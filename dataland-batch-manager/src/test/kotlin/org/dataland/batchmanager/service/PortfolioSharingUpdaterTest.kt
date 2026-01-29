@@ -10,6 +10,9 @@ import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssi
 import org.dataland.userService.openApiClient.api.PortfolioControllerApi
 import org.dataland.userService.openApiClient.model.BasePortfolio
 import org.dataland.userService.openApiClient.model.NotificationFrequency
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -67,10 +70,10 @@ class PortfolioSharingUpdaterTest {
 
         val result = portfolioSharingUpdater.getAllUserIdsOfAdminsAndMembers()
 
-        assert(result.contains(adminUserOne.userId))
-        assert(result.contains(adminUserTwo.userId))
-        assert(result.contains(memberAssignment.userId))
-        assert(!result.contains(nonMemberAssignment.userId))
+        assertTrue(result.contains(adminUserOne.userId))
+        assertTrue(result.contains(adminUserTwo.userId))
+        assertTrue(result.contains(memberAssignment.userId))
+        assertFalse(result.contains(nonMemberAssignment.userId))
     }
 
     @Test
@@ -82,7 +85,7 @@ class PortfolioSharingUpdaterTest {
             assertThrows<IllegalArgumentException> {
                 portfolioSharingUpdater.getAllUserIdsOfAdminsAndMembers()
             }
-        assert(exception.message == "No Dataland admins or members found. Portfolio sharing update failed.")
+        assertEquals("No Dataland admins or members found. Portfolio sharing update failed.", exception.message)
     }
 
     @Test
@@ -93,7 +96,7 @@ class PortfolioSharingUpdaterTest {
         whenever(mockDerivedRightsUtilsComponent.isUserDatalandMember(ADMIN_MEMBER_USER_ID)).thenReturn(true)
 
         val result = portfolioSharingUpdater.getAllUserIdsOfAdminsAndMembers()
-        assert(result.size == 1)
+        assertEquals(1, result.size)
     }
 
     @Test
@@ -111,9 +114,9 @@ class PortfolioSharingUpdaterTest {
 
         spyUpdater.updatePortfolioSharing()
 
-        verify(mockPortfolioControllerApi, times(0)).patchSharing(eq("p1"), any())
+        verify(mockPortfolioControllerApi, never()).patchSharing(eq("p1"), any())
         verify(mockPortfolioControllerApi, times(1)).patchSharing(eq("p2"), argThat { sharedUserIds.isEmpty() })
-        verify(mockPortfolioControllerApi, times(0)).patchSharing(eq("p3"), any())
+        verify(mockPortfolioControllerApi, never()).patchSharing(eq("p3"), any())
     }
 
     @Test
@@ -126,7 +129,7 @@ class PortfolioSharingUpdaterTest {
         spyUpdater.updatePortfolioSharing()
 
         verify(mockPortfolioControllerApi, times(1)).getAllPortfolios(chunkSize = 100, chunkIndex = 0)
-        verify(mockPortfolioControllerApi, times(0)).patchSharing(eq("p1"), any())
+        verify(mockPortfolioControllerApi, never()).patchSharing(eq("p1"), any())
     }
 
     @Test
@@ -141,7 +144,7 @@ class PortfolioSharingUpdaterTest {
         spyUpdater.updatePortfolioSharing()
 
         verify(mockPortfolioControllerApi, times(1)).getAllPortfolios(chunkSize = 100, chunkIndex = 0)
-        verify(mockPortfolioControllerApi, times(0)).patchSharing(eq("p1"), any())
+        verify(mockPortfolioControllerApi, never()).patchSharing(eq("p1"), any())
     }
 
     @Test

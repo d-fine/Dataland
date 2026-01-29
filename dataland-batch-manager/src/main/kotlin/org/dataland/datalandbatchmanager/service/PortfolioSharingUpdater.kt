@@ -22,16 +22,17 @@ class PortfolioSharingUpdater
         private val keycloakUserService: KeycloakUserService,
         private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val portfolioControllerApi: PortfolioControllerApi,
-        @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
         private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
+        @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Updates portfolio sharing settings by removing shared user IDs from portfolios
-         * which were shared by users who lost their admin or member status
+         * which were shared by users who lost their admin or Dataland member status
          */
         fun updatePortfolioSharing() {
+            logger.info("Starting portfolio sharing update job")
             val userIdsOfAdminsAndMembers = getAllUserIdsOfAdminsAndMembers()
 
             var chunkIndex = 0
@@ -57,6 +58,7 @@ class PortfolioSharingUpdater
             } while (chunkOfPortfolios.size == resultsPerPage)
 
             logger.info("Cleared portfolio sharing for $totalClearedPortfolios portfolios out of $totalProcessedPortfolios portfolios")
+            logger.info("Finished portfolio sharing update job")
         }
 
         /**
