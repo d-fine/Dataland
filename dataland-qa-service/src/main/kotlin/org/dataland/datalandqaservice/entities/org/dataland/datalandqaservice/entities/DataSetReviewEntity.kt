@@ -14,11 +14,11 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import java.util.UUID
 
 /**
- * The database entity for storing metadata regarding QA reports uploaded to dataland
+ * The database entity for storing dataset reviews
  */
 @SuppressWarnings("LongParameterList")
 @Entity
-@Table(name = "dataset_review_entity")
+@Table(name = "dataset_review")
 class DataSetReviewEntity(
     @Id
     @Column(name = "dataset_review_id")
