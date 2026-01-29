@@ -274,9 +274,6 @@ class AssembledDatasetTest {
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
         expectedDataPointInformationBigInteger.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
-                assertEquals(expectedData.qaStatus, it[0].qaStatus)
-            }
             QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
                 assertQaReportsAlignBigInteger(expectedData.qaReport, it[0])
             }
@@ -310,9 +307,6 @@ class AssembledDatasetTest {
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
         expectedDataPointInformationYesNo.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
-                assertEquals(expectedData.qaStatus, it[0].qaStatus)
-            }
             QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
                 assertQaReportsAlignYesNo(expectedData.qaReport, it[0])
             }

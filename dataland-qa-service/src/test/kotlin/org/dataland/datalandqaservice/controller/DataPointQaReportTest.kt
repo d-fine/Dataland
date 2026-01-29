@@ -127,11 +127,11 @@ class DataPointQaReportTest(
     }
 
     @Test
-    fun `uploading a data point QA report should update the QA status`() {
+    fun `uploading a data point QA report should not update the QA status`() {
         UtilityFunctions.withReviewerAuthentication {
             dataPointQaReportController.postQaReport(dummyDataId, dummyQaReportDataPoint)
             val retrievedDataPointMetaInformation = qaController.getDataPointQaReviewInformationByDataId(dummyDataId)
-            assert(retrievedDataPointMetaInformation.body!![0].qaStatus == UtilsQaStatus.Accepted)
+            assert(retrievedDataPointMetaInformation.body!![0].qaStatus == UtilsQaStatus.Pending)
         }
     }
 
