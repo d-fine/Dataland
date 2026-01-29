@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.org.dataland.datalandqaservice.entities
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -10,7 +10,6 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import java.util.UUID
 
 /**
