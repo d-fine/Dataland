@@ -43,6 +43,9 @@ class DataSetReviewEntity(
     @JoinColumn(name = "dataset_review_id")
     var qaReports: MutableSet<DataPointQaReportEntity>,
     @ElementCollection
+    @Column(name = "approved_qa_report_ids")
+    var approvedQaReportIds: Set<UUID> = emptySet(),
+    @ElementCollection
     @Column(name = "approved_data_point_ids")
     var approvedDataPointIds: Set<UUID> = emptySet(),
     @ElementCollection
