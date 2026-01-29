@@ -26,6 +26,11 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class PortfolioSharingUpdaterTest {
+    companion object {
+        private const val ADMIN_MEMBER_USER_ID = "user-id"
+        private const val FAIL_400_PORTFOLIO_ID = "fail-400"
+    }
+
     private val mockPortfolioControllerApi = mock<PortfolioControllerApi>()
     private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
@@ -82,10 +87,10 @@ class PortfolioSharingUpdaterTest {
 
     @Test
     fun `getAllUserIdsOfAdminsAndMembers only returns single userId if user is admin and member`() {
-        whenever(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN")).thenReturn(listOf(createKeycloakUser("user-id")))
+        whenever(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN")).thenReturn(listOf(createKeycloakUser(ADMIN_MEMBER_USER_ID)))
         whenever(mockCompanyRolesControllerApi.getExtendedCompanyRoleAssignments())
-            .thenReturn(listOf(createCompanyRoleAssignment("user-id")))
-        whenever(mockDerivedRightsUtilsComponent.isUserDatalandMember("user-id")).thenReturn(true)
+            .thenReturn(listOf(createCompanyRoleAssignment(ADMIN_MEMBER_USER_ID)))
+        whenever(mockDerivedRightsUtilsComponent.isUserDatalandMember(ADMIN_MEMBER_USER_ID)).thenReturn(true)
 
         val result = portfolioSharingUpdater.getAllUserIdsOfAdminsAndMembers()
         assert(result.size == 1)
@@ -172,13 +177,13 @@ class PortfolioSharingUpdaterTest {
         val spyUpdater = spy(portfolioSharingUpdater)
         doReturn(setOf("admin")).whenever(spyUpdater).getAllUserIdsOfAdminsAndMembers()
 
-        val p1 = createBasePortfolio(portfolioId = "fail-400", userId = "stranger", sharedUserIds = setOf("u1"))
+        val p1 = createBasePortfolio(portfolioId = FAIL_400_PORTFOLIO_ID, userId = "stranger", sharedUserIds = setOf("u1"))
 
         whenever(mockPortfolioControllerApi.getAllPortfolios(eq(100), any()))
             .thenReturn(listOf(p1))
             .thenReturn(emptyList())
 
-        whenever(mockPortfolioControllerApi.patchSharing(eq("fail-400"), any()))
+        whenever(mockPortfolioControllerApi.patchSharing(eq(FAIL_400_PORTFOLIO_ID), any()))
             .thenThrow(
                 ClientException(
                     statusCode = 400,
@@ -187,7 +192,7 @@ class PortfolioSharingUpdaterTest {
             )
 
         spyUpdater.updatePortfolioSharing()
-        verify(mockPortfolioControllerApi).patchSharing(eq("fail-400"), any())
+        verify(mockPortfolioControllerApi).patchSharing(eq(FAIL_400_PORTFOLIO_ID), any())
     }
 
     @Test
