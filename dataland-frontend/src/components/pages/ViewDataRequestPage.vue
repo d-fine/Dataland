@@ -91,6 +91,14 @@
             style="width: fit-content"
           />
         </div>
+        <div class="card" data-test="card_dataSourcingDetails">
+          <div class="title">Data Sourcing</div>
+          <Divider />
+          <div class="side-header">Document Collector</div>
+          <div class="data" data-test="data-sourcing-collector">-</div>
+          <div class="side-header">Data Extractor</div>
+          <div class="data" data-test="data-sourcing-extractor">-</div>
+        </div>
       </div>
       <div>
         <div style="padding: var(--spacing-md)">
