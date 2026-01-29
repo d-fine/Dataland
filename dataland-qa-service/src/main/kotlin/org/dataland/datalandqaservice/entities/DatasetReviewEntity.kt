@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import java.util.UUID
 
 /**
@@ -18,7 +19,7 @@ import java.util.UUID
 @SuppressWarnings("LongParameterList")
 @Entity
 @Table(name = "dataset_review")
-class DataSetReviewEntity(
+class DatasetReviewEntity(
     @Id
     @Column(name = "dataset_review_id")
     val dataSetReviewId: UUID,
@@ -50,4 +51,23 @@ class DataSetReviewEntity(
     @ElementCollection
     @Column(name = "approved_custom_data_point_ids")
     var approvedCustomDataPointIds: Map<UUID, String> = emptyMap(),
-)
+) {
+    /**
+     * Convert to DatasetReview objects for API use.
+     */
+    fun toDatasetReview(): DatasetReview =
+        DatasetReview(
+            dataSetReviewId,
+            datasetId,
+            companyId,
+            dataType,
+            reportingPeriod,
+            status,
+            reviewerUserId,
+            preapprovedDataPointIds,
+            qaReports,
+            approvedQaReportIds,
+            approvedDataPointIds,
+            approvedCustomDataPointIds,
+        )
+}
