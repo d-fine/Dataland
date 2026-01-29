@@ -14,7 +14,7 @@
 import { ExtendedQaStatus } from '@/components/resources/datasetOverview/DatasetTableInfo.ts';
 import Tag from 'primevue/tag';
 import { computed, type Ref } from 'vue';
-import { RequestState, RequestPriority } from '@clients/datasourcingservice';
+import { RequestState, RequestPriority, DataSourcingState } from '@clients/datasourcingservice';
 
 type TagColorDefinition = {
   background: string;
@@ -40,6 +40,21 @@ const amberTag: TagColorDefinition = {
 const skyTag: TagColorDefinition = {
   background: '{surface.0}',
   color: '{sky.600}',
+};
+
+const tealTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{teal.600}',
+};
+
+const violetTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{violet.600}',
+};
+
+const fuchsiaTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{fuchsia.600}',
 };
 
 const slateTag: TagColorDefinition = {
@@ -93,6 +108,21 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
       return greenTag;
     case RequestState.Withdrawn:
       return slateTag;
+    // datasourcing state
+    case DataSourcingState.Initialized:
+      return amberTag;
+    case DataSourcingState.DocumentSourcing:
+      return skyTag;
+    case DataSourcingState.DocumentSourcingDone:
+      return tealTag;
+    case DataSourcingState.DataExtraction:
+      return violetTag;
+    case DataSourcingState.DataVerification:
+      return fuchsiaTag;
+    case DataSourcingState.NonSourceable:
+      return slateTag;
+    case DataSourcingState.Done:
+      return greenTag;
     default:
       return slateTag;
   }
