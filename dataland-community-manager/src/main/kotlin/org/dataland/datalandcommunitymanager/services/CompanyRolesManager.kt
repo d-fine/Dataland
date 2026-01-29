@@ -241,22 +241,6 @@ class CompanyRolesManager(
     }
 
     /**
-     * Verifies if the user with the specified userId has the role CompanyOwner or Admin for
-     * at least one company on Dataland.
-     */
-    @Transactional(readOnly = true)
-    fun currentUserIsOwnerOrAdminOfAtLeastOneCompany(): Boolean {
-        val userId = DatalandAuthentication.fromContextOrNull()?.userId
-        if (userId == null) return false
-        return companyRoleAssignmentRepository
-            .getCompanyRoleAssignmentsByProvidedParameters(
-                companyId = null, userId = userId, companyRole = null,
-            ).any {
-                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
-            }
-    }
-
-    /**
      * Sends a company ownership request if company owner role is not assigned to user yet
      * @param companyId of the company for which company ownership is being requested
      * @param userAuthentication of the user who wants to become company owner

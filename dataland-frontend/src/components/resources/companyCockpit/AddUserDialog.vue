@@ -15,9 +15,9 @@
             <Button label="SELECT" @click="selectUser(searchQuery, true)" data-test="select-user-button" />
           </div>
           <Message
-            v-if="unknownUserError"
+            v-if="searchError"
             severity="error"
-            data-test="unknown-user-error"
+            data-test="search-error"
             :pt="{
               root: {
                 style: 'margin-top: var(--spacing-xxs); max-width:30rem',
@@ -27,7 +27,7 @@
               },
             }"
           >
-            {{ unknownUserError }}
+            {{ searchError }}
           </Message>
         </div>
 
@@ -118,6 +118,9 @@
     </Card>
   </div>
   <div class="dialog-actions">
+    <Message v-if="errorMessage" severity="error" data-test="error-message" :pt="{ root: { style: 'margin: 0;' } }">
+      {{ errorMessage }}
+    </Message>
     <Button
       label="ADD SELECTED USERS"
       :disabled="!hasSelectedUsers"
@@ -136,6 +139,7 @@ import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { generateInitials } from '@/utils/StringFormatter.ts';
 import type Keycloak from 'keycloak-js';
 import type { CompanyRole } from '@clients/communitymanager';
 import { AxiosError } from 'axios';
@@ -167,7 +171,8 @@ const selectedUsers = ref<User[]>([]);
 const hasSelectedUsers = computed(() => selectedUsers.value.length > 0);
 const usersToAdd = ref<User[]>([]);
 const searchQuery = ref('');
-const unknownUserError = ref('');
+const searchError = ref('');
+const errorMessage = ref('');
 const userCountText = computed(() => {
   const count = selectedUsers.value?.length;
   return `${count} User${count === 1 ? '' : 's'}`;
@@ -188,23 +193,11 @@ type User = {
 };
 
 /**
- * Generates initials from a given name.
- * @param name - The full name of the user
- * @returns The initials derived from the name
- */
-function generateInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase())
-    .join('');
-}
-
-/**
  * Validates the email address and adds the user to the selected users list if valid.
  */
 async function validateAndAddUser(email: string, byInputText: boolean): Promise<void> {
   if (!email) return;
-  unknownUserError.value = '';
+  searchError.value = '';
 
   try {
     const emailAddressControllerApi = apiClientProvider.apiClients.emailAddressController;
@@ -223,7 +216,7 @@ async function validateAndAddUser(email: string, byInputText: boolean): Promise<
       props.existingUsers.some((u) => u.userId === user.userId);
 
     if (alreadySelected) {
-      unknownUserError.value = 'This user has already been selected.';
+      searchError.value = 'This user has already been selected.';
       return;
     }
 
@@ -233,9 +226,9 @@ async function validateAndAddUser(email: string, byInputText: boolean): Promise<
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      unknownUserError.value = error.response?.data?.errors?.[0]?.message;
+      searchError.value = error.response?.data?.errors?.[0]?.message;
     } else {
-      unknownUserError.value = 'An unknown error occurred while validating the user.';
+      searchError.value = 'An unknown error occurred while validating the user.';
       console.error(error);
     }
   }
@@ -296,9 +289,9 @@ async function handleAddUser(): Promise<void> {
     emit('users-added', 'User(s) successfully added.');
   } catch (error) {
     if (error instanceof AxiosError) {
-      unknownUserError.value = error.response?.data?.errors?.[0]?.message;
+      errorMessage.value = error.response?.data?.errors?.[0]?.message || 'Failed to add users.';
     } else {
-      unknownUserError.value = 'An unknown error occurred while adding users.';
+      errorMessage.value = 'An unknown error occurred while adding users.';
       console.error(error);
     }
   }
@@ -403,6 +396,8 @@ async function getSuggestedUsers(): Promise<User[]> {
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .select-container {

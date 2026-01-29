@@ -18,7 +18,25 @@
         />
       </div>
 
+      <div :title="!isUserDatalandMemberOrAdmin ? 'Only Dataland members can share portfolios' : ''">
+        <Button
+          @click="openShareModal(reload)"
+          data-test="share-portfolio"
+          :disabled="!isUserDatalandMemberOrAdmin"
+          icon="pi pi-share-alt"
+          label="SHARE PORTFOLIO"
+        />
+      </div>
+
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
+      <Tag
+        v-if="Array.from(enrichedPortfolio?.sharedUserIds ?? []).length > 0"
+        :value="`Shared with ${Array.from(enrichedPortfolio?.sharedUserIds ?? []).length} user${Array.from(enrichedPortfolio?.sharedUserIds ?? []).length === 1 ? '' : 's'}`"
+        icon="pi pi-users"
+        severity="info"
+        data-test="shared-users-tag"
+      />
+
       <Button
         class="reset-button-align-right"
         data-test="reset-filter"
@@ -46,6 +64,7 @@
 import PortfolioDetailsBase from '@/components/resources/portfolio/PortfolioDetailsBase.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
 import PortfolioMonitoring from '@/components/resources/portfolio/PortfolioMonitoring.vue';
+import SharePortfolioDialog from '@/components/resources/portfolio/SharePortfolioDialog.vue';
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
@@ -147,6 +166,28 @@ function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, r
         isSuccessDialogVisible.value = true;
         reload();
         emit('update:portfolio-overview');
+      }
+    },
+  });
+}
+
+/**
+ * Opens the SharePortfolioDialog to manage which users have access to the portfolio.
+ * Once the dialog is closed with saved changes, it reloads the portfolio data.
+ * @param reload - Function to reload the portfolio data
+ */
+function openShareModal(reload: () => void): void {
+  dialog.open(SharePortfolioDialog, {
+    props: {
+      modal: true,
+      header: 'Manage Portfolio Access',
+    },
+    data: {
+      portfolioId: props.portfolioId,
+    },
+    onClose(options) {
+      if (options?.data?.saved) {
+        reload();
       }
     },
   });
