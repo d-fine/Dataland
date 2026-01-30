@@ -1241,6 +1241,16 @@
               "type": "string"
             },
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          {
+            "name": "stateChangesOnly",
+            "in": "query",
+            "description": "If true, only returns revisions where the state changed.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -1699,6 +1709,18 @@
           }
         }
       },
+      "DataSourcingState": {
+        "type": "string",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
       "RequestPriority": {
         "type": "string",
         "enum": [
@@ -1783,9 +1805,12 @@
           "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
-            "example": "[DataVerification]",
+            "example": [
+              "Initialized",
+              "DataVerification"
+            ],
             "items": {
-              "$ref": "#/components/schemas/RequestState"
+              "$ref": "#/components/schemas/DataSourcingState"
             }
           }
         }
@@ -1915,20 +1940,6 @@
             "example": "test@example.com"
           }
         }
-      },
-      "DataSourcingState": {
-        "type": "string",
-        "description": "The current state of the data sourcing object.",
-        "example": "DataVerification",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Done"
-        ]
       },
       "StoredRequest": {
         "required": [
@@ -2273,6 +2284,7 @@
           "companyId",
           "dataSourcingId",
           "dataType",
+          "lastModifiedDate",
           "reportingPeriod",
           "state"
         ],
@@ -2320,6 +2332,12 @@
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the data sourcing object was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           }
         }
       },

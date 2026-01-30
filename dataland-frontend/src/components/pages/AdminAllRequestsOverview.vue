@@ -167,6 +167,16 @@
               <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
             </template>
           </Column>
+          <Column header="DOCUMENT COLLECTOR" :sortable="false">
+            <template #body="{ data }">
+              {{ data.dataSourcingDetails?.documentCollectorName ?? '-' }}
+            </template>
+          </Column>
+          <Column header="DATA EXTRACTOR" :sortable="false">
+            <template #body="{ data }">
+              {{ data.dataSourcingDetails?.dataExtractorName ?? '-' }}
+            </template>
+          </Column>
           <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
           <template #empty>
             <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
@@ -201,7 +211,7 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
+import type { RequestState, RequestPriority, DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const frameworkFilter = ref();
@@ -213,7 +223,7 @@ const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
 const rowsPerPage = ref(datasetsPerPage);
 const firstRowIndex = ref(0);
-const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
+const currentDataRequests = ref<DataSourcingEnhancedRequest[]>([]);
 const searchBarInputEmail = ref('');
 const searchBarInputComment = ref('');
 const searchBarInputCompanySearchString = ref('');

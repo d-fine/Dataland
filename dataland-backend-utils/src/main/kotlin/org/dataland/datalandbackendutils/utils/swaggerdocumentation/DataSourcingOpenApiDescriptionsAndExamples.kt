@@ -6,6 +6,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_STATE_DESCRIPTION = "The current state of the data sourcing object."
     const val DATA_SOURCING_STATE_EXAMPLE = "DataVerification"
+    const val DATA_SOURCING_STATE_LIST_EXAMPLE = "[\"Initialized\",\"DataVerification\"]"
 
     const val DOCUMENT_IDS_DESCRIPTION = "The IDs of documents from which the data for this data sourcing object are extracted."
     const val DOCUMENT_IDS_PATCH_DESCRIPTION = "The IDs of documents to append to or overwrite the existing document IDs."
