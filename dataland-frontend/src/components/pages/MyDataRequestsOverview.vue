@@ -29,7 +29,7 @@
           v-model="selectedState"
           ref="stateFilter"
           :available-items="availableState"
-          filter-name="Request State"
+          filter-name="State"
           data-test="requested-datasets-state"
           filter-placeholder="Search State"
           class="search-filter"
@@ -89,9 +89,9 @@
               {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
             </template>
           </Column>
-          <Column header="REQUEST STATE" field="state" :sortable="true">
+          <Column header="STATE" field="state" :sortable="true">
             <template #body="{ data }">
-              <DatalandTag :severity="data.state" :value="data.state" />
+              <DatalandTag :severity="getDisplayedState(data)" :value="getDisplayedState(data)" />
             </template>
           </Column>
           <Column field="resolve" header="">
@@ -135,9 +135,9 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
-  customCompareForRequestState,
+  customCompareForState,
+  retrieveAvailableDataSourcingStates,
   retrieveAvailableFrameworks,
-  retrieveAvailableRequestStates,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -153,15 +153,15 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { type ExtendedStoredRequest, RequestState } from '@clients/datasourcingservice';
+import { type DataSourcingState, type DataSourcingEnhancedRequest, RequestState } from '@clients/datasourcingservice';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const datasetsPerPage = 100;
 
 const waitingForData = ref(true);
 const currentPage = ref(0);
-const storedDataRequests = ref<ExtendedStoredRequest[]>([]);
-const displayedData = ref<ExtendedStoredRequest[]>([]);
+const storedDataRequests = ref<DataSourcingEnhancedRequest[]>([]);
+const displayedData = ref<DataSourcingEnhancedRequest[]>([]);
 const searchBarInput = ref('');
 const searchBarInputFilter = ref('');
 
@@ -172,7 +172,7 @@ const availableState = ref<SelectableItem[]>([]);
 const selectedState = ref<SelectableItem[]>([]);
 
 const numberOfFilteredRequests = ref(0);
-const sortField = ref<keyof ExtendedStoredRequest>('state');
+const sortField = ref<keyof DataSourcingEnhancedRequest>('state');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
@@ -183,7 +183,10 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableState.value = retrieveAvailableRequestStates();
+  availableState.value = [
+    { displayName: RequestState.Open, disabled: false },
+    ...retrieveAvailableDataSourcingStates(),
+  ];
   await getStoredRequestDataList();
 });
 
@@ -233,7 +236,7 @@ async function getStoredRequestDataList(): Promise<void> {
  * @param {DataTableRowClickEvent} event - The row click event containing data about the clicked row.
  */
 function onRowClick(event: DataTableRowClickEvent): void {
-  const requestIdOfClickedRow = (event.data as ExtendedStoredRequest).id;
+  const requestIdOfClickedRow = (event.data as DataSourcingEnhancedRequest).id;
   void vueRouter.push(`/requests/${requestIdOfClickedRow}`);
 }
 
@@ -245,7 +248,7 @@ function onRowClick(event: DataTableRowClickEvent): void {
  * @param {DataTableSortEvent} event - The sorting event containing the sort field and sort order.
  */
 function onSort(event: DataTableSortEvent): void {
-  sortField.value = event.sortField as keyof ExtendedStoredRequest;
+  sortField.value = event.sortField as keyof DataSourcingEnhancedRequest;
   sortOrder.value = event.sortOrder ?? 1;
   updateCurrentDisplayedData();
 }
@@ -268,6 +271,18 @@ function filterFramework(framework: string): boolean {
  */
 function filterState(state: string): boolean {
   return selectedState.value.some((s) => s.displayName === state);
+}
+
+/**
+ * Retrieves the displayed state of a data sourcing request.
+ * If the data sourcing details are available, it returns the data sourcing state;
+ * otherwise, it defaults to 'Open'.
+ *
+ * @param {DataSourcingEnhancedRequest} request - The data sourcing request object.
+ * @returns {string} The displayed state of the request.
+ */
+function getDisplayedState(request: DataSourcingEnhancedRequest): string {
+  return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
 }
 
 /**
@@ -312,7 +327,7 @@ function updateCurrentDisplayedData(): void {
     data = data.filter((request) => filterFramework(request.dataType));
   }
   if (selectedState.value.length > 0) {
-    data = data.filter((request) => filterState(request.state));
+    data = data.filter((request) => filterState(getDisplayedState(request)));
   }
 
   data.sort((dataRequestObjectA, dataRequestObjectB) =>
@@ -330,13 +345,13 @@ function updateCurrentDisplayedData(): void {
  * Custom comparison function for sorting `ExtendedStoredDataRequest` objects.
  * Compares based on the current sort field, request state, last modified date, and company name.
  *
- * @param {ExtendedStoredRequest} dataRequestObjectA - The first data request object to compare.
- * @param {ExtendedStoredRequest} dataRequestObjectB - The second data request object to compare.
+ * @param {DataSourcingEnhancedRequest} dataRequestObjectA - The first data request object to compare.
+ * @param {DataSourcingEnhancedRequest} dataRequestObjectB - The second data request object to compare.
  * @returns {number} Comparison result: negative if `dataRequestObjectA` should precede `dataRequestObjectB`, positive if `dataRequestObjectB` should precede `dataRequestObjectA`, or zero if they are equal.
  */
 function customCompareForExtendedStoredDataRequests(
-  dataRequestObjectA: ExtendedStoredRequest,
-  dataRequestObjectB: ExtendedStoredRequest
+  dataRequestObjectA: DataSourcingEnhancedRequest,
+  dataRequestObjectB: DataSourcingEnhancedRequest
 ): number {
   const dataRequestObjectValueA = dataRequestObjectA[sortField.value] ?? '';
   const dataRequestObjectValueB = dataRequestObjectB[sortField.value] ?? '';
@@ -346,8 +361,12 @@ function customCompareForExtendedStoredDataRequests(
     if (dataRequestObjectValueA > dataRequestObjectValueB) return sortOrder.value;
   }
 
-  if (dataRequestObjectA.state !== dataRequestObjectB.state)
-    return customCompareForRequestState(dataRequestObjectA.state, dataRequestObjectB.state, sortOrder.value);
+  const stateA = getDisplayedState(dataRequestObjectA) as DataSourcingState | RequestState;
+  const stateB = getDisplayedState(dataRequestObjectB) as DataSourcingState | RequestState;
+
+  if (stateA !== stateB) {
+    return customCompareForState(stateA, stateB, sortOrder.value);
+  }
 
   if (dataRequestObjectA.lastModifiedDate < dataRequestObjectB.lastModifiedDate) return sortOrder.value;
   if (dataRequestObjectA.lastModifiedDate > dataRequestObjectB.lastModifiedDate) return -1 * sortOrder.value;

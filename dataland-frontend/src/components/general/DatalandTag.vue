@@ -72,6 +72,16 @@ const primaryTag: TagColorDefinition = {
   color: '{primary.color}',
 };
 
+const greenTagFull: TagColorDefinition = {
+  background: '{green.600}',
+  color: '{surface.0}',
+};
+
+const redTagFull: TagColorDefinition = {
+  background: '{red.600}',
+  color: '{surface.0}',
+};
+
 const { severity } = defineProps({
   severity: {
     type: String,
@@ -120,9 +130,9 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case DataSourcingState.DataVerification:
       return fuchsiaTag;
     case DataSourcingState.NonSourceable:
-      return slateTag;
+      return redTagFull;
     case DataSourcingState.Done:
-      return greenTag;
+      return greenTagFull;
     default:
       return slateTag;
   }
