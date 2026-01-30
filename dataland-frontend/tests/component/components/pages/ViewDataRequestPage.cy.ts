@@ -265,6 +265,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist');
     cy.contains('Request is').should('exist');
+    cy.contains('Document Collector').should('exist');
+    cy.contains('Data Extractor').should('exist');
 
     cy.get('[data-test="card_requestDetails"]').should('exist');
     cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -292,6 +294,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist');
     cy.contains('Request is').should('exist');
+    cy.contains('Document Collector').should('exist');
+    cy.contains('Data Extractor').should('exist');
 
     cy.get('[data-test="card_requestDetails"]').should('exist');
     cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -444,6 +448,22 @@ describe('Component tests for the view data request page', function (): void {
       cy.get('[data-test="card_requestDetails"]').within(() => {
         cy.get('[data-test="data-sourcing-collector"]').should('contain', collectorName);
         cy.get('[data-test="data-sourcing-extractor"]').should('contain', extractorName);
+      });
+    });
+  });
+
+  it('Check data sourcing details display collector and extractor names when dataSourcingDetails is not present', function () {
+    const dataSourcingEntityId = 'dummyDataSourcingId';
+    const request = createRequestWithDataSourcing(dataSourcingEntityId);
+
+    setupDataSourcingInterceptions(request, [], []);
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="card_requestDetails"]').within(() => {
+        cy.get('[data-test="data-sourcing-collector"]').should('contain', '-');
+        cy.get('[data-test="data-sourcing-extractor"]').should('contain', '-');
       });
     });
   });
