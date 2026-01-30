@@ -3,7 +3,7 @@ import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/Frame
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import { DataSourcingState, RequestState } from '@clients/datasourcingservice';
+import { type DataSourcingEnhancedRequest, DataSourcingState, RequestState } from '@clients/datasourcingservice';
 
 /**
  * Compares two states, either data sourcing states or request states
@@ -28,6 +28,21 @@ export function customCompareForState(
   sortOrderRequestState[DataSourcingState.NonSourceable] = 7;
   if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
+}
+
+/**
+ * Retrieves the displayed state of a data sourcing request.
+ * If the data sourcing details are available, it returns the data sourcing state;
+ * otherwise, it defaults to 'Open'.
+ *
+ * @param {DataSourcingEnhancedRequest} request - The data sourcing request object.
+ * @returns {string} The displayed state of the request.
+ */
+export function getDisplayedState(request: DataSourcingEnhancedRequest): string {
+  if (request.state in [RequestState.Open, RequestState.Withdrawn]) {
+    return request.state;
+  }
+  return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
 }
 
 /**

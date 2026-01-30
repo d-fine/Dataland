@@ -135,6 +135,7 @@ import {
   customCompareForState,
   retrieveAvailableDataSourcingStates,
   retrieveAvailableFrameworks,
+  getDisplayedState,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -268,18 +269,6 @@ function filterFramework(framework: string): boolean {
  */
 function filterState(state: string): boolean {
   return selectedState.value.some((s) => s.displayName === state);
-}
-
-/**
- * Retrieves the displayed state of a data sourcing request.
- * If the data sourcing details are available, it returns the data sourcing state;
- * otherwise, it defaults to 'Open'.
- *
- * @param {DataSourcingEnhancedRequest} request - The data sourcing request object.
- * @returns {string} The displayed state of the request.
- */
-function getDisplayedState(request: DataSourcingEnhancedRequest): string {
-  return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
 }
 
 /**
