@@ -1709,6 +1709,18 @@
           }
         }
       },
+      "DataSourcingState": {
+        "type": "string",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
       "RequestPriority": {
         "type": "string",
         "enum": [
@@ -1793,9 +1805,12 @@
           "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
-            "example": "[DataVerification]",
+            "example": [
+              "Initialized",
+              "DataVerification"
+            ],
             "items": {
-              "$ref": "#/components/schemas/RequestState"
+              "$ref": "#/components/schemas/DataSourcingState"
             }
           }
         }
@@ -1925,20 +1940,6 @@
             "example": "test@example.com"
           }
         }
-      },
-      "DataSourcingState": {
-        "type": "string",
-        "description": "The current state of the data sourcing object.",
-        "example": "DataVerification",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Done"
-        ]
       },
       "StoredRequest": {
         "required": [
