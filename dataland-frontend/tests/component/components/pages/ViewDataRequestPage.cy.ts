@@ -1,6 +1,14 @@
 import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { RequestState, RequestPriority, type ExtendedStoredRequest } from '@clients/datasourcingservice';
+import {
+  RequestState,
+  RequestPriority,
+  type ExtendedStoredRequest,
+  type DataSourcingWithoutReferences,
+  type StoredRequest,
+  type StoredDataSourcing,
+  DataSourcingState,
+} from '@clients/datasourcingservice';
 import type { CompanyInformation } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -29,6 +37,43 @@ describe('Component tests for the view data request page', function (): void {
   const dummyReportingYear = 'dummyReportingYear';
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
+
+  /**
+   * Creates a DataSourcingWithoutReferences object with defaults
+   * @param overrides optional fields to override
+   */
+  function createDataSourcingHistoryEntry(
+    overrides: Partial<DataSourcingWithoutReferences> = {}
+  ): DataSourcingWithoutReferences {
+    return {
+      dataSourcingId: 'dummyDataSourcingId',
+      companyId: dummyCompanyId,
+      reportingPeriod: dummyReportingYear,
+      dataType: dummyFramework,
+      state: DataSourcingState.Initialized,
+      lastModifiedDate: dummyLastModifiedDate,
+      ...overrides,
+    };
+  }
+
+  /**
+   * Creates a StoredRequest history entry with defaults
+   * @param overrides optional fields to override
+   */
+  function createRequestHistoryEntry(overrides: Partial<StoredRequest> = {}): StoredRequest {
+    return {
+      id: requestId,
+      companyId: dummyCompanyId,
+      reportingPeriod: dummyReportingYear,
+      dataType: dummyFramework,
+      userId: dummyUserId,
+      creationTimestamp: dummyCreationTime,
+      lastModifiedDate: dummyLastModifiedDate,
+      state: RequestState.Open,
+      requestPriority: RequestPriority.Low,
+      ...overrides,
+    };
+  }
 
   /**
    * Mocks the data-sourcing-manager answer for single data request of the users
@@ -91,6 +136,125 @@ describe('Component tests for the view data request page', function (): void {
     cy.intercept(`**/data-sourcing/requests/${requestId}/state?**`, {
       status: 200,
     });
+  }
+
+  /**
+   * Mocks the data-sourcing-manager answer for data sourcing history
+   * @param dataSourcingId the data sourcing entity ID
+   * @param history the data sourcing history to return
+   */
+  function interceptDataSourcingHistory(dataSourcingId: string, history: DataSourcingWithoutReferences[]): void {
+    cy.intercept(`**/data-sourcing/${dataSourcingId}/history`, {
+      body: history,
+      status: 200,
+    });
+  }
+
+  /**
+   * Mocks the data-sourcing-manager answer for request history
+   * @param requestId the request ID
+   * @param history the request history to return
+   */
+  function interceptRequestHistory(requestId: string, history: StoredRequest[]): void {
+    cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
+      body: history,
+      status: 200,
+    });
+  }
+
+  /**
+   * Creates a request object with data sourcing entity ID
+   * @param dataSourcingEntityId the data sourcing entity ID
+   */
+  function createRequestWithDataSourcing(dataSourcingEntityId: string): ExtendedStoredRequest {
+    return {
+      id: requestId,
+      userId: dummyUserId,
+      creationTimestamp: dummyCreationTime,
+      dataType: dummyFramework,
+      reportingPeriod: dummyReportingYear,
+      companyId: dummyCompanyId,
+      lastModifiedDate: dummyLastModifiedDate,
+      state: RequestState.Processing,
+      requestPriority: RequestPriority.Low,
+      companyName: dummyCompanyName,
+      userEmailAddress: dummyEmail,
+      dataSourcingEntityId: dataSourcingEntityId,
+    };
+  }
+
+  /**
+   * Mocks the data-sourcing-manager answer for data sourcing details
+   * @param dataSourcingId the data sourcing entity ID
+   * @param collectorId the collector company UUID
+   * @param extractorId the extractor company UUID
+   */
+  function interceptDataSourcingDetails(dataSourcingId: string, collectorId: string, extractorId: string): void {
+    const dataSourcing: Partial<StoredDataSourcing> = {
+      dataSourcingId: dataSourcingId,
+      companyId: dummyCompanyId,
+      reportingPeriod: dummyReportingYear,
+      dataType: dummyFramework,
+      state: DataSourcingState.Initialized,
+      documentCollector: collectorId,
+      dataExtractor: extractorId,
+    };
+    cy.intercept(`**/data-sourcing/${dataSourcingId}`, {
+      body: dataSourcing,
+      status: 200,
+    });
+  }
+
+  /**
+   * Mocks company info endpoint for resolving UUIDs to names
+   * @param companyId the company UUID
+   * @param companyName the company name to return
+   */
+  function interceptCompanyInfo(companyId: string, companyName: string): void {
+    cy.intercept(`**/api/companies/${companyId}/info`, {
+      body: { companyName: companyName } as Partial<CompanyInformation>,
+      status: 200,
+    });
+  }
+
+  /**
+   * Sets up all necessary interceptions for a request with data sourcing
+   * @param request the request object with data sourcing entity ID
+   * @param requestHistory the request history to return
+   * @param dataSourcingHistory the data sourcing history to return
+   * @param collectorId the collector company UUID
+   * @param collectorName the collector company name
+   * @param extractorId the extractor company UUID
+   * @param extractorName the extractor company name
+   */
+  function setupDataSourcingInterceptions(
+    request: ExtendedStoredRequest,
+    requestHistory: StoredRequest[],
+    dataSourcingHistory: DataSourcingWithoutReferences[],
+    collectorId?: string,
+    collectorName?: string,
+    extractorId?: string,
+    extractorName?: string
+  ): void {
+    cy.intercept(`**/data-sourcing/requests/${requestId}`, {
+      body: request,
+      status: 200,
+    });
+    interceptUserAskForCompanyNameOnMounted();
+    interceptUserActiveDatasetOnMounted(false);
+    interceptRequestHistory(requestId, requestHistory);
+    if (request.dataSourcingEntityId) {
+      interceptDataSourcingHistory(request.dataSourcingEntityId, dataSourcingHistory);
+      if (collectorId && extractorId) {
+        interceptDataSourcingDetails(request.dataSourcingEntityId, collectorId, extractorId);
+      }
+      if (collectorId && collectorName) {
+        interceptCompanyInfo(collectorId, collectorName);
+      }
+      if (extractorId && extractorName) {
+        interceptCompanyInfo(extractorId, extractorName);
+      }
+    }
   }
 
   /**
@@ -261,6 +425,81 @@ describe('Component tests for the view data request page', function (): void {
       cy.intercept('POST', '**/data-sourcing/requests**', { body: { requestId: 'newId' } }).as('createRequest');
       cy.get('[data-test="resubmit-confirmation-button"]').click();
       cy.wait('@createRequest');
+    });
+  });
+
+  it('Check data sourcing details display collector and extractor names when dataSourcingDetails is present', function () {
+    const dataSourcingEntityId = 'dummyDataSourcingId';
+    const collectorId = 'collector-company-uuid';
+    const collectorName = 'Collector Company Ltd.';
+    const extractorId = 'extractor-company-uuid';
+    const extractorName = 'Extractor GmbH';
+    const request = createRequestWithDataSourcing(dataSourcingEntityId);
+
+    setupDataSourcingInterceptions(request, [], [], collectorId, collectorName, extractorId, extractorName);
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="card_requestDetails"]').within(() => {
+        cy.get('[data-test="data-sourcing-collector"]').should('contain', collectorName);
+        cy.get('[data-test="data-sourcing-extractor"]').should('contain', extractorName);
+      });
+    });
+  });
+
+  it('Check data sourcing details are hidden when dataSourcingDetails is not present', function () {
+    setupRequestInterceptions(RequestState.Open, false);
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="data-sourcing-collector"]').should('not.exist');
+      cy.get('[data-test="data-sourcing-extractor"]').should('not.exist');
+    });
+  });
+
+  it('Check combined history displays both request and data sourcing history sorted by timestamp', function () {
+    const dataSourcingEntityId = 'dummyDataSourcingId';
+    const oldRequestTimestamp = 1709104495770;
+    const request = createRequestWithDataSourcing(dataSourcingEntityId);
+
+    const requestHistory = [
+      createRequestHistoryEntry({
+        creationTimestamp: oldRequestTimestamp,
+        lastModifiedDate: oldRequestTimestamp,
+        adminComment: 'Request created',
+      }),
+    ];
+
+    const dataSourcingHistory = [
+      createDataSourcingHistoryEntry({
+        dataSourcingId: dataSourcingEntityId,
+        state: DataSourcingState.DataExtraction,
+        adminComment: 'Data extraction started',
+      }),
+    ];
+
+    setupDataSourcingInterceptions(
+      request,
+      requestHistory,
+      dataSourcingHistory,
+      'collector-uuid',
+      'Collector Ltd.',
+      'extractor-uuid',
+      'Extractor GmbH'
+    );
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="stateHistoryTable"]').should('exist');
+      cy.get('[data-test="stateHistoryTable"]').within(() => {
+        cy.get('tbody tr').should('have.length', 2);
+        cy.contains('Request').should('exist');
+        cy.contains('Data Sourcing').should('exist');
+        cy.contains(RequestState.Open).should('exist');
+        cy.contains(DataSourcingState.DataExtraction).should('exist');
+      });
     });
   });
 });
