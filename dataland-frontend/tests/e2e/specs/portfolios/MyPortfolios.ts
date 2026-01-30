@@ -93,7 +93,7 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
 }
 
 describeIf(
-  'As a user I want to be able to create, edit, and delete my portfolios',
+  'As a user I want to be able to create, edit, delete, and monitor my portfolios',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
@@ -137,7 +137,7 @@ describeIf(
       });
     });
 
-    it('Creates, edits and deletes two portfolios, verifying correct display and deletion', () => {
+    it('Creates, edits, deletes and monitors two portfolios, verifying correct display and deletion', () => {
       // Create two portfolios and verify correct display
       addPortfolio(portfolioName, permIdOfExistingCompany);
       addPortfolio(secondPortfolioName, permIdOfExistingCompany);

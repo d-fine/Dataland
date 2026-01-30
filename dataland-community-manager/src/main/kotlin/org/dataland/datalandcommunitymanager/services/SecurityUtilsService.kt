@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -25,6 +26,7 @@ class SecurityUtilsService(
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyRolesManager: CompanyRolesManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
+    @Autowired private val inheritedRolesManager: InheritedRolesManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val roleModificationPermissionsMap =
@@ -41,6 +43,29 @@ class SecurityUtilsService(
     fun isUserRequestingForOwnId(userIdRequester: String?): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
+    }
+
+    /**
+     * Returns true if the current user is a Dataland member based on their inherited roles.
+     */
+    fun isCurrentUserDatalandMember(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+        val inheritedRoles = inheritedRolesManager.getInheritedRoles(UUID.fromString(userId))
+        return DerivedRightsUtils.isUserDatalandMember(inheritedRoles)
+    }
+
+    /**
+     * Returns true if the current user has the role CompanyOwner or Admin for at least one company.
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserOwnerOrAdminOfAtLeastOneCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+        return companyRoleAssignmentRepository
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null, userId = userId, companyRole = null,
+            ).any {
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
+            }
     }
 
     /**

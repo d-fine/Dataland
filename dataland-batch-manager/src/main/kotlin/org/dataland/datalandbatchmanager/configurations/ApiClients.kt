@@ -7,12 +7,14 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.userService.openApiClient.api.PortfolioControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
@@ -22,6 +24,7 @@ class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
     @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
+    @Value("\${dataland.user-service.base-url}") private val userServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -82,4 +85,18 @@ class ApiClients(
     fun getIsinLeiDataControllerApi(
         @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
     ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, patientAuthenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the PortfolioControllerApi of the user-service
+     */
+    @Bean
+    fun getPortfolioControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): PortfolioControllerApi = PortfolioControllerApi(userServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an ActuatorApi of the user-service
+     */
+    @Bean
+    fun getUserServiceActuatorApi(): UserServiceActuatorApi = UserServiceActuatorApi(userServiceBaseUrl)
 }
