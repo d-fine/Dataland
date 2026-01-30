@@ -311,17 +311,33 @@ class DataSourcingManager
          * Retrieves the history of revisions for a specific data sourcing object identified by its ID.
          * The returned DTOs do not include lazily fetched references to avoid runtime errors.
          * @param id The UUID string of the data sourcing object whose history is to be retrieved.
+         * @param stateChangesOnly If true, only returns revisions where the state changed.
          * @return A list of StoredDataSourcing objects representing the revision history.
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
+        fun retrieveDataSourcingHistory(
+            id: UUID,
+            stateChangesOnly: Boolean = false,
+        ): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
-            return dataRevisionRepository
-                .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences(isUserAdmin()) }
-                .ifEmpty {
-                    throw DataSourcingNotFoundApiException(id)
+            val revisions = dataRevisionRepository.listDataSourcingRevisionsById(id)
+            if (revisions.isEmpty()) {
+                throw DataSourcingNotFoundApiException(id)
+            }
+            val filteredRevisions = if (stateChangesOnly) filterStateChanges(revisions) else revisions
+            return filteredRevisions
+                .map { (entity, timestamp) -> entity.toDataSourcingWithoutReferences(isUserAdmin(), timestamp) }
+        }
+
+        private fun filterStateChanges(revisions: List<Pair<DataSourcingEntity, Long>>): List<Pair<DataSourcingEntity, Long>> {
+            if (revisions.isEmpty()) return emptyList()
+            val result = mutableListOf(revisions.first())
+            for (i in 1 until revisions.size) {
+                if (revisions[i].first.state != revisions[i - 1].first.state) {
+                    result.add(revisions[i])
                 }
+            }
+            return result
         }
     }
