@@ -40,10 +40,11 @@ class DataRevisionRepository(
                 .createQuery()
                 .forRevisionsOfEntity(classType, false, false)
                 .add(AuditEntity.id().eq(id))
-                .resultList as List<Array<Any>>
+                .resultList
+                .filterIsInstance<Array<Any>>()
 
         return resultList.map {
-            val entity = it[0] as T
+            val entity = classType.cast(it[0])
             val revisionEntity = it[1] as DefaultRevisionEntity
             Pair(entity, revisionEntity.timestamp)
         }

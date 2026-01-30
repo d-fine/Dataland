@@ -27,6 +27,42 @@ function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): Retur
   });
 }
 
+/**
+ * Mocks the data-sourcing-manager answer for data sourcing history
+ * @param dataSourcingId the data sourcing entity ID
+ * @param history the data sourcing history to return
+ */
+function interceptDataSourcingHistory(dataSourcingId: string, history: DataSourcingWithoutReferences[]): void {
+  cy.intercept(`**/data-sourcing/${dataSourcingId}/history`, {
+    body: history,
+    status: 200,
+  });
+}
+
+/**
+ * Mocks the data-sourcing-manager answer for request history
+ * @param requestId the request ID
+ * @param history the request history to return
+ */
+function interceptRequestHistory(requestId: string, history: StoredRequest[]): void {
+  cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
+    body: history,
+    status: 200,
+  });
+}
+
+/**
+ * Mocks company info endpoint for resolving UUIDs to names
+ * @param companyId the company UUID
+ * @param companyName the company name to return
+ */
+function interceptCompanyInfo(companyId: string, companyName: string): void {
+  cy.intercept(`**/api/companies/${companyId}/info`, {
+    body: { companyName: companyName } as Partial<CompanyInformation>,
+    status: 200,
+  });
+}
+
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
   const dummyUserId = 'dummyUserId';
@@ -139,30 +175,6 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Mocks the data-sourcing-manager answer for data sourcing history
-   * @param dataSourcingId the data sourcing entity ID
-   * @param history the data sourcing history to return
-   */
-  function interceptDataSourcingHistory(dataSourcingId: string, history: DataSourcingWithoutReferences[]): void {
-    cy.intercept(`**/data-sourcing/${dataSourcingId}/history`, {
-      body: history,
-      status: 200,
-    });
-  }
-
-  /**
-   * Mocks the data-sourcing-manager answer for request history
-   * @param requestId the request ID
-   * @param history the request history to return
-   */
-  function interceptRequestHistory(requestId: string, history: StoredRequest[]): void {
-    cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
-      body: history,
-      status: 200,
-    });
-  }
-
-  /**
    * Creates a request object with data sourcing entity ID
    * @param dataSourcingEntityId the data sourcing entity ID
    */
@@ -201,18 +213,6 @@ describe('Component tests for the view data request page', function (): void {
     };
     cy.intercept(`**/data-sourcing/${dataSourcingId}`, {
       body: dataSourcing,
-      status: 200,
-    });
-  }
-
-  /**
-   * Mocks company info endpoint for resolving UUIDs to names
-   * @param companyId the company UUID
-   * @param companyName the company name to return
-   */
-  function interceptCompanyInfo(companyId: string, companyName: string): void {
-    cy.intercept(`**/api/companies/${companyId}/info`, {
-      body: { companyName: companyName } as Partial<CompanyInformation>,
       status: 200,
     });
   }
