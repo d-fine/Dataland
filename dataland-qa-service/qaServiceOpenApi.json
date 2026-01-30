@@ -1261,6 +1261,306 @@
         ]
       }
     },
+    "/{datasetReviewId}/state": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Change the state of a dataset review object.",
+        "description": "Modify state of the dataset review object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
+        "operationId": "setState",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datasetReviewState",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully set state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{datasetReviewId}/reviewer": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Change the reviewer of a dataset review object.",
+        "description": "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
+        "operationId": "setReviewer",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully set yourself as the reviewer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{datasetReviewId}/approvedQaReports": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a qa report to ApprovedQaReports map.",
+        "description": "Adds a datapoint to the ApprovedQaReports map. Removes the data point id and custom data point from approvedDataPoints and approvedCustomDataPoints with same data point type.",
+        "operationId": "acceptQaReport",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved qa report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{datasetReviewId}/approvedDataPoints": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a datapoint to ApprovedDataPoints map.",
+        "description": "Adds a datapoint to the ApprovedDataPoints map. Removes the qa report and custom datapoint from approvedQaReports and approvedCustomDataPoints with same data point type.",
+        "operationId": "acceptOriginalDatapoint",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataPointId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved datapoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{datasetReviewId}/approvedCustomDataPoints": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a custom data point to ApprovedCustomDataPoints map.",
+        "description": "Adds a custom datapoint to the ApprovedCustomDataPoints map. Removes the data point id and qa report from approvedDataPoints and approvedQaReports with same data point type.",
+        "operationId": "acceptCustomDataPoint",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataPoint",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataPointType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved and saved custom data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -6741,6 +7041,136 @@
       },
       "JsonNode": {
         "type": "object"
+      },
+      "DataPointQaReportEntity": {
+        "required": [
+          "active",
+          "comment",
+          "dataPointId",
+          "dataPointType",
+          "qaReportId",
+          "reporterUserId",
+          "uploadTime",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "qaReportId": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "string"
+          },
+          "dataPointId": {
+            "type": "string"
+          },
+          "dataPointType": {
+            "type": "string"
+          },
+          "reporterUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DatasetReview": {
+        "required": [
+          "approvedCustomDataPointIds",
+          "approvedDataPointIds",
+          "approvedQaReportIds",
+          "companyId",
+          "dataSetReviewId",
+          "dataType",
+          "datasetId",
+          "preapprovedDataPointIds",
+          "qaReports",
+          "reportingPeriod",
+          "reviewerUserId",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSetReviewId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "companyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DatasetReviewState"
+          },
+          "reviewerUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preapprovedDataPointIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "qaReports": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointQaReportEntity"
+            }
+          },
+          "approvedQaReportIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "approvedDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "approvedCustomDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DatasetReviewState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Finished",
+          "Aborted"
+        ]
       },
       "QaReportStatusPatch": {
         "required": [
