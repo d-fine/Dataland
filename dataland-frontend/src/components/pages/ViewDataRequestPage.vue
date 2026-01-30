@@ -83,6 +83,16 @@
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
+          <template v-if="dataSourcingDetails">
+            <div class="side-header">Document Collector</div>
+            <div class="data" data-test="data-sourcing-collector">
+              {{ documentCollectorName || '—' }}
+            </div>
+            <div class="side-header">Data Extractor</div>
+            <div class="data" data-test="data-sourcing-extractor">
+              {{ dataExtractorName || '—' }}
+            </div>
+          </template>
           <PrimeButton
             v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
@@ -90,14 +100,6 @@
             @click="goToAnsweringDatasetPage()"
             style="width: fit-content"
           />
-        </div>
-        <div class="card" data-test="card_dataSourcingDetails">
-          <div class="title">Data Sourcing</div>
-          <Divider />
-          <div class="side-header">Document Collector</div>
-          <div class="data" data-test="data-sourcing-collector">-</div>
-          <div class="side-header">Data Extractor</div>
-          <div class="data" data-test="data-sourcing-extractor">-</div>
         </div>
       </div>
       <div>
@@ -115,8 +117,12 @@
               </span>
             </span>
             <Divider />
-            <p class="title">Request State History</p>
-            <RequestStateHistory :stateHistory="requestHistory" />
+            <p class="title">State History</p>
+            <RequestStateHistory
+              :stateHistory="requestHistory"
+              :dataSourcingHistory="dataSourcingHistory"
+              :isAdmin="isUserKeycloakAdmin"
+            />
           </div>
           <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
             <div class="title">Resubmit Request</div>
@@ -169,10 +175,12 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import {
+  type DataSourcingWithoutReferences,
   type ExtendedStoredRequest,
   RequestState,
   type SingleRequest,
   type StoredRequest,
+  type StoredDataSourcing,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -188,6 +196,7 @@ const requestId = ref<string>(props.requestId);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const requestControllerApi = apiClientProvider.apiClients.requestController;
+const dataSourcingControllerApi = apiClientProvider.apiClients.dataSourcingController;
 const companyControllerApi = apiClientProvider.backendClients.companyDataController;
 const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
 
@@ -201,6 +210,10 @@ const storedRequest = reactive({} as ExtendedStoredRequest);
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<StoredRequest[]>([]);
+const dataSourcingHistory = ref<DataSourcingWithoutReferences[]>([]);
+const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
+const documentCollectorName = ref<string | null>(null);
+const dataExtractorName = ref<string | null>(null);
 
 /**
  * Perform all steps required to set up the component.
@@ -211,6 +224,8 @@ async function initializeComponent(): Promise<void> {
     .then(async () => {
       if (getKeycloakPromise) {
         await getAndStoreRequestHistory().catch((error) => console.error(error));
+        await getAndStoreDataSourcingHistory().catch((error) => console.error(error));
+        await getAndStoreDataSourcingDetails().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
       }
       requestHistory.value.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
@@ -225,6 +240,44 @@ async function initializeComponent(): Promise<void> {
 async function getAndStoreRequestHistory(): Promise<void> {
   try {
     requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Retrieve the data sourcing history and store it if a value was found.
+ */
+async function getAndStoreDataSourcingHistory(): Promise<void> {
+  try {
+    if (storedRequest.dataSourcingEntityId) {
+      dataSourcingHistory.value = (
+        await dataSourcingControllerApi.getDataSourcingHistoryById(storedRequest.dataSourcingEntityId, true)
+      ).data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Retrieve the data sourcing details and resolve collector/extractor names.
+ */
+async function getAndStoreDataSourcingDetails(): Promise<void> {
+  try {
+    if (storedRequest.dataSourcingEntityId) {
+      dataSourcingDetails.value = (
+        await dataSourcingControllerApi.getDataSourcingById(storedRequest.dataSourcingEntityId)
+      ).data;
+      if (dataSourcingDetails.value?.documentCollector) {
+        const companyInfo = await companyControllerApi.getCompanyInfo(dataSourcingDetails.value.documentCollector);
+        documentCollectorName.value = companyInfo.data.companyName;
+      }
+      if (dataSourcingDetails.value?.dataExtractor) {
+        const companyInfo = await companyControllerApi.getCompanyInfo(dataSourcingDetails.value.dataExtractor);
+        dataExtractorName.value = companyInfo.data.companyName;
+      }
+    }
   } catch (error) {
     console.error(error);
   }
