@@ -37,8 +37,6 @@
           @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
-    </div>
-    <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
@@ -51,6 +49,8 @@
         :max-selected-labels="1"
         selected-items-label="{0} frameworks"
       />
+    </div>
+    <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedRequestStates"
@@ -62,6 +62,18 @@
         class="search-filter"
         :max-selected-labels="1"
         selected-items-label="{0} request states"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedDataSourcingStates"
+        ref="frameworkFilter"
+        :available-items="availableDataSourcingStates"
+        filter-name="Data Sourcing State"
+        data-test="data-sourcing-state-picker"
+        filter-placeholder="Search by Data Sourcing State"
+        class="search-filter"
+        :max-selected-labels="1"
+        selected-items-label="{0} data sourcing states"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -162,6 +174,18 @@
               <DatalandTag :severity="data.state" :value="data.state" rounded />
             </template>
           </Column>
+          <Column header="DATA SOURCING STATE" :sortable="false">
+            <template #body="{ data }">
+              <div v-if="data.dataSourcingDetails?.dataSourcingState">
+                <DatalandTag
+                  :severity="data.dataSourcingDetails.dataSourcingState"
+                  :value="data.dataSourcingDetails.dataSourcingState"
+                  rounded
+                />
+              </div>
+              <div v-else>-</div>
+            </template>
+          </Column>
           <Column header="REQUEST PRIORITY" :sortable="false">
             <template #body="{ data }">
               <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
@@ -202,6 +226,7 @@ import {
   retrieveAvailablePriorities,
   retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
+  retrieveAvailableDataSourcingStates,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -211,7 +236,12 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import type { RequestState, RequestPriority, DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
+import type {
+  RequestState,
+  RequestPriority,
+  DataSourcingEnhancedRequest,
+  DataSourcingState,
+} from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const frameworkFilter = ref();
@@ -232,6 +262,8 @@ const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
 const availableRequestStates = ref<SelectableItem[]>([]);
 const selectedRequestStates = ref<SelectableItem[]>([]);
+const availableDataSourcingStates = ref<SelectableItem[]>([]);
+const selectedDataSourcingStates = ref<SelectableItem[]>([]);
 const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
@@ -248,6 +280,7 @@ function setChunkAndFirstRowIndexToZero(): void {
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
   availableRequestStates.value = retrieveAvailableRequestStates();
+  availableDataSourcingStates.value = retrieveAvailableDataSourcingStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   void getAllRequestsForFilters();
@@ -270,6 +303,12 @@ async function getAllRequestsForFilters(): Promise<void> {
       : undefined
   );
 
+  const selectedDataSourcingStatesForApi = computed<DataSourcingState[] | undefined>(() =>
+    selectedDataSourcingStates.value.length
+      ? selectedDataSourcingStates.value.map((i) => i.displayName as DataSourcingState)
+      : undefined
+  );
+
   const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
     selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
   );
@@ -284,6 +323,7 @@ async function getAllRequestsForFilters(): Promise<void> {
       const filters = {
         dataTypes: selectedFrameworksForApi.value,
         requestStates: selectedRequestStatesForApi.value,
+        dataSourcingStates: selectedDataSourcingStatesForApi.value,
         requestPriorities: selectedPrioritiesForApi.value,
         reportingPeriods: selectedReportingPeriodsForApi.value,
         emailAddress: searchBarInputEmail.value || undefined,
@@ -317,6 +357,7 @@ function resetFilterAndSearchBar(): void {
   currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
   selectedRequestStates.value = [];
+  selectedDataSourcingStates.value = [];
   selectedPriorities.value = [];
   selectedReportingPeriods.value = [];
   searchBarInputEmail.value = '';
@@ -372,6 +413,11 @@ function onRowClick(event: DataTableRowClickEvent): void {
 
   .search-bar {
     width: 20%;
+  }
+
+  .search-filter {
+    width: 20%;
+    text-align: left;
   }
 }
 
