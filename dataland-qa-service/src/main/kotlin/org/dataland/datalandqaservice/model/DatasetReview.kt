@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import java.util.UUID
 
@@ -14,11 +13,11 @@ class DatasetReview(
     val companyId: UUID,
     val dataType: String,
     val reportingPeriod: String,
-    var status: QaStatus = QaStatus.Pending,
-    var reviewerUserId: String,
-    var preapprovedDataPointIds: Set<UUID> = emptySet(),
+    var status: DatasetReviewState,
+    var reviewerUserId: UUID,
+    var preapprovedDataPointIds: Set<UUID>,
     var qaReports: MutableSet<DataPointQaReportEntity>,
-    var approvedQaReportIds: Set<UUID> = emptySet(),
-    var approvedDataPointIds: Set<UUID> = emptySet(),
-    var approvedCustomDataPointIds: Map<UUID, String> = emptyMap(),
+    var approvedQaReportIds: MutableMap<String, UUID>,
+    var approvedDataPointIds: MutableMap<String, UUID>,
+    var approvedCustomDataPointIds: MutableMap<String, String>,
 )

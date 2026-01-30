@@ -8,9 +8,9 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import org.dataland.datalandbackendutils.converter.QaStatusConverter
-import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converter.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import java.util.UUID
 
 /**
@@ -31,11 +31,11 @@ class DatasetReviewEntity(
     val dataType: String,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
-    @Convert(converter = QaStatusConverter::class)
+    @Convert(converter = DatasetReviewStateConverter::class)
     @Column(name = "status")
-    var status: QaStatus = QaStatus.Pending,
+    var status: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
-    var reviewerUserId: String,
+    var reviewerUserId: UUID,
     @ElementCollection
     @Column(name = "preapproved_data_point_ids")
     var preapprovedDataPointIds: Set<UUID> = emptySet(),
@@ -44,13 +44,13 @@ class DatasetReviewEntity(
     var qaReports: MutableSet<DataPointQaReportEntity>,
     @ElementCollection
     @Column(name = "approved_qa_report_ids")
-    var approvedQaReportIds: Set<UUID> = emptySet(),
+    var approvedQaReportIds: MutableMap<String, UUID> = mutableMapOf(),
     @ElementCollection
     @Column(name = "approved_data_point_ids")
-    var approvedDataPointIds: Set<UUID> = emptySet(),
+    var approvedDataPointIds: MutableMap<String, UUID> = mutableMapOf(),
     @ElementCollection
     @Column(name = "approved_custom_data_point_ids")
-    var approvedCustomDataPointIds: Map<UUID, String> = emptyMap(),
+    var approvedCustomDataPointIds: MutableMap<String, String> = mutableMapOf(),
 ) {
     /**
      * Convert to DatasetReview objects for API use.

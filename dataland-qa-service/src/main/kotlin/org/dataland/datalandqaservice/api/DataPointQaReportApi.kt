@@ -46,13 +46,12 @@ interface DataPointQaReportApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun postQaReport(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
         @RequestBody qaReport: QaReportDataPoint<String?>,
     ): ResponseEntity<DataPointQaReport>
 
@@ -76,20 +75,18 @@ interface DataPointQaReportApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun setQaReportStatus(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
-        @Parameter(
+        ) dataPointId: String,
+        @PathVariable @Parameter(
             name = "qaReportId",
             description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("qaReportId") qaReportId: String,
+        ) qaReportId: String,
         @RequestBody statusPatch: QaReportStatusPatch,
     )
 
@@ -114,20 +111,18 @@ interface DataPointQaReportApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getQaReport(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
-        @Parameter(
+        ) dataPointId: String,
+        @PathVariable @Parameter(
             name = "qaReportId",
             description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("qaReportId") qaReportId: String,
+        ) qaReportId: String,
     ): ResponseEntity<DataPointQaReport>
 
     /**
@@ -152,13 +147,12 @@ interface DataPointQaReportApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAllQaReportsForDataPoint(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
         @RequestParam(required = false)
         @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_SHOW_INACTIVE_DESCRIPTION,

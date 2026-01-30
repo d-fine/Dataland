@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -13,8 +15,55 @@ import java.util.UUID
 class DatasetReviewController(
     private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
-    override fun setReviewer(datasetReviewId: String): ResponseEntity<String> {
-        datasetReviewService.setReviewer(UUID.fromString(datasetReviewId))
-        return ResponseEntity.ok(datasetReviewId)
-    }
+    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReview> =
+        ResponseEntity.ok(datasetReviewService.setReviewer(UUID.fromString(datasetReviewId)))
+
+    override fun setState(
+        datasetReviewId: String,
+        state: DatasetReviewState,
+    ): ResponseEntity<DatasetReview> =
+        ResponseEntity
+            .ok(
+                datasetReviewService.setState(
+                    UUID.fromString(datasetReviewId),
+                    state,
+                ),
+            )
+
+    override fun acceptOriginalDatapoint(
+        datasetReviewId: String,
+        dataPointId: String,
+    ): ResponseEntity<DatasetReview> =
+        ResponseEntity
+            .ok(
+                datasetReviewService.acceptOriginalDatapoint(
+                    UUID.fromString(datasetReviewId),
+                    UUID.fromString(dataPointId),
+                ),
+            )
+
+    override fun acceptQaReport(
+        datasetReviewId: String,
+        qaReportId: String,
+    ): ResponseEntity<DatasetReview> =
+        ResponseEntity
+            .ok(
+                datasetReviewService.acceptQaReport(
+                    UUID.fromString(datasetReviewId),
+                    UUID.fromString(qaReportId),
+                ),
+            )
+
+    override fun acceptCustomDataPoint(
+        datasetReviewId: String,
+        dataPoint: String,
+        dataPointType: String,
+    ): ResponseEntity<DatasetReview> =
+        ResponseEntity
+            .ok(
+                datasetReviewService.acceptCustomDataPoint(
+                    UUID.fromString(datasetReviewId),
+                    dataPoint, dataPointType,
+                ),
+            )
 }

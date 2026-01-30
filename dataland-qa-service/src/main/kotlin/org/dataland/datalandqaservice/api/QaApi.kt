@@ -114,13 +114,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getQaReviewResponseByDataId(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataId") dataId: UUID,
+        ) dataId: UUID,
     ): ResponseEntity<QaReviewResponse>
 
     /**
@@ -144,13 +143,12 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeQaStatus(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataId") dataId: String,
+        ) dataId: String,
         @RequestParam
         @Parameter(
             name = "qaStatus",
@@ -318,13 +316,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
@@ -348,13 +345,12 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeDataPointQaStatus(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
         @RequestParam
         @Parameter(
             name = "qaStatus",
