@@ -79,6 +79,16 @@
             </template>
           </Column>
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
+          <Column header="STATE" field="state" :sortable="true">
+            <template #body="{ data }">
+              <DatalandTag :severity="getDisplayedState(data)" :value="getDisplayedState(data)" />
+            </template>
+          </Column>
+          <Column header="NEXT DOCUMENT SOURCING ATTEMPT" field="nextDataSourcingAttempt" :sortable="true">
+            <template #body="{ data }">
+              {{ convertUnixTimeInMsToDateString(data.dataSourcingDetails.nextDataSourcingAttempt) ?? '-' }}
+            </template>
+          </Column>
           <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
             <template #body="{ data }">
               {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
@@ -87,19 +97,6 @@
           <Column header="LAST UPDATED" field="lastModifiedDate" :sortable="true">
             <template #body="{ data }">
               {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
-            </template>
-          </Column>
-          <Column header="STATE" field="state" :sortable="true">
-            <template #body="{ data }">
-              <DatalandTag :severity="getDisplayedState(data)" :value="getDisplayedState(data)" />
-            </template>
-          </Column>
-          <Column field="resolve" header="">
-            <template #body="{ data }">
-              <div v-if="data.state === RequestState.Processed" class="text-primary no-underline">
-                <span id="resolveButton" style="cursor: pointer" data-test="requested-datasets-resolve">RESOLVE</span>
-                <span style="margin: var(--spacing-md)">&gt;</span>
-              </div>
             </template>
           </Column>
           <template #empty>
