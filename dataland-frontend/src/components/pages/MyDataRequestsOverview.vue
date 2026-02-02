@@ -322,7 +322,9 @@ function updateCurrentDisplayedData(): void {
     data = data.filter((request) => filterFramework(request.dataType));
   }
   if (selectedState.value.length > 0) {
-    data = data.filter((request) => filterState(getDisplayedState(request)));
+    data = data.filter((request) =>
+      filterState(getDisplayedStateLabel(getDisplayedState(request) as DataSourcingState | RequestState))
+    );
   }
 
   data.sort((dataRequestObjectA, dataRequestObjectB) =>

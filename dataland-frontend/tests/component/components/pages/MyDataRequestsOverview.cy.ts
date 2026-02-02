@@ -249,7 +249,7 @@ describe('Component tests for the data requests search page', function (): void 
       .type('companyProcessed');
   });
 
-  it('Check filter functionality and reset button', function (): void {
+  it('Check filter functionality for framework', function (): void {
     const expectedFrameworkNameSubstrings = [
       'SFDR',
       'EU Taxonomy',
@@ -268,6 +268,21 @@ describe('Component tests for the data requests search page', function (): void 
       cy.get(`table tbody:contains(${value})`).should('exist');
     }
     cy.get(`table tbody:contains("SME")`).should('not.exist');
+  });
+
+  it('Check filter functionality for state', function (): void {
+    interceptUserRequests();
+    mountMyDataRequestsOverview();
+    cy.get('[data-test="requested-datasets-state"]')
+      .click()
+      .get('.p-multiselect-option')
+      .contains('Data Verification')
+      .click();
+    cy.get('[data-test="requested-datasets-state"]').click();
+    cy.get('table tbody').find('tr').should('have.length', 1);
+    cy.get('table tbody').find('tr').first().find('td').contains('Data Verification').should('exist');
+    cy.get('[data-test="reset-filter"]').should('exist').click();
+    cy.get('table tbody').find('tr').should('have.length', mockDataRequests.length);
   });
 
   it('Check the functionality of rowClick event', function (): void {

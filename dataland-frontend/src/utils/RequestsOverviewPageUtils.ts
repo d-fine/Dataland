@@ -109,7 +109,7 @@ export function retrieveAvailableRequestStates(): Array<SelectableItem> {
 export function retrieveAvailableDataSourcingStates(): Array<SelectableItem> {
   return Object.values(DataSourcingState).map((DataSourcingState) => {
     return {
-      displayName: DataSourcingState,
+      displayName: getDisplayedStateLabel(DataSourcingState),
       disabled: false,
     };
   });
