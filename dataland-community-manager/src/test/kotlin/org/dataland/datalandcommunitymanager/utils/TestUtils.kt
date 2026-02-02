@@ -34,4 +34,19 @@ object TestUtils {
         userId: String = "dummy-id",
         role: DatalandRealmRole = DatalandRealmRole.ROLE_PREMIUM_USER,
     ): DatalandJwtAuthentication = mockSecurityContext(username, userId, setOf(role))
+
+    // Deliberate code duplication for sonar to alert me about reminder:
+    // Check if these functions can be moved to keycloakadapter
+    fun mockSecurityContext2(
+        username: String,
+        userId: String,
+        roles: Set<DatalandRealmRole>,
+    ): DatalandJwtAuthentication {
+        val mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(username, userId, roles)
+        val mockSecurityContext = mock<SecurityContext>()
+        doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
+        return mockAuthentication
+    }
 }

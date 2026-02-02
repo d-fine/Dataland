@@ -175,7 +175,7 @@ class DatasetReviewService(
         if (datasetReview.dataType !in frameworksOfDataPointType) {
             throw InvalidInputApiException(
                 "Datapoint type not valid.",
-                "Datapoint type either does not exist or is not part of the framework ${datasetReview.dataType}.",
+                "Datapoint type is not part of the framework ${datasetReview.dataType}.",
             )
         }
         try {
@@ -205,7 +205,7 @@ class DatasetReviewService(
     /**
      * Throws InsufficientRightsApiException if user is not reviewer.
      */
-    private fun isUserReviewer(reviewerUserId: UUID) {
+    private fun isUserReviewer(reviewerUserId: UUID?) {
         if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
             throw InsufficientRightsApiException(
                 summary = "Only the reviewer is allowed to patch this dataset review object.",

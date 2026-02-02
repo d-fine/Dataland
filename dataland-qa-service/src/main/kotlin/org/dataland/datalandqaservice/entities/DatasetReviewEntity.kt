@@ -35,7 +35,7 @@ class DatasetReviewEntity(
     @Column(name = "status")
     var status: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
-    var reviewerUserId: UUID,
+    var reviewerUserId: UUID?,
     @ElementCollection
     @Column(name = "preapproved_data_point_ids")
     var preapprovedDataPointIds: Set<UUID> = emptySet(),

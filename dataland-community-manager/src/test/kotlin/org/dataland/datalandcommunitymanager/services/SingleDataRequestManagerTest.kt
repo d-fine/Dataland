@@ -19,6 +19,7 @@ import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -285,7 +286,7 @@ class SingleDataRequestManagerTest {
         assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
-
+        assertEquals(expectedUserIdToUse, premiumUserId)
         verify(spySingleDataRequestManager, times(1)).preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
     }
 
