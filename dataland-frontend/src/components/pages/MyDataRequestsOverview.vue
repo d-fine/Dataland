@@ -83,7 +83,7 @@
             <template #body="{ data }">
               <DatalandTag
                 :severity="getDisplayedState(data)"
-                :value="getDisplayedStateLabel(getDisplayedState(data))"
+                :value="getDisplayedStateLabel(getDisplayedState(data) as DataSourcingState | RequestState)"
               />
             </template>
           </Column>

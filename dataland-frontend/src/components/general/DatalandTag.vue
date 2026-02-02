@@ -7,6 +7,7 @@
         style: 'border: 1px solid var(--p-tag-primary-color);',
       },
     }"
+    :value="value"
   />
 </template>
 
@@ -82,10 +83,15 @@ const redTagFull: TagColorDefinition = {
   color: '{surface.0}',
 };
 
-const { severity } = defineProps({
+const { severity, value } = defineProps({
   severity: {
     type: String,
     required: true,
+  },
+  value: {
+    type: String,
+    required: false,
+    default: undefined,
   },
 });
 
