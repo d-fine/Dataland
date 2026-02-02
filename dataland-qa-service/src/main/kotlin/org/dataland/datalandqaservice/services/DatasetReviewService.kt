@@ -6,9 +6,12 @@ import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -25,9 +28,55 @@ import java.util.UUID
 class DatasetReviewService(
     @Autowired var datasetReviewRepository: DatasetReviewRepository,
     @Autowired var dataPointControllerApi: DataPointControllerApi,
+    @Autowired var dataPointQaReportRepository: DataPointQaReportRepository,
     @Autowired var specificationControllerApi: SpecificationControllerApi,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) {
+    /**
+     * Method to set reviewer to current user.
+     */
+    @Transactional
+    fun createDatasetReview(datasetReview: DatasetReview): DatasetReviewResponse {
+        val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId)
+
+        val dataPointQaReports =
+            dataPointQaReportRepository.searchQaReportMetaInformation(
+                dataPointIds = datatypeToDatapointIds.values.toList(),
+                showInactive = false,
+                reporterUserId = null,
+            )
+
+        val datasetReviewEntity =
+            DatasetReviewEntity(
+                dataSetReviewId = UUID.randomUUID(),
+                datasetId = ValidationUtils.convertToUUID(datasetReview.datasetId),
+                companyId = ValidationUtils.convertToUUID(datasetReview.companyId),
+                dataType = datasetReview.dataType,
+                reportingPeriod = datasetReview.reportingPeriod,
+                status = datasetReview.status,
+                reviewerUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
+                preapprovedDataPointIds =
+                    datasetReview.preapprovedDataPointIds
+                        .map {
+                            ValidationUtils.convertToUUID(
+                                it,
+                            )
+                        }.toSet(),
+                qaReports = dataPointQaReports.toSet(),
+                approvedQaReportIds =
+                    datasetReview.approvedQaReportIds
+                        .mapValues {
+                            ValidationUtils.convertToUUID(it.value)
+                        }.toMutableMap(),
+                approvedDataPointIds =
+                    datasetReview.approvedDataPointIds
+                        .mapValues { ValidationUtils.convertToUUID(it.value) }
+                        .toMutableMap(),
+                approvedCustomDataPointIds = datasetReview.approvedCustomDataPointIds.toMutableMap(),
+            )
+        return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
+    }
+
     /**
      * Method to set reviewer to current user.
      */
@@ -64,8 +113,7 @@ class DatasetReviewService(
     ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
-        val datatypeToDatapointIds =
-            metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId.toString())
+        val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId.toString())
         if (dataPointId.toString() !in datatypeToDatapointIds.values) {
             throw ResourceNotFoundApiException(
                 "Datapoint not found.",
@@ -93,8 +141,7 @@ class DatasetReviewService(
             datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId.toString() }
                 ?: throw ResourceNotFoundApiException(
                     "QA report not found.",
-                    "QA report id $qaReportId not part of collected qa reports of " +
-                        "dataset review ${datasetReview.dataSetReviewId}.",
+                    "QA report id $qaReportId not part of collected qa reports of " + "dataset review ${datasetReview.dataSetReviewId}.",
                 )
         val dataPointType = qaReport.dataPointType
         datasetReview.approvedQaReportIds[dataPointType] = qaReportId
@@ -117,7 +164,8 @@ class DatasetReviewService(
         isUserReviewer(datasetReview.reviewerUserId)
         lateinit var frameworksOfDataPointType: List<String>
         try {
-            frameworksOfDataPointType = specificationControllerApi.getDataPointTypeSpecification(dataPointType).usedBy.map { it.id }
+            frameworksOfDataPointType =
+                specificationControllerApi.getDataPointTypeSpecification(dataPointType).usedBy.map { it.id }
         } catch (_: HttpClientErrorException) {
             throw InvalidInputApiException(
                 "DataPoint type not found.",

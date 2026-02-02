@@ -13,7 +13,6 @@ data class DatasetReview(
     var status: DatasetReviewState,
     var reviewerUserId: String,
     var preapprovedDataPointIds: Set<String>,
-    var qaReports: Set<String>,
     var approvedQaReportIds: Map<String, String>,
     var approvedDataPointIds: Map<String, String>,
     var approvedCustomDataPointIds: Map<String, String>,

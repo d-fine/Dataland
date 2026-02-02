@@ -16,9 +16,8 @@ import java.util.UUID
 class DatasetReviewController(
     private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
-    override fun postDatasetReview(datasetReview: DatasetReview): ResponseEntity<DatasetReviewResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun postDatasetReview(datasetReview: DatasetReview): ResponseEntity<DatasetReviewResponse> =
+        ResponseEntity.ok(datasetReviewService.createDatasetReview(datasetReview))
 
     override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity.ok(datasetReviewService.setReviewer(UUID.fromString(datasetReviewId)))

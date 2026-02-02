@@ -41,7 +41,7 @@ class DatasetReviewEntity(
     var preapprovedDataPointIds: Set<UUID> = emptySet(),
     @OneToMany
     @JoinColumn(name = "dataset_review_id")
-    var qaReports: MutableSet<DataPointQaReportEntity>,
+    var qaReports: Set<DataPointQaReportEntity>,
     @ElementCollection
     @Column(name = "approved_qa_report_ids")
     var approvedQaReportIds: MutableMap<String, UUID> = mutableMapOf(),
