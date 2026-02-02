@@ -1,8 +1,9 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -15,13 +16,17 @@ import java.util.UUID
 class DatasetReviewController(
     private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
-    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReview> =
+    override fun postDatasetReview(datasetReview: DatasetReview): ResponseEntity<DatasetReviewResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity.ok(datasetReviewService.setReviewer(UUID.fromString(datasetReviewId)))
 
     override fun setState(
         datasetReviewId: String,
         state: DatasetReviewState,
-    ): ResponseEntity<DatasetReview> =
+    ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.setState(
@@ -33,7 +38,7 @@ class DatasetReviewController(
     override fun acceptOriginalDatapoint(
         datasetReviewId: String,
         dataPointId: String,
-    ): ResponseEntity<DatasetReview> =
+    ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.acceptOriginalDatapoint(
@@ -45,7 +50,7 @@ class DatasetReviewController(
     override fun acceptQaReport(
         datasetReviewId: String,
         qaReportId: String,
-    ): ResponseEntity<DatasetReview> =
+    ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.acceptQaReport(
@@ -58,7 +63,7 @@ class DatasetReviewController(
         datasetReviewId: String,
         dataPoint: String,
         dataPointType: String,
-    ): ResponseEntity<DatasetReview> =
+    ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.acceptCustomDataPoint(

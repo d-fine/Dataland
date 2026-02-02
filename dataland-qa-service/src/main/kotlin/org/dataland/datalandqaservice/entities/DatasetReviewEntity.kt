@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converter.DatasetReviewStateConverter
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import java.util.UUID
 
@@ -55,19 +55,19 @@ class DatasetReviewEntity(
     /**
      * Convert to DatasetReview objects for API use.
      */
-    fun toDatasetReview(): DatasetReview =
-        DatasetReview(
-            dataSetReviewId,
-            datasetId,
-            companyId,
+    fun toDatasetReviewResponse(): DatasetReviewResponse =
+        DatasetReviewResponse(
+            dataSetReviewId.toString(),
+            datasetId.toString(),
+            companyId.toString(),
             dataType,
             reportingPeriod,
             status,
-            reviewerUserId,
-            preapprovedDataPointIds,
-            qaReports,
-            approvedQaReportIds,
-            approvedDataPointIds,
+            reviewerUserId.toString(),
+            preapprovedDataPointIds.map { it.toString() }.toSet(),
+            qaReports.map { it.qaReportId }.toSet(),
+            approvedQaReportIds.mapValues { it.value.toString() },
+            approvedDataPointIds.mapValues { it.value.toString() },
             approvedCustomDataPointIds,
         )
 }

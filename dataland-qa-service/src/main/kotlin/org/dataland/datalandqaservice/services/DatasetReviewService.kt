@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
@@ -32,11 +32,11 @@ class DatasetReviewService(
      * Method to set reviewer to current user.
      */
     @Transactional
-    fun setReviewer(datasetReviewId: UUID): DatasetReview {
+    fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         datasetReview.reviewerUserId = UUID.fromString(DatalandAuthentication.fromContext().userId)
 
-        return datasetReviewRepository.save(datasetReview).toDatasetReview()
+        return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
 
     /**
@@ -46,12 +46,12 @@ class DatasetReviewService(
     fun setState(
         datasetReviewId: UUID,
         state: DatasetReviewState,
-    ): DatasetReview {
+    ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
         datasetReview.status = state
 
-        return datasetReviewRepository.save(datasetReview).toDatasetReview()
+        return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
 
     /**
@@ -61,7 +61,7 @@ class DatasetReviewService(
     fun acceptOriginalDatapoint(
         datasetReviewId: UUID,
         dataPointId: UUID,
-    ): DatasetReview {
+    ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
         val datatypeToDatapointIds =
@@ -76,7 +76,7 @@ class DatasetReviewService(
         datasetReview.approvedDataPointIds[dataPointType] = dataPointId
         datasetReview.approvedQaReportIds.remove(dataPointType)
         datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-        return datasetReviewRepository.save(datasetReview).toDatasetReview()
+        return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
 
     /**
@@ -86,7 +86,7 @@ class DatasetReviewService(
     fun acceptQaReport(
         datasetReviewId: UUID,
         qaReportId: UUID,
-    ): DatasetReview {
+    ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
         val qaReport =
@@ -100,7 +100,7 @@ class DatasetReviewService(
         datasetReview.approvedQaReportIds[dataPointType] = qaReportId
         datasetReview.approvedDataPointIds.remove(dataPointType)
         datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-        return datasetReviewRepository.save(datasetReview).toDatasetReview()
+        return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
 
     /**
@@ -112,7 +112,7 @@ class DatasetReviewService(
         datasetReviewId: UUID,
         dataPoint: String,
         dataPointType: String,
-    ): DatasetReview {
+    ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
         lateinit var frameworksOfDataPointType: List<String>
@@ -143,7 +143,7 @@ class DatasetReviewService(
         datasetReview.approvedCustomDataPointIds[dataPointType] = dataPoint
         datasetReview.approvedDataPointIds.remove(dataPointType)
         datasetReview.approvedQaReportIds.remove(dataPointType)
-        return datasetReviewRepository.save(datasetReview).toDatasetReview()
+        return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
 
     private fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewEntity =

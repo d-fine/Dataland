@@ -4,17 +4,43 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Defines the restful dataland dataset review API
  */
 interface DatasetReviewApi {
+    /**
+     * A method to store a new dataset review object
+     * @param datasetReview the dataset review object to be stored
+     */
+    @Operation(
+        summary = "Upload new dataset review object.",
+        description = "Upload a new dataset review object.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Successfully added dataset review object to dataland."),
+        ],
+    )
+    @PostMapping(
+        value = ["/"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun postDatasetReview(
+        @RequestBody datasetReview: DatasetReview,
+    ): ResponseEntity<DatasetReviewResponse>
+
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
      */
@@ -34,7 +60,7 @@ interface DatasetReviewApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun setReviewer(
         @PathVariable datasetReviewId: String,
-    ): ResponseEntity<DatasetReview>
+    ): ResponseEntity<DatasetReviewResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -63,7 +89,7 @@ interface DatasetReviewApi {
             required = true,
         )
         state: DatasetReviewState,
-    ): ResponseEntity<DatasetReview>
+    ): ResponseEntity<DatasetReviewResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -92,7 +118,7 @@ interface DatasetReviewApi {
             required = true,
         )
         dataPointId: String,
-    ): ResponseEntity<DatasetReview>
+    ): ResponseEntity<DatasetReviewResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -122,7 +148,7 @@ interface DatasetReviewApi {
             required = true,
         )
         qaReportId: String,
-    ): ResponseEntity<DatasetReview>
+    ): ResponseEntity<DatasetReviewResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -157,5 +183,5 @@ interface DatasetReviewApi {
             required = true,
         )
         dataPointType: String,
-    ): ResponseEntity<DatasetReview>
+    ): ResponseEntity<DatasetReviewResponse>
 }
