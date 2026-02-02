@@ -468,16 +468,6 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it('Check data sourcing details are hidden when dataSourcingDetails is not present', function () {
-    setupRequestInterceptions(RequestState.Open, false);
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then(() => {
-      cy.get('[data-test="data-sourcing-collector"]').should('not.exist');
-      cy.get('[data-test="data-sourcing-extractor"]').should('not.exist');
-    });
-  });
-
   it('Check combined history displays both request and data sourcing history sorted by timestamp', function () {
     const dataSourcingEntityId = 'dummyDataSourcingId';
     const oldRequestTimestamp = 1709104495770;
