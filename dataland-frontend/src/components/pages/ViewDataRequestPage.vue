@@ -83,16 +83,14 @@
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
-          <template v-if="dataSourcingDetails">
-            <div class="side-header">Document Collector</div>
-            <div class="data" data-test="data-sourcing-collector">
-              {{ documentCollectorName || '—' }}
-            </div>
-            <div class="side-header">Data Extractor</div>
-            <div class="data" data-test="data-sourcing-extractor">
-              {{ dataExtractorName || '—' }}
-            </div>
-          </template>
+          <div class="side-header">Document Collector</div>
+          <div class="data" data-test="data-sourcing-collector">
+            {{ documentCollectorName || '—' }}
+          </div>
+          <div class="side-header">Data Extractor</div>
+          <div class="data" data-test="data-sourcing-extractor">
+            {{ dataExtractorName || '—' }}
+          </div>
           <PrimeButton
             v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
