@@ -44,6 +44,7 @@ function interceptApiCallsAndMountAndWaitForDownload(
       .mountWithPlugins(PortfolioDetails, {
         keycloak: minimalKeycloakMock({
           userId: userId,
+          roles: configurationParameters.keycloakRoles,
         }),
         props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
       })
@@ -69,11 +70,16 @@ describe('Check the portfolio details view', function (): void {
   let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
   let portfolioFixtureWithMonitoring: EnrichedPortfolio;
   let largePortfolioFixture: EnrichedPortfolio;
+  let portfolioFixtureWithSharing: EnrichedPortfolio;
 
   before(function () {
     cy.fixture('enrichedPortfolio.json')
       .then(function (jsonContent) {
-        portfolioFixtureWithoutMonitoring = jsonContent as EnrichedPortfolio;
+        portfolioFixtureWithoutMonitoring = {
+          ...(jsonContent as EnrichedPortfolio),
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: [] as unknown as Set<string>,
+        } as EnrichedPortfolio;
       })
       .then(() => {
         nonMemberConfigurationParameters = {
@@ -107,6 +113,12 @@ describe('Check the portfolio details view', function (): void {
           keycloakRoles: ['ROLE_ADMIN'],
           portfolioResponse: portfolioFixtureWithMonitoring,
         };
+
+        portfolioFixtureWithSharing = {
+          ...portfolioFixtureWithoutMonitoring,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: ['user-1', 'user-2'] as unknown as Set<string>,
+        } as EnrichedPortfolio;
       });
     cy.fixture('largeEnrichedPortfolio.json')
       .then(function (jsonContent) {
@@ -222,6 +234,35 @@ describe('Check the portfolio details view', function (): void {
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio actively monitored');
+      });
+    });
+  }
+
+  it('Check Share Button for non Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      cy.get('[data-test="share-portfolio"]').should('be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+      cy.get('[data-test="shared-users-tag"]').should('not.exist');
+    });
+  });
+
+  for (const testMode of testModes) {
+    it('Check Share Button and No Sharing Tag for not shared portfolio Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, false);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
+        cy.get('[data-test="share-portfolio"]').should('not.be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+        cy.get('[data-test="shared-users-tag"]').should('not.exist');
+      });
+    });
+
+    it('Check Shared Users Tag for shared portfolio for Dataland ' + testMode, function (): void {
+      const configWithSharing = {
+        ...getTestModeConfigurationParameters(testMode, false),
+        portfolioResponse: portfolioFixtureWithSharing,
+      };
+
+      interceptApiCallsAndMountAndWaitForDownload(configWithSharing).then(() => {
+        cy.get('[data-test="shared-users-tag"]').should('be.visible').and('contain.text', 'Shared with 2 users');
       });
     });
   }

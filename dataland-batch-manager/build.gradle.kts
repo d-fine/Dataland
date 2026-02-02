@@ -149,12 +149,45 @@ tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.g
     )
 }
 
+tasks.register("generateUserServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the user service."
+    group = "clients"
+    val userServiceClientDestinationPackage = "org.dataland.userService.openApiClient"
+    input =
+        project
+            .file("${project.rootDir}/dataland-user-service/userServiceOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/user-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(userServiceClientDestinationPackage)
+    modelPackage.set("$userServiceClientDestinationPackage.model")
+    apiPackage.set("$userServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateDataSourcingServiceClient")
+    dependsOn("generateUserServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -170,6 +203,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/user-service/src/main/kotlin"))
 }
 
 ktlint {

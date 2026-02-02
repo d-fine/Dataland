@@ -12,6 +12,7 @@ import java.net.ConnectException
 import java.time.Instant
 import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
@@ -33,6 +34,8 @@ class ProcessDataUpdates
         private val backendActuatorApi: BackendActuatorApi,
         private val requestPriorityUpdater: RequestPriorityUpdater,
         private val dataSourcingActuatorApi: DataSourcingActuatorApi,
+        private val userServiceActuatorApi: UserServiceActuatorApi,
+        private val portfolioSharingUpdater: PortfolioSharingUpdater,
         @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
         private val allGleifCompaniesForceIngest: Boolean,
         @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
@@ -160,6 +163,14 @@ class ProcessDataUpdates
             requestPriorityUpdater.processRequestPriorityUpdates()
         }
 
+        @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
+        @Scheduled(cron = "0 0 4 * * *")
+        private fun processPortfolioSharingUpdates() {
+            logger.info("Running scheduled update of portfolio sharing access rights.")
+            waitForUserService()
+            portfolioSharingUpdater.updatePortfolioSharing()
+        }
+
         /**
          * This method waits for the backend to be ready
          */
@@ -192,6 +203,25 @@ class ProcessDataUpdates
                     logger.info(
                         "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for " +
                             "data sourcing service to be available. Exception was: ${exception.message}.",
+                    )
+                    Thread.sleep(WAIT_TIME_IN_MS)
+                }
+            }
+        }
+
+        /**
+         * This method waits for the user service to be ready
+         */
+        fun waitForUserService() {
+            val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
+            while (Instant.now().toEpochMilli() <= timeoutTime) {
+                try {
+                    userServiceActuatorApi.health()
+                    break
+                } catch (exception: ConnectException) {
+                    logger.info(
+                        "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s for " +
+                            "user service to be available. Exception was: ${exception.message}.",
                     )
                     Thread.sleep(WAIT_TIME_IN_MS)
                 }
