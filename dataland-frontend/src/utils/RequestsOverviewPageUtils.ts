@@ -39,10 +39,34 @@ export function customCompareForState(
  * @returns {string} The displayed state of the request.
  */
 export function getDisplayedState(request: DataSourcingEnhancedRequest): string {
-  if (request.state in [RequestState.Open, RequestState.Withdrawn]) {
+  if (request.state === RequestState.Open || request.state === RequestState.Withdrawn) {
     return request.state;
   }
   return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
+}
+
+/**
+ * Returns a user-facing label for the displayed request state.
+ * This is intended for UI display (e.g. inside a tag) and is intentionally decoupled from enum values.
+ *
+ * @param displayedState - The state to get the label for, either a DataSourcingState or RequestState.
+ * @returns The user-facing label for the given state.
+ */
+export function getDisplayedStateLabel(displayedState: DataSourcingState | RequestState): string {
+  const stateLabelMap: Partial<Record<DataSourcingState | RequestState, string>> = {
+    [RequestState.Open]: 'Open',
+    [RequestState.Withdrawn]: 'Withdrawn',
+
+    [DataSourcingState.Initialized]: 'Validated',
+    [DataSourcingState.DocumentSourcing]: 'Document Sourcing',
+    [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
+    [DataSourcingState.DataExtraction]: 'Data Extraction',
+    [DataSourcingState.DataVerification]: 'Data Verification',
+    [DataSourcingState.NonSourceable]: 'Non-Sourceable',
+    [DataSourcingState.Done]: 'Done',
+  };
+
+  return stateLabelMap[displayedState] ?? humanizeStringOrNumber(displayedState);
 }
 
 /**

@@ -81,7 +81,10 @@
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
           <Column header="STATE" field="state" :sortable="true">
             <template #body="{ data }">
-              <DatalandTag :severity="getDisplayedState(data)" :value="getDisplayedState(data)" />
+              <DatalandTag
+                :severity="getDisplayedState(data)"
+                :value="getDisplayedStateLabel(getDisplayedState(data))"
+              />
             </template>
           </Column>
           <Column header="NEXT DOCUMENT SOURCING ATTEMPT" field="nextDataSourcingAttempt" :sortable="true">
@@ -136,6 +139,7 @@ import {
   retrieveAvailableDataSourcingStates,
   retrieveAvailableFrameworks,
   getDisplayedState,
+  getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
