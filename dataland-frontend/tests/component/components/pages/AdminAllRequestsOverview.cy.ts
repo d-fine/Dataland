@@ -42,6 +42,8 @@ describe('Component test for the admin-requests-overview page', () => {
     framework: DataTypeEnum;
     state: RequestState;
     dataSourcingState?: DataSourcingState;
+    documentCollectorName?: string;
+    dataExtractorName?: string;
     adminComment: string;
     requestPriority: RequestPriority;
     companyName: string | undefined;
@@ -70,8 +72,8 @@ describe('Component test for the admin-requests-overview page', () => {
         dataSourcingEntityId: '12345678-1234-1234-1234-123456789012',
         dataSourcingState: filterParameters.dataSourcingState,
         dateOfNextDocumentSourcingAttempt: '2024-01-01T00:00:00Z',
-        documentCollectorName: 'DefaultCollector',
-        dataExtractorName: 'DefaultExtractor',
+        documentCollectorName: filterParameters.documentCollectorName ?? 'Default Document Collector',
+        dataExtractorName: filterParameters.dataExtractorName ?? 'Default Data Extractor',
       },
       adminComment: filterParameters.adminComment,
       requestPriority: filterParameters.requestPriority,
@@ -105,6 +107,8 @@ describe('Component test for the admin-requests-overview page', () => {
         framework: DataTypeEnum.Lksg,
         state: RequestState.Open,
         dataSourcingState: DataSourcingState.DataExtraction,
+        documentCollectorName: 'Document Collector Alpha',
+        dataExtractorName: 'Data Extractor Alpha',
         adminComment: commentAlpha,
         requestPriority: RequestPriority.Urgent,
         companyName: companyNameAlpha,
@@ -343,7 +347,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get(`li[aria-label="${dataSourcingStateToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
-    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
@@ -546,7 +550,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateRequestStateFilter();
   });
 
-  it.only('Filtering for data sourcing state works as expected', () => {
+  it('Filtering for data sourcing state works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateDataSourcingStateFilter();
   });
@@ -599,5 +603,17 @@ describe('Component test for the admin-requests-overview page', () => {
 
       cy.get('@routerPush').should('have.been.calledWith', `/requests/${dataRequestIdOfLastElement}`);
     });
+  });
+
+  it('Check existence and entries of Data Extractor column', () => {
+    mountAdminAllRequestsPageWithMocks();
+    cy.contains('th', 'DATA EXTRACTOR');
+    cy.contains('td', 'Data Extractor Alpha');
+  });
+
+  it('Check existence and entries of Document collector column', () => {
+    mountAdminAllRequestsPageWithMocks();
+    cy.contains('th', 'DOCUMENT COLLECTOR');
+    cy.contains('td', 'Document Collector Alpha');
   });
 });
