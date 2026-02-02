@@ -26,6 +26,7 @@ export function customCompareForState(
   sortOrderRequestState[DataSourcingState.DataVerification] = 5;
   sortOrderRequestState[DataSourcingState.Done] = 6;
   sortOrderRequestState[DataSourcingState.NonSourceable] = 7;
+  sortOrderRequestState[RequestState.Withdrawn] = 8;
   if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
 }
@@ -108,7 +109,7 @@ export function retrieveAvailableRequestStates(): Array<SelectableItem> {
 export function retrieveAvailableDataSourcingStates(): Array<SelectableItem> {
   return Object.values(DataSourcingState).map((DataSourcingState) => {
     return {
-      displayName: DataSourcingState,
+      displayName: getDisplayedStateLabel(DataSourcingState),
       disabled: false,
     };
   });

@@ -89,7 +89,11 @@
           </Column>
           <Column header="NEXT DOCUMENT SOURCING ATTEMPT" field="nextDataSourcingAttempt" :sortable="true">
             <template #body="{ data }">
-              {{ convertUnixTimeInMsToDateString(data.dataSourcingDetails.nextDataSourcingAttempt) ?? '-' }}
+              {{
+                data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt
+                  ? data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt
+                  : '-'
+              }}
             </template>
           </Column>
           <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
@@ -188,6 +192,7 @@ onMounted(async () => {
   availableState.value = [
     { displayName: RequestState.Open, disabled: false },
     ...retrieveAvailableDataSourcingStates(),
+    { displayName: RequestState.Withdrawn, disabled: false },
   ];
   await getStoredRequestDataList();
 });
@@ -317,7 +322,9 @@ function updateCurrentDisplayedData(): void {
     data = data.filter((request) => filterFramework(request.dataType));
   }
   if (selectedState.value.length > 0) {
-    data = data.filter((request) => filterState(getDisplayedState(request)));
+    data = data.filter((request) =>
+      filterState(getDisplayedStateLabel(getDisplayedState(request) as DataSourcingState | RequestState))
+    );
   }
 
   data.sort((dataRequestObjectA, dataRequestObjectB) =>
