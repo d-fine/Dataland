@@ -6,8 +6,7 @@ import java.util.UUID
 /**
  * API model for the dataset review objects returned.
  */
-@SuppressWarnings("LongParameterList")
-class DatasetReview(
+data class DatasetReview(
     val dataSetReviewId: UUID,
     val datasetId: UUID,
     val companyId: UUID,
