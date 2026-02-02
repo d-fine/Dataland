@@ -7,10 +7,12 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
@@ -26,11 +28,12 @@ import java.util.UUID
  */
 @Service
 class DatasetReviewService(
-    @Autowired var datasetReviewRepository: DatasetReviewRepository,
-    @Autowired var dataPointControllerApi: DataPointControllerApi,
-    @Autowired var dataPointQaReportRepository: DataPointQaReportRepository,
-    @Autowired var specificationControllerApi: SpecificationControllerApi,
+    @Autowired val datasetReviewRepository: DatasetReviewRepository,
+    @Autowired val dataPointControllerApi: DataPointControllerApi,
+    @Autowired val dataPointQaReportRepository: DataPointQaReportRepository,
+    @Autowired val specificationControllerApi: SpecificationControllerApi,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
+    @Autowired val inheritedRolesControllerApi: InheritedRolesControllerApi,
 ) {
     /**
      * Method to set reviewer to current user.
@@ -46,6 +49,14 @@ class DatasetReviewService(
                 reporterUserId = null,
             )
 
+        val qaReportIdWithUploaderCompanyIds =
+            dataPointQaReports.map {
+                QaReportIdWithUploaderCompanyId(
+                    UUID.fromString(it.qaReportId),
+                    UUID.fromString(inheritedRolesControllerApi.getInheritedRoles(it.reporterUserId).keys.firstOrNull()),
+                )
+            }
+
         val datasetReviewEntity =
             DatasetReviewEntity(
                 dataSetReviewId = UUID.randomUUID(),
@@ -53,26 +64,8 @@ class DatasetReviewService(
                 companyId = ValidationUtils.convertToUUID(datasetReview.companyId),
                 dataType = datasetReview.dataType,
                 reportingPeriod = datasetReview.reportingPeriod,
-                status = datasetReview.status,
                 reviewerUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
-                preapprovedDataPointIds =
-                    datasetReview.preapprovedDataPointIds
-                        .map {
-                            ValidationUtils.convertToUUID(
-                                it,
-                            )
-                        }.toSet(),
-                qaReports = dataPointQaReports.toSet(),
-                approvedQaReportIds =
-                    datasetReview.approvedQaReportIds
-                        .mapValues {
-                            ValidationUtils.convertToUUID(it.value)
-                        }.toMutableMap(),
-                approvedDataPointIds =
-                    datasetReview.approvedDataPointIds
-                        .mapValues { ValidationUtils.convertToUUID(it.value) }
-                        .toMutableMap(),
-                approvedCustomDataPointIds = datasetReview.approvedCustomDataPointIds.toMutableMap(),
+                qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
             )
         return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
     }
@@ -137,13 +130,16 @@ class DatasetReviewService(
     ): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
         isUserReviewer(datasetReview.reviewerUserId)
-        val qaReport =
-            datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId.toString() }
-                ?: throw ResourceNotFoundApiException(
-                    "QA report not found.",
-                    "QA report id $qaReportId not part of collected qa reports of " + "dataset review ${datasetReview.dataSetReviewId}.",
-                )
-        val dataPointType = qaReport.dataPointType
+        datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
+            ?: throw ResourceNotFoundApiException(
+                "QA report not found.",
+                "QA report id $qaReportId not part of collected qa reports of " +
+                    "dataset review ${datasetReview.dataSetReviewId}.",
+            )
+
+        val dataPointType =
+            dataPointQaReportRepository.findDataPointTypeUsingId(qaReportId.toString())
+
         datasetReview.approvedQaReportIds[dataPointType] = qaReportId
         datasetReview.approvedDataPointIds.remove(dataPointType)
         datasetReview.approvedCustomDataPointIds.remove(dataPointType)

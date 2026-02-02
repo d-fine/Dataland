@@ -46,4 +46,9 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
         dataPointId: String,
         reporterUserId: String,
     )
+
+    /**
+     * Keyword 'Using' necessary since output type is String
+     */
+    fun findDataPointTypeUsingId(dataPointId: String): String
 }

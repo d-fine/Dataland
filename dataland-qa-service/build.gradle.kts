@@ -107,6 +107,36 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
+    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/community-manager")
+            .get()
+            .toString(),
+    )
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateSpecificationClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     description = "Task to generate clients for the specification service."
     group = "clients"
@@ -141,6 +171,7 @@ tasks.register("generateClients") {
     group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateSpecificationClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -156,6 +187,7 @@ sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
 }
 
 ktlint {

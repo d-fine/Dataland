@@ -5,12 +5,11 @@ import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converter.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import java.util.UUID
 
 /**
@@ -39,9 +38,9 @@ class DatasetReviewEntity(
     @ElementCollection
     @Column(name = "preapproved_data_point_ids")
     var preapprovedDataPointIds: Set<UUID> = emptySet(),
-    @OneToMany
-    @JoinColumn(name = "dataset_review_id")
-    var qaReports: Set<DataPointQaReportEntity>,
+    @ElementCollection
+    @Column(name = "qa_reports")
+    var qaReports: Set<QaReportIdWithUploaderCompanyId>,
     @ElementCollection
     @Column(name = "approved_qa_report_ids")
     var approvedQaReportIds: MutableMap<String, UUID> = mutableMapOf(),
@@ -65,7 +64,7 @@ class DatasetReviewEntity(
             status,
             reviewerUserId.toString(),
             preapprovedDataPointIds.map { it.toString() }.toSet(),
-            qaReports.map { it.qaReportId }.toSet(),
+            qaReports.map { it.toString() }.toSet(),
             approvedQaReportIds.mapValues { it.value.toString() },
             approvedDataPointIds.mapValues { it.value.toString() },
             approvedCustomDataPointIds,

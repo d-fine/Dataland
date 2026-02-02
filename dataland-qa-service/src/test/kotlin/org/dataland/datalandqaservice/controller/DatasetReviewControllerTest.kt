@@ -5,10 +5,10 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
@@ -35,6 +35,7 @@ class DatasetReviewControllerTest {
     private val mockDataPointQaReportRepository = mock<DataPointQaReportRepository>()
     private val mockSpecificationControllerApi = mock<SpecificationControllerApi>()
     private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
+    private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
     private val datasetReviewService =
         DatasetReviewService(
@@ -43,6 +44,7 @@ class DatasetReviewControllerTest {
             mockDataPointQaReportRepository,
             mockSpecificationControllerApi,
             mockMetaDataControllerApi,
+            mockInheritedRolesControllerApi,
         )
 
     private val datasetReviewController = DatasetReviewController(datasetReviewService)
@@ -57,20 +59,7 @@ class DatasetReviewControllerTest {
             dataType = "sfdr",
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
-            qaReports =
-                mutableSetOf(
-                    DataPointQaReportEntity(
-                        qaReportId = dummyQaReportId.toString(),
-                        comment = "",
-                        verdict = QaReportDataPointVerdict.QaAccepted,
-                        correctedData = null,
-                        dataPointId = "",
-                        dataPointType = dummyDataPointType,
-                        reporterUserId = "",
-                        uploadTime = 0L,
-                        active = false,
-                    ),
-                ),
+            qaReports = setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, null)),
         )
 
     @BeforeEach
@@ -84,6 +73,8 @@ class DatasetReviewControllerTest {
 
         doReturn(Optional.of(datasetReviewEntity)).whenever(mockDatasetReviewRepository).findById(any())
         whenever(mockDatasetReviewRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        doReturn(dummyDataPointType).whenever(mockDataPointQaReportRepository).findDataPointTypeUsingId(any())
     }
 
     @Test
