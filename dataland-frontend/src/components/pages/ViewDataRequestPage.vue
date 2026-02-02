@@ -106,13 +106,19 @@
             <span style="display: flex; align-items: center">
               <span class="title">Request is:</span>
               <DatalandTag
-                :severity="getDisplayedState(storedRequest)"
-                :value="getDisplayedState(storedRequest)"
+                :severity="
+                  storedRequest.state === RequestState.Processing
+                    ? dataSourcingDetails?.state || ' '
+                    : storedRequest.state
+                "
+                :value="
+                  storedRequest.state === RequestState.Processing
+                    ? dataSourcingDetails?.state || ' '
+                    : storedRequest.state
+                "
                 class="dataland-inline-tag"
               />
-              <span class="dataland-info-text normal">
-                since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
-              </span>
+              <span class="dataland-info-text normal"> since {{ getLastModifiedDate() }} </span>
             </span>
             <Divider />
             <p class="title">State History</p>
@@ -187,7 +193,6 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
-import { getDisplayedState } from '@/utils/RequestsOverviewPageUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);
@@ -213,6 +218,22 @@ const dataSourcingHistory = ref<DataSourcingWithoutReferences[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);
+
+/**
+ * Returns latest "last modified date" from storedRequest and dataSourcingHistory.
+ */
+function getLastModifiedDate(): string {
+  const lastModifiedDateFromStoredRequest = storedRequest.lastModifiedDate;
+
+  const lastModifiedDateFromDataSourcingHistory =
+    dataSourcingHistory.value.length > 0
+      ? dataSourcingHistory.value[dataSourcingHistory.value.length - 1]?.lastModifiedDate || 0
+      : 0;
+
+  const lastModifiedDate = Math.max(lastModifiedDateFromStoredRequest, lastModifiedDateFromDataSourcingHistory);
+
+  return convertUnixTimeInMsToDateString(lastModifiedDate);
+}
 
 /**
  * Perform all steps required to set up the component.
