@@ -1,12 +1,26 @@
 import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
-import { RequestState, type DataSourcingEnhancedRequest, RequestPriority } from '@clients/datasourcingservice';
+import {
+  RequestState,
+  type DataSourcingEnhancedRequest,
+  RequestPriority,
+  DataSourcingState,
+} from '@clients/datasourcingservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 const mockDataRequests: DataSourcingEnhancedRequest[] = [];
-const expectedHeaders = ['COMPANY', 'FRAMEWORK', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATE', 'LAST UPDATED'];
+const expectedHeaders = [
+  'COMPANY',
+  'FRAMEWORK',
+  'REPORTING PERIOD',
+  'REQUESTED',
+  'STATE',
+  'NEXT DOCUMENT SOURCING ATTEMPT',
+  'LAST UPDATED',
+];
 const dummyRequestId = 'dummyRequestId';
+const dummyDate = '2024-11-01';
 
 before(function () {
   /**
@@ -17,6 +31,8 @@ before(function () {
    * @param companyId to include in the data request
    * @param state to set in the data request
    * @param requestPriority to set in the data request
+   * @param dataSourcingState to set in the data request
+   * @param dateOfNextSourcingAttempt to set in the data request
    * @returns an extended sorted data request object
    */
   function buildExtendedStoredRequest(
@@ -25,7 +41,9 @@ before(function () {
     companyName: string,
     companyId: string,
     state: RequestState,
-    requestPriority: RequestPriority
+    requestPriority: RequestPriority,
+    dataSourcingState: DataSourcingState | undefined,
+    dateOfNextSourcingAttempt: string | undefined
   ): DataSourcingEnhancedRequest {
     return {
       id: dummyRequestId,
@@ -37,6 +55,13 @@ before(function () {
       companyName: companyName,
       lastModifiedDate: 1709204495770,
       state: state,
+      dataSourcingDetails: {
+        dataSourcingEntityId: 'entity-id',
+        dataSourcingState: dataSourcingState,
+        dateOfNextDocumentSourcingAttempt: dateOfNextSourcingAttempt,
+        documentCollectorName: undefined,
+        dataExtractorName: undefined,
+      },
       requestPriority: requestPriority,
     };
   }
@@ -48,7 +73,9 @@ before(function () {
       'companyProcessed',
       'compA',
       RequestState.Processed,
-      RequestPriority.Low
+      RequestPriority.Low,
+      DataSourcingState.NonSourceable,
+      dummyDate
     ),
     buildExtendedStoredRequest(
       DataTypeEnum.Sfdr,
@@ -56,7 +83,19 @@ before(function () {
       'companyOpen',
       'someId',
       RequestState.Open,
-      RequestPriority.Low
+      RequestPriority.Low,
+      undefined,
+      undefined
+    ),
+    buildExtendedStoredRequest(
+      DataTypeEnum.Sfdr,
+      '2022',
+      'companyProcessing',
+      'someId',
+      RequestState.Processing,
+      RequestPriority.Low,
+      DataSourcingState.DataVerification,
+      undefined
     ),
     buildExtendedStoredRequest(
       DataTypeEnum.Sfdr,
@@ -64,7 +103,9 @@ before(function () {
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
       RequestState.Withdrawn,
-      RequestPriority.Low
+      RequestPriority.Low,
+      DataSourcingState.DocumentSourcing,
+      undefined
     ),
     buildExtendedStoredRequest(
       DataTypeEnum.EutaxonomyNonFinancials,
@@ -72,15 +113,19 @@ before(function () {
       'companyWithdrawn',
       'someId',
       RequestState.Withdrawn,
-      RequestPriority.Low
+      RequestPriority.Low,
+      undefined,
+      undefined
     ),
     buildExtendedStoredRequest(
       DataTypeEnum.EutaxonomyFinancials,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
-      RequestState.Processed,
-      RequestPriority.Low
+      RequestState.Open,
+      RequestPriority.Low,
+      undefined,
+      undefined
     )
   );
 });
@@ -116,14 +161,7 @@ describe('Component tests for the data requests search page', function (): void 
   it('Check sorting', function (): void {
     interceptUserRequests();
     mountMyDataRequestsOverview();
-    const sortingColumnHeader = [
-      'COMPANY',
-      'REPORTING PERIOD',
-      'REQUESTED',
-      'REQUEST STATE',
-      'LAST UPDATED',
-      'FRAMEWORK',
-    ];
+    const sortingColumnHeader = ['COMPANY', 'REPORTING PERIOD', 'STATE', 'FRAMEWORK'];
     for (const value of sortingColumnHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-datasets-table"]')
@@ -177,6 +215,7 @@ describe('Component tests for the data requests search page', function (): void 
       'companyProcessed',
       'companyOpen',
       'companyWithdrawn',
+      'companyProcessing',
       'z-company-that-will-always-be-sorted-to-bottom',
       'a-company-that-will-always-be-sorted-to-top',
     ];
@@ -191,9 +230,10 @@ describe('Component tests for the data requests search page', function (): void 
       cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
     }
     cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(dummyDate).should('be.visible');
   });
 
-  it('Check existence and functionality of searchbar and resolve button', function (): void {
+  it('Check existence and functionality of searchbar', function (): void {
     interceptUserRequests();
     cy.spy(router, 'push').as('routerPush');
     mountMyDataRequestsOverview({ router });
@@ -202,14 +242,11 @@ describe('Component tests for the data requests search page', function (): void 
       .should('not.be.disabled')
       .clear()
       .type('companyOpen');
-    cy.get('[data-test="requested-datasets-resolve"]').should('not.exist');
     cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
       .clear()
       .type('companyProcessed');
-    cy.get('[data-test="requested-datasets-resolve"]').should('exist').should('be.visible').click();
-    cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
   });
 
   it('Check filter functionality and reset button', function (): void {

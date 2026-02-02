@@ -26,6 +26,7 @@ export function customCompareForState(
   sortOrderRequestState[DataSourcingState.DataVerification] = 5;
   sortOrderRequestState[DataSourcingState.Done] = 6;
   sortOrderRequestState[DataSourcingState.NonSourceable] = 7;
+  sortOrderRequestState[RequestState.Withdrawn] = 8;
   if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
 }
