@@ -12,19 +12,13 @@
         </template>
       </Column>
 
-      <Column v-if="isAdmin" field="type" header="Type" style="width: 20%">
-        <template #body="{ data }">
-          <span data-test="historyType">{{ data.type }}</span>
-        </template>
-      </Column>
-
-      <Column field="state" header="State" :style="isAdmin ? 'width: 25%' : 'width: 35%'">
+      <Column field="state" header="State" :style="'width: 35%'">
         <template #body="{ data }">
           <DatalandTag :severity="data.state || ''" :value="data.state" class="dataland-inline-tag" />
         </template>
       </Column>
 
-      <Column field="adminComment" header="Comment" :style="isAdmin ? 'width: 30%' : 'width: 40%'">
+      <Column field="adminComment" header="Comment" :style="'width: 40%'">
         <template #body="{ data }">
           <div style="display: inline-flex" data-test="adminComment">
             {{ data.adminComment || '—' }}
@@ -72,6 +66,8 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
     adminComment: entry.adminComment,
   }));
 
-  return [...requestEntries, ...dataSourcingEntries].sort((a, b) => b.timestamp - a.timestamp);
+  const combined = [...requestEntries, ...dataSourcingEntries].sort((a, b) => a.timestamp - b.timestamp);
+
+  return combined.filter((entry) => entry.state !== 'Processing');
 });
 </script>

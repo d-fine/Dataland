@@ -106,8 +106,8 @@
             <span style="display: flex; align-items: center">
               <span class="title">Request is:</span>
               <DatalandTag
-                :severity="storedRequest.state || ''"
-                :value="storedRequest.state"
+                :severity="getDisplayedState(storedRequest)"
+                :value="getDisplayedState(storedRequest)"
                 class="dataland-inline-tag"
               />
               <span class="dataland-info-text normal">
@@ -187,6 +187,7 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
+import { getDisplayedState } from '@/utils/RequestsOverviewPageUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);
