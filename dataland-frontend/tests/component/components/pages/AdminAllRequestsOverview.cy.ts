@@ -2,7 +2,12 @@ import AdminAllRequestsOverview from '@/components/pages/AdminAllRequestsOvervie
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { type DataSourcingEnhancedRequest, RequestPriority, RequestState } from '@clients/datasourcingservice';
+import {
+  type DataSourcingEnhancedRequest,
+  DataSourcingState,
+  RequestPriority,
+  RequestState,
+} from '@clients/datasourcingservice';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
@@ -36,6 +41,7 @@ describe('Component test for the admin-requests-overview page', () => {
     userEmailAddress: string;
     framework: DataTypeEnum;
     state: RequestState;
+    dataSourcingState?: DataSourcingState;
     adminComment: string;
     requestPriority: RequestPriority;
     companyName: string | undefined;
@@ -60,6 +66,13 @@ describe('Component test for the admin-requests-overview page', () => {
       companyName: filterParameters.companyName ?? faker.company.name(),
       lastModifiedDate: Date.now(),
       state: filterParameters.state,
+      dataSourcingDetails: {
+        dataSourcingEntityId: '12345678-1234-1234-1234-123456789012',
+        dataSourcingState: filterParameters.dataSourcingState,
+        dateOfNextDocumentSourcingAttempt: '2024-01-01T00:00:00Z',
+        documentCollectorName: 'DefaultCollector',
+        dataExtractorName: 'DefaultExtractor',
+      },
       adminComment: filterParameters.adminComment,
       requestPriority: filterParameters.requestPriority,
     };
@@ -91,6 +104,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailAlpha,
         framework: DataTypeEnum.Lksg,
         state: RequestState.Open,
+        dataSourcingState: DataSourcingState.DataExtraction,
         adminComment: commentAlpha,
         requestPriority: RequestPriority.Urgent,
         companyName: companyNameAlpha,
@@ -100,6 +114,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailBeta,
         framework: DataTypeEnum.EutaxonomyFinancials,
         state: RequestState.Processing,
+        dataSourcingState: DataSourcingState.Initialized,
         adminComment: commentBeta,
         requestPriority: RequestPriority.High,
         companyName: companyNameBeta,
@@ -109,6 +124,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailGamma,
         framework: DataTypeEnum.Vsme,
         state: RequestState.Processed,
+        dataSourcingState: DataSourcingState.DataExtraction,
         adminComment: commentGamma,
         requestPriority: RequestPriority.High,
         companyName: companyNameGamma,
@@ -118,6 +134,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailDelta,
         framework: DataTypeEnum.Sfdr,
         state: RequestState.Withdrawn,
+        dataSourcingState: DataSourcingState.DataExtraction,
         adminComment: commentDelta,
         requestPriority: RequestPriority.Low,
         companyName: companyNameDelta,
@@ -290,10 +307,40 @@ describe('Component test for the admin-requests-overview page', () => {
         req.reply(expectedNumberOfRequests.toString());
       }
     });
-
     cy.get(`div[data-test="request-state-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${requestStateToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+  }
+
+  /**
+   * Validates if filtering via data request state dropdown filter works as expected
+   */
+  function validateDataSourcingStateFilter(): void {
+    const dataSourcingStateToFilterFor = DataSourcingState.Initialized;
+    const mockResponse = [mockRequests[1]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
+      if (
+        Array.isArray(req.body.dataSourcingStates) &&
+        req.body.dataSourcingStates.includes(dataSourcingStateToFilterFor)
+      ) {
+        req.reply(mockResponse);
+      }
+    });
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
+      if (
+        Array.isArray(req.body.dataSourcingStates) &&
+        req.body.dataSourcingStates.includes(dataSourcingStateToFilterFor)
+      ) {
+        req.reply(expectedNumberOfRequests.toString());
+      }
+    });
+    cy.get(`div[data-test="data-sourcing-state-picker"]`).click();
+    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
+    cy.get(`li[aria-label="${dataSourcingStateToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -497,6 +544,11 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Filtering for request state works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestStateFilter();
+  });
+
+  it.only('Filtering for data sourcing state works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateDataSourcingStateFilter();
   });
 
   it('Filtering for request priority works as expected', () => {
