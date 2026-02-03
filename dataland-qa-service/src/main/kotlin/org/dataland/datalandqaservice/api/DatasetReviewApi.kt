@@ -42,6 +42,28 @@ interface DatasetReviewApi {
     ): ResponseEntity<DatasetReviewResponse>
 
     /**
+     * @param datasetId identifier used to uniquely specify the dataset
+     */
+    @Operation(
+        summary = "Get dataset review objects by dataset id.",
+        description = "Retrieve all dataset review objects associated with the specified dataset id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only Dataland admins access these dataset review objects."),
+        ],
+    )
+    @PostMapping(
+        value = ["/{datasetId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDatasetReviewsByDatasetId(
+        @PathVariable datasetId: String,
+    ): ResponseEntity<List<DatasetReviewResponse>>
+
+    /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
      */
     @Operation(

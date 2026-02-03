@@ -5,6 +5,8 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
@@ -40,6 +42,7 @@ class DatasetReviewControllerTest {
     private val mockSpecificationControllerApi = mock<SpecificationControllerApi>()
     private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private val datasetReviewService =
         DatasetReviewService(
@@ -49,6 +52,7 @@ class DatasetReviewControllerTest {
             mockSpecificationControllerApi,
             mockMetaDataControllerApi,
             mockInheritedRolesControllerApi,
+            mockKeycloakUserService,
         )
 
     private val datasetReviewController = DatasetReviewController(datasetReviewService)
@@ -81,6 +85,34 @@ class DatasetReviewControllerTest {
         whenever(mockDatasetReviewRepository.save(any())).thenAnswer { it.arguments[0] }
 
         doReturn(dummyDataPointType).whenever(mockDataPointQaReportRepository).findDataPointTypeUsingId(any())
+
+        whenever(mockKeycloakUserService.getUser(any())).thenReturn(
+            KeycloakUserInfo(email = "reviewer@example.com", userId = dummyUserId.toString(), firstName = "Dummy", lastName = "User"),
+        )
+    }
+
+    @Test
+    fun `check that get dataset reviews by dataset id returns expected response`() {
+        doReturn(listOf(datasetReviewEntity)).whenever(mockDatasetReviewRepository).findAllByDatasetId(any())
+
+        val responseEntity = datasetReviewController.getDatasetReviewsByDatasetId(datasetReviewEntity.datasetId.toString())
+
+        assertEquals(1, responseEntity.body!!.size)
+        val response = responseEntity.body!!.first()
+        assertEquals(datasetReviewEntity.dataSetReviewId.toString(), response.dataSetReviewId)
+        assertEquals(datasetReviewEntity.datasetId.toString(), response.datasetId)
+        assertEquals(datasetReviewEntity.companyId.toString(), response.companyId)
+        assertEquals(dummyUserId.toString(), response.reviewerUserId)
+        assertEquals("Dummy User", response.reviewerUserName)
+    }
+
+    @Test
+    fun `check that get dataset reviews by dataset id returns empty list when no dataset reviews exist`() {
+        doReturn(emptyList<DatasetReviewEntity>()).whenever(mockDatasetReviewRepository).findAllByDatasetId(any())
+
+        val responseEntity = datasetReviewController.getDatasetReviewsByDatasetId(UUID.randomUUID().toString())
+
+        assertEquals(0, responseEntity.body!!.size)
     }
 
     @Test
