@@ -22,7 +22,7 @@ class DatasetReviewEntity(
     @Id
     @Column(name = "dataset_review_id")
     val dataSetReviewId: UUID,
-    @Column(name = "dateset_id", unique = true)
+    @Column(name = "dateset_id")
     val datasetId: UUID,
     @Column(name = "company_id")
     val companyId: UUID,
@@ -64,7 +64,7 @@ class DatasetReviewEntity(
             status,
             reviewerUserId.toString(),
             preapprovedDataPointIds.map { it.toString() }.toSet(),
-            qaReports.map { it.toString() }.toSet(),
+            qaReports, // .map { it.toString() }.toSet(),
             approvedQaReportIds.mapValues { it.value.toString() },
             approvedDataPointIds.mapValues { it.value.toString() },
             approvedCustomDataPointIds,

@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Value("\${dataland.specification-service.base-url}") private val specificationServiceBaseUrl: String,
+    @Value("\\\${dataland.community-manager.base-url}\"") private val communityManagerBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -47,4 +49,9 @@ class ApiClients(
      */
     @Bean
     fun getSpecificationControllerApi(): SpecificationControllerApi = SpecificationControllerApi(specificationServiceBaseUrl)
+
+    /**
+     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     */
+    @Bean fun getInheritedRolesControllerApi(): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl)
 }

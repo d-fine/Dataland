@@ -48,7 +48,12 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     )
 
     /**
-     * Keyword 'Using' necessary since output type is String
+     * Makes testing easier
      */
+    @Query(
+        "select qaReport.dataPointType " +
+            "from DataPointQaReportEntity qaReport " +
+            "where qaReport.qaReportId = :id",
+    )
     fun findDataPointTypeUsingId(dataPointId: String): String
 }

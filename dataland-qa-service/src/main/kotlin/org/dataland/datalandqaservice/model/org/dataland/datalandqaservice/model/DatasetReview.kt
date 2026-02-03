@@ -8,5 +8,4 @@ data class DatasetReview(
     val companyId: String,
     val dataType: String,
     val reportingPeriod: String,
-    var reviewerUserId: String,
 )

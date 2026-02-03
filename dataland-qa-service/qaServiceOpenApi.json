@@ -7096,16 +7096,10 @@
       },
       "DatasetReview": {
         "required": [
-          "approvedCustomDataPointIds",
-          "approvedDataPointIds",
-          "approvedQaReportIds",
           "companyId",
           "dataType",
           "datasetId",
-          "preapprovedDataPointIds",
-          "reportingPeriod",
-          "reviewerUserId",
-          "status"
+          "reportingPeriod"
         ],
         "type": "object",
         "properties": {
@@ -7120,47 +7114,8 @@
           },
           "reportingPeriod": {
             "type": "string"
-          },
-          "status": {
-            "$ref": "#/components/schemas/DatasetReviewState"
-          },
-          "reviewerUserId": {
-            "type": "string"
-          },
-          "preapprovedDataPointIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "approvedQaReportIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "approvedDataPointIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "approvedCustomDataPointIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
           }
         }
-      },
-      "DatasetReviewState": {
-        "type": "string",
-        "enum": [
-          "Pending",
-          "Finished",
-          "Aborted"
-        ]
       },
       "DatasetReviewResponse": {
         "required": [
@@ -7211,7 +7166,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/QaReportIdWithUploaderCompanyId"
             }
           },
           "approvedQaReportIds": {
@@ -7231,6 +7186,30 @@
             "additionalProperties": {
               "type": "string"
             }
+          }
+        }
+      },
+      "DatasetReviewState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Finished",
+          "Aborted"
+        ]
+      },
+      "QaReportIdWithUploaderCompanyId": {
+        "required": [
+          "qaReportId"
+        ],
+        "type": "object",
+        "properties": {
+          "qaReportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uploaderCompanyId": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },

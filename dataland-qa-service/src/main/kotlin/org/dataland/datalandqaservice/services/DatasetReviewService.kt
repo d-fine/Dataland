@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
@@ -42,29 +42,30 @@ class DatasetReviewService(
     fun createDatasetReview(datasetReview: DatasetReview): DatasetReviewResponse {
         val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId)
 
-        val dataPointQaReports =
-            dataPointQaReportRepository.searchQaReportMetaInformation(
-                dataPointIds = datatypeToDatapointIds.values.toList(),
-                showInactive = false,
-                reporterUserId = null,
-            )
+        val dataPointQaReportIds =
+            dataPointQaReportRepository
+                .searchQaReportMetaInformation(
+                    dataPointIds = datatypeToDatapointIds.values.toList(),
+                    showInactive = false,
+                    reporterUserId = null,
+                ).map { it.qaReportId }
 
         val qaReportIdWithUploaderCompanyIds =
-            dataPointQaReports.map {
+            dataPointQaReportIds.map {
                 QaReportIdWithUploaderCompanyId(
-                    UUID.fromString(it.qaReportId),
-                    UUID.fromString(inheritedRolesControllerApi.getInheritedRoles(it.reporterUserId).keys.firstOrNull()),
+                    convertToUUID(it),
+                    UUID.fromString(inheritedRolesControllerApi.getInheritedRoles(it).keys.firstOrNull()),
                 )
             }
 
         val datasetReviewEntity =
             DatasetReviewEntity(
                 dataSetReviewId = UUID.randomUUID(),
-                datasetId = ValidationUtils.convertToUUID(datasetReview.datasetId),
-                companyId = ValidationUtils.convertToUUID(datasetReview.companyId),
+                datasetId = convertToUUID(datasetReview.datasetId),
+                companyId = convertToUUID(datasetReview.companyId),
                 dataType = datasetReview.dataType,
                 reportingPeriod = datasetReview.reportingPeriod,
-                reviewerUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
+                reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                 qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
             )
         return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
@@ -76,7 +77,7 @@ class DatasetReviewService(
     @Transactional
     fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
         val datasetReview = getDatasetReviewById(datasetReviewId)
-        datasetReview.reviewerUserId = UUID.fromString(DatalandAuthentication.fromContext().userId)
+        datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
 
         return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
     }
