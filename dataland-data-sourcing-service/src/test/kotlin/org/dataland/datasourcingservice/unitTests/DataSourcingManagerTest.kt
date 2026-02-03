@@ -64,6 +64,13 @@ class DataSourcingManagerTest {
 
     @BeforeEach
     fun setup() {
+        resetMocks()
+        createTestEntities()
+        setupMocks()
+        createManagers()
+    }
+
+    private fun resetMocks() {
         reset(
             mockDataSourcingValidator,
             mockDataRevisionRepository,
@@ -71,13 +78,17 @@ class DataSourcingManagerTest {
             mockExistingRequestsManager,
             mockCloudEventMessageHandler,
         )
+    }
 
+    private fun createTestEntities() {
         newDataSourcingEntity = createDataSourcingEntity(DataSourcingState.Initialized, mutableSetOf(newRequest))
         existingDataSourcingEntities =
             DataSourcingState.entries.associateWith {
                 createDataSourcingEntity(it, mutableSetOf(existingRequest))
             }
+    }
 
+    private fun setupMocks() {
         doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockDataSourcingRepository).save(any())
 
@@ -109,7 +120,9 @@ class DataSourcingManagerTest {
             eq(RequestState.Processed),
             anyOrNull(),
         )
+    }
 
+    private fun createManagers() {
         dataSourcingManager =
             DataSourcingManager(
                 dataSourcingValidator = mockDataSourcingValidator,
