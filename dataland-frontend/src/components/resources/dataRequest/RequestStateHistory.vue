@@ -68,7 +68,8 @@ const props = defineProps<{
 interface CombinedHistoryEntry {
   timestamp: number;
   type: string;
-  state: string;
+  requestState: string | null;
+  dataSourcingState: string | null;
   adminComment?: string | null;
 }
 
@@ -76,19 +77,37 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
   const requestEntries: CombinedHistoryEntry[] = props.stateHistory.map((entry) => ({
     timestamp: entry.lastModifiedDate,
     type: 'Request',
-    state: entry.state || '',
+    requestState: entry.state,
+    dataSourcingState: null,
     adminComment: entry.adminComment,
   }));
 
   const dataSourcingEntries: CombinedHistoryEntry[] = (props.dataSourcingHistory || []).map((entry) => ({
     timestamp: entry.lastModifiedDate || 0,
     type: 'Data Sourcing',
-    state: entry.state || '',
+    requestState: null,
+    dataSourcingState: entry.state,
     adminComment: entry.adminComment,
   }));
 
   const combined = [...requestEntries, ...dataSourcingEntries].sort((a, b) => a.timestamp - b.timestamp);
 
-  return combined.filter((entry) => entry.state !== 'Processing');
+  // Fill null values with previous non-null value
+  let lastRequestState: string | null = null;
+  let lastDataSourcingState: string | null = null;
+  for (const entry of combined) {
+    if (entry.requestState == null) {
+      entry.requestState = lastRequestState;
+    } else {
+      lastRequestState = entry.requestState;
+    }
+    if (entry.dataSourcingState == null) {
+      entry.dataSourcingState = lastDataSourcingState;
+    } else {
+      lastDataSourcingState = entry.dataSourcingState;
+    }
+  }
+
+  return combined;
 });
 </script>
