@@ -83,13 +83,21 @@
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
-          <div class="side-header">Document Collector</div>
-          <div class="data" data-test="data-sourcing-collector">
-            {{ documentCollectorName || '—' }}
+          <div v-if="dataSourcingDetails != null && dataSourcingDetails.dateOfNextDocumentSourcingAttempt">
+            <div class="side-header">Date of next sourcing attempt</div>
+            <div class="data" data-test="date-next-sourcing-attempt">
+              {{ dataSourcingDetails.dateOfNextDocumentSourcingAttempt }}
+            </div>
           </div>
-          <div class="side-header">Data Extractor</div>
-          <div class="data" data-test="data-sourcing-extractor">
-            {{ dataExtractorName || '—' }}
+          <div v-if="isUserKeycloakAdmin">
+            <div class="side-header">Document Collector</div>
+            <div class="data" data-test="data-sourcing-collector">
+              {{ documentCollectorName || '—' }}
+            </div>
+            <div class="side-header">Data Extractor</div>
+            <div class="data" data-test="data-sourcing-extractor">
+              {{ dataExtractorName || '—' }}
+            </div>
           </div>
           <PrimeButton
             v-if="answeringDatasetUrl"
@@ -106,15 +114,9 @@
             <span style="display: flex; align-items: center">
               <span class="title">Request is:</span>
               <DatalandTag
-                :severity="
-                  storedRequest.state === RequestState.Processing
-                    ? dataSourcingDetails?.state || ' '
-                    : storedRequest.state
-                "
+                :severity="dataSourcingDetails != null ? dataSourcingDetails.state : storedRequest.state"
                 :value="
-                  storedRequest.state === RequestState.Processing
-                    ? dataSourcingDetails?.state || ' '
-                    : storedRequest.state
+                  getDisplayedStateLabel(dataSourcingDetails != null ? dataSourcingDetails.state : storedRequest.state)
                 "
                 class="dataland-inline-tag"
               />
@@ -193,6 +195,7 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
+import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);

@@ -14,6 +14,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
+import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 
 /**
  * Utility function to create a minimal Keycloak mock
@@ -33,7 +34,7 @@ function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): Retur
  * @param history the data sourcing history to return
  */
 function interceptDataSourcingHistory(dataSourcingId: string, history: DataSourcingWithoutReferences[]): void {
-  cy.intercept(`**/data-sourcing/${dataSourcingId}/history`, {
+  cy.intercept(`**/data-sourcing/${dataSourcingId}/history?stateChangesOnly=true`, {
     body: history,
     status: 200,
   });
@@ -200,14 +201,21 @@ describe('Component tests for the view data request page', function (): void {
    * @param dataSourcingId the data sourcing entity ID
    * @param collectorId the collector company UUID
    * @param extractorId the extractor company UUID
+   * @param dataSourcingHistory the data sourcing history to determine the current state
    */
-  function interceptDataSourcingDetails(dataSourcingId: string, collectorId: string, extractorId: string): void {
+  function interceptDataSourcingDetails(
+    dataSourcingId: string,
+    collectorId: string,
+    extractorId: string,
+    dataSourcingHistory: DataSourcingWithoutReferences[]
+  ): void {
+    const lastHistoryEntry = dataSourcingHistory[dataSourcingHistory.length - 1];
     const dataSourcing: Partial<StoredDataSourcing> = {
       dataSourcingId: dataSourcingId,
       companyId: dummyCompanyId,
       reportingPeriod: dummyReportingYear,
       dataType: dummyFramework,
-      state: DataSourcingState.Initialized,
+      state: lastHistoryEntry ? lastHistoryEntry.state : DataSourcingState.Initialized,
       documentCollector: collectorId,
       dataExtractor: extractorId,
     };
@@ -246,7 +254,7 @@ describe('Component tests for the view data request page', function (): void {
     if (request.dataSourcingEntityId) {
       interceptDataSourcingHistory(request.dataSourcingEntityId, dataSourcingHistory);
       if (collectorId && extractorId) {
-        interceptDataSourcingDetails(request.dataSourcingEntityId, collectorId, extractorId);
+        interceptDataSourcingDetails(request.dataSourcingEntityId, collectorId, extractorId, dataSourcingHistory);
       }
       if (collectorId && collectorName) {
         interceptCompanyInfo(collectorId, collectorName);
@@ -265,8 +273,8 @@ describe('Component tests for the view data request page', function (): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist');
     cy.contains('Request is').should('exist');
-    cy.contains('Document Collector').should('exist');
-    cy.contains('Data Extractor').should('exist');
+    cy.contains('Document Collector').should('not.exist');
+    cy.contains('Data Extractor').should('not.exist');
 
     cy.get('[data-test="card_requestDetails"]').should('exist');
     cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -442,7 +450,7 @@ describe('Component tests for the view data request page', function (): void {
 
     setupDataSourcingInterceptions(request, [], [], collectorId, collectorName, extractorId, extractorName);
 
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
       cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -458,7 +466,7 @@ describe('Component tests for the view data request page', function (): void {
 
     setupDataSourcingInterceptions(request, [], []);
 
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId) })(ViewDataRequestPage, {
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
       cy.get('[data-test="card_requestDetails"]').within(() => {
@@ -505,10 +513,10 @@ describe('Component tests for the view data request page', function (): void {
       cy.get('[data-test="stateHistoryTable"]').should('exist');
       cy.get('[data-test="stateHistoryTable"]').within(() => {
         cy.get('tbody tr').should('have.length', 2);
-        cy.contains('Request').should('exist');
-        cy.contains('Data Sourcing').should('exist');
-        cy.contains(RequestState.Open).should('exist');
-        cy.contains(DataSourcingState.DataExtraction).should('exist');
+        cy.contains('Request created').should('exist');
+        cy.contains('Data extraction started').should('exist');
+        cy.contains(getDisplayedStateLabel(RequestState.Open)).should('exist');
+        cy.contains(getDisplayedStateLabel(DataSourcingState.DataExtraction)).should('exist');
       });
     });
   });

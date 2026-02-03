@@ -1,5 +1,5 @@
 <template>
-  <div data-test="stateHistoryContainer" style="pointer-events: none; width: 900px">
+  <div data-test="stateHistoryContainer" style="pointer-events: none; min-width: 900px">
     <DataTable :value="combinedHistory" data-test="stateHistoryTable" scrollable class="p-datatable-sm">
       <Column field="timestamp" header="Updated On" style="width: 25%">
         <template #body="{ data }">
@@ -11,7 +11,11 @@
 
       <Column field="state" header="State" :style="'width: 35%'">
         <template #body="{ data }">
-          <DatalandTag :severity="data.state || ''" :value="data.state" class="dataland-inline-tag" />
+          <DatalandTag
+            :severity="data.state || '-'"
+            :value="getDisplayedStateLabel(data.state)"
+            class="dataland-inline-tag"
+          />
         </template>
       </Column>
 
@@ -33,6 +37,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import type { DataSourcingWithoutReferences, StoredRequest } from '@clients/datasourcingservice';
 import DatalandTag from '@/components/general/DatalandTag.vue';
+import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 
 const props = defineProps<{
   stateHistory: StoredRequest[];
