@@ -6,8 +6,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -20,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -51,11 +55,13 @@ class DatasetReviewControllerTest {
     private val dummyUserId = UUID.randomUUID()
     private val dummyDataPointType = "dummy datapoint type"
     private val dummyQaReportId = UUID.randomUUID()
+    private val dummyCompanyId = UUID.randomUUID()
+    private val dummyDatasetId = UUID.randomUUID()
     private val datasetReviewEntity =
         DatasetReviewEntity(
             dataSetReviewId = UUID.randomUUID(),
-            datasetId = UUID.randomUUID(),
-            companyId = UUID.randomUUID(),
+            datasetId = dummyDatasetId,
+            companyId = dummyCompanyId,
             dataType = "sfdr",
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
@@ -75,6 +81,52 @@ class DatasetReviewControllerTest {
         whenever(mockDatasetReviewRepository.save(any())).thenAnswer { it.arguments[0] }
 
         doReturn(dummyDataPointType).whenever(mockDataPointQaReportRepository).findDataPointTypeUsingId(any())
+    }
+
+    @Test
+    fun `check that creating a review object works as expected`() {
+        val dummyDatapointId = UUID.randomUUID().toString()
+        doReturn(mapOf(dummyDataPointType to dummyDatapointId))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(any())
+
+        val dummyQaReportMetadata =
+            DataPointQaReportEntity(
+                qaReportId = dummyQaReportId.toString(),
+                comment = "",
+                verdict = QaReportDataPointVerdict.QaAccepted,
+                correctedData = null,
+                dataPointId = dummyDatapointId,
+                dataPointType = dummyDataPointType,
+                reporterUserId = UUID.randomUUID().toString(),
+                uploadTime = 0L,
+                active = true,
+            )
+        doReturn(listOf(dummyQaReportMetadata))
+            .whenever(mockDataPointQaReportRepository)
+            .searchQaReportMetaInformation(any(), any(), anyOrNull())
+
+        val uploaderCompanyId = UUID.randomUUID()
+        doReturn(mapOf(uploaderCompanyId.toString() to listOf("Role")))
+            .whenever(mockInheritedRolesControllerApi)
+            .getInheritedRoles(any())
+
+        val createdDatasetReview =
+            datasetReviewService.createDatasetReview(
+                DatasetReview(
+                    datasetId = UUID.randomUUID().toString(),
+                    companyId = dummyCompanyId.toString(),
+                    dataType = "sfdr",
+                    reportingPeriod = "2026",
+                ),
+            )
+
+        assertEquals(dummyCompanyId.toString(), createdDatasetReview.companyId)
+
+        assertEquals(
+            setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId)),
+            createdDatasetReview.qaReports,
+        )
     }
 
     @Test
