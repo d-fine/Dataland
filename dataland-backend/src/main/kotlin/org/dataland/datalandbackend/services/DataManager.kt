@@ -318,11 +318,15 @@ class DataManager
 
         @Transactional(readOnly = true)
         override fun getLatestAvailableData(
-            companyId: String,
+            companyIds: Collection<String>,
             dataType: String,
             correlationId: String,
-        ): Pair<String, String>? =
-            metaDataManager.getLatestAvailableDatasetMetaInformation(companyId, dataType)?.let {
-                Pair(it.reportingPeriod, getDatasetData(it.dataId, dataType, correlationId))
-            }
+        ): Map<BasicDatasetDimensions, String> =
+            metaDataManager
+                .getLatestAvailableDatasetMetaInformation(companyIds, dataType)
+                .entries
+                .asSequence()
+                .map {
+                    it.key to getDatasetData(it.value.dataId, dataType, correlationId)
+                }.toMap()
     }

@@ -162,4 +162,30 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         companyId: String,
         dataType: String,
     ): DataMetaInformationEntity?
+
+    /**
+     * Retrieves the most recent (in terms of reporting period) active DataMetaInformationEntity for each company and the specified dataType
+     *
+     * @param companyIds the list of company IDs
+     * @param dataType the data type
+     * @returns a list of DataMetaInformationEntity representing the latest active dataset for each company
+     */
+    @Query(
+        """
+    SELECT d FROM DataMetaInformationEntity d
+    WHERE d.company.companyId IN :companyIds
+      AND d.dataType = :dataType
+      AND d.currentlyActive = true
+      AND d.reportingPeriod = (
+        SELECT MAX(d2.reportingPeriod) FROM DataMetaInformationEntity d2
+        WHERE d2.company.companyId = d.company.companyId
+          AND d2.dataType = :dataType
+          AND d2.currentlyActive = true
+      )
+    """,
+    )
+    fun findLatestActiveByCompanyIdsAndDataType(
+        @Param("companyIds") companyIds: Collection<String>,
+        @Param("dataType") dataType: String,
+    ): List<DataMetaInformationEntity>
 }

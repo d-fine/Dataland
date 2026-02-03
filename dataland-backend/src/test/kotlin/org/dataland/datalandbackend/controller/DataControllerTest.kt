@@ -274,7 +274,7 @@ internal class DataControllerTest {
         doReturn(listOf(createCompanyValidationResultMock(companyId)))
             .whenever(mockCompanyQueryManager)
             .validateCompanyIdentifiers(listOf(companyLei))
-        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(companyId), any(), any())
+        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getLatestAvailableCompanyAssociatedData(companyLei)
@@ -291,10 +291,10 @@ internal class DataControllerTest {
         doReturn(listOf(createCompanyValidationResultMock(companyId)))
             .whenever(mockCompanyQueryManager)
             .validateCompanyIdentifiers(listOf(companyLei))
-        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(companyId), any(), any())
+        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
         doReturn(Pair(testReportingPeriod, someEuTaxoDataAsString))
             .whenever(mockDataManager)
-            .getLatestAvailableData(eq(companyId), any(), any())
+            .getLatestAvailableData(eq(listOf(companyId)), any(), any())
 
         val response = dataController.getLatestAvailableCompanyAssociatedData(companyLei)
         Assertions.assertNotNull(response, "Controller should not return null")

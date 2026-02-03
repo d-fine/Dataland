@@ -59,15 +59,18 @@ interface DatasetStorageService {
     ): List<PlainDataAndMetaInformation>
 
     /**
-     * Retrieves the latest available dataset for a certain company and data type
-     * @param companyId the id of the company
+     * Retrieves the latest available datasets for a certain data type and a collections of companies
+     *
+     * If no dataset is found for a company, it is omitted from the result
+     *
+     * @param companyIds the ids of the companies
      * @param dataType the type of dataset
      * @param correlationId the correlation id for the operation
-     * @return the latest available reporting period and the corresponding dataset, or null if no dataset is found
+     * @return the latest available dataset dimensions mapped to the corresponding dataset
      */
     fun getLatestAvailableData(
-        companyId: String,
+        companyIds: Collection<String>,
         dataType: String,
         correlationId: String,
-    ): Pair<String, String>?
+    ): Map<BasicDatasetDimensions, String>
 }

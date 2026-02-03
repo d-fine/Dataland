@@ -283,12 +283,14 @@ open class DataController<T>(
                 message = "No company matches the provided identifier: $identifier.",
             )
 
-        val dataAndReportingPeriod =
-            datasetStorageService.getLatestAvailableData(
-                companyId,
-                dataType.toString(),
-                correlationId,
-            ) ?: throw ResourceNotFoundApiException(
+        val latestData =
+            datasetStorageService
+                .getLatestAvailableData(
+                    listOf(companyId),
+                    dataType.toString(),
+                    correlationId,
+                ).entries
+                .firstOrNull() ?: throw ResourceNotFoundApiException(
                 summary = "No available data found for company $companyId and data type $dataType.",
                 message = "The company with ID $companyId has no available data for the requested data type: $dataType.",
             )
@@ -296,8 +298,8 @@ open class DataController<T>(
         return ResponseEntity.ok(
             CompanyAssociatedData(
                 companyId = companyId,
-                reportingPeriod = dataAndReportingPeriod.first,
-                data = defaultObjectMapper.readValue(dataAndReportingPeriod.second, clazz),
+                reportingPeriod = latestData.key.reportingPeriod,
+                data = defaultObjectMapper.readValue(latestData.value, clazz),
             ),
         )
     }

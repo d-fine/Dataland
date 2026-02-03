@@ -361,8 +361,10 @@ class AssembledDataManager
 
         @Transactional(readOnly = true)
         override fun getLatestAvailableData(
-            companyId: String,
+            companyIds: Collection<String>,
             dataType: String,
             correlationId: String,
-        ): Pair<String, String>? = dataDeliveryService.getLatestAvailableAssembledDataset(companyId, dataType, correlationId)
+        ): Map<BasicDatasetDimensions, String> =
+            dataDeliveryService
+                .getLatestAvailableAssembledDatasets(companyIds, dataType, correlationId)
     }
