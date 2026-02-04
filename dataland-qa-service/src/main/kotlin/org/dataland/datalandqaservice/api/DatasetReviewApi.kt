@@ -33,7 +33,6 @@ interface DatasetReviewApi {
     @PostMapping(
         value = ["/{datasetId}"],
         produces = ["application/json"],
-        consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDatasetReview(

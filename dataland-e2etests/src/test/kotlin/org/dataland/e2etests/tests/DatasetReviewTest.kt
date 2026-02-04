@@ -6,18 +6,27 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DatasetReviewTest {
     private val testDataProvider =
         FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
+
+    @BeforeAll
+    fun postTestDocuments() {
+        DocumentControllerApiAccessor().uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     private fun uploadDummySfdrDataset(
         companyId: String,
