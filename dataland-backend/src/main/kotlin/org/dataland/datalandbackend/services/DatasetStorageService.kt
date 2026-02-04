@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -72,5 +73,5 @@ interface DatasetStorageService {
         companyIds: Collection<String>,
         dataType: String,
         correlationId: String,
-    ): Map<BasicDatasetDimensions, String>
+    ): List<PlainDataAndDimensions>
 }

@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -321,12 +322,13 @@ class DataManager
             companyIds: Collection<String>,
             dataType: String,
             correlationId: String,
-        ): Map<BasicDatasetDimensions, String> =
+        ): List<PlainDataAndDimensions> =
             metaDataManager
                 .getLatestAvailableDatasetMetaInformation(companyIds, dataType)
-                .entries
-                .asSequence()
                 .map {
-                    it.key to getDatasetData(it.value.dataId, dataType, correlationId)
-                }.toMap()
+                    PlainDataAndDimensions(
+                        BasicDatasetDimensions(it.company.companyId, dataType, it.reportingPeriod),
+                        getDatasetData(it.dataId, dataType, correlationId),
+                    )
+                }
     }

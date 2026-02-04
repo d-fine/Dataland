@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.export.ExportRequestData
@@ -274,7 +275,7 @@ internal class DataControllerTest {
         doReturn(listOf(createCompanyValidationResultMock(companyId)))
             .whenever(mockCompanyQueryManager)
             .validateCompanyIdentifiers(listOf(companyLei))
-        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
+        doReturn(emptyList<PlainDataAndDimensions>()).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getLatestAvailableCompanyAssociatedData(companyLei)
@@ -291,9 +292,15 @@ internal class DataControllerTest {
         doReturn(listOf(createCompanyValidationResultMock(companyId)))
             .whenever(mockCompanyQueryManager)
             .validateCompanyIdentifiers(listOf(companyLei))
-        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
-        doReturn(Pair(testReportingPeriod, someEuTaxoDataAsString))
-            .whenever(mockDataManager)
+        doReturn(emptyList<PlainDataAndDimensions>()).whenever(mockDataManager).getLatestAvailableData(eq(listOf(companyId)), any(), any())
+        doReturn(
+            listOf(
+                PlainDataAndDimensions(
+                    BasicDatasetDimensions("companyId", "dataType", testReportingPeriod),
+                    someEuTaxoDataAsString,
+                ),
+            ),
+        ).whenever(mockDataManager)
             .getLatestAvailableData(eq(listOf(companyId)), any(), any())
 
         val response = dataController.getLatestAvailableCompanyAssociatedData(companyLei)

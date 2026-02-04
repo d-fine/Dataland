@@ -289,8 +289,7 @@ open class DataController<T>(
                     listOf(companyId),
                     dataType.toString(),
                     correlationId,
-                ).entries
-                .firstOrNull() ?: throw ResourceNotFoundApiException(
+                ).firstOrNull() ?: throw ResourceNotFoundApiException(
                 summary = "No available data found for company $companyId and data type $dataType.",
                 message = "The company with ID $companyId has no available data for the requested data type: $dataType.",
             )
@@ -298,8 +297,8 @@ open class DataController<T>(
         return ResponseEntity.ok(
             CompanyAssociatedData(
                 companyId = companyId,
-                reportingPeriod = latestData.key.reportingPeriod,
-                data = defaultObjectMapper.readValue(latestData.value, clazz),
+                reportingPeriod = latestData.dimensions.reportingPeriod,
+                data = defaultObjectMapper.readValue(latestData.data, clazz),
             ),
         )
     }

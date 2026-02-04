@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -364,7 +365,7 @@ class AssembledDataManager
             companyIds: Collection<String>,
             dataType: String,
             correlationId: String,
-        ): Map<BasicDatasetDimensions, String> =
+        ): List<PlainDataAndDimensions> =
             dataDeliveryService
                 .getLatestAvailableAssembledDatasets(companyIds, dataType, correlationId)
     }

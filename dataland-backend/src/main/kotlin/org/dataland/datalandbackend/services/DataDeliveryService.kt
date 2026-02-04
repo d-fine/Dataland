@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -113,13 +114,13 @@ class DataDeliveryService
          * @param companyIds the ids of the companies
          * @param framework the type of dataset
          * @param correlationId the correlation id for the operation
-         * @return the latest available reporting period and the corresponding dataset per company
+         * @return the latest available data for each company
          */
         fun getLatestAvailableAssembledDatasets(
             companyIds: Collection<String>,
             framework: String,
             correlationId: String,
-        ): Map<BasicDatasetDimensions, String> {
+        ): List<PlainDataAndDimensions> {
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()
             val deliverableDataPointIds =
                 dataAvailabilityChecker
@@ -130,5 +131,11 @@ class DataDeliveryService
                     }
 
             return assembleDatasetsFromDataPointIds(deliverableDataPointIds, correlationId)
+                .map {
+                    PlainDataAndDimensions(
+                        dimensions = it.key,
+                        data = it.value,
+                    )
+                }
         }
     }

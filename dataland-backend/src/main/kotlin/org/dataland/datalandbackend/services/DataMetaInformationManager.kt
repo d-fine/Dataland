@@ -140,10 +140,5 @@ class DataMetaInformationManager(
     fun getLatestAvailableDatasetMetaInformation(
         companyIds: Collection<String>,
         dataType: String,
-    ): Map<BasicDatasetDimensions, DataMetaInformationEntity> =
-        dataMetaInformationRepository
-            .findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
-            .associateBy {
-                BasicDatasetDimensions(it.company.companyId, dataType, it.reportingPeriod)
-            }
+    ): List<DataMetaInformationEntity> = dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
 }
