@@ -29,6 +29,18 @@ function assertEmailAddressExistsInSearchResults(emailAddress: string): void {
   cy.contains('td', emailAddress);
 }
 
+/**
+ * Selects an option from a dropdown filter and triggers the filter request.
+ * @param pickerDataTest the data-test attribute of the dropdown picker
+ * @param label the aria-label of the option to select
+ */
+function selectFromDropdownAndFilter(pickerDataTest: string, label: string): void {
+  cy.get(`div[data-test="${pickerDataTest}"]`).click();
+  cy.get('.p-multiselect-overlay').invoke('attr', 'style', 'position: relative; z-index: 1');
+  cy.get(`li[aria-label="${label}"]`).click();
+  cy.get('button[data-test="trigger-filtering-requests"]').click();
+}
+
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: DataSourcingEnhancedRequest[];
   let mockRequestsLarge: DataSourcingEnhancedRequest[];
@@ -60,18 +72,6 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (bodyMatcher(req.body)) req.reply(mockResponse.length.toString());
     });
-  }
-
-  /**
-   * Selects an option from a dropdown filter and triggers the filter request.
-   * @param pickerDataTest the data-test attribute of the dropdown picker
-   * @param label the aria-label of the option to select
-   */
-  function selectFromDropdownAndFilter(pickerDataTest: string, label: string): void {
-    cy.get(`div[data-test="${pickerDataTest}"]`).click();
-    cy.get('.p-multiselect-overlay').invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${label}"]`).click();
-    cy.get('button[data-test="trigger-filtering-requests"]').click();
   }
 
   /**
