@@ -21,7 +21,7 @@
   ],
   "paths": {
     "/{datasetId}": {
-      "get": {
+      "post": {
         "tags": [
           "dataset-review-controller"
         ],
@@ -61,56 +61,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DatasetReviewResponse"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "dataset-review-controller"
-        ],
-        "summary": "Upload new dataset review object.",
-        "description": "Upload a new dataset review object.",
-        "operationId": "postDatasetReview",
-        "parameters": [
-          {
-            "name": "datasetId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successfully added dataset review object to dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
                 }
               }
             }
@@ -1377,6 +1327,58 @@
             "default-bearer-auth": []
           }
         ]
+      }
+    },
+    "/": {
+      "post": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Upload new dataset review object.",
+        "description": "Upload a new dataset review object.",
+        "operationId": "postDatasetReview",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetReview"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully added dataset review object to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/{datasetReviewId}/state": {
@@ -7257,6 +7259,29 @@
       },
       "JsonNode": {
         "type": "object"
+      },
+      "DatasetReview": {
+        "required": [
+          "companyId",
+          "dataType",
+          "datasetId",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
       },
       "QaReportStatusPatch": {
         "required": [

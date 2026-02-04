@@ -131,7 +131,7 @@ interface DatasetReviewApi {
         value = ["/{datasetReviewId}/approvedDataPoints"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptOriginalDatapoint(
         @PathVariable datasetReviewId: String,
         @Parameter(
@@ -161,7 +161,7 @@ interface DatasetReviewApi {
         value = ["/{datasetReviewId}/approvedQaReports"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptQaReport(
         @PathVariable datasetReviewId: String,
         @Parameter(
@@ -191,7 +191,7 @@ interface DatasetReviewApi {
         value = ["/{datasetReviewId}/approvedCustomDataPoints"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptCustomDataPoint(
         @PathVariable datasetReviewId: String,
         @Parameter(
