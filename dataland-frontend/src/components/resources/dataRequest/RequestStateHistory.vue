@@ -120,15 +120,20 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
   // Fill null values with previous non-null value
   let lastRequestState: string | null = null;
   let lastDataSourcingState: string | null = null;
+  let currentAdminComment: string | null | undefined = undefined;
   for (const entry of combined) {
     if (entry.requestState == null) {
       entry.requestState = lastRequestState;
     } else {
+      currentAdminComment = entry.adminComment;
       lastRequestState = entry.requestState;
     }
     if (entry.dataSourcingState == null) {
       entry.dataSourcingState = lastDataSourcingState;
     } else {
+      if (currentAdminComment !== undefined) {
+        entry.adminComment = currentAdminComment;
+      }
       lastDataSourcingState = entry.dataSourcingState;
     }
   }
