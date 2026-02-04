@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
@@ -56,18 +55,13 @@ class DatasetReviewControllerTest {
     fun `postDatasetReview delegates to service`() {
         val dataType = "sfdr"
         val reportingPeriod = "2026"
-        val request =
-            DatasetReview(
-                datasetId = UUID.randomUUID().toString(),
-                companyId = UUID.randomUUID().toString(),
-                dataType = dataType,
-                reportingPeriod = reportingPeriod,
-            )
+        val datasetId = UUID.randomUUID()
+
         val expectedResponse =
             DatasetReviewResponse(
                 dataSetReviewId = UUID.randomUUID().toString(),
-                datasetId = request.datasetId,
-                companyId = request.companyId,
+                datasetId = datasetId.toString(),
+                companyId = UUID.randomUUID().toString(),
                 reviewerUserId = UUID.randomUUID().toString(),
                 reviewerUserName = "Dummy User",
                 qaReports = emptySet(),
@@ -80,14 +74,14 @@ class DatasetReviewControllerTest {
                 approvedCustomDataPointIds = emptyMap(),
             )
 
-        whenever(datasetReviewService.createDatasetReview(request))
+        whenever(datasetReviewService.createDatasetReview(datasetId))
             .thenReturn(expectedResponse)
 
-        val result = controller.postDatasetReview(request)
+        val result = controller.postDatasetReview(datasetId.toString())
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(expectedResponse, result.body)
-        verify(datasetReviewService).createDatasetReview(request)
+        verify(datasetReviewService).createDatasetReview(datasetId)
     }
 
     @Test

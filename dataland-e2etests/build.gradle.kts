@@ -245,35 +245,6 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
 }
 
-tasks.register("generateSpecificationServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    description = "Task to generate clients for the specification service."
-    group = "clients"
-    val specificationServiceClientDestinationPackage = "org.dataland.specificationservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
-    outputDir.set(
-        layout.buildDirectory
-            .dir("clients/community-manager")
-            .get()
-            .toString(),
-    )
-    packageName.set(specificationServiceClientDestinationPackage)
-    modelPackage.set("$specificationServiceClientDestinationPackage.model")
-    apiPackage.set("$specificationServiceClientDestinationPackage.api")
-    generatorName.set("kotlin")
-
-    additionalProperties.set(
-        mapOf(
-            "removeEnumValuePrefix" to false,
-        ),
-    )
-    configOptions.set(
-        mapOf(
-            "dateLibrary" to "java21",
-            "useTags" to "true",
-        ),
-    )
-}
-
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
@@ -285,7 +256,6 @@ tasks.register("generateClients") {
     dependsOn("generateUserServiceClient")
     dependsOn("generateDataSourcingServiceClient")
     dependsOn("generateAccountingServiceClient")
-    dependsOn("generateSpecificationServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -306,7 +276,6 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/user-service/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/accounting-service/src/main/kotlin"))
-    main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
 }
 
 ktlint {
