@@ -12,7 +12,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -144,17 +143,11 @@ class DatasetReviewControllerTest {
             .getInheritedRoles(any())
 
         val createdDatasetReview =
-            datasetReviewService.createDatasetReview(
-                DatasetReview(
-                    datasetId = UUID.randomUUID().toString(),
-                    companyId = dummyCompanyId.toString(),
-                    dataType = "sfdr",
-                    reportingPeriod = "2026",
-                ),
-            )
+            datasetReviewController
+                .postDatasetReview(UUID.randomUUID().toString())
+                .body!!
 
         assertEquals(dummyCompanyId.toString(), createdDatasetReview.companyId)
-
         assertEquals(
             setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId)),
             createdDatasetReview.qaReports,

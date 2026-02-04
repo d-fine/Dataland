@@ -4,7 +4,6 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 class DatasetReviewController(
     private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
-    override fun postDatasetReview(datasetReview: DatasetReview): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity.ok(datasetReviewService.createDatasetReview(datasetReview))
+    override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
+        ResponseEntity.ok(datasetReviewService.createDatasetReview(convertToUUID(datasetId)))
 
     override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetReviewResponse>> =
         ResponseEntity.ok(datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))

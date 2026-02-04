@@ -12,7 +12,6 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -44,8 +43,8 @@ class DatasetReviewService
          * Method to set reviewer to current user.
          */
         @Transactional
-        fun createDatasetReview(datasetReview: DatasetReview): DatasetReviewResponse {
-            val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId)
+        fun createDatasetReview(datasetId: UUID): DatasetReviewResponse {
+            val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetId.toString())
 
             val dataPointQaReportIds =
                 dataPointQaReportRepository
@@ -63,13 +62,15 @@ class DatasetReviewService
                     )
                 }
 
+            val datasetMetaData = metaDataControllerApi.getDataMetaInfo(datasetId.toString())
+
             val datasetReviewEntity =
                 DatasetReviewEntity(
                     dataSetReviewId = UUID.randomUUID(),
-                    datasetId = convertToUUID(datasetReview.datasetId),
-                    companyId = convertToUUID(datasetReview.companyId),
-                    dataType = datasetReview.dataType,
-                    reportingPeriod = datasetReview.reportingPeriod,
+                    datasetId = datasetId,
+                    companyId = convertToUUID(datasetMetaData.companyId),
+                    dataType = datasetMetaData.dataType.toString(),
+                    reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
                 )
