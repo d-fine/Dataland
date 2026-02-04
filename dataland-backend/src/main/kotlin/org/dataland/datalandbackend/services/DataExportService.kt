@@ -10,15 +10,15 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
+import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataExportUtils
-import org.dataland.datalandbackend.utils.DataPointUtils
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
 import java.io.ByteArrayInputStream
@@ -29,8 +29,7 @@ import java.io.OutputStream
  * Base class for export service used for managing the logic behind the dataset export controller
  */
 open class DataExportService<T>(
-    private val dataPointUtils: DataPointUtils,
-    private val referencedReportsUtilities: ReferencedReportsUtilities,
+    private val datasetAssembler: DatasetAssembler,
     private val specificationApi: SpecificationControllerApi,
     private val companyQueryManager: CompanyQueryManager,
     private val datasetStorageService: DatasetStorageService,
@@ -46,76 +45,30 @@ open class DataExportService<T>(
 
     /**
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
-     * @param portfolioData the passed list of SingleCompanyExportData to be exported
+     *
+     * Note that swagger only supports InputStreamResources and not OutputStreams
+     *
+     * @param dataDimensionsWithDataStrings the plain data to be exported
      * @param exportFileType the file type to be exported
+     * @param newExportJob export job in which the stream will be stored
+     * @param clazz the class type of the data to be exported
      * @param dataType the datatype specifying the framework
      * @param keepValueFieldsOnly if true, non value fields are stripped
-     * @return InputStreamResource byteStream for export.
-     * Note that swagger only supports InputStreamResources and not OutputStreams
+     * @param includeAliases if true, human-readable names are used if available
      */
-    fun <T> buildStreamFromPortfolioExportData(
-        portfolioData: List<SingleCompanyExportData<T>>,
-        exportFileType: ExportFileType,
-        dataType: DataType,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
-    ): InputStreamResource {
-        val jsonData = portfolioData.map { convertDataToJson(it) }
-        if (jsonData.isEmpty()) {
-            throw DownloadDataNotFoundApiException()
-        }
-
-        return when (exportFileType) {
-            ExportFileType.CSV -> {
-                buildCsvStreamFromPortfolioAsJsonData(
-                    jsonData,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
-                )
-            }
-
-            ExportFileType.EXCEL -> {
-                buildExcelStreamFromPortfolioAsJsonData(
-                    jsonData,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
-                )
-            }
-
-            ExportFileType.JSON -> {
-                buildJsonStreamFromPortfolioAsJsonData(jsonData)
-            }
-        }
-    }
-
-    /**
-     * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
-     * @param listDataDimensions the passed list of SingleCompanyExportData to be exported
-     * @param exportFileType the file type to be exported
-     * @param newExportJob correlationId for unique identification
-     * @param keepValueFieldsOnly if true, non value fields are stripped
-     * @return InputStreamResource byteStream for export.
-     * Note that swagger only supports InputStreamResources and not OutputStreams
-     */
-    @Async
-    open fun startExportJob(
-        listDataDimensions: ListDataDimensions,
+    internal fun buildStreamFromPortfolioExportData(
+        dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
         exportFileType: ExportFileType,
         newExportJob: ExportJob,
         clazz: Class<T>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ) {
-        val portfolioData =
-            buildCompanyExportData(listDataDimensions, clazz, newExportJob.id.toString())
-
-        val jsonData = portfolioData.map { convertDataToJson(it) }
+        val jsonData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz).map { convertDataToJson(it) }
         if (jsonData.isEmpty()) {
             throw DownloadDataNotFoundApiException()
         }
-        val dataType = DataType.valueOf(listDataDimensions.dataTypes.first())
+        val dataType = DataType.valueOf(newExportJob.frameworkName)
 
         newExportJob.fileToExport =
             when (exportFileType) {
@@ -143,6 +96,63 @@ open class DataExportService<T>(
             }
         newExportJob.progressState = ExportJobProgressState.Success
     }
+
+    /**
+     * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
+     *
+     * Note that swagger only supports InputStreamResources and not OutputStreams
+     *
+     * @param listDataDimensions the passed list of SingleCompanyExportData to be exported
+     * @param exportFileType the file type to be exported
+     * @param newExportJob export job in which the stream will be stored
+     * @param clazz the class type of the data to be exported
+     * @param keepValueFieldsOnly if true, non value fields are stripped
+     * @param includeAliases if true, human-readable names are used if available
+     */
+    @Async
+    open fun startExportJob(
+        listDataDimensions: ListDataDimensions,
+        exportFileType: ExportFileType,
+        newExportJob: ExportJob,
+        clazz: Class<T>,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ) = buildStreamFromPortfolioExportData(
+        getPlainData(listDataDimensions, newExportJob.id.toString()),
+        exportFileType,
+        newExportJob,
+        clazz,
+        keepValueFieldsOnly,
+        includeAliases,
+    )
+
+    /**
+     * Create a ByteStream of the latest available data per company to be used for export from a list of SingleCompanyExportData.
+     *
+     * @param companyIds the companies for which the latest data is to be exported
+     * @param framework the framework for which the data is to be exported
+     * @param exportFileType the file type to be exported
+     * @param newExportJob correlationId for unique identification
+     * @param clazz the class type of the data to be exported
+     * @param keepValueFieldsOnly if true, non value fields are stripped
+     * @param includeAliases if true, human-readable names are used if available
+     */
+    @Async
+    open fun startLatestExportJob(
+        companyIds: Collection<String>,
+        exportFileType: ExportFileType,
+        newExportJob: ExportJob,
+        clazz: Class<T>,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ) = buildStreamFromPortfolioExportData(
+        getLatestPlainData(companyIds, newExportJob.frameworkName, newExportJob.id.toString()),
+        exportFileType,
+        newExportJob,
+        clazz,
+        keepValueFieldsOnly,
+        includeAliases,
+    )
 
     /**
      * Transform the data to an Excel file with human-readable headers.
@@ -181,24 +191,36 @@ open class DataExportService<T>(
         workbook.close()
     }
 
-    internal fun buildCompanyExportData(
+    private fun getPlainData(
         listDataDimensions: ListDataDimensions,
-        clazz: Class<T>,
         correlationId: String,
-    ): List<SingleCompanyExportData<T>> {
-        val dataDimensionsWithDataStrings =
-            datasetStorageService.getDatasetData(
-                listDataDimensions.companyIds
-                    .flatMap { companyId ->
-                        listDataDimensions.reportingPeriods.flatMap { reportingPeriod ->
-                            listDataDimensions.dataTypes.map { dataType ->
-                                BasicDatasetDimensions(companyId, dataType, reportingPeriod)
-                            }
-                        }
-                    }.toSet(),
-                correlationId,
-            )
+    ) = datasetStorageService.getDatasetData(
+        listDataDimensions.companyIds
+            .flatMap { companyId ->
+                listDataDimensions.reportingPeriods.flatMap { reportingPeriod ->
+                    listDataDimensions.dataTypes.map { dataType ->
+                        BasicDatasetDimensions(companyId, dataType, reportingPeriod)
+                    }
+                }
+            }.toSet(),
+        correlationId,
+    )
 
+    private fun getLatestPlainData(
+        companyIds: Collection<String>,
+        framework: String,
+        correlationId: String,
+    ) = datasetStorageService
+        .getLatestAvailableData(
+            companyIds,
+            framework,
+            correlationId,
+        ).associate { it.dimensions to it.data }
+
+    private fun buildCompanyExportData(
+        dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
+        clazz: Class<T>,
+    ): List<SingleCompanyExportData<T>> {
         val basicCompanyInformation =
             companyQueryManager.getBasicCompanyInformationByIds(
                 dataDimensionsWithDataStrings.map { it.key.companyId },
@@ -302,16 +324,12 @@ open class DataExportService<T>(
      *
      * @param framework the framework for which the template shall be returned
      */
-    private fun getFrameworkTemplate(framework: String): JsonNode? {
-        return dataPointUtils.getFrameworkSpecificationOrNull(framework)?.let {
-            val frameworkTemplate = objectMapper.readTree(it.schema)
-            referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(
-                frameworkTemplate,
-                it.referencedReportJsonPath,
-            )
-            return frameworkTemplate
+    private fun getFrameworkTemplate(framework: String): JsonNode? =
+        try {
+            datasetAssembler.getFrameworkTemplate(framework)
+        } catch (ignore: ClientException) {
+            null
         }
-    }
 
     private fun getResolvedSchemaNode(framework: String): JsonNode? {
         val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
