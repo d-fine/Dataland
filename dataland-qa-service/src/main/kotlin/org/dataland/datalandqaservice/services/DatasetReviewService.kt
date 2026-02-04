@@ -1,8 +1,5 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -14,9 +11,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
-import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,15 +23,11 @@ import java.util.UUID
  * Service class for dataset review objects.
  */
 @Service
-@Suppress("LongParameterList")
 class DatasetReviewService
     @Autowired
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
-        private val dataPointControllerApi: DataPointControllerApi,
-        private val dataPointQaReportRepository: DataPointQaReportRepository,
-        private val specificationControllerApi: SpecificationControllerApi,
-        private val metaDataControllerApi: MetaDataControllerApi,
+        private val datasetReviewSupportService: DatasetReviewSupportService,
         private val inheritedRolesControllerApi: InheritedRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
     ) {
@@ -45,21 +36,21 @@ class DatasetReviewService
          */
         @Transactional
         fun createDatasetReview(datasetReview: DatasetReview): DatasetReviewResponse {
-            val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId)
+            val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId)
 
             val dataPointQaReportIds =
-                dataPointQaReportRepository
-                    .searchQaReportMetaInformation(
-                        dataPointIds = datatypeToDatapointIds.values.toList(),
-                        showInactive = false,
-                        reporterUserId = null,
-                    ).map { it.qaReportId }
+                datasetReviewSupportService
+                    .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
 
             val qaReportIdWithUploaderCompanyIds =
                 dataPointQaReportIds.map {
+                    val uploaderCompanyId =
+                        UUID.fromString(
+                            inheritedRolesControllerApi.getInheritedRoles(it).keys.firstOrNull(),
+                        )
                     QaReportIdWithUploaderCompanyId(
                         convertToUUID(it),
-                        UUID.fromString(inheritedRolesControllerApi.getInheritedRoles(it).keys.firstOrNull()),
+                        uploaderCompanyId,
                     )
                 }
 
@@ -121,14 +112,14 @@ class DatasetReviewService
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReviewById(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            val datatypeToDatapointIds = metaDataControllerApi.getContainedDataPoints(datasetReview.datasetId.toString())
+            val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
             if (dataPointId.toString() !in datatypeToDatapointIds.values) {
                 throw ResourceNotFoundApiException(
                     "Datapoint not found.",
                     "Datapoint id $dataPointId not part of dataset ${datasetReview.datasetId}.",
                 )
             }
-            val dataPointType = dataPointControllerApi.getDataPointMetaInfo(dataPointId.toString()).dataPointType
+            val dataPointType = datasetReviewSupportService.getDataPointType(dataPointId)
             datasetReview.approvedDataPointIds[dataPointType] = dataPointId
             datasetReview.approvedQaReportIds.remove(dataPointType)
             datasetReview.approvedCustomDataPointIds.remove(dataPointType)
@@ -153,7 +144,7 @@ class DatasetReviewService
                 )
 
             val dataPointType =
-                dataPointQaReportRepository.findDataPointTypeUsingId(qaReportId.toString())
+                datasetReviewSupportService.findDataPointTypeUsingQaReportId(qaReportId)
 
             datasetReview.approvedQaReportIds[dataPointType] = qaReportId
             datasetReview.approvedDataPointIds.remove(dataPointType)
@@ -176,7 +167,7 @@ class DatasetReviewService
             lateinit var frameworksOfDataPointType: List<String>
             try {
                 frameworksOfDataPointType =
-                    specificationControllerApi.getDataPointTypeSpecification(dataPointType).usedBy.map { it.id }
+                    datasetReviewSupportService.getFrameworksForDataPointType(dataPointType)
             } catch (_: HttpClientErrorException) {
                 throw InvalidInputApiException(
                     "DataPoint type not found.",
@@ -190,7 +181,7 @@ class DatasetReviewService
                 )
             }
             try {
-                dataPointControllerApi.validateDataPoint(DataPointToValidate(dataPoint, dataPointType))
+                datasetReviewSupportService.validateCustomDataPoint(dataPoint, dataPointType)
             } catch (e: HttpClientErrorException) {
                 throw InvalidInputApiException(
                     "Datapoint not valid.",
