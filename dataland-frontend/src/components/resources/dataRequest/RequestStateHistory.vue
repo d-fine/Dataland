@@ -138,6 +138,12 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
     }
   }
 
-  return combined.filter((entry) => !(entry.dataSourcingState === null && entry.requestState === 'Processing'));
+  return combined.filter(
+    (entry) =>
+      !(
+        (entry.dataSourcingState === null && entry.requestState === 'Processing') ||
+        (entry.dataSourcingState === 'DataVerification' && entry.requestState === 'Processed')
+      )
+  );
 });
 </script>
