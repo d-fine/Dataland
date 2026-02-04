@@ -53,7 +53,7 @@ class DatasetReviewService
                     )
                 }
 
-            val datasetMetaData = metaDataControllerApi.getDataMetaInfo(datasetId.toString())
+            val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
                 DatasetReviewEntity(

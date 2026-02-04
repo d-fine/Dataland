@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
@@ -21,6 +22,11 @@ class DatasetReviewSupportService
         private val specificationControllerApi: SpecificationControllerApi,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
     ) {
+        /**
+         * Retrieves meta data of a dataset
+         */
+        fun getDataMetaInfo(datasetId: String): DataMetaInformation = metaDataControllerApi.getDataMetaInfo(datasetId)
+
         /**  Retrieves the data points contained in a dataset.
          */
         fun getContainedDataPoints(datasetId: String): Map<String, String> = metaDataControllerApi.getContainedDataPoints(datasetId)
