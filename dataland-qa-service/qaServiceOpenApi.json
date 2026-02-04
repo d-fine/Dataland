@@ -20,6 +20,74 @@
     }
   ],
   "paths": {
+    "/{datasetId}": {
+      "post": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Get dataset review objects by dataset id.",
+        "description": "Retrieve all dataset review objects associated with the specified dataset id.",
+        "operationId": "getDatasetReviewsByDatasetId",
+        "parameters": [
+          {
+            "name": "datasetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins access these dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/datasets/{dataId}": {
       "get": {
         "tags": [
@@ -3152,6 +3220,104 @@
   },
   "components": {
     "schemas": {
+      "DatasetReviewResponse": {
+        "required": [
+          "approvedCustomDataPointIds",
+          "approvedDataPointIds",
+          "approvedQaReportIds",
+          "companyId",
+          "dataSetReviewId",
+          "dataType",
+          "datasetId",
+          "preapprovedDataPointIds",
+          "qaReports",
+          "reportingPeriod",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSetReviewId": {
+            "type": "string"
+          },
+          "datasetId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DatasetReviewState"
+          },
+          "reviewerUserId": {
+            "type": "string"
+          },
+          "reviewerUserName": {
+            "type": "string"
+          },
+          "preapprovedDataPointIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "qaReports": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QaReportIdWithUploaderCompanyId"
+            }
+          },
+          "approvedQaReportIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "approvedDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "approvedCustomDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DatasetReviewState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Finished",
+          "Aborted"
+        ]
+      },
+      "QaReportIdWithUploaderCompanyId": {
+        "required": [
+          "qaReportId"
+        ],
+        "type": "object",
+        "properties": {
+          "qaReportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uploaderCompanyId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "QaStatus": {
         "type": "string",
         "enum": [
@@ -7114,102 +7280,6 @@
           },
           "reportingPeriod": {
             "type": "string"
-          }
-        }
-      },
-      "DatasetReviewResponse": {
-        "required": [
-          "approvedCustomDataPointIds",
-          "approvedDataPointIds",
-          "approvedQaReportIds",
-          "companyId",
-          "dataSetReviewId",
-          "dataType",
-          "datasetId",
-          "preapprovedDataPointIds",
-          "qaReports",
-          "reportingPeriod",
-          "reviewerUserId",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "dataSetReviewId": {
-            "type": "string"
-          },
-          "datasetId": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "status": {
-            "$ref": "#/components/schemas/DatasetReviewState"
-          },
-          "reviewerUserId": {
-            "type": "string"
-          },
-          "preapprovedDataPointIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "qaReports": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/QaReportIdWithUploaderCompanyId"
-            }
-          },
-          "approvedQaReportIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "approvedDataPointIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "approvedCustomDataPointIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "DatasetReviewState": {
-        "type": "string",
-        "enum": [
-          "Pending",
-          "Finished",
-          "Aborted"
-        ]
-      },
-      "QaReportIdWithUploaderCompanyId": {
-        "required": [
-          "qaReportId"
-        ],
-        "type": "object",
-        "properties": {
-          "qaReportId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "uploaderCompanyId": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
