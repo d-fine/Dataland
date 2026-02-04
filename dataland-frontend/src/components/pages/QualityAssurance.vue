@@ -8,7 +8,7 @@
             <InputText
               data-test="companyNameSearchbar"
               v-model="searchBarInput"
-              placeholder="Search by company name"
+              placeholder="Search by Company Name or Identifier"
               fluid
               variant="filled"
             />
@@ -23,7 +23,7 @@
           data-test="reportingPeriod"
           v-model="availableReportingPeriods"
           :updateModelType="'date'"
-          placeholder="Search by reporting period"
+          placeholder="Reporting Period"
           :showIcon="true"
           :manualInput="false"
           view="year"
@@ -101,7 +101,7 @@
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="" class="w-2 qa-review-button">
+            <Column field="reviewDataset" header="REVIEW AVAILABLE" class="w-2 qa-review-button">
               <template #body="slotProps">
                 <PrimeButton
                   @click="goToQaViewPageByButton(slotProps.data)"
@@ -124,7 +124,7 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
@@ -147,209 +147,189 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import { defineComponent, inject } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
-export default defineComponent({
-  name: 'QualityAssurance',
-  components: {
-    DatalandProgressSpinner,
-    AuthorizationWrapper,
-    TheContent,
-    FrameworkDataSearchDropdownFilter,
-    DataTable,
-    Column,
-    InputText,
-    InputIcon,
-    IconField,
-    PrimeButton,
-    DatePicker,
-    Message,
-  },
-  setup() {
-    return {
-      datasetsPerPage: 10,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    return {
-      apiClientProvider: new ApiClientProvider(assertDefined(this.getKeycloakPromise)()),
-      displayDataOfPage: [] as QaReviewResponse[],
-      waitingForData: true,
-      KEYCLOAK_ROLE_REVIEWER,
-      currentChunkIndex: 0,
-      firstRowIndex: 0,
-      totalRecords: 0,
-      debounceInMs: 300,
-      timerId: 0,
-      searchBarInput: '',
-      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableReportingPeriods: undefined as undefined | Array<Date>,
-      notEnoughCharactersWarningTimeoutId: 0,
-      showNotEnoughCharactersWarning: false,
-    };
-  },
-  mounted() {
-    this.getQaDataForCurrentPage().catch((error) => console.log(error));
-    this.availableFrameworks = retrieveAvailableFrameworks();
-  },
-  watch: {
-    selectedFrameworks() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    availableReportingPeriods() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    searchBarInput() {
-      const isValid = this.validateSearchBarInput();
-      if (isValid) {
-        this.currentChunkIndex = 0;
-        this.firstRowIndex = 0;
-        if (this.timerId) {
-          clearTimeout(this.timerId);
-        }
-        this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
-      }
-    },
-  },
-  methods: {
-    convertUnixTimeInMsToDateString,
-    humanizeString: humanizeStringOrNumber,
-    /**
-     * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
-     * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
-     * @param input is a value with type DataTypeEnum
-     * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
-     */
-    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
-      return input as GetInfoOnDatasetsDataTypesEnum;
-    },
-    /**
-     * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
-     */
-    async getQaDataForCurrentPage() {
-      try {
-        this.waitingForData = true;
-        this.displayDataOfPage = [];
+const datasetsPerPage = 10;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
-          this.selectedFrameworks.map((selectableItem) =>
-            this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
-          )
-        );
-        const reportingPeriodFilter: Set<string> = new Set<string>(
-          this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
-        );
-        const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnDatasets(
-          selectedFrameworksAsSet,
-          reportingPeriodFilter,
-          companyNameFilter,
-          undefined,
-          this.datasetsPerPage,
-          this.currentChunkIndex
-        );
-        this.displayDataOfPage = response.data;
-        this.totalRecords = (
-          await this.apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
-            selectedFrameworksAsSet,
-            reportingPeriodFilter,
-            companyNameFilter
-          )
-        ).data;
-        this.waitingForData = false;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Navigates to the view framework data page on a click on the row of the company
-     * @param event the row click event
-     * @returns the promise of the router push action
-     */
-    goToQaViewPage(event: DataTableRowClickEvent) {
-      const qaDataObject = event.data as QaReviewResponse;
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      return router.push(qaUri);
-    },
+const displayDataOfPage = ref<QaReviewResponse[]>([]);
+const waitingForData = ref(true);
+const currentChunkIndex = ref(0);
+const firstRowIndex = ref(0);
+const totalRecords = ref(0);
+const searchBarInput = ref('');
+const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableReportingPeriods = ref<undefined | Array<Date>>(undefined);
+const showNotEnoughCharactersWarning = ref(false);
 
-    /**
-     * Navigates to the view framework data page on a click on the row of the company
-     * @param qaDataObject stored information about the row
-     */
-    goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      void router.push(qaUri);
-    },
+const debounceInMs = 300;
+let timerId = 0;
+let notEnoughCharactersWarningTimeoutId = 0;
 
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.currentChunkIndex = 0;
-      this.selectedFrameworks = [];
-      this.availableReportingPeriods = [];
-      this.searchBarInput = '';
-    },
-    /**
-     * Updates the current Page
-     * @param event DataTablePageEvent
-     */
-    onPage(event: DataTablePageEvent) {
-      globalThis.scrollTo(0, 0);
-      if (event.page != this.currentChunkIndex) {
-        this.currentChunkIndex = event.page;
-        this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    /**
-     * Validates the current company name search bar input.
-     * If there are only one or two characters typed, an error message shall be rendered asking the user to
-     * provide at least three characters.
-     * @returns the outcome of the validation
-     */
-    validateSearchBarInput(): boolean {
-      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+const humanizeString = humanizeStringOrNumber;
 
-      const inputLength = this.searchBarInput.length;
-      const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+/**
+ * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
+ * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
+ * @param input is a value with type DataTypeEnum
+ * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
+ */
+function manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
+  return input as GetInfoOnDatasetsDataTypesEnum;
+}
 
-      if (notEnoughCharacters) {
-        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
-          this.showNotEnoughCharactersWarning = true;
-        }, 1000);
-        return false;
-      }
+/**
+ * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
+ */
+async function getQaDataForCurrentPage(): Promise<void> {
+  try {
+    waitingForData.value = true;
+    displayDataOfPage.value = [];
 
-      this.showNotEnoughCharactersWarning = false;
-      return true;
-    },
-  },
-  computed: {
-    numberOfUnreviewedDatasets(): string {
-      if (!this.waitingForData) {
-        if (this.totalRecords === 0) {
-          return 'No results for this search.';
-        } else {
-          const startIndex = this.currentChunkIndex * this.datasetsPerPage + 1;
-          const endIndex = Math.min(startIndex + this.datasetsPerPage - 1, this.totalRecords);
-          return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
-        }
-      }
-      return '';
-    },
-  },
+    const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
+      selectedFrameworks.value.map((selectableItem) =>
+        manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
+      )
+    );
+    const reportingPeriodFilter: Set<string> = new Set<string>(
+      availableReportingPeriods.value?.map((date) => date.getFullYear().toString())
+    );
+    const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
+    const response = await apiClientProvider.apiClients.qaController.getInfoOnDatasets(
+      selectedFrameworksAsSet,
+      reportingPeriodFilter,
+      companyNameFilter,
+      undefined,
+      datasetsPerPage,
+      currentChunkIndex.value
+    );
+    displayDataOfPage.value = response.data;
+    totalRecords.value = (
+      await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
+        selectedFrameworksAsSet,
+        reportingPeriodFilter,
+        companyNameFilter
+      )
+    ).data;
+    waitingForData.value = false;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Navigates to the view framework data page on a click on the row of the company
+ * @param event the row click event
+ * @returns the promise of the router push action
+ */
+function goToQaViewPage(event: DataTableRowClickEvent): ReturnType<typeof router.push> {
+  const qaDataObject = event.data as QaReviewResponse;
+  const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+  return router.push(qaUri);
+}
+
+/**
+ * Navigates to the view framework data page on a click on the row of the company
+ * @param qaDataObject stored information about the row
+ */
+function goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
+  const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+  void router.push(qaUri);
+}
+
+/**
+ * Resets selected frameworks and searchBarInput
+ */
+function resetFilterAndSearchBar(): void {
+  currentChunkIndex.value = 0;
+  selectedFrameworks.value = [];
+  availableReportingPeriods.value = [];
+  searchBarInput.value = '';
+}
+
+/**
+ * Updates the current Page
+ * @param event DataTablePageEvent
+ */
+function onPage(event: DataTablePageEvent): void {
+  globalThis.scrollTo(0, 0);
+  if (event.page != currentChunkIndex.value) {
+    currentChunkIndex.value = event.page;
+    firstRowIndex.value = currentChunkIndex.value * datasetsPerPage;
+    void getQaDataForCurrentPage();
+  }
+}
+
+/**
+ * Validates the current company name search bar input.
+ * If there are only one or two characters typed, an error message shall be rendered asking the user to
+ * provide at least three characters.
+ * @returns the outcome of the validation
+ */
+function validateSearchBarInput(): boolean {
+  clearTimeout(notEnoughCharactersWarningTimeoutId);
+
+  const inputLength = searchBarInput.value.length;
+  const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+
+  if (notEnoughCharacters) {
+    notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+      showNotEnoughCharactersWarning.value = true;
+    }, 1000);
+    return false;
+  }
+
+  showNotEnoughCharactersWarning.value = false;
+  return true;
+}
+
+watch(selectedFrameworks, () => {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+  if (!waitingForData.value) {
+    void getQaDataForCurrentPage();
+  }
+});
+
+watch(availableReportingPeriods, () => {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+  if (!waitingForData.value) {
+    void getQaDataForCurrentPage();
+  }
+});
+
+watch(searchBarInput, () => {
+  const isValid = validateSearchBarInput();
+  if (isValid) {
+    currentChunkIndex.value = 0;
+    firstRowIndex.value = 0;
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => getQaDataForCurrentPage(), debounceInMs);
+  }
+});
+
+const numberOfUnreviewedDatasets = computed((): string => {
+  if (!waitingForData.value) {
+    if (totalRecords.value === 0) {
+      return 'No results for this search.';
+    } else {
+      const startIndex = currentChunkIndex.value * datasetsPerPage + 1;
+      const endIndex = Math.min(startIndex + datasetsPerPage - 1, totalRecords.value);
+      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
+    }
+  }
+  return '';
+});
+
+onMounted(() => {
+  getQaDataForCurrentPage().catch((error) => console.log(error));
+  availableFrameworks.value = retrieveAvailableFrameworks();
 });
 </script>
 

@@ -157,6 +157,12 @@ object BackendOpenApiDescriptionsAndExamples {
         "If set, only metadata of reports that were uploaded before the maxUploadDate are returned."
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 
+    const val REVIEWER_USER_NAME_DESCRIPTION = "The name of the user who is reviewing the dataset."
+    const val REVIEWER_USER_NAME_EXAMPLE = "John Doe"
+
+    const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
+    const val NUMBER_QA_REPORTS_EXAMPLE = "5"
+
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
         "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =

@@ -6760,6 +6760,7 @@
           "companyName",
           "dataId",
           "framework",
+          "numberQaReports",
           "qaStatus",
           "reportingPeriod",
           "timestamp"
@@ -6799,6 +6800,17 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "reviewerUserName": {
+            "type": "string",
+            "description": "The name of the user who is reviewing the dataset.",
+            "example": "John Doe"
+          },
+          "numberQaReports": {
+            "type": "integer",
+            "description": "The number of QA reports associated with the dataset.",
+            "format": "int64",
+            "example": 5
           },
           "comment": {
             "type": "string",
