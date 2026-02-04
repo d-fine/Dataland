@@ -127,7 +127,6 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case RequestState.Withdrawn:
       return stateSlateTag;
     case DataSourcingState.Initialized:
-      return stateAmberTag;
     case DataSourcingState.DocumentSourcing:
     case DataSourcingState.DocumentSourcingDone:
     case DataSourcingState.DataExtraction:

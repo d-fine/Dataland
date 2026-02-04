@@ -35,6 +35,46 @@ describe('Component test for the admin-requests-overview page', () => {
   const chunkSize = 100;
 
   /**
+   * Creates a keycloak mock configured for an authenticated admin user.
+   * @returns keycloak mock instance
+   */
+  const adminKeycloakMock = (): ReturnType<typeof minimalKeycloakMock> =>
+    minimalKeycloakMock({
+      authenticated: true,
+      roles: [KEYCLOAK_ROLE_ADMIN],
+      userId: crypto.randomUUID(),
+    });
+
+  /**
+   * Sets up intercepts for both search and count endpoints with a custom body matcher.
+   * @param mockResponse the mock data to return when the matcher succeeds
+   * @param bodyMatcher predicate function to match request body
+   */
+  function setupFilterIntercepts(
+    mockResponse: DataSourcingEnhancedRequest[],
+    bodyMatcher: (body: Record<string, unknown>) => boolean
+  ): void {
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
+      if (bodyMatcher(req.body)) req.reply(mockResponse);
+    });
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
+      if (bodyMatcher(req.body)) req.reply(mockResponse.length.toString());
+    });
+  }
+
+  /**
+   * Selects an option from a dropdown filter and triggers the filter request.
+   * @param pickerDataTest the data-test attribute of the dropdown picker
+   * @param label the aria-label of the option to select
+   */
+  function selectFromDropdownAndFilter(pickerDataTest: string, label: string): void {
+    cy.get(`div[data-test="${pickerDataTest}"]`).click();
+    cy.get('.p-multiselect-overlay').invoke('attr', 'style', 'position: relative; z-index: 1');
+    cy.get(`li[aria-label="${label}"]`).click();
+    cy.get('button[data-test="trigger-filtering-requests"]').click();
+  }
+
+  /**
    * A collection of fields of extended stored data requests that can be filtered by.
    */
   type FilterParameters = {
@@ -199,11 +239,7 @@ describe('Component test for the admin-requests-overview page', () => {
   function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
     setUpUnfilteredInterceptions();
     const mountedComponent = getMountingFunction({
-      keycloak: minimalKeycloakMock({
-        authenticated: true,
-        roles: [KEYCLOAK_ROLE_ADMIN],
-        userId: crypto.randomUUID(),
-      }),
+      keycloak: adminKeycloakMock(),
       router: router,
     })(AdminAllRequestsOverview);
 
@@ -217,289 +253,163 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   /**
-   *
+   * Mounts the page with a large mock dataset for pagination testing.
    */
   function mountAdminAllRequestsPageWithManyMocks(): void {
-    const expectedNumberOfRequests = mockRequestsLarge.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(mockRequestsLarge);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Object.keys(req.body).length === 0) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
-
-    getMountingFunction({
-      keycloak: minimalKeycloakMock({
-        authenticated: true,
-        roles: [KEYCLOAK_ROLE_ADMIN],
-        userId: crypto.randomUUID(),
-      }),
-    })(AdminAllRequestsOverview);
+    setupFilterIntercepts(mockRequestsLarge, (body) => Object.keys(body).length === 0);
+    getMountingFunction({ keycloak: adminKeycloakMock() })(AdminAllRequestsOverview);
     assertNumberOfSearchResults(chunkSize);
   }
 
   /**
-   * Validates if filtering via email address substring works as expected
+   * Validates if filtering via email address substring works as expected.
    */
   function validateEmailAddressFilter(): void {
-    const mockResponse = [mockRequests[0], mockRequests[3]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (req.body.emailAddress === mailSearchTerm) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (req.body.emailAddress === mailSearchTerm) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[0]!, mockRequests[3]!];
+    setupFilterIntercepts(mockResponse, (body) => body.emailAddress === mailSearchTerm);
 
-    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm);
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    cy.get('input[data-test="email-searchbar"]').type(mailSearchTerm);
+    cy.get('button[data-test="trigger-filtering-requests"]').click();
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
-   * Validates if filtering via framework dropdown filter works as expected
+   * Validates if filtering via framework dropdown filter works as expected.
    */
   function validateFrameworkFilter(): void {
     const frameworkToFilterFor = DataTypeEnum.Sfdr;
-    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    const mockResponse = [mockRequests[1]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Array.isArray(req.body.dataTypes) && req.body.dataTypes.includes(frameworkToFilterFor)) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[1]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) => Array.isArray(body.dataTypes) && body.dataTypes.includes(frameworkToFilterFor)
+    );
 
-    cy.get(`div[data-test="framework-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    selectFromDropdownAndFilter('framework-picker', humanizeStringOrNumber(frameworkToFilterFor));
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
-   * Validates if filtering via status dropdown filter works as expected for RequestState (Open)
+   * Validates if filtering via status dropdown filter works as expected for RequestState (Open).
    */
   function validateStatusFilterForRequestState(): void {
-    const statusLabelToFilterFor = 'Open';
-    const expectedRequestState = RequestState.Open;
-    const mockResponse = [mockRequests[0]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(expectedRequestState)) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(expectedRequestState)) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
-    cy.get(`div[data-test="state-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    const mockResponse = [mockRequests[0]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) => Array.isArray(body.requestStates) && body.requestStates.includes(RequestState.Open)
+    );
+
+    selectFromDropdownAndFilter('state-picker', 'Open');
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
   }
 
   /**
-   * Validates if filtering via status dropdown filter works as expected for DataSourcingState (Validated -> Initialized)
+   * Validates if filtering via status dropdown filter works as expected for DataSourcingState (Validated).
    */
   function validateStatusFilterForDataSourcingState(): void {
-    const statusLabelToFilterFor = 'Validated';
-    const expectedDataSourcingState = DataSourcingState.Initialized;
-    const mockResponse = [mockRequests[1]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (
-        Array.isArray(req.body.dataSourcingStates) &&
-        req.body.dataSourcingStates.includes(expectedDataSourcingState)
-      ) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (
-        Array.isArray(req.body.dataSourcingStates) &&
-        req.body.dataSourcingStates.includes(expectedDataSourcingState)
-      ) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
-    cy.get(`div[data-test="state-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    const mockResponse = [mockRequests[1]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) =>
+        Array.isArray(body.dataSourcingStates) && body.dataSourcingStates.includes(DataSourcingState.Initialized)
+    );
+
+    selectFromDropdownAndFilter('state-picker', 'Validated');
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
-   * Validates if filtering via priority dropdown filter works as expected
+   * Validates if filtering via priority dropdown filter works as expected.
    */
   function validateRequestPriorityFilter(): void {
-    const priorityToFilterFor = RequestPriority.Urgent;
-    const mockResponse = [mockRequests[0], mockRequests[1]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Array.isArray(req.body.requestPriorities) && req.body.requestPriorities.includes(priorityToFilterFor)) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[0]!, mockRequests[1]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) => Array.isArray(body.requestPriorities) && body.requestPriorities.includes(RequestPriority.Urgent)
+    );
 
-    cy.get(`div[data-test="request-priority-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    selectFromDropdownAndFilter('request-priority-picker', RequestPriority.Urgent);
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
-   * Validates if filtering via reporting period dropdown filter works as expected
+   * Validates if filtering via reporting period dropdown filter works as expected.
    */
   function validateReportingPeriodFilter(): void {
     const reportingPeriodToFilterFor = '2023';
-    const mockResponse = [mockRequests[3]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Array.isArray(req.body.reportingPeriods) && req.body.reportingPeriods.includes(reportingPeriodToFilterFor)) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[3]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) => Array.isArray(body.reportingPeriods) && body.reportingPeriods.includes(reportingPeriodToFilterFor)
+    );
 
-    cy.get(`div[data-test="reporting-period-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${reportingPeriodToFilterFor}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    selectFromDropdownAndFilter('reporting-period-picker', reportingPeriodToFilterFor);
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
-   * Validates if filtering via admin comment substring works as expected
+   * Validates if filtering via admin comment substring works as expected.
    */
   function validateAdminCommentFilter(): void {
-    const mockResponse = [mockRequests[1], mockRequests[3]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (req.body.adminComment === commentSearchTerm) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (req.body.adminComment === commentSearchTerm) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[1]!, mockRequests[3]!];
+    setupFilterIntercepts(mockResponse, (body) => body.adminComment === commentSearchTerm);
 
-    cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    cy.get('input[data-test="comment-searchbar"]').type(commentSearchTerm);
+    cy.get('button[data-test="trigger-filtering-requests"]').click();
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailBeta);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
-   * Validates if filtering via company search string works as expected
+   * Validates if filtering via company search string works as expected.
    */
   function validateCompanySearchStringFilter(): void {
-    const mockResponse = [mockRequests[0], mockRequests[1]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (req.body.companySearchString === companyNameSearchTerm) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (req.body.companySearchString === companyNameSearchTerm) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[0]!, mockRequests[1]!];
+    setupFilterIntercepts(mockResponse, (body) => body.companySearchString === companyNameSearchTerm);
 
-    cy.get(`input[data-test="company-search-string-searchbar"]`).type(companyNameSearchTerm);
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    cy.get('input[data-test="company-search-string-searchbar"]').type(companyNameSearchTerm);
+    cy.get('button[data-test="trigger-filtering-requests"]').click();
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
   /**
-   * Validates if combining two filters leads to a combined filter query
+   * Validates if combining two filters leads to a combined filter query.
    */
   function validateCombinedFilter(): void {
     validateEmailAddressFilter();
     const frameworkToFilterFor = DataTypeEnum.Sfdr;
-    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    const mockResponse = [mockRequests[3]];
-    const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (
-        Array.isArray(req.body.dataTypes) &&
-        req.body.dataTypes.includes(frameworkToFilterFor) &&
-        req.body.emailAddress === mailSearchTerm
-      ) {
-        req.reply(mockResponse);
-      }
-    });
-    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (
-        Array.isArray(req.body.dataTypes) &&
-        req.body.dataTypes.includes(frameworkToFilterFor) &&
-        req.body.emailAddress === mailSearchTerm
-      ) {
-        req.reply(expectedNumberOfRequests.toString());
-      }
-    });
+    const mockResponse = [mockRequests[3]!];
+    setupFilterIntercepts(
+      mockResponse,
+      (body) =>
+        Array.isArray(body.dataTypes) &&
+        body.dataTypes.includes(frameworkToFilterFor) &&
+        body.emailAddress === mailSearchTerm
+    );
 
-    cy.get(`div[data-test="framework-picker"]`).click();
-    cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
-    assertNumberOfSearchResults(expectedNumberOfRequests);
+    selectFromDropdownAndFilter('framework-picker', humanizeStringOrNumber(frameworkToFilterFor));
+    assertNumberOfSearchResults(mockResponse.length);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
-   * Removes the combined filter and checks if all requests are shown again
+   * Removes the combined filter and checks if all requests are shown again.
    */
   function validateDeselectingCombinedFilter(): void {
     setUpUnfilteredInterceptions();
-    const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
-    cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
-    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+    cy.get(`li[aria-label="${humanizeStringOrNumber(DataTypeEnum.Sfdr)}"]`).click();
+    cy.get('input[data-test="email-searchbar"]').clear().type('{enter}');
+    cy.get('button[data-test="trigger-filtering-requests"]').click();
 
     assertNumberOfSearchResults(mockRequests.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -526,11 +436,11 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   /**
-   * Removes the combined filter via resetButton and checks if all requests are shown again
+   * Removes the combined filter via reset button and checks if all requests are shown again.
    */
   function validateResetButton(): void {
     setUpUnfilteredInterceptions();
-    cy.get(`[data-test=reset-filter]`).click();
+    cy.get('[data-test=reset-filter]').click();
 
     assertNumberOfSearchResults(mockRequests.length);
     assertEmailAddressExistsInSearchResults(mailAlpha);
