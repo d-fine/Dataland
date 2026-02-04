@@ -41,13 +41,13 @@ class SecurityUtilsService(
      * @return True if the user can patch the dataset review, false otherwise.
      */
     fun canUserPatchDatasetReview(datasetReviewId: String): Boolean {
-        val dataset = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetReviewId))
+        val datasets = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetReviewId))
         val userId =
             try {
                 DatalandAuthentication.fromContext().userId
             } catch (_: IllegalArgumentException) {
                 null
             }
-        return dataset.any { it.reviewerUserId == userId }
+        return datasets.any { it.reviewerUserId == userId }
     }
 }
