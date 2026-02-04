@@ -312,7 +312,7 @@ describe('Component test for the admin-requests-overview page', () => {
         req.reply(expectedNumberOfRequests.toString());
       }
     });
-    cy.get(`div[data-test="status-picker"]`).click();
+    cy.get(`div[data-test="state-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -344,7 +344,7 @@ describe('Component test for the admin-requests-overview page', () => {
         req.reply(expectedNumberOfRequests.toString());
       }
     });
-    cy.get(`div[data-test="status-picker"]`).click();
+    cy.get(`div[data-test="state-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
     cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
@@ -607,16 +607,18 @@ describe('Component test for the admin-requests-overview page', () => {
     });
   });
 
-  it('Check existence and entries of Data Extractor column', () => {
+  it('Check existence and entries of Data Extractor column including fallback', () => {
     mountAdminAllRequestsPageWithMocks();
     cy.contains('th', 'DATA EXTRACTOR');
     cy.contains('td', 'Data Extractor Alpha');
+    cy.get('td').contains('-').should('exist');
   });
 
-  it('Check existence and entries of Document collector column', () => {
+  it('Check existence and entries of Document collector column including fallback', () => {
     mountAdminAllRequestsPageWithMocks();
     cy.contains('th', 'DOCUMENT COLLECTOR');
     cy.contains('td', 'Document Collector Alpha');
+    cy.get('td').contains('-').should('exist');
   });
 
   it('Check existence and entries of STATE column with mixed state labels', () => {

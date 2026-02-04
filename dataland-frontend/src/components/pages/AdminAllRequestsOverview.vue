@@ -40,7 +40,6 @@
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
-        ref="frameworkFilter"
         :available-items="availableFrameworks"
         filter-name="Framework"
         data-test="framework-picker"
@@ -54,19 +53,17 @@
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedMixedStates"
-        ref="frameworkFilter"
         :available-items="availableMixedStates"
-        filter-name="Status"
-        data-test="status-picker"
-        filter-placeholder="Search by Status"
+        filter-name="State"
+        data-test="state-picker"
+        filter-placeholder="Search by State"
         class="search-filter"
         :max-selected-labels="1"
-        selected-items-label="{0} statuses"
+        selected-items-label="{0} states"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedPriorities"
-        ref="frameworkFilter"
         :available-items="availablePriorities"
         filter-name="Priority"
         data-test="request-priority-picker"
@@ -78,7 +75,6 @@
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedReportingPeriods"
-        ref="frameworkFilter"
         :available-items="availableReportingPeriods"
         filter-name="Reporting Period"
         data-test="reporting-period-picker"
@@ -235,7 +231,6 @@ import {
 } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
-const frameworkFilter = ref();
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
