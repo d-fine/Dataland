@@ -26,6 +26,8 @@ class DatasetReviewSupportServiceTest {
     private val specificationControllerApi: SpecificationControllerApi = mock()
     private val dataPointQaReportRepository: DataPointQaReportRepository = mock()
 
+    private val dummyDatapoint = """{"foo":"bar"}"""
+
     private val service =
         DatasetReviewSupportService(
             dataPointControllerApi,
@@ -76,7 +78,7 @@ class DatasetReviewSupportServiceTest {
 
     @Test
     fun `validateCustomDataPoint calls DataPointControllerApi with correct payload`() {
-        val dataPoint = """{"foo":"bar"}"""
+        val dataPoint = dummyDatapoint
         val dataPointType = "dummyType"
 
         service.validateCustomDataPoint(dataPoint, dataPointType)
@@ -137,7 +139,7 @@ class DatasetReviewSupportServiceTest {
                 dataPointId = "dp1",
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
-                correctedData = """{"foo":"bar"}""",
+                correctedData = dummyDatapoint,
                 dataPointType = "dummyType",
                 reporterUserId = "dummyUserId",
                 uploadTime = 1623456789L,
@@ -149,7 +151,7 @@ class DatasetReviewSupportServiceTest {
                 qaReportId = "qa2",
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
-                correctedData = """{"foo":"bar"}""",
+                correctedData = dummyDatapoint,
                 dataPointType = "dummyType",
                 reporterUserId = "dummyUserId",
                 uploadTime = 1623456789L,

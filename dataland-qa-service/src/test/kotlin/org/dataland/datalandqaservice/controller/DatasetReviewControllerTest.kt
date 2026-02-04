@@ -1,9 +1,9 @@
 package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
