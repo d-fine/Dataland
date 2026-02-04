@@ -138,6 +138,31 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
     }
   }
 
-  return combined.filter((entry) => !(entry.dataSourcingState === null && entry.requestState === 'Processing'));
+  const filtered = combined.filter(
+    (entry) =>
+      !(
+        (entry.dataSourcingState === null && entry.requestState === 'Processing') ||
+        (entry.dataSourcingState === 'DataVerification' && entry.requestState === 'Processed')
+      )
+  );
+
+  if (props.isAdmin) {
+    return filtered;
+  }
+
+  const compacted: CombinedHistoryEntry[] = [];
+  let lastMixedState: string | null = null;
+  for (const entry of filtered) {
+    const requestState = entry.requestState ?? RequestState.Processing;
+    const currentMixedState = getDisplayedStateLabel(
+      getMixedStatus(requestState as RequestState, entry.dataSourcingState as DataSourcingState | null)
+    );
+    if (currentMixedState !== lastMixedState) {
+      compacted.push(entry);
+      lastMixedState = currentMixedState;
+    }
+  }
+
+  return compacted;
 });
 </script>
