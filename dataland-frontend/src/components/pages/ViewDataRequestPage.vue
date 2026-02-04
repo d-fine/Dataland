@@ -116,7 +116,9 @@
               <DatalandTag
                 :severity="dataSourcingDetails != null ? dataSourcingDetails.state : storedRequest.state"
                 :value="
-                  getDisplayedStateLabel(dataSourcingDetails != null ? dataSourcingDetails.state : storedRequest.state)
+                  dataSourcingDetails == null
+                    ? getDisplayedStateLabel(storedRequest.state)
+                    : getDisplayedStateLabel(getMixedStatus(storedRequest.state, dataSourcingDetails.state))
                 "
                 class="dataland-inline-tag"
               />
@@ -187,6 +189,7 @@ import {
   type SingleRequest,
   type StoredRequest,
   type StoredDataSourcing,
+  type DataSourcingState,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -221,6 +224,26 @@ const dataSourcingHistory = ref<DataSourcingWithoutReferences[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);
+
+/**
+ * Determines the mixed status based on request state and data sourcing state.
+ * If the request state is 'Withdrawn' or 'Open', or if data sourcing state is null,
+ * it returns the request state. Otherwise, it returns the data sourcing state.
+ *
+ * @param requestState - The current state of the request.
+ * @param dataSourcingState - The current state of data sourcing, which can be null.
+ * @returns The mixed status as either RequestState or DataSourcingState.
+ */
+function getMixedStatus(
+  requestState: RequestState,
+  dataSourcingState: DataSourcingState | null
+): RequestState | DataSourcingState {
+  if (requestState == RequestState.Withdrawn || requestState == RequestState.Open || dataSourcingState == null) {
+    return requestState;
+  } else {
+    return dataSourcingState;
+  }
+}
 
 /**
  * Returns latest "last modified date" from storedRequest and dataSourcingHistory.
