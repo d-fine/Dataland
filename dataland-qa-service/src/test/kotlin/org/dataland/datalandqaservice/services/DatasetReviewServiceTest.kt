@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
@@ -168,6 +169,31 @@ class DatasetReviewServiceTest {
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
         assertEquals(dummyUserId, captor.firstValue.reviewerUserId)
+    }
+
+    @Test
+    fun `setState updates status when user is reviewer`() {
+        val newState = DatasetReviewState.Aborted
+
+        datasetReviewService.setState(UUID.randomUUID(), newState)
+
+        val captor = argumentCaptor<DatasetReviewEntity>()
+        verify(mockDatasetReviewRepository).save(captor.capture())
+        assertEquals(newState, captor.firstValue.status)
+    }
+
+    @Test
+    fun `setState throws InsufficientRights when current user is not reviewer`() {
+        val otherUserId = UUID.randomUUID()
+        AuthenticationMock.mockSecurityContext(
+            "other@example.com",
+            otherUserId.toString(),
+            setOf(DatalandRealmRole.ROLE_ADMIN),
+        )
+
+        assertThrows<InsufficientRightsApiException> {
+            datasetReviewService.setState(UUID.randomUUID(), DatasetReviewState.Pending)
+        }
     }
 
     @Test
