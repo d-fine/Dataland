@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportLatestRequestData
+import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -183,11 +184,14 @@ open class DataController<T>(
                         exportRequestData.reportingPeriods,
                         listOf(dataType.toString()),
                     ),
-                    exportRequestData.fileFormat,
                     exportJobEntity,
                     clazz,
-                    keepValueFieldsOnly,
-                    includeAliases,
+                    ExportOptions(
+                        dataType = dataType,
+                        exportFileType = exportRequestData.fileFormat,
+                        keepValueFieldsOnly = keepValueFieldsOnly,
+                        includeAliases = includeAliases,
+                    ),
                 )
             },
         )
@@ -203,11 +207,14 @@ open class DataController<T>(
             startExport = { exportJobEntity ->
                 dataExportService.startLatestExportJob(
                     exportRequestData.companyIds,
-                    exportRequestData.fileFormat,
                     exportJobEntity,
                     clazz,
-                    keepValueFieldsOnly,
-                    includeAliases,
+                    ExportOptions(
+                        dataType = dataType,
+                        exportFileType = exportRequestData.fileFormat,
+                        keepValueFieldsOnly = keepValueFieldsOnly,
+                        includeAliases = includeAliases,
+                    ),
                 )
             },
         )

@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -120,10 +121,12 @@ class DataExportServiceTest {
         val jsonStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(lksgCompanyExportTestData),
-                ExportFileType.JSON,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.JSON,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
@@ -135,10 +138,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportDataLksgTestData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
@@ -151,10 +156,12 @@ class DataExportServiceTest {
         val excelStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportDataLksgTestData),
-                ExportFileType.EXCEL,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.EXCEL,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val bytes = excelStream.inputStream.readAllBytes()
         Assertions.assertTrue(bytes.isNotEmpty(), "Excel stream should not be empty")
@@ -190,10 +197,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -229,10 +238,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -282,10 +293,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 portfolioDataTwoCompanies,
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -342,10 +355,12 @@ class DataExportServiceTest {
                             ),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -374,10 +389,12 @@ class DataExportServiceTest {
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -402,10 +419,12 @@ class DataExportServiceTest {
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)

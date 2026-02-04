@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
+import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataExportUtils
@@ -46,31 +47,28 @@ open class DataExportService<T>(
 
     internal fun <T> buildStreamFromPortfolioExportData(
         portfolioData: Collection<SingleCompanyExportData<T>>,
-        exportFileType: ExportFileType,
-        dataType: DataType,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
+        exportOptions: ExportOptions,
     ): InputStreamResource {
         val jsonData = portfolioData.map { convertDataToJson(it) }
         if (jsonData.isEmpty()) {
             throw DownloadDataNotFoundApiException()
         }
-        return when (exportFileType) {
+        return when (exportOptions.exportFileType) {
             ExportFileType.CSV -> {
                 buildCsvStreamFromPortfolioAsJsonData(
                     jsonData,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
+                    exportOptions.dataType,
+                    exportOptions.keepValueFieldsOnly,
+                    exportOptions.includeAliases,
                 )
             }
 
             ExportFileType.EXCEL -> {
                 buildExcelStreamFromPortfolioAsJsonData(
                     jsonData,
-                    dataType,
-                    keepValueFieldsOnly,
-                    includeAliases,
+                    exportOptions.dataType,
+                    exportOptions.keepValueFieldsOnly,
+                    exportOptions.includeAliases,
                 )
             }
 
@@ -95,17 +93,13 @@ open class DataExportService<T>(
      */
     private fun buildStream(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
-        exportFileType: ExportFileType,
         newExportJob: ExportJob,
         clazz: Class<T>,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
+        exportOptions: ExportOptions,
     ) {
         val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz)
-        val dataType = DataType.valueOf(newExportJob.frameworkName)
 
-        newExportJob.fileToExport =
-            buildStreamFromPortfolioExportData(portfolioData, exportFileType, dataType, keepValueFieldsOnly, includeAliases)
+        newExportJob.fileToExport = buildStreamFromPortfolioExportData(portfolioData, exportOptions)
         newExportJob.progressState = ExportJobProgressState.Success
     }
 
@@ -124,18 +118,14 @@ open class DataExportService<T>(
     @Async
     open fun startExportJob(
         listDataDimensions: ListDataDimensions,
-        exportFileType: ExportFileType,
         newExportJob: ExportJob,
         clazz: Class<T>,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
+        exportOptions: ExportOptions,
     ) = buildStream(
         getPlainData(listDataDimensions, newExportJob.id.toString()),
-        exportFileType,
         newExportJob,
         clazz,
-        keepValueFieldsOnly,
-        includeAliases,
+        exportOptions,
     )
 
     /**
@@ -152,18 +142,14 @@ open class DataExportService<T>(
     @Async
     open fun startLatestExportJob(
         companyIds: Collection<String>,
-        exportFileType: ExportFileType,
         newExportJob: ExportJob,
         clazz: Class<T>,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
+        exportOptions: ExportOptions,
     ) = buildStream(
         getLatestPlainData(companyIds, newExportJob.frameworkName, newExportJob.id.toString()),
-        exportFileType,
         newExportJob,
         clazz,
-        keepValueFieldsOnly,
-        includeAliases,
+        exportOptions,
     )
 
     /**
