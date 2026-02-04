@@ -14,7 +14,6 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -43,13 +42,13 @@ const val QUALITY_STRING = "quality"
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDatasetAssembler = mock<DatasetAssembler>()
-    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
         DataExportService<LksgData>(
             mockDatasetAssembler,
-            mockSpecificationApi,
+            mockSpecificationService,
             mockCompanyQueryManager,
             mockDatasetStorageService,
         )
@@ -280,8 +279,9 @@ class DataExportServiceTest {
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-        whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
-            .thenReturn(baseTypeSchema)
+        doReturn(baseTypeSchema)
+            .whenever(mockSpecificationService)
+            .getResolvedFrameworkSpecification("lksg")
         doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
             .whenever(mockDatasetAssembler)
             .getFrameworkTemplate("lksg")
