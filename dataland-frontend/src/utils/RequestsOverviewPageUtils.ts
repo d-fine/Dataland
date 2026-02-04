@@ -61,11 +61,11 @@ export function customCompareForState(
 
 /**
  * Retrieves the displayed state of a data sourcing request.
- * If the data sourcing details are available, it returns the data sourcing state;
- * otherwise, it defaults to 'Open'.
+ * Returns the request state for Open/Withdrawn requests, Done for Processed requests without
+ * data sourcing details, or the data sourcing state if available.
  *
- * @param {DataSourcingEnhancedRequest} request - The data sourcing request object.
- * @returns {string} The displayed state of the request.
+ * @param request - The data sourcing request object.
+ * @returns The displayed state of the request.
  */
 export function getDisplayedState(request: DataSourcingEnhancedRequest): string {
   if (request.state === RequestState.Open || request.state === RequestState.Withdrawn) {
