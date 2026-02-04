@@ -24,6 +24,7 @@ import org.springframework.scheduling.annotation.Async
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import kotlin.jvm.java
 
 /**
  * Base class for export service used for managing the logic behind the dataset export controller
@@ -43,6 +44,42 @@ open class DataExportService<T>(
 
     private val objectMapper = defaultObjectMapper
 
+    internal fun <T> buildStreamFromPortfolioExportData(
+        portfolioData: Collection<SingleCompanyExportData<T>>,
+        exportFileType: ExportFileType,
+        dataType: DataType,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ): InputStreamResource {
+        val jsonData = portfolioData.map { convertDataToJson(it) }
+        if (jsonData.isEmpty()) {
+            throw DownloadDataNotFoundApiException()
+        }
+        return when (exportFileType) {
+            ExportFileType.CSV -> {
+                buildCsvStreamFromPortfolioAsJsonData(
+                    jsonData,
+                    dataType,
+                    keepValueFieldsOnly,
+                    includeAliases,
+                )
+            }
+
+            ExportFileType.EXCEL -> {
+                buildExcelStreamFromPortfolioAsJsonData(
+                    jsonData,
+                    dataType,
+                    keepValueFieldsOnly,
+                    includeAliases,
+                )
+            }
+
+            ExportFileType.JSON -> {
+                buildJsonStreamFromPortfolioAsJsonData(jsonData)
+            }
+        }
+    }
+
     /**
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
      *
@@ -56,7 +93,7 @@ open class DataExportService<T>(
      * @param keepValueFieldsOnly if true, non value fields are stripped
      * @param includeAliases if true, human-readable names are used if available
      */
-    internal fun buildStreamFromPortfolioExportData(
+    private fun buildStream(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
         exportFileType: ExportFileType,
         newExportJob: ExportJob,
@@ -64,36 +101,11 @@ open class DataExportService<T>(
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ) {
-        val jsonData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz).map { convertDataToJson(it) }
-        if (jsonData.isEmpty()) {
-            throw DownloadDataNotFoundApiException()
-        }
+        val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz)
         val dataType = DataType.valueOf(newExportJob.frameworkName)
 
         newExportJob.fileToExport =
-            when (exportFileType) {
-                ExportFileType.CSV -> {
-                    buildCsvStreamFromPortfolioAsJsonData(
-                        jsonData,
-                        dataType,
-                        keepValueFieldsOnly,
-                        includeAliases,
-                    )
-                }
-
-                ExportFileType.EXCEL -> {
-                    buildExcelStreamFromPortfolioAsJsonData(
-                        jsonData,
-                        dataType,
-                        keepValueFieldsOnly,
-                        includeAliases,
-                    )
-                }
-
-                ExportFileType.JSON -> {
-                    buildJsonStreamFromPortfolioAsJsonData(jsonData)
-                }
-            }
+            buildStreamFromPortfolioExportData(portfolioData, exportFileType, dataType, keepValueFieldsOnly, includeAliases)
         newExportJob.progressState = ExportJobProgressState.Success
     }
 
@@ -117,7 +129,7 @@ open class DataExportService<T>(
         clazz: Class<T>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ) = buildStreamFromPortfolioExportData(
+    ) = buildStream(
         getPlainData(listDataDimensions, newExportJob.id.toString()),
         exportFileType,
         newExportJob,
@@ -145,7 +157,7 @@ open class DataExportService<T>(
         clazz: Class<T>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ) = buildStreamFromPortfolioExportData(
+    ) = buildStream(
         getLatestPlainData(companyIds, newExportJob.frameworkName, newExportJob.id.toString()),
         exportFileType,
         newExportJob,

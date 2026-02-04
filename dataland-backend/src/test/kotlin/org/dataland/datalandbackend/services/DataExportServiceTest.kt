@@ -8,15 +8,13 @@ import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
-import org.dataland.datalandbackend.utils.DataPointUtils
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
-import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -43,15 +41,13 @@ const val QUALITY_STRING = "quality"
 
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
-    private val mockDataPointUtils = mock<DataPointUtils>()
+    private val mockDatasetAssembler = mock<DatasetAssembler>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
-    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
         DataExportService<LksgData>(
-            mockDataPointUtils,
-            mockReferencedReportsUtils,
+            mockDatasetAssembler,
             mockSpecificationApi,
             mockCompanyQueryManager,
             mockDatasetStorageService,
@@ -275,15 +271,9 @@ class DataExportServiceTest {
             }
         whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
             .thenReturn(baseTypeSchema)
-        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
-            FrameworkSpecification(
-                IdWithRef("testId", "testRef"),
-                "testFramework",
-                "testBusinessDefinition",
-                testDataProvider.createTestSpecification(),
-                "testPath",
-            ),
-        )
+        doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
+            .whenever(mockDatasetAssembler)
+            .getFrameworkTemplate("lksg")
     }
 
     @Test
