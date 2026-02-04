@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import org.apache.poi.ss.formula.functions.T
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
@@ -7,6 +8,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
@@ -25,6 +27,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -169,53 +172,57 @@ open class DataController<T>(
         exportRequestData: ExportRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): ResponseEntity<ExportJobInfo> {
-        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
-                it.companyInformation == null
-            }
-        ) {
-            throw ResourceNotFoundApiException(
-                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
-                message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
-            )
-        }
-
-        val exportJobId = UUID.randomUUID()
-        logger.info("Received a request to export portfolio data. ID of new export Job: $exportJobId")
-
-        val newExportJobEntity =
-            dataExportStorage
-                .createAndSaveExportJob(exportJobId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
-
-        try {
-            // Async function
-            dataExportService.startExportJob(
-                ListDataDimensions(exportRequestData.companyIds, exportRequestData.reportingPeriods, listOf(dataType.toString())),
-                exportRequestData.fileFormat,
-                newExportJobEntity,
-                clazz,
-                keepValueFieldsOnly,
-                includeAliases,
-            )
-        } catch (_: DownloadDataNotFoundApiException) {
-            newExportJobEntity.progressState = ExportJobProgressState.Failure
-            return ResponseEntity.noContent().build()
-        }
-        return ResponseEntity
-            .ok(ExportJobInfo(id = exportJobId))
-    }
+    ): ResponseEntity<ExportJobInfo> =
+        createAndStartExportJob(
+            companyIds = exportRequestData.companyIds,
+            fileFormat = exportRequestData.fileFormat,
+            startExport = { exportJobEntity ->
+                dataExportService.startExportJob(
+                    ListDataDimensions(
+                        exportRequestData.companyIds,
+                        exportRequestData.reportingPeriods,
+                        listOf(dataType.toString()),
+                    ),
+                    exportRequestData.fileFormat,
+                    exportJobEntity,
+                    clazz,
+                    keepValueFieldsOnly,
+                    includeAliases,
+                )
+            },
+        )
 
     override fun postExportLatestJobCompanyAssociatedDataByDimensions(
         exportRequestData: ExportLatestRequestData,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
+    ): ResponseEntity<ExportJobInfo> =
+        createAndStartExportJob(
+            companyIds = exportRequestData.companyIds,
+            fileFormat = exportRequestData.fileFormat,
+            startExport = { exportJobEntity ->
+                dataExportService.startLatestExportJob(
+                    exportRequestData.companyIds,
+                    exportRequestData.fileFormat,
+                    exportJobEntity,
+                    clazz,
+                    keepValueFieldsOnly,
+                    includeAliases,
+                )
+            },
+        )
+
+    private fun createAndStartExportJob(
+        companyIds: List<String>,
+        fileFormat: ExportFileType,
+        startExport: (exportJobEntity: ExportJob) -> Unit,
     ): ResponseEntity<ExportJobInfo> {
-        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
+        if (companyQueryManager.validateCompanyIdentifiers(companyIds).all {
                 it.companyInformation == null
             }
         ) {
             throw ResourceNotFoundApiException(
-                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
+                summary = "CompanyIds $companyIds not found.",
                 message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
             )
         }
@@ -225,18 +232,15 @@ open class DataController<T>(
 
         val newExportJobEntity =
             dataExportStorage
-                .createAndSaveExportJob(exportJobId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
+                .createAndSaveExportJob(
+                    exportJobId,
+                    fileFormat,
+                    DataTypeNameMapper.getDisplayName(dataType.name) ?: "",
+                )
 
         try {
             // Async function
-            dataExportService.startLatestExportJob(
-                exportRequestData.companyIds,
-                exportRequestData.fileFormat,
-                newExportJobEntity,
-                clazz,
-                keepValueFieldsOnly,
-                includeAliases,
-            )
+            startExport(newExportJobEntity)
         } catch (_: DownloadDataNotFoundApiException) {
             newExportJobEntity.progressState = ExportJobProgressState.Failure
             return ResponseEntity.noContent().build()
