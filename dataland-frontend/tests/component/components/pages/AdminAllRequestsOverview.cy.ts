@@ -295,41 +295,43 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   /**
-   * Validates if filtering via data request state dropdown filter works as expected
+   * Validates if filtering via status dropdown filter works as expected for RequestState (Open)
    */
-  function validateRequestStateFilter(): void {
-    const requestStateToFilterFor = RequestState.Open;
+  function validateStatusFilterForRequestState(): void {
+    const statusLabelToFilterFor = 'Open';
+    const expectedRequestState = RequestState.Open;
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(expectedRequestState)) {
         req.reply(mockResponse);
       }
     });
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
-      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(requestStateToFilterFor)) {
+      if (Array.isArray(req.body.requestStates) && req.body.requestStates.includes(expectedRequestState)) {
         req.reply(expectedNumberOfRequests.toString());
       }
     });
-    cy.get(`div[data-test="request-state-picker"]`).click();
+    cy.get(`div[data-test="status-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${requestStateToFilterFor}"]`).click();
+    cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
   }
 
   /**
-   * Validates if filtering via data request state dropdown filter works as expected
+   * Validates if filtering via status dropdown filter works as expected for DataSourcingState (Validated -> Initialized)
    */
-  function validateDataSourcingStateFilter(): void {
-    const dataSourcingStateToFilterFor = DataSourcingState.Initialized;
+  function validateStatusFilterForDataSourcingState(): void {
+    const statusLabelToFilterFor = 'Validated';
+    const expectedDataSourcingState = DataSourcingState.Initialized;
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', (req) => {
       if (
         Array.isArray(req.body.dataSourcingStates) &&
-        req.body.dataSourcingStates.includes(dataSourcingStateToFilterFor)
+        req.body.dataSourcingStates.includes(expectedDataSourcingState)
       ) {
         req.reply(mockResponse);
       }
@@ -337,14 +339,14 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', (req) => {
       if (
         Array.isArray(req.body.dataSourcingStates) &&
-        req.body.dataSourcingStates.includes(dataSourcingStateToFilterFor)
+        req.body.dataSourcingStates.includes(expectedDataSourcingState)
       ) {
         req.reply(expectedNumberOfRequests.toString());
       }
     });
-    cy.get(`div[data-test="data-sourcing-state-picker"]`).click();
+    cy.get(`div[data-test="status-picker"]`).click();
     cy.get(`.p-multiselect-overlay`).invoke('attr', 'style', 'position: relative; z-index: 1');
-    cy.get(`li[aria-label="${dataSourcingStateToFilterFor}"]`).click();
+    cy.get(`li[aria-label="${statusLabelToFilterFor}"]`).click();
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
@@ -545,14 +547,14 @@ describe('Component test for the admin-requests-overview page', () => {
     validateFrameworkFilter();
   });
 
-  it('Filtering for request state works as expected', () => {
+  it('Filtering for status with request state (Open) works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
-    validateRequestStateFilter();
+    validateStatusFilterForRequestState();
   });
 
-  it('Filtering for data sourcing state works as expected', () => {
+  it('Filtering for status with data sourcing state (Validated) works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
-    validateDataSourcingStateFilter();
+    validateStatusFilterForDataSourcingState();
   });
 
   it('Filtering for request priority works as expected', () => {
@@ -615,5 +617,19 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks();
     cy.contains('th', 'DOCUMENT COLLECTOR');
     cy.contains('td', 'Document Collector Alpha');
+  });
+
+  it('Check existence and entries of STATUS column with mixed state labels', () => {
+    mountAdminAllRequestsPageWithMocks();
+    cy.contains('th', 'STATUS');
+    cy.contains('td', 'Open');
+    cy.contains('td', 'Data Extraction');
+    cy.contains('td', 'Validated');
+  });
+
+  it('Check existence and entries of NEXT SOURCING ATTEMPT column', () => {
+    mountAdminAllRequestsPageWithMocks();
+    cy.contains('th', 'NEXT SOURCING ATTEMPT');
+    cy.contains('td', '2024-01-01');
   });
 });

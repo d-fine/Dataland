@@ -53,27 +53,15 @@
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
-        v-model="selectedRequestStates"
+        v-model="selectedMixedStates"
         ref="frameworkFilter"
-        :available-items="availableRequestStates"
-        filter-name="Request State"
-        data-test="request-state-picker"
-        filter-placeholder="Search by Request State"
+        :available-items="availableMixedStates"
+        filter-name="Status"
+        data-test="status-picker"
+        filter-placeholder="Search by Status"
         class="search-filter"
         :max-selected-labels="1"
-        selected-items-label="{0} request states"
-      />
-      <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedDataSourcingStates"
-        ref="frameworkFilter"
-        :available-items="availableDataSourcingStates"
-        filter-name="Data Sourcing State"
-        data-test="data-sourcing-state-picker"
-        filter-placeholder="Search by Data Sourcing State"
-        class="search-filter"
-        :max-selected-labels="1"
-        selected-items-label="{0} data sourcing states"
+        selected-items-label="{0} statuses"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -169,21 +157,18 @@
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATE" :sortable="false">
+          <Column header="STATUS" :sortable="false">
             <template #body="{ data }">
-              <DatalandTag :severity="data.state" :value="data.state" rounded />
+              <DatalandTag
+                :severity="getDisplayedState(data)"
+                :value="getDisplayedStateLabel(getDisplayedState(data) as DataSourcingState | RequestState)"
+                rounded
+              />
             </template>
           </Column>
-          <Column header="DATA SOURCING STATE" :sortable="false">
+          <Column header="NEXT SOURCING ATTEMPT" :sortable="false">
             <template #body="{ data }">
-              <div v-if="data.dataSourcingDetails?.dataSourcingState">
-                <DatalandTag
-                  :severity="data.dataSourcingDetails.dataSourcingState"
-                  :value="data.dataSourcingDetails.dataSourcingState"
-                  rounded
-                />
-              </div>
-              <div v-else>-</div>
+              {{ data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt ?? '-' }}
             </template>
           </Column>
           <Column header="REQUEST PRIORITY" :sortable="false">
@@ -220,13 +205,19 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import type {
+  FrameworkSelectableItem,
+  MixedStateSelectableItem,
+  SelectableItem,
+} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
-  retrieveAvailableDataSourcingStates,
+  retrieveAvailableMixedStates,
+  convertMixedStatesToApiFilters,
+  getDisplayedState,
+  getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -236,11 +227,11 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import type {
-  RequestState,
-  RequestPriority,
-  DataSourcingEnhancedRequest,
-  DataSourcingState,
+import {
+  type RequestPriority,
+  type DataSourcingEnhancedRequest,
+  type DataSourcingState,
+  type RequestState,
 } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
@@ -260,10 +251,8 @@ const searchBarInputCompanySearchString = ref('');
 
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-const availableRequestStates = ref<SelectableItem[]>([]);
-const selectedRequestStates = ref<SelectableItem[]>([]);
-const availableDataSourcingStates = ref<SelectableItem[]>([]);
-const selectedDataSourcingStates = ref<SelectableItem[]>([]);
+const availableMixedStates = ref<MixedStateSelectableItem[]>([]);
+const selectedMixedStates = ref<MixedStateSelectableItem[]>([]);
 const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
@@ -279,8 +268,7 @@ function setChunkAndFirstRowIndexToZero(): void {
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableRequestStates.value = retrieveAvailableRequestStates();
-  availableDataSourcingStates.value = retrieveAvailableDataSourcingStates();
+  availableMixedStates.value = retrieveAvailableMixedStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   void getAllRequestsForFilters();
@@ -297,17 +285,7 @@ async function getAllRequestsForFilters(): Promise<void> {
       : undefined
   );
 
-  const selectedRequestStatesForApi = computed<RequestState[] | undefined>(() =>
-    selectedRequestStates.value.length
-      ? selectedRequestStates.value.map((i) => i.displayName as RequestState)
-      : undefined
-  );
-
-  const selectedDataSourcingStatesForApi = computed<DataSourcingState[] | undefined>(() =>
-    selectedDataSourcingStates.value.length
-      ? selectedDataSourcingStates.value.map((i) => i.displayName as DataSourcingState)
-      : undefined
-  );
+  const mixedStateFilters = computed(() => convertMixedStatesToApiFilters(selectedMixedStates.value));
 
   const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
     selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
@@ -322,8 +300,8 @@ async function getAllRequestsForFilters(): Promise<void> {
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
       const filters = {
         dataTypes: selectedFrameworksForApi.value,
-        requestStates: selectedRequestStatesForApi.value,
-        dataSourcingStates: selectedDataSourcingStatesForApi.value,
+        requestStates: mixedStateFilters.value.requestStates,
+        dataSourcingStates: mixedStateFilters.value.dataSourcingStates,
         requestPriorities: selectedPrioritiesForApi.value,
         reportingPeriods: selectedReportingPeriodsForApi.value,
         emailAddress: searchBarInputEmail.value || undefined,
@@ -356,8 +334,7 @@ async function getAllRequestsForFilters(): Promise<void> {
 function resetFilterAndSearchBar(): void {
   currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
-  selectedRequestStates.value = [];
-  selectedDataSourcingStates.value = [];
+  selectedMixedStates.value = [];
   selectedPriorities.value = [];
   selectedReportingPeriods.value = [];
   searchBarInputEmail.value = '';
