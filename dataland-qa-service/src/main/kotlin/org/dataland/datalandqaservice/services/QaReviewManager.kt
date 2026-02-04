@@ -26,6 +26,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -141,8 +142,8 @@ class QaReviewManager
          */
         @Transactional(readOnly = true)
         fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
-            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            return getMostRecentQaReviewEntity(dataId.toString())?.toQaReviewResponse(userIsAdmin)
+            val userIsAdmin = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN)
+            return getMostRecentQaReviewEntity(dataId.toString())?.toQaReviewResponse(userIsAdmin ?: false)
         }
 
         /**
@@ -345,10 +346,17 @@ class QaReviewManager
         /**
          * Returns the number of QA reports for all data points contained in the given dataId
          */
-        private fun getNumberOfQaReportsForDataId(dataId: String): Long {
-            val dataPointIds = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
-            return dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds)
-        }
+        private fun getNumberOfQaReportsForDataId(dataId: String): Long =
+            try {
+                val dataPointIds = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
+                dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds)
+            } catch (clientException: ClientException) {
+                if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    0L
+                } else {
+                    throw clientException
+                }
+            }
 
         /**
          * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET Request.
