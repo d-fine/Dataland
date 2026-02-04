@@ -19,10 +19,10 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateManagerTestDataProvider
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -204,7 +204,7 @@ class DataRequestUpdateManagerTest {
 
     @BeforeEach
     fun setupDummyDataRequestEntities() {
-        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         dummyDataRequestEntitiesWithoutEarlierQaApproval = testDataProvider.getDummyDataRequestEntities()
         dummyDataRequestEntityWithoutEarlierQaApproval1 = dummyDataRequestEntitiesWithoutEarlierQaApproval[0]
         dummyDataRequestEntityWithoutEarlierQaApproval2 = dummyDataRequestEntitiesWithoutEarlierQaApproval[1]

@@ -72,4 +72,13 @@ object AuthenticationMock {
         SecurityContextHolder.setContext(mockSecurityContext)
         return mockAuthentication
     }
+
+    /**
+     * Setting up the security context for the specified dataland dummy user with fewer parameters
+     */
+    fun mockSecurityContext(
+        username: String = "mocked_uploader",
+        userId: String = "dummy-id",
+        role: DatalandRealmRole = DatalandRealmRole.ROLE_PREMIUM_USER,
+    ): DatalandJwtAuthentication = mockSecurityContext(username, userId, setOf(role))
 }

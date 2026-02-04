@@ -1,5 +1,8 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -62,6 +65,17 @@ class DatasetReviewServiceTest {
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
             qaReports = setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, null)),
+        )
+
+    private val dummyMetaData =
+        DataMetaInformation(
+            dataId = UUID.randomUUID().toString(),
+            companyId = dummyCompanyId.toString(),
+            dataType = DataTypeEnum.sfdr,
+            uploadTime = 0L,
+            reportingPeriod = "2026",
+            currentlyActive = true,
+            qaStatus = QaStatus.Pending,
         )
 
     @BeforeEach
@@ -136,6 +150,10 @@ class DatasetReviewServiceTest {
         doReturn(dummyQaReportIds)
             .whenever(mockDatasetReviewSupportService)
             .findQaReportIdsForDataPoints(any())
+
+        doReturn(dummyMetaData)
+            .whenever(mockDatasetReviewSupportService)
+            .getDataMetaInfo(any())
 
         val uploaderCompanyId = UUID.randomUUID()
         doReturn(mapOf(uploaderCompanyId.toString() to listOf("Role")))
