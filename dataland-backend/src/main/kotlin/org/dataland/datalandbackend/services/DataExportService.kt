@@ -18,8 +18,6 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
 import java.io.ByteArrayInputStream
@@ -32,7 +30,7 @@ import kotlin.jvm.java
  */
 open class DataExportService<T>(
     private val datasetAssembler: DatasetAssembler,
-    private val specificationApi: SpecificationControllerApi,
+    private val specificationService: SpecificationService,
     private val companyQueryManager: CompanyQueryManager,
     private val datasetStorageService: DatasetStorageService,
 ) {
@@ -317,20 +315,8 @@ open class DataExportService<T>(
         return objectMapper.readTree(singleCompanyExportDataJson)
     }
 
-    /**
-     * Return the template of an assembled framework or null if the passed name refers to an old style framework
-     *
-     * @param framework the framework for which the template shall be returned
-     */
-    private fun getFrameworkTemplate(framework: String): JsonNode? =
-        try {
-            datasetAssembler.getFrameworkTemplate(framework)
-        } catch (ignore: ClientException) {
-            null
-        }
-
     private fun getResolvedSchemaNode(framework: String): JsonNode? {
-        val resolvedSchemaDto = specificationApi.getResolvedFrameworkSpecification(framework)
+        val resolvedSchemaDto = specificationService.getResolvedFrameworkSpecification(framework)
         return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
     }
 
@@ -351,8 +337,8 @@ open class DataExportService<T>(
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
     ): DataExportUtils.Companion.PreparedExportData {
-        val frameworkTemplate = getFrameworkTemplate(dataType.toString())
-        val isAssembledDatasetParam = (frameworkTemplate != null)
+        val isAssembledDatasetParam = specificationService.isAssembledFramework(dataType.toString())
+        val frameworkTemplate = if (isAssembledDatasetParam) datasetAssembler.getFrameworkTemplate(dataType.toString()) else null
 
         val (csvData, nonEmptyHeaderFields) =
             DataExportUtils.getCsvDataAndNonEmptyFields(

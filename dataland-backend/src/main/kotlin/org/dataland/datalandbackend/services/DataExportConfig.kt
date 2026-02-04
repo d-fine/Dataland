@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class DataExportConfig(
     private val datasetAssembler: DatasetAssembler,
-    private val specificationApi: SpecificationControllerApi,
+    private val specificationService: SpecificationService,
     private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
@@ -37,7 +36,7 @@ class DataExportConfig(
     private fun createExportService(datasetStorageService: DatasetStorageService): DataExportService<Any> =
         DataExportService(
             datasetAssembler,
-            specificationApi,
+            specificationService,
             companyQueryManager,
             datasetStorageService,
         )
