@@ -619,9 +619,9 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.contains('td', 'Document Collector Alpha');
   });
 
-  it('Check existence and entries of STATUS column with mixed state labels', () => {
+  it('Check existence and entries of STATE column with mixed state labels', () => {
     mountAdminAllRequestsPageWithMocks();
-    cy.contains('th', 'STATUS');
+    cy.contains('th', 'STATE');
     cy.contains('td', 'Open');
     cy.contains('td', 'Data Extraction');
     cy.contains('td', 'Validated');

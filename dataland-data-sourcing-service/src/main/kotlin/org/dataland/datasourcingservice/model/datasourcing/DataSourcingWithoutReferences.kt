@@ -55,8 +55,8 @@ data class DataSourcingWithoutReferences(
     )
     val adminComment: String? = null,
     @field:Schema(
-        description = "The timestamp (epoch milliseconds) at which the data sourcing object was last modified.",
-        example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_EXAMPLE,
     )
     val lastModifiedDate: Long,
 )

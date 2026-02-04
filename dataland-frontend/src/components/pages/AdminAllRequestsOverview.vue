@@ -157,7 +157,7 @@
               </div>
             </template>
           </Column>
-          <Column header="STATUS" :sortable="false">
+          <Column header="STATE" :sortable="false">
             <template #body="{ data }">
               <DatalandTag
                 :severity="getDisplayedState(data)"

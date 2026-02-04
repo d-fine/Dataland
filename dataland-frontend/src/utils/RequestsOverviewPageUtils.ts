@@ -71,6 +71,9 @@ export function getDisplayedState(request: DataSourcingEnhancedRequest): string 
   if (request.state === RequestState.Open || request.state === RequestState.Withdrawn) {
     return request.state;
   }
+  if (request.state === RequestState.Processed && !request.dataSourcingDetails?.dataSourcingState) {
+    return DataSourcingState.Done;
+  }
   return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
 }
 

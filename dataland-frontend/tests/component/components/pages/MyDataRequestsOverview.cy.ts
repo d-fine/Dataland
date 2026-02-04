@@ -22,111 +22,98 @@ const expectedHeaders = [
 const dummyRequestId = 'dummyRequestId';
 const dummyDate = '2024-11-01';
 
-before(function () {
-  /**
-   * Builds an extended stored data request object and assures type-safety.
-   * @param dataType to include in the data request
-   * @param reportingPeriod to include in the data request
-   * @param companyName to include in the data request
-   * @param companyId to include in the data request
-   * @param state to set in the data request
-   * @param requestPriority to set in the data request
-   * @param dataSourcingState to set in the data request
-   * @param dateOfNextSourcingAttempt to set in the data request
-   * @returns an extended sorted data request object
-   */
-  function buildExtendedStoredRequest(
-    dataType: DataTypeEnum,
-    reportingPeriod: string,
-    companyName: string,
-    companyId: string,
-    state: RequestState,
-    requestPriority: RequestPriority,
-    dataSourcingState: DataSourcingState | undefined,
-    dateOfNextSourcingAttempt: string | undefined
-  ): DataSourcingEnhancedRequest {
-    return {
-      id: dummyRequestId,
-      userId: 'some-user-id',
-      creationTimestamp: 1709204495770,
-      dataType: dataType,
-      reportingPeriod: reportingPeriod,
-      companyId: companyId,
-      companyName: companyName,
-      lastModifiedDate: 1709204495770,
-      state: state,
-      dataSourcingDetails: {
-        dataSourcingEntityId: 'entity-id',
-        dataSourcingState: dataSourcingState,
-        dateOfNextDocumentSourcingAttempt: dateOfNextSourcingAttempt,
-        documentCollectorName: undefined,
-        dataExtractorName: undefined,
-      },
-      requestPriority: requestPriority,
-    };
-  }
+interface MockRequestParams {
+  dataType: DataTypeEnum;
+  reportingPeriod: string;
+  companyName: string;
+  companyId: string;
+  state: RequestState;
+  requestPriority: RequestPriority;
+  dataSourcingState?: DataSourcingState;
+  dateOfNextSourcingAttempt?: string;
+}
 
+/**
+ * Builds an extended stored data request object and assures type-safety.
+ * @param params - The parameters for building the request
+ * @returns an extended stored data request object
+ */
+function buildExtendedStoredRequest(params: MockRequestParams): DataSourcingEnhancedRequest {
+  return {
+    id: dummyRequestId,
+    userId: 'some-user-id',
+    creationTimestamp: 1709204495770,
+    dataType: params.dataType,
+    reportingPeriod: params.reportingPeriod,
+    companyId: params.companyId,
+    companyName: params.companyName,
+    lastModifiedDate: 1709204495770,
+    state: params.state,
+    dataSourcingDetails: {
+      dataSourcingEntityId: 'entity-id',
+      dataSourcingState: params.dataSourcingState,
+      dateOfNextDocumentSourcingAttempt: params.dateOfNextSourcingAttempt,
+      documentCollectorName: undefined,
+      dataExtractorName: undefined,
+    },
+    requestPriority: params.requestPriority,
+  };
+}
+
+before(function () {
   mockDataRequests.push(
-    buildExtendedStoredRequest(
-      DataTypeEnum.Lksg,
-      '2020',
-      'companyProcessed',
-      'compA',
-      RequestState.Processed,
-      RequestPriority.Low,
-      DataSourcingState.NonSourceable,
-      dummyDate
-    ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.Sfdr,
-      '2022',
-      'companyOpen',
-      'someId',
-      RequestState.Open,
-      RequestPriority.Low,
-      undefined,
-      undefined
-    ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.Sfdr,
-      '2022',
-      'companyProcessing',
-      'someId',
-      RequestState.Processing,
-      RequestPriority.Low,
-      DataSourcingState.DataVerification,
-      undefined
-    ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.Sfdr,
-      '9999',
-      'z-company-that-will-always-be-sorted-to-bottom',
-      'someId',
-      RequestState.Withdrawn,
-      RequestPriority.Low,
-      DataSourcingState.DocumentSourcing,
-      undefined
-    ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.EutaxonomyNonFinancials,
-      '2021',
-      'companyWithdrawn',
-      'someId',
-      RequestState.Withdrawn,
-      RequestPriority.Low,
-      undefined,
-      undefined
-    ),
-    buildExtendedStoredRequest(
-      DataTypeEnum.EutaxonomyFinancials,
-      '1021',
-      'a-company-that-will-always-be-sorted-to-top',
-      'someId',
-      RequestState.Open,
-      RequestPriority.Low,
-      undefined,
-      undefined
-    )
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.Lksg,
+      reportingPeriod: '2020',
+      companyName: 'companyProcessed',
+      companyId: 'compA',
+      state: RequestState.Processed,
+      requestPriority: RequestPriority.Low,
+      dataSourcingState: DataSourcingState.NonSourceable,
+      dateOfNextSourcingAttempt: dummyDate,
+    }),
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.Sfdr,
+      reportingPeriod: '2022',
+      companyName: 'companyOpen',
+      companyId: 'someId',
+      state: RequestState.Open,
+      requestPriority: RequestPriority.Low,
+    }),
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.Sfdr,
+      reportingPeriod: '2022',
+      companyName: 'companyProcessing',
+      companyId: 'someId',
+      state: RequestState.Processing,
+      requestPriority: RequestPriority.Low,
+      dataSourcingState: DataSourcingState.DataVerification,
+    }),
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.Sfdr,
+      reportingPeriod: '9999',
+      companyName: 'z-company-that-will-always-be-sorted-to-bottom',
+      companyId: 'someId',
+      state: RequestState.Withdrawn,
+      requestPriority: RequestPriority.Low,
+      dataSourcingState: DataSourcingState.DocumentSourcing,
+    }),
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.EutaxonomyNonFinancials,
+      reportingPeriod: '2021',
+      companyName: 'companyWithdrawn',
+      companyId: 'someId',
+      state: RequestState.Withdrawn,
+      requestPriority: RequestPriority.Low,
+    }),
+    buildExtendedStoredRequest({
+      dataType: DataTypeEnum.EutaxonomyFinancials,
+      reportingPeriod: '1021',
+      companyName: 'a-company-that-will-always-be-sorted-to-top',
+      companyId: 'someId',
+      state: RequestState.Open,
+      requestPriority: RequestPriority.Low,
+    })
   );
 });
 /**

@@ -77,6 +77,10 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the data sourcing object was last modified."
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
             "If set to false, the provided document IDs replace the existing ones instead."
