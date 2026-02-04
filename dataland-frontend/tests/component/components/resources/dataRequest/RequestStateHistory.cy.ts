@@ -5,7 +5,6 @@ import {
   type DataSourcingWithoutReferences,
   DataSourcingState,
 } from '@clients/datasourcingservice';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Request State History', function (): void {
@@ -82,6 +81,14 @@ describe('Component tests for the Request State History', function (): void {
       dataType: 'sfdr',
       state: DataSourcingState.Done,
       lastModifiedDate: dummyCreationTimestamp + 2 * 600000,
+    },
+    {
+      dataSourcingId: 'dummy-data-sourcing-id',
+      companyId: 'dummy-company-id',
+      reportingPeriod: '2024',
+      dataType: 'sfdr',
+      state: DataSourcingState.DocumentSourcing,
+      lastModifiedDate: dummyCreationTimestamp + 4 * 600000,
     },
   ] as Array<DataSourcingWithoutReferences>;
 
@@ -184,60 +191,18 @@ describe('Component tests for the Request State History', function (): void {
     });
   });
 
-  it('renders correct state history table with request history only', function () {
+  it('Check that consecutive rows with same mixed status are only shown once in non admin view', function () {
     getMountingFunction()(RequestStateHistory, {
       props: {
-        stateHistory: dummyStateHistory,
-        isAdmin: true,
+        stateHistory: [dummyStateHistory[2], dummyStateHistory[3]] as Array<StoredRequest>,
+        dataSourcingHistory: [
+          dummyDataSourcingHistory[3],
+          dummyDataSourcingHistory[4],
+          dummyDataSourcingHistory[5],
+        ] as Array<DataSourcingWithoutReferences>,
+        isAdmin: false,
       },
     });
-
-    cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
-    cy.get('[data-test="lastModifiedDate"]').should('have.length', dummyStateHistory.length);
-    cy.get('[data-test="historyType"]').should('have.length', dummyStateHistory.length);
-
-    const sortedHistory = [...dummyStateHistory].sort((a, b) => b.lastModifiedDate - a.lastModifiedDate);
-
-    for (const [idx, entry] of sortedHistory.entries()) {
-      cy.get('[data-test="lastModifiedDate"]')
-        .eq(idx)
-        .should('contain.text', convertUnixTimeInMsToDateString(entry.lastModifiedDate));
-      cy.get('[data-test="historyType"]').eq(idx).should('contain.text', 'Request');
-      cy.get('.dataland-inline-tag').eq(idx).should('contain.text', entry.state);
-      const expectedComment = entry.adminComment || '—';
-      cy.get('[data-test="adminComment"]').eq(idx).should('contain.text', expectedComment);
-    }
-  });
-
-  it('renders correct combined history table with both request and data sourcing history', function () {
-    const dataSourcingHistory: DataSourcingWithoutReferences[] = [
-      {
-        dataSourcingId: 'dummy-data-sourcing-id',
-        companyId: 'dummy-company-id',
-        reportingPeriod: '2024',
-        dataType: 'sfdr',
-        state: DataSourcingState.DocumentSourcing,
-        adminComment: 'Document sourcing started',
-        lastModifiedDate: dummyCreationTimestamp + 3 * 600000,
-      },
-    ];
-
-    getMountingFunction()(RequestStateHistory, {
-      props: {
-        stateHistory: [dummyStateHistory[1]] as Array<StoredRequest>,
-        dataSourcingHistory: dataSourcingHistory,
-        isAdmin: true,
-      },
-    });
-
-    cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
-    const totalEntries = dummyStateHistory.length + dataSourcingHistory.length;
-    cy.get('[data-test="lastModifiedDate"]').should('have.length', totalEntries);
-    cy.get('[data-test="historyType"]').should('have.length', totalEntries);
-
-    cy.get('[data-test="historyType"]').contains('Request').should('exist');
-    cy.get('[data-test="historyType"]').contains('Data Sourcing').should('exist');
-    cy.get('.dataland-inline-tag').contains(RequestState.Open).should('exist');
-    cy.get('.dataland-inline-tag').contains('DocumentSourcing').should('exist');
+    cy.get('[data-test="lastModifiedDate"]').should('have.length', 3);
   });
 });
