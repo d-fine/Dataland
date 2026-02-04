@@ -20,7 +20,6 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.toQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -337,5 +336,27 @@ class QaReviewManager(
             }
         }
         return companyIds
+    }
+
+    /**
+     * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET Request.
+     * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
+     */
+    private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
+        val numberQaReports = 0
+        val reviewerUserName = null
+        return QaReviewResponse(
+            dataId = this.dataId,
+            companyId = this.companyId,
+            companyName = this.companyName,
+            framework = this.framework,
+            reportingPeriod = this.reportingPeriod,
+            timestamp = this.timestamp,
+            qaStatus = this.qaStatus,
+            reviewerUserName = reviewerUserName,
+            numberQaReports = numberQaReports,
+            comment = this.comment,
+            triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
+        )
     }
 }
