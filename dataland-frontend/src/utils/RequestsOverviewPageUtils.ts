@@ -64,17 +64,20 @@ export function customCompareForState(
  * Returns the request state for Open/Withdrawn requests, Done for Processed requests without
  * data sourcing details, or the data sourcing state if available.
  *
+ * Note: Requests in Processing state always have an associated DataSourcing entity with a valid
+ * dataSourcingState. The fallback handles Processed requests with no DataSourcing entity.
+ *
  * @param request - The data sourcing request object.
  * @returns The displayed state of the request.
  */
-export function getDisplayedState(request: DataSourcingEnhancedRequest): string {
+export function getDisplayedState(request: DataSourcingEnhancedRequest): DataSourcingState | RequestState {
   if (request.state === RequestState.Open || request.state === RequestState.Withdrawn) {
     return request.state;
   }
   if (request.state === RequestState.Processed && !request.dataSourcingDetails?.dataSourcingState) {
     return DataSourcingState.Done;
   }
-  return request.dataSourcingDetails?.dataSourcingState ?? RequestState.Open;
+  return request.dataSourcingDetails?.dataSourcingState ?? DataSourcingState.Done;
 }
 
 /**

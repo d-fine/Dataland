@@ -15,7 +15,6 @@
 
         <FrameworkDataSearchDropdownFilter
           v-model="selectedFrameworks"
-          ref="frameworkFilter"
           :available-items="availableFrameworks"
           filter-name="Framework"
           data-test="requested-datasets-frameworks"
@@ -82,7 +81,7 @@
             <template #body="{ data }">
               <DatalandTag
                 :severity="getDisplayedState(data)"
-                :value="getDisplayedStateLabel(getDisplayedState(data) as DataSourcingState | RequestState)"
+                :value="getDisplayedStateLabel(getDisplayedState(data))"
               />
             </template>
           </Column>
@@ -158,7 +157,7 @@ import DataTable, {
 import InputText from 'primevue/inputtext';
 import { inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { type DataSourcingState, type DataSourcingEnhancedRequest, RequestState } from '@clients/datasourcingservice';
+import { type DataSourcingEnhancedRequest, RequestState } from '@clients/datasourcingservice';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const datasetsPerPage = 100;
@@ -319,9 +318,7 @@ function updateCurrentDisplayedData(): void {
     data = data.filter((request) => filterFramework(request.dataType));
   }
   if (selectedState.value.length > 0) {
-    data = data.filter((request) =>
-      filterState(getDisplayedStateLabel(getDisplayedState(request) as DataSourcingState | RequestState))
-    );
+    data = data.filter((request) => filterState(getDisplayedStateLabel(getDisplayedState(request))));
   }
 
   data.sort((dataRequestObjectA, dataRequestObjectB) =>
@@ -355,8 +352,8 @@ function customCompareForExtendedStoredDataRequests(
     if (dataRequestObjectValueA > dataRequestObjectValueB) return sortOrder.value;
   }
 
-  const stateA = getDisplayedState(dataRequestObjectA) as DataSourcingState | RequestState;
-  const stateB = getDisplayedState(dataRequestObjectB) as DataSourcingState | RequestState;
+  const stateA = getDisplayedState(dataRequestObjectA);
+  const stateB = getDisplayedState(dataRequestObjectB);
 
   if (stateA !== stateB) {
     return customCompareForState(stateA, stateB, sortOrder.value);

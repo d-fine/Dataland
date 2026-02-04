@@ -157,7 +157,7 @@
             <template #body="{ data }">
               <DatalandTag
                 :severity="getDisplayedState(data)"
-                :value="getDisplayedStateLabel(getDisplayedState(data) as DataSourcingState | RequestState)"
+                :value="getDisplayedStateLabel(getDisplayedState(data))"
               />
             </template>
           </Column>
@@ -222,12 +222,7 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import {
-  type RequestPriority,
-  type DataSourcingEnhancedRequest,
-  type DataSourcingState,
-  type RequestState,
-} from '@clients/datasourcingservice';
+import { type RequestPriority, type DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const datasetsPerPage = 100;
