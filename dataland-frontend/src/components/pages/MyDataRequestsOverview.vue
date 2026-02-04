@@ -27,7 +27,6 @@
 
         <FrameworkDataSearchDropdownFilter
           v-model="selectedState"
-          ref="stateFilter"
           :available-items="availableState"
           filter-name="State"
           data-test="requested-datasets-state"
@@ -180,8 +179,6 @@ const selectedState = ref<SelectableItem[]>([]);
 const numberOfFilteredRequests = ref(0);
 const sortField = ref<keyof DataSourcingEnhancedRequest>('state');
 const sortOrder = ref(1);
-
-const frameworkFilter = ref();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 

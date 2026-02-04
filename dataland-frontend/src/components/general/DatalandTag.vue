@@ -1,10 +1,11 @@
 <template>
   <Tag
     v-if="severity"
+    class="dataland-tag"
     :dt="{ colorScheme: { light: { primary: designToken } } }"
     :pt="{
       root: {
-        style: 'border: 1px solid var(--p-tag-primary-color);',
+        style: 'border: 1px solid color-mix(in srgb, var(--p-tag-primary-color) 50%, transparent);',
       },
     }"
     :value="value"
@@ -22,65 +23,69 @@ type TagColorDefinition = {
   color: string;
 };
 
-// Define tag color constants
-const yellowTag: TagColorDefinition = {
+const stateAmberTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{yellow.800}',
+  color: '{amber.700}',
 };
 
-const greenTag: TagColorDefinition = {
+const stateBlueTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{green.600}',
+  color: '{blue.800}',
 };
 
-const amberTag: TagColorDefinition = {
+const stateGreenTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{amber.600}',
+  color: '{green.700}',
 };
 
-const skyTag: TagColorDefinition = {
+const stateRedTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{red.700}',
+};
+
+const stateSlateTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{slate.400}',
+};
+
+const priorityLowTag: TagColorDefinition = {
   background: '{surface.0}',
   color: '{sky.600}',
 };
 
-const tealTag: TagColorDefinition = {
+const priorityBaselineTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{teal.600}',
+  color: '{amber.600}',
 };
 
-const violetTag: TagColorDefinition = {
-  background: '{surface.0}',
-  color: '{violet.600}',
-};
-
-const fuchsiaTag: TagColorDefinition = {
-  background: '{surface.0}',
-  color: '{fuchsia.600}',
-};
-
-const slateTag: TagColorDefinition = {
-  background: '{surface.0}',
-  color: '{slate.600}',
-};
-
-const redTag: TagColorDefinition = {
-  background: '{surface.0}',
-  color: '{red.600}',
-};
-
-const primaryTag: TagColorDefinition = {
+const priorityHighTag: TagColorDefinition = {
   background: '{surface.0}',
   color: '{primary.color}',
 };
 
-const greenTagFull: TagColorDefinition = {
-  background: '{green.600}',
-  color: '{surface.0}',
+const priorityUrgentTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{red.600}',
 };
 
-const redTagFull: TagColorDefinition = {
-  background: '{red.600}',
-  color: '{surface.0}',
+const qaAmberTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{amber.700}',
+};
+
+const qaGreenTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{green.700}',
+};
+
+const qaRedTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{red.700}',
+};
+
+const qaYellowTag: TagColorDefinition = {
+  background: '{surface.0}',
+  color: '{yellow.800}',
 };
 
 const { severity, value } = defineProps({
@@ -97,50 +102,55 @@ const { severity, value } = defineProps({
 
 const designToken: Ref<TagColorDefinition> = computed(() => {
   switch (severity) {
-    // quality status
     case ExtendedQaStatus.Pending:
-      return amberTag;
+      return qaAmberTag;
     case ExtendedQaStatus.Accepted:
-      return greenTag;
+      return qaGreenTag;
     case ExtendedQaStatus.Rejected:
-      return redTag;
+      return qaRedTag;
     case ExtendedQaStatus.Superseded:
-      return yellowTag;
-    // request priority
+      return qaYellowTag;
     case RequestPriority.Low:
-      return skyTag;
+      return priorityLowTag;
     case RequestPriority.Baseline:
-      return amberTag;
+      return priorityBaselineTag;
     case RequestPriority.High:
-      return primaryTag;
+      return priorityHighTag;
     case RequestPriority.Urgent:
-      return redTag;
-    // request state
+      return priorityUrgentTag;
     case RequestState.Open:
-      return amberTag;
+      return stateAmberTag;
     case RequestState.Processing:
-      return skyTag;
+      return stateBlueTag;
     case RequestState.Processed:
-      return greenTag;
+      return stateGreenTag;
     case RequestState.Withdrawn:
-      return slateTag;
-    // datasourcing state
+      return stateSlateTag;
     case DataSourcingState.Initialized:
-      return amberTag;
+      return stateAmberTag;
     case DataSourcingState.DocumentSourcing:
-      return skyTag;
     case DataSourcingState.DocumentSourcingDone:
-      return tealTag;
     case DataSourcingState.DataExtraction:
-      return violetTag;
     case DataSourcingState.DataVerification:
-      return fuchsiaTag;
-    case DataSourcingState.NonSourceable:
-      return redTagFull;
+      return stateBlueTag;
     case DataSourcingState.Done:
-      return greenTagFull;
+      return stateGreenTag;
+    case DataSourcingState.NonSourceable:
+      return stateRedTag;
     default:
-      return slateTag;
+      return stateSlateTag;
   }
 });
 </script>
+
+<style scoped lang="scss">
+.dataland-tag {
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+</style>

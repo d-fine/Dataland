@@ -37,6 +37,8 @@
           @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
         />
       </IconField>
+    </div>
+    <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
@@ -48,8 +50,6 @@
         :max-selected-labels="1"
         selected-items-label="{0} frameworks"
       />
-    </div>
-    <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedMixedStates"
@@ -139,14 +139,14 @@
           </Column>
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
           <Column header="REQUEST ID" field="id" :sortable="false" />
-          <Column header="REQUESTED" :sortable="false">
+          <Column header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
                 {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false">
+          <Column header="LAST UPDATED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
                 {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
@@ -158,7 +158,6 @@
               <DatalandTag
                 :severity="getDisplayedState(data)"
                 :value="getDisplayedStateLabel(getDisplayedState(data) as DataSourcingState | RequestState)"
-                rounded
               />
             </template>
           </Column>
@@ -198,7 +197,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import type {
@@ -233,6 +232,7 @@ import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const datasetsPerPage = 100;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const router = useRouter();
 
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
@@ -401,5 +401,10 @@ function onRowClick(event: DataTableRowClickEvent): void {
     width: 20%;
     text-align: left;
   }
+}
+
+:deep(.date-column) {
+  width: 8rem;
+  min-width: 8rem;
 }
 </style>
