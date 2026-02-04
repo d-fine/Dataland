@@ -224,7 +224,7 @@ describe('Component tests for the Request State History', function (): void {
 
     getMountingFunction()(RequestStateHistory, {
       props: {
-        stateHistory: dummyStateHistory,
+        stateHistory: [dummyStateHistory[1]] as Array<StoredRequest>,
         dataSourcingHistory: dataSourcingHistory,
         isAdmin: true,
       },
