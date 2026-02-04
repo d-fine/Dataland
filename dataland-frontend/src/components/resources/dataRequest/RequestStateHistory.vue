@@ -98,6 +98,88 @@ interface CombinedHistoryEntry {
   adminComment?: string | null;
 }
 
+type HistoryAccumulator = {
+  lastRequestState: string | null;
+  lastDataSourcingState: string | null;
+  currentAdminComment: string | null | undefined;
+};
+
+/**
+ * Fills in missing requestState and dataSourcingState values in the combined history entries.
+ * It iterates through the entries and uses the last known states to fill in any gaps.
+ *
+ * @param entries - The combined history entries to be processed.
+ * @returns The combined history entries with filled gaps.
+ */
+function fillHistoryGaps(entries: CombinedHistoryEntry[]): CombinedHistoryEntry[] {
+  const acc: HistoryAccumulator = {
+    lastRequestState: null,
+    lastDataSourcingState: null,
+    currentAdminComment: undefined,
+  };
+
+  for (const entry of entries) {
+    if (entry.requestState == null) {
+      entry.requestState = acc.lastRequestState;
+    } else {
+      acc.currentAdminComment = entry.adminComment;
+      acc.lastRequestState = entry.requestState;
+    }
+
+    if (entry.dataSourcingState == null) {
+      entry.dataSourcingState = acc.lastDataSourcingState;
+    } else {
+      entry.adminComment = acc.currentAdminComment;
+      acc.lastDataSourcingState = entry.dataSourcingState;
+    }
+  }
+  return entries;
+}
+
+/**
+ * Filters out entries that are in a transient state, such as 'Processing' without a data sourcing state
+ * or 'DataVerification' with a 'Processed' request state. These states are not meaningful for display
+ * and can be confusing to users.
+ *
+ * @param entries - The combined history entries to be filtered.
+ * @returns The filtered combined history entries.
+ */
+function filterHistory(entries: CombinedHistoryEntry[]): CombinedHistoryEntry[] {
+  return entries.filter(
+    (entry) =>
+      !(
+        (entry.dataSourcingState === null && entry.requestState === 'Processing') ||
+        (entry.dataSourcingState === 'DataVerification' && entry.requestState === 'Processed')
+      )
+  );
+}
+
+/**
+ * Compacts the history entries by removing consecutive entries that have the same displayed mixed state.
+ * This is only useful for non-admin users since they have no information about requestState and dataSourcingState, so
+ * consecutive entries with the same mixed state would be redundant.
+ *
+ * @param entries - The combined history entries to be compacted.
+ * @returns The compacted combined history entries.
+ */
+function compactHistory(entries: CombinedHistoryEntry[]): CombinedHistoryEntry[] {
+  const compacted: CombinedHistoryEntry[] = [];
+  let lastMixedState: string | null = null;
+
+  for (const entry of entries) {
+    const requestState = entry.requestState ?? RequestState.Processing;
+    const currentMixedState = getDisplayedStateLabel(
+      getMixedStatus(requestState as RequestState, entry.dataSourcingState as DataSourcingState | null)
+    );
+    if (currentMixedState !== lastMixedState) {
+      compacted.push(entry);
+      lastMixedState = currentMixedState;
+    }
+  }
+
+  return compacted;
+}
+
 const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
   const requestEntries: CombinedHistoryEntry[] = props.stateHistory.map((entry) => ({
     timestamp: entry.lastModifiedDate,
@@ -116,53 +198,13 @@ const combinedHistory = computed<CombinedHistoryEntry[]>(() => {
   }));
 
   const combined = [...requestEntries, ...dataSourcingEntries].sort((a, b) => a.timestamp - b.timestamp);
-
-  // Fill null values with previous non-null value
-  let lastRequestState: string | null = null;
-  let lastDataSourcingState: string | null = null;
-  let currentAdminComment: string | null | undefined = undefined;
-  for (const entry of combined) {
-    if (entry.requestState == null) {
-      entry.requestState = lastRequestState;
-    } else {
-      currentAdminComment = entry.adminComment;
-      lastRequestState = entry.requestState;
-    }
-    if (entry.dataSourcingState == null) {
-      entry.dataSourcingState = lastDataSourcingState;
-    } else {
-      if (currentAdminComment !== undefined) {
-        entry.adminComment = currentAdminComment;
-      }
-      lastDataSourcingState = entry.dataSourcingState;
-    }
-  }
-
-  const filtered = combined.filter(
-    (entry) =>
-      !(
-        (entry.dataSourcingState === null && entry.requestState === 'Processing') ||
-        (entry.dataSourcingState === 'DataVerification' && entry.requestState === 'Processed')
-      )
-  );
+  const filled = fillHistoryGaps(combined);
+  const filtered = filterHistory(filled);
 
   if (props.isAdmin) {
     return filtered;
   }
 
-  const compacted: CombinedHistoryEntry[] = [];
-  let lastMixedState: string | null = null;
-  for (const entry of filtered) {
-    const requestState = entry.requestState ?? RequestState.Processing;
-    const currentMixedState = getDisplayedStateLabel(
-      getMixedStatus(requestState as RequestState, entry.dataSourcingState as DataSourcingState | null)
-    );
-    if (currentMixedState !== lastMixedState) {
-      compacted.push(entry);
-      lastMixedState = currentMixedState;
-    }
-  }
-
-  return compacted;
+  return compactHistory(filtered);
 });
 </script>
