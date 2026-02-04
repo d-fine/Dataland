@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -179,12 +180,6 @@ open class DataController<T>(
             )
         }
 
-        val listDataDimensions =
-            ListDataDimensions(
-                exportRequestData.companyIds,
-                exportRequestData.reportingPeriods,
-                listOf(dataType.toString()),
-            )
         val exportJobId = UUID.randomUUID()
         logger.info("Received a request to export portfolio data. ID of new export Job: $exportJobId")
 
@@ -195,7 +190,47 @@ open class DataController<T>(
         try {
             // Async function
             dataExportService.startExportJob(
-                listDataDimensions,
+                ListDataDimensions(exportRequestData.companyIds, exportRequestData.reportingPeriods, listOf(dataType.toString())),
+                exportRequestData.fileFormat,
+                newExportJobEntity,
+                clazz,
+                keepValueFieldsOnly,
+                includeAliases,
+            )
+        } catch (_: DownloadDataNotFoundApiException) {
+            newExportJobEntity.progressState = ExportJobProgressState.Failure
+            return ResponseEntity.noContent().build()
+        }
+        return ResponseEntity
+            .ok(ExportJobInfo(id = exportJobId))
+    }
+
+    override fun postExportLatestJobCompanyAssociatedDataByDimensions(
+        exportRequestData: ExportLatestRequestData,
+        keepValueFieldsOnly: Boolean,
+        includeAliases: Boolean,
+    ): ResponseEntity<ExportJobInfo> {
+        if (companyQueryManager.validateCompanyIdentifiers(exportRequestData.companyIds).all {
+                it.companyInformation == null
+            }
+        ) {
+            throw ResourceNotFoundApiException(
+                summary = "CompanyIds ${exportRequestData.companyIds} not found.",
+                message = "All provided companyIds are invalid. Please provide at least one valid companyId.",
+            )
+        }
+
+        val exportJobId = UUID.randomUUID()
+        logger.info("Received a request to export portfolio data. ID of new export Job: $exportJobId")
+
+        val newExportJobEntity =
+            dataExportStorage
+                .createAndSaveExportJob(exportJobId, exportRequestData.fileFormat, DataTypeNameMapper.getDisplayName(dataType.name) ?: "")
+
+        try {
+            // Async function
+            dataExportService.startLatestExportJob(
+                exportRequestData.companyIds,
                 exportRequestData.fileFormat,
                 newExportJobEntity,
                 clazz,
