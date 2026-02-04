@@ -78,7 +78,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         return super.postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
     }
 
-    @Operation(operationId = "postExportLatestJobCompanyAssociated${frameworkDataType.shortenedQualifier}DataByDimensions")
+    @Operation(operationId = "postExportLatestJobCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
     override fun postExportLatestJobCompanyAssociatedDataByDimensions(
     exportRequestData: ExportLatestRequestData,
     keepValueFieldsOnly: Boolean,
