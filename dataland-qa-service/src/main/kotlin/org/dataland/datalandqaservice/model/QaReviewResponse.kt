@@ -53,7 +53,7 @@ data class QaReviewResponse(
         description = BackendOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_EXAMPLE,
     )
-    var numberQaReports: Int,
+    var numberQaReports: Long,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,

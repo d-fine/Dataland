@@ -46,4 +46,17 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
         dataPointId: String,
         reporterUserId: String,
     )
+
+    /**
+     * Returns the number of QA reports where dataPointId is in the given set of ids.
+     * @param dataPointIds set of dataPointId values to filter by
+     * @return number of matching QA reports
+     */
+    @Query(
+        "SELECT COUNT(qaReport) FROM DataPointQaReportEntity qaReport " +
+            "WHERE qaReport.dataPointId IN :dataPointIds",
+    )
+    fun countByDataPointIdIn(
+        @Param("dataPointIds") dataPointIds: Set<String>,
+    ): Long
 }
