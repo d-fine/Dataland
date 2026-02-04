@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.controller.DataController
 </#list>
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -75,6 +76,15 @@ class ${frameworkDataType.shortenedQualifier}Controller
         includeAliases: Boolean,
     ): ResponseEntity<ExportJobInfo> {
         return super.postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
+    }
+
+    @Operation(operationId = "postExportLatestJobCompanyAssociated${frameworkDataType.shortenedQualifier}DataByDimensions")
+    override fun postExportLatestJobCompanyAssociatedDataByDimensions(
+    exportRequestData: ExportLatestRequestData,
+    keepValueFieldsOnly: Boolean,
+    includeAliases: Boolean
+    ): ResponseEntity<ExportJobInfo> {
+        return super.postExportLatestJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")

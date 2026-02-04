@@ -1067,6 +1067,88 @@
         ]
       }
     },
+    "/data/sfdr/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedSfdrDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/export-jobs": {
       "post": {
         "tags": [
@@ -1187,6 +1269,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedPcafDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1371,6 +1535,88 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedNuclearAndGasDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/nuclear-and-gas/export-jobs": {
       "post": {
         "tags": [
@@ -1491,6 +1737,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksg/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedLksgDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1675,6 +2003,88 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "eutaxonomy-non-financials-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/export-jobs": {
       "post": {
         "tags": [
@@ -1795,6 +2205,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-financials/export-latest-jobs": {
+      "post": {
+        "tags": [
+          "eutaxonomy-financials-data-controller"
+        ],
+        "operationId": "postExportLatestJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportLatestRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -10050,6 +10542,41 @@
           "JSON"
         ]
       },
+      "ExportLatestRequestData": {
+        "required": [
+          "companyIds",
+          "fileFormat"
+        ],
+        "type": "object",
+        "properties": {
+          "companyIds": {
+            "type": "array",
+            "description": "The reporting periods for which the data export is requested.",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "fileFormat": {
+            "$ref": "#/components/schemas/ExportFileType"
+          }
+        }
+      },
+      "ExportJobInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "ExportRequestData": {
         "required": [
           "companyIds",
@@ -10079,18 +10606,6 @@
           },
           "fileFormat": {
             "$ref": "#/components/schemas/ExportFileType"
-          }
-        }
-      },
-      "ExportJobInfo": {
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
@@ -18063,15 +18578,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
