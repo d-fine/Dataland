@@ -7,7 +7,6 @@ import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
@@ -145,12 +144,7 @@ class DatasetReviewServiceTest {
 
         val createdDatasetReview =
             datasetReviewService.createDatasetReview(
-                DatasetReview(
-                    datasetId = UUID.randomUUID().toString(),
-                    companyId = dummyCompanyId.toString(),
-                    dataType = "sfdr",
-                    reportingPeriod = "2026",
-                ),
+                UUID.randomUUID(),
             )
 
         assertEquals(dummyCompanyId.toString(), createdDatasetReview.companyId)

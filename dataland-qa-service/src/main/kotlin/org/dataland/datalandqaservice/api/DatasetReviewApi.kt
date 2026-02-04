@@ -4,15 +4,14 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Defines the restful dataland dataset review API
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 interface DatasetReviewApi {
     /**
      * A method to store a new dataset review object
-     * @param datasetReview the dataset review object to be stored
+     * @param datasetId the dataset for which the review should be created
      */
     @Operation(
         summary = "Upload new dataset review object.",
@@ -32,13 +31,13 @@ interface DatasetReviewApi {
         ],
     )
     @PostMapping(
-        value = ["/"],
+        value = ["/{datasetId}"],
         produces = ["application/json"],
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDatasetReview(
-        @RequestBody datasetReview: DatasetReview,
+        @PathVariable datasetId: String,
     ): ResponseEntity<DatasetReviewResponse>
 
     /**
@@ -54,7 +53,7 @@ interface DatasetReviewApi {
             ApiResponse(responseCode = "403", description = "Only Dataland admins access these dataset review objects."),
         ],
     )
-    @PostMapping(
+    @GetMapping(
         value = ["/{datasetId}"],
         produces = ["application/json"],
     )
