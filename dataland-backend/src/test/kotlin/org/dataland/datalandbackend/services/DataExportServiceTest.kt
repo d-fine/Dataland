@@ -280,10 +280,11 @@ class DataExportServiceTest {
             }
         doReturn(baseTypeSchema)
             .whenever(mockSpecificationService)
-            .getResolvedFrameworkSpecification("lksg")
+            .getResolvedFrameworkSpecification("sfdr")
         doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
             .whenever(mockDatasetAssembler)
-            .getFrameworkTemplate("lksg")
+            .getFrameworkTemplate("sfdr")
+        doReturn(true).whenever(mockSpecificationService).isAssembledFramework("sfdr")
     }
 
     @Test
@@ -293,7 +294,7 @@ class DataExportServiceTest {
             dataExportService.buildStreamFromPortfolioExportData(
                 portfolioDataTwoCompanies,
                 ExportOptions(
-                    DataType.valueOf("lksg"),
+                    DataType.valueOf("sfdr"),
                     ExportFileType.CSV,
                     keepValueFieldsOnly = true,
                     includeAliases = false,
@@ -355,7 +356,7 @@ class DataExportServiceTest {
                     ),
                 ),
                 ExportOptions(
-                    DataType.valueOf("lksg"),
+                    DataType.valueOf("sfdr"),
                     ExportFileType.CSV,
                     keepValueFieldsOnly = true,
                     includeAliases = true,
