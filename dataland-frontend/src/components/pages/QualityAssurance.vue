@@ -88,7 +88,7 @@
             </Column>
             <Column header="FRAMEWORK" class="w-2">
               <template #body="slotProps">
-                {{ humanizeString(slotProps.data.framework) }}
+                {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
             </Column>
             <Column header="REPORTING PERIOD" class="w-2">
@@ -99,6 +99,11 @@
             <Column header="SUBMISSION DATE" class="w-2">
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
+              </template>
+            </Column>
+            <Column header="NUMBER OF QA REPORTS" class="w-2">
+              <template #body="slotProps">
+                {{ slotProps.data.numberOfQaReports }}
               </template>
             </Column>
             <Column field="reviewDataset" header="REVIEW AVAILABLE" class="w-2 qa-review-button">
@@ -168,8 +173,6 @@ const showNotEnoughCharactersWarning = ref(false);
 const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
-
-const humanizeString = humanizeStringOrNumber;
 
 /**
  * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
