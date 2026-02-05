@@ -3269,7 +3269,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/QaReportIdWithUploaderCompanyId"
+              "type": "string"
             }
           },
           "approvedQaReportIds": {
@@ -3299,22 +3299,6 @@
           "Finished",
           "Aborted"
         ]
-      },
-      "QaReportIdWithUploaderCompanyId": {
-        "required": [
-          "qaReportId"
-        ],
-        "type": "object",
-        "properties": {
-          "qaReportId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "uploaderCompanyId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
       },
       "QaStatus": {
         "type": "string",

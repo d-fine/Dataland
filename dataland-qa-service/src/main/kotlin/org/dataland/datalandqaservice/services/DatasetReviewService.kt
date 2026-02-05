@@ -44,9 +44,11 @@ class DatasetReviewService
             val qaReportIdWithUploaderCompanyIds =
                 dataPointQaReportIds.map {
                     val uploaderCompanyId =
-                        UUID.fromString(
-                            inheritedRolesControllerApi.getInheritedRoles(it).keys.firstOrNull(),
-                        )
+                        inheritedRolesControllerApi
+                            .getInheritedRoles(it)
+                            .keys
+                            .firstOrNull()
+                            ?.let { companyId -> convertToUUID(companyId) }
                     QaReportIdWithUploaderCompanyId(
                         convertToUUID(it),
                         uploaderCompanyId,
@@ -197,7 +199,11 @@ class DatasetReviewService
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }
 
-        private fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewEntity =
+        /**
+         * Helper method to get a dataset review entity by id including exception handling.
+         */
+        @Transactional(readOnly = true)
+        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewEntity =
             datasetReviewRepository.findById(datasetReviewId).orElseThrow {
                 ResourceNotFoundApiException(
                     "Dataset review object not found",

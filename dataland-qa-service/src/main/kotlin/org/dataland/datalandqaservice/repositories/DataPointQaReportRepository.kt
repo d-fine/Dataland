@@ -53,7 +53,7 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     @Query(
         "select qaReport.dataPointType " +
             "from DataPointQaReportEntity qaReport " +
-            "where qaReport.qaReportId = :id",
+            "where qaReport.qaReportId = :qaReportId",
     )
-    fun findDataPointTypeUsingId(dataPointId: String): String
+    fun findDataPointTypeUsingId(qaReportId: String): String
 }

@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
+import org.dataland.e2etests.ADMIN_USER_ID
+import org.dataland.e2etests.auth.GlobalAuth
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.Backend
@@ -22,6 +25,9 @@ class DatasetReviewTest {
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
+    private val datapointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
+    private val datapointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
+    private val datapointType3 = "extendedDecimalScope2GhgEmissionsInTonnes"
 
     @BeforeAll
     fun postTestDocuments() {
@@ -47,10 +53,10 @@ class DatasetReviewTest {
     @Test
     fun `ensure dataset review entities behave correctly`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val datasetId = uploadDummySfdrDataset(companyId, bypassQa = true).dataId
+        val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
         val dataPoints = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
-        val datapoint1 = dataPoints["extendedDecimalScope1GhgEmissionsInTonnes"]!!
-        val datapoint2 = dataPoints["extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"]!!
+        val datapoint1 = dataPoints[datapointType1]!!
+        val datapoint2 = dataPoints[datapointType2]!!
 
         val dummyQaReport1 =
             QaReportDataPointString(
@@ -70,37 +76,41 @@ class DatasetReviewTest {
             QaService.dataPointQaReportControllerApi
                 .postQaReport(datapoint1, dummyQaReport1)
                 .qaReportId
+
         val uploadedQaReportId2 =
             QaService.dataPointQaReportControllerApi
                 .postQaReport(datapoint2, dummyQaReport2)
                 .qaReportId
         val customDataPoint = "{ \"value\": \" 1000\", \"quality\": \"Reported\"}"
 
-        val datasetReviewId = QaService.datasetReviewControllerApi.postDatasetReview(datasetId).dataSetReviewId
-
-        QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId1)
-        QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId2)
-        QaService.datasetReviewControllerApi.acceptOriginalDatapoint(
-            datasetReviewId,
-            datapoint1,
-        )
-        QaService.datasetReviewControllerApi.acceptCustomDataPoint(
-            datasetReviewId,
-            customDataPoint,
-            "extendedDecimalScope2GhgEmissionsInTonnes",
-        )
-
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val datasetReviewId = QaService.datasetReviewControllerApi.postDatasetReview(datasetId).dataSetReviewId
+            val reviewer = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0].reviewerUserId
+            println("Admin User ID: $ADMIN_USER_ID")
+            println("Reviewer: $reviewer")
+            QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId1)
+            QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId2)
+            QaService.datasetReviewControllerApi.acceptOriginalDatapoint(
+                datasetReviewId,
+                datapoint1,
+            )
+            QaService.datasetReviewControllerApi.acceptCustomDataPoint(
+                datasetReviewId,
+                customDataPoint,
+                datapointType3,
+            )
+        }
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
         assertEquals(
-            mapOf("extendedDecimalScope2GhgEmissionsLocationBasedInTonnes" to uploadedQaReportId2),
-            datasetReview.approvedQaReportIds,
-        )
-        assertEquals(
-            mapOf("extendedDecimalScope2GhgEmissionsLocationBasedInTonnes" to datapoint1),
+            mapOf(datapointType1 to datapoint1),
             datasetReview.approvedDataPointIds,
         )
         assertEquals(
-            mapOf("extendedDecimalScope2GhgEmissionsInTonnes" to customDataPoint),
+            mapOf(datapointType2 to uploadedQaReportId2),
+            datasetReview.approvedQaReportIds,
+        )
+        assertEquals(
+            mapOf(datapointType3 to customDataPoint),
             datasetReview.approvedCustomDataPointIds,
         )
     }

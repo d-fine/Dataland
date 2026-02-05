@@ -65,9 +65,9 @@ class DatasetReviewEntity(
             reviewerUserId?.toString(),
             null,
             preapprovedDataPointIds.map { it.toString() }.toSet(),
-            qaReports, // .map { it.toString() }.toSet(),
+            qaReports.map { it.toString() }.toSet(),
             approvedQaReportIds.mapValues { it.value.toString() },
             approvedDataPointIds.mapValues { it.value.toString() },
-            approvedCustomDataPointIds,
+            approvedCustomDataPointIds.toMap(),
         )
 }
