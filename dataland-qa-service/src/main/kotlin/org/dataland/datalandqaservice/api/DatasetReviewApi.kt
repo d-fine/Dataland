@@ -18,6 +18,29 @@ import org.springframework.web.bind.annotation.PostMapping
  */
 interface DatasetReviewApi {
     /**
+     * A method to retrieve a dataset review object
+     * @param datasetReviewId id of the dataset review entity
+     */
+    @Operation(
+        summary = "Get a dataset review object by its id.",
+        description = "Get a dataset review object by its id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review object."),
+            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{datasetReviewId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDatasetReview(
+        @PathVariable datasetReviewId: String,
+    ): ResponseEntity<DatasetReviewResponse>
+
+    /**
      * A method to store a new dataset review object
      * @param datasetId the dataset for which the review should be created
      */
@@ -49,7 +72,7 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review objects."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins access these dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
         ],
     )
     @GetMapping(
@@ -71,6 +94,7 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully set yourself as the reviewer."),
+            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
         ],
     )
     @PatchMapping(
@@ -99,9 +123,15 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully set state."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "Forbidden. You must first assign yourself as the reviewer " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
+            ),
         ],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun setState(
         @PathVariable datasetReviewId: String,
         @Parameter(
@@ -124,6 +154,13 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully approved datapoint."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "Forbidden. You must first assign yourself as the reviewer " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
+            ),
+
         ],
     )
     @PatchMapping(
@@ -154,6 +191,12 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully approved qa report."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "Forbidden. You must first assign yourself as the reviewer " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
+            ),
         ],
     )
     @PatchMapping(
@@ -184,6 +227,12 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully approved and saved custom data point."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "Forbidden. You must first assign yourself as the reviewer " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
+            ),
         ],
     )
     @PatchMapping(

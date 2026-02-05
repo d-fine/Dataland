@@ -167,7 +167,7 @@ class DatasetReviewServiceTest {
 
         assertEquals(dummyCompanyId.toString(), createdDatasetReview.companyId)
         assertEquals(
-            setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId)),
+            setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId).toString()),
             createdDatasetReview.qaReports,
         )
     }
@@ -191,7 +191,7 @@ class DatasetReviewServiceTest {
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
-        assertEquals(newState, captor.firstValue.status)
+        assertEquals(newState, captor.firstValue.state)
     }
 
     @Test

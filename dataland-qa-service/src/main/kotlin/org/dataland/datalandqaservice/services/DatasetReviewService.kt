@@ -31,7 +31,7 @@ class DatasetReviewService
         private val keycloakUserService: KeycloakUserService,
     ) {
         /**
-         * Method to set reviewer to current user.
+         * Create a dataset review object associated to the given dataset.
          */
         @Transactional
         fun createDatasetReview(datasetId: UUID): DatasetReviewResponse {
@@ -100,7 +100,7 @@ class DatasetReviewService
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReviewById(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            datasetReview.status = state
+            datasetReview.state = state
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }

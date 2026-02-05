@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 class DatasetReviewController(
     private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
+    override fun getDatasetReview(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
+        ResponseEntity.ok(
+            datasetReviewService
+                .getDatasetReviewById(convertToUUID(datasetReviewId))
+                .toDatasetReviewResponse(),
+        )
+
     override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity.ok(datasetReviewService.createDatasetReview(convertToUUID(datasetId)))
 

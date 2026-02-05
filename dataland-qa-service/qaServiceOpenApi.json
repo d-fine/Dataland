@@ -53,7 +53,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins access these dataset review objects.",
+            "description": "Only Dataland admins can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1416,6 +1416,16 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -1460,6 +1470,16 @@
         "responses": {
           "200": {
             "description": "Successfully set yourself as the reviewer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1528,6 +1548,16 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -1580,6 +1610,16 @@
         "responses": {
           "200": {
             "description": "Successfully approved datapoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1648,6 +1688,16 @@
         "responses": {
           "200": {
             "description": "Successfully approved and saved custom data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2097,6 +2147,68 @@
             "default-bearer-auth": []
           }
         ]
+      }
+    },
+    "/{datasetReviewId}": {
+      "get": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Get a dataset review object by its id.",
+        "description": "Get a dataset review object by its id.",
+        "operationId": "getDatasetReview",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset review object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/numberOfUnreviewedDatasets": {
