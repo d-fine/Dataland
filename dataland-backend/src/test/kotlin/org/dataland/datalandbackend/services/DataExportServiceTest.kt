@@ -13,7 +13,6 @@ import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
