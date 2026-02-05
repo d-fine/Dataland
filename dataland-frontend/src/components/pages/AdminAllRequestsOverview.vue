@@ -119,6 +119,7 @@
           id="admin-request-overview-data"
           :rowHover="true"
           style="cursor: pointer"
+          tableLayout="fixed"
         >
           <Column v-if="isColumnVisible('requester')" header="REQUESTER" field="userEmailAddress" :sortable="false" />
           <Column v-if="isColumnVisible('company')" header="COMPANY" field="companyName" :sortable="false" />
@@ -212,6 +213,7 @@
             />
             <Popover ref="columnPopover" data-test="column-selector-popover">
               <div class="column-popover-content">
+                <span class="column-popover-title">Select Columns</span>
                 <div v-for="col in allColumns" :key="col.field" class="column-checkbox-row">
                   <Checkbox
                     v-model="selectedColumns"
@@ -510,6 +512,10 @@ function onRowClick(event: DataTableRowClickEvent): void {
   width: 3rem;
 }
 
+:deep(.p-datatable-paginator-bottom .column-selector-button) {
+  visibility: hidden;
+}
+
 :deep(.column-selector-button .pi) {
   font-size: 1.25rem;
 }
@@ -519,6 +525,11 @@ function onRowClick(event: DataTableRowClickEvent): void {
   flex-direction: column;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm);
+
+  .column-popover-title {
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+  }
 
   .column-checkbox-row {
     display: flex;
@@ -531,7 +542,7 @@ function onRowClick(event: DataTableRowClickEvent): void {
   }
 }
 
-:deep(.date-column) {
+:deep(.date-column .p-datatable-column-title) {
   white-space: nowrap;
 }
 </style>
