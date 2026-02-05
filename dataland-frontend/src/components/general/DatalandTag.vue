@@ -30,12 +30,12 @@ const stateAmberTag: TagColorDefinition = {
 
 const stateBlueTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{blue.800}',
+  color: '{sky.700}',
 };
 
 const stateGreenTag: TagColorDefinition = {
   background: '{surface.0}',
-  color: '{green.700}',
+  color: '{green.600}',
 };
 
 const stateRedTag: TagColorDefinition = {

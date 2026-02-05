@@ -544,4 +544,131 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.contains('th', 'NEXT SOURCING ATTEMPT');
     cy.contains('td', '2024-01-01');
   });
+
+  describe('Column selector functionality', () => {
+    const COLUMN_SELECTION_STORAGE_KEY = 'adminAllRequestsOverview.selectedColumns';
+
+    beforeEach(() => {
+      localStorage.removeItem(COLUMN_SELECTION_STORAGE_KEY);
+    });
+
+    it('opens the column selector popover when clicking the gear icon', () => {
+      mountAdminAllRequestsPageWithMocks();
+      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('[data-test="column-selector-popover"]').should('be.visible');
+      cy.get('[data-test="column-selector-popover"]').within(() => {
+        cy.contains('label', 'Requester').should('exist');
+        cy.contains('label', 'Company').should('exist');
+        cy.contains('label', 'Framework').should('exist');
+      });
+    });
+
+    it('hides a column when unchecking it in the column selector', () => {
+      mountAdminAllRequestsPageWithMocks();
+      cy.contains('th', 'REQUEST ID').should('exist');
+
+      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('[data-test="column-checkbox-id"]').click();
+      cy.get('body').click(0, 0);
+
+      cy.contains('th', 'REQUEST ID').should('not.exist');
+    });
+
+    it('shows a column when checking it in the column selector after it was hidden', () => {
+      mountAdminAllRequestsPageWithMocks();
+
+      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('[data-test="column-checkbox-requester"]').click();
+      cy.get('body').click(0, 0);
+      cy.contains('th', 'REQUESTER').should('not.exist');
+
+      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('[data-test="column-checkbox-requester"]').click();
+      cy.get('body').click(0, 0);
+      cy.contains('th', 'REQUESTER').should('exist');
+    });
+
+    it('persists column selection to localStorage', () => {
+      mountAdminAllRequestsPageWithMocks();
+
+      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('[data-test="column-checkbox-adminComment"]').click();
+      cy.get('body').click(0, 0);
+
+      cy.then(() => {
+        const saved = localStorage.getItem(COLUMN_SELECTION_STORAGE_KEY);
+        expect(saved).to.not.be.null;
+        const savedFields: string[] = JSON.parse(saved!);
+        expect(savedFields).to.not.include('adminComment');
+      });
+    });
+
+    it('loads column selection from localStorage on mount', () => {
+      const savedSelection = ['requester', 'company', 'state'];
+      localStorage.setItem(COLUMN_SELECTION_STORAGE_KEY, JSON.stringify(savedSelection));
+
+      mountAdminAllRequestsPageWithMocks();
+
+      cy.contains('th', 'REQUESTER').should('exist');
+      cy.contains('th', 'COMPANY').should('exist');
+      cy.contains('th', 'STATE').should('exist');
+      cy.contains('th', 'FRAMEWORK').should('not.exist');
+      cy.contains('th', 'REQUEST ID').should('not.exist');
+    });
+  });
+
+  describe('Data fallback handling', () => {
+    it('displays dash for missing dataSourcingDetails fields', () => {
+      const requestWithoutDetails: DataSourcingEnhancedRequest = {
+        id: crypto.randomUUID(),
+        userId: crypto.randomUUID(),
+        userEmailAddress: 'nodetails@test.com',
+        creationTimestamp: Date.now(),
+        dataType: DataTypeEnum.Lksg,
+        reportingPeriod: '2023',
+        companyId: crypto.randomUUID(),
+        companyName: 'No Details Company',
+        lastModifiedDate: Date.now(),
+        state: RequestState.Open,
+        dataSourcingDetails: undefined,
+        adminComment: 'Test comment',
+        requestPriority: RequestPriority.Low,
+      };
+
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', [requestWithoutDetails]);
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', '1');
+
+      getMountingFunction({
+        keycloak: adminKeycloakMock(),
+        router: router,
+      })(AdminAllRequestsOverview);
+
+      assertNumberOfSearchResults(1);
+      cy.get('td').filter(':contains("-")').should('have.length.at.least', 3);
+    });
+  });
+
+  describe('Error handling', () => {
+    it('handles API error gracefully', () => {
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', {
+        statusCode: 500,
+        body: 'Internal Server Error',
+      });
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
+        statusCode: 500,
+        body: 'Internal Server Error',
+      });
+
+      cy.window().then((win) => {
+        cy.spy(win.console, 'error').as('consoleError');
+      });
+
+      getMountingFunction({
+        keycloak: adminKeycloakMock(),
+        router: router,
+      })(AdminAllRequestsOverview);
+
+      cy.get('@consoleError').should('have.been.called');
+    });
+  });
 });
