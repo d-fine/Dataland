@@ -120,9 +120,9 @@
           :rowHover="true"
           style="cursor: pointer"
         >
-          <Column header="REQUESTER" field="userEmailAddress" :sortable="false" />
-          <Column header="COMPANY" field="companyName" :sortable="false" />
-          <Column header="FRAMEWORK" :sortable="false">
+          <Column v-if="isColumnVisible('requester')" header="REQUESTER" field="userEmailAddress" :sortable="false" />
+          <Column v-if="isColumnVisible('company')" header="COMPANY" field="companyName" :sortable="false" />
+          <Column v-if="isColumnVisible('framework')" header="FRAMEWORK" :sortable="false">
             <template #body="{ data }">
               <div>
                 {{ getFrameworkTitle(data.dataType) }}
@@ -137,23 +137,33 @@
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
-          <Column header="REQUEST ID" field="id" :sortable="false" />
-          <Column header="REQUESTED" :sortable="false" class="date-column">
+          <Column
+            v-if="isColumnVisible('reportingPeriod')"
+            header="REPORTING PERIOD"
+            field="reportingPeriod"
+            :sortable="false"
+          />
+          <Column v-if="isColumnVisible('id')" header="REQUEST ID" field="id" :sortable="false" />
+          <Column v-if="isColumnVisible('creationTimestamp')" header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
                 {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false" class="date-column">
+          <Column
+            v-if="isColumnVisible('lastModifiedDate')"
+            header="LAST UPDATED"
+            :sortable="false"
+            class="date-column"
+          >
             <template #body="{ data }">
               <div>
                 {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
               </div>
             </template>
           </Column>
-          <Column header="STATE" :sortable="false">
+          <Column v-if="isColumnVisible('state')" header="STATE" :sortable="false">
             <template #body="{ data }">
               <DatalandTag
                 :severity="getDisplayedState(data)"
@@ -161,27 +171,59 @@
               />
             </template>
           </Column>
-          <Column header="NEXT SOURCING ATTEMPT" :sortable="false">
+          <Column v-if="isColumnVisible('nextSourcingAttempt')" header="NEXT SOURCING ATTEMPT" :sortable="false">
             <template #body="{ data }">
               {{ data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt ?? '-' }}
             </template>
           </Column>
-          <Column header="REQUEST PRIORITY" :sortable="false">
+          <Column v-if="isColumnVisible('priority')" header="REQUEST PRIORITY" :sortable="false">
             <template #body="{ data }">
               <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
             </template>
           </Column>
-          <Column header="DOCUMENT COLLECTOR" :sortable="false">
+          <Column v-if="isColumnVisible('documentCollector')" header="DOCUMENT COLLECTOR" :sortable="false">
             <template #body="{ data }">
               {{ data.dataSourcingDetails?.documentCollectorName ?? '-' }}
             </template>
           </Column>
-          <Column header="DATA EXTRACTOR" :sortable="false">
+          <Column v-if="isColumnVisible('dataExtractor')" header="DATA EXTRACTOR" :sortable="false">
             <template #body="{ data }">
               {{ data.dataSourcingDetails?.dataExtractorName ?? '-' }}
             </template>
           </Column>
-          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
+          <Column
+            v-if="isColumnVisible('adminComment')"
+            header="ADMIN COMMENT"
+            :sortable="false"
+            field="adminComment"
+          />
+          <template #paginatorstart>
+            <span class="paginator-spacer"></span>
+          </template>
+          <template #paginatorend>
+            <PrimeButton
+              type="button"
+              icon="pi pi-cog"
+              variant="text"
+              class="column-selector-button"
+              data-test="column-selector-button"
+              aria-label="Configure columns"
+              @click="toggleColumnPopover"
+            />
+            <Popover ref="columnPopover" data-test="column-selector-popover">
+              <div class="column-popover-content">
+                <div v-for="col in allColumns" :key="col.field" class="column-checkbox-row">
+                  <Checkbox
+                    v-model="selectedColumns"
+                    :inputId="col.field"
+                    :value="col"
+                    :data-test="`column-checkbox-${col.field}`"
+                  />
+                  <label :for="col.field">{{ col.header }}</label>
+                </div>
+              </div>
+            </Popover>
+          </template>
           <template #empty>
             <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
           </template>
@@ -192,7 +234,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue';
+import { ref, computed, onMounted, inject, watch } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -222,10 +264,13 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import Checkbox from 'primevue/checkbox';
+import Popover from 'primevue/popover';
 import { type RequestPriority, type DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const datasetsPerPage = 100;
+const COLUMN_SELECTION_STORAGE_KEY = 'adminAllRequestsOverview.selectedColumns';
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const router = useRouter();
 
@@ -247,6 +292,69 @@ const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
 const selectedReportingPeriods = ref<SelectableItem[]>([]);
+
+interface ColumnDefinition {
+  field: string;
+  header: string;
+}
+
+const allColumns: ColumnDefinition[] = [
+  { field: 'requester', header: 'Requester' },
+  { field: 'company', header: 'Company' },
+  { field: 'framework', header: 'Framework' },
+  { field: 'reportingPeriod', header: 'Reporting Period' },
+  { field: 'id', header: 'Request ID' },
+  { field: 'creationTimestamp', header: 'Requested' },
+  { field: 'lastModifiedDate', header: 'Last Updated' },
+  { field: 'state', header: 'State' },
+  { field: 'nextSourcingAttempt', header: 'Next Sourcing Attempt' },
+  { field: 'priority', header: 'Request Priority' },
+  { field: 'documentCollector', header: 'Document Collector' },
+  { field: 'dataExtractor', header: 'Data Extractor' },
+  { field: 'adminComment', header: 'Admin Comment' },
+];
+
+const selectedColumns = ref<ColumnDefinition[]>(loadColumnSelection());
+const columnPopover = ref();
+
+/**
+ * Toggles the column selection popover visibility.
+ * @param event - The click event from the button
+ */
+function toggleColumnPopover(event: Event): void {
+  columnPopover.value.toggle(event);
+}
+
+/**
+ * Loads the column selection from localStorage, falling back to all columns if not found.
+ * @returns The saved column selection or all columns as default
+ */
+function loadColumnSelection(): ColumnDefinition[] {
+  const saved = localStorage.getItem(COLUMN_SELECTION_STORAGE_KEY);
+  if (saved) {
+    const savedFields: string[] = JSON.parse(saved);
+    return allColumns.filter((col) => savedFields.includes(col.field));
+  }
+  return [...allColumns];
+}
+
+watch(
+  selectedColumns,
+  (newSelection) => {
+    const fields = newSelection.map((col) => col.field);
+    localStorage.setItem(COLUMN_SELECTION_STORAGE_KEY, JSON.stringify(fields));
+  },
+  { deep: true }
+);
+
+/**
+ * Checks if a column is currently visible based on user selection.
+ * @param field - The field identifier of the column
+ * @returns true if the column is selected for display
+ */
+function isColumnVisible(field: string): boolean {
+  return selectedColumns.value.some((col) => col.field === field);
+}
 
 /**
  * Sets the current chunk index and first row index to zero.
@@ -398,8 +506,32 @@ function onRowClick(event: DataTableRowClickEvent): void {
   }
 }
 
+.paginator-spacer {
+  width: 3rem;
+}
+
+:deep(.column-selector-button .pi) {
+  font-size: 1.25rem;
+}
+
+.column-popover-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+
+  .column-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
 :deep(.date-column) {
-  width: 8rem;
-  min-width: 8rem;
+  white-space: nowrap;
 }
 </style>
