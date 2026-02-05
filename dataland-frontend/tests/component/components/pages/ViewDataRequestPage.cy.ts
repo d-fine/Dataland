@@ -5,7 +5,6 @@ import {
   RequestPriority,
   type ExtendedStoredRequest,
   type DataSourcingWithoutReferences,
-  type StoredRequest,
   type StoredDataSourcing,
   DataSourcingState,
 } from '@clients/datasourcingservice';
@@ -29,30 +28,6 @@ function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): Retur
 }
 
 /**
- * Mocks the data-sourcing-manager answer for data sourcing history
- * @param dataSourcingId the data sourcing entity ID
- * @param history the data sourcing history to return
- */
-function interceptDataSourcingHistory(dataSourcingId: string, history: DataSourcingWithoutReferences[]): void {
-  cy.intercept(`**/data-sourcing/${dataSourcingId}/history?stateChangesOnly=true`, {
-    body: history,
-    status: 200,
-  });
-}
-
-/**
- * Mocks the data-sourcing-manager answer for request history
- * @param requestId the request ID
- * @param history the request history to return
- */
-function interceptRequestHistory(requestId: string, history: StoredRequest[]): void {
-  cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
-    body: history,
-    status: 200,
-  });
-}
-
-/**
  * Mocks company info endpoint for resolving UUIDs to names
  * @param companyId the company UUID
  * @param companyName the company name to return
@@ -72,8 +47,14 @@ describe('Component tests for the view data request page', function (): void {
   const dummyCompanyName = 'dummyCompanyName';
   const dummyFramework = 'dummyFramework';
   const dummyReportingYear = 'dummyReportingYear';
-  const dummyLastModifiedDate = 1000000000000;
   const dummyCreationTime = 1709104495770;
+  const dummyLastModifiedDate = dummyCreationTime + 600000;
+
+  const dataSourcingEntityId = 'dummyDataSourcingId';
+  const collectorId = 'collector-company-uuid';
+  const collectorName = 'Collector Company Ltd.';
+  const extractorId = 'extractor-company-uuid';
+  const extractorName = 'Extractor GmbH';
 
   /**
    * Creates a DataSourcingWithoutReferences object with defaults
@@ -83,31 +64,12 @@ describe('Component tests for the view data request page', function (): void {
     overrides: Partial<DataSourcingWithoutReferences> = {}
   ): DataSourcingWithoutReferences {
     return {
-      dataSourcingId: 'dummyDataSourcingId',
+      dataSourcingId: dataSourcingEntityId,
       companyId: dummyCompanyId,
       reportingPeriod: dummyReportingYear,
       dataType: dummyFramework,
       state: DataSourcingState.Initialized,
       lastModifiedDate: dummyLastModifiedDate,
-      ...overrides,
-    };
-  }
-
-  /**
-   * Creates a StoredRequest history entry with defaults
-   * @param overrides optional fields to override
-   */
-  function createRequestHistoryEntry(overrides: Partial<StoredRequest> = {}): StoredRequest {
-    return {
-      id: requestId,
-      companyId: dummyCompanyId,
-      reportingPeriod: dummyReportingYear,
-      dataType: dummyFramework,
-      userId: dummyUserId,
-      creationTimestamp: dummyCreationTime,
-      lastModifiedDate: dummyLastModifiedDate,
-      state: RequestState.Open,
-      requestPriority: RequestPriority.Low,
       ...overrides,
     };
   }
@@ -129,6 +91,7 @@ describe('Component tests for the view data request page', function (): void {
       requestPriority: RequestPriority.Low,
       companyName: dummyCompanyName,
       userEmailAddress: dummyEmail,
+      dataSourcingEntityId: dataSourcingEntityId,
     };
     cy.intercept(`**/data-sourcing/requests/${request.id}`, {
       body: request,
@@ -176,100 +139,48 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Creates a request object with data sourcing entity ID
-   * @param dataSourcingEntityId the data sourcing entity ID
-   */
-  function createRequestWithDataSourcing(dataSourcingEntityId: string): ExtendedStoredRequest {
-    return {
-      id: requestId,
-      userId: dummyUserId,
-      creationTimestamp: dummyCreationTime,
-      dataType: dummyFramework,
-      reportingPeriod: dummyReportingYear,
-      companyId: dummyCompanyId,
-      lastModifiedDate: dummyLastModifiedDate,
-      state: RequestState.Processing,
-      requestPriority: RequestPriority.Low,
-      companyName: dummyCompanyName,
-      userEmailAddress: dummyEmail,
-      dataSourcingEntityId: dataSourcingEntityId,
-    };
-  }
-
-  /**
    * Mocks the data-sourcing-manager answer for data sourcing details
-   * @param dataSourcingId the data sourcing entity ID
-   * @param collectorId the collector company UUID
-   * @param extractorId the extractor company UUID
    * @param dataSourcingHistory the data sourcing history to determine the current state
    */
-  function interceptDataSourcingDetails(
-    dataSourcingId: string,
-    collectorId: string,
-    extractorId: string,
-    dataSourcingHistory: DataSourcingWithoutReferences[]
-  ): void {
-    const lastHistoryEntry = dataSourcingHistory[dataSourcingHistory.length - 1];
+  function interceptDataSourcingDetails(dataSourcingHistory: DataSourcingWithoutReferences[]): void {
+    const dataSourcingState =
+      dataSourcingHistory[dataSourcingHistory.length - 1]?.state || DataSourcingState.Initialized;
     const dataSourcing: Partial<StoredDataSourcing> = {
-      dataSourcingId: dataSourcingId,
+      dataSourcingId: dataSourcingEntityId,
       companyId: dummyCompanyId,
       reportingPeriod: dummyReportingYear,
       dataType: dummyFramework,
-      state: lastHistoryEntry ? lastHistoryEntry.state : DataSourcingState.Initialized,
+      state: dataSourcingState,
       documentCollector: collectorId,
       dataExtractor: extractorId,
     };
-    cy.intercept(`**/data-sourcing/${dataSourcingId}`, {
+    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
       body: dataSourcing,
       status: 200,
     });
   }
 
   /**
-   * Sets up all necessary interceptions for a request with data sourcing
-   * @param request the request object with data sourcing entity ID
-   * @param requestHistory the request history to return
-   * @param dataSourcingHistory the data sourcing history to return
-   * @param collectorId the collector company UUID
-   * @param collectorName the collector company name
-   * @param extractorId the extractor company UUID
-   * @param extractorName the extractor company name
+   * Sets up Cypress interceptions for data sourcing history and details,
+   * and mocks company info for collector and extractor.
+   * @param history Array of DataSourcingWithoutReferences representing the history entries.
    */
-  function setupDataSourcingInterceptions(
-    request: ExtendedStoredRequest,
-    requestHistory: StoredRequest[],
-    dataSourcingHistory: DataSourcingWithoutReferences[],
-    collectorId?: string,
-    collectorName?: string,
-    extractorId?: string,
-    extractorName?: string
-  ): void {
-    cy.intercept(`**/data-sourcing/requests/${requestId}`, {
-      body: request,
+  function setupDataSourcingHistoryInterceptions(history: DataSourcingWithoutReferences[]): void {
+    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}/history?stateChangesOnly=true`, {
+      body: history,
       status: 200,
     });
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(false);
-    interceptRequestHistory(requestId, requestHistory);
-    if (request.dataSourcingEntityId) {
-      interceptDataSourcingHistory(request.dataSourcingEntityId, dataSourcingHistory);
-      if (collectorId && extractorId) {
-        interceptDataSourcingDetails(request.dataSourcingEntityId, collectorId, extractorId, dataSourcingHistory);
-      }
-      if (collectorId && collectorName) {
-        interceptCompanyInfo(collectorId, collectorName);
-      }
-      if (extractorId && extractorName) {
-        interceptCompanyInfo(extractorId, extractorName);
-      }
-    }
+    interceptDataSourcingDetails(history);
+    interceptCompanyInfo(collectorId, collectorName);
+    interceptCompanyInfo(extractorId, extractorName);
   }
 
   /**
    * Checks the existence of basic elements of the page
-   * @param requestState the request state to check for
+   * @param expectedState the request state to check for
+   * @param expectedTime the expected time to check for
    */
-  function checkBasicPageElementsAsUser(requestState: RequestState): void {
+  function checkBasicPageElementsAsUser(expectedState: RequestState | DataSourcingState, expectedTime: number): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist');
     cy.contains('Request is').should('exist');
@@ -288,17 +199,19 @@ describe('Component tests for the view data request page', function (): void {
     });
     cy.get('[data-test="card_requestIs"]').should('exist');
     cy.get('[data-test="card_requestIs"]').within(() => {
-      cy.contains(requestState).should('exist');
-      cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
+      const searchString =
+        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
+      cy.contains(searchString).should('exist');
     });
     cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
   }
 
   /**
    * Checks the existence of basic elements of the page when admin is visiting
-   * @param requestState the request state to check for
+   * @param expectedState the request state to check for
+   * @param expectedTime the expected time to check for
    */
-  function checkBasicPageElementsAsAdmin(requestState: RequestState): void {
+  function checkBasicPageElementsAsAdmin(expectedState: RequestState | DataSourcingState, expectedTime: number): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist');
     cy.contains('Request is').should('exist');
@@ -318,10 +231,11 @@ describe('Component tests for the view data request page', function (): void {
     });
     cy.get('[data-test="card_requestIs"]').should('exist');
     cy.get('[data-test="card_requestIs"]').within(() => {
-      cy.contains(`${requestState}`).should('exist');
-      cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
+      const searchString =
+        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
+      cy.contains(searchString).should('exist');
     });
-    if (requestState !== RequestState.Withdrawn) {
+    if (expectedState !== RequestState.Withdrawn) {
       cy.get('[data-test="card_withdrawn"]').should('be.visible');
     }
   }
@@ -338,28 +252,42 @@ describe('Component tests for the view data request page', function (): void {
 
   /**
    * Mounts the ViewDataRequestPage and checks basic page elements as user
-   * @param requestState the request state to check for
+   * @param expectedState the request state to check for
+   * @param expectedTime the expected time to check for
    * @param options mounting options (keycloak, router, etc.)
    */
-  function mountAndCheckBasicPageElementsAsUser(
-    requestState: RequestState,
+  function mountAndCheckBasicPageElements(
+    expectedState: RequestState | DataSourcingState,
+    expectedTime: number,
     options: {
-      keycloak?: ReturnType<typeof minimalKeycloakMock>;
+      keycloak: ReturnType<typeof minimalKeycloakMock>;
       router?: typeof router;
     }
   ): Cypress.Chainable {
     return getMountingFunction(options)(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
-      checkBasicPageElementsAsUser(requestState);
+      if (options.keycloak.hasRealmRole('ROLE_ADMIN')) {
+        checkBasicPageElementsAsAdmin(expectedState, expectedTime);
+      } else {
+        checkBasicPageElementsAsUser(expectedState, expectedTime);
+      }
     });
   }
 
   it('Check view data request page for Processed request with data renders as expected', function () {
+    const historyWithNonSourceableEntry = [
+      createDataSourcingHistoryEntry({
+        state: DataSourcingState.NonSourceable,
+        lastModifiedDate: dummyLastModifiedDate + 600000,
+      }),
+    ] as Array<DataSourcingWithoutReferences>;
+
     setupRequestInterceptions(RequestState.Processed, true);
+    setupDataSourcingHistoryInterceptions(historyWithNonSourceableEntry);
     cy.spy(router, 'push').as('routerPush');
-    mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
-      keycloak: getKeycloakMock(dummyUserId),
+    mountAndCheckBasicPageElements(DataSourcingState.NonSourceable, dummyLastModifiedDate + 600000, {
+      keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
       router,
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('be.visible');
@@ -368,9 +296,25 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
+  it('Check if Withdrawn request with afterwards updated DataSourcingState is as expected for non admins', function () {
+    const historyWithNonSourceableEntry = [
+      createDataSourcingHistoryEntry({
+        state: DataSourcingState.NonSourceable,
+        lastModifiedDate: dummyLastModifiedDate + 600000,
+      }),
+    ] as Array<DataSourcingWithoutReferences>;
+
+    setupRequestInterceptions(RequestState.Withdrawn, true);
+    setupDataSourcingHistoryInterceptions(historyWithNonSourceableEntry);
+    mountAndCheckBasicPageElements(RequestState.Withdrawn, dummyLastModifiedDate, {
+      keycloak: getKeycloakMock(dummyUserId, ['ROLE_USER']),
+      router,
+    });
+  });
+
   it('Check view data request page for Withdrawn request without data renders as expected', function () {
     setupRequestInterceptions(RequestState.Withdrawn, false);
-    mountAndCheckBasicPageElementsAsUser(RequestState.Withdrawn, {
+    mountAndCheckBasicPageElements(RequestState.Withdrawn, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
     });
     cy.get('[data-test="resubmit-request-button"]').should('be.visible');
@@ -379,7 +323,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page as non-admin for Open request without data and verify withdraw button is absent', function () {
     setupRequestInterceptions(RequestState.Open, false);
-    mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
+    mountAndCheckBasicPageElements(RequestState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_USER']),
     });
     cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
@@ -388,7 +332,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page as admin for Open request without data and withdraw the data request', function () {
     setupRequestInterceptions(RequestState.Open, false);
-    mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
+    mountAndCheckBasicPageElements(RequestState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
@@ -402,14 +346,14 @@ describe('Component tests for the view data request page', function (): void {
       });
       cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
       cy.get('[data-test="success-modal"]').should('not.exist');
-      checkBasicPageElementsAsAdmin(RequestState.Withdrawn);
+      checkBasicPageElementsAsAdmin(RequestState.Withdrawn, dummyLastModifiedDate);
     });
   });
 
   it('Check view data request page for Open request with data and check the routing to data view page', function () {
     setupRequestInterceptions(RequestState.Open, true);
     cy.spy(router, 'push').as('routerPush');
-    mountAndCheckBasicPageElementsAsUser(RequestState.Open, {
+    mountAndCheckBasicPageElements(RequestState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId),
       router,
     }).then(() => {
@@ -421,7 +365,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page for Processed request and check resubmitting the request works as expected', function () {
     setupRequestInterceptions(RequestState.Processed, true);
-    mountAndCheckBasicPageElementsAsUser(RequestState.Processed, {
+    mountAndCheckBasicPageElements(RequestState.Processed, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId),
       router,
     }).then(() => {
@@ -440,16 +384,18 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it('Check data sourcing details display collector and extractor names when dataSourcingDetails is present', function () {
-    const dataSourcingEntityId = 'dummyDataSourcingId';
-    const collectorId = 'collector-company-uuid';
-    const collectorName = 'Collector Company Ltd.';
-    const extractorId = 'extractor-company-uuid';
-    const extractorName = 'Extractor GmbH';
-    const request = createRequestWithDataSourcing(dataSourcingEntityId);
+  it('Check display of collector and extractor names when present and not null', function () {
+    const historyWithNonSourceableEntry = [
+      createDataSourcingHistoryEntry({
+        state: DataSourcingState.NonSourceable,
+        lastModifiedDate: dummyLastModifiedDate + 600000,
+      }),
+    ] as Array<DataSourcingWithoutReferences>;
 
-    setupDataSourcingInterceptions(request, [], [], collectorId, collectorName, extractorId, extractorName);
-
+    interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
+    interceptDataSourcingDetails(historyWithNonSourceableEntry);
+    interceptCompanyInfo(collectorId, collectorName);
+    interceptCompanyInfo(extractorId, extractorName);
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
@@ -460,12 +406,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it('Check data sourcing details display collector and extractor names when dataSourcingDetails is not present', function () {
-    const dataSourcingEntityId = 'dummyDataSourcingId';
-    const request = createRequestWithDataSourcing(dataSourcingEntityId);
-
-    setupDataSourcingInterceptions(request, [], []);
-
+  it('Check display of collector and extractor names when null', function () {
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
@@ -473,157 +414,6 @@ describe('Component tests for the view data request page', function (): void {
         cy.get('[data-test="data-sourcing-collector"]').should('contain', '—');
         cy.get('[data-test="data-sourcing-extractor"]').should('contain', '—');
       });
-    });
-  });
-
-  it('Check combined history displays both request and data sourcing history sorted by timestamp', function () {
-    const dataSourcingEntityId = 'dummyDataSourcingId';
-    const oldRequestTimestamp = 1709104495770;
-    const request = createRequestWithDataSourcing(dataSourcingEntityId);
-
-    const requestHistory = [
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp,
-        adminComment: 'Request created',
-      }),
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp + 600000,
-        state: RequestState.Processing,
-        adminComment: 'Processing request',
-      }),
-    ];
-
-    const dataSourcingHistory = [
-      createDataSourcingHistoryEntry({
-        dataSourcingId: dataSourcingEntityId,
-        lastModifiedDate: oldRequestTimestamp + 3 * 600000,
-        state: DataSourcingState.DataExtraction,
-      }),
-    ];
-
-    setupDataSourcingInterceptions(
-      request,
-      requestHistory,
-      dataSourcingHistory,
-      'collector-uuid',
-      'Collector Ltd.',
-      'extractor-uuid',
-      'Extractor GmbH'
-    );
-
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then(() => {
-      cy.get('[data-test="stateHistoryTable"]').should('exist');
-      cy.get('[data-test="stateHistoryTable"]').within(() => {
-        cy.get('tbody tr').should('have.length', 2);
-        cy.contains('Request created').should('exist');
-        cy.contains(getDisplayedStateLabel(RequestState.Open)).should('exist');
-        cy.contains(getDisplayedStateLabel(DataSourcingState.DataExtraction)).should('exist');
-      });
-    });
-  });
-
-  it('Check that status and date of "Request is:" is equal to last entry in state history table in admin view', function () {
-    const dataSourcingEntityId = 'dummyDataSourcingId';
-    const oldRequestTimestamp = 1709104495770;
-    const request = createRequestWithDataSourcing(dataSourcingEntityId);
-
-    const requestHistory = [
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp,
-        adminComment: 'Request created',
-      }),
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp + 600000,
-        state: RequestState.Processing,
-        adminComment: 'Processing request',
-      }),
-    ];
-
-    const dataSourcingHistory = [
-      createDataSourcingHistoryEntry({
-        dataSourcingId: dataSourcingEntityId,
-        lastModifiedDate: oldRequestTimestamp + 3 * 600000,
-        state: DataSourcingState.DataExtraction,
-      }),
-    ];
-
-    setupDataSourcingInterceptions(
-      request,
-      requestHistory,
-      dataSourcingHistory,
-      'collector-uuid',
-      'Collector Ltd.',
-      'extractor-uuid',
-      'Extractor GmbH'
-    );
-
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then(() => {
-      const searchString =
-        'Data Extraction' + ' since ' + convertUnixTimeInMsToDateString(oldRequestTimestamp + 3 * 600000);
-      cy.get('[data-test="card_requestIs"]').should('contain', searchString);
-    });
-  });
-  it('Check that status and date of "Request is:" is equal to last entry in state history table in non admin view', function () {
-    const dataSourcingEntityId = 'dummyDataSourcingId';
-    const oldRequestTimestamp = 1709104495770;
-    const request = createRequestWithDataSourcing(dataSourcingEntityId);
-
-    const requestHistory = [
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp,
-        adminComment: 'Request created',
-      }),
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp + 600000,
-        state: RequestState.Processing,
-        adminComment: 'Processing request',
-      }),
-      createRequestHistoryEntry({
-        creationTimestamp: oldRequestTimestamp,
-        lastModifiedDate: oldRequestTimestamp + 4 * 600000,
-        state: RequestState.Withdrawn,
-        adminComment: 'Request withdrawn',
-      }),
-    ];
-
-    const dataSourcingHistory = [
-      createDataSourcingHistoryEntry({
-        dataSourcingId: dataSourcingEntityId,
-        lastModifiedDate: oldRequestTimestamp + 3 * 600000,
-        state: DataSourcingState.DataExtraction,
-      }),
-      createDataSourcingHistoryEntry({
-        dataSourcingId: dataSourcingEntityId,
-        lastModifiedDate: oldRequestTimestamp + 5 * 600000,
-        state: DataSourcingState.DocumentSourcing,
-      }),
-    ];
-
-    setupDataSourcingInterceptions(
-      request,
-      requestHistory,
-      dataSourcingHistory,
-      'collector-uuid',
-      'Collector Ltd.',
-      'extractor-uuid',
-      'Extractor GmbH'
-    );
-
-    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_UPLOADER']) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then(() => {
-      const searchString = 'Withdrawn' + ' since ' + convertUnixTimeInMsToDateString(oldRequestTimestamp + 4 * 600000);
-      cy.get('[data-test="card_requestIs"]').should('contain', searchString);
     });
   });
 });
