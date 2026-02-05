@@ -202,18 +202,20 @@
             <span class="paginator-spacer"></span>
           </template>
           <template #paginatorend>
-            <PrimeButton
-              type="button"
-              icon="pi pi-cog"
-              variant="text"
-              class="column-selector-button"
-              data-test="column-selector-button"
-              aria-label="Configure columns"
-              @click="toggleColumnPopover"
-            />
+            <div class="column-selector-container">
+              <span class="column-selector-label">Select Columns</span>
+              <PrimeButton
+                type="button"
+                icon="pi pi-cog"
+                variant="text"
+                class="column-selector-button"
+                data-test="column-selector-button"
+                aria-label="Configure columns"
+                @click="toggleColumnPopover"
+              />
+            </div>
             <Popover ref="columnPopover" data-test="column-selector-popover">
               <div class="column-popover-content">
-                <span class="column-popover-title">Select Columns</span>
                 <div v-for="col in allColumns" :key="col.field" class="column-checkbox-row">
                   <Checkbox
                     v-model="selectedColumns"
@@ -512,8 +514,19 @@ function onRowClick(event: DataTableRowClickEvent): void {
   width: 3rem;
 }
 
-:deep(.p-datatable-paginator-bottom .column-selector-button) {
+:deep(.p-datatable-paginator-bottom .column-selector-container) {
   visibility: hidden;
+}
+
+.column-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.column-selector-label {
+  font-size: 0.875rem;
+  color: var(--p-primary-color);
 }
 
 :deep(.column-selector-button .pi) {
@@ -525,11 +538,6 @@ function onRowClick(event: DataTableRowClickEvent): void {
   flex-direction: column;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm);
-
-  .column-popover-title {
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-xs);
-  }
 
   .column-checkbox-row {
     display: flex;
