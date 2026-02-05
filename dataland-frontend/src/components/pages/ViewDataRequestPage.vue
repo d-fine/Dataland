@@ -118,11 +118,11 @@
                 :value="
                   dataSourcingDetails == null
                     ? getDisplayedStateLabel(storedRequest.state)
-                    : getDisplayedStateLabel(getMixedStatus(storedRequest.state, dataSourcingDetails.state))
+                    : getDisplayedStateLabel(getMixedState(storedRequest.state, dataSourcingDetails.state))
                 "
                 class="dataland-inline-tag"
               />
-              <span class="dataland-info-text normal"> since {{ getLastModifiedDate() }} </span>
+              <span class="dataland-info-text normal"> since {{ getLastTimestampInTable() }} </span>
             </span>
             <Divider />
             <p class="title">State History</p>
@@ -177,7 +177,6 @@ import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -189,7 +188,6 @@ import {
   type SingleRequest,
   type StoredRequest,
   type StoredDataSourcing,
-  type DataSourcingState,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -198,7 +196,8 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
-import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDisplayedStateLabel, getMixedState } from '@/utils/RequestsOverviewPageUtils.ts';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);
@@ -226,39 +225,25 @@ const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);
 
 /**
- * Determines the mixed status based on request state and data sourcing state.
- * If the request state is 'Withdrawn' or 'Open', or if data sourcing state is null,
- * it returns the request state. Otherwise, it returns the data sourcing state.
- *
- * @param requestState - The current state of the request.
- * @param dataSourcingState - The current state of data sourcing, which can be null.
- * @returns The mixed status as either RequestState or DataSourcingState.
+ * Get the last timestamp to be displayed in the "Request is since ..." text.
  */
-function getMixedStatus(
-  requestState: RequestState,
-  dataSourcingState: DataSourcingState | null
-): RequestState | DataSourcingState {
-  if (requestState == RequestState.Withdrawn || requestState == RequestState.Open || dataSourcingState == null) {
-    return requestState;
+function getLastTimestampInTable(): string {
+  if (dataSourcingHistory.value == null) {
+    return convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate);
   } else {
-    return dataSourcingState;
+    const maxTimestamp = Math.max(
+      dataSourcingHistory.value[dataSourcingHistory.value.length - 1]?.lastModifiedDate || 0,
+      storedRequest.lastModifiedDate
+    );
+    if (isUserKeycloakAdmin.value) {
+      return convertUnixTimeInMsToDateString(maxTimestamp);
+    }
+    if (storedRequest.state == RequestState.Withdrawn) {
+      return convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate);
+    } else {
+      return convertUnixTimeInMsToDateString(maxTimestamp);
+    }
   }
-}
-
-/**
- * Returns latest "last modified date" from storedRequest and dataSourcingHistory.
- */
-function getLastModifiedDate(): string {
-  const lastModifiedDateFromStoredRequest = storedRequest.lastModifiedDate;
-
-  const lastModifiedDateFromDataSourcingHistory =
-    dataSourcingHistory.value.length > 0
-      ? dataSourcingHistory.value[dataSourcingHistory.value.length - 1]?.lastModifiedDate || 0
-      : 0;
-
-  const lastModifiedDate = Math.max(lastModifiedDateFromStoredRequest, lastModifiedDateFromDataSourcingHistory);
-
-  return convertUnixTimeInMsToDateString(lastModifiedDate);
 }
 
 /**

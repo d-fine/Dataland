@@ -16,8 +16,8 @@
       >
         <template #body="{ data }">
           <DatalandTag
-            :severity="getMixedStatus(data.requestState, data.dataSourcingState) || '-'"
-            :value="getDisplayedStateLabel(getMixedStatus(data.requestState, data.dataSourcingState))"
+            :severity="getMixedState(data.requestState, data.dataSourcingState) || '-'"
+            :value="getDisplayedStateLabel(getMixedState(data.requestState, data.dataSourcingState))"
             class="dataland-inline-tag"
           />
         </template>
@@ -62,27 +62,7 @@ import {
   type DataSourcingState,
 } from '@clients/datasourcingservice';
 import DatalandTag from '@/components/general/DatalandTag.vue';
-import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
-
-/**
- * Determines the mixed status based on request state and data sourcing state.
- * If the request state is 'Withdrawn' or 'Open', or if data sourcing state is null,
- * it returns the request state. Otherwise, it returns the data sourcing state.
- *
- * @param requestState - The current state of the request.
- * @param dataSourcingState - The current state of data sourcing, which can be null.
- * @returns The mixed status as either RequestState or DataSourcingState.
- */
-function getMixedStatus(
-  requestState: RequestState,
-  dataSourcingState: DataSourcingState | null
-): RequestState | DataSourcingState {
-  if (requestState == RequestState.Withdrawn || requestState == RequestState.Open || dataSourcingState == null) {
-    return requestState;
-  } else {
-    return dataSourcingState;
-  }
-}
+import { getDisplayedStateLabel, getMixedState } from '@/utils/RequestsOverviewPageUtils.ts';
 
 const props = defineProps<{
   stateHistory: StoredRequest[];
@@ -169,7 +149,7 @@ function compactHistory(entries: CombinedHistoryEntry[]): CombinedHistoryEntry[]
   for (const entry of entries) {
     const requestState = entry.requestState ?? RequestState.Processing;
     const currentMixedState = getDisplayedStateLabel(
-      getMixedStatus(requestState as RequestState, entry.dataSourcingState as DataSourcingState | null)
+      getMixedState(requestState as RequestState, entry.dataSourcingState as DataSourcingState | null)
     );
     if (currentMixedState !== lastMixedState) {
       compacted.push(entry);

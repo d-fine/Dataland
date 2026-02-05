@@ -92,6 +92,26 @@ export function getDisplayedStateLabel(displayedState: DataSourcingState | Reque
 }
 
 /**
+ * Determines the mixed state based on request state and data sourcing state.
+ * If the request state is 'Withdrawn' or 'Open', or if data sourcing state is null,
+ * it returns the request state. Otherwise, it returns the data sourcing state.
+ *
+ * @param requestState - The current state of the request.
+ * @param dataSourcingState - The current state of data sourcing, which can be null.
+ * @returns The mixed state as either RequestState or DataSourcingState.
+ */
+export function getMixedState(
+  requestState: RequestState,
+  dataSourcingState: DataSourcingState | null
+): RequestState | DataSourcingState {
+  if (requestState == RequestState.Withdrawn || requestState == RequestState.Open || dataSourcingState == null) {
+    return requestState;
+  } else {
+    return dataSourcingState;
+  }
+}
+
+/**
  * Gets list with all available frameworks
  * @returns array of frameworkSelectableItem
  */
