@@ -19,6 +19,7 @@ import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -31,7 +32,6 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -60,14 +60,14 @@ internal class DataControllerTest {
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
     private val mockDataPointUtils = mock<DataPointUtils>()
-    private val mockSpecificationApi = mock<SpecificationControllerApi>()
+    private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val mockDatasetAssembler = mock<DatasetAssembler>()
     private val dataExportService =
         DataExportService<LksgData>(
             mockDatasetAssembler,
-            mockSpecificationApi,
+            mockSpecificationService,
             mockCompanyQueryManager,
             mockDatasetStorageService,
         )
