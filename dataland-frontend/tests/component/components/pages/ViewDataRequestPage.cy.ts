@@ -526,7 +526,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
 
-  it('Check that status and date of "Request is:" is equal to last entry in state history table', function () {
+  it('Check that status and date of "Request is:" is equal to last entry in state history table in admin view', function () {
     const dataSourcingEntityId = 'dummyDataSourcingId';
     const oldRequestTimestamp = 1709104495770;
     const request = createRequestWithDataSourcing(dataSourcingEntityId);
@@ -566,40 +566,64 @@ describe('Component tests for the view data request page', function (): void {
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
-      cy.get('[data-test="stateHistoryTable"]').should('contain', 'Data Extraction');
-      cy.wait(500); // Wait for DOM to stabilize
-      cy.get('[data-test="stateHistoryTable"] tbody tr')
-        .last()
-        .then(($lastRow) => {
-          const dateText = $lastRow.find('td').eq(0).text().trim();
-          cy.get('[data-test="card_requestIs"]').then(($card) => {
-            // Exclude any text from stateHistoryTable inside card_requestIs
-            const cardText = $card
-              .clone() // clone to avoid modifying the DOM
-              .find('[data-test="stateHistoryTable"]')
-              .remove()
-              .end() // remove stateHistoryTable
-              .text()
-              .trim();
-            expect(cardText).to.contain(dateText);
-          });
-        });
-      cy.get('[data-test="stateHistoryTable"] tbody tr')
-        .last()
-        .then(($lastRow) => {
-          const statusText = $lastRow.find('td').eq(1).text().trim();
-          cy.get('[data-test="card_requestIs"]').then(($card) => {
-            // Exclude any text from stateHistoryTable inside card_requestIs
-            const cardText = $card
-              .clone() // clone to avoid modifying the DOM
-              .find('[data-test="stateHistoryTable"]')
-              .remove()
-              .end() // remove stateHistoryTable
-              .text()
-              .trim();
-            expect(cardText).to.contain(statusText);
-          });
-        });
+      const searchString =
+        'Data Extraction' + ' since ' + convertUnixTimeInMsToDateString(oldRequestTimestamp + 3 * 600000);
+      cy.get('[data-test="card_requestIs"]').should('contain', searchString);
+    });
+  });
+  it('Check that status and date of "Request is:" is equal to last entry in state history table in non admin view', function () {
+    const dataSourcingEntityId = 'dummyDataSourcingId';
+    const oldRequestTimestamp = 1709104495770;
+    const request = createRequestWithDataSourcing(dataSourcingEntityId);
+
+    const requestHistory = [
+      createRequestHistoryEntry({
+        creationTimestamp: oldRequestTimestamp,
+        lastModifiedDate: oldRequestTimestamp,
+        adminComment: 'Request created',
+      }),
+      createRequestHistoryEntry({
+        creationTimestamp: oldRequestTimestamp,
+        lastModifiedDate: oldRequestTimestamp + 600000,
+        state: RequestState.Processing,
+        adminComment: 'Processing request',
+      }),
+      createRequestHistoryEntry({
+        creationTimestamp: oldRequestTimestamp,
+        lastModifiedDate: oldRequestTimestamp + 4 * 600000,
+        state: RequestState.Withdrawn,
+        adminComment: 'Request withdrawn',
+      }),
+    ];
+
+    const dataSourcingHistory = [
+      createDataSourcingHistoryEntry({
+        dataSourcingId: dataSourcingEntityId,
+        lastModifiedDate: oldRequestTimestamp + 3 * 600000,
+        state: DataSourcingState.DataExtraction,
+      }),
+      createDataSourcingHistoryEntry({
+        dataSourcingId: dataSourcingEntityId,
+        lastModifiedDate: oldRequestTimestamp + 5 * 600000,
+        state: DataSourcingState.DocumentSourcing,
+      }),
+    ];
+
+    setupDataSourcingInterceptions(
+      request,
+      requestHistory,
+      dataSourcingHistory,
+      'collector-uuid',
+      'Collector Ltd.',
+      'extractor-uuid',
+      'Extractor GmbH'
+    );
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_UPLOADER']) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      const searchString = 'Withdrawn' + ' since ' + convertUnixTimeInMsToDateString(oldRequestTimestamp + 4 * 600000);
+      cy.get('[data-test="card_requestIs"]').should('contain', searchString);
     });
   });
 });
