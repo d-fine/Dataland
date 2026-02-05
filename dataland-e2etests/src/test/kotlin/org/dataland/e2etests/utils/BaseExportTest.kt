@@ -1,6 +1,12 @@
 package org.dataland.e2etests.utils
 
 import org.awaitility.Awaitility
+import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportJobInfo
+import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
+import org.dataland.datalandbackend.openApiClient.model.ExportLatestRequestData
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
@@ -27,7 +33,10 @@ abstract class BaseExportTest<T> {
 
     protected abstract fun getNullFieldName(): String
 
-    protected abstract fun retrieveData(companyId: String): Any
+    protected abstract fun retrieveData(
+        companyId: String,
+        reportingPeriod: String,
+    ): Any
 
     protected abstract fun uploadData(
         companyId: String,
@@ -35,44 +44,61 @@ abstract class BaseExportTest<T> {
         reportingPeriod: String,
     )
 
-    protected abstract fun exportDataAsCsv(
+    protected abstract fun getExportJobPostingFunction(): (ExportRequestData, Boolean?, Boolean?) -> ExportJobInfo
+
+    protected abstract fun getExportLatestJobPostingFunction(): (ExportLatestRequestData, Boolean?, Boolean?) -> ExportJobInfo
+
+    private fun exportDataAsCsv(
         companyIds: List<String>,
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean = true,
         includeAliases: Boolean = false,
-    ): File
-
-    private fun exportDataAsCsvWithMetadata(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File = exportDataAsCsv(companyIds, reportingPeriods, keepValueFieldsOnly = false)
-
-    private fun exportDataAsCsvWithAlias(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
     ): File =
-        exportDataAsCsv(
-            companyIds = companyIds,
-            reportingPeriods = reportingPeriods,
-            keepValueFieldsOnly = true,
-            includeAliases = true,
+        exportData(
+            ExportRequestData(
+                reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+                fileFormat = ExportFileType.CSV,
+            ),
+            keepValueFieldsOnly,
+            includeAliases,
         )
 
-    private fun exportDataAsCsvWithoutAlias(
+    private fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
+        keepValueFieldsOnly: Boolean = true,
+        includeAliases: Boolean = false,
     ): File =
-        exportDataAsCsv(
-            companyIds = companyIds,
-            reportingPeriods = reportingPeriods,
-            keepValueFieldsOnly = true,
-            includeAliases = false,
+        exportData(
+            ExportRequestData(
+                reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+                fileFormat = ExportFileType.EXCEL,
+            ),
+            keepValueFieldsOnly = keepValueFieldsOnly,
+            includeAliases = includeAliases,
         )
 
-    protected abstract fun exportDataAsExcel(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File
+    private fun getExportedData(exportJobInfo: ExportJobInfo): File {
+        val exportJobId = exportJobInfo.id.toString()
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
+
+    private fun exportData(
+        exportRequestData: ExportRequestData,
+        keepValueFieldsOnly: Boolean = true,
+        includeAliases: Boolean = false,
+    ): File = getExportedData(getExportJobPostingFunction()(exportRequestData, keepValueFieldsOnly, includeAliases))
+
+    private fun exportLatestData(
+        exportLatestRequestData: ExportLatestRequestData,
+        keepValueFieldsOnly: Boolean = true,
+        includeAliases: Boolean = false,
+    ): File = getExportedData(getExportLatestJobPostingFunction()(exportLatestRequestData, keepValueFieldsOnly, includeAliases))
 
     /**
      * Uploads a company with a randomly generated Legal Entity Identifier (LEI) and associates it with the
@@ -112,6 +138,13 @@ abstract class BaseExportTest<T> {
             reportingPeriod = reportingPeriod,
         )
 
+        // Upload outdated data (with null field) for second company
+        uploadData(
+            companyId = companyWithNonNullFieldId,
+            data = getTestDataWithNonNullField(),
+            reportingPeriod = (reportingPeriod.toInt() - 1).toString(),
+        )
+
         waitForDataAvailability()
     }
 
@@ -135,8 +168,8 @@ abstract class BaseExportTest<T> {
             .pollInterval(500, TimeUnit.MILLISECONDS)
             .untilAsserted {
                 assertDoesNotThrow {
-                    retrieveData(companyWithNullFieldId)
-                    retrieveData(companyWithNonNullFieldId)
+                    retrieveData(companyWithNullFieldId, reportingPeriod)
+                    retrieveData(companyWithNonNullFieldId, reportingPeriod)
                 }
             }
     }
@@ -259,9 +292,10 @@ abstract class BaseExportTest<T> {
     protected fun testCsvExportIncludeDataMetaInformationFlag(fieldName: String) {
         // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
-            exportDataAsCsvWithMetadata(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
+                keepValueFieldsOnly = false,
             )
 
         // Export data with default includeDataMetaInformation=false
@@ -385,14 +419,15 @@ abstract class BaseExportTest<T> {
     protected fun testCsvExportIncludeAliasFlag(alias: String) {
         // Export data with includeAlias=true
         val exportWithAlias =
-            exportDataAsCsvWithAlias(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
+                includeAliases = true,
             )
 
         // Export data with default includeAlias=false
         val exportWithoutAlias =
-            exportDataAsCsvWithoutAlias(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
             )
@@ -423,5 +458,34 @@ abstract class BaseExportTest<T> {
             shouldExist = false,
             contextMessage = "CSV export with includeAlias=false should not include value of test field",
         )
+    }
+
+    protected fun testExportLatest() {
+        val companyIds = listOf(companyWithNullFieldId, companyWithNonNullFieldId)
+        val latestData =
+            exportLatestData(
+                ExportLatestRequestData(companyIds, ExportFileType.JSON),
+            )
+        ExportTestUtils.validateExportFile(latestData, "Latest export")
+
+        val oldData =
+            exportData(
+                ExportRequestData(
+                    companyIds = companyIds,
+                    reportingPeriods = listOf((reportingPeriod.toInt() - 1).toString()),
+                    fileFormat = ExportFileType.JSON,
+                ),
+            )
+        val newData =
+            exportData(
+                ExportRequestData(
+                    companyIds = companyIds,
+                    reportingPeriods = listOf(reportingPeriod),
+                    fileFormat = ExportFileType.JSON,
+                ),
+            )
+
+        Assertions.assertTrue { latestData.readText() != oldData.readText() }
+        Assertions.assertTrue { latestData.readText() == newData.readText() }
     }
 }

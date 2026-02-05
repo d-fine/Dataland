@@ -1,9 +1,8 @@
 // SFDR Test Implementation
 package org.dataland.e2etests.tests.frameworks
 
-import org.awaitility.Awaitility
-import org.dataland.datalandbackend.openApiClient.model.ExportFileType
-import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
+import org.dataland.datalandbackend.openApiClient.model.ExportJobInfo
+import org.dataland.datalandbackend.openApiClient.model.ExportLatestRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
@@ -13,9 +12,7 @@ import org.dataland.datalandbackend.openApiClient.model.YesNo
 import org.dataland.e2etests.utils.BaseExportTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.math.BigDecimal
-import java.util.concurrent.TimeUnit
 
 class SfdrExportTest : BaseExportTest<SfdrData>() {
     private lateinit var fullTestData: SfdrData
@@ -91,52 +88,16 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
         )
     }
 
-    override fun exportDataAsCsv(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-        keepValueFieldsOnly: Boolean,
-        includeAliases: Boolean,
-    ): File {
-        val exportJobId =
-            apiAccessor.dataControllerApiForSfdrData
-                .postExportJobCompanyAssociatedSfdrDataByDimensions(
-                    ExportRequestData(
-                        reportingPeriods = reportingPeriods,
-                        companyIds = companyIds,
-                        fileFormat = ExportFileType.CSV,
-                    ),
-                    keepValueFieldsOnly = keepValueFieldsOnly,
-                    includeAliases = includeAliases,
-                ).id
-                .toString()
-        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
-            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
-        }
-        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
-    }
+    override fun getExportJobPostingFunction(): (ExportRequestData, Boolean?, Boolean?) -> ExportJobInfo =
+        apiAccessor.dataControllerApiForSfdrData::postExportJobCompanyAssociatedSfdrDataByDimensions
 
-    override fun exportDataAsExcel(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File {
-        val exportJobId =
-            apiAccessor.dataControllerApiForSfdrData
-                .postExportJobCompanyAssociatedSfdrDataByDimensions(
-                    ExportRequestData(
-                        reportingPeriods = reportingPeriods,
-                        companyIds = companyIds,
-                        fileFormat = ExportFileType.EXCEL,
-                    ),
-                    includeAliases = false,
-                ).id
-                .toString()
-        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
-            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
-        }
-        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
-    }
+    override fun getExportLatestJobPostingFunction(): (ExportLatestRequestData, Boolean?, Boolean?) -> ExportJobInfo =
+        apiAccessor.dataControllerApiForSfdrData::postExportLatestJobCompanyAssociatedSfdrDataByDimensions
 
-    override fun retrieveData(companyId: String): Any =
+    override fun retrieveData(
+        companyId: String,
+        reportingPeriod: String,
+    ): Any =
         apiAccessor.dataControllerApiForSfdrData
             .getCompanyAssociatedSfdrDataByDimensions(
                 reportingPeriod = reportingPeriod,
@@ -166,5 +127,10 @@ class SfdrExportTest : BaseExportTest<SfdrData>() {
     @Test
     fun `test CSV export with and without dataMetaInformation`() {
         testCsvExportIncludeDataMetaInformationFlag("environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes")
+    }
+
+    @Test
+    fun `test that exporting latest data yields the data with the latest reporting period`() {
+        testExportLatest()
     }
 }

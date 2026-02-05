@@ -144,7 +144,7 @@ open class DataExportService<T>(
         clazz: Class<T>,
         exportOptions: ExportOptions,
     ) = buildStream(
-        getLatestPlainData(companyIds, newExportJob.frameworkName, newExportJob.id.toString()),
+        getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
         newExportJob,
         clazz,
         exportOptions,
