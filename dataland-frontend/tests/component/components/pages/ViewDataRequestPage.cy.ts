@@ -188,8 +188,7 @@ describe('Component tests for the view data request page', function (): void {
   function interceptDataSourcingDetails(
     dataSourcingDetailsState?: DataSourcingState,
     customCollectorId?: string,
-    customExtractorId?: string,
-    nextDataSourcingDate?: string
+    customExtractorId?: string
   ): void {
     const dataSourcing: Partial<StoredDataSourcing> = {
       dataSourcingId: dataSourcingEntityId,
@@ -199,7 +198,6 @@ describe('Component tests for the view data request page', function (): void {
       state: dataSourcingDetailsState ? dataSourcingDetailsState : DataSourcingState.Initialized,
       documentCollector: customCollectorId,
       dataExtractor: customExtractorId,
-      dateOfNextDocumentSourcingAttempt: nextDataSourcingDate,
     };
     cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
       body: dataSourcing,
@@ -393,9 +391,6 @@ describe('Component tests for the view data request page', function (): void {
     interceptDataSourcingDetails(DataSourcingState.Initialized);
     interceptCompanyInfo(collectorId, collectorName);
     interceptCompanyInfo(extractorId, extractorName);
-
-    interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
-    interceptDataSourcingDetails(DataSourcingState.Initialized);
 
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
