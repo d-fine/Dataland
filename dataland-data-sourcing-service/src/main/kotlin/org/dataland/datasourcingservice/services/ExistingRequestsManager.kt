@@ -149,7 +149,7 @@ class ExistingRequestsManager
         fun retrieveRequestHistory(requestId: UUID): List<StoredRequest> =
             dataRevisionRepository
                 .listDataRequestRevisionsById(requestId)
-                .map { it.toStoredDataRequest() }
+                .map { (entity, _) -> entity.toStoredDataRequest() }
                 .ifEmpty {
                     throw RequestNotFoundApiException(requestId)
                 }

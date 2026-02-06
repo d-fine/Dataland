@@ -79,11 +79,11 @@ class DataSourcingEntityAuditTests
                     .listDataSourcingRevisionsById(dataSourcingEntityId)
 
             Assertions.assertThat(entityRevisionList).hasSize(3) // Create, Update 1, Update 2
-            Assertions.assertThat(entityRevisionList[0].state).isEqualTo(initialState)
-            Assertions.assertThat(entityRevisionList[0].adminComment).isEqualTo(initialAdminComment)
-            Assertions.assertThat(entityRevisionList[1].state).isEqualTo(DataSourcingState.DocumentSourcing)
-            Assertions.assertThat(entityRevisionList[1].adminComment).isEqualTo(updatedAdminComment1)
-            Assertions.assertThat(entityRevisionList[2].state).isEqualTo(DataSourcingState.DataVerification)
-            Assertions.assertThat(entityRevisionList[2].adminComment).isEqualTo(updatedAdminComment2)
+            Assertions.assertThat(entityRevisionList[0].first.state).isEqualTo(initialState)
+            Assertions.assertThat(entityRevisionList[0].first.adminComment).isEqualTo(initialAdminComment)
+            Assertions.assertThat(entityRevisionList[1].first.state).isEqualTo(DataSourcingState.DocumentSourcing)
+            Assertions.assertThat(entityRevisionList[1].first.adminComment).isEqualTo(updatedAdminComment1)
+            Assertions.assertThat(entityRevisionList[2].first.state).isEqualTo(DataSourcingState.DataVerification)
+            Assertions.assertThat(entityRevisionList[2].first.adminComment).isEqualTo(updatedAdminComment2)
         }
     }
