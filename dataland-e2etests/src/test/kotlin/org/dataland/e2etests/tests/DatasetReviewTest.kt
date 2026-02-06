@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
-import org.dataland.e2etests.ADMIN_USER_ID
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -28,6 +27,21 @@ class DatasetReviewTest {
     private val datapointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
     private val datapointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
     private val datapointType3 = "extendedDecimalScope2GhgEmissionsInTonnes"
+    private val customDataPoint = "{ \"value\": \" 1000\", \"quality\": \"Reported\"}"
+
+    private val dummyQaReport1 =
+        QaReportDataPointString(
+            comment = "",
+            verdict = QaReportDataPointVerdict.QaAccepted,
+            correctedData = "{ \"value\": \" 100\", \"quality\": \"Reported\"}",
+        )
+
+    private val dummyQaReport2 =
+        QaReportDataPointString(
+            comment = "",
+            verdict = QaReportDataPointVerdict.QaRejected,
+            correctedData = "{ \"value\": \" 200\", \"quality\": \"Reported\"}",
+        )
 
     @BeforeAll
     fun postTestDocuments() {
@@ -58,20 +72,6 @@ class DatasetReviewTest {
         val datapoint1 = dataPoints[datapointType1]!!
         val datapoint2 = dataPoints[datapointType2]!!
 
-        val dummyQaReport1 =
-            QaReportDataPointString(
-                comment = "",
-                verdict = QaReportDataPointVerdict.QaAccepted,
-                correctedData = "{ \"value\": \" 100\", \"quality\": \"Reported\"}",
-            )
-
-        val dummyQaReport2 =
-            QaReportDataPointString(
-                comment = "",
-                verdict = QaReportDataPointVerdict.QaRejected,
-                correctedData = "{ \"value\": \" 200\", \"quality\": \"Reported\"}",
-            )
-
         val uploadedQaReportId1 =
             QaService.dataPointQaReportControllerApi
                 .postQaReport(datapoint1, dummyQaReport1)
@@ -81,13 +81,9 @@ class DatasetReviewTest {
             QaService.dataPointQaReportControllerApi
                 .postQaReport(datapoint2, dummyQaReport2)
                 .qaReportId
-        val customDataPoint = "{ \"value\": \" 1000\", \"quality\": \"Reported\"}"
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetReviewId = QaService.datasetReviewControllerApi.postDatasetReview(datasetId).dataSetReviewId
-            val reviewer = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0].reviewerUserId
-            println("Admin User ID: $ADMIN_USER_ID")
-            println("Reviewer: $reviewer")
             QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId1)
             QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId2)
             QaService.datasetReviewControllerApi.acceptOriginalDatapoint(
