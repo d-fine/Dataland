@@ -1,7 +1,7 @@
 <template>
   <div data-test="stateHistoryContainer" style="pointer-events: none; min-width: 1100px">
     <DataTable :value="combinedHistory" data-test="stateHistoryTable" scrollable class="p-datatable-sm">
-      <Column field="timestamp" header="Updated On" :style="isAdmin ? 'width: 20%' : 'width: 25%'">
+      <Column field="timestamp" header="Updated On" :style="isAdmin ? 'width: 20%' : 'width: 40%'">
         <template #body="{ data }">
           <span data-test="lastModifiedDate">
             {{ convertUnixTimeInMsToDateString(data.timestamp) }}
@@ -12,7 +12,7 @@
       <Column
         field="mixedState"
         :header="isAdmin ? 'Mixed State' : 'State'"
-        :style="isAdmin ? 'width: 20%' : 'width: 30%'"
+        :style="isAdmin ? 'width: 20%' : 'width: 60%'"
       >
         <template #body="{ data }">
           <DatalandTag
@@ -39,7 +39,7 @@
         </template>
       </Column>
 
-      <Column field="adminComment" header="Comment" :style="isAdmin ? 'width: 25%' : 'width: 45%'">
+      <Column v-if="isAdmin" field="adminComment" header="Comment" :style="'width: 25%'">
         <template #body="{ data }">
           <div style="display: inline-flex" data-test="adminComment">
             {{ data.adminComment || '—' }}

@@ -119,7 +119,7 @@ describe('Component tests for the Request State History', function (): void {
     cy.get('[data-test="stateHistoryTable"] th').should('contain', 'State');
     cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Request State');
     cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Data Sourcing State');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Comment');
+    cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Comment');
   });
 
   it('Check that entries with requestState = Processing and dataSourcingState = null are not shown', function () {

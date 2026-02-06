@@ -142,37 +142,24 @@ describe('Component tests for the view data request page', function (): void {
    * Mocks the data-sourcing-manager answer for data sourcing details
    * @param dataSourcingHistory the data sourcing history to determine the current state
    */
-  function interceptDataSourcingDetails(dataSourcingHistory: DataSourcingWithoutReferences[]): void {
-    const dataSourcingState =
-      dataSourcingHistory[dataSourcingHistory.length - 1]?.state || DataSourcingState.Initialized;
+  function interceptDataSourcingDetails(
+    dataSourcingDetailsState?: DataSourcingState,
+    customCollectorId?: string,
+    customExtractorId?: string
+  ): void {
     const dataSourcing: Partial<StoredDataSourcing> = {
       dataSourcingId: dataSourcingEntityId,
       companyId: dummyCompanyId,
       reportingPeriod: dummyReportingYear,
       dataType: dummyFramework,
-      state: dataSourcingState,
-      documentCollector: collectorId,
-      dataExtractor: extractorId,
+      state: dataSourcingDetailsState ? dataSourcingDetailsState : DataSourcingState.Initialized,
+      documentCollector: customCollectorId,
+      dataExtractor: customExtractorId,
     };
     cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
       body: dataSourcing,
       status: 200,
     });
-  }
-
-  /**
-   * Sets up Cypress interceptions for data sourcing history and details,
-   * and mocks company info for collector and extractor.
-   * @param history Array of DataSourcingWithoutReferences representing the history entries.
-   */
-  function setupDataSourcingHistoryInterceptions(history: DataSourcingWithoutReferences[]): void {
-    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}/history?stateChangesOnly=true`, {
-      body: history,
-      status: 200,
-    });
-    interceptDataSourcingDetails(history);
-    interceptCompanyInfo(collectorId, collectorName);
-    interceptCompanyInfo(extractorId, extractorName);
   }
 
   /**
@@ -238,6 +225,21 @@ describe('Component tests for the view data request page', function (): void {
     if (expectedState !== RequestState.Withdrawn) {
       cy.get('[data-test="card_withdrawn"]').should('be.visible');
     }
+  }
+
+  /**
+   * Sets up Cypress interceptions for data sourcing history and details,
+   * and mocks company info for collector and extractor.
+   * @param history Array of DataSourcingWithoutReferences representing the history entries.
+   */
+  function setupDataSourcingHistoryInterceptions(history: DataSourcingWithoutReferences[]): void {
+    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}/history?stateChangesOnly=true`, {
+      body: history,
+      status: 200,
+    });
+    interceptDataSourcingDetails(history[history.length - 1]?.state, collectorId, extractorId);
+    interceptCompanyInfo(collectorId, collectorName);
+    interceptCompanyInfo(extractorId, extractorName);
   }
 
   /**
@@ -393,7 +395,11 @@ describe('Component tests for the view data request page', function (): void {
     ] as Array<DataSourcingWithoutReferences>;
 
     interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
-    interceptDataSourcingDetails(historyWithNonSourceableEntry);
+    interceptDataSourcingDetails(
+      historyWithNonSourceableEntry[historyWithNonSourceableEntry.length - 1]?.state,
+      collectorId,
+      extractorId
+    );
     interceptCompanyInfo(collectorId, collectorName);
     interceptCompanyInfo(extractorId, extractorName);
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
@@ -407,6 +413,11 @@ describe('Component tests for the view data request page', function (): void {
   });
 
   it('Check display of collector and extractor names when null', function () {
+    interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
+    interceptDataSourcingDetails(DataSourcingState.Initialized);
+    interceptCompanyInfo(collectorId, collectorName);
+    interceptCompanyInfo(extractorId, extractorName);
+
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     }).then(() => {
