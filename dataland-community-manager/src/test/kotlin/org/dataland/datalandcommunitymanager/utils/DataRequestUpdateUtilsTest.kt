@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.RequestEmailManager
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -48,7 +49,7 @@ class DataRequestUpdateUtilsTest {
 
     @BeforeEach
     fun setup() {
-        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         dummyDataRequestEntity =
             DataRequestEntity(
                 userId = "",

@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageBuilder
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -17,6 +16,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailConten
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -63,7 +63,8 @@ class BulkDataRequestEmailMessageSenderTest {
 
     @BeforeEach
     fun setup() {
-        authenticationMock = TestUtils.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        authenticationMock =
+            AuthenticationMock.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         val companyApiMock = Mockito.mock(CompanyDataControllerApi::class.java)
         val companyInfoMock = Mockito.mock(CompanyInformation::class.java)
         Mockito.`when`(companyInfoMock.companyName).thenReturn(companyName)
