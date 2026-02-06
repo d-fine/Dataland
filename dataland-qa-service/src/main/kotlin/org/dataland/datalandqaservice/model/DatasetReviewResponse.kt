@@ -9,7 +9,7 @@ data class DatasetReviewResponse(
     val companyId: String,
     val dataType: String,
     val reportingPeriod: String,
-    var status: DatasetReviewState,
+    var reviewState: DatasetReviewState,
     var reviewerUserId: String?,
     var reviewerUserName: String?,
     var preapprovedDataPointIds: Set<String>,

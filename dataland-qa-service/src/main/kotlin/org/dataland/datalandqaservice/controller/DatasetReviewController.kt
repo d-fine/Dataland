@@ -31,13 +31,13 @@ class DatasetReviewController(
     override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity.ok(datasetReviewService.setReviewer(convertToUUID(datasetReviewId)))
 
-    override fun setState(
+    override fun setReviewState(
         datasetReviewId: String,
         state: DatasetReviewState,
     ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService.setState(
+                datasetReviewService.setReviewState(
                     convertToUUID(datasetReviewId),
                     state,
                 ),

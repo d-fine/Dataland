@@ -2,8 +2,10 @@ package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
@@ -35,6 +37,29 @@ class DatasetReviewSupportServiceTest {
             specificationControllerApi,
             dataPointQaReportRepository,
         )
+
+    @Test
+    fun `getDataMetaDataInfo delegates to MetaDataControllerApi and returns its result`() {
+        val datasetId = UUID.randomUUID().toString()
+        val expected =
+            DataMetaInformation(
+                dataId = datasetId,
+                companyId = UUID.randomUUID().toString(),
+                dataType = DataTypeEnum.sfdr,
+                uploadTime = 1L,
+                reportingPeriod = "2026",
+                currentlyActive = false,
+                qaStatus = QaStatus.Pending,
+            )
+
+        whenever(metaDataControllerApi.getDataMetaInfo(datasetId))
+            .thenReturn(expected)
+
+        val result = service.getDataMetaInfo(datasetId)
+
+        assertEquals(expected, result)
+        verify(metaDataControllerApi).getDataMetaInfo(datasetId)
+    }
 
     @Test
     fun `getContainedDataPoints delegates to MetaDataControllerApi and returns its result`() {
@@ -135,8 +160,8 @@ class DatasetReviewSupportServiceTest {
 
         val entity1 =
             DataPointQaReportEntity(
-                qaReportId = "qa1",
-                dataPointId = "dp1",
+                qaReportId = expectedQaReportIds[0],
+                dataPointId = dataPointIds[0],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
                 correctedData = dummyDatapoint,
@@ -147,8 +172,8 @@ class DatasetReviewSupportServiceTest {
             )
         val entity2 =
             DataPointQaReportEntity(
-                dataPointId = "dp2",
-                qaReportId = "qa2",
+                qaReportId = expectedQaReportIds[1],
+                dataPointId = dataPointIds[1],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
                 correctedData = dummyDatapoint,

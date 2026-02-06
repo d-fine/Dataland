@@ -94,13 +94,13 @@ class DatasetReviewService
          * Method to set state of dataset review object.
          */
         @Transactional
-        fun setState(
+        fun setReviewState(
             datasetReviewId: UUID,
             state: DatasetReviewState,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReviewById(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            datasetReview.state = state
+            datasetReview.reviewState = state
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }

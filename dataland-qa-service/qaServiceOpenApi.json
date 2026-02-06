@@ -49,6 +49,16 @@
               }
             }
           },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
           "default": {
             "description": "An error occurred",
             "content": {
@@ -1320,7 +1330,7 @@
         ],
         "summary": "Change the state of a dataset review object.",
         "description": "Modify state of the dataset review object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
-        "operationId": "setState",
+        "operationId": "setReviewState",
         "parameters": [
           {
             "name": "datasetReviewId",
@@ -3344,7 +3354,7 @@
           "preapprovedDataPointIds",
           "qaReports",
           "reportingPeriod",
-          "status"
+          "reviewState"
         ],
         "type": "object",
         "properties": {
@@ -3363,7 +3373,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "status": {
+          "reviewState": {
             "$ref": "#/components/schemas/DatasetReviewState"
           },
           "reviewerUserId": {

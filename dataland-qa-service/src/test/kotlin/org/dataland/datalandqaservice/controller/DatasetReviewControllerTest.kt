@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
@@ -19,6 +20,36 @@ class DatasetReviewControllerTest {
     private val controller = DatasetReviewController(datasetReviewService)
 
     @Test
+    fun `getDatasetReviewsById delegates to service and returns expected body`() {
+        val datasetReviewId = UUID.randomUUID()
+        val response =
+            DatasetReviewEntity(
+                dataSetReviewId = datasetReviewId,
+                datasetId = UUID.randomUUID(),
+                companyId = UUID.randomUUID(),
+                reviewerUserId = UUID.randomUUID(),
+                qaReports = emptySet(),
+                dataType = "sfdr",
+                reportingPeriod = "2025",
+                reviewState = DatasetReviewState.Pending,
+                preapprovedDataPointIds = emptySet(),
+                approvedQaReportIds = mutableMapOf(),
+                approvedDataPointIds = mutableMapOf(),
+                approvedCustomDataPointIds = mutableMapOf(),
+            )
+
+        whenever(datasetReviewService.getDatasetReviewById(datasetReviewId))
+            .thenReturn(response)
+
+        val result = controller.getDatasetReview(datasetReviewId.toString())
+
+        assertEquals(HttpStatus.OK, result.statusCode)
+        assertEquals(response.toDatasetReviewResponse(), result.body)
+
+        verify(datasetReviewService).getDatasetReviewById(datasetReviewId)
+    }
+
+    @Test
     fun `getDatasetReviewsByDatasetId delegates to service and returns expected body`() {
         val datasetId = UUID.randomUUID()
         val response =
@@ -31,7 +62,7 @@ class DatasetReviewControllerTest {
                 qaReports = emptySet(),
                 dataType = "sfdr",
                 reportingPeriod = "2025",
-                status = DatasetReviewState.Pending,
+                reviewState = DatasetReviewState.Pending,
                 preapprovedDataPointIds = emptySet(),
                 approvedQaReportIds = emptyMap(),
                 approvedDataPointIds = emptyMap(),
@@ -67,7 +98,7 @@ class DatasetReviewControllerTest {
                 qaReports = emptySet(),
                 dataType = dataType,
                 reportingPeriod = reportingPeriod,
-                status = DatasetReviewState.Pending,
+                reviewState = DatasetReviewState.Pending,
                 preapprovedDataPointIds = emptySet(),
                 approvedQaReportIds = emptyMap(),
                 approvedDataPointIds = emptyMap(),
@@ -103,21 +134,21 @@ class DatasetReviewControllerTest {
     }
 
     @Test
-    fun `setState delegates to service`() {
+    fun `setReviewState delegates to service`() {
         val id = UUID.randomUUID()
         val state = DatasetReviewState.Finished
         val serviceResponse = mock<DatasetReviewResponse>()
 
-        whenever(datasetReviewService.setState(id, state))
+        whenever(datasetReviewService.setReviewState(id, state))
             .thenReturn(serviceResponse)
 
-        val result = controller.setState(id.toString(), state)
+        val result = controller.setReviewState(id.toString(), state)
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).setState(idCaptor.capture(), eq(state))
+        verify(datasetReviewService).setReviewState(idCaptor.capture(), eq(state))
         assertEquals(id, idCaptor.firstValue)
     }
 

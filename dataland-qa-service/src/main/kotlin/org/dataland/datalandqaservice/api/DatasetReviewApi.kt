@@ -51,6 +51,7 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully added dataset review object to dataland."),
+            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
         ],
     )
     @PostMapping(
@@ -132,7 +133,7 @@ interface DatasetReviewApi {
         ],
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
-    fun setState(
+    fun setReviewState(
         @PathVariable datasetReviewId: String,
         @Parameter(
             name = "datasetReviewState",

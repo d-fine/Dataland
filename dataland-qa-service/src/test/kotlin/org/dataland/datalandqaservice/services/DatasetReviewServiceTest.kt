@@ -184,18 +184,18 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setState updates status when user is reviewer`() {
+    fun `setReviewState updates status when user is reviewer`() {
         val newState = DatasetReviewState.Aborted
 
-        datasetReviewService.setState(UUID.randomUUID(), newState)
+        datasetReviewService.setReviewState(UUID.randomUUID(), newState)
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
-        assertEquals(newState, captor.firstValue.state)
+        assertEquals(newState, captor.firstValue.reviewState)
     }
 
     @Test
-    fun `setState throws InsufficientRights when current user is not reviewer`() {
+    fun `setReviewState throws InsufficientRights when current user is not reviewer`() {
         val otherUserId = UUID.randomUUID()
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
@@ -204,7 +204,7 @@ class DatasetReviewServiceTest {
         )
 
         assertThrows<InsufficientRightsApiException> {
-            datasetReviewService.setState(UUID.randomUUID(), DatasetReviewState.Pending)
+            datasetReviewService.setReviewState(UUID.randomUUID(), DatasetReviewState.Pending)
         }
     }
 
