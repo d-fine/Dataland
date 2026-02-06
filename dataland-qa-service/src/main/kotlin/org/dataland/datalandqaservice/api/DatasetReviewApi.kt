@@ -76,7 +76,7 @@ interface DatasetReviewApi {
         ],
     )
     @GetMapping(
-        value = ["/{datasetId}"],
+        value = ["/{datasetId}/datasetId"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")

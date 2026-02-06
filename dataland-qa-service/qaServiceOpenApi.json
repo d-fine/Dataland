@@ -21,72 +21,6 @@
   ],
   "paths": {
     "/{datasetId}": {
-      "get": {
-        "tags": [
-          "dataset-review-controller"
-        ],
-        "summary": "Get dataset review objects by dataset id.",
-        "description": "Retrieve all dataset review objects associated with the specified dataset id.",
-        "operationId": "getDatasetReviewsByDatasetId",
-        "parameters": [
-          {
-            "name": "datasetId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved dataset review objects.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DatasetReviewResponse"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DatasetReviewResponse"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "dataset-review-controller"
@@ -2184,6 +2118,74 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{datasetId}/datasetId": {
+      "get": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Get dataset review objects by dataset id.",
+        "description": "Retrieve all dataset review objects associated with the specified dataset id.",
+        "operationId": "getDatasetReviewsByDatasetId",
+        "parameters": [
+          {
+            "name": "datasetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                  }
                 }
               }
             }
