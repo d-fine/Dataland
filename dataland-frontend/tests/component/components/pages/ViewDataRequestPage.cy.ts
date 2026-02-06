@@ -139,8 +139,10 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Mocks the data-sourcing-manager answer for data sourcing details
-   * @param dataSourcingHistory the data sourcing history to determine the current state
+   * Mocks the data-sourcing-manager answer for data sourcing details, with optional parameters to customize the response
+   * @param dataSourcingDetailsState the state to set in the mocked data sourcing details (defaults to Initialized if not provided)
+   * @param customCollectorId optional custom collector company ID to include in the response
+   * @param customExtractorId optional custom extractor company ID to include in the response
    */
   function interceptDataSourcingDetails(
     dataSourcingDetailsState?: DataSourcingState,
