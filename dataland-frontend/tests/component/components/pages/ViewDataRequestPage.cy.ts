@@ -75,6 +75,47 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
+   * Checks the presence and content of basic page elements on the view data request page, with conditional checks based on admin status and expected state/time
+   * @param isAdminUser boolean indicating if the user is an admin (affects visibility of certain elements)
+   * @param expectedState the expected state to check for in the "Request is" card
+   * @param expectedTime the expected time to check for in the "Request is" card (used to verify the "since" timestamp)
+   */
+  function checkBasicPageElements(
+    isAdminUser: boolean,
+    expectedState: RequestState | DataSourcingState,
+    expectedTime: number
+  ): void {
+    cy.contains('Data Request').should('exist');
+    cy.contains('Request Details').should('exist');
+    cy.contains('Request is').should('exist');
+    cy.contains('Document Collector').should(isAdminUser ? 'exist' : 'not.exist');
+    cy.contains('Data Extractor').should(isAdminUser ? 'exist' : 'not.exist');
+
+    cy.get('[data-test="card_requestDetails"]').should('exist');
+    cy.get('[data-test="card_requestDetails"]').within(() => {
+      cy.contains('Requester').should(isAdminUser ? 'exist' : 'not.exist');
+      cy.contains(`${dummyEmail}`).should(isAdminUser ? 'exist' : 'not.exist');
+      cy.contains('Company').should('exist');
+      cy.contains(`${dummyCompanyName}`).should('exist');
+      cy.contains('Framework').should('exist');
+      cy.contains(`${humanizeStringOrNumber(dummyFramework)}`).should('exist');
+      cy.contains('Reporting year').should('exist');
+      cy.contains(`${dummyReportingYear}`).should('exist');
+    });
+    cy.get('[data-test="card_requestIs"]').should('exist');
+    cy.get('[data-test="card_requestIs"]').within(() => {
+      const searchString =
+        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
+      cy.contains(searchString).should('exist');
+    });
+    if (expectedState !== RequestState.Withdrawn && isAdminUser) {
+      cy.get('[data-test="card_withdrawn"]').should('be.visible');
+    } else {
+      cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
+    }
+  }
+
+  /**
    * Mocks the data-sourcing-manager answer for single data request of the users
    * @param requestState the request state
    */
@@ -165,71 +206,6 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Checks the existence of basic elements of the page
-   * @param expectedState the request state to check for
-   * @param expectedTime the expected time to check for
-   */
-  function checkBasicPageElementsAsUser(expectedState: RequestState | DataSourcingState, expectedTime: number): void {
-    cy.contains('Data Request').should('exist');
-    cy.contains('Request Details').should('exist');
-    cy.contains('Request is').should('exist');
-    cy.contains('Document Collector').should('not.exist');
-    cy.contains('Data Extractor').should('not.exist');
-
-    cy.get('[data-test="card_requestDetails"]').should('exist');
-    cy.get('[data-test="card_requestDetails"]').within(() => {
-      cy.contains('Requester').should('not.exist');
-      cy.contains('Company').should('exist');
-      cy.contains(`${dummyCompanyName}`).should('exist');
-      cy.contains('Framework').should('exist');
-      cy.contains(`${humanizeStringOrNumber(dummyFramework)}`).should('exist');
-      cy.contains('Reporting year').should('exist');
-      cy.contains(`${dummyReportingYear}`).should('exist');
-    });
-    cy.get('[data-test="card_requestIs"]').should('exist');
-    cy.get('[data-test="card_requestIs"]').within(() => {
-      const searchString =
-        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
-      cy.contains(searchString).should('exist');
-    });
-    cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
-  }
-
-  /**
-   * Checks the existence of basic elements of the page when admin is visiting
-   * @param expectedState the request state to check for
-   * @param expectedTime the expected time to check for
-   */
-  function checkBasicPageElementsAsAdmin(expectedState: RequestState | DataSourcingState, expectedTime: number): void {
-    cy.contains('Data Request').should('exist');
-    cy.contains('Request Details').should('exist');
-    cy.contains('Request is').should('exist');
-    cy.contains('Document Collector').should('exist');
-    cy.contains('Data Extractor').should('exist');
-
-    cy.get('[data-test="card_requestDetails"]').should('exist');
-    cy.get('[data-test="card_requestDetails"]').within(() => {
-      cy.contains('Requester').should('exist');
-      cy.contains(`${dummyEmail}`).should('exist');
-      cy.contains('Company').should('exist');
-      cy.contains(`${dummyCompanyName}`).should('exist');
-      cy.contains('Framework').should('exist');
-      cy.contains(`${humanizeStringOrNumber(dummyFramework)}`).should('exist');
-      cy.contains('Reporting year').should('exist');
-      cy.contains(`${dummyReportingYear}`).should('exist');
-    });
-    cy.get('[data-test="card_requestIs"]').should('exist');
-    cy.get('[data-test="card_requestIs"]').within(() => {
-      const searchString =
-        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
-      cy.contains(searchString).should('exist');
-    });
-    if (expectedState !== RequestState.Withdrawn) {
-      cy.get('[data-test="card_withdrawn"]').should('be.visible');
-    }
-  }
-
-  /**
    * Sets up Cypress interceptions for data sourcing history and details,
    * and mocks company info for collector and extractor.
    * @param history Array of DataSourcingWithoutReferences representing the history entries.
@@ -239,7 +215,7 @@ describe('Component tests for the view data request page', function (): void {
       body: history,
       status: 200,
     });
-    interceptDataSourcingDetails(history[history.length - 1]?.state, collectorId, extractorId);
+    interceptDataSourcingDetails(history.at(length - 1)?.state, collectorId, extractorId);
     interceptCompanyInfo(collectorId, collectorName);
     interceptCompanyInfo(extractorId, extractorName);
   }
@@ -272,9 +248,9 @@ describe('Component tests for the view data request page', function (): void {
       props: { requestId: requestId },
     }).then(() => {
       if (options.keycloak.hasRealmRole('ROLE_ADMIN')) {
-        checkBasicPageElementsAsAdmin(expectedState, expectedTime);
+        checkBasicPageElements(true, expectedState, expectedTime);
       } else {
-        checkBasicPageElementsAsUser(expectedState, expectedTime);
+        checkBasicPageElements(false, expectedState, expectedTime);
       }
     });
   }
@@ -350,7 +326,7 @@ describe('Component tests for the view data request page', function (): void {
       });
       cy.get('[data-test="success-modal"]').should('exist').should('be.visible').contains('OK').click();
       cy.get('[data-test="success-modal"]').should('not.exist');
-      checkBasicPageElementsAsAdmin(RequestState.Withdrawn, dummyLastModifiedDate);
+      checkBasicPageElements(true, RequestState.Withdrawn, dummyLastModifiedDate);
     });
   });
 
@@ -397,11 +373,7 @@ describe('Component tests for the view data request page', function (): void {
     ] as Array<DataSourcingWithoutReferences>;
 
     interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
-    interceptDataSourcingDetails(
-      historyWithNonSourceableEntry[historyWithNonSourceableEntry.length - 1]?.state,
-      collectorId,
-      extractorId
-    );
+    interceptDataSourcingDetails(historyWithNonSourceableEntry.at(length - 1)?.state, collectorId, extractorId);
     interceptCompanyInfo(collectorId, collectorName);
     interceptCompanyInfo(extractorId, extractorName);
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {

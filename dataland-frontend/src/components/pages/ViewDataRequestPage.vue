@@ -232,7 +232,7 @@ function getLastTimestampInTable(): string {
     return convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate);
   } else {
     const maxTimestamp = Math.max(
-      dataSourcingHistory.value[dataSourcingHistory.value.length - 1]?.lastModifiedDate || 0,
+      dataSourcingHistory.value.at(length - 1)?.lastModifiedDate || 0,
       storedRequest.lastModifiedDate
     );
     if (isUserKeycloakAdmin.value) {

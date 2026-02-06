@@ -92,34 +92,31 @@ describe('Component tests for the Request State History', function (): void {
     },
   ] as Array<DataSourcingWithoutReferences>;
 
-  it('Check existence of columns in state history table for Admins', function () {
+  /**
+   * Helper function to check the existence of columns in the state history table based on user role
+   * @param isAdminUser - boolean indicating whether the user is an admin or not
+   */
+  function checkColumnExistence(isAdminUser: boolean): void {
     getMountingFunction()(RequestStateHistory, {
       props: {
         stateHistory: dummyStateHistory,
-        isAdmin: true,
+        isAdmin: isAdminUser,
       },
     });
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
     cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Updated On');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Mixed State');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Request State');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Data Sourcing State');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Comment');
+    cy.get('[data-test="stateHistoryTable"] th').should('contain', isAdminUser ? 'Mixed State' : 'State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Request State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Data Sourcing State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Comment');
+  }
+
+  it('Check existence of columns in state history table for Admins', function () {
+    checkColumnExistence(true);
   });
 
   it('Check existence of columns in state history table for non admin users', function () {
-    getMountingFunction()(RequestStateHistory, {
-      props: {
-        stateHistory: dummyStateHistory,
-        isAdmin: false,
-      },
-    });
-    cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Updated On');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'State');
-    cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Request State');
-    cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Data Sourcing State');
-    cy.get('[data-test="stateHistoryTable"] th').should('not.contain', 'Comment');
+    checkColumnExistence(false);
   });
 
   it('Check that entries with requestState = Processing and dataSourcingState = null are not shown', function () {
@@ -180,11 +177,11 @@ describe('Component tests for the Request State History', function (): void {
         const state = row.querySelector('[data-test="requestState"]')?.textContent?.trim();
         const comment = row.querySelector('[data-test="adminComment"]')?.textContent?.trim();
         if (state && comment) {
-          if (!stateToComments[state]) {
+          if (stateToComments[state]) {
+            expect(comment).eq(stateToComments[state]);
+          } else {
             stateToComments[state] = new Set();
             stateToComments[state].add(comment);
-          } else {
-            expect(comment).eq(stateToComments[state]);
           }
         }
       });
