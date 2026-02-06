@@ -217,7 +217,7 @@ describe('Component tests for the data requests search page', function (): void 
       cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(value).should('exist');
     }
     cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('2019').should('not.exist');
-    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains(dummyDate).should('be.visible');
+    cy.get('[data-test="requested-datasets-table"]').find('tr').find('td').contains('1 Nov 2024').should('be.visible');
   });
 
   it('Check existence and functionality of searchbar', function (): void {
