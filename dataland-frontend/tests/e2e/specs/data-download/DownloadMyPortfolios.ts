@@ -165,17 +165,20 @@ describeIf(
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
       portfolioName = `Download Portfolio ${Date.now()}`;
 
-      return getKeycloakToken(admin_name, admin_pw).then((token) => {
-        return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
-          .then((company1) => {
-            storedCompany = company1;
-            return setupCompanyWithData(token, secondCompanyName, ['2023', '2024']);
-          })
-          .then((company2) => {
-            secondCompany = company2;
-            createPortfolio(storedCompany, secondCompany, portfolioName);
-          });
-      });
+      return getKeycloakToken(admin_name, admin_pw)
+        .then((token) => {
+          return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
+            .then((company1) => {
+              storedCompany = company1;
+              return setupCompanyWithData(token, secondCompanyName, ['2023', '2024']);
+            })
+            .then((company2) => {
+              secondCompany = company2;
+            });
+        })
+        .then(() => {
+          createPortfolio(storedCompany, secondCompany, portfolioName);
+        });
     });
 
     beforeEach(() => {
@@ -185,9 +188,11 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
+      cy.get('[data-test="reportingPeriodSelector"]').click();
       for (const year of reportingYearsToSelect) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
+        cy.get('.p-multiselect-list').contains(year).click();
       }
+      cy.get('body').click(0, 0);
     });
 
     testDownloadPortfolio({
@@ -212,14 +217,16 @@ describeIf(
       fileType: 'Excel File (.xlsx)',
     });
 
-    it('Shows that not all reporting periods are clickable when data is missing', () => {
-      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
-      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
-      cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
-
+    it('Shows that unavailable reporting periods are not shown in the dropdown', () => {
+      cy.get('[data-test="reportingPeriodSelector"]').click();
       for (const year of unavailableYears) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).parent().should('have.class', 'disabled');
+        cy.get('.p-multiselect-list').should('not.contain', year);
       }
+    });
+
+    it('Enables latest reporting period toggle and verifies reporting period selector is disabled', () => {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+      cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
     });
   }
 );
