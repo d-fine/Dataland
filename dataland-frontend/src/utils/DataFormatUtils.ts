@@ -30,21 +30,6 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 }
 
 /**
- * Formats the given date string to a more user-friendly format that also includes the weekday
- * @param date the date string in the format of "yyyy-MM-dd"
- * @returns a more user-friendly date string representing the given date, including the weekday (e.g. "Wed, 25 Jan 2023")
- */
-export function formatIsoDateToWeekday(date: string): string {
-  const d = new Date(`${date}T00:00:00`);
-  return d.toLocaleDateString('en-gb', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-/**
  * Converts the given date string to a more user-friendly format
  * @param date the date
  * @returns a more user-friendly date string representing the given date

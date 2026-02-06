@@ -86,7 +86,7 @@
           <div v-if="dataSourcingDetails != null && dataSourcingDetails.dateOfNextDocumentSourcingAttempt">
             <div class="side-header">Date of next sourcing attempt</div>
             <div class="data" data-test="date-next-sourcing-attempt">
-              {{ formatIsoDateToWeekday(dataSourcingDetails.dateOfNextDocumentSourcingAttempt) }}
+              {{ dateStringFormatter(dataSourcingDetails.dateOfNextDocumentSourcingAttempt) }}
             </div>
           </div>
           <div v-if="isUserKeycloakAdmin">
@@ -197,7 +197,7 @@ import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
 import { getDisplayedStateLabel, getMixedState } from '@/utils/RequestsOverviewPageUtils.ts';
-import { convertUnixTimeInMsToDateString, formatIsoDateToWeekday } from '@/utils/DataFormatUtils.ts';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);
