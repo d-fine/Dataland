@@ -421,7 +421,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check that "Date of next sourcing attempt" shows correctly when not null', function (): void {
     interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
-    interceptDataSourcingDetails(DataSourcingState.Initialized, undefined, undefined, 'Fri, 06 Feb 2026');
+    interceptDataSourcingDetails(DataSourcingState.Initialized, undefined, undefined, '2026-02-06');
 
     getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
       props: { requestId: requestId },
@@ -429,7 +429,7 @@ describe('Component tests for the view data request page', function (): void {
       cy.get('[data-test="card_requestDetails"]').within(() => {
         cy.get('[data-test="date-next-sourcing-attempt"]').should('exist');
         cy.contains('Date of next sourcing attempt').should('exist');
-        cy.get('[data-test="date-next-sourcing-attempt"]').should('contain', 'Fri, 06 Feb 2026');
+        cy.get('[data-test="date-next-sourcing-attempt"]').should('contain', 'Fri, 6 Feb 2026');
       });
     });
   });
