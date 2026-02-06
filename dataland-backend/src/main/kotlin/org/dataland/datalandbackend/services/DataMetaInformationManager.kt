@@ -132,15 +132,13 @@ class DataMetaInformationManager(
     }
 
     /**
-     * Method to retrieve the latest available dataset meta information for a certain company and data type
-     * @param companyId the id of the company
+     * Method to retrieve the latest available dataset meta information for a certain data type and a collection of companies
+     * @param companyIds the ids of the companies
      * @param dataType the type of dataset
      * @return the latest available dataset meta information, or null if no dataset is found
      */
     fun getLatestAvailableDatasetMetaInformation(
-        companyId: String,
+        companyIds: Collection<String>,
         dataType: String,
-    ): DataMetaInformationEntity? =
-        dataMetaInformationRepository
-            .findFirstByCompanyCompanyIdAndDataTypeAndCurrentlyActiveTrueOrderByReportingPeriodDesc(companyId, dataType)
+    ): List<DataMetaInformationEntity> = dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
 }

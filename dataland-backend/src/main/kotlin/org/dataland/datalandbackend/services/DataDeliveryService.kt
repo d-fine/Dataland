@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -106,31 +107,35 @@ class DataDeliveryService
         }
 
         /**
-         * Retrieves the latest available assembled dataset for a certain company and data type
+         * Retrieves the latest available assembled datasets for a particular data type and a collection of companíes
          *
-         * @param companyId the id of the company
+         * If no data is available for a company, it is omitted from the result.
+         *
+         * @param companyIds the ids of the companies
          * @param framework the type of dataset
          * @param correlationId the correlation id for the operation
-         * @return the latest available reporting period and the corresponding dataset, or null if no dataset is found
+         * @return the latest available data for each company
          */
-        fun getLatestAvailableAssembledDataset(
-            companyId: String,
+        fun getLatestAvailableAssembledDatasets(
+            companyIds: Collection<String>,
             framework: String,
             correlationId: String,
-        ): Pair<String, String>? {
+        ): List<PlainDataAndDimensions> {
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()
-            val deliverableDataPoints = dataAvailabilityChecker.getLatestAvailableDataPointIds(companyId, dataPointTypes)
+            val deliverableDataPointIds =
+                dataAvailabilityChecker
+                    .getLatestAvailableDataPointIds(companyIds, dataPointTypes)
+                    .entries
+                    .associate {
+                        BasicDatasetDimensions(it.key.companyId, framework, it.key.reportingPeriod) to it.value.map { dp -> dp.dataPointId }
+                    }
 
-            val reportingPeriod = deliverableDataPoints.firstOrNull()?.reportingPeriod ?: return null
-            val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
-            val plainData =
-                assembleDatasetsFromDataPointIds(
-                    mapOf(
-                        dataDimensions to deliverableDataPoints.map { it.dataPointId },
-                    ),
-                    correlationId,
-                ).getValue(dataDimensions)
-
-            return Pair(reportingPeriod, plainData)
+            return assembleDatasetsFromDataPointIds(deliverableDataPointIds, correlationId)
+                .map {
+                    PlainDataAndDimensions(
+                        dimensions = it.key,
+                        data = it.value,
+                    )
+                }
         }
     }

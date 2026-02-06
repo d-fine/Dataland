@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -147,6 +148,47 @@ interface DataApi<T> {
     fun postExportJobCompanyAssociatedDataByDimensions(
         @Valid @RequestBody
         exportRequestData: ExportRequestData,
+        @Parameter(
+            name = "keepValueFieldsOnly",
+            description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
+            required = false,
+        )
+        @RequestParam(
+            value = "keepValueFieldsOnly",
+            defaultValue = "true",
+        ) keepValueFieldsOnly: Boolean = true,
+        @RequestParam(
+            value = "includeAliases",
+            defaultValue = "true",
+        ) includeAliases: Boolean = true,
+    ): ResponseEntity<ExportJobInfo>
+
+    /**
+     * A method to post an export job for a collection of company IDs that retrieves the latest available data per company.
+     */
+    @Operation(
+        summary = "Start an export job for the latest available reporting period for each provided companyId.",
+        description = "Triggers asynchronous export job for the latest available reporting period for each provided companyId.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully started export job."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Input parameter could not be found.",
+                content = [Content(mediaType = "")],
+            ),
+        ],
+    )
+    @PostMapping(
+        value = ["/export-latest-jobs"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postExportLatestJobCompanyAssociatedDataByDimensions(
+        @Valid @RequestBody
+        exportRequestData: ExportLatestRequestData,
         @Parameter(
             name = "keepValueFieldsOnly",
             description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
