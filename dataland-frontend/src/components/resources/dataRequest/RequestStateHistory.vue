@@ -9,11 +9,7 @@
         </template>
       </Column>
 
-      <Column
-        field="mixedState"
-        :header="isAdmin ? 'Mixed State' : 'State'"
-        :style="isAdmin ? 'width: 20%' : 'width: 60%'"
-      >
+      <Column field="State" :header="'State'" :style="isAdmin ? 'width: 20%' : 'width: 60%'">
         <template #body="{ data }">
           <DatalandTag
             :severity="getMixedState(data.requestState, data.dataSourcingState) || '-'"

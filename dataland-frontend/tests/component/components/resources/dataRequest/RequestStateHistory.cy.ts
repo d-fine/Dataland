@@ -105,7 +105,7 @@ describe('Component tests for the Request State History', function (): void {
     });
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
     cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Updated On');
-    cy.get('[data-test="stateHistoryTable"] th').should('contain', isAdminUser ? 'Mixed State' : 'State');
+    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'State');
     cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Request State');
     cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Data Sourcing State');
     cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Comment');

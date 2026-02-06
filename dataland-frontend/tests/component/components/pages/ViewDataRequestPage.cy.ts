@@ -184,20 +184,23 @@ describe('Component tests for the view data request page', function (): void {
    * @param dataSourcingDetailsState the state to set in the mocked data sourcing details (defaults to Initialized if not provided)
    * @param customCollectorId optional custom collector company ID to include in the response
    * @param customExtractorId optional custom extractor company ID to include in the response
+   * @param nextDataSourcingDate optional custom date for the "date of next sourcing attempt" field in the response
    */
   function interceptDataSourcingDetails(
     dataSourcingDetailsState?: DataSourcingState,
     customCollectorId?: string,
-    customExtractorId?: string
+    customExtractorId?: string,
+    nextDataSourcingDate?: string
   ): void {
     const dataSourcing: Partial<StoredDataSourcing> = {
       dataSourcingId: dataSourcingEntityId,
       companyId: dummyCompanyId,
       reportingPeriod: dummyReportingYear,
       dataType: dummyFramework,
-      state: dataSourcingDetailsState ? dataSourcingDetailsState : DataSourcingState.Initialized,
+      state: dataSourcingDetailsState ?? DataSourcingState.Initialized,
       documentCollector: customCollectorId,
       dataExtractor: customExtractorId,
+      dateOfNextDocumentSourcingAttempt: nextDataSourcingDate,
     };
     cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
       body: dataSourcing,
@@ -398,6 +401,35 @@ describe('Component tests for the view data request page', function (): void {
       cy.get('[data-test="card_requestDetails"]').within(() => {
         cy.get('[data-test="data-sourcing-collector"]').should('contain', '—');
         cy.get('[data-test="data-sourcing-extractor"]').should('contain', '—');
+      });
+    });
+  });
+
+  it('Check that "Date of next sourcing attempt" does not show when null', function (): void {
+    interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
+    interceptDataSourcingDetails(DataSourcingState.Initialized);
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="card_requestDetails"]').within(() => {
+        cy.get('[data-test="date-next-sourcing-attempt"]').should('not.exist');
+        cy.contains('Date of next sourcing attempt').should('not.exist');
+      });
+    });
+  });
+
+  it('Check that "Date of next sourcing attempt" shows correctly when not null', function (): void {
+    interceptUserAskForSingleDataRequestsOnMounted(RequestState.Processing);
+    interceptDataSourcingDetails(DataSourcingState.Initialized, undefined, undefined, 'Fri, 06 Feb 2026');
+
+    getMountingFunction({ keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
+    }).then(() => {
+      cy.get('[data-test="card_requestDetails"]').within(() => {
+        cy.get('[data-test="date-next-sourcing-attempt"]').should('exist');
+        cy.contains('Date of next sourcing attempt').should('exist');
+        cy.get('[data-test="date-next-sourcing-attempt"]').should('contain', 'Fri, 06 Feb 2026');
       });
     });
   });
