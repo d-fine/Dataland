@@ -101,10 +101,23 @@ function needsTruncation(text: string | undefined): boolean {
 
 /**
  * Get the human-readable display name for a data point.
- * Transforms technical names like "COMPANY_NAME" to "Company Name".
+ * Prefers enriched dataPointName from API, falls back to humanized aliasExport.
  */
 function getDataPointDisplayName(dataPoint: ParsedDataPoint): string {
+  // Use enriched name from batch loading if available
+  if (dataPoint.dataPointName) {
+    return dataPoint.dataPointName;
+  }
+  // Otherwise humanize the aliasExport or key
   return humanizeStringOrNumber(dataPoint.aliasExport || dataPoint.key);
+}
+
+/**
+ * Get the technical identifier for display (aliasExport in capital letters with underscores).
+ * Returns undefined if not available.
+ */
+function getDataPointTechnicalId(dataPoint: ParsedDataPoint): string | undefined {
+  return dataPoint.aliasExport;
 }
 
 /**
@@ -114,16 +127,17 @@ function getDataPointDisplayName(dataPoint: ParsedDataPoint): string {
  * @returns Object with readable label and technical ID
  */
 function getDataTypeDisplay(dataPoint: ParsedDataPoint): { readable: string; technical: string } {
-  // Use enriched base type if available, otherwise extract from dataPointTypeId
-  let baseType: string;
-  
+  // Use enriched base type if available
   if (dataPoint.baseTypeId) {
-    baseType = dataPoint.baseTypeId;
-  } else {
-    // Extract base type prefix using regex (e.g., "plainDate" from "plainDateSfdrDataDate")
-    const baseTypeMatch = dataPoint.dataPointTypeId.match(/^(plain[A-Z][a-z]+|extended[A-Z][a-z]+)/);
-    baseType = baseTypeMatch ? baseTypeMatch[1] : dataPoint.dataPointTypeId;
+    return {
+      readable: humanizeDataPointBaseType(dataPoint.baseTypeId),
+      technical: dataPoint.dataPointTypeId,
+    };
   }
+  
+  // Otherwise extract base type prefix using regex
+  const baseTypeMatch = dataPoint.dataPointTypeId.match(/^(plain[A-Z][a-z]+|extended[A-Z][a-z]+)/);
+  const baseType = baseTypeMatch ? baseTypeMatch[1] : dataPoint.dataPointTypeId;
   
   return {
     readable: humanizeDataPointBaseType(baseType),
@@ -219,9 +233,14 @@ function handleViewDetails(dataPointTypeId: string): void {
       >
         <div class="data-point-header">
           <i :class="getDataPointIcon(node.dataPointTypeId)" class="data-point-icon" aria-hidden="true"></i>
-          <span class="data-point-name" :data-test="'datapoint-name'">
-            {{ getDataPointDisplayName(node) }}
-          </span>
+          <div class="data-point-title-section">
+            <span class="data-point-name" :data-test="'datapoint-name'">
+              {{ getDataPointDisplayName(node) }}
+            </span>
+            <span v-if="getDataPointTechnicalId(node)" class="data-point-technical-id">
+              {{ getDataPointTechnicalId(node) }}
+            </span>
+          </div>
           <PrimeButton
             label="View Details"
             icon="pi pi-info-circle"
@@ -330,11 +349,25 @@ function handleViewDetails(dataPointTypeId: string): void {
         flex-shrink: 0;
       }
 
-      .data-point-name {
-        font-weight: 600;
-        font-size: 1rem;
-        color: var(--p-text-color);
+      .data-point-title-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
         flex-grow: 1;
+        min-width: 0;
+
+        .data-point-name {
+          font-weight: 600;
+          font-size: 1rem;
+          color: var(--p-text-color);
+        }
+
+        .data-point-technical-id {
+          font-family: monospace;
+          font-size: 0.75rem;
+          color: var(--p-text-secondary-color);
+          opacity: 0.8;
+        }
       }
     }
 

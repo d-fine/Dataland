@@ -249,7 +249,7 @@ export function truncateText(text: string, maxLength: number): { truncated: stri
  * humanizeDataPointBaseType("plainString") // Returns "Text"
  * humanizeDataPointBaseType("plainDate") // Returns "Date"
  * humanizeDataPointBaseType("extendedDecimal") // Returns "Number"
- * humanizeDataPointBaseType("plaintextDocument") // Returns "Plaintext Document"
+ * humanizeDataPointBaseType("extendedEnumPcafMainSector") // Returns "Selection"
  */
 export function humanizeDataPointBaseType(baseTypeId: string): string {
   // Map of common base types to user-friendly labels
@@ -270,6 +270,18 @@ export function humanizeDataPointBaseType(baseTypeId: string): string {
     return typeMapping[baseTypeId];
   }
 
-  // Otherwise, humanize the ID using existing utility
-  return humanizeStringOrNumber(baseTypeId);
+  // Detect common patterns in the type ID for better fallback labels
+  const lowerCaseId = baseTypeId.toLowerCase();
+  
+  // Pattern-based detection for partial matches
+  if (lowerCaseId.includes('enum')) return 'Selection';
+  if (lowerCaseId.includes('date')) return 'Date';
+  if (lowerCaseId.includes('decimal') || lowerCaseId.includes('integer') || lowerCaseId.includes('number')) return 'Number';
+  if (lowerCaseId.includes('boolean')) return 'Yes/No';
+  if (lowerCaseId.includes('array') || lowerCaseId.includes('list')) return 'List';
+  if (lowerCaseId.includes('string') || lowerCaseId.includes('text')) return 'Text';
+  if (lowerCaseId.includes('document') || lowerCaseId.includes('file')) return 'Document';
+  
+  // If no pattern matches, return a simple generic label
+  return 'Data';
 }
