@@ -222,14 +222,19 @@ open class DataExportService<T>(
                 dataDimensionsWithDataStrings.map { it.key.companyId },
             )
 
-        return dataDimensionsWithDataStrings.map {
-            SingleCompanyExportData(
-                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
-                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
-                reportingPeriod = it.key.reportingPeriod,
-                data = defaultObjectMapper.readValue(it.value, clazz),
-            )
-        }
+        return dataDimensionsWithDataStrings
+            .entries
+            .sortedWith(
+                compareBy<Map.Entry<BasicDatasetDimensions, String>> { it.key.companyId }
+                    .thenBy { it.key.reportingPeriod },
+            ).map {
+                SingleCompanyExportData(
+                    companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
+                    companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
+                    reportingPeriod = it.key.reportingPeriod,
+                    data = defaultObjectMapper.readValue(it.value, clazz),
+                )
+            }
     }
 
     /**

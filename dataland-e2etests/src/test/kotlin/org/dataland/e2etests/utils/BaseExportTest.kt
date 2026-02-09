@@ -486,7 +486,20 @@ abstract class BaseExportTest<T> {
                 ),
             )
 
-        Assertions.assertTrue { latestData.readText() != oldData.readText() }
-        Assertions.assertTrue { latestData.readText() == newData.readText() }
+        val latestText = latestData.readText()
+        val oldText = oldData.readText()
+        val newText = newData.readText()
+
+        Assertions.assertNotEquals(
+            latestText,
+            oldText,
+            "Latest export should differ from old data export $latestText != $oldText",
+        )
+
+        Assertions.assertEquals(
+            latestText,
+            newText,
+            "Latest export does not match new reporting period $latestText == $newText",
+        )
     }
 }
