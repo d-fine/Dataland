@@ -33,6 +33,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -294,7 +295,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(null), eq(false), eq(correlationId),
+                any(), eq(RequestStatus.Answered), isNull(), eq(false), eq(correlationId),
             )
         verify(mockDataRequestSummaryNotificationService, times(1))
             .createUserSpecificNotificationEvent(
@@ -312,7 +313,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(null), any(), eq(correlationId),
+                any(), eq(RequestStatus.Answered), isNull(), any(), eq(correlationId),
             )
     }
 
@@ -325,7 +326,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Closed), eq(null), any(), eq(correlationId),
+                any(), eq(RequestStatus.Closed), isNull(), any(), eq(correlationId),
             )
     }
 
@@ -352,7 +353,7 @@ class DataRequestUpdateManagerTest {
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyDataRequestEntitiesWithoutEarlierQaApproval[i]),
                     eq(RequestStatus.Answered),
-                    eq(null),
+                    isNull(),
                     eq(false),
                     eq(correlationId),
                 )
