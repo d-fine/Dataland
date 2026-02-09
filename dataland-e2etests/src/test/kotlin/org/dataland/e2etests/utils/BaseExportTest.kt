@@ -170,6 +170,7 @@ abstract class BaseExportTest<T> {
                 assertDoesNotThrow {
                     retrieveData(companyWithNullFieldId, reportingPeriod)
                     retrieveData(companyWithNonNullFieldId, reportingPeriod)
+                    retrieveData(companyWithNonNullFieldId, (reportingPeriod.toInt() - 1).toString())
                 }
             }
     }
