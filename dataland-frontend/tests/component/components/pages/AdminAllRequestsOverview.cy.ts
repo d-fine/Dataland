@@ -542,7 +542,7 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Check existence and entries of NEXT SOURCING ATTEMPT column', () => {
     mountAdminAllRequestsPageWithMocks();
     cy.contains('th', 'NEXT SOURCING ATTEMPT');
-    cy.contains('td', '2024-01-01');
+    cy.contains('td', '1 Jan 2024');
   });
 
   describe('Column selector functionality', () => {
@@ -554,7 +554,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     it('opens the column selector popover when clicking the gear icon', () => {
       mountAdminAllRequestsPageWithMocks();
-      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('.column-selector-container').first().click();
       cy.get('[data-test="column-selector-popover"]').should('be.visible');
       cy.get('[data-test="column-selector-popover"]').within(() => {
         cy.contains('label', 'Requester').should('exist');
@@ -567,7 +567,7 @@ describe('Component test for the admin-requests-overview page', () => {
       mountAdminAllRequestsPageWithMocks();
       cy.contains('th', 'REQUEST ID').should('exist');
 
-      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('.column-selector-container').first().click();
       cy.get('[data-test="column-checkbox-id"]').click();
       cy.get('body').click(0, 0);
 
@@ -577,12 +577,12 @@ describe('Component test for the admin-requests-overview page', () => {
     it('shows a column when checking it in the column selector after it was hidden', () => {
       mountAdminAllRequestsPageWithMocks();
 
-      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('.column-selector-container').first().click();
       cy.get('[data-test="column-checkbox-requester"]').click();
       cy.get('body').click(0, 0);
       cy.contains('th', 'REQUESTER').should('not.exist');
 
-      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('.column-selector-container').first().click();
       cy.get('[data-test="column-checkbox-requester"]').click();
       cy.get('body').click(0, 0);
       cy.contains('th', 'REQUESTER').should('exist');
@@ -591,7 +591,7 @@ describe('Component test for the admin-requests-overview page', () => {
     it('persists column selection to localStorage', () => {
       mountAdminAllRequestsPageWithMocks();
 
-      cy.get('[data-test="column-selector-button"]').first().click();
+      cy.get('.column-selector-container').first().click();
       cy.get('[data-test="column-checkbox-adminComment"]').click();
       cy.get('body').click(0, 0);
 

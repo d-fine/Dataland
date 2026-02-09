@@ -87,11 +87,7 @@
           </Column>
           <Column header="NEXT DOCUMENT SOURCING ATTEMPT" field="nextDataSourcingAttempt" :sortable="true">
             <template #body="{ data }">
-              {{
-                data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt
-                  ? data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt
-                  : '-'
-              }}
+              {{ dateStringFormatter(data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt) || '-' }}
             </template>
           </Column>
           <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
@@ -134,7 +130,7 @@ import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   customCompareForState,

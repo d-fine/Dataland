@@ -119,7 +119,6 @@
           id="admin-request-overview-data"
           :rowHover="true"
           style="cursor: pointer"
-          tableLayout="fixed"
         >
           <Column v-if="isColumnVisible('requester')" header="REQUESTER" field="userEmailAddress" :sortable="false" />
           <Column v-if="isColumnVisible('company')" header="COMPANY" field="companyName" :sortable="false" />
@@ -148,7 +147,12 @@
           <Column v-if="isColumnVisible('creationTimestamp')" header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
+                <span>{{
+                  convertUnixTimeInMsToDateString(data.creationTimestamp).split(', ').slice(0, 2).join(', ')
+                }}</span>
+                <span>{{
+                  convertUnixTimeInMsToDateString(data.creationTimestamp).split(', ').slice(2).join(', ')
+                }}</span>
               </div>
             </template>
           </Column>
@@ -160,7 +164,12 @@
           >
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+                <span>{{
+                  convertUnixTimeInMsToDateString(data.lastModifiedDate).split(', ').slice(0, 2).join(', ')
+                }}</span>
+                <span>{{
+                  convertUnixTimeInMsToDateString(data.lastModifiedDate).split(', ').slice(2).join(', ')
+                }}</span>
               </div>
             </template>
           </Column>
@@ -174,7 +183,20 @@
           </Column>
           <Column v-if="isColumnVisible('nextSourcingAttempt')" header="NEXT SOURCING ATTEMPT" :sortable="false">
             <template #body="{ data }">
-              {{ data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt ?? '-' }}
+              <div v-if="data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt">
+                <span
+                  >{{
+                    dateStringFormatter(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).split(', ')[0]
+                  }},</span
+                >
+                <span>{{
+                  dateStringFormatter(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt)
+                    .split(', ')
+                    .slice(1)
+                    .join(', ')
+                }}</span>
+              </div>
+              <template v-else>-</template>
             </template>
           </Column>
           <Column v-if="isColumnVisible('priority')" header="REQUEST PRIORITY" :sortable="false">
@@ -202,7 +224,7 @@
             <span class="paginator-spacer"></span>
           </template>
           <template #paginatorend>
-            <div class="column-selector-container">
+            <div class="column-selector-container" @click="toggleColumnPopover">
               <span class="column-selector-label">Select Columns</span>
               <PrimeButton
                 type="button"
@@ -211,7 +233,6 @@
                 class="column-selector-button"
                 data-test="column-selector-button"
                 aria-label="Configure columns"
-                @click="toggleColumnPopover"
               />
             </div>
             <Popover ref="columnPopover" data-test="column-selector-popover">
@@ -245,7 +266,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { useRouter } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import type {
   FrameworkSelectableItem,
   MixedStateSelectableItem,
@@ -518,10 +539,15 @@ function onRowClick(event: DataTableRowClickEvent): void {
   visibility: hidden;
 }
 
+:deep(.p-paginator-content-end) {
+  flex: none;
+}
+
 .column-selector-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  cursor: pointer;
 }
 
 .column-selector-label {
@@ -529,8 +555,16 @@ function onRowClick(event: DataTableRowClickEvent): void {
   color: var(--p-primary-color);
 }
 
-:deep(.column-selector-button .pi) {
-  font-size: 1.25rem;
+:deep(.column-selector-button) {
+  pointer-events: none;
+
+  &:hover {
+    background: transparent;
+  }
+
+  .pi {
+    font-size: 1.25rem;
+  }
 }
 
 .column-popover-content {
@@ -548,9 +582,5 @@ function onRowClick(event: DataTableRowClickEvent): void {
       cursor: pointer;
     }
   }
-}
-
-:deep(.date-column .p-datatable-column-title) {
-  white-space: nowrap;
 }
 </style>
