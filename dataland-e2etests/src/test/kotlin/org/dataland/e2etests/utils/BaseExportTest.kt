@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.ExportJobInfo
 import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
 import org.dataland.datalandbackend.openApiClient.model.ExportLatestRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -490,16 +491,21 @@ abstract class BaseExportTest<T> {
         val oldText = oldData.readText()
         val newText = newData.readText()
 
-        Assertions.assertNotEquals(
-            latestText,
-            oldText,
-            "Latest export should differ from old data export $latestText != $oldText",
-        )
+        val objectMapper = defaultObjectMapper
+        val latestJson = objectMapper.readTree(latestText)
+        val newJson = objectMapper.readTree(newText)
+        val oldJson = objectMapper.readTree(oldText)
 
         Assertions.assertEquals(
-            latestText,
-            newText,
-            "Latest export does not match new reporting period $latestText == $newText",
+            newJson,
+            latestJson,
+            "Latest export does not match new reporting period (structural JSON comparison)",
+        )
+
+        Assertions.assertNotEquals(
+            latestJson,
+            oldJson,
+            "Latest export should differ from old data export $latestText != $oldText",
         )
     }
 }
