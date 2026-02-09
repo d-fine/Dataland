@@ -30,8 +30,8 @@ class DatasetReviewEntity(
     val dataType: String,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
-    @Convert(converter = DatasetReviewStateConverter::class)
     @Column(name = "review_state")
+    @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
     var reviewerUserId: UUID?,

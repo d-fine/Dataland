@@ -27,9 +27,6 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val UPLOAD_TIME_DESCRIPTION = "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland."
     const val UPLOAD_TIME_EXAMPLE = GENERAL_TIMESTAMP_EXAMPLE
 
-    const val QA_STATUS_DESCRIPTION =
-        "The status with regard to Dataland's quality assurance process."
-
     const val CHUNK_SIZE_DESCRIPTION =
         "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size " +
             "of a single chunk. All chunks except possibly the last will have that size."

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
@@ -83,8 +84,8 @@ interface DataPointQaReportApi {
         ) dataPointId: String,
         @PathVariable @Parameter(
             name = "qaReportId",
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
             required = true,
         ) qaReportId: String,
         @RequestBody statusPatch: QaReportStatusPatch,
@@ -119,8 +120,8 @@ interface DataPointQaReportApi {
         ) dataPointId: String,
         @PathVariable @Parameter(
             name = "qaReportId",
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
             required = true,
         ) qaReportId: String,
     ): ResponseEntity<DataPointQaReport>
@@ -155,14 +156,14 @@ interface DataPointQaReportApi {
         ) dataPointId: String,
         @RequestParam(required = false)
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_SHOW_INACTIVE_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_SHOW_INACTIVE_DESCRIPTION,
             required = false,
         )
         showInactive: Boolean?,
         @RequestParam(required = false)
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
             required = false,
         )
         reporterUserId: String?,

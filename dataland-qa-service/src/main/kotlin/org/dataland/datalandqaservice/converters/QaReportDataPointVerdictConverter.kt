@@ -24,11 +24,6 @@ class QaReportDataPointVerdictConverter : AttributeConverter<QaReportDataPointVe
 class DatasetReviewStateConverter : AttributeConverter<DatasetReviewState, String> {
     override fun convertToDatabaseColumn(datasetReviewState: DatasetReviewState?): String = datasetReviewState.toString()
 
-    override fun convertToEntityAttribute(datasetReviewStateAsString: String?): DatasetReviewState? =
-        if (datasetReviewStateAsString.isNullOrEmpty()) {
-            null
-        } else {
-            DatasetReviewState
-                .valueOf(datasetReviewStateAsString)
-        }
+    override fun convertToEntityAttribute(datasetReviewStateAsString: String): DatasetReviewState =
+        DatasetReviewState.valueOf(datasetReviewStateAsString)
 }

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.springframework.http.ResponseEntity
@@ -44,7 +46,11 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDatasetReview(
-        @PathVariable datasetReviewId: String,
+        @PathVariable @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
     ): ResponseEntity<DatasetReviewResponse>
 
     /**
@@ -67,7 +73,11 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDatasetReview(
-        @PathVariable datasetId: String,
+        @PathVariable @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+        )
+        datasetId: String,
     ): ResponseEntity<DatasetReviewResponse>
 
     /**
@@ -89,7 +99,11 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDatasetReviewsByDatasetId(
-        @PathVariable datasetId: String,
+        @PathVariable @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+        )
+        datasetId: String,
     ): ResponseEntity<List<DatasetReviewResponse>>
 
     /**
@@ -111,7 +125,11 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun setReviewer(
-        @PathVariable datasetReviewId: String,
+        @PathVariable @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
     ): ResponseEntity<DatasetReviewResponse>
 
     /**
@@ -141,8 +159,16 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun setReviewState(
-        @PathVariable datasetReviewId: String,
-        @Valid @RequestParam(
+        @PathVariable @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
+        @Valid
+        @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_STATE_DESCRIPTION,
+        )
+        @RequestParam(
             name = "datasetReviewState",
             required = true,
         )
@@ -177,10 +203,16 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptOriginalDatapoint(
-        @PathVariable datasetReviewId: String,
+        @PathVariable@Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
         @Parameter(
             name = "dataPointId",
             required = true,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
         )
         dataPointId: String,
     ): ResponseEntity<DatasetReviewResponse>
@@ -213,10 +245,16 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptQaReport(
-        @PathVariable datasetReviewId: String,
+        @PathVariable @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
         @Parameter(
             name = "qaReportId",
             required = true,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
         )
         qaReportId: String,
     ): ResponseEntity<DatasetReviewResponse>
@@ -249,15 +287,23 @@ interface DatasetReviewApi {
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
     fun acceptCustomDataPoint(
-        @PathVariable datasetReviewId: String,
+        @PathVariable @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
         @Parameter(
             name = "dataPoint",
             required = true,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_EXAMPLE,
         )
         dataPoint: String,
         @Parameter(
             name = "dataPointType",
             required = true,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_EXAMPLE,
         )
         dataPointType: String,
     ): ResponseEntity<DatasetReviewResponse>

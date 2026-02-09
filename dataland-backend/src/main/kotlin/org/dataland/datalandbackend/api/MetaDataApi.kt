@@ -22,6 +22,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdPar
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -92,7 +93,7 @@ interface MetaDataApi {
         uploaderUserIds: Set<UUID>? = null,
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus? = null,

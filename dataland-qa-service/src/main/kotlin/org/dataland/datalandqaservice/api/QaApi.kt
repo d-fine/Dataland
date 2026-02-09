@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
@@ -69,7 +70,7 @@ interface QaApi {
         @RequestParam(defaultValue = "Pending")
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus,
@@ -152,21 +153,21 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,
         @RequestParam
         @Parameter(
             name = "comment",
-            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
             required = false,
         )
         comment: String? = null,
         @RequestParam
         @Parameter(
             name = "overwriteDataPointQaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION,
             required = false,
         )
         overwriteDataPointQaStatus: Boolean = false,
@@ -265,7 +266,7 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus?,
@@ -354,14 +355,14 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,
         @RequestParam
         @Parameter(
             name = "comment",
-            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
         )
         comment: String? = null,
     )
