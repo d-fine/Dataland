@@ -186,4 +186,43 @@ class MalformedRawRequestTests {
         assertTrue(responseBodyString.contains("invalid-input"))
         assertEquals(400, response.code)
     }
+
+    @Test
+    fun `sending a request with an invalid enum path variable should result in a 400 error`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("identifiers")
+                .addPathSegment("NOT_A_VALID_ENUM_VALUE")
+                .addPathSegment("some-identifier")
+                .build()
+
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .get()
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
+
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body!!.string()
+
+        assertEquals(400, response.code)
+        assertTrue(
+            responseBodyString.contains("\"errorType\":\"bad-input\""),
+            "Expected errorType 'bad-input' in response, got: $responseBodyString",
+        )
+        assertTrue(
+            responseBodyString.contains("Invalid value 'NOT_A_VALID_ENUM_VALUE'"),
+            "Expected invalid value to be mentioned in response, got: $responseBodyString",
+        )
+        assertTrue(
+            responseBodyString.contains("Expected one of"),
+            "Expected the list of allowed enum values to be mentioned, got: $responseBodyString",
+        )
+    }
 }
