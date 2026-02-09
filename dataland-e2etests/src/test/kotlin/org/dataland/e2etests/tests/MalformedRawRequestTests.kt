@@ -195,6 +195,7 @@ class MalformedRawRequestTests {
             BASE_PATH_TO_DATALAND_BACKEND
                 .toHttpUrl()
                 .newBuilder()
+                .addPathSegment("companies")
                 .addPathSegment("identifiers")
                 .addPathSegment("NOT_A_VALID_ENUM_VALUE")
                 .addPathSegment("some-identifier")
@@ -213,8 +214,8 @@ class MalformedRawRequestTests {
 
         assertEquals(400, response.code)
         assertTrue(
-            responseBodyString.contains("\"errorType\":\"bad-input\""),
-            "Expected errorType 'bad-input' in response, got: $responseBodyString",
+            responseBodyString.contains("\"errorType\":\"invalid-input\""),
+            "Expected errorType 'invalid-input' in response, got: $responseBodyString",
         )
         assertTrue(
             responseBodyString.contains("Invalid value 'NOT_A_VALID_ENUM_VALUE'"),

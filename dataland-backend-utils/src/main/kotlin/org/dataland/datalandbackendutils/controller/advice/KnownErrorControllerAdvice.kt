@@ -229,7 +229,7 @@ class KnownErrorControllerAdvice(
 
         return prepareResponse(
             ErrorDetails(
-                errorType = "bad-input",
+                errorType = "invalid-input",
                 summary = "Invalid parameter",
                 message = message,
                 httpStatus = HttpStatus.BAD_REQUEST,
