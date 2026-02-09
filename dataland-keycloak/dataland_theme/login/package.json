@@ -25,7 +25,7 @@
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
-    "npm-check-updates": "19.2.1",
+    "npm-check-updates": "19.3.2",
     "sass": "1.97.1",
     "typescript": "5.8.3",
     "vite": "7.3.0"
