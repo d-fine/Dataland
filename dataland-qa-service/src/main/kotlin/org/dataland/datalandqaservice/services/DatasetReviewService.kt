@@ -11,11 +11,11 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.client.HttpClientErrorException
 import java.util.UUID
 
 /**
@@ -38,7 +38,7 @@ class DatasetReviewService
             lateinit var datatypeToDatapointIds: Map<String, String>
             try {
                 datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
-            } catch (_: InvalidInputApiException) {
+            } catch (_: ClientException) {
                 throw ResourceNotFoundApiException(
                     "Dataset not found",
                     "Dataset with the id: $datasetId could be found.",
@@ -178,7 +178,7 @@ class DatasetReviewService
             try {
                 frameworksOfDataPointType =
                     datasetReviewSupportService.getFrameworksForDataPointType(dataPointType)
-            } catch (_: HttpClientErrorException) {
+            } catch (_: ClientException) {
                 throw InvalidInputApiException(
                     "DataPoint type not found.",
                     "Cannot find DataPoint type $dataPointType on Dataland.",
@@ -192,7 +192,7 @@ class DatasetReviewService
             }
             try {
                 datasetReviewSupportService.validateCustomDataPoint(dataPoint, dataPointType)
-            } catch (e: HttpClientErrorException) {
+            } catch (e: ClientException) {
                 throw InvalidInputApiException(
                     "Datapoint not valid.",
                     "Datapoint given does not match the specification of $dataPointType. ${e.message}",

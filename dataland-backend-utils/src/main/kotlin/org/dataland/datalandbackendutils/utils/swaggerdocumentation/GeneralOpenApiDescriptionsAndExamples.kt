@@ -6,6 +6,9 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val GENERAL_TIMESTAMP_EXAMPLE = "1751291891271"
     const val GENERAL_LEI_EXAMPLE = "5493001KJX4BT0IHAG73"
     const val GENERAL_DATE_EXAMPLE = "2025-12-31"
+    const val GENERAL_SET_OF_UUIDS_EXAMPLE =
+        "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, " +
+            "c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
 
     const val POST_MESSAGE_DESCRIPTION = "A text about the result of Dataland processing the data request."
     const val POST_MESSAGE_EXAMPLE = "Your data request was stored successfully."
@@ -48,6 +51,8 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val DATA_TYPE_DESCRIPTION = "The associated reporting framework or data point type (as applicable)."
     const val DATA_TYPE_FRAMEWORK_EXAMPLE = "sfdr"
     const val DATA_TYPE_DATA_POINT_TYPE_EXAMPLE = "extendedDateFiscalYearEnd"
+
+    const val DATA_TYPE_TO_UUID_MAP_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \" }"
 
     const val GENERAL_DATA_TYPES_DESCRIPTION = "A list of associated reporting frameworks or data point types (as applicable)."
     const val DATA_TYPES_FRAMEWORK_EXAMPLE = "[\"sfdr\",\"eutaxonomy-financials\"]"

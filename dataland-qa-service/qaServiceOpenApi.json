@@ -3467,65 +3467,114 @@
         "type": "object",
         "properties": {
           "dataSetReviewId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data review.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "datasetId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "companyId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "enum": [
+              "sfdr",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
+              "pcaf",
+              "vsme"
+            ]
           },
           "reportingPeriod": {
-            "type": "string"
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           },
           "reviewState": {
             "$ref": "#/components/schemas/DatasetReviewState"
           },
           "reviewerUserId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique user ID of the user reviewing the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "reviewerUserName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name or email of the user reviewing the dataset.",
+            "example": "Jane Doe"
           },
           "preapprovedDataPointIds": {
             "uniqueItems": true,
             "type": "array",
+            "description": "Datapoints automatically approved by Dataland.",
+            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Datapoints automatically approved by Dataland.",
+              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
             }
           },
           "qaReports": {
             "uniqueItems": true,
             "type": "array",
+            "description": "QA reports associated to the dataset.",
+            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
             "items": {
-              "type": "string"
-            }
-          },
-          "approvedQaReportIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "description": "QA reports associated to the dataset.",
+              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
             }
           },
           "approvedDataPointIds": {
             "type": "object",
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "description": "Data points approved and to be accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
+            },
+            "description": "Data points approved and to be accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
+            }
+          },
+          "approvedQaReportIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "QA reports approved and to be accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
+            },
+            "description": "QA reports approved and to be accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
             }
           },
           "approvedCustomDataPointIds": {
             "type": "object",
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
+            },
+            "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " 2026-12-31 "
             }
           }
         }
       },
       "DatasetReviewState": {
         "type": "string",
+        "description": "The state of the dataset review.",
         "enum": [
           "Pending",
           "Finished",

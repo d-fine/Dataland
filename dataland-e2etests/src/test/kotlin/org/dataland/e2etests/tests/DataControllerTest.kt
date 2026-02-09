@@ -222,13 +222,17 @@ class DataControllerTest {
     @Test
     fun `test fetching of dataset of the latest available reporting period`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-
-        mapOf(
-            "2023" to "2023",
-            "2024" to "2024",
-            "2022" to "2024",
-        ).forEach { (reportingPeriod, latestAvailableReportingPeriod) ->
+        val reportingPeriodMap =
+            mapOf(
+                "2023" to "2023",
+                "2024" to "2024",
+                "2022" to "2024",
+            )
+        reportingPeriodMap.forEach { (reportingPeriod, _) ->
             uploadLksgDataset(companyId, reportingPeriod)
+        }
+        // Separate two loops to avoid race conditions
+        reportingPeriodMap.forEach { (_, latestAvailableReportingPeriod) ->
             assertEquals(
                 "Test Description $latestAvailableReportingPeriod",
                 ApiAwait.waitForData {

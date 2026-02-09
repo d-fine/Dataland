@@ -55,4 +55,25 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val DATA_REVIEW_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val DATA_REVIEW_STATE_DESCRIPTION = "The state of the dataset review."
+
+    const val DATA_REVIEW_REVIEWER_ID_DESCRIPTION = "The unique user ID of the user reviewing the dataset."
+    const val DATA_REVIEW_REVIEWER_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION = "The name or email of the user reviewing the dataset."
+    const val DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE = "Jane Doe"
+
+    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_DESCRIPTION = "Datapoints automatically approved by Dataland."
+    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
+
+    const val DATA_REVIEW_QA_REPORTS_DESCRIPTION = "QA reports associated to the dataset."
+    const val DATA_REVIEW_QA_REPORTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
+
+    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_DESCRIPTION = "Data points approved and to be accepted."
+    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
+
+    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_DESCRIPTION = "QA reports approved and to be accepted."
+    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
+
+    const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
+    const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
 }

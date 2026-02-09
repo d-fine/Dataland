@@ -93,8 +93,12 @@ class DatasetReviewServiceTest {
             setOf(DatalandRealmRole.ROLE_ADMIN),
         )
 
-        doReturn(Optional.of(datasetReviewEntity)).whenever(mockDatasetReviewRepository).findById(any())
-        whenever(mockDatasetReviewRepository.save(any())).thenAnswer { it.arguments[0] }
+        doReturn(Optional.of(datasetReviewEntity))
+            .whenever(mockDatasetReviewRepository)
+            .findById(any())
+
+        whenever(mockDatasetReviewRepository.save(any<DatasetReviewEntity>()))
+            .thenAnswer { it.arguments[0] as DatasetReviewEntity }
 
         doReturn(dummyDataPointType)
             .whenever(mockDatasetReviewSupportService)
