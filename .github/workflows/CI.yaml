@@ -449,21 +449,21 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: JaCoCoResultsUnitTests
         with:
           pattern: JaCoCoResultsUnitTests-*
           merge-multiple: true
-      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: JaCoCoResultsE2ETest
         with:
           pattern: JaCoCoResultsE2ETest-*
           merge-multiple: true
-      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           pattern: JaCoCoResultsToolbox-*
           merge-multiple: true
-      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: lcovResults
         with:
           pattern: lcovResults-*
