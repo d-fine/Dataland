@@ -33,81 +33,76 @@ An integrated frontend component with a framework selector dropdown at the top, 
    - Define `FrameworkSpecificationWithParsedSchema` extending generated `FrameworkSpecification` with parsed schema property
    - Import generated types from `@clients/specificationservice`
 
-4. **Create schema parsing utility**
-   - Create [dataland-frontend/src/utils/SpecificationSchemaParser.ts](dataland-frontend/src/utils/SpecificationSchemaParser.ts)
-   - Function `parseSchemaString(schemaJson: string): ParsedSchemaNode[]` - parses JSON string to typed tree
-   - Identify terminal nodes: objects with fields `{id, ref, aliasExport?}` per JsonSpecificationUtils.kt pattern
-   - Recursively parse nested objects as sections, leaf nodes as data points
-   - Handle both standard and resolved schema formats
-
-5. **Create text truncation utility**
+4. **Create text truncation utility**
    - Create [dataland-frontend/src/utils/TextTruncation.ts](dataland-frontend/src/utils/TextTruncation.ts) or add to existing utils
    - Function `truncateText(text: string, maxLength: number): { truncated: string, needsTruncation: boolean }`
    - Truncate at word boundaries, append "..." if truncated
    - Used for business definition display in schema tree
 
-6. **Create composable for data fetching and state management**
+5. **Create consolidated composable for data fetching and state management**
    - Create [dataland-frontend/src/composables/useSpecifications.ts](dataland-frontend/src/composables/useSpecifications.ts)
-   - Export `useFrameworkSpecifications()` - fetches framework list for dropdown options (calls `/specifications/frameworks`)
-   - Export `useFrameworkSpecification(frameworkId)` - fetches detail with parsed schema
-   - Export `useDataPointTypeDetails(dataPointTypeId)` - fetches for modal (`/specifications/data-point-types/{id}`)
-   - Include `shallowRef` for large data, `ref` for loading/error states
-   - Error handling with user-friendly messages
+   - **Consolidate all specification-related logic here.** This composable will be the single source of truth for the viewer.
+   - **Internalize schema parsing:** Move the logic for parsing the schema JSON into this composable. It will transform the raw API response into the `ParsedSchemaNode[]` structure.
+   - **Expose reactive state:**
+     - `frameworks: Ref<Framework[]>`: List of all available frameworks for the dropdown.
+     - `selectedFramework: Ref<FrameworkSpecificationWithParsedSchema | null>`: The currently selected and fully processed framework specification.
+     - `isLoadingFrameworks: Ref<boolean>`: Loading state for the initial framework list.
+     - `isLoadingSpecification: Ref<boolean>`: Loading state for the detailed framework view.
+     - `error: Ref<string | null>`: Error message for display.
+   - **Expose methods:**
+     - `loadFrameworks()`: Fetches the list of all frameworks.
+     - `selectFramework(frameworkId: string)`: Fetches the specification for a given ID and parses its schema.
+   - Use `shallowRef` for the parsed schema within `selectedFramework` to optimize performance.
+
+6. **Create composable for data point details**
+   - Create [dataland-frontend/src/composables/useDataPointDetails.ts](dataland-frontend/src/composables/useDataPointDetails.ts)
+   - Export `useDataPointTypeDetails(dataPointTypeId)` - fetches details for the modal (`/specifications/data-point-types/{id}`).
+   - This keeps the modal's data logic separate and reusable.
+   - Include `ref` for loading/error states specific to the modal.
 
 7. **Create main specification viewer page**
    - Create [dataland-frontend/src/components/pages/SpecificationsViewer.vue](dataland-frontend/src/components/pages/SpecificationsViewer.vue)
-   - Top section: PrimeVue `Select` component with all available frameworks loaded from `useFrameworkSpecifications()`
-   - Dropdown options show framework name (e.g., "SFDR - Sustainability Finance Disclosure Regulation")
-   - Sort frameworks alphabetically by name in dropdown for easy discovery
-   - On selection change: update URL query param `?framework=<id>`, fetch specification
-   - Display `FrameworkMetadataPanel` below dropdown (when framework selected)
-   - Render `SpecificationSchemaTree` with parsed schema (when framework selected)
-   - Show "Select a framework to view its specification" empty state message when none selected
-   - Include loading spinner (PrimeVue `ProgressSpinner`) and error handling
-   - Wrap in `TheContent` layout component
-   - Add `data-test="framework-selector"` and `data-test="specifications-content"` attributes
+   - **Use the `useSpecifications` composable** to manage all state and data fetching.
+   - Top section: PrimeVue `Select` component with frameworks from `useSpecifications()`.
+   - On selection change: call `selectFramework(frameworkId)` from the composable and update the URL query param.
+   - **Pass data via props:**
+     - Pass the `selectedFramework` object as a prop to `FrameworkMetadataPanel`.
+     - Pass the `selectedFramework.parsedSchema` as a prop to `SpecificationSchemaTree`.
+   - Show "Select a framework to view its specification" empty state message when `selectedFramework` is null.
+   - Display loading spinners and error messages based on the composable's state.
+   - Wrap in `TheContent` layout component.
+   - Add `data-test="framework-selector"` and `data-test="specifications-content"` attributes.
 
-8. **Create framework metadata panel component**
+8. **Create framework metadata panel component (Presentational)**
    - Create [dataland-frontend/src/components/resources/specifications/FrameworkMetadataPanel.vue](dataland-frontend/src/components/resources/specifications/FrameworkMetadataPanel.vue)
-   - Display: Framework Name (large heading), Business Definition (prominent paragraph), Framework ID (subtle secondary text with `var(--p-text-secondary-color)`)
-   - Show `referencedReportJsonPath` if present (labeled clearly for business users)
-   - Use PrimeVue `Card` component with custom layout via PassThrough API for positioning
-   - Apply Design Tokens: `var(--p-surface-card)` for background, `var(--p-border-radius)` for corners
-   - Add `data-test="framework-metadata"` attribute
+   - **This is a presentational component.** It should receive all data via props from its parent (`SpecificationsViewer`).
+   - `defineProps<{ framework: FrameworkSpecificationWithParsedSchema }>()`
+   - Display: Framework Name, Business Definition, Framework ID from the `framework` prop.
+   - Show `referencedReportJsonPath` if present.
+   - Use PrimeVue `Card` component with custom layout via PassThrough API.
+   - Add `data-test="framework-metadata"` attribute.
 
-9. **Create hierarchical schema tree component**
+9. **Create hierarchical schema tree component (Presentational)**
    - Create [dataland-frontend/src/components/resources/specifications/SpecificationSchemaTree.vue](dataland-frontend/src/components/resources/specifications/SpecificationSchemaTree.vue)
-   - Follow [MultiLayerDataTableBody.vue](dataland-frontend/src/components/resources/dataTable/MultiLayerDataTableBody.vue) pattern for expandable sections
-   - Use `Set<number>` to track expanded section indices (similar to existing `expandedSections` pattern)
-   - Render recursive sections with clickable headers and chevron icons:
-     - `pi pi-chevron-down` when expanded
-     - `pi pi-chevron-left` when collapsed
-   - For section nodes: render label as clickable header, recursively render children when expanded
-   - For data point nodes:
-     - Display `aliasExport` (human-readable name) as primary heading
-     - Show truncated `businessDefinition` (150 chars) below heading
-     - Add "Show more/less" text toggle to expand/collapse full definition
-     - Include "View Details" button (PrimeVue `Button` with `text` variant) to open modal with technical details
-   - Auto-expand top-level sections on mount (use `onMounted` lifecycle hook)
-   - Keep nested sections collapsed by default (users drill down as needed)
-   - Add `data-test` attributes: `section-header`, `datapoint-name`, `datapoint-definition`, `show-more-toggle`, `view-details-button`
-   - Scoped styles ONLY for structural layout (flex, grid, spacing, indentation levels)
+   - **This is a presentational component.** It receives the parsed schema tree via props.
+   - `defineProps<{ schema: ParsedSchemaNode[] }>()`
+   - Follow `MultiLayerDataTableBody.vue` pattern for expandable sections.
+   - Use `Set<string>` to track expanded section unique identifiers.
+   - Render recursive sections and data points based on the `schema` prop.
+   - "View Details" button emits an event with the `dataPointTypeId` to the parent, which then opens the modal.
+   - Auto-expand top-level sections on mount.
+   - Add `data-test` attributes: `section-header`, `datapoint-name`, `datapoint-definition`, `show-more-toggle`, `view-details-button`.
+   - Scoped styles ONLY for structural layout.
 
 10. **Create data point detail modal component**
     - Create [dataland-frontend/src/components/resources/specifications/DataPointTypeDetailsDialog.vue](dataland-frontend/src/components/resources/specifications/DataPointTypeDetailsDialog.vue)
-    - Use PrimeVue `Dialog` with `v-model:visible` prop binding
-    - Fetch data point details using `useDataPointTypeDetails(dataPointTypeId)` when modal opens
-    - Display sections:
-      - **Name:** Display as dialog heading
-      - **Business Definition:** Full text in prominent paragraph
-      - **Data Point Base Type:** Show name with link to base type ref if available
-      - **Constraints:** Format in `<code>` blocks or formatted list (if present)
-      - **Used By Frameworks:** Display as list with PrimeVue chips/tags for each framework
-    - Format technical fields for readability - use monospace font for IDs/constraints
-    - Include close button with `data-test="close-dialog"` attribute
-    - Dialog header uses `var(--p-dialog-header-background)` Design Token
-    - Use semantic HTML structure (`<dl>`, `<dt>`, `<dd>`) for accessibility
-    - Loading state within modal while fetching data point details
+    - Use PrimeVue `Dialog` with `v-model:visible` prop binding.
+    - **Use the `useDataPointDetails` composable.** Fetch data when the modal opens, triggered by a `dataPointTypeId` prop.
+    - Display sections: Name, Business Definition, Base Type, Constraints, etc.
+    - Format technical fields for readability.
+    - Include close button with `data-test="close-dialog"`.
+    - Use semantic HTML structure (`<dl>`, `<dt>`, `<dd>`).
+    - Manage its own loading state within the modal while fetching details.
 
 11. **Add routing configuration**
     - Edit [dataland-frontend/src/router/index.ts](dataland-frontend/src/router/index.ts)
