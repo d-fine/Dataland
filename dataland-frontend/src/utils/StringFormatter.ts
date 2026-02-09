@@ -237,3 +237,39 @@ export function truncateText(text: string, maxLength: number): { truncated: stri
 
   return { truncated, needsTruncation: true };
 }
+
+/**
+ * Converts a data point base type ID to a human-readable label.
+ * Used to display user-friendly type names alongside technical IDs in the specification viewer.
+ * 
+ * @param baseTypeId - The technical base type ID (e.g., "plainString", "extendedDecimal")
+ * @returns A human-readable label for the type
+ * 
+ * @example
+ * humanizeDataPointBaseType("plainString") // Returns "Text"
+ * humanizeDataPointBaseType("plainDate") // Returns "Date"
+ * humanizeDataPointBaseType("extendedDecimal") // Returns "Number"
+ * humanizeDataPointBaseType("plaintextDocument") // Returns "Plaintext Document"
+ */
+export function humanizeDataPointBaseType(baseTypeId: string): string {
+  // Map of common base types to user-friendly labels
+  const typeMapping: { [key: string]: string } = {
+    plainString: 'Text',
+    plainDate: 'Date',
+    plainInteger: 'Number',
+    plainDecimal: 'Number',
+    extendedDecimal: 'Number',
+    plainBoolean: 'Yes/No',
+    extendedEnum: 'Selection',
+    plainEnum: 'Selection',
+    extendedArray: 'List',
+  };
+
+  // Check if we have a direct mapping
+  if (typeMapping[baseTypeId]) {
+    return typeMapping[baseTypeId];
+  }
+
+  // Otherwise, humanize the ID using existing utility
+  return humanizeStringOrNumber(baseTypeId);
+}

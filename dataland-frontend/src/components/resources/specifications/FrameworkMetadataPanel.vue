@@ -31,26 +31,6 @@ const props = defineProps<{
           <dt class="metadata-label">Framework ID</dt>
           <dd class="metadata-value metadata-value-code">{{ framework.framework.id }}</dd>
         </div>
-
-        <div v-if="framework.referencedReportJsonPath" class="metadata-item">
-          <dt class="metadata-label">Referenced Report Path</dt>
-          <dd class="metadata-value metadata-value-code">{{ framework.referencedReportJsonPath }}</dd>
-        </div>
-
-        <div class="metadata-item">
-          <dt class="metadata-label">API Reference</dt>
-          <dd class="metadata-value">
-            <a 
-              :href="framework.framework.ref" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="api-link"
-            >
-              {{ framework.framework.ref }}
-              <i class="pi pi-external-link"></i>
-            </a>
-          </dd>
-        </div>
       </dl>
     </template>
   </Card>
@@ -110,24 +90,6 @@ const props = defineProps<{
           font-family: monospace;
           font-size: 0.875rem;
           color: var(--p-text-secondary-color);
-        }
-      }
-
-      .api-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--p-primary-color);
-        text-decoration: none;
-        font-size: 0.875rem;
-        word-break: break-all;
-
-        &:hover {
-          text-decoration: underline;
-        }
-
-        i {
-          font-size: 0.75rem;
         }
       }
     }
