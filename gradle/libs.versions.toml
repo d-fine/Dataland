@@ -34,7 +34,7 @@ poi = "5.5.1"
 jodconverter = "4.4.11"
 spring-boot = "3.5.9"
 spring-framework = "6.2.15"
-detekt = "v2.0.0-alpha.2"
+detekt = "2.0.0-alpha.2"
 bouncy-castle = "1.70"
 testcontainers = "1.21.4"
 
