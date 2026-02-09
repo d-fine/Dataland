@@ -35,8 +35,15 @@ class DatasetReviewService
          */
         @Transactional
         fun createDatasetReview(datasetId: UUID): DatasetReviewResponse {
-            val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
-
+            lateinit var datatypeToDatapointIds: Map<String, String>
+            try {
+                datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
+            } catch (_: InvalidInputApiException) {
+                throw ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "Dataset with the id: $datasetId could be found.",
+                )
+            }
             val dataPointQaReportIds =
                 datasetReviewSupportService
                     .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
@@ -84,7 +91,7 @@ class DatasetReviewService
          */
         @Transactional
         fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
-            val datasetReview = getDatasetReviewById(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
@@ -98,7 +105,7 @@ class DatasetReviewService
             datasetReviewId: UUID,
             state: DatasetReviewState,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReviewById(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
 
@@ -113,7 +120,7 @@ class DatasetReviewService
             datasetReviewId: UUID,
             dataPointId: UUID,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReviewById(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
             if (dataPointId.toString() !in datatypeToDatapointIds.values) {
@@ -137,7 +144,7 @@ class DatasetReviewService
             datasetReviewId: UUID,
             qaReportId: UUID,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReviewById(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
                 ?: throw ResourceNotFoundApiException(
@@ -165,7 +172,7 @@ class DatasetReviewService
             dataPoint: String,
             dataPointType: String,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReviewById(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             lateinit var frameworksOfDataPointType: List<String>
             try {
@@ -200,14 +207,20 @@ class DatasetReviewService
         }
 
         /**
+         * Method to get a dataset review entity by id and convert to response
+         */
+        @Transactional(readOnly = true)
+        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse = getDatasetReview(datasetReviewId).toDatasetReviewResponse()
+
+        /**
          * Helper method to get a dataset review entity by id including exception handling.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewEntity =
+        fun getDatasetReview(datasetReviewId: UUID): DatasetReviewEntity =
             datasetReviewRepository.findById(datasetReviewId).orElseThrow {
                 ResourceNotFoundApiException(
                     "Dataset review object not found",
-                    "NoDataset review object with the id: $datasetReviewId could be found.",
+                    "No Dataset review object with the id: $datasetReviewId could be found.",
                 )
             }
 

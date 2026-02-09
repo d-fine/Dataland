@@ -5,6 +5,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.Dataset
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -13,13 +14,12 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class DatasetReviewController(
-    private val datasetReviewService: DatasetReviewService,
+    @Autowired private val datasetReviewService: DatasetReviewService,
 ) : DatasetReviewApi {
     override fun getDatasetReview(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity.ok(
             datasetReviewService
-                .getDatasetReviewById(convertToUUID(datasetReviewId))
-                .toDatasetReviewResponse(),
+                .getDatasetReviewById(convertToUUID(datasetReviewId)),
         )
 
     override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
