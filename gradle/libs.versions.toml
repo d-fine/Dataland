@@ -18,7 +18,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "2.0.21"
+kotlin = "2.3.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.21.0"
@@ -34,7 +34,7 @@ poi = "5.5.1"
 jodconverter = "4.4.11"
 spring-boot = "3.5.9"
 spring-framework = "6.2.15"
-detekt = "1.23.8"
+detekt = "v2.0.0-alpha.2"
 bouncy-castle = "1.70"
 testcontainers = "1.21.4"
 
