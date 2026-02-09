@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { ParsedSchemaNode, ParsedSection, ParsedDataPoint } from '@/types/Specifications';
-import { humanizeStringOrNumber, humanizeDataPointBaseType } from '@/utils/StringFormatter';
+import { humanizeStringOrNumber, humanizeDataPointBaseType, truncateText } from '@/utils/StringFormatter';
 import PrimeButton from 'primevue/button';
 
 /**
@@ -21,6 +21,12 @@ const emit = defineEmits<{
 
 // Track expanded sections using a Set of section IDs
 const expandedSections = ref<Set<string>>(new Set());
+
+// Track expanded business definitions (show more/less toggle)
+const expandedDefinitions = ref<Set<string>>(new Set());
+
+// Maximum length for business definition truncation
+const DEFINITION_MAX_LENGTH = 150;
 
 /**
  * Auto-expand top-level sections on mount.
@@ -53,6 +59,47 @@ function isSectionExpanded(sectionId: string): boolean {
 }
 
 /**
+ * Toggle business definition expansion (show more/less).
+ */
+function toggleDefinition(dataPointId: string): void {
+  if (expandedDefinitions.value.has(dataPointId)) {
+    expandedDefinitions.value.delete(dataPointId);
+  } else {
+    expandedDefinitions.value.add(dataPointId);
+  }
+}
+
+/**
+ * Check if a definition is expanded.
+ */
+function isDefinitionExpanded(dataPointId: string): boolean {
+  return expandedDefinitions.value.has(dataPointId);
+}
+
+/**
+ * Get the display text for a business definition (truncated or full).
+ */
+function getDefinitionDisplay(dataPointId: string, fullText: string | undefined): string {
+  if (!fullText) return '';
+  
+  if (isDefinitionExpanded(dataPointId)) {
+    return fullText;
+  }
+  
+  const { truncated } = truncateText(fullText, DEFINITION_MAX_LENGTH);
+  return truncated;
+}
+
+/**
+ * Check if a definition needs truncation.
+ */
+function needsTruncation(text: string | undefined): boolean {
+  if (!text) return false;
+  const { needsTruncation } = truncateText(text, DEFINITION_MAX_LENGTH);
+  return needsTruncation;
+}
+
+/**
  * Get the human-readable display name for a data point.
  * Transforms technical names like "COMPANY_NAME" to "Company Name".
  */
@@ -62,17 +109,25 @@ function getDataPointDisplayName(dataPoint: ParsedDataPoint): string {
 
 /**
  * Extract and display both human-readable and technical data type information.
- * @param dataPointTypeId - The full data point type ID (e.g., "plainDateSfdrDataDate")
+ * Uses enriched baseTypeId from batch loading if available.
+ * @param dataPoint - The data point node
  * @returns Object with readable label and technical ID
  */
-function getDataTypeDisplay(dataPointTypeId: string): { readable: string; technical: string } {
-  // Extract base type prefix using regex (e.g., "plainDate" from "plainDateSfdrDataDate")
-  const baseTypeMatch = dataPointTypeId.match(/^(plain[A-Z][a-z]+|extended[A-Z][a-z]+)/);
-  const baseType = baseTypeMatch ? baseTypeMatch[1] : dataPointTypeId;
+function getDataTypeDisplay(dataPoint: ParsedDataPoint): { readable: string; technical: string } {
+  // Use enriched base type if available, otherwise extract from dataPointTypeId
+  let baseType: string;
+  
+  if (dataPoint.baseTypeId) {
+    baseType = dataPoint.baseTypeId;
+  } else {
+    // Extract base type prefix using regex (e.g., "plainDate" from "plainDateSfdrDataDate")
+    const baseTypeMatch = dataPoint.dataPointTypeId.match(/^(plain[A-Z][a-z]+|extended[A-Z][a-z]+)/);
+    baseType = baseTypeMatch ? baseTypeMatch[1] : dataPoint.dataPointTypeId;
+  }
   
   return {
     readable: humanizeDataPointBaseType(baseType),
-    technical: dataPointTypeId,
+    technical: dataPoint.dataPointTypeId,
   };
 }
 
@@ -177,10 +232,25 @@ function handleViewDetails(dataPointTypeId: string): void {
           />
         </div>
 
+        <!-- Business Definition (if loaded via batch) -->
+        <div v-if="node.businessDefinition" class="data-point-definition" :data-test="'datapoint-definition'">
+          <p class="definition-text">
+            {{ getDefinitionDisplay(node.id, node.businessDefinition) }}
+          </p>
+          <button
+            v-if="needsTruncation(node.businessDefinition)"
+            class="definition-toggle"
+            :data-test="'show-more-toggle'"
+            @click="toggleDefinition(node.id)"
+          >
+            {{ isDefinitionExpanded(node.id) ? 'Show less' : 'Show more' }}
+          </button>
+        </div>
+
         <!-- Data Point Type (human-readable + technical) -->
         <div class="data-point-type">
           <span class="type-label">Type:</span>
-          <span class="type-readable">{{ getDataTypeDisplay(node.dataPointTypeId).readable }}</span>
+          <span class="type-readable">{{ getDataTypeDisplay(node).readable }}</span>
           <span class="type-technical">({{ node.dataPointTypeId }})</span>
         </div>
       </div>
@@ -265,6 +335,40 @@ function handleViewDetails(dataPointTypeId: string): void {
         font-size: 1rem;
         color: var(--p-text-color);
         flex-grow: 1;
+      }
+    }
+
+    .data-point-definition {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .definition-text {
+        margin: 0;
+        color: var(--p-text-secondary-color);
+        line-height: 1.6;
+        font-size: 0.875rem;
+      }
+
+      .definition-toggle {
+        align-self: flex-start;
+        background: none;
+        border: none;
+        color: var(--p-primary-color);
+        cursor: pointer;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        padding: 0;
+        text-decoration: underline;
+
+        &:hover {
+          color: var(--p-primary-600);
+        }
+
+        &:focus {
+          outline: 2px solid var(--p-primary-color);
+          outline-offset: 2px;
+        }
       }
     }
 

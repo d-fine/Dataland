@@ -84,6 +84,14 @@ export interface ParsedDataPoint {
   ref: string;
   /** Human-readable name for display (preferred over key) */
   aliasExport?: string;
+  
+  // Optional enriched fields from batch loading (Phase 2)
+  /** Actual business definition from DataPointTypeSpecification API */
+  businessDefinition?: string;
+  /** Human-readable name from API (may differ from aliasExport) */
+  dataPointName?: string;
+  /** Base type ID for display (e.g., "plainDate") from API */
+  baseTypeId?: string;
 }
 
 /**

@@ -29,12 +29,15 @@ const {
   selectedFramework,
   isLoadingFrameworks,
   isLoadingSpecification,
+  isLoadingDataPointDetails,
   error: specificationsError,
   loadFrameworks,
   selectFramework,
 } = useSpecifications({
   fetchFrameworks: () => apiClientProvider.apiClients.specificationController.listFrameworkSpecifications().then(r => r.data),
   fetchSpecification: (id) => apiClientProvider.apiClients.specificationController.getFrameworkSpecification(id).then(r => r.data),
+  fetchDataPointDetails: (id) => apiClientProvider.apiClients.specificationController.getDataPointTypeSpecification(id).then(r => r.data),
+  enableBatchDataPointLoading: true,
 });
 
 const {
@@ -191,6 +194,13 @@ async function retryLoadSpecification(): Promise<void> {
         <!-- Schema Tree -->
         <div class="schema-section">
           <h2>Data Point Structure</h2>
+          
+          <!-- Loading indicator for batch data point details -->
+          <div v-if="isLoadingDataPointDetails" class="loading-details">
+            <ProgressSpinner class="spinner-inline" />
+            <span>Loading detailed descriptions...</span>
+          </div>
+          
           <SpecificationSchemaTree
             :schema="selectedFramework.parsedSchema"
             @view-details="handleViewDetails"
@@ -294,6 +304,22 @@ async function retryLoadSpecification(): Promise<void> {
 
       h2 {
         margin: 0;
+      }
+      
+      .loading-details {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: var(--p-surface-50);
+        border-radius: var(--p-border-radius);
+        color: var(--p-text-secondary-color);
+        font-size: 0.9375rem;
+        
+        .spinner-inline {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
       }
     }
   }

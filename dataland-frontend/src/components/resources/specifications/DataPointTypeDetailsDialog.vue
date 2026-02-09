@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { DataPointTypeSpecification } from '@clients/specificationservice';
+import { humanizeDataPointBaseType } from '@/utils/StringFormatter';
 import Dialog from 'primevue/dialog';
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import PrimeButton from 'primevue/button';
@@ -103,72 +106,100 @@ function getFrameworksList(usedBy: Array<{ id: string; ref: string }> | undefine
 
     <!-- Content -->
     <div v-else-if="dataPointDetails" class="dialog-content">
-      <dl class="details-list">
-        <!-- Name -->
-        <div class="detail-item">
-          <dt class="detail-label">Name</dt>
-          <dd class="detail-value detail-value-title">{{ dataPointDetails.name }}</dd>
-        </div>
+      <!-- Overview Section (always visible) -->
+      <div class="overview-section">
+        <dl class="details-list">
+          <!-- Name -->
+          <div class="detail-item">
+            <dt class="detail-label">Name</dt>
+            <dd class="detail-value detail-value-title">{{ dataPointDetails.name }}</dd>
+          </div>
 
-        <!-- Business Definition -->
-        <div class="detail-item">
-          <dt class="detail-label">Business Definition</dt>
-          <dd class="detail-value detail-value-prominent">{{ dataPointDetails.businessDefinition }}</dd>
-        </div>
+          <!-- Business Definition -->
+          <div class="detail-item">
+            <dt class="detail-label">Business Definition</dt>
+            <dd class="detail-value detail-value-prominent">{{ dataPointDetails.businessDefinition }}</dd>
+          </div>
 
-        <!-- Data Point Type ID -->
-        <div class="detail-item">
-          <dt class="detail-label">Data Point Type ID</dt>
-          <dd class="detail-value detail-value-code">{{ dataPointDetails.dataPointType.id }}</dd>
-        </div>
+          <!-- Data Type Display (human-readable + technical) -->
+          <div class="detail-item">
+            <dt class="detail-label">Data Type</dt>
+            <dd class="detail-value">
+              <div class="data-type-display">
+                <span class="type-primary">{{ humanizeDataPointBaseType(dataPointDetails.dataPointBaseType.id) }}</span>
+                <span class="type-secondary">({{ dataPointDetails.dataPointBaseType.id }})</span>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
 
-        <!-- Base Type -->
-        <div class="detail-item">
-          <dt class="detail-label">Base Type</dt>
-          <dd class="detail-value">
-            <span class="detail-value-code">{{ dataPointDetails.dataPointBaseType.id }}</span>
-            <a
-              :href="dataPointDetails.dataPointBaseType.ref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="detail-link"
-            >
-              <i class="pi pi-external-link"></i>
-              View Base Type
-            </a>
-          </dd>
-        </div>
+      <!-- Technical Details Section (collapsible) -->
+      <Accordion :value="undefined" class="technical-accordion">
+        <AccordionPanel value="technical">
+          <template #header>
+            <div class="accordion-header">
+              <i class="pi pi-code"></i>
+              <span>Technical Details</span>
+            </div>
+          </template>
+          
+          <dl class="details-list">
+            <!-- Data Point Type ID -->
+            <div class="detail-item">
+              <dt class="detail-label">Data Point Type ID</dt>
+              <dd class="detail-value detail-value-code">{{ dataPointDetails.dataPointType.id }}</dd>
+            </div>
 
-        <!-- Constraints -->
-        <div class="detail-item">
-          <dt class="detail-label">Constraints</dt>
-          <dd class="detail-value">
-            <pre class="detail-code">{{ formatConstraints(dataPointDetails.constraints) }}</pre>
-          </dd>
-        </div>
+            <!-- Base Type with Link -->
+            <div class="detail-item">
+              <dt class="detail-label">Base Type ID</dt>
+              <dd class="detail-value">
+                <span class="detail-value-code">{{ dataPointDetails.dataPointBaseType.id }}</span>
+                <a
+                  :href="dataPointDetails.dataPointBaseType.ref"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-link"
+                >
+                  <i class="pi pi-external-link"></i>
+                  View Base Type
+                </a>
+              </dd>
+            </div>
 
-        <!-- Frameworks -->
-        <div class="detail-item">
-          <dt class="detail-label">Used By Frameworks</dt>
-          <dd class="detail-value detail-value-code">{{ getFrameworksList(dataPointDetails.usedBy) }}</dd>
-        </div>
+            <!-- Constraints -->
+            <div class="detail-item">
+              <dt class="detail-label">Constraints</dt>
+              <dd class="detail-value">
+                <pre class="detail-code">{{ formatConstraints(dataPointDetails.constraints) }}</pre>
+              </dd>
+            </div>
 
-        <!-- API Reference -->
-        <div class="detail-item">
-          <dt class="detail-label">API Reference</dt>
-          <dd class="detail-value">
-            <a
-              :href="dataPointDetails.dataPointType.ref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="detail-link"
-            >
-              {{ dataPointDetails.dataPointType.ref }}
-              <i class="pi pi-external-link"></i>
-            </a>
-          </dd>
-        </div>
-      </dl>
+            <!-- Frameworks -->
+            <div class="detail-item">
+              <dt class="detail-label">Used By Frameworks</dt>
+              <dd class="detail-value detail-value-code">{{ getFrameworksList(dataPointDetails.usedBy) }}</dd>
+            </div>
+
+            <!-- API Reference -->
+            <div class="detail-item">
+              <dt class="detail-label">API Reference</dt>
+              <dd class="detail-value">
+                <a
+                  :href="dataPointDetails.dataPointType.ref"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-link"
+                >
+                  {{ dataPointDetails.dataPointType.ref }}
+                  <i class="pi pi-external-link"></i>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </AccordionPanel>
+      </Accordion>
     </div>
 
     <!-- No Data State -->
@@ -225,6 +256,44 @@ function getFrameworksList(usedBy: Array<{ id: string; ref: string }> | undefine
 }
 
 .dialog-content {
+  .overview-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .data-type-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    .type-primary {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--p-text-color);
+    }
+
+    .type-secondary {
+      font-family: monospace;
+      font-size: 0.9375rem;
+      color: var(--p-text-secondary-color);
+    }
+  }
+
+  .technical-accordion {
+    margin-top: 1rem;
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+
+      i {
+        color: var(--p-text-secondary-color);
+      }
+    }
+  }
+
   .details-list {
     display: flex;
     flex-direction: column;
@@ -260,7 +329,7 @@ function getFrameworksList(usedBy: Array<{ id: string; ref: string }> | undefine
           font-size: 1rem;
           line-height: 1.7;
           padding: 1rem;
-          background: var(--p-surface-50);
+          background: var(--p-surface-100);
           border-radius: var(--p-border-radius);
           border-left: 3px solid var(--p-primary-color);
         }
