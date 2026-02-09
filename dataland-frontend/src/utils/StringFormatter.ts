@@ -213,3 +213,27 @@ export function generateInitials(name: string): string {
     .map((word) => word.charAt(0).toUpperCase())
     .join('');
 }
+
+/**
+ * Truncates text to a maximum length at word boundaries.
+ * If the text is longer than maxLength, it will be truncated and "..." will be appended.
+ * @param text - The text to truncate
+ * @param maxLength - The maximum length of the truncated text (including "...")
+ * @returns An object containing the truncated text and a flag indicating if truncation occurred
+ */
+export function truncateText(text: string, maxLength: number): { truncated: string; needsTruncation: boolean } {
+  if (text.length <= maxLength) {
+    return { truncated: text, needsTruncation: false };
+  }
+
+  // Find the last space within the maxLength (accounting for "...")
+  const ellipsis = '...';
+  const targetLength = maxLength - ellipsis.length;
+  const lastSpaceIndex = text.lastIndexOf(' ', targetLength);
+
+  // If no space found, just cut at target length
+  const cutIndex = lastSpaceIndex > 0 ? lastSpaceIndex : targetLength;
+  const truncated = text.substring(0, cutIndex) + ellipsis;
+
+  return { truncated, needsTruncation: true };
+}

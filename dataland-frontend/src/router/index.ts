@@ -40,6 +40,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+const SpecificationsViewer = (): Promise<RouteComponent> => import('@/components/pages/SpecificationsViewer.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 
 const routes = [
@@ -190,6 +191,14 @@ const routes = [
     component: QualityAssurance,
     meta: {
       initialTabId: 'qa',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/specifications',
+    name: 'SpecificationsViewer',
+    component: SpecificationsViewer,
+    meta: {
       requiresAuthentication: true,
     },
   },
