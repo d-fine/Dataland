@@ -13,7 +13,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     // Mock API calls with cy.intercept
     cy.intercept('GET', '/specifications/frameworks', { fixture: 'specifications/framework-list.json' }).as('getFrameworks');
     cy.intercept('GET', '/specifications/frameworks/lksg', { fixture: 'specifications/lksg-framework.json' }).as('getLksgFramework');
-    cy.intercept('GET', '/specifications/datapoints/*', { fixture: 'specifications/datapoint-details.json' }).as('getDataPoint');
+    cy.intercept('GET', '/specifications/data-point-types/*', { fixture: 'specifications/datapoint-details.json' }).as('getDataPoint');
   });
 
   describe('Framework selection flow', () => {
@@ -148,7 +148,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should show batch loading indicator when loading data point details', () => {
-      cy.intercept('GET', '/specifications/datapoints/*', (req) => {
+      cy.intercept('GET', '/specifications/data-point-types/*', (req) => {
         req.reply({ fixture: 'specifications/datapoint-details.json', delay: 500 });
       }).as('getDataPointSlow');
 
