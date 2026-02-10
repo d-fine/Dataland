@@ -5,13 +5,15 @@ import lksgFrameworkFixture from '@testing/data/specifications/lksg-framework.js
 import emptyFrameworkFixture from '@testing/data/specifications/empty-framework.json';
 import dataPointDetailsFixture from '@testing/data/specifications/datapointdetails.json';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { createRouter, createMemoryHistory } from 'vue-router';
+import { routes } from '@/router';
 
 describe('Component tests for SpecificationsViewer page', () => {
   beforeEach(() => {
     // Mock API calls with cy.intercept
-    cy.intercept('GET', '/api/specification/frameworks', { fixture: 'specifications/framework-list.json' }).as('getFrameworks');
-    cy.intercept('GET', '/api/specification/frameworks/lksg', { fixture: 'specifications/lksg-framework.json' }).as('getLksgFramework');
-    cy.intercept('GET', '/api/specification/datapoints/*', { fixture: 'specifications/datapoint-details.json' }).as('getDataPoint');
+    cy.intercept('GET', '/specifications/frameworks', { fixture: 'specifications/framework-list.json' }).as('getFrameworks');
+    cy.intercept('GET', '/specifications/frameworks/lksg', { fixture: 'specifications/lksg-framework.json' }).as('getLksgFramework');
+    cy.intercept('GET', '/specifications/datapoints/*', { fixture: 'specifications/datapoint-details.json' }).as('getDataPoint');
   });
 
   describe('Framework selection flow', () => {
@@ -88,7 +90,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Loading states', () => {
     it('Should show spinner in dropdown area while frameworks loading', () => {
-      cy.intercept('GET', '/api/specification/frameworks', (req) => {
+      cy.intercept('GET', '/specifications/frameworks', (req) => {
         req.reply({ fixture: 'specifications/framework-list.json', delay: 500 });
       }).as('getFrameworksSlow');
 
@@ -101,7 +103,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should show loading state while specification loads', () => {
-      cy.intercept('GET', '/api/specification/frameworks/lksg', (req) => {
+      cy.intercept('GET', '/specifications/frameworks/lksg', (req) => {
         req.reply({ fixture: 'specifications/lksg-framework.json', delay: 500 });
       }).as('getLksgFrameworkSlow');
 
@@ -122,7 +124,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should keep dropdown interactive while specification loads', () => {
-      cy.intercept('GET', '/api/specification/frameworks/lksg', (req) => {
+      cy.intercept('GET', '/specifications/frameworks/lksg', (req) => {
         req.reply({ fixture: 'specifications/lksg-framework.json', delay: 500 });
       }).as('getLksgFrameworkSlow');
 
@@ -139,7 +141,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should show batch loading indicator when loading data point details', () => {
-      cy.intercept('GET', '/api/specification/datapoints/*', (req) => {
+      cy.intercept('GET', '/specifications/datapoints/*', (req) => {
         req.reply({ fixture: 'specifications/datapoint-details.json', delay: 500 });
       }).as('getDataPointSlow');
 
@@ -159,7 +161,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Error scenarios', () => {
     it('Should show error message when framework list fetch fails', () => {
-      cy.intercept('GET', '/api/specification/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
+      cy.intercept('GET', '/specifications/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
 
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
@@ -169,7 +171,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should show retry button for framework list errors', () => {
-      cy.intercept('GET', '/api/specification/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
+      cy.intercept('GET', '/specifications/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
 
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
@@ -179,7 +181,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
     it('Should retry framework list fetch on retry button click', () => {
       let requestCount = 0;
-      cy.intercept('GET', '/api/specification/frameworks', (req) => {
+      cy.intercept('GET', '/specifications/frameworks', (req) => {
         requestCount++;
         if (requestCount === 1) {
           req.reply({ statusCode: 500, body: { message: 'Server error' } });
@@ -202,7 +204,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should show error message when specification fetch fails', () => {
-      cy.intercept('GET', '/api/specification/frameworks/lksg', { statusCode: 500, body: { message: 'Server error' } }).as('getLksgFrameworkError');
+      cy.intercept('GET', '/specifications/frameworks/lksg', { statusCode: 500, body: { message: 'Server error' } }).as('getLksgFrameworkError');
 
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
@@ -218,7 +220,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
     it('Should clear error on successful retry', () => {
       let requestCount = 0;
-      cy.intercept('GET', '/api/specification/frameworks/lksg', (req) => {
+      cy.intercept('GET', '/specifications/frameworks/lksg', (req) => {
         requestCount++;
         if (requestCount === 1) {
           req.reply({ statusCode: 500, body: { message: 'Server error' } });
@@ -383,10 +385,10 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should render empty schema gracefully', () => {
-      cy.intercept('GET', '/api/specification/frameworks/empty-test', { fixture: 'specifications/empty-framework.json' }).as('getEmptyFramework');
+      cy.intercept('GET', '/specifications/frameworks/empty-test', { fixture: 'specifications/empty-framework.json' }).as('getEmptyFramework');
       
       // Update framework list to include empty framework
-      cy.intercept('GET', '/api/specification/frameworks', {
+      cy.intercept('GET', '/specifications/frameworks', {
         body: [
           ...frameworkListFixture as SimpleFrameworkSpecification[],
           { id: 'empty-test', name: 'Empty Framework', businessDefinition: 'Empty' },
@@ -410,11 +412,21 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('URL synchronization', () => {
     it('Should auto-select framework from URL query param on mount', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {
-        keycloak: minimalKeycloakMock({}),
-        router: {
-          initialRoute: '/framework-specifications?framework=lksg',
-        },
+      // Create router with initial route per Dataland pattern
+      const router = createRouter({
+        routes: routes,
+        history: createMemoryHistory(),
+      });
+      
+      // Set initial route before mounting
+      void router.push('/framework-specifications?framework=lksg');
+      
+      // Wait for router to be ready, then mount component
+      cy.wrap(router.isReady()).then(() => {
+        cy.mountWithPlugins(SpecificationsViewer, {
+          keycloak: minimalKeycloakMock({}),
+          router: router,
+        });
       });
 
       cy.wait('@getFrameworks');
@@ -426,7 +438,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should update URL when switching frameworks', () => {
-      cy.intercept('GET', '/api/specification/frameworks/sfdr', {
+      cy.intercept('GET', '/specifications/frameworks/sfdr', {
         body: {
           id: 'sfdr',
           name: 'SFDR',
