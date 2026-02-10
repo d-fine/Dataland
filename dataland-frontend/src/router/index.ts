@@ -198,7 +198,6 @@ const routes = [
     path: '/framework-specifications',
     name: 'SpecificationsViewer',
     component: SpecificationsViewer,
-
     meta: {
       requiresAuthentication: true,
     },
