@@ -1,17 +1,23 @@
 [
   {
-    "id": "lksg",
-    "name": "LkSG",
-    "businessDefinition": "German Supply Chain Due Diligence Act (Lieferkettensorgfaltspflichtengesetz) requirements for corporate responsibility and human rights in supply chains"
+    "framework": {
+      "id": "lksg",
+      "ref": "/specifications/frameworks/lksg"
+    },
+    "name": "LkSG"
   },
   {
-    "id": "sfdr",
-    "name": "SFDR",
-    "businessDefinition": "Sustainable Finance Disclosure Regulation for financial market participants and advisers"
+    "framework": {
+      "id": "sfdr",
+      "ref": "/specifications/frameworks/sfdr"
+    },
+    "name": "SFDR"
   },
   {
-    "id": "eutaxonomy-non-financials",
-    "name": "EU Taxonomy for non-financial companies",
-    "businessDefinition": "EU Taxonomy Regulation for classifying environmentally sustainable economic activities"
+    "framework": {
+      "id": "eutaxonomy-non-financials",
+      "ref": "/specifications/frameworks/eutaxonomy-non-financials"
+    },
+    "name": "EU Taxonomy for non-financial companies"
   }
 ]

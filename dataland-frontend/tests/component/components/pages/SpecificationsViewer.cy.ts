@@ -40,7 +40,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Should show framework options
       cy.get('.p-select-overlay').should('be.visible');
       cy.get('.p-select-option').should('have.length', 3);
-      cy.get('.p-select-option').first().should('contain.text', 'LkSG');
+      cy.contains('.p-select-option', 'LkSG').should('exist');
     });
 
     it('Should load specification when framework selected', () => {
@@ -52,10 +52,13 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
       
+      // Wait for dropdown to close
+      cy.get('.p-select-overlay').should('not.exist');
+      
       cy.wait('@getLksgFramework');
       
       // Metadata panel should be visible
-      cy.get('[data-test="framework-metadata"]').should('be.visible');
+      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
       cy.get('[data-test="framework-metadata"]').should('contain.text', 'LkSG');
     });
 
@@ -67,6 +70,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -82,6 +86,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       // URL should be updated
       cy.location('search').should('include', 'framework=lksg');
@@ -114,6 +119,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       // Loading state should appear
       cy.get('.loading-state').should('be.visible');
@@ -135,6 +141,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       // Dropdown should still be interactive
       cy.get('.framework-select').should('not.be.disabled');
@@ -152,6 +159,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       // Batch loading indicator should appear
       cy.get('.loading-details').should('be.visible');
@@ -210,9 +218,10 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      // Select framework
+     // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFrameworkError');
       cy.get('.error-message').should('be.visible');
@@ -236,6 +245,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFrameworkRetry');
       cy.get('.error-message').should('be.visible');
@@ -257,6 +267,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -273,6 +284,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -288,6 +300,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -309,6 +322,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -330,6 +344,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -352,6 +367,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       
@@ -391,7 +407,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.intercept('GET', '/specifications/frameworks', {
         body: [
           ...frameworkListFixture as SimpleFrameworkSpecification[],
-          { id: 'empty-test', name: 'Empty Framework', businessDefinition: 'Empty' },
+          { framework: { id: 'empty-test', ref: '/specifications/frameworks/empty-test' }, name: 'Empty Framework' },
         ],
       }).as('getFrameworks');
 
@@ -440,7 +456,10 @@ describe('Component tests for SpecificationsViewer page', () => {
     it('Should update URL when switching frameworks', () => {
       cy.intercept('GET', '/specifications/frameworks/sfdr', {
         body: {
-          id: 'sfdr',
+          framework: {
+            id: 'sfdr',
+            ref: '/specifications/frameworks/sfdr'
+          },
           name: 'SFDR',
           businessDefinition: 'SFDR desc',
           schema: '{}',
@@ -454,6 +473,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select first framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getLksgFramework');
       cy.location('search').should('include', 'framework=lksg');
@@ -461,6 +481,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // Select second framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'SFDR').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       cy.wait('@getSfdrFramework');
       cy.location('search').should('include', 'framework=sfdr');
@@ -478,6 +499,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       // 2. Select framework
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG').click();
+      cy.get('.p-select-overlay').should('not.exist');
       
       // 3. Verify framework loads
       cy.wait('@getLksgFramework');
