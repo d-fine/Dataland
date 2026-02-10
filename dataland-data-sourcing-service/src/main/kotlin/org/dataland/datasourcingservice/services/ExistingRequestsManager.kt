@@ -1,9 +1,14 @@
 package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
+import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BasicStateHistoryEntry
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
@@ -28,6 +33,7 @@ class ExistingRequestsManager
         private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingServiceMessageSender: DataSourcingServiceMessageSender,
         private val requestQueryManager: RequestQueryManager,
+        private val dataSourcingManager: DataSourcingManager,
     ) {
         private val requestLogger = RequestLogger()
 
@@ -153,4 +159,47 @@ class ExistingRequestsManager
                 .ifEmpty {
                     throw RequestNotFoundApiException(requestId)
                 }
+
+        /**
+         * A data class representing a combined history entry that includes the timestamp, request state, data sourcing
+         * state, displayed state, and an optional admin comment.
+         */
+        interface CombinedHistoryEntry {
+            val timestamp: Long
+            val requestState: RequestState?
+            val dataSourcingState: DataSourcingState?
+            val displayedState: DisplayedState?
+            val adminComment: String?
+        }
+
+        /**
+         * Retrieves the history of revisions for a specific data request identified by its ID.
+         * @param requestId The UUID string of the data request whose history is to be retrieved.
+         * @return A list of StoredRequest objects representing the revision history of the specified data request.
+         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
+         */
+        @Transactional(readOnly = true)
+        fun retrieveBasicStateHistory(requestId: UUID): List<BasicStateHistoryEntry> {
+            val dataRequestRevisions = dataRevisionRepository.listDataRequestRevisionsById(requestId)
+            val requestStateHistory = dataRequestRevisions.map { (entity, _) -> entity.state }
+            print(requestStateHistory)
+            // Alle Request states abrufen mit Timestamp
+
+            // Über Request ID das DataSourcing Object abrufen
+            val dataSourcingID = getRequest(requestId).dataSourcingEntityId
+
+            // DataSourcing History mit Timestamps abrufen
+            var dataSourcingHistory = emptyList<DataSourcingWithoutReferences>()
+            if (dataSourcingID != null) {
+                dataSourcingHistory =
+                    dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUID(dataSourcingID), true)
+            }
+            println(dataSourcingHistory)
+
+            // "Fill history gaps"
+
+            // Daraus displayed state berechnen
+
+            return emptyList<BasicStateHistoryEntry>()
+        }
     }

@@ -13,9 +13,11 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataRequestI
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BasicStateHistoryEntry
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.FullStateHistoryEntry
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -285,11 +287,11 @@ interface RequestApi {
     ): ResponseEntity<List<StoredRequest>>
 
     /**
-     * Retrieve the state history of a Request object by its ID.
+     * Retrieve the full state history of a Request object by its ID.
      */
     @Operation(
         summary = "Get full state history of requests by ID",
-        description = "Retrieve the state history of a Request object by its unique identifier.",
+        description = "Retrieve the full state history of a Request object by its unique identifier.",
     )
     @ApiResponses(
         value = [
@@ -306,10 +308,39 @@ interface RequestApi {
             ),
         ],
     )
-    @GetMapping(value = ["/{dataRequestId}/state-history"], produces = ["application/json"])
+    @GetMapping(value = ["/{dataRequestId}/full-state-history"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
-    fun getStateHistoryByRequestId(
+    fun getFullStateHistoryByRequestId(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
-    ): ResponseEntity<List<CombinedStateHistoryEntry>>
+    ): ResponseEntity<List<FullStateHistoryEntry>>
+
+    /**
+     * Retrieve the basic state history of a Request object by its ID.
+     */
+    @Operation(
+        summary = "Get basic state history of requests by ID",
+        description = "Retrieve the basic state history of a Request object by its unique identifier.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved state history."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to query state history.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(value = ["/{dataRequestId}/basic-state-history"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
+    fun getBasicStateHistoryByRequestId(
+        @DataRequestIdParameterRequired
+        @PathVariable dataRequestId: String,
+    ): ResponseEntity<List<BasicStateHistoryEntry>>
 }
