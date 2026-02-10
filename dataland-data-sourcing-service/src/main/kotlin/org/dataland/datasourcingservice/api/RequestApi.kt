@@ -309,8 +309,8 @@ interface RequestApi {
         ],
     )
     @GetMapping(value = ["/{dataRequestId}/full-state-history"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
-    fun getFullStateHistoryByRequestId(
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getFullStateHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
     ): ResponseEntity<List<FullStateHistoryEntry>>
@@ -339,7 +339,7 @@ interface RequestApi {
     )
     @GetMapping(value = ["/{dataRequestId}/basic-state-history"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId))")
-    fun getBasicStateHistoryByRequestId(
+    fun getBasicStateHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
     ): ResponseEntity<List<BasicStateHistoryEntry>>

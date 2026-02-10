@@ -24,7 +24,7 @@ data class FullStateHistoryEntryDefault(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE,
     )
-    override val dataSourcingState: DataSourcingState,
+    override val dataSourcingState: DataSourcingState? = null,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_DESCRIPTION,
         example = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_EXAMPLE,
@@ -36,4 +36,4 @@ data class FullStateHistoryEntryDefault(
         nullable = true,
     )
     override val adminComment: String? = null,
-): FullStateHistoryEntry
+) : FullStateHistoryEntry

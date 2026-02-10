@@ -103,7 +103,7 @@ class RequestController
         override fun getFullStateHistoryById(dataRequestId: String): ResponseEntity<List<FullStateHistoryEntry>> =
             ResponseEntity
                 .ok(
-                    existingRequestsManager.retrieveRequestHistory(
+                    existingRequestsManager.retrieveFullStateHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),
@@ -113,7 +113,7 @@ class RequestController
         override fun getBasicStateHistoryById(dataRequestId: String): ResponseEntity<List<BasicStateHistoryEntry>> =
             ResponseEntity
                 .ok(
-                    existingRequestsManager.retrieveRequestHistory(
+                    existingRequestsManager.retrieveBasicStateHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),

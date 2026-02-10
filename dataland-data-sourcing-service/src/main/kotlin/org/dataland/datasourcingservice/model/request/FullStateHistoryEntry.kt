@@ -8,6 +8,6 @@ import org.dataland.datasourcingservice.model.enums.RequestState
  */
 interface FullStateHistoryEntry : BasicStateHistoryEntry {
     val requestState: RequestState
-    val dataSourcingState: DataSourcingState
+    val dataSourcingState: DataSourcingState?
     val adminComment: String?
 }
