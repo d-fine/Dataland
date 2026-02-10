@@ -1,7 +1,7 @@
 import { defineComponent, h } from 'vue';
 import { useDataPointDetails, type UseDataPointDetailsOptions } from '@/composables/useDataPointDetails';
 import type { DataPointTypeSpecification } from '@clients/specificationservice';
-import dataPointDetailsFixture from '@/../testing/data/specifications/datapoint-details.json';
+import dataPointDetailsFixture from '@testing/data/specifications/datapoint-details.json';
 
 describe('Component tests for useDataPointDetails composable', () => {
   /**

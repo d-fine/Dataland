@@ -1,10 +1,10 @@
 import { defineComponent, h } from 'vue';
 import { useSpecifications, type UseSpecificationsOptions } from '@/composables/useSpecifications';
 import type { SimpleFrameworkSpecification, FrameworkSpecification, DataPointTypeSpecification } from '@clients/specificationservice';
-import frameworkListFixture from '@/../testing/data/specifications/framework-list.json';
-import lksgFrameworkFixture from '@/../testing/data/specifications/lksg-framework.json';
-import emptyFrameworkFixture from '@/../testing/data/specifications/empty-framework.json';
-import nestedSchemaFixture from '@/../testing/data/specifications/nested-schema.json';
+import frameworkListFixture from '@testing/data/specifications/framework-list.json';
+import lksgFrameworkFixture from '@testing/data/specifications/lksg-framework.json';
+import emptyFrameworkFixture from '@testing/data/specifications/empty-framework.json';
+import nestedSchemaFixture from '@testing/data/specifications/nested-schema.json';
 
 describe('Component tests for useSpecifications composable', () => {
   /**

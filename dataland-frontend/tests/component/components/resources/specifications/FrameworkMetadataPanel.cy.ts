@@ -1,6 +1,6 @@
 import FrameworkMetadataPanel from '@/components/resources/specifications/FrameworkMetadataPanel.vue';
 import type { FrameworkSpecificationWithParsedSchema } from '@/types/Specifications';
-import lksgFrameworkFixture from '@/../testing/data/specifications/lksg-framework.json';
+import lksgFrameworkFixture from '@testing/data/specifications/lksg-framework.json';
 
 describe('Component tests for FrameworkMetadataPanel', () => {
   const mockFramework: FrameworkSpecificationWithParsedSchema = {

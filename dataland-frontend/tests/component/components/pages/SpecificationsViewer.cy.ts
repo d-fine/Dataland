@@ -1,9 +1,10 @@
 import SpecificationsViewer from '@/components/pages/SpecificationsViewer.vue';
 import type { SimpleFrameworkSpecification, FrameworkSpecification } from '@clients/specificationservice';
-import frameworkListFixture from '@/../testing/data/specifications/framework-list.json';
-import lksgFrameworkFixture from '@/../testing/data/specifications/lksg-framework.json';
-import emptyFrameworkFixture from '@/../testing/data/specifications/empty-framework.json';
-import dataPointDetailsFixture from '@/../testing/data/specifications/datapointdetails.json';
+import frameworkListFixture from '@testing/data/specifications/framework-list.json';
+import lksgFrameworkFixture from '@testing/data/specifications/lksg-framework.json';
+import emptyFrameworkFixture from '@testing/data/specifications/empty-framework.json';
+import dataPointDetailsFixture from '@testing/data/specifications/datapointdetails.json';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component tests for SpecificationsViewer page', () => {
   beforeEach(() => {
@@ -15,7 +16,9 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Framework selection flow', () => {
     it('Should show empty state when no framework selected', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, {
+        keycloak: minimalKeycloakMock({}),
+      });
 
       cy.wait('@getFrameworks');
       cy.get('[data-test="specifications-content"]').should('be.visible');
@@ -24,7 +27,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should populate framework dropdown after loading', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       cy.get('[data-test="framework-selector"]').should('be.visible');
@@ -39,7 +42,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should load specification when framework selected', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -55,7 +58,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should render schema tree after loading specification', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -70,7 +73,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should update URL query param when framework selected', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -89,7 +92,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         req.reply({ fixture: 'specifications/framework-list.json', delay: 500 });
       }).as('getFrameworksSlow');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.get('.spinner-small').should('be.visible');
       
@@ -102,7 +105,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         req.reply({ fixture: 'specifications/lksg-framework.json', delay: 500 });
       }).as('getLksgFrameworkSlow');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -123,7 +126,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         req.reply({ fixture: 'specifications/lksg-framework.json', delay: 500 });
       }).as('getLksgFrameworkSlow');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -140,7 +143,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         req.reply({ fixture: 'specifications/datapoint-details.json', delay: 500 });
       }).as('getDataPointSlow');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -158,7 +161,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     it('Should show error message when framework list fetch fails', () => {
       cy.intercept('GET', '/api/specification/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksError');
       cy.get('.error-message').should('be.visible');
@@ -168,7 +171,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     it('Should show retry button for framework list errors', () => {
       cy.intercept('GET', '/api/specification/frameworks', { statusCode: 500, body: { message: 'Server error' } }).as('getFrameworksError');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksError');
       cy.contains('button', 'Retry').should('be.visible');
@@ -185,7 +188,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         }
       }).as('getFrameworksRetry');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksRetry');
       cy.get('.error-message').should('be.visible');
@@ -201,7 +204,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     it('Should show error message when specification fetch fails', () => {
       cy.intercept('GET', '/api/specification/frameworks/lksg', { statusCode: 500, body: { message: 'Server error' } }).as('getLksgFrameworkError');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -224,7 +227,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         }
       }).as('getLksgFrameworkRetry');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -246,7 +249,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Child component integration', () => {
     it('Should pass correct framework prop to FrameworkMetadataPanel', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -262,7 +265,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should pass parsed schema to SpecificationSchemaTree', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -277,7 +280,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should open DataPointTypeDetailsDialog when clicking View Details', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -298,7 +301,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should pass correct dataPointTypeId to dialog', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -319,7 +322,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should close dialog and clear details on close', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -341,7 +344,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     });
 
     it('Should allow opening dialog for different data point', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -370,7 +373,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Empty states', () => {
     it('Should show empty state when no framework selected', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -390,7 +393,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         ],
       }).as('getFrameworks');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -408,6 +411,7 @@ describe('Component tests for SpecificationsViewer page', () => {
   describe('URL synchronization', () => {
     it('Should auto-select framework from URL query param on mount', () => {
       cy.mountWithPlugins(SpecificationsViewer, {
+        keycloak: minimalKeycloakMock({}),
         router: {
           initialRoute: '/framework-specifications?framework=lksg',
         },
@@ -431,7 +435,7 @@ describe('Component tests for SpecificationsViewer page', () => {
         },
       }).as('getSfdrFramework');
 
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworks');
       
@@ -453,7 +457,7 @@ describe('Component tests for SpecificationsViewer page', () => {
 
   describe('Multiple interactions', () => {
     it('Should handle complete user journey', () => {
-      cy.mountWithPlugins(SpecificationsViewer, {});
+      cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       // 1. Load frameworks
       cy.wait('@getFrameworks');
