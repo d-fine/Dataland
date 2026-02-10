@@ -198,6 +198,7 @@ const routes = [
     path: '/framework-specifications',
     name: 'SpecificationsViewer',
     component: SpecificationsViewer,
+
     meta: {
       requiresAuthentication: true,
     },
@@ -371,18 +372,6 @@ const router = createRouter({
   scrollBehavior() {
     globalThis.scrollTo(0, 0);
   },
-});
-
-// Navigation guard: Remove trailing slashes to normalize URLs
-router.beforeEach((to) => {
-  if (to.path !== '/' && to.path.endsWith('/')) {
-    // Redirect to the same path without trailing slash, preserving query and hash
-    return {
-      path: to.path.slice(0, -1),
-      query: to.query,
-      hash: to.hash,
-    };
-  }
 });
 
 export { routes };
