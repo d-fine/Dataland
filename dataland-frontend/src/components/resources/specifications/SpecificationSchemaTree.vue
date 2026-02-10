@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import type { ParsedSchemaNode, ParsedSection, ParsedDataPoint } from '@/types/Specifications';
 import { humanizeStringOrNumber, humanizeDataPointBaseType, truncateText } from '@/utils/StringFormatter';
 import PrimeButton from 'primevue/button';
@@ -27,18 +27,6 @@ const expandedDefinitions = ref<Set<string>>(new Set());
 
 // Maximum length for business definition truncation
 const DEFINITION_MAX_LENGTH = 150;
-
-/**
- * Auto-expand top-level sections on mount.
- */
-onMounted(() => {
-  // Expand all top-level sections
-  props.schema.forEach((node) => {
-    if (node.type === 'section') {
-      expandedSections.value.add(node.id);
-    }
-  });
-});
 
 /**
  * Toggle section expansion state.
