@@ -27,17 +27,19 @@ describeIf(
       cy.get('.framework-select', { timeout: 10000 }).should('not.be.disabled');
       cy.get('.framework-select').click();
 
-      // Step 5: Select a framework (assuming LkSG exists in backend)
-      // Note: This test requires LkSG framework to be deployed in the backend
+      // Step 5: Select a framework (using PCAF which exists in backend)
+      // Note: This test requires PCAF framework to be deployed in the backend
       cy.get('.p-select-overlay', { timeout: 5000 }).should('be.visible');
-      cy.contains('.p-select-option', 'LkSG', { timeout: 5000 }).should('exist').click();
+      cy.contains('.p-select-option', 'PCAF', { timeout: 5000 }).should('exist').click();
 
       // Step 6: Verify URL updates with framework query param
       cy.url({ timeout: 5000 }).should('include', '?framework=');
 
       // Step 7: Verify metadata panel displays
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
-      cy.get('.framework-name', { timeout: 5000 }).should('contain.text', 'LkSG');
+      cy.get('@selectedFrameworkName').then((frameworkName) => {
+        cy.get('.framework-name', { timeout: 5000 }).should('contain.text', frameworkName);
+      });
 
       // Step 8: Verify schema tree renders
       cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
@@ -97,51 +99,60 @@ describeIf(
     });
 
     it('Should support keyboard navigation through specifications', () => {
-      cy.visit('/specifications?framework=lksg');
+      // First, get the available frameworks to select the first one
+      cy.visit('/specifications');
+      cy.get('.framework-select', { timeout: 10000 }).should('be.visible').click();
+      
+      // Get first framework ID from dropdown
+      cy.get('.p-select-option', { timeout: 5000 }).first().then(($option) => {
+        const frameworkText = $option.text().trim();
+        $option.trigger('click');
+        
+        // Wait for page to load
+        cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
+        cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
+      });
 
-      // Wait for page to load
-      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
-      cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
+        // Focus on first section header
+        cy.get('[data-test="section-header"]').first().focus();
 
-      // Focus on first section header
-      cy.get('[data-test="section-header"]').first().focus();
+        // Verify focus is on section header
+        cy.focused().should('have.attr', 'data-test', 'section-header');
 
-      // Verify focus is on section header
-      cy.focused().should('have.attr', 'data-test', 'section-header');
+        // Toggle section with Enter key
+        cy.focused().type('{enter}');
+        cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'true');
 
-      // Toggle section with Enter key
-      cy.focused().type('{enter}');
-      cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'true');
+        // Toggle with Space key
+        cy.get('[data-test="section-header"]').first().focus();
+        cy.focused().type(' ');
+        cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'false');
 
-      // Toggle with Space key
-      cy.get('[data-test="section-header"]').first().focus();
-      cy.focused().type(' ');
-      cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'false');
+        // Toggle back with Enter
+        cy.focused().type('{enter}');
+        cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'true');
 
-      // Toggle back with Enter
-      cy.focused().type('{enter}');
-      cy.get('[data-test="section-header"]').first().should('have.attr', 'aria-expanded', 'true');
+        // Tab to View Details button
+        cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().focus();
 
-      // Tab to View Details button
-      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().focus();
+        // Trigger with Enter key
+        cy.focused().type('{enter}');
 
-      // Trigger with Enter key
-      cy.focused().type('{enter}');
+        // Verify modal opens
+        cy.get('[role="dialog"]', { timeout: 10000 }).should('be.visible');
 
-      // Verify modal opens
-      cy.get('[role="dialog"]', { timeout: 10000 }).should('be.visible');
-
-      // Close with ESC key
-      cy.get('body').type('{esc}');
-      cy.get('[role="dialog"]').should('not.exist');
+        // Close with ESC key
+        cy.get('body').type('{esc}');
+        cy.get('[role="dialog"]').should('not.exist');
+      });
     });
 
     it('Should persist framework selection across browser navigation', () => {
-      // Select framework
+      // Select framework (first available)
       cy.visit('/specifications');
       cy.get('[data-test="framework-selector"]', { timeout: 10000 }).should('be.visible');
       cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG', { timeout: 5000 }).click();
+      cy.get('.p-select-option', { timeout: 5000 }).first().click();
 
       // Verify framework loads
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
@@ -159,15 +170,35 @@ describeIf(
     });
 
     it('Should handle direct URL access with framework parameter', () => {
-      // Visit specifications page directly with framework parameter
-      cy.visit('/specifications?framework=lksg');
-
-      // Framework should be auto-loaded
-      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
-      cy.get('.framework-name').should('contain.text', 'LkSG');
-
-      // Schema tree should be rendered
-      cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
+      // First get the first available framework ID to construct URL
+      cy.visit('/specifications');
+      cy.get('.framework-select', { timeout: 10000 }).should('be.visible').click();
+      
+      cy.get('.p-select-option', { timeout: 5000 }).first().then(($option) => {
+        // Get framework name for later assertion
+        const frameworkName = $option.text().trim();
+        $option.trigger('click');
+        
+        // Wait for framework to load, then get the URL parameter value
+        cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
+        cy.url().should('include', '?framework=');
+        
+        // Extract framework ID from URL
+        cy.location('search').then((search) => {
+          const urlParams = new URLSearchParams(search);
+          const frameworkId = urlParams.get('framework');
+          
+          // Now visit the page directly with that framework ID
+          cy.visit(`/specifications?framework=${frameworkId}`);
+          
+          // Framework should be auto-loaded
+          cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
+          cy.get('.framework-name').should('contain.text', frameworkName);
+          
+          // Schema tree should be rendered
+          cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
+        });
+      });
     });
   }
 );
