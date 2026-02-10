@@ -16,6 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
+import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,8 +32,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.springframework.http.HttpStatus
-import org.springframework.web.client.HttpClientErrorException
 import java.util.Optional
 import java.util.UUID
 
@@ -328,7 +327,7 @@ class DatasetReviewServiceTest {
         val type = "unknown-type"
 
         whenever(mockDatasetReviewSupportService.getFrameworksForDataPointType(type))
-            .thenThrow(HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .thenThrow(ClientException())
 
         assertThrows<InvalidInputApiException> {
             datasetReviewService.acceptCustomDataPoint(datasetReviewId, "{}", type)
