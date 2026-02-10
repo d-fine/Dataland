@@ -51,7 +51,7 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'companies', label: 'COMPANIES', route: '/companies', isVisible: true },
   { id: 'my-company', label: 'MY COMPANY', route: '/companies', isVisible: false },
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { id: 'specifications', label: 'SPECIFICATIONS', route: '/specifications', isVisible: true },
+  { id: 'specifications', label: 'SPECIFICATIONS', route: 'SpecificationsViewer', isVisible: true },
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { id: 'my-data-requests-legacy', label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
@@ -98,7 +98,9 @@ watch(companyRoleAssignments, () => {
 function onTabChange(newTab: string | number): void {
   const newId = String(newTab);
   const tab = getTabById(newId);
-  router.push(tab.route).catch((err) => {
+  // Use name-based navigation if route doesn't start with '/', otherwise use path
+  const location = tab.route.startsWith('/') ? { path: tab.route } : { name: tab.route };
+  router.push(location).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
 }
