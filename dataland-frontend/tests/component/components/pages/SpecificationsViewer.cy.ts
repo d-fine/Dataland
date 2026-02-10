@@ -409,7 +409,7 @@ describe('Component tests for SpecificationsViewer page', () => {
     it('Should auto-select framework from URL query param on mount', () => {
       cy.mountWithPlugins(SpecificationsViewer, {
         router: {
-          initialRoute: '/specifications?framework=lksg',
+          initialRoute: '/framework-specifications?framework=lksg',
         },
       });
 

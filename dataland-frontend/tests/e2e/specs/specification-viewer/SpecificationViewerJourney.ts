@@ -27,17 +27,17 @@ describeIf(
       cy.get('.framework-select', { timeout: 10000 }).should('not.be.disabled');
       cy.get('.framework-select').click();
 
-      // Step 5: Select a framework (assuming LkSG exists in backend)
-      // Note: This test requires LkSG framework to be deployed in the backend
+      // Step 5: Select a framework (using PCAF which exists in backend)
+      // Note: This test requires PCAF framework to be deployed in the backend
       cy.get('.p-select-overlay', { timeout: 5000 }).should('be.visible');
-      cy.contains('.p-select-option', 'LkSG', { timeout: 5000 }).should('exist').click();
+      cy.contains('.p-select-option', 'PCAF', { timeout: 5000 }).should('exist').click();
 
       // Step 6: Verify URL updates with framework query param
       cy.url({ timeout: 5000 }).should('include', '?framework=');
 
       // Step 7: Verify metadata panel displays
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
-      cy.get('.framework-name', { timeout: 5000 }).should('contain.text', 'LkSG');
+      cy.get('.framework-name', { timeout: 5000 }).should('contain.text', 'PCAF');
 
       // Step 8: Verify schema tree renders
       cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
@@ -97,7 +97,7 @@ describeIf(
     });
 
     it('Should support keyboard navigation through specifications', () => {
-      cy.visit('/framework-specifications?framework=lksg');
+      cy.visit('/framework-specifications?framework=pcaf');
 
       // Wait for page to load
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
@@ -141,7 +141,7 @@ describeIf(
       cy.visit('/framework-specifications');
       cy.get('[data-test="framework-selector"]', { timeout: 10000 }).should('be.visible');
       cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG', { timeout: 5000 }).click();
+      cy.contains('.p-select-option', 'PCAF', { timeout: 5000 }).click();
 
       // Verify framework loads
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
@@ -160,11 +160,11 @@ describeIf(
 
     it('Should handle direct URL access with framework parameter', () => {
       // Visit specifications page directly with framework parameter
-      cy.visit('/framework-specifications?framework=lksg');
+      cy.visit('/framework-specifications?framework=pcaf');
 
       // Framework should be auto-loaded
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
-      cy.get('.framework-name').should('contain.text', 'LkSG');
+      cy.get('.framework-name').should('contain.text', 'PCAF');
 
       // Schema tree should be rendered
       cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
