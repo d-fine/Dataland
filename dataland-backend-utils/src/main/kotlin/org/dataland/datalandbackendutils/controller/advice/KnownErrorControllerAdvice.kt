@@ -216,9 +216,8 @@ class KnownErrorControllerAdvice(
         val message =
             if (requiredType?.isEnum == true) {
                 val allowedValues =
-                    requiredType.enumConstants
-                        ?.joinToString(", ") { (it as Enum<*>).name }
-                        ?: "none"
+                    requiredType.enumConstants.joinToString(", ") { (it as Enum<*>).name }
+
                 "Invalid value '$value' for parameter '$paramName'. " +
                     "Expected one of: $allowedValues."
             } else {
