@@ -96,7 +96,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '78,448.67');
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '17,825.99');
         });
 
       cy.get('[data-test="quality-select"]')
@@ -140,7 +140,7 @@ describeIf(
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="yes-no-select"]').should('be.visible');
-          cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'Yes');
+          cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'No');
           cy.get('[data-test="yes-no-select"]').contains('No').click();
         });
 
@@ -157,7 +157,7 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '2,079,638,442.05');
+          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '3,986,980,133.35');
 
           cy.get('[data-test="currency"]').should('exist');
         });
