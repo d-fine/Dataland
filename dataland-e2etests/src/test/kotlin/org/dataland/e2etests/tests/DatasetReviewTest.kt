@@ -69,17 +69,17 @@ class DatasetReviewTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
         val dataPoints = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
-        val datapoint1 = dataPoints[datapointType1]!!
-        val datapoint2 = dataPoints[datapointType2]!!
+        val datapointId1 = dataPoints[datapointType1]!!
+        val datapointId2 = dataPoints[datapointType2]!!
 
         val uploadedQaReportId1 =
             QaService.dataPointQaReportControllerApi
-                .postQaReport(datapoint1, dummyQaReport1)
+                .postQaReport(datapointId1, dummyQaReport1)
                 .qaReportId
 
         val uploadedQaReportId2 =
             QaService.dataPointQaReportControllerApi
-                .postQaReport(datapoint2, dummyQaReport2)
+                .postQaReport(datapointId2, dummyQaReport2)
                 .qaReportId
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
@@ -88,7 +88,7 @@ class DatasetReviewTest {
             QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId2)
             QaService.datasetReviewControllerApi.acceptOriginalDatapoint(
                 datasetReviewId,
-                datapoint1,
+                datapointId1,
             )
             QaService.datasetReviewControllerApi.acceptCustomDataPoint(
                 datasetReviewId,
@@ -98,7 +98,7 @@ class DatasetReviewTest {
         }
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
         assertEquals(
-            mapOf(datapointType1 to datapoint1),
+            mapOf(datapointType1 to datapointId1),
             datasetReview.approvedDataPointIds,
         )
         assertEquals(
