@@ -195,7 +195,7 @@ const routes = [
     },
   },
   {
-    path: '/specifications',
+    path: '/framework-specifications',
     name: 'SpecificationsViewer',
     component: SpecificationsViewer,
     meta: {
