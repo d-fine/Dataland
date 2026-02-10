@@ -15,6 +15,7 @@ import PrimeButton from 'primevue/button';
 const props = defineProps<{
   visible: boolean;
   dataPointTypeId: string | null;
+  dataPointAliasExport: string | undefined;
   dataPointDetails: DataPointTypeSpecification | null;
   isLoading: boolean;
   error: string | null;
@@ -145,6 +146,12 @@ function getFrameworksList(usedBy: Array<{ id: string; ref: string }> | undefine
           </template>
           
           <dl class="details-list">
+            <!-- Technical Identifier (aliasExport) -->
+            <div v-if="dataPointAliasExport" class="detail-item">
+              <dt class="detail-label">Technical Identifier</dt>
+              <dd class="detail-value detail-value-code">{{ dataPointAliasExport }}</dd>
+            </div>
+
             <!-- Data Point Type ID -->
             <div class="detail-item">
               <dt class="detail-label">Data Point Type ID</dt>

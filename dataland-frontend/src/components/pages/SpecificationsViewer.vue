@@ -55,6 +55,7 @@ const {
 const selectedFrameworkId = ref<string | null>(null);
 const showDataPointDialog = ref(false);
 const currentDataPointId = ref<string | null>(null);
+const currentDataPointAliasExport = ref<string | undefined>(undefined);
 
 // Load frameworks on mount
 onMounted(async () => {
@@ -103,8 +104,9 @@ async function handleFrameworkChange(frameworkId: string): Promise<void> {
  * Handle "View Details" button click for a data point.
  * Opens the modal and loads data point details.
  */
-async function handleViewDetails(dataPointTypeId: string): Promise<void> {
+async function handleViewDetails(dataPointTypeId: string, aliasExport?: string): Promise<void> {
   currentDataPointId.value = dataPointTypeId;
+  currentDataPointAliasExport.value = aliasExport;
   showDataPointDialog.value = true;
   
   try {
@@ -123,6 +125,7 @@ function handleDialogClose(): void {
   showDataPointDialog.value = false;
   clearDataPointDetails();
   currentDataPointId.value = null;
+  currentDataPointAliasExport.value = undefined;
 }
 
 /**
@@ -235,6 +238,7 @@ async function retryLoadSpecification(): Promise<void> {
       <DataPointTypeDetailsDialog
         v-model:visible="showDataPointDialog"
         :data-point-type-id="currentDataPointId"
+        :data-point-alias-export="currentDataPointAliasExport"
         :data-point-details="dataPointDetails"
         :is-loading="isLoadingDataPoint"
         :error="dataPointError"
