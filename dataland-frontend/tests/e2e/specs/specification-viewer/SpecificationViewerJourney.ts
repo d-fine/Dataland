@@ -12,8 +12,8 @@ describeIf(
 
     it('Should allow complete specification exploration journey', () => {
       // Step 1: Navigate to specifications page
-      cy.visit('/specifications');
-      cy.url().should('include', '/specifications');
+      cy.visit('/framework-specifications');
+      cy.url().should('include', '/framework-specifications');
 
       // Step 2: Verify framework selector is visible
       cy.get('[data-test="framework-selector"]', { timeout: 10000 }).should('be.visible');
@@ -97,7 +97,7 @@ describeIf(
     });
 
     it('Should support keyboard navigation through specifications', () => {
-      cy.visit('/specifications?framework=lksg');
+      cy.visit('/framework-specifications?framework=lksg');
 
       // Wait for page to load
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
@@ -138,7 +138,7 @@ describeIf(
 
     it('Should persist framework selection across browser navigation', () => {
       // Select framework
-      cy.visit('/specifications');
+      cy.visit('/framework-specifications');
       cy.get('[data-test="framework-selector"]', { timeout: 10000 }).should('be.visible');
       cy.get('.framework-select').click();
       cy.contains('.p-select-option', 'LkSG', { timeout: 5000 }).click();
@@ -160,7 +160,7 @@ describeIf(
 
     it('Should handle direct URL access with framework parameter', () => {
       // Visit specifications page directly with framework parameter
-      cy.visit('/specifications?framework=lksg');
+      cy.visit('/framework-specifications?framework=lksg');
 
       // Framework should be auto-loaded
       cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');

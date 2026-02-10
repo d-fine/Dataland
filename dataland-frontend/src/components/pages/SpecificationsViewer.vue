@@ -91,9 +91,9 @@ watch(
  * Updates URL query param and loads the selected framework specification.
  */
 async function handleFrameworkChange(frameworkId: string): Promise<void> {
-  // Update URL query param
+  // Update URL query param using route name (Vue Router best practice)
   if (route.query.framework !== frameworkId) {
-    await router.push({ query: { framework: frameworkId } });
+    await router.push({ name: 'SpecificationsViewer', query: { framework: frameworkId } });
   }
   
   // Load framework specification

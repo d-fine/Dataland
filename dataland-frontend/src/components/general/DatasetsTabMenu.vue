@@ -51,7 +51,7 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'companies', label: 'COMPANIES', route: '/companies', isVisible: true },
   { id: 'my-company', label: 'MY COMPANY', route: '/companies', isVisible: false },
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { id: 'specifications', label: 'SPECIFICATIONS', route: '/specifications', isVisible: true },
+  { id: 'specifications', label: 'SPECIFICATIONS', route: '/framework-specifications', isVisible: true },
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { id: 'my-data-requests-legacy', label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
