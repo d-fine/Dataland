@@ -1,181 +1,15 @@
 package org.dataland.e2etests.utils
 
-import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
-import org.dataland.datalandbackend.openApiClient.model.ExportJobInfo
-import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
 import org.dataland.datalandbackend.openApiClient.model.ExportLatestRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
-import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class BaseExportTest<T> {
-    protected val apiAccessor = ApiAccessor()
-
-    // Common properties that all export tests need
-    protected lateinit var companyWithNullFieldId: String
-    protected lateinit var companyWithNullFieldLei: String
-    protected lateinit var companyWithNonNullFieldId: String
-    protected lateinit var companyWithNonNullFieldLei: String
-    protected val reportingPeriod = "2024"
-
-    // Abstract methods that subclasses must implement
-    protected abstract fun getTestDataWithNullField(): T
-
-    protected abstract fun getTestDataWithNonNullField(): T
-
-    protected abstract fun getFullTestData(): T
-
-    protected abstract fun getNullFieldName(): String
-
-    protected abstract fun retrieveData(
-        companyId: String,
-        reportingPeriod: String,
-    ): Any
-
-    protected abstract fun uploadData(
-        companyId: String,
-        data: T,
-        reportingPeriod: String,
-    )
-
-    protected abstract fun getExportJobPostingFunction(): (ExportRequestData, Boolean?, Boolean?) -> ExportJobInfo
-
-    protected abstract fun getExportLatestJobPostingFunction(): (ExportLatestRequestData, Boolean?, Boolean?) -> ExportJobInfo
-
-    private fun exportDataAsCsv(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-        keepValueFieldsOnly: Boolean = true,
-        includeAliases: Boolean = false,
-    ): File =
-        exportData(
-            ExportRequestData(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
-            ),
-            keepValueFieldsOnly,
-            includeAliases,
-        )
-
-    private fun exportDataAsExcel(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-        keepValueFieldsOnly: Boolean = true,
-        includeAliases: Boolean = false,
-    ): File =
-        exportData(
-            ExportRequestData(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.EXCEL,
-            ),
-            keepValueFieldsOnly = keepValueFieldsOnly,
-            includeAliases = includeAliases,
-        )
-
-    private fun getExportedData(exportJobInfo: ExportJobInfo): File {
-        val exportJobId = exportJobInfo.id.toString()
-        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
-            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
-        }
-        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
-    }
-
-    private fun exportData(
-        exportRequestData: ExportRequestData,
-        keepValueFieldsOnly: Boolean = true,
-        includeAliases: Boolean = false,
-    ): File = getExportedData(getExportJobPostingFunction()(exportRequestData, keepValueFieldsOnly, includeAliases))
-
-    private fun exportLatestData(
-        exportLatestRequestData: ExportLatestRequestData,
-        keepValueFieldsOnly: Boolean = true,
-        includeAliases: Boolean = false,
-    ): File = getExportedData(getExportLatestJobPostingFunction()(exportLatestRequestData, keepValueFieldsOnly, includeAliases))
-
-    /**
-     * Uploads a company with a randomly generated Legal Entity Identifier (LEI) and associates it with the
-     * API accessor.
-     *
-     * @return A pair where the first element is the ID of the uploaded company and the second element is the generated LEI.
-     */
-    private fun uploadCompanyWithRandomLei(): Pair<String, String> {
-        val lei = UUID.randomUUID().toString()
-        return Pair(apiAccessor.uploadOneCompanyWithIdentifiers(lei = lei)!!.actualStoredCompany.companyId, lei)
-    }
-
-    /**
-     * Sets up test companies and their associated data for use in export tests.
-     */
-    protected fun setupCompaniesAndData() {
-        // Create two test companies with randomly generated LEIs
-        val companyWithNullFieldIdAndLei = uploadCompanyWithRandomLei()
-        val companyWithNonNullFieldIdAndLei = uploadCompanyWithRandomLei()
-
-        companyWithNullFieldId = companyWithNullFieldIdAndLei.first
-        companyWithNullFieldLei = companyWithNullFieldIdAndLei.second
-        companyWithNonNullFieldId = companyWithNonNullFieldIdAndLei.first
-        companyWithNonNullFieldLei = companyWithNonNullFieldIdAndLei.second
-
-        // Upload test data with null field for first company
-        uploadData(
-            companyId = companyWithNullFieldId,
-            data = getTestDataWithNullField(),
-            reportingPeriod = reportingPeriod,
-        )
-
-        // Upload test data with non-null field for second company
-        uploadData(
-            companyId = companyWithNonNullFieldId,
-            data = getTestDataWithNonNullField(),
-            reportingPeriod = reportingPeriod,
-        )
-
-        // Upload outdated data (with null field) for second company
-        uploadData(
-            companyId = companyWithNonNullFieldId,
-            data = getTestDataWithNonNullField(),
-            reportingPeriod = (reportingPeriod.toInt() - 1).toString(),
-        )
-
-        waitForDataAvailability()
-    }
-
-    /**
-     * Waits for the data associated with specific test companies to become available.
-     *
-     * This method uses polling to repeatedly check the availability of data for two test companies
-     * identified by their respective IDs (`companyWithNullFieldId` and `companyWithNonNullFieldId`).
-     * It ensures that data retrieval for both companies does not throw any exceptions.
-     *
-     * The method will attempt to verify data availability within a maximum time limit of 10 seconds.
-     * Each polling attempt is performed at intervals of 500 milliseconds until the conditions are met.
-     *
-     * The method is intended to be used as part of the data setup or verification process in export tests,
-     * ensuring that the required data is accessible before proceeding with further test operations.
-     */
-    protected fun waitForDataAvailability() {
-        Awaitility
-            .await()
-            .atMost(10, TimeUnit.SECONDS)
-            .pollInterval(500, TimeUnit.MILLISECONDS)
-            .untilAsserted {
-                assertDoesNotThrow {
-                    retrieveData(companyWithNullFieldId, reportingPeriod)
-                    retrieveData(companyWithNonNullFieldId, reportingPeriod)
-                    retrieveData(companyWithNonNullFieldId, (reportingPeriod.toInt() - 1).toString())
-                }
-            }
-    }
-
+abstract class BaseExportTest<T> : BaseExportTestSetup<T>() {
     // Common test implementations that can be called from subclasses
 
     /**
@@ -183,7 +17,7 @@ abstract class BaseExportTest<T> {
      * The test ensures that null fields in the source data are properly omitted from the exported CSV file.
      */
     protected fun testCsvExportOmitsColumnForNullField() {
-        // Export only the company with null field
+        // Export only the company with a null field
         val singleCompanyCsvExport =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNullFieldId),
@@ -204,7 +38,7 @@ abstract class BaseExportTest<T> {
     }
 
     protected fun testCsvExportIncludesColumnForNonNullField() {
-        // Export only the company with non-null field
+        // Export only the company with a non-null field
         val singleCompanyCsvExport =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
@@ -247,7 +81,7 @@ abstract class BaseExportTest<T> {
     /**
      * Tests the Excel export functionality for two companies with differing data configurations.
      * The purpose of this test is to ensure that the Excel export functionality correctly integrates
-     * and represents data for multiple companies, while maintaining data validity and consistency.
+     * and represents data for multiple companies while maintaining data validity and consistency.
      */
     protected fun testExcelExportForBothCompanies() {
         // Export both companies as Excel
@@ -404,7 +238,7 @@ abstract class BaseExportTest<T> {
      */
     open fun frameworkSpecificValidationForCSVExportBothCompanies(headers: List<String>) {
         // This function can be overwritten in the export tests for the specific frameworks to test cases specific
-        // to those frameworks, e.g. the correct export of the activities arrays
+        // to those frameworks, e.g., the correct export of the activities arrays
         // in the eutaxonomy non financials framework
     }
 
