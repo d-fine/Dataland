@@ -102,7 +102,7 @@ describeIf(
       cy.get('[data-test="quality-select"]')
         .should('be.visible')
         .find('.p-select-label, .p-dropdown-label')
-        .should('contain', 'Estimated');
+        .should('contain', 'Incomplete');
 
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
@@ -141,11 +141,11 @@ describeIf(
         .within(() => {
           cy.get('[data-test="yes-no-select"]').should('be.visible');
           cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'No');
-          cy.get('[data-test="yes-no-select"]').contains('No').click();
+          cy.get('[data-test="yes-no-select"]').contains('Yes').click();
         });
 
       saveDataPoint();
-      verifyFieldValue('Fossil Fuel Sector Exposure', 'No');
+      verifyFieldValue('Fossil Fuel Sector Exposure', 'Yes');
     });
 
     it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {
