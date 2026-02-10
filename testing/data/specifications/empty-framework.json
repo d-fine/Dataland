@@ -1,0 +1,6 @@
+{
+  "id": "empty-test",
+  "name": "Empty Test Framework",
+  "businessDefinition": "Framework with no data points for testing empty state",
+  "schema": "{}"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "lksg",
+  "name": "LkSG",
+  "businessDefinition": "German Supply Chain Due Diligence Act (Lieferkettensorgfaltspflichtengesetz) requirements for corporate responsibility and human rights in supply chains",
+  "schema": "{\"general\":{\"reportingPeriod\":{\"id\":\"lksg_reportingPeriod\",\"ref\":\"plainDate\",\"aliasExport\":\"Reporting Period\"},\"companyInformation\":{\"companyName\":{\"id\":\"lksg_companyName\",\"ref\":\"plainString\",\"aliasExport\":\"Company Name\"},\"headquarters\":{\"id\":\"lksg_headquarters\",\"ref\":\"plainString\",\"aliasExport\":\"Headquarters Location\"},\"numberOfEmployees\":{\"id\":\"lksg_numberOfEmployees\",\"ref\":\"plainInteger\",\"aliasExport\":\"Number of Employees\"}}},\"riskManagement\":{\"riskAnalysis\":{\"riskAssessmentConducted\":{\"id\":\"lksg_riskAssessmentConducted\",\"ref\":\"plainBoolean\",\"aliasExport\":\"Risk Assessment Conducted\"},\"identifiedRisks\":{\"id\":\"lksg_identifiedRisks\",\"ref\":\"extendedArray\",\"aliasExport\":\"Identified Risks\"}},\"preventiveMeasures\":{\"measuresTaken\":{\"id\":\"lksg_measuresTaken\",\"ref\":\"extendedArray\",\"aliasExport\":\"Preventive Measures Taken\"}}}}"
+}

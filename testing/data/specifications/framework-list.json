@@ -1,0 +1,17 @@
+[
+  {
+    "id": "lksg",
+    "name": "LkSG",
+    "businessDefinition": "German Supply Chain Due Diligence Act (Lieferkettensorgfaltspflichtengesetz) requirements for corporate responsibility and human rights in supply chains"
+  },
+  {
+    "id": "sfdr",
+    "name": "SFDR",
+    "businessDefinition": "Sustainable Finance Disclosure Regulation for financial market participants and advisers"
+  },
+  {
+    "id": "eutaxonomy-non-financials",
+    "name": "EU Taxonomy for non-financial companies",
+    "businessDefinition": "EU Taxonomy Regulation for classifying environmentally sustainable economic activities"
+  }
+]
