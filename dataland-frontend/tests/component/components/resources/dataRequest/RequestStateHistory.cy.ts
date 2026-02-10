@@ -172,7 +172,7 @@ describe('Component tests for the Request State History', function (): void {
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
 
     cy.get('[data-test="stateHistoryTable"] tr').then(($rows) => {
-      const stateToComments: Record<string, Set<string>> = {};
+      const stateToComments: Record<string, string> = {};
       $rows.each((_, row) => {
         const state = row.querySelector('[data-test="requestState"]')?.textContent?.trim();
         const comment = row.querySelector('[data-test="adminComment"]')?.textContent?.trim();
@@ -180,8 +180,7 @@ describe('Component tests for the Request State History', function (): void {
           if (stateToComments[state]) {
             expect(comment).eq(stateToComments[state]);
           } else {
-            stateToComments[state] = new Set();
-            stateToComments[state].add(comment);
+            stateToComments[state] = comment;
           }
         }
       });
