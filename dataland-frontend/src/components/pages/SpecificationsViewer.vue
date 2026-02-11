@@ -59,13 +59,18 @@ const currentDataPointAliasExport = ref<string | undefined>(undefined);
 
 // Load frameworks on mount
 onMounted(async () => {
-  await loadFrameworks();
-  
-  // Check for framework query parameter and pre-select if present
-  const frameworkParam = route.query.framework as string | undefined;
-  if (frameworkParam && frameworks.value.some(f => f.framework.id === frameworkParam)) {
-    selectedFrameworkId.value = frameworkParam;
-    await handleFrameworkChange(frameworkParam);
+  try {
+    await loadFrameworks();
+    
+    // Check for framework query parameter and pre-select if present
+    const frameworkParam = route.query.framework as string | undefined;
+    if (frameworkParam && frameworks.value.some(f => f.framework.id === frameworkParam)) {
+      selectedFrameworkId.value = frameworkParam;
+      await handleFrameworkChange(frameworkParam);
+    }
+  } catch (err) {
+    // Error is already handled in the composable
+    console.error('Failed to load frameworks on mount:', err);
   }
 });
 
@@ -97,7 +102,12 @@ async function handleFrameworkChange(frameworkId: string): Promise<void> {
   }
   
   // Load framework specification
-  await selectFramework(frameworkId);
+  try {
+    await selectFramework(frameworkId);
+  } catch (err) {
+    // Error is already handled in the composable
+    console.error('Failed to load framework:', err);
+  }
 }
 
 /**
@@ -132,7 +142,12 @@ function handleDialogClose(): void {
  * Retry loading the framework list after an error.
  */
 async function retryLoadFrameworks(): Promise<void> {
-  await loadFrameworks();
+  try {
+    await loadFrameworks();
+  } catch (err) {
+    // Error is already handled in the composable
+    console.error('Failed to retry loading frameworks:', err);
+  }
 }
 
 /**
@@ -140,7 +155,12 @@ async function retryLoadFrameworks(): Promise<void> {
  */
 async function retryLoadSpecification(): Promise<void> {
   if (selectedFrameworkId.value) {
-    await selectFramework(selectedFrameworkId.value);
+    try {
+      await selectFramework(selectedFrameworkId.value);
+    } catch (err) {
+      // Error is already handled in the composable
+      console.error('Failed to retry loading specification:', err);
+    }
   }
 }
 </script>

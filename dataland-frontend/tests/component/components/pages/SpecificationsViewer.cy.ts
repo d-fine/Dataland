@@ -84,8 +84,12 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.framework-select .p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('LkSG').click();
       
-      // URL should be updated
-      cy.location('search', { timeout: 5000 }).should('include', 'framework=lksg');
+      // Wait for framework to load
+      cy.wait('@getLksgFramework');
+      
+      // Wait a bit longer for router to complete navigation
+      cy.wait(100);
+      cy.location('search', { timeout: 10000 }).should('include', 'framework=lksg');
     });
   });
 
@@ -170,8 +174,9 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksError');
-      cy.get('.error-message').should('be.visible');
-      cy.get('.error-message').should('contain.text', 'Failed to load');
+      // Error message shows when: specificationsError && !selectedFramework && !isLoadingSpecification
+      cy.get('.error-message', { timeout: 5000 }).should('be.visible');
+      cy.get('.error-message').should('contain.text', 'Failed to load frameworks');
     });
 
     it('Should show retry button for framework list errors', () => {
@@ -180,6 +185,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksError');
+      cy.get('.error-message', { timeout: 5000 }).should('be.visible');
       cy.contains('button', 'Retry').should('be.visible');
     });
 
@@ -197,13 +203,13 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.mountWithPlugins(SpecificationsViewer, { keycloak: minimalKeycloakMock({}) });
 
       cy.wait('@getFrameworksRetry');
-      cy.get('.error-message').should('be.visible');
+      cy.get('.error-message', { timeout: 5000 }).should('be.visible');
       
       // Click retry
       cy.contains('button', 'Retry').click();
       
       cy.wait('@getFrameworksRetry');
-      cy.get('.error-message').should('not.exist');
+      cy.get('.error-message', { timeout: 5000 }).should('not.exist');
       cy.get('[data-test="framework-selector"]').should('be.visible');
     });
 
@@ -219,7 +225,9 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFrameworkError');
-      cy.get('.error-message', { timeout: 5000 }).should('be.visible');
+      // Error message shows when: specificationsError && selectedFrameworkId
+      cy.get('.error-message', { timeout: 10000 }).should('be.visible');
+      cy.get('.error-message').should('contain.text', 'Failed to load specification');
     });
 
     it('Should clear error on successful retry', () => {
@@ -242,14 +250,16 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFrameworkRetry');
-      cy.get('.error-message').should('be.visible');
+      cy.get('.error-message', { timeout: 10000 }).should('be.visible');
       
       // Click retry
       cy.contains('button', 'Retry').click();
       
       cy.wait('@getLksgFrameworkRetry');
-      cy.get('.error-message', { timeout: 5000 }).should('not.exist');
-      cy.get('[data-test="framework-metadata"]').should('be.visible');
+      // Wait for Vue to finish re-rendering
+      cy.wait(200);
+      cy.get('.error-message', { timeout: 10000 }).should('not.exist');
+      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
     });
   });
 

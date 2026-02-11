@@ -85,8 +85,7 @@ export function useSpecifications({
       // Sort frameworks alphabetically by name for better UX
       frameworks.value = frameworkList.sort((a, b) => a.name.localeCompare(b.name));
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load frameworks';
-      error.value = message;
+      error.value = 'Failed to load frameworks';
       console.error('Error loading frameworks:', err);
       throw err;
     } finally {
@@ -123,8 +122,7 @@ export function useSpecifications({
         await enrichSchemaWithDataPointDetails(parsedSchema);
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load specification';
-      error.value = message;
+      error.value = 'Failed to load specification';
       console.error(`Error loading specification for framework ${frameworkId}:`, err);
       
       // Clear selected framework on error
