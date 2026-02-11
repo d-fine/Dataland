@@ -1698,7 +1698,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           }
         ],
         "responses": {
@@ -7475,7 +7475,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "qaReportId": {
             "type": "string",
@@ -7761,7 +7761,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "reportingPeriod": {
             "type": "string",

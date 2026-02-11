@@ -42,7 +42,7 @@ class DatasetReviewService
             } catch (_: BackendClientException) {
                 throw ResourceNotFoundApiException(
                     "Dataset not found",
-                    "Dataset with the id: $datasetId could be found.",
+                    "Dataset with the id: $datasetId could not be found.",
                 )
             }
             val dataPointQaReportIds =
