@@ -8,23 +8,19 @@ import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.BasicStateHistoryEntry
-import org.dataland.datasourcingservice.model.request.BasicStateHistoryEntryDefault
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.FullStateHistoryEntry
-import org.dataland.datasourcingservice.model.request.FullStateHistoryEntryDefault
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
-import org.dataland.datasourcingservice.utils.buildCombinedHistory
-import org.dataland.datasourcingservice.utils.deleteRepeatingDisplayedStates
+import org.dataland.datasourcingservice.utils.getCombinedHistory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
-import kotlin.collections.ifEmpty
 
 /**
  * Service responsible for managing existing (data) requests in the sense of the data sourcing service.
@@ -151,21 +147,6 @@ class ExistingRequestsManager
         }
 
         /**
-         * Retrieves the history of revisions for a specific data request identified by its ID.
-         * @param requestId The UUID string of the data request whose history is to be retrieved.
-         * @return A list of StoredRequest objects representing the revision history of the specified data request.
-         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
-         */
-        @Transactional(readOnly = true)
-        fun retrieveRequestHistory(requestId: UUID): List<StoredRequest> =
-            dataRevisionRepository
-                .listDataRequestRevisionsById(requestId)
-                .map { (entity, _) -> entity.toStoredDataRequest() }
-                .ifEmpty {
-                    throw RequestNotFoundApiException(requestId)
-                }
-
-        /**
          * A data class representing a combined history entry that includes the timestamp, request state,
          * data sourcing state, displayed state, and admin comment.
          * This class is used to create a unified view of the history of a data request and its associated data
@@ -190,7 +171,10 @@ class ExistingRequestsManager
          * and data sourcing states for the specified data request.
          */
         @Transactional(readOnly = true)
-        fun retrieveStateHistoryByRequestId(requestId: UUID): List<CombinedHistoryEntryDefault> {
+        fun retrieveStateHistoryByRequestId(
+            requestId: UUID,
+            getExtendedHistory: Boolean,
+        ): List<RequestHistoryEntry> {
             val requestHistory = dataRevisionRepository.listDataRequestRevisionsById(requestId)
             val dataSourcingID = getRequest(requestId).dataSourcingEntityId
             var dataSourcingHistory = emptyList<DataSourcingWithoutReferences>()
@@ -198,55 +182,33 @@ class ExistingRequestsManager
                 dataSourcingHistory =
                     dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUID(dataSourcingID), true)
             }
-            return buildCombinedHistory(requestHistory, dataSourcingHistory)
+
+            return getCombinedHistory(requestHistory, dataSourcingHistory, getExtendedHistory)
         }
 
         /**
          * Retrieves the history of revisions for a specific data request identified by its ID.
+         *
          * @param requestId The UUID string of the data request whose history is to be retrieved.
          * @return A list of StoredRequest objects representing the revision history of the specified data request.
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveBasicStateHistory(requestId: UUID): List<BasicStateHistoryEntry> {
-            var combinedHistory = retrieveStateHistoryByRequestId(requestId)
-            combinedHistory = deleteRepeatingDisplayedStates(combinedHistory)
+        fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
+            var combinedHistory = retrieveStateHistoryByRequestId(requestId, false)
 
-            return combinedHistory.map { entry ->
-                checkNotNull(entry.displayedState) {
-                    "Displayed state should not be null after filling history gaps."
-                }
-                BasicStateHistoryEntryDefault(
-                    modificationDate = entry.timestamp,
-                    displayedState = entry.displayedState,
-                )
-            }
+            return combinedHistory
         }
 
         /**
          * Retrieves the history of revisions for a specific data request identified by its ID.
+         *
          * @param requestId The UUID string of the data request whose history is to be retrieved.
          * @return A list of StoredRequest objects representing the revision history of the specified data request.
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveFullStateHistory(requestId: UUID): List<FullStateHistoryEntry> {
-            val combinedHistory = retrieveStateHistoryByRequestId(requestId)
-
-            return combinedHistory.map { entry ->
-                checkNotNull(entry.requestState) {
-                    "Request state should not be null after filling history gaps."
-                }
-                checkNotNull(entry.displayedState) {
-                    "Displayed state should not be null after filling history gaps."
-                }
-                FullStateHistoryEntryDefault(
-                    modificationDate = entry.timestamp,
-                    displayedState = entry.displayedState,
-                    dataSourcingState = entry.dataSourcingState,
-                    requestState = entry.requestState,
-                    adminComment = entry.adminComment,
-                )
-            }
-        }
+        fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> =
+            retrieveStateHistoryByRequestId(requestId, true)
+                .filterIsInstance<ExtendedRequestHistoryEntry>()
     }

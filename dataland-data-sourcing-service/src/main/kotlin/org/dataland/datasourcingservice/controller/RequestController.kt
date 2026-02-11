@@ -4,11 +4,11 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.RequestApi
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.BasicStateHistoryEntry
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.FullStateHistoryEntry
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -90,30 +90,20 @@ class RequestController
                 ),
             )
 
-        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
+        override fun getFullStateHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntry>> =
+            ResponseEntity
+                .ok(
+                    existingRequestsManager.retrieveExtendedRequestHistory(
+                        ValidationUtils.convertToUUID(
+                            dataRequestId,
+                        ),
+                    ),
+                )
+
+        override fun getBasicStateHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntry>> =
             ResponseEntity
                 .ok(
                     existingRequestsManager.retrieveRequestHistory(
-                        ValidationUtils.convertToUUID(
-                            dataRequestId,
-                        ),
-                    ),
-                )
-
-        override fun getFullStateHistoryById(dataRequestId: String): ResponseEntity<List<FullStateHistoryEntry>> =
-            ResponseEntity
-                .ok(
-                    existingRequestsManager.retrieveFullStateHistory(
-                        ValidationUtils.convertToUUID(
-                            dataRequestId,
-                        ),
-                    ),
-                )
-
-        override fun getBasicStateHistoryById(dataRequestId: String): ResponseEntity<List<BasicStateHistoryEntry>> =
-            ResponseEntity
-                .ok(
-                    existingRequestsManager.retrieveBasicStateHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),

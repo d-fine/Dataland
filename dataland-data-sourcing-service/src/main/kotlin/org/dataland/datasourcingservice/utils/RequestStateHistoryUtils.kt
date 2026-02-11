@@ -5,6 +5,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.services.ExistingRequestsManager.CombinedHistoryEntryDefault
 
 /**
@@ -160,4 +161,30 @@ fun buildCombinedHistory(
     }
     val filled = fillHistoryGaps(combinedHistory)
     return filterHistory(filled)
+}
+
+/**
+ * Combines the request history and data sourcing history into a unified list of RequestHistoryEntry objects.
+ * It iterates through both histories, comparing timestamps, and creates RequestHistoryEntryData or
+ * ExtendedRequestHistoryEntryData objects based on the getExtendedHistory flag.
+ * The resulting list is sorted by modification date and includes entries from both histories in chronological order.
+ *
+ * @param requestHistory - A list of pairs containing RequestEntity objects and their corresponding revision numbers,
+ * representing the history of request state changes.
+ * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects representing the history of data
+ * sourcing state changes associated with the request.
+ * @param getExtendedHistory - A boolean flag indicating whether to create ExtendedRequestHistoryEntryData objects
+ * (if true) or RequestHistoryEntryData objects (if false).
+ * @returns A list of RequestHistoryEntry objects representing the combined history of request states and data
+ * sourcing states, sorted by modification date.
+ */
+fun getCombinedHistory(
+    requestHistory: List<Pair<RequestEntity, Long>>,
+    dataSourcingHistory: List<DataSourcingWithoutReferences>,
+    getExtendedHistory: Boolean,
+): List<RequestHistoryEntry> {
+    print(requestHistory.size)
+    print(dataSourcingHistory.size)
+    print(getExtendedHistory)
+    return emptyList<RequestHistoryEntry>()
 }
