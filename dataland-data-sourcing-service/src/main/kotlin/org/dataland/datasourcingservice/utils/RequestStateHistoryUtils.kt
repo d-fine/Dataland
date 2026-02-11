@@ -9,7 +9,6 @@ import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntr
 import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
-import org.dataland.datasourcingservice.services.ExistingRequestsManager.CombinedHistoryEntryDefault
 
 /**
  * Deletes consecutive entries with the same displayedState, keeping the order stable.
@@ -63,58 +62,6 @@ fun getDisplayedState(
                 DataSourcingState.Done -> DisplayedState.Done
             }
     }
-
-/**
- * Filters out entries that are in a transient state, such as 'Processing' without a data sourcing state
- * or 'DataVerification' with a 'Processed' request state. These states are not meaningful for display
- * and can be confusing to users.
- *
- * @param entries - The combined history entries to be filtered.
- * @returns The filtered combined history entries.
- */
-fun filterHistory(entries: List<CombinedHistoryEntryDefault>): List<CombinedHistoryEntryDefault> =
-    entries.filter { entry ->
-        !(
-            (entry.dataSourcingState == null && entry.requestState == RequestState.Processing) ||
-                (
-                    entry.dataSourcingState == DataSourcingState.DataVerification &&
-                        entry.requestState == RequestState.Processed
-                )
-        )
-    }
-
-/**
- * Fills in missing requestState and dataSourcingState values in the combined history entries.
- * It iterates through the entries and uses the last known states to fill in any gaps.
- * Using both the request state and data sourcing state, it also calculates the displayed state for each entry.
- * The admin comment is also filled in based on the last admin comment from a request state.
- *
- * @param entries - The combined history entries to be processed.
- * @returns The combined history entries with filled gaps.
- */
-fun fillHistoryGaps(entries: List<CombinedHistoryEntryDefault>): List<CombinedHistoryEntryDefault> {
-    var lastRequestState: RequestState = RequestState.Open
-    var lastDataSourcingState: DataSourcingState? = null
-    var lastAdminComment: String? = null
-    val result = mutableListOf<CombinedHistoryEntryDefault>()
-    for (entry in entries) {
-        val currentRequestState = entry.requestState ?: lastRequestState
-        val currentDataSourcingState = entry.dataSourcingState ?: lastDataSourcingState
-        val currentAdminComment = entry.adminComment ?: lastAdminComment
-        result.add(
-            entry.copy(
-                requestState = currentRequestState,
-                dataSourcingState = currentDataSourcingState,
-                adminComment = currentAdminComment,
-                displayedState = getDisplayedState(currentRequestState, currentDataSourcingState),
-            ),
-        )
-        lastRequestState = currentRequestState
-        lastDataSourcingState = currentDataSourcingState
-        lastAdminComment = currentAdminComment
-    }
-    return result
-}
 
 /**
  * Combines the request history and data sourcing history into a unified list of ExtendedRequestHistoryEntry objects for admin view.

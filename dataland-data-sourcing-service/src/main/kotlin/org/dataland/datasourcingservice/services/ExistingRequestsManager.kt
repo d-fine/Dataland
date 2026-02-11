@@ -193,7 +193,7 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            var combinedHistory = getRequestHistory(requestHistory, dataSourcingHistory)
+            val combinedHistory = getRequestHistory(requestHistory, dataSourcingHistory)
             return deleteRepeatingDisplayedStates(combinedHistory)
         }
 
