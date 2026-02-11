@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -15,7 +16,8 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
-import org.dataland.datasourcingservice.utils.getCombinedHistory
+import org.dataland.datasourcingservice.utils.getExtendedRequestHistory
+import org.dataland.datasourcingservice.utils.getRequestHistory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -161,20 +163,15 @@ class ExistingRequestsManager
         )
 
         /**
-         * Retrieves the combined history of request states and data sourcing states for a specific data request
-         * identified by its ID.
-         * It fetches the history of request revisions and the associated data sourcing history, then builds a
-         * combined history that includes both types of entries.
+         * Retrieves the combined history of revisions for a specific data request identified by its ID.
          *
-         * @param requestId The UUID of the data request whose history is to be retrieved.
-         * @return A list of CombinedHistoryEntryDefault objects representing the combined history of request states
-         * and data sourcing states for the specified data request.
+         * @param requestId The UUID string of the data request whose history is to be retrieved.
+         * @return A list of CombinedHistoryEntryDefault objects representing the combined revision history
+         * of the specified data request and its associated data sourcing entries.
+         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveStateHistoryByRequestId(
-            requestId: UUID,
-            getExtendedHistory: Boolean,
-        ): List<RequestHistoryEntry> {
+        fun retrieveStateHistoryByRequestId(requestId: UUID): Pair<List<Pair<RequestEntity, Long>>, List<DataSourcingWithoutReferences>> {
             val requestHistory = dataRevisionRepository.listDataRequestRevisionsById(requestId)
             val dataSourcingID = getRequest(requestId).dataSourcingEntityId
             var dataSourcingHistory = emptyList<DataSourcingWithoutReferences>()
@@ -182,8 +179,7 @@ class ExistingRequestsManager
                 dataSourcingHistory =
                     dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUID(dataSourcingID), true)
             }
-
-            return getCombinedHistory(requestHistory, dataSourcingHistory, getExtendedHistory)
+            return Pair(requestHistory, dataSourcingHistory)
         }
 
         /**
@@ -195,7 +191,8 @@ class ExistingRequestsManager
          */
         @Transactional(readOnly = true)
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
-            var combinedHistory = retrieveStateHistoryByRequestId(requestId, false)
+            val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
+            var combinedHistory = getRequestHistory(requestHistory, dataSourcingHistory)
 
             return combinedHistory
         }
@@ -208,7 +205,8 @@ class ExistingRequestsManager
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> =
-            retrieveStateHistoryByRequestId(requestId, true)
-                .filterIsInstance<ExtendedRequestHistoryEntry>()
+        fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> {
+            val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
+            return getExtendedRequestHistory(requestHistory, dataSourcingHistory)
+        }
     }
