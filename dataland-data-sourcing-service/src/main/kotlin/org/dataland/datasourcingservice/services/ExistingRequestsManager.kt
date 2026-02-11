@@ -16,6 +16,7 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
+import org.dataland.datasourcingservice.utils.deleteRepeatingDisplayedStates
 import org.dataland.datasourcingservice.utils.getExtendedRequestHistory
 import org.dataland.datasourcingservice.utils.getRequestHistory
 import org.springframework.beans.factory.annotation.Autowired
@@ -193,8 +194,7 @@ class ExistingRequestsManager
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
             var combinedHistory = getRequestHistory(requestHistory, dataSourcingHistory)
-
-            return combinedHistory
+            return deleteRepeatingDisplayedStates(combinedHistory)
         }
 
         /**

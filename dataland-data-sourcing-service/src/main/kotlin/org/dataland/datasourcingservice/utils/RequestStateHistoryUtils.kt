@@ -17,12 +17,11 @@ import org.dataland.datasourcingservice.services.ExistingRequestsManager.Combine
  * @param entries - The combined history entries from which repeating displayed states should be removed.
  * @returns The filtered combined history entries with repeating displayed states removed.
  */
-fun deleteRepeatingDisplayedStates(entries: List<CombinedHistoryEntryDefault>): List<CombinedHistoryEntryDefault> {
+fun deleteRepeatingDisplayedStates(entries: List<RequestHistoryEntry>): List<RequestHistoryEntry> {
     if (entries.isEmpty()) {
         return entries
     }
-
-    val result = mutableListOf<CombinedHistoryEntryDefault>()
+    val result = mutableListOf<RequestHistoryEntry>()
     var lastDisplayedState: DisplayedState? = null
 
     for (entry in entries) {
@@ -115,55 +114,6 @@ fun fillHistoryGaps(entries: List<CombinedHistoryEntryDefault>): List<CombinedHi
         lastAdminComment = currentAdminComment
     }
     return result
-}
-
-/**
- * Builds a combined history of request states and data sourcing states based on the provided data request
- * revisions and data sourcing history.
- * It creates a unified list of history entries that include both request state changes and data sourcing state
- * changes, sorted by timestamp.
- * The method also checks that the first entry in the combined history has the request state 'Open', as this is
- * expected for all requests.
- *
- * @param requestHistory - A list of pairs containing RequestEntity objects and their corresponding
- * revision numbers, representing the history of request state changes.
- * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects representing the history of
- * data sourcing state changes associated with the request.
- * @returns A list of CombinedHistoryEntryDefault objects representing the combined history of request states
- * and data sourcing states, with gaps filled and filtered for display.
- */
-fun buildCombinedHistory(
-    requestHistory: List<Pair<RequestEntity, Long>>,
-    dataSourcingHistory: List<DataSourcingWithoutReferences>,
-): List<CombinedHistoryEntryDefault> {
-    val requestEntries: List<CombinedHistoryEntryDefault> =
-        requestHistory.map { (entity, _) ->
-            CombinedHistoryEntryDefault(
-                timestamp = entity.lastModifiedDate,
-                requestState = entity.state,
-                dataSourcingState = null,
-                displayedState = null,
-                adminComment = entity.adminComment,
-            )
-        }
-
-    val dataSourcingEntries: List<CombinedHistoryEntryDefault> =
-        dataSourcingHistory.map { entry ->
-            CombinedHistoryEntryDefault(
-                timestamp = entry.lastModifiedDate,
-                requestState = null,
-                dataSourcingState = entry.state,
-                displayedState = null,
-                adminComment = null,
-            )
-        }
-
-    val combinedHistory = (requestEntries + dataSourcingEntries).sortedBy { it.timestamp }
-    check(combinedHistory[0].requestState == RequestState.Open) {
-        "The first entry in the history should have the request state 'Open'."
-    }
-    val filled = fillHistoryGaps(combinedHistory)
-    return filterHistory(filled)
 }
 
 /**
