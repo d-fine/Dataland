@@ -5,8 +5,6 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
-import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
@@ -148,20 +146,6 @@ class ExistingRequestsManager
 
             return requestEntity.toStoredDataRequest()
         }
-
-        /**
-         * A data class representing a combined history entry that includes the timestamp, request state,
-         * data sourcing state, displayed state, and admin comment.
-         * This class is used to create a unified view of the history of a data request and its associated data
-         * sourcing entries.
-         */
-        data class CombinedHistoryEntryDefault(
-            val timestamp: Long,
-            val requestState: RequestState?,
-            val dataSourcingState: DataSourcingState?,
-            val displayedState: DisplayedState?,
-            val adminComment: String?,
-        )
 
         /**
          * Retrieves the combined history of revisions for a specific data request identified by its ID.
