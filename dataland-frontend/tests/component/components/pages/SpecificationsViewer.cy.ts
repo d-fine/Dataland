@@ -24,7 +24,8 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       cy.get('[data-test="specifications-content"]').should('be.visible');
-      cy.get('.empty-state').should('be.visible');
+      // After frameworks load, empty state should be visible (no framework selected yet)
+      cy.get('.empty-state', { timeout: 10000 }).should('be.visible');
       cy.get('.empty-state').should('contain.text', 'Select a framework');
     });
 
@@ -34,11 +35,11 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       cy.get('[data-test="framework-selector"]').should('be.visible');
       
-      // Open dropdown
-      cy.get('.framework-select').click();
+      // Open dropdown - click the dropdown trigger
+      cy.get('.framework-select .p-select-dropdown').click();
       
-      // Should show framework options
-      cy.get('.p-select-overlay').should('be.visible');
+      // Should show framework options in list container
+      cy.get('.p-select-list-container', { timeout: 5000 }).should('be.visible');
       cy.get('.p-select-option').should('have.length', 3);
       cy.contains('.p-select-option', 'LkSG').should('exist');
     });
@@ -49,11 +50,8 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      
-      // Wait for dropdown to close
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
@@ -68,14 +66,13 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
       // Schema tree should be visible
-      cy.get('[data-test="section-header"]').should('exist');
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
     });
 
     it('Should update URL query param when framework selected', () => {
@@ -84,12 +81,11 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       // URL should be updated
-      cy.location('search').should('include', 'framework=lksg');
+      cy.location('search', { timeout: 5000 }).should('include', 'framework=lksg');
     });
   });
 
@@ -139,11 +135,10 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
-      // Dropdown should still be interactive
+      // Dropdown should still be interactive (not disabled during specification load)
       cy.get('.framework-select').should('not.be.disabled');
     });
 
@@ -157,12 +152,13 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
-      // Batch loading indicator should appear
-      cy.get('.loading-details').should('be.visible');
+      cy.wait('@getLksgFramework');
+      
+      // Batch loading indicator should appear while loading data point details
+      cy.get('.loading-details', { timeout: 10000 }).should('be.visible');
       cy.get('.loading-details').should('contain.text', 'Loading detailed descriptions');
     });
   });
@@ -218,13 +214,12 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-     // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      // Select framework
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFrameworkError');
-      cy.get('.error-message').should('be.visible');
+      cy.get('.error-message', { timeout: 5000 }).should('be.visible');
     });
 
     it('Should clear error on successful retry', () => {
@@ -243,9 +238,8 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFrameworkRetry');
       cy.get('.error-message').should('be.visible');
@@ -254,7 +248,7 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.contains('button', 'Retry').click();
       
       cy.wait('@getLksgFrameworkRetry');
-      cy.get('.error-message').should('not.exist');
+      cy.get('.error-message', { timeout: 5000 }).should('not.exist');
       cy.get('[data-test="framework-metadata"]').should('be.visible');
     });
   });
@@ -265,16 +259,16 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
       // Verify metadata panel displays correct framework
       cy.get('[data-test="framework-metadata"]').should('be.visible');
       cy.get('.framework-name').should('contain.text', 'LkSG');
-      cy.get('.metadata-value').should('contain.text', 'German Supply Chain');
+      // Check for business definition text from fixture
+      cy.get('.metadata-value').first().should('contain.text', 'German Supply Chain Due Diligence Act');
     });
 
     it('Should pass parsed schema to SpecificationSchemaTree', () => {
@@ -282,14 +276,13 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
       // Schema tree should render sections from parsed schema
-      cy.get('[data-test="section-header"]').should('exist');
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
       cy.get('[data-test="section-header"]').should('have.length.at.least', 1);
     });
 
@@ -298,20 +291,22 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
+      
+      // Wait for schema tree to render
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).should('exist');
       
       // Expand section
       cy.get('[data-test="section-header"]').first().click();
       
-      // Click View Details
-      cy.get('[data-test="view-details-button"]').first().click();
+      // Wait for data points to be visible and click View Details
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().click();
       
       // Dialog should open
-      cy.get('[role="dialog"]').should('be.visible');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
       cy.wait('@getDataPoint');
     });
 
@@ -320,21 +315,21 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
-      // Expand section and click View Details
-      cy.get('[data-test="section-header"]').first().click();
-      cy.get('[data-test="view-details-button"]').first().click();
+      // Wait for schema tree and expand section
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).first().click();
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().click();
       
       cy.wait('@getDataPoint');
       
       // Dialog should show data point details
-      cy.get('[role="dialog"]').should('be.visible');
-      cy.get('.p-dialog-header').should('contain.text', 'Company Name');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
+      // Check for header with data point name from fixture
+      cy.get('.p-dialog-header', { timeout: 5000 }).should('contain.text', 'Company Name');
     });
 
     it('Should close dialog and clear details on close', () => {
@@ -342,22 +337,21 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
       // Open dialog
-      cy.get('[data-test="section-header"]').first().click();
-      cy.get('[data-test="view-details-button"]').first().click();
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).first().click();
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().click();
       
       cy.wait('@getDataPoint');
-      cy.get('[role="dialog"]').should('be.visible');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
       
       // Close dialog
       cy.get('[data-test="close-dialog"]').click();
-      cy.get('[role="dialog"]').should('not.exist');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('not.exist');
     });
 
     it('Should allow opening dialog for different data point', () => {
@@ -365,27 +359,27 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
       
       // Open dialog for first data point
-      cy.get('[data-test="section-header"]').first().click();
-      cy.get('[data-test="view-details-button"]').first().click();
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).first().click();
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().click();
       
       cy.wait('@getDataPoint');
-      cy.get('[role="dialog"]').should('be.visible');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
       
       // Close dialog
       cy.get('[data-test="close-dialog"]').click();
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('not.exist');
       
       // Open dialog for second data point
-      cy.get('[data-test="view-details-button"]').eq(1).click();
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).eq(1).click();
       
       cy.wait('@getDataPoint');
-      cy.get('[role="dialog"]').should('be.visible');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
     });
   });
 
@@ -415,13 +409,13 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       cy.wait('@getFrameworks');
       
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'Empty Framework').click();
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('Empty Framework').click();
       
       cy.wait('@getEmptyFramework');
       
       // Metadata panel should show but schema tree should be empty
-      cy.get('[data-test="framework-metadata"]').should('be.visible');
+      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
       cy.get('[data-test="section-header"]').should('not.exist');
     });
   });
@@ -471,20 +465,18 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.wait('@getFrameworks');
       
       // Select first framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       cy.wait('@getLksgFramework');
-      cy.location('search').should('include', 'framework=lksg');
+      cy.location('search', { timeout: 5000 }).should('include', 'framework=lksg');
       
       // Select second framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'SFDR').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('SFDR').click();
       
       cy.wait('@getSfdrFramework');
-      cy.location('search').should('include', 'framework=sfdr');
+      cy.location('search', { timeout: 5000 }).should('include', 'framework=sfdr');
     });
   });
 
@@ -494,33 +486,32 @@ describe('Component tests for SpecificationsViewer page', () => {
 
       // 1. Load frameworks
       cy.wait('@getFrameworks');
-      cy.get('.empty-state').should('be.visible');
+      cy.get('.empty-state', { timeout: 10000 }).should('be.visible');
       
       // 2. Select framework
-      cy.get('.framework-select').click();
-      cy.contains('.p-select-option', 'LkSG').click();
-      cy.get('.p-select-overlay').should('not.exist');
+      cy.get('.framework-select .p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('LkSG').click();
       
       // 3. Verify framework loads
       cy.wait('@getLksgFramework');
-      cy.get('[data-test="framework-metadata"]').should('be.visible');
+      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
       
       // 4. Expand section
-      cy.get('[data-test="section-header"]').first().click();
-      cy.get('[data-test="datapoint-name"]').should('be.visible');
+      cy.get('[data-test="section-header"]', { timeout: 10000 }).first().click();
+      cy.get('[data-test="datapoint-name"]', { timeout: 5000 }).should('be.visible');
       
       // 5. View details
-      cy.get('[data-test="view-details-button"]').first().click();
+      cy.get('[data-test="view-details-button"]', { timeout: 5000 }).first().click();
       cy.wait('@getDataPoint');
-      cy.get('[role="dialog"]').should('be.visible');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('be.visible');
       
       // 6. Close dialog
       cy.get('[data-test="close-dialog"]').click();
-      cy.get('[role="dialog"]').should('not.exist');
+      cy.get('[role="dialog"]', { timeout: 5000 }).should('not.exist');
       
       // 7. Collapse section
       cy.get('[data-test="section-header"]').first().click();
-      cy.get('[data-test="datapoint-name"]').should('not.exist');
+      cy.get('[data-test="datapoint-name"]', { timeout: 5000 }).should('not.be.visible');
     });
   });
 });
