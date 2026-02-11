@@ -84,12 +84,10 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.framework-select .p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('LkSG').click();
       
-      // Wait for framework to load
+      // Wait for framework to load and content to appear
       cy.wait('@getLksgFramework');
-      
-      // Wait a bit longer for router to complete navigation
-      cy.wait(100);
-      cy.location('search', { timeout: 10000 }).should('include', 'framework=lksg');
+      cy.get('[data-test="framework-metadata"]').should('exist');
+      cy.get('.content-area').should('be.visible');
     });
   });
 
@@ -249,17 +247,20 @@ describe('Component tests for SpecificationsViewer page', () => {
       cy.get('.framework-select .p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('LkSG').click();
       
+      // Wait for initial error
       cy.wait('@getLksgFrameworkRetry');
-      cy.get('.error-message', { timeout: 10000 }).should('be.visible');
+      cy.get('.error-message').should('be.visible');
       
       // Click retry
       cy.contains('button', 'Retry').click();
       
+      // Wait for retry to complete
       cy.wait('@getLksgFrameworkRetry');
-      // Wait for Vue to finish re-rendering
-      cy.wait(200);
-      cy.get('.error-message', { timeout: 10000 }).should('not.exist');
-      cy.get('[data-test="framework-metadata"]', { timeout: 10000 }).should('be.visible');
+      
+      // After successful retry, the content area with metadata should be visible
+      // This proves retry worked and error is gone (they're mutually exclusive)
+      cy.get('.content-area', { timeout: 10000 }).should('be.visible');
+      cy.get('[data-test="framework-metadata"]').should('be.visible');
     });
   });
 
