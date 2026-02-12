@@ -83,41 +83,45 @@ fun getExtendedRequestHistory(
     var requestHistorySorted = requestHistory.sortedBy { it.first.lastModifiedDate }
     var dataSourcingHistorySorted = dataSourcingHistory.sortedBy { it.lastModifiedDate }
 
-    val requestStateHistory = mutableListOf<ExtendedRequestHistoryEntry>() // Andere Liste
-
-    while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
-        if (requestHistorySorted[0].first.lastModifiedDate < // Switch
-            dataSourcingHistorySorted[0].lastModifiedDate
-        ) {
-            requestStateHistory.add(
-                ExtendedRequestHistoryEntryData(
-                    requestHistorySorted[0].first,
-                    requestStateHistory.lastOrNull()?.dataSourcingState,
-                ),
-            )
-            requestHistorySorted = requestHistorySorted.drop(1)
-        } else if (requestHistorySorted[0].first.lastModifiedDate >
-            dataSourcingHistorySorted[0].lastModifiedDate
-        ) {
-            requestStateHistory.add(
-                ExtendedRequestHistoryEntryData(
-                    dataSourcingHistorySorted[0],
-                    requestStateHistory.last().requestState,
-                    requestStateHistory.last().adminComment,
-                ),
-            )
-            dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
-        } else {
-            requestStateHistory.add(
-                ExtendedRequestHistoryEntryData(
-                    requestHistorySorted[0].first,
-                    dataSourcingHistorySorted[0].state,
-                ),
-            )
-            requestHistorySorted = requestHistorySorted.drop(1)
-            dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+    val requestStateHistory =
+        buildList<ExtendedRequestHistoryEntry> {
+            while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
+                val timeDifferenceBetweenNextRequestAndDataSourcingState =
+                    (requestHistorySorted.getOrNull(0)?.first?.lastModifiedDate ?: Long.MAX_VALUE) -
+                        (dataSourcingHistorySorted.getOrNull(0)?.lastModifiedDate ?: Long.MAX_VALUE)
+                when {
+                    timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
+                        add(
+                            ExtendedRequestHistoryEntryData(
+                                requestHistorySorted[0].first,
+                                lastOrNull()?.dataSourcingState,
+                            ),
+                        )
+                        requestHistorySorted = requestHistorySorted.drop(1)
+                    }
+                    timeDifferenceBetweenNextRequestAndDataSourcingState > 0 -> {
+                        add(
+                            ExtendedRequestHistoryEntryData(
+                                dataSourcingHistorySorted[0],
+                                last().requestState,
+                                last().adminComment,
+                            ),
+                        )
+                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+                    }
+                    else -> {
+                        add(
+                            ExtendedRequestHistoryEntryData(
+                                requestHistorySorted[0].first,
+                                dataSourcingHistorySorted[0].state,
+                            ),
+                        )
+                        requestHistorySorted = requestHistorySorted.drop(1)
+                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+                    }
+                }
+            }
         }
-    }
     return requestStateHistory
 }
 
@@ -141,36 +145,39 @@ fun getRequestHistory(
     var requestHistorySorted = requestHistory.sortedBy { it.first.lastModifiedDate }
     var dataSourcingHistorySorted = dataSourcingHistory.sortedBy { it.lastModifiedDate }
 
-    val requestStateHistory = mutableListOf<RequestHistoryEntry>()
-
-    while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
-        if (requestHistorySorted[0].first.lastModifiedDate <
-            dataSourcingHistorySorted[0].lastModifiedDate
-        ) {
-            requestStateHistory.add(
-                RequestHistoryEntryData(requestHistorySorted[0].first),
-            )
-            requestHistorySorted = requestHistorySorted.drop(1)
-        } else if (requestHistorySorted[0].first.lastModifiedDate >
-            dataSourcingHistorySorted[0].lastModifiedDate
-        ) {
-            requestStateHistory.add(
-                RequestHistoryEntryData(
-                    dataSourcingHistorySorted[0],
-                    requestStateHistory.last().displayedState,
-                ),
-            )
-            dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
-        } else {
-            requestStateHistory.add(
-                RequestHistoryEntryData(
-                    dataSourcingHistorySorted[0],
-                    requestStateHistory.last().displayedState,
-                ),
-            )
-            requestHistorySorted = requestHistorySorted.drop(1)
-            dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+    val requestStateHistory =
+        buildList<RequestHistoryEntry> {
+            while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
+                val timeDifferenceBetweenNextRequestAndDataSourcingState =
+                    (requestHistorySorted.getOrNull(0)?.first?.lastModifiedDate ?: Long.MAX_VALUE) -
+                        (dataSourcingHistorySorted.getOrNull(0)?.lastModifiedDate ?: Long.MAX_VALUE)
+                when {
+                    timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
+                        add(
+                            RequestHistoryEntryData(requestHistorySorted[0].first),
+                        )
+                        requestHistorySorted = requestHistorySorted.drop(1)
+                    } timeDifferenceBetweenNextRequestAndDataSourcingState > 0 -> {
+                        add(
+                            RequestHistoryEntryData(
+                                dataSourcingHistorySorted[0],
+                                last().displayedState,
+                            ),
+                        )
+                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+                    } else -> {
+                        add(
+                            RequestHistoryEntryData(
+                                dataSourcingHistorySorted[0],
+                                last().displayedState,
+                            ),
+                        )
+                        requestHistorySorted = requestHistorySorted.drop(1)
+                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
+                    }
+                }
+            }
         }
-    }
+
     return requestStateHistory
 }

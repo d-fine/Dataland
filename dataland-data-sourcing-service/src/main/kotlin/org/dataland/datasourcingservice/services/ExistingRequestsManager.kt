@@ -164,6 +164,7 @@ class ExistingRequestsManager
                 dataSourcingHistory =
                     dataSourcingManager.retrieveDataSourcingHistory(ValidationUtils.convertToUUID(dataSourcingID), true)
             }
+
             return Pair(requestHistory, dataSourcingHistory)
         }
 
