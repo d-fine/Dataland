@@ -64,6 +64,28 @@ fun getDisplayedState(
     }
 
 /**
+ * Calculates the time difference between the next request state change and the next data sourcing state change.
+ * It retrieves the last modified dates of the next entries in both histories and returns the difference.
+ *
+ * @param requestHistorySorted - A list of pairs containing RequestEntity objects and their corresponding revision numbers,
+ * sorted by last modified date, representing the history of request state changes.
+ * @param dataSourcingHistorySorted - A list of DataSourcingWithoutReferences objects sorted by last modified date,
+ * representing the history of data sourcing state changes associated with the request.
+ * @returns The time difference in milliseconds between the next request state change and the next data sourcing state change.
+ */
+fun getTimeDifferenceBetweenNextRequestAndDataSourcingState(
+    requestHistorySorted: List<Pair<RequestEntity, Long>>,
+    dataSourcingHistorySorted: List<DataSourcingWithoutReferences>,
+): Long =
+    if (requestHistorySorted.isNotEmpty() && dataSourcingHistorySorted.isNotEmpty()) {
+        requestHistorySorted[0].first.lastModifiedDate - dataSourcingHistorySorted[0].lastModifiedDate
+    } else if (dataSourcingHistorySorted.isNotEmpty()) {
+        Long.MAX_VALUE
+    } else {
+        Long.MIN_VALUE
+    }
+
+/**
  * Combines the request history and data sourcing history into a unified list of ExtendedRequestHistoryEntry objects for admin view.
  * It iterates through both histories, comparing timestamps, and creates ExtendedRequestHistoryEntryData objects that include
  * both request state and data sourcing state information, as well as admin comments.
@@ -87,8 +109,7 @@ fun getExtendedRequestHistory(
         buildList<ExtendedRequestHistoryEntry> {
             while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
                 val timeDifferenceBetweenNextRequestAndDataSourcingState =
-                    (requestHistorySorted.getOrNull(0)?.first?.lastModifiedDate ?: Long.MAX_VALUE) -
-                        (dataSourcingHistorySorted.getOrNull(0)?.lastModifiedDate ?: Long.MAX_VALUE)
+                    getTimeDifferenceBetweenNextRequestAndDataSourcingState(requestHistorySorted, dataSourcingHistorySorted)
                 when {
                     timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
                         add(
@@ -149,8 +170,7 @@ fun getRequestHistory(
         buildList<RequestHistoryEntry> {
             while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
                 val timeDifferenceBetweenNextRequestAndDataSourcingState =
-                    (requestHistorySorted.getOrNull(0)?.first?.lastModifiedDate ?: Long.MAX_VALUE) -
-                        (dataSourcingHistorySorted.getOrNull(0)?.lastModifiedDate ?: Long.MAX_VALUE)
+                    getTimeDifferenceBetweenNextRequestAndDataSourcingState(requestHistorySorted, dataSourcingHistorySorted)
                 when {
                     timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
                         add(
