@@ -2,38 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "East Jeremieville",
-			"headquartersPostalCode": "61377-3961",
-			"sector": "smart contracts",
+			"headquarters": "Kochton",
+			"headquartersPostalCode": "12235",
+			"sector": "models",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"YbnCrZuZpyiP6eUmWfQY"
+				],
 				"Isin": [
-					"qkzg0a1dwvYn"
+					"OhBqvuC7vOeX"
 				],
-				"PermId": [
-					"cAG1ApDGT8"
-				],
-				"Ticker": [
-					"7qW1G5Q"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"HHOUeQVxKMeudtb"
-				]
+				"VatNumber": [
+					"0MiLPFVLA"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VU",
+			"countryCode": "TD",
 			"companyContactDetails": [
-				"Rosie64@example.com"
+				"Marilie_Quigley88@example.com",
+				"Katelynn_Jakubowski@example.com"
 			],
 			"companyAlternativeNames": [
-				"Armstrong, Sipes and Luettgen",
-				"Grady LLC",
-				"Sipes, Conroy and Hansen"
+				"Boyer, Mills and Hagenes",
+				"Kunze, Satterfield and Sipes",
+				"Murphy Inc",
+				"Stehr - Kuhic"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://heavy-seal.biz/",
-			"fiscalYearEnd": "21-Jan",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://aged-formamide.info/",
+			"fiscalYearEnd": "11-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -101,6 +101,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	}
 ]
