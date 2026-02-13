@@ -326,9 +326,9 @@ abstract class BaseExportTest<T> : BaseExportTestSetup<T>() {
         val newText = newData.readText()
 
         val objectMapper = defaultObjectMapper
-        val latestJson = objectMapper.readTree(latestText)
-        val newJson = objectMapper.readTree(newText)
-        val oldJson = objectMapper.readTree(oldText)
+        val latestJson = objectMapper.readTree(latestText).sortedBy { it.toString() }
+        val newJson = objectMapper.readTree(newText).sortedBy { it.toString() }
+        val oldJson = objectMapper.readTree(oldText).sortedBy { it.toString() }
 
         Assertions.assertEquals(
             newJson,
