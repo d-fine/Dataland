@@ -27,7 +27,7 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
   });
   cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
   cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').first().click();
-  cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
+  cy.get('.p-datepicker-day-view').find('span:contains("11")').first().click();
   selectItemFromDropdownByIndex(cy.get('[data-test="assurance-form-field"]'), 1);
   cy.get('input[name="provider"]').type('Some Assurance Provider Company');
 }
