@@ -26,7 +26,7 @@ class RequestStateHistoryUtils {
      * @param entries - The combined history entries from which repeating displayed states should be removed.
      * @returns The filtered combined history entries with repeating displayed states removed.
      */
-    fun deleteRepeatingDisplayedStates(entries: List<RequestHistoryEntry>): List<RequestHistoryEntry> {
+    private fun deleteRepeatingDisplayedStates(entries: List<RequestHistoryEntry>): List<RequestHistoryEntry> {
         if (entries.isEmpty()) {
             return entries
         }
@@ -88,7 +88,7 @@ class RequestStateHistoryUtils {
      * representing the history of data sourcing state changes associated with the request.
      * @returns The time difference in milliseconds between the next request state change and the next data sourcing state change.
      */
-    fun compareRequestAndDataSourcingTime(
+    private fun compareRequestAndDataSourcingTime(
         requestHistorySorted: List<Pair<RequestEntity, Long>>,
         dataSourcingHistorySorted: List<DataSourcingWithoutReferences>,
     ): Int =
@@ -108,7 +108,7 @@ class RequestStateHistoryUtils {
      * @param T - The type of the previous history entry, which can be either RequestHistoryEntry or ExtendedRequestHistoryEntry,
      * depending on the context in which the HistoryEntryInput is being used.
      */
-    sealed interface HistoryEntryInput<out T> {
+    private sealed interface HistoryEntryInput<out T> {
         /**
          * Represents a history entry input that contains only request information, along with an optional previous history entry.
          *
@@ -162,7 +162,7 @@ class RequestStateHistoryUtils {
      *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
      * @returns An ExtendedRequestHistoryEntry object representing the combined state of the request and data sourcing
      */
-    fun createExtendedHistoryEntry(input: HistoryEntryInput<ExtendedRequestHistoryEntry>): ExtendedRequestHistoryEntry =
+    private fun createExtendedHistoryEntry(input: HistoryEntryInput<ExtendedRequestHistoryEntry>): ExtendedRequestHistoryEntry =
         when (input) {
             is HistoryEntryInput.RequestOnly ->
                 ExtendedRequestHistoryEntryData(
@@ -194,7 +194,7 @@ class RequestStateHistoryUtils {
      *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
      * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
      */
-    fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
+    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
         when (input) {
             is HistoryEntryInput.RequestOnly ->
                 RequestHistoryEntryData(input.requestEntity)
@@ -223,7 +223,7 @@ class RequestStateHistoryUtils {
      * changes and data sourcing state changes, sorted by modification date.
      *
      */
-    fun <T> buildHistory(
+    private fun <T> buildHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
         createHistoryEntry: (HistoryEntryInput<T>) -> T,

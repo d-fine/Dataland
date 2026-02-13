@@ -13,8 +13,11 @@ import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestQueryManager
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,7 +27,7 @@ import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureMockMvc
-class RetrieveRequestHistoryTest
+class ExistingRequestsManagerTest
     @Autowired
     constructor(
         private val existingRequestsManager: ExistingRequestsManager,
@@ -130,8 +133,14 @@ class RetrieveRequestHistoryTest
                 userEmailAddress = "",
             )
 
-        @Test
-        fun `request history is sorted by timestamps`() {
+        @BeforeEach
+        fun setup() {
+            reset(
+                mockDataRevisionRepository,
+                mockDataSourcingManager,
+                mockRequestRepository,
+                mockRequestQueryManager,
+            )
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyRequestEntity).whenever(mockRequestRepository).findByIdAndFetchDataSourcingEntity(requestId)
@@ -148,8 +157,23 @@ class RetrieveRequestHistoryTest
                     ),
                     true,
                 )
+        }
+
+
+        @Test
+        fun `request history is sorted by timestamps`() {
 
             val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
-            print(requestHistory)
+
+            Assertions.assertEquals(1000, requestHistory[0].modificationDate )
+            Assertions.assertEquals(1500, requestHistory[1].modificationDate )
+
+            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+
+            Assertions.assertEquals(1000, extendRequestHistory[0].modificationDate )
+            Assertions.assertEquals(1500, extendRequestHistory[1].modificationDate )
         }
+
+
+
     }
