@@ -990,7 +990,7 @@
         ],
         "summary": "Get basic request history of requests by ID",
         "description": "Retrieve the basic request history of a Request object by its unique identifier.",
-        "operationId": "getBasicStateHistoryById",
+        "operationId": "getRequestHistoryById",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -1061,7 +1061,7 @@
         ],
         "summary": "Get extended request history of requests by ID",
         "description": "Retrieve the extended request history of a Request object by its unique identifier.",
-        "operationId": "getFullStateHistoryById",
+        "operationId": "getExtendedRequestHistoryById",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -2388,11 +2388,11 @@
         ],
         "type": "object",
         "properties": {
-          "adminComment": {
-            "type": "string"
-          },
           "dataSourcingState": {
             "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "adminComment": {
+            "type": "string"
           },
           "requestState": {
             "$ref": "#/components/schemas/RequestState"

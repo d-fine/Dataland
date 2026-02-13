@@ -92,7 +92,7 @@ class RequestController
                 ),
             )
 
-        override fun getFullStateHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntry>> =
+        override fun getExtendedRequestHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntry>> =
             ResponseEntity
                 .ok(
                     requestHistoryService.retrieveExtendedRequestHistory(
@@ -102,7 +102,7 @@ class RequestController
                     ),
                 )
 
-        override fun getBasicStateHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntry>> =
+        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntry>> =
             ResponseEntity
                 .ok(
                     requestHistoryService.retrieveRequestHistory(
