@@ -51,6 +51,7 @@ function buildReviewQueueElement(
     framework: framework,
     reportingPeriod: reportingPeriod,
     qaStatus: QaStatus.Pending,
+    numberQaReports: 0,
   };
 }
 

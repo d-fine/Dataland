@@ -189,4 +189,11 @@ class DataPointQaReportManager(
                 reporterUserId = reporterUserId,
                 showInactive = showInactive,
             ).map { it.toApiModel() }
+
+    /**
+     * Returns the number of QA reports where dataPointId is in the given set of ids.
+     * @param dataPointIds set of dataPointId values to filter by
+     * @return number of matching QA reports
+     */
+    fun countQaReportsForDataPointIds(dataPointIds: Set<String>): Long = qaReportRepository.countByDataPointIdIn(dataPointIds)
 }

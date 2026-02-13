@@ -11,8 +11,11 @@ import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -43,6 +46,7 @@ class QaReviewManagerTest {
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
+    private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -73,6 +77,7 @@ class QaReviewManagerTest {
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
             mockExceptionForwarder,
+            mockDataPointQaReportManager,
         )
         qaReviewManager =
             QaReviewManager(
@@ -82,6 +87,7 @@ class QaReviewManagerTest {
                 mockCloudEventMessageHandler,
                 objectMapper,
                 mockExceptionForwarder,
+                mockDataPointQaReportManager,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
@@ -181,5 +187,51 @@ class QaReviewManagerTest {
             )
         }
         Assertions.assertEquals(uploaderId, dummyUploadQaReviewEntity.triggeringUserId)
+    }
+
+    @Test
+    fun `check that QaReviewResponse includes qa report count and reviewer user name`() {
+        val qaReviewEntity =
+            QaReviewEntity(
+                dataId = dataId,
+                companyId = companyId,
+                companyName = "dummyCompanyName",
+                framework = "dummyFramework",
+                reportingPeriod = reportingPeriod,
+                timestamp = 0L,
+                qaStatus = QaStatus.Pending,
+                triggeringUserId = uploaderId,
+                comment = null,
+            )
+
+        doReturn(listOf(qaReviewEntity))
+            .whenever(mockQaReviewRepository)
+            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+        doReturn(mapOf("first" to "dp1", "second" to "dp2"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId))
+        doReturn(2L)
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIds(any())
+
+        val responses =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = uploaderId,
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewManager.getInfoOnDatasets(
+                    dataTypes = setOf(DataTypeEnum.sfdr),
+                    reportingPeriods = setOf(reportingPeriod),
+                    companyName = null,
+                    qaStatus = QaStatus.Pending,
+                    chunkSize = 10,
+                    chunkIndex = 0,
+                )
+            }
+
+        Assertions.assertEquals(1, responses.size)
+        Assertions.assertEquals(2L, responses.first().numberQaReports)
+        Assertions.assertNull(responses.first().reviewerUserName) // for now, change later
     }
 }
