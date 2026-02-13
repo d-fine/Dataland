@@ -163,6 +163,7 @@ describeIf(
           });
         });
       });
+      cy.get('.p-dialog').should('not.exist');
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
