@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestSummaryEmailBuilder
-import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -95,7 +95,7 @@ class DataRequestSummaryNotificationServiceTest {
         earlierQaApprovedVersionOfDatasetExists: Boolean,
         notificationEventType: NotificationEventType?,
     ) {
-        TestUtils.mockSecurityContext()
+        AuthenticationMock.mockSecurityContext()
         val dataRequestEntity =
             DataRequestEntity(
                 userId = userUUID.toString(),

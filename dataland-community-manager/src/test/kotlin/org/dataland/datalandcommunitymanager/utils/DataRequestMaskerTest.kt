@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -88,7 +89,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are not visible to non admins for a list of ExtendedStoredDataRequests`() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
                 listOf(getExtendedStoredDataRequestEntityWithAdminComment()),
@@ -99,7 +100,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are visible to admins for a list of ExtendedStoredDataRequests`() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
 
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
@@ -111,7 +112,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are not visible to non admins for single StoredDataRequest`() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
         val modifiedStoredDataRequest =
             dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequestEntityWithAdminComment)
         assertNull(modifiedStoredDataRequest.adminComment)
@@ -119,7 +120,7 @@ class DataRequestMaskerTest {
 
     @Test
     fun `validates that admin comments are visible to admins for single StoredDataRequest`() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
         val modifiedStoredDataRequest =
             dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequestEntityWithAdminComment)
         assertEquals(testComment, modifiedStoredDataRequest.adminComment)

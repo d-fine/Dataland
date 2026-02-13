@@ -723,6 +723,9 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ "TERMS_AND_CONDITIONS" ],
     "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
+    "clientRoles" : {
+      "realm-management" : [ "view-users" ]
+    },
     "notBefore" : 0,
     "groups" : [ ]
   }, {

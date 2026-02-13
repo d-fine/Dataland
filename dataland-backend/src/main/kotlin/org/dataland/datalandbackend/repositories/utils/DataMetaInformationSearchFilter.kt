@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import java.util.UUID
 
 /**
@@ -42,7 +43,7 @@ data class DataMetaInformationSearchFilter(
     )
     val uploaderUserIds: Set<UUID>? = null,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     val qaStatus: QaStatus? = null,
 ) {

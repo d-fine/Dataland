@@ -22,6 +22,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdPar
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypeParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -92,7 +93,7 @@ interface MetaDataApi {
         uploaderUserIds: Set<UUID>? = null,
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus? = null,
@@ -177,19 +178,19 @@ interface MetaDataApi {
     ): ResponseEntity<DataMetaInformation>
 
     /**
-     * A method to retrieve a list of all data IDs of the data-points contained in the dataset
+     * A method to retrieve a map with all data IDs of the data-points contained in the dataset
      * @param dataId identifier used to uniquely specify the dataset in question
-     * @return a list of data point IDs contained in the dataset
+     * @return a map of data point types to data point ids.
      */
     @Operation(
         summary = "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
-        description = "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        description = "Returns a map with keys being the datapoint types and the values being the data point Ids.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully retrieved list of data point IDs.",
+                description = "Successfully retrieved map of data point IDs.",
                 content = [
                     Content(
                         schema =

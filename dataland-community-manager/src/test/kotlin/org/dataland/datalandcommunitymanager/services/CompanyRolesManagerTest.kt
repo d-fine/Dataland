@@ -16,9 +16,9 @@ import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentR
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipRequestedEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -37,7 +37,6 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
-import org.springframework.security.core.context.SecurityContext
 import java.io.File
 import java.util.Optional
 
@@ -49,7 +48,6 @@ class CompanyRolesManagerTest {
     private val mockCompanyOwnershipAcceptedEmailMessageBuilder = mock<CompanyOwnershipAcceptedEmailMessageBuilder>()
     private val mockCompanyOwnershipRequestedEmailMessageBuilder = mock<CompanyOwnershipRequestedEmailMessageBuilder>()
     private val mockDatalandJwtAuthentication = mock<DatalandJwtAuthentication>()
-    private val mockSecurityContext = mock<SecurityContext>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockCompanyRightsManager = mock<CompanyRightsManager>()
 
@@ -101,7 +99,6 @@ class CompanyRolesManagerTest {
             mockCompanyOwnershipAcceptedEmailMessageBuilder,
             mockCompanyOwnershipRequestedEmailMessageBuilder,
             mockDatalandJwtAuthentication,
-            mockSecurityContext,
             mockKeycloakUserService,
             mockCompanyRightsManager,
         )
@@ -186,7 +183,7 @@ class CompanyRolesManagerTest {
     fun `check that a company ownership can only be requested if the user is not already a company owner`() {
         doReturn(true).whenever(mockCompanyRoleAssignmentRepository).existsById(existingCompanyRoleAssignmentId)
 
-        val mockAuthentication = TestUtils.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
+        val mockAuthentication = AuthenticationMock.mockSecurityContext("username", testUserId, DatalandRealmRole.ROLE_USER)
         val exception =
             assertThrows<InvalidInputApiException> {
                 companyRolesManager.triggerCompanyOwnershipRequest(

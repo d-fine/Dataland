@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * A variation of the DataMetaInformation augmented by the information needed for display on the "My Datasets" page
@@ -35,7 +36,7 @@ data class DataMetaInformationForMyDatasets(
     )
     val reportingPeriod: String,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     val qualityStatus: QaStatus,
     @field:Schema(

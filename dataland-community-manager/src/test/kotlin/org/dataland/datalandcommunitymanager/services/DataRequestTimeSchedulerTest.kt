@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
@@ -71,7 +71,7 @@ class DataRequestTimeSchedulerTest {
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
         reset(mockDataRequestRepository)
-        TestUtils.mockSecurityContext()
+        AuthenticationMock.mockSecurityContext()
         doReturn(null)
             .whenever(
                 mockDataRequestUpdateManager,

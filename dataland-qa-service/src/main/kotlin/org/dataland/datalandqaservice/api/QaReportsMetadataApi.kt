@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
@@ -53,35 +53,35 @@ interface QaReportsMetadataApi {
     fun getQaReportsMetadata(
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_LIST_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_LIST_EXAMPLE,
             required = false,
         )
         uploaderUserIds: Set<UUID>? = null,
         @RequestParam(defaultValue = "true")
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_SHOW_ONLY_ACTIVE_DESCRIPTION,
             required = false,
         )
         showOnlyActive: Boolean,
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus? = null,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_MIN_UPLOAD_DATE_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_MIN_UPLOAD_DATE_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_MIN_UPLOAD_DATE_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_MIN_UPLOAD_DATE_EXAMPLE,
             required = false,
         )
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         minUploadDate: LocalDate? = null,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_MAX_UPLOAD_DATE_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_MAX_UPLOAD_DATE_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE,
             required = false,
         )
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

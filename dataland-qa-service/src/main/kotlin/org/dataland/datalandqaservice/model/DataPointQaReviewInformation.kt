@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * API model for the QA review information of a data point building on the DataPointDimensions interface.
@@ -45,22 +46,22 @@ data class DataPointQaReviewInformation(
     )
     override val reportingPeriod: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_EXAMPLE,
     )
     val timestamp: Long,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     val qaStatus: QaStatus,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
     )
     val comment: String?,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
     )
     val reviewerId: String?,
 ) : DataPointDimensions

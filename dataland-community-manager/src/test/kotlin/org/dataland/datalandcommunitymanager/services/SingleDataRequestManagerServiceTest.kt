@@ -14,8 +14,8 @@ import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestPr
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -34,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.core.context.SecurityContext
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
@@ -71,7 +70,6 @@ class SingleDataRequestManagerServiceTest
         private lateinit var spyCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
         private lateinit var spyKeycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils
 
-        private val mockSecurityContext = mock<SecurityContext>()
         private val dummyCompanyId = "00000000-0000-0000-0000-000000000000"
         private val sampleDataType = DataTypeEnum.eutaxonomyMinusFinancials
         private val sampleReportingPeriod = "2023"
@@ -124,7 +122,6 @@ class SingleDataRequestManagerServiceTest
                 mockCompanyInfoService,
                 mockDataAccessManager,
                 mockSingleDataRequestEmailMessageBuilder,
-                mockSecurityContext,
                 mockKeycloakUserService,
             )
 
@@ -144,7 +141,7 @@ class SingleDataRequestManagerServiceTest
                     maxRequestsForUser = 10,
                 )
 
-            TestUtils.mockSecurityContext(
+            AuthenticationMock.mockSecurityContext(
                 username = adminUserName,
                 userId = adminUserId,
                 roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_PREMIUM_USER),

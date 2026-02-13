@@ -3273,7 +3273,7 @@
           "meta-data-controller"
         ],
         "summary": "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        "description": "Returns a map with keys being the datapoint types and the values being the data point Ids.",
         "operationId": "getContainedDataPoints",
         "parameters": [
           {
@@ -3289,7 +3289,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved list of data point IDs.",
+            "description": "Successfully retrieved map of data point IDs.",
             "content": {
               "application/json": {
                 "schema": {
@@ -17501,7 +17501,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "companyId": {
             "type": "string",
@@ -17536,7 +17536,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "companyId": {
             "type": "string",
@@ -17583,7 +17583,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           }
         }
       },
