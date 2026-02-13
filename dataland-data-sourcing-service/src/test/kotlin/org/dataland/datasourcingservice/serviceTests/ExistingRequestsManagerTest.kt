@@ -159,21 +159,70 @@ class ExistingRequestsManagerTest
                 )
         }
 
-
         @Test
         fun `request history is sorted by timestamps`() {
-
             val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
 
-            Assertions.assertEquals(1000, requestHistory[0].modificationDate )
-            Assertions.assertEquals(1500, requestHistory[1].modificationDate )
+            Assertions.assertEquals(1000, requestHistory[0].modificationDate)
+            Assertions.assertEquals(1500, requestHistory[1].modificationDate)
 
             val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
 
-            Assertions.assertEquals(1000, extendRequestHistory[0].modificationDate )
-            Assertions.assertEquals(1500, extendRequestHistory[1].modificationDate )
+            Assertions.assertEquals(1000, extendRequestHistory[0].modificationDate)
+            Assertions.assertEquals(1500, extendRequestHistory[1].modificationDate)
         }
 
+        @Test
+        fun `Check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
+            val requestStateHistory: List<Pair<RequestEntity, Long>> =
+                dummyRequestStateHistory +
+                    Pair(
+                        RequestEntity(
+                            id = requestId,
+                            companyId = dummyCompanyId,
+                            reportingPeriod = "2025",
+                            dataType = "dummyDataType",
+                            userId = dummyUserId,
+                            creationTimestamp = lastModifiedDateFirstRequest + 1000L,
+                            memberComment = null,
+                            lastModifiedDate = lastModifiedDateFirstRequest + 1000L,
+                            requestPriority = RequestPriority.Low,
+                            state = RequestState.Withdrawn,
+                        ),
+                        lastModifiedDateFirstRequest + 1000L,
+                    )
 
+            val dataSourcingStatHistory: List<DataSourcingWithoutReferences> =
+                dummyDataSourcingStatHistory +
+                    DataSourcingWithoutReferences(
+                        dataSourcingId = dataSourcingID.toString(),
+                        companyId = dummyCompanyId.toString(),
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        state = DataSourcingState.DataExtraction,
+                        dateOfNextDocumentSourcingAttempt = null,
+                        documentCollector = null,
+                        dataExtractor = null,
+                        adminComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 1500L,
+                    )
 
+            doReturn(requestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
+
+            doReturn(dataSourcingStatHistory)
+                .whenever(mockDataSourcingManager)
+                .retrieveDataSourcingHistory(
+                    ValidationUtils.convertToUUID(
+                        dataSourcingID.toString(),
+                    ),
+                    true,
+                )
+
+            val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
+
+            Assertions.assertEquals(3, requestHistory.size)
+            requestHistory.zipWithNext { a, b ->
+                Assertions.assertNotEquals(a.displayedState, b.displayedState)
+            }
+        }
     }
