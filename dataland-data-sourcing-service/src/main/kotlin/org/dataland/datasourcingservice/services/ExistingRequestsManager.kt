@@ -14,10 +14,7 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
-import org.dataland.datasourcingservice.utils.buildHistory
-import org.dataland.datasourcingservice.utils.createExtendedHistoryEntry
-import org.dataland.datasourcingservice.utils.createHistoryEntry
-import org.dataland.datasourcingservice.utils.deleteRepeatingDisplayedStates
+import org.dataland.datasourcingservice.utils.RequestStateHistoryUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,6 +36,7 @@ class ExistingRequestsManager
         private val dataSourcingManager: DataSourcingManager,
     ) {
         private val requestLogger = RequestLogger()
+        private val requestStateHistoryUtils = RequestStateHistoryUtils()
 
         /**
          Retrieves a stored data request by its ID.
@@ -179,8 +177,7 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            val combinedHistory = buildHistory(requestHistory, dataSourcingHistory, ::createHistoryEntry)
-            return deleteRepeatingDisplayedStates(combinedHistory)
+            return requestStateHistoryUtils.getRequestHistory(requestHistory, dataSourcingHistory)
         }
 
         /**
@@ -193,6 +190,6 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            return buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
+            return requestStateHistoryUtils.getExtendedRequestHistory(requestHistory, dataSourcingHistory)
         }
     }

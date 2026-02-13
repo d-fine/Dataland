@@ -7,7 +7,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.utils.getDisplayedState
+import org.dataland.datasourcingservice.utils.RequestStateHistoryUtils
 
 /**
  * A class that holds the combined states of a request and its associated data sourcing entry, used for the "mixedState"
@@ -44,7 +44,7 @@ data class ExtendedRequestHistoryEntryData(
         modificationDate = requestEntity.lastModifiedDate,
         requestState = requestEntity.state,
         dataSourcingState = dataSourcingState,
-        displayedState = getDisplayedState(requestEntity.state, dataSourcingState),
+        displayedState = RequestStateHistoryUtils.getDisplayedState(requestEntity.state, dataSourcingState),
         adminComment = requestEntity.adminComment,
     )
 
@@ -52,7 +52,7 @@ data class ExtendedRequestHistoryEntryData(
         modificationDate = dataSourcingObject.lastModifiedDate,
         requestState = requestState,
         dataSourcingState = dataSourcingObject.state,
-        displayedState = getDisplayedState(requestState, dataSourcingObject.state),
+        displayedState = RequestStateHistoryUtils.getDisplayedState(requestState, dataSourcingObject.state),
         adminComment = comment,
     )
 }
