@@ -4,7 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import kotlin.reflect.KClass
 
 /**
- * A hierarchical group of subelements with identifiers. Allows users to manipulate (CRUD) subelements
+ * A hierarchical group of sub-elements with identifiers. Allows users to manipulate (CRUD) sub-elements
  * using their identifier. Uses Kotlin's Type-Safe-Builders to allow for DSL-Like intuitive manipulation of
  * Elements
  */

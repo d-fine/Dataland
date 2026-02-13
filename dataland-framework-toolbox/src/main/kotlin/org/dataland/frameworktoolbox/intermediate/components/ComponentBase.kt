@@ -88,7 +88,7 @@ open class ComponentBase(
 
     /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
-     * of this specific component isntance
+     * of this specific component instance
      */
     var fixtureGeneratorGenerator: ((sectionBuilder: FixtureSectionBuilder) -> Unit)? = null
 
@@ -135,7 +135,7 @@ open class ComponentBase(
     /**
      * Create a schema annotation for the data model with a description and an example per field
      * @param uploadPageExplanation the tooltip description for the data upload (business definition for data points)
-     * @param example an example as a json string
+     * @param example an example as a JSON string
      */
     private fun getSchemaAnnotation(
         uploadPageExplanation: String?,
@@ -152,7 +152,7 @@ open class ComponentBase(
      * Create a schema annotation for the data model with a description and an example per field. Also create a supress
      * SuppressKtlintMaxLineLengthAnnotation due to long description texts.
      * @param uploadPageExplanation the tooltip description for the data upload (business definition for data points)
-     * @param example an example as a json string
+     * @param example an example as a JSON string
      */
     fun getSchemaAnnotationWithSuppressMaxLineLength(
         uploadPageExplanation: String?,

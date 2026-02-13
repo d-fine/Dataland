@@ -125,9 +125,9 @@ class ComponentGroup(
         }
     }
 
-    override fun generateDefaultTranslation(specificationCategoryBuilder: CategoryBuilder) {
+    override fun generateDefaultTranslation(translationCategoryBuilder: CategoryBuilder) {
         val containerCategory =
-            specificationCategoryBuilder.addCategory(
+            translationCategoryBuilder.addCategory(
                 identifier = identifier,
             )
 

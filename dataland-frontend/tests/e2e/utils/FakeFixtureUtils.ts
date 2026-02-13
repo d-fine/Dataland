@@ -252,8 +252,8 @@ export class Generator {
   }
 
   /**
-   * Generates a fiscal year end date in the format DD-MMM (e.g., "31-Mar")
-   * @returns the generated fiscal year end date string
+   * Generates a fiscal year-end date in the format DD-MMM (e.g., "31-Mar")
+   * @returns the generated fiscal year-end date string
    */
   generateFiscalYearEnd(): string {
     const day = this.guaranteedInt(1, 28).toString().padStart(2, '0');
