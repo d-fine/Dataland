@@ -13,7 +13,7 @@ jobs:
     outputs:
       buildscript_json_array: ${{ steps.gather-buildscripts-step.outputs.BUILDSCRIPT_JSON_ARRAY }}
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Gather Buildscripts
         id: gather-buildscripts-step
         run: |
@@ -33,7 +33,7 @@ jobs:
     env:
       BUILD_SCRIPT: ${{ matrix.buildScript }}
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -46,8 +46,13 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
       - name: Login to Github Packages
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -67,12 +72,12 @@ jobs:
           chmod +x "./build-utils/$BUILD_SCRIPT"
           "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: dockerImageVersions-${{ matrix.buildScript }}
           path: ./*github_env.log
       - name: Store env and secrets
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: parameters-${{ matrix.buildScript }}

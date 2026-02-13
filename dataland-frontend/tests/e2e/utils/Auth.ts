@@ -1,4 +1,6 @@
 import { getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { PortfolioControllerApi } from '@clients/userservice';
+import { Configuration } from '@clients/backend';
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
@@ -21,7 +23,11 @@ let globalJwt = '';
  * @param password the password to use (defaults to the password of data_reader)
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
+export function login(
+  username = reader_name,
+  password = reader_pw,
+  otpGenerator?: () => string | Promise<string>
+): void {
   cy.intercept({ url: 'https://www.youtube.com/**' }, { forceNetworkError: false }).as('youtube');
   cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
@@ -35,16 +41,31 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .then((it) => {
         // cy.then used to ensure that the OTP is only generated right before it is entered
-        return cy.wrap(it).type(otpGenerator());
+        return cy.wrap(otpGenerator()).then((otp) => {
+          return cy.wrap(it).type(otp as string);
+        });
       })
       .get('#kc-login')
       .should('exist')
       .click();
   }
-  cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', getBaseUrl() + '/portfolios');
-  cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
-    globalJwt = interception.request.headers['authorization'] as string;
-  });
+  let urlToRedirectTo = getBaseUrl() + '/companies';
+  if (!otpGenerator) {
+    let doesUserHavePortfolios = false;
+    getKeycloakToken(username, password).then(async (token) => {
+      const allUserPortfolios = await new PortfolioControllerApi(
+        new Configuration({ accessToken: token })
+      ).getAllPortfolioNamesForCurrentUser();
+      doesUserHavePortfolios = allUserPortfolios.data.length > 0;
+      if (doesUserHavePortfolios) {
+        urlToRedirectTo = getBaseUrl() + '/portfolios';
+      }
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
+      cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
+        globalJwt = interception.request.headers['authorization'] as string;
+      });
+    });
+  }
 }
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.

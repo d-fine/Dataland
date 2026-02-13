@@ -4,7 +4,7 @@ import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
- * A quota exceeded Excpetion should be thrown if an internal quota is exceeded
+ * A quota exceeded exception thrown if quota is exceeded.
  */
 open class QuotaExceededException(
     val summary: String,

@@ -5,7 +5,6 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
-  type LksgProductionSite,
   QaStatus,
 } from '@clients/backend';
 import { type ReportingPeriodOfDatasetWithId, sortReportingPeriodsToDisplayAsColumns } from '@/utils/DataTableDisplay';
@@ -75,11 +74,11 @@ describe('Component test for the LksgPanel', () => {
     cy.get(`span.p-column-title`).should('contain.text', reportingPeriod.substring(0, 4));
     getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
     getCellValueContainer('List Of Production Sites').contains('a').should('be.visible').click();
-    lksgData.general.productionSpecific.listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
+    for (const productionSite of lksgData.general.productionSpecific.listOfProductionSites) {
       if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
         cy.get('tbody.p-datatable-tbody p').contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
       }
-    });
+    }
     cy.get('div.p-dialog-mask').click({ force: true });
   });
 

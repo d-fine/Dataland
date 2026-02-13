@@ -1,12 +1,15 @@
 // EU Taxonomy Implementation
 package org.dataland.e2etests.tests.frameworks
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.model.Activity
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
 import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportJobProgressState
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
 import org.dataland.datalandbackend.openApiClient.model.QualityOptions
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancialsData>() {
     private lateinit var fullTestData: EutaxonomyNonFinancialsData
@@ -125,27 +129,45 @@ class EuTaxonomyNonFinancialsExportTest : BaseExportTest<EutaxonomyNonFinancials
         reportingPeriods: List<String>,
         keepValueFieldsOnly: Boolean,
         includeAliases: Boolean,
-    ): File =
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.CSV,
-                keepValueFieldsOnly = keepValueFieldsOnly,
-                includeAliases = includeAliases,
-            )
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.CSV,
+                    ),
+                    keepValueFieldsOnly = keepValueFieldsOnly,
+                    includeAliases = includeAliases,
+                ).id
+                .toString()
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun exportDataAsExcel(
         companyIds: List<String>,
         reportingPeriods: List<String>,
-    ): File =
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
-                reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-                fileFormat = ExportFileType.EXCEL,
-                includeAliases = false,
-            )
+    ): File {
+        val exportJobId =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+                    ExportRequestData(
+                        reportingPeriods = reportingPeriods,
+                        companyIds = companyIds,
+                        fileFormat = ExportFileType.EXCEL,
+                    ),
+                    includeAliases = false,
+                ).id
+                .toString()
+        Awaitility.await().atMost(10000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            apiAccessor.exportControllerApi.getExportJobState(exportJobId) == ExportJobProgressState.Success
+        }
+        return apiAccessor.exportControllerApi.exportCompanyAssociatedDataById(exportJobId)
+    }
 
     override fun retrieveData(companyId: String): Any =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials

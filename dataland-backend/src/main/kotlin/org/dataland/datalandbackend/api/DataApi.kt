@@ -8,15 +8,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodParameterNonRequired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -119,60 +120,33 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData by its [reportingPeriods], [companyIds] as a [exportFileType] file.
-     * @param reportingPeriods specifies the reporting periods
-     * @param companyIds specifies the companies
-     * @param exportFileType specifies the file type to export to
-     * @param keepValueFieldsOnly specifies whether to exclude metadata from the export
-     * @return JSON of companyAssociatedData in the form of InputStreamResource
+     * A method to post an export job of the CompanyAssociatedData by its reporting periods and company IDs.
      */
     @Operation(
-        summary = "Export data for the reportingPeriods and companyIds provided.",
+        summary = "Start an export job for the reportingPeriods and companyIds provided.",
         description =
-            "Export data for the each combination of reportingPeriod and companyId provided into a file of the " +
+            "Triggers asynchronous export job for the reportingPeriods and companyIds provided." +
                 "specified format (CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported datasets."),
-            ApiResponse(
-                responseCode = "204",
-                description = "No data for download available.",
-                content = [Content(mediaType = "")],
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully started export job."),
             ApiResponse(
                 responseCode = "404",
-                description = "Company Id could not be found.",
+                description = "Input parameter could not be found.",
                 content = [Content(mediaType = "")],
             ),
         ],
     )
-    @GetMapping(
-        value = ["/export"],
-        produces = ["application/octet-stream"],
+    @PostMapping(
+        value = ["/export-jobs"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun exportCompanyAssociatedDataByDimensions(
-        @Parameter(
-            name = "reportingPeriods",
-            description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIODS_LIST_EXAMPLE,
-            required = true,
-        )
-        @RequestParam("reportingPeriods") reportingPeriods: List<String>,
-        @Parameter(
-            name = "companyIds",
-            description = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.COMPANY_IDS_LIST_EXAMPLE,
-            required = true,
-        )
-        @RequestParam("companyIds") companyIds: List<String>,
-        @Parameter(
-            name = "fileFormat",
-            description = BackendOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
-            required = true,
-        )
-        @RequestParam("fileFormat") exportFileType: ExportFileType,
+    fun postExportJobCompanyAssociatedDataByDimensions(
+        @Valid @RequestBody
+        exportRequestData: ExportRequestData,
         @Parameter(
             name = "keepValueFieldsOnly",
             description = BackendOpenApiDescriptionsAndExamples.KEEP_VALUE_FIELDS_ONLY_DESCRIPTION,
@@ -186,7 +160,7 @@ interface DataApi<T> {
             value = "includeAliases",
             defaultValue = "true",
         ) includeAliases: Boolean = true,
-    ): ResponseEntity<InputStreamResource>
+    ): ResponseEntity<ExportJobInfo>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its
@@ -224,4 +198,31 @@ interface DataApi<T> {
         @ReportingPeriodParameterNonRequired
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
+
+    /**
+     * A method to retrieve the latest available data for a given [identifier] and the implicitly defined data type [T]
+     * @param identifier specifies the company
+     * @return the dataset stored or an error if no dataset can be found
+     */
+    @Operation(
+        summary = "Retrieve the latest data for the company provided.",
+        description = "The latest data identified by the company ID is retrieved, if available.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
+            ApiResponse(responseCode = "400", description = "Company identifier is not unique."),
+            ApiResponse(responseCode = "403", description = "You do not have the right to make this query."),
+            ApiResponse(responseCode = "404", description = "Company or dataset could not be found."),
+        ],
+    )
+    @GetMapping(
+        value = ["/latest"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getLatestAvailableCompanyAssociatedData(
+        @IdentifierParameterRequired
+        @RequestParam identifier: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
 }

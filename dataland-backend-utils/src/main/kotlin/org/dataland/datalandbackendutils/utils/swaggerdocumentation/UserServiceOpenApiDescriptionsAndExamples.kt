@@ -21,26 +21,36 @@ object UserServiceOpenApiDescriptionsAndExamples {
 
     const val PORTFOLIO_IS_MONITORED_DESCRIPTION = "Boolean flag that indicates whether the portfolio is monitored."
 
-    const val PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION =
-        "The reporting period from which the companies in the portfolio are actively monitored for data updates."
-    const val PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE
-
     const val PORTFOLIO_MONITORED_FRAMEWORKS_DESCRIPTION =
         "A list of frameworks for which the companies in the portfolio are actively monitored."
-    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"]"
+    const val PORTFOLIO_MONITORED_FRAMEWORKS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"]"
+
+    const val PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION = "Possible frequencies in which notifications can be received."
+    const val PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE = "Weekly"
+
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION =
+        "The time window threshold for portfolio monitoring. " +
+            "Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months)."
+    const val PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE = "Standard"
+
+    const val PORTFOLIO_SHARED_USER_IDS_DESCRIPTION = "A list of user IDs with whom the portfolio is shared."
+    const val PORTFOLIO_SHARED_USER_IDS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"]"
+
+    const val PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION = "The access rights that the user has for the shared portfolio."
+    const val PORTFOLIO_ACCESS_RIGHTS_EXAMPLE = "Owner"
 
     const val AVAILABLE_REPORTING_PERIODS_DESCRIPTION = "The reporting periods that are available per framework."
     const val AVAILABLE_REPORTING_PERIODS_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":\"2024, 2023, 2022\"}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":\"2024, 2023, 2022\"}"
 
     const val COMPANY_COCKPIT_REF_DESCRIPTION = "The link to the company cockpit page."
     const val COMPANY_COCKPIT_REF_EXAMPLE = "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}"
 
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_DESCRIPTION = "The links to the data pages per framework."
     const val FRAMEWORK_HYPHENATED_NAMES_TO_DATA_REF_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":" +
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":" +
             "\"https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
-            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\"}"
+            "/frameworks/${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"}"
 
     const val HELP_REQUEST_TOPIC = "The topic of the request for help."
     const val HELP_REQUEST_TOPIC_EXAMPLE = "Find company identifiers."

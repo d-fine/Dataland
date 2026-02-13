@@ -113,7 +113,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -969,8 +969,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Assign a QA review status to a dataset.",
-        "description": "Assign a QA review status to a dataset.",
+        "summary": "Assign a QA review status to a data point.",
+        "description": "Assign a QA review status to a data point.",
         "operationId": "changeDataPointQaStatus",
         "parameters": [
           {
@@ -986,7 +986,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -1004,7 +1004,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully assigned QA review status to dataset."
+            "description": "Successfully assigned QA review status to data point."
           },
           "default": {
             "description": "An error occurred",
@@ -1693,7 +1693,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1715,7 +1715,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1724,7 +1724,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyName",
@@ -1792,7 +1795,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1814,7 +1817,7 @@
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1823,7 +1826,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           },
           {
             "name": "companyName",
@@ -1838,7 +1844,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2000,7 +2006,9 @@
                 "format": "uuid"
               }
             },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ]
           },
           {
             "name": "showOnlyActive",
@@ -2015,7 +2023,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "type": "string",
@@ -2380,7 +2388,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -2390,7 +2398,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "type": "string"
@@ -2409,7 +2417,7 @@
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2915,6 +2923,85 @@
           }
         }
       },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
       "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -3040,6 +3127,46 @@
           }
         }
       },
+      "QaReportDataPointExtendedDataPointLocalDate": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
       "QaReportDataPointExtendedDataPointYesNo": {
         "required": [
           "comment",
@@ -3073,6 +3200,9 @@
       "SfdrData": {
         "type": "object",
         "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
+          },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
@@ -3326,6 +3456,25 @@
           }
         }
       },
+      "SfdrGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          }
+        }
+      },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",
         "properties": {
@@ -3529,7 +3678,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "qaReportId": {
@@ -3610,10 +3759,51 @@
               "Industrials",
               "Industry",
               "InformationTechnology",
-              "Machinery",
               "Materials",
               "RealEstate",
-              "Sovereign"
+              "Sovereign",
+              "Utilities"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
             ]
           },
           "quality": {
@@ -3658,6 +3848,17 @@
           }
         }
       },
+      "PcafCompanyValueEstimation": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+          },
+          "unlistedCompany": {
+            "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
+          }
+        }
+      },
       "PcafCompanyvalueListedCompany": {
         "type": "object",
         "properties": {
@@ -3680,6 +3881,28 @@
           }
         }
       },
+      "PcafCompanyvalueestimationListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "bookValueOfDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "minoritiesInterestInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "PcafCompanyvalueestimationUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -3691,6 +3914,12 @@
           },
           "environmental": {
             "$ref": "#/components/schemas/PcafEnvironmental"
+          },
+          "companyValueEstimation": {
+            "$ref": "#/components/schemas/PcafCompanyValueEstimation"
+          },
+          "environmentalEstimation": {
+            "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
           }
         }
       },
@@ -3699,6 +3928,14 @@
         "properties": {
           "greenhouseGasEmissions": {
             "$ref": "#/components/schemas/PcafEnvironmentalGreenhouseGasEmissions"
+          }
+        }
+      },
+      "PcafEnvironmentalEstimation": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
           }
         }
       },
@@ -3719,9 +3956,29 @@
           }
         }
       },
+      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
       "PcafGeneral": {
         "type": "object",
         "properties": {
+          "general": {
+            "$ref": "#/components/schemas/PcafGeneralGeneral"
+          },
           "company": {
             "$ref": "#/components/schemas/PcafGeneralCompany"
           }
@@ -3735,6 +3992,17 @@
           },
           "companyExchangeStatus": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+          }
+        }
+      },
+      "PcafGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
           }
         }
       },
@@ -3775,6 +4043,26 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
           }
         }
       },
@@ -5308,44 +5596,6 @@
           }
         }
       },
-      "ExtendedDataPointLocalDate": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "date"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        },
-        "description": "Contains suggested data corrections for the rejected data point.",
-        "example": {
-          "value": "No",
-          "quality": "Incomplete",
-          "comment": "program neural circuit",
-          "dataSource": {
-            "page": "1026",
-            "tagName": "web services",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "publicationDate": "2024-01-07"
-          }
-        }
-      },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -5445,26 +5695,6 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
-          }
-        }
-      },
-      "QaReportDataPointExtendedDataPointLocalDate": {
-        "required": [
-          "comment",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
           }
         }
       },
@@ -6543,7 +6773,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -6553,7 +6783,7 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -6747,7 +6977,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {

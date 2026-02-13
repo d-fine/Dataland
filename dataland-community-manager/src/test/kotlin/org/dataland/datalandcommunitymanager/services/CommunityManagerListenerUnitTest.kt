@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -22,6 +23,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import java.util.UUID
 
 /**
  * Tests if the listener processes the incoming non-sourceable data information correctly.
@@ -32,9 +34,9 @@ class CommunityManagerListenerUnitTest {
     private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
     private val mockInvestorRelationsManager = mock<InvestorRelationsManager>()
-    private val validDataId = "valid-data-id"
+    private val validDataId = UUID.randomUUID().toString()
     private val invalidDataId = ""
-    private val correlationId = "test correlation id"
+    private val correlationId = UUID.randomUUID().toString()
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
@@ -48,7 +50,6 @@ class CommunityManagerListenerUnitTest {
         )
         communityManagerListener =
             CommunityManagerListener(
-                jacksonObjectMapper,
                 mockDataRequestUpdateManager,
                 mockInvestorRelationsManager,
             )
@@ -63,6 +64,8 @@ class CommunityManagerListenerUnitTest {
                 dataId = validDataId,
                 updatedQaStatus = qaStatus,
                 currentlyActiveDataId = validDataId,
+                BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                false,
             )
         communityManagerListener.changeRequestStatusAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
@@ -87,7 +90,9 @@ class CommunityManagerListenerUnitTest {
                 ).saveNotificationEventForInvestorRelationsEmails(any<String>())
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 
@@ -98,6 +103,7 @@ class CommunityManagerListenerUnitTest {
                 dataId = invalidDataId,
                 updatedQaStatus = QaStatus.Accepted,
                 currentlyActiveDataId = invalidDataId,
+                BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"), false,
             )
         assertThrows<MessageQueueRejectException> {
             communityManagerListener.changeRequestStatusAfterQaDecision(
@@ -146,14 +152,6 @@ class CommunityManagerListenerUnitTest {
 
     @Test
     fun `valid nonsourceable message should be processed successfully`() {
-        val sourceabilityMessageValid =
-            SourceabilityMessage(
-                "exampleCompany",
-                "sfdr",
-                "2023",
-                true,
-                "test",
-            )
         val sourceabilityInfoValid =
             SourceabilityInfo(
                 "exampleCompany",
@@ -163,7 +161,7 @@ class CommunityManagerListenerUnitTest {
                 "test",
             )
         communityManagerListener.processMessageForDataReportedAsNonSourceable(
-            jacksonObjectMapper.writeValueAsString(sourceabilityMessageValid), typeNonSourceable, correlationId,
+            jacksonObjectMapper.writeValueAsString(sourceabilityInfoValid), typeNonSourceable, correlationId,
         )
         verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfoValid,
@@ -184,9 +182,11 @@ class CommunityManagerListenerUnitTest {
     ) {
         val sourceabilityMessageIncomplete =
             SourceabilityMessage(
-                companyId,
-                "sdfr",
-                reportingPeriod,
+                BasicDataDimensions(
+                    companyId,
+                    "sdfr",
+                    reportingPeriod,
+                ),
                 true,
                 "test",
             )
@@ -204,9 +204,11 @@ class CommunityManagerListenerUnitTest {
         assertThrows<MessageQueueRejectException> {
             val sourceability =
                 SourceabilityMessage(
-                    "exampleCompany",
-                    "sfdr",
-                    "2023",
+                    BasicDataDimensions(
+                        "exampleCompany",
+                        "sfdr",
+                        "2023",
+                    ),
                     false,
                     "test",
                 )

@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
@@ -19,14 +20,11 @@ import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -40,7 +38,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.io.File
 import java.util.Optional
 
@@ -54,6 +51,7 @@ class CompanyRolesManagerTest {
     private val mockDatalandJwtAuthentication = mock<DatalandJwtAuthentication>()
     private val mockSecurityContext = mock<SecurityContext>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockCompanyRightsManager = mock<CompanyRightsManager>()
 
     private val objectMapper = JsonUtils.defaultObjectMapper
 
@@ -91,7 +89,6 @@ class CompanyRolesManagerTest {
             File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 
-    private val companyNotFound = "Company not found"
     private val companyIdNotKnown = "Dataland does not know the company ID $nonExistingCompanyId"
     private val unknownUserId = "Unknown user ID"
     private val companyRoleNotAssigned = "Company role is not assigned to user"
@@ -106,6 +103,7 @@ class CompanyRolesManagerTest {
             mockDatalandJwtAuthentication,
             mockSecurityContext,
             mockKeycloakUserService,
+            mockCompanyRightsManager,
         )
     }
 
@@ -126,7 +124,7 @@ class CompanyRolesManagerTest {
         doNothing().whenever(mockCompanyInfoService).assertCompanyIdIsValid(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                companyNotFound,
+                COMPANY_NOT_FOUND,
                 companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).assertCompanyIdIsValid(nonExistingCompanyId)
@@ -134,7 +132,7 @@ class CompanyRolesManagerTest {
         doReturn(testCompanyName).whenever(mockCompanyInfoService).getValidCompanyName(existingCompanyId)
         doThrow(
             ResourceNotFoundApiException(
-                companyNotFound,
+                COMPANY_NOT_FOUND,
                 companyIdNotKnown,
             ),
         ).whenever(mockCompanyInfoService).getValidCompanyName(nonExistingCompanyId)
@@ -181,7 +179,7 @@ class CompanyRolesManagerTest {
                     "non-existing-company-id",
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -212,7 +210,7 @@ class CompanyRolesManagerTest {
                 )
             }
         verifyNoInteractions(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -229,45 +227,6 @@ class CompanyRolesManagerTest {
             .buildCompanyOwnershipAcceptanceExternalEmailAndSendCEMessage(
                 anyString(), anyString(), anyString(), anyString(),
             )
-    }
-
-    @Test
-    fun `check that an unauthenticated user is not considered owner or admin of any company`() {
-        doReturn(null).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
-
-        assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = CompanyRole::class)
-    fun `check that the different company roles pass or fail the authorization check for user lookup by email as appropriate`(
-        companyRole: CompanyRole,
-    ) {
-        val companyOwnerUserId = "user-id-of-company-owner"
-        doReturn(companyOwnerUserId).whenever(mockDatalandJwtAuthentication).userId
-        doReturn(mockDatalandJwtAuthentication).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
-        doReturn(
-            listOf(
-                CompanyRoleAssignmentEntity(
-                    companyRole = companyRole,
-                    companyId = "dummy-company-id",
-                    userId = companyOwnerUserId,
-                ),
-            ),
-        ).whenever(mockCompanyRoleAssignmentRepository)
-            .getCompanyRoleAssignmentsByProvidedParameters(
-                companyId = null,
-                userId = companyOwnerUserId,
-                companyRole = null,
-            )
-
-        if (companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin)) {
-            assertTrue(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
-        } else {
-            assertFalse(companyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany())
-        }
     }
 
     @Test
@@ -343,7 +302,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test
@@ -386,7 +345,7 @@ class CompanyRolesManagerTest {
                     userId = testUserId,
                 )
             }
-        assertEquals(companyNotFound, exception.summary)
+        assertEquals(COMPANY_NOT_FOUND, exception.summary)
     }
 
     @Test

@@ -373,10 +373,7 @@ export default defineComponent({
       try {
         const company = this.getCompanyInformation();
         const hasAtLeastOneIdentifier = Object.values(this.identifiers).some((it) => it.length > 0);
-        if (!hasAtLeastOneIdentifier) {
-          this.message = 'Please specify at least one company identifier.';
-          this.uploadSucceded = false;
-        } else {
+        if (hasAtLeastOneIdentifier) {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           const response = await companyDataControllerApi.postCompany(company);
@@ -386,6 +383,9 @@ export default defineComponent({
           this.companyAlternativeNames = new Array<string>();
           this.message = 'New company has the ID: ' + newCompanyId;
           this.uploadSucceded = true;
+        } else {
+          this.message = 'Please specify at least one company identifier.';
+          this.uploadSucceded = false;
         }
       } catch (error) {
         console.error(error);

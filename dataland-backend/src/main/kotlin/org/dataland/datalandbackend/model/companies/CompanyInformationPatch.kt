@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.validator.ValidFiscalYearEnd
+import org.dataland.datalandbackend.validator.ValidReportingPeriodShift
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
@@ -16,6 +18,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
+ * @param fiscalYearEnd fiscal year-end of the company
+ * @param reportingPeriodShift difference between fiscal year-end and reporting period
  * @param sector in which the company operates (e.g. Financials)
  * @param sectorCodeWz classification according to the NACE compliant WZ method
  * @param identifiers under which the company is registered (LEI, PermID, ...)
@@ -65,6 +69,18 @@ data class CompanyInformationPatch(
     )
     val headquartersPostalCode: String? = null,
     @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.FISCAL_YEAR_END_EXAMPLE,
+    )
+    @field:ValidFiscalYearEnd
+    val fiscalYearEnd: String? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.REPORTING_PERIOD_SHIFT_EXAMPLE,
+    )
+    @field:ValidReportingPeriodShift
+    val reportingPeriodShift: Int? = null,
+    @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.SECTOR_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.SECTOR_EXAMPLE,
     )
@@ -75,8 +91,8 @@ data class CompanyInformationPatch(
     )
     val sectorCodeWz: String? = null,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.IDENTIFIERS_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_MAP_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.IDENTIFIER_MAP_EXAMPLE,
     )
     val identifiers: Map<IdentifierType, List<String>>? = null,
     @field:Schema(

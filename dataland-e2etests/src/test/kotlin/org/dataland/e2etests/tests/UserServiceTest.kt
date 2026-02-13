@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.GlobalAuth
@@ -8,6 +9,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.UserService
 import org.dataland.userService.openApiClient.model.EnrichedPortfolio
+import org.dataland.userService.openApiClient.model.NotificationFrequency
 import org.dataland.userService.openApiClient.model.PortfolioMonitoringPatch
 import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,10 +27,12 @@ class UserServiceTest {
     private fun createDummyPortfolioUpload(companyIds: Set<String>): PortfolioUpload =
         PortfolioUpload(
             portfolioName = "Test Portfolio ${UUID.randomUUID()}",
-            companyIds = companyIds,
+            identifiers = companyIds,
             isMonitored = false,
-            startingMonitoringPeriod = "",
             monitoredFrameworks = emptySet(),
+            notificationFrequency = NotificationFrequency.NoNotifications,
+            sharedUserIds = emptySet(),
+            timeWindowThreshold = null,
         )
 
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
@@ -128,16 +132,17 @@ class UserServiceTest {
     }
 
     @Test
-    fun `portfolio yields expected bulk requests after activating monitoring`() {
-        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val dummyReportingPeriod = "2024"
+    fun `portfolio yields no requests after activating monitoring`() {
+        val dummyCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifierFYEAndReportingShift().actualStoredCompany.companyId
         val portfolioUpload =
             PortfolioUpload(
                 portfolioName = "Test Portfolio ${UUID.randomUUID()}",
-                companyIds = setOf(dummyCompanyId),
+                identifiers = setOf(dummyCompanyId),
                 isMonitored = false,
-                startingMonitoringPeriod = null,
                 monitoredFrameworks = emptySet(),
+                notificationFrequency = NotificationFrequency.NoNotifications,
+                sharedUserIds = emptySet(),
+                timeWindowThreshold = null,
             )
 
         val portfolio =
@@ -148,7 +153,6 @@ class UserServiceTest {
         assertEquals(portfolioUpload.portfolioName, portfolio.portfolioName)
         assertEquals(false, portfolio.isMonitored)
         assertEquals(emptySet<String>(), portfolio.monitoredFrameworks)
-        assertEquals(null, portfolio.startingMonitoringPeriod)
 
         val portfolioId = portfolio.portfolioId
 
@@ -159,26 +163,29 @@ class UserServiceTest {
                         portfolioId,
                         PortfolioMonitoringPatch(
                             isMonitored = true,
-                            startingMonitoringPeriod = dummyReportingPeriod,
                             monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                            notificationFrequency = NotificationFrequency.NoNotifications,
+                            timeWindowThreshold = PortfolioMonitoringPatch.TimeWindowThreshold.Standard,
                         ),
                     )
                 }
             }
 
         assertTrue(patchedPortfolio.isMonitored)
-        assertEquals(dummyReportingPeriod, patchedPortfolio.startingMonitoringPeriod)
         assertEquals(setOf("sfdr", "eutaxonomy"), patchedPortfolio.monitoredFrameworks)
 
         val requests =
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 ApiAwait.waitForData {
-                    apiAccessor.requestControllerApi.getDataRequests(datalandCompanyId = dummyCompanyId)
+                    apiAccessor.enhancedRequestControllerApi.postRequestSearch(
+                        RequestSearchFilterString(
+                            companyId = dummyCompanyId,
+                        ),
+                    )
                 }
             }
 
-        assertEquals(3, requests.size)
+        assertEquals(0, requests.size)
         assertTrue(requests.all { it.userId == TechnicalUser.Admin.technicalUserId })
-        assertTrue(requests.all { it.reportingPeriod >= dummyReportingPeriod })
     }
 }

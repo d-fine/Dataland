@@ -38,6 +38,7 @@
             data-test="expiryDatePicker"
             inputId="icon"
             v-model="customDate"
+            :updateModelType="'date'"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             :minDate="minDate"
@@ -99,8 +100,8 @@ export default defineComponent({
     expiryTimeDays: null as null | number,
     expiryTimeDropdown: '',
     isExpiryDateValid: true,
-    minDate: new Date(new Date().getTime() + MS_PER_DAY),
-    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
+    minDate: new Date(Date.now() + MS_PER_DAY),
+    maxDate: new Date(Date.now() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
 
     customDateInMilliseconds: null as null | number,
     days: [
@@ -126,7 +127,7 @@ export default defineComponent({
           ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
       } else {
-        this.expiryTimeDays = parseInt(event.value);
+        this.expiryTimeDays = Number.parseInt(event.value);
       }
       this.isExpiryDateValid = true;
     },

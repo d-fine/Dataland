@@ -11,6 +11,7 @@ import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
+import org.dataland.datalandbatchmanager.service.PortfolioSharingUpdater
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
@@ -33,8 +34,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.net.ConnectException
+import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
@@ -48,7 +50,9 @@ class ProcessDataUpdatesTest {
     private val mockRelationshipExtractor = mock<RelationshipExtractor>()
     private val mockBackendActuatorApi = mock<BackendActuatorApi>()
     private val mockRequestPriorityUpdater = mock<RequestPriorityUpdater>()
-    private val mockCommunityActuatorApi = mock<CommunityActuatorApi>()
+    private val mockDataSourcingActuatorApi = mock<DataSourcingActuatorApi>()
+    private val mockPortfolioSharingUpdater = mock<PortfolioSharingUpdater>()
+    private val mockUserServiceActuatorApi = mock<UserServiceActuatorApi>()
     private val mockFile = mock<File>()
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
@@ -74,7 +78,9 @@ class ProcessDataUpdatesTest {
                 nothDataIngestorTest,
                 mockBackendActuatorApi,
                 mockRequestPriorityUpdater,
-                mockCommunityActuatorApi,
+                mockDataSourcingActuatorApi,
+                mockUserServiceActuatorApi,
+                mockPortfolioSharingUpdater,
                 allGleifCompaniesForceIngest = false,
                 allNorthDataCompaniesForceIngest = false,
                 allGleifCompaniesIngestFlagFilePath = flagFileGleif,
@@ -153,11 +159,11 @@ class ProcessDataUpdatesTest {
     }
 
     @Test
-    fun `waitForCommunityManager should stop on first successful health check`() {
-        whenever(mockCommunityActuatorApi.health()).thenReturn(Any())
+    fun `waitForDataSourcingService should stop on first successful health check`() {
+        whenever(mockDataSourcingActuatorApi.health()).thenReturn(Any())
         initProcessDataUpdates()
-        processDataUpdates.waitForCommunityManager()
-        verify(mockCommunityActuatorApi).health()
+        processDataUpdates.waitForDataSourcingService()
+        verify(mockDataSourcingActuatorApi).health()
     }
 
     @Test
@@ -224,6 +230,14 @@ class ProcessDataUpdatesTest {
                     it.formattedMessage.contains("deleted successfully")
             },
         )
+    }
+
+    @Test
+    fun `waitForUserService should stop on first successful health check`() {
+        whenever(mockUserServiceActuatorApi.health()).thenReturn(Any())
+        initProcessDataUpdates()
+        processDataUpdates.waitForUserService()
+        verify(mockUserServiceActuatorApi).health()
     }
 }
 

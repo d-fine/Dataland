@@ -155,7 +155,7 @@ class EurodatDataStore(
     /**
      * Select a data object from the eurodat storage by its dataId
      */
-    fun selectPrivateDataSet(
+    fun selectPrivateDataset(
         dataId: String,
         correlationId: String,
     ): String {

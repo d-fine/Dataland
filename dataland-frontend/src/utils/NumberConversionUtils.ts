@@ -25,7 +25,7 @@ export function formatBytesUserFriendly(numberOfBytes: number, precision: number
   const sizes = ['Bytes', 'KB', 'MB'];
   const i = Math.floor(Math.log(numberOfBytes) / Math.log(k));
 
-  return `${parseFloat((numberOfBytes / Math.pow(k, i)).toFixed(precision))} ${sizes[i]}`;
+  return `${Number.parseFloat((numberOfBytes / Math.pow(k, i)).toFixed(precision))} ${sizes[i]}`;
 }
 
 /**

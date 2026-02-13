@@ -15,6 +15,63 @@ import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRole
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
+/**
+ * Picks a reporting period to filter for in the date-picker.
+ * @param reportingPeriod to click on in the date-picker
+ */
+function clickOnReportingPeriod(reportingPeriod: string): void {
+  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+  cy.contains('span', reportingPeriod).should('exist').click();
+  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+}
+
+/**
+ * Builds a review queue element.
+ * @param dataId to include
+ * @param companyName to include
+ * @param companyId to include
+ * @param framework to include
+ * @param reportingPeriod to include
+ * @param timestamp to include
+ * @returns the element
+ */
+function buildReviewQueueElement(
+  dataId: string,
+  companyName: string,
+  companyId: string,
+  framework: string,
+  reportingPeriod: string,
+  timestamp: number = Date.now()
+): QaReviewResponse {
+  return {
+    dataId: dataId,
+    timestamp: timestamp,
+    companyName: companyName,
+    companyId: companyId,
+    framework: framework,
+    reportingPeriod: reportingPeriod,
+    qaStatus: QaStatus.Pending,
+  };
+}
+
+/**
+ * Types the input into the search bar
+ * @param input to type
+ */
+function typeIntoSearchBar(input: string): void {
+  cy.get(`input[data-test="companyNameSearchbar"]`).type(input);
+}
+
+/**
+ * Checks if the warning is there or is not there, based on the boolean passed to the function.
+ * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
+ */
+function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
+  cy.get('[data-test="companySearchBarWithMessage"]')
+    .contains('Please type at least 3 characters')
+    .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
+}
+
 describe('Component tests for the Quality Assurance page', () => {
   let LksgFixture: FixtureData<LksgData>;
   let mockDataMetaInfoForActiveDataset: DataMetaInformation;
@@ -24,7 +81,7 @@ describe('Component tests for the Quality Assurance page', () => {
       const preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       LksgFixture = getPreparedFixture('LkSG-date-2023-04-18', preparedLksgFixtures);
       cy.fixture('MetaInfoDataMocksForOneCompany.json').then((metaInfos: Array<DataMetaInformation>) => {
-        mockDataMetaInfoForActiveDataset = metaInfos[0];
+        mockDataMetaInfoForActiveDataset = metaInfos[0]!;
       });
     });
   });
@@ -56,45 +113,6 @@ describe('Component tests for the Quality Assurance page', () => {
   );
 
   /**
-   * Builds a review queue element.
-   * @param dataId to include
-   * @param companyName to include
-   * @param companyId to include
-   * @param framework to include
-   * @param reportingPeriod to include
-   * @param timestamp to include
-   * @returns the element
-   */
-  function buildReviewQueueElement(
-    dataId: string,
-    companyName: string,
-    companyId: string,
-    framework: string,
-    reportingPeriod: string,
-    timestamp: number = Date.now()
-  ): QaReviewResponse {
-    return {
-      dataId: dataId,
-      timestamp: timestamp,
-      companyName: companyName,
-      companyId: companyId,
-      framework: framework,
-      reportingPeriod: reportingPeriod,
-      qaStatus: QaStatus.Pending,
-    };
-  }
-
-  /**
-   * Picks a reporting period to filter for in the date-picker.
-   * @param reportingPeriod to click on in the date-picker
-   */
-  function clickOnReportingPeriod(reportingPeriod: string): void {
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-    cy.contains('span', reportingPeriod).should('exist').click();
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-  }
-
-  /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
    * are there.
    */
@@ -119,37 +137,19 @@ describe('Component tests for the Quality Assurance page', () => {
   }
 
   /**
+   * Checks if the search results for an empty company name search string are currently displayed or not,
+   * based on the boolean passed to the function.
+   * @param searchResultsExpectedToBeDisplayed decides whether the search results are expected to be displayed or not
+   */
+  function validateAllMockSearchResults(searchResultsExpectedToBeDisplayed: boolean): void {
+    cy.contains('td', `${dataIdAlpha}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
+    cy.contains('td', `${dataIdBeta}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
+  }
+
+  /**
    * Validates that no search is triggered if the company search term is too short and that a warning is show to users.
    */
   function validateNoSearchIfNotEnoughChars(): void {
-    /**
-     * Types the input into the search bar
-     * @param input to type
-     */
-    function typeIntoSearchBar(input: string): void {
-      cy.get(`input[data-test="companyNameSearchbar"]`).type(input);
-    }
-
-    /**
-     * Checks if the warning is there or is not there, based on the boolean passed to the function.
-     * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
-     */
-    function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
-      cy.get('[data-test="companySearchBarWithMessage"]')
-        .contains('Please type at least 3 characters')
-        .should(isWarningExpectedToExist ? 'exist' : 'not.exist');
-    }
-
-    /**
-     * Checks if the search results for an empty company name search string are currently displayed or not,
-     * based on the boolean passed to the function.
-     * @param searchResultsExpectedToBeDisplayed decides whether the search results are expected to be displayed or not
-     */
-    function validateAllMockSearchResults(searchResultsExpectedToBeDisplayed: boolean): void {
-      cy.contains('td', `${dataIdAlpha}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
-      cy.contains('td', `${dataIdBeta}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
-    }
-
     validateSearchStringWarning(false);
     validateAllMockSearchResults(true);
 

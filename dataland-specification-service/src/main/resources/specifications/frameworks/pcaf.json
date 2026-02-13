@@ -6,12 +6,12 @@
   "schema" : {
     "general" : {
       "general" : {
-        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
-        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+        "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "extendedDateFiscalYearEnd"
       },
       "company" : {
-        "mainPcafSector" : "customEnumPcafMainSector",
-        "companyExchangeStatus" : "customEnumCompanyExchangeStatus"
+        "mainPcafSector" : "extendedEnumPcafMainSector",
+        "companyExchangeStatus" : "extendedEnumCompanyExchangeStatus"
       }
     },
     "companyValue" : {
@@ -30,6 +30,24 @@
         "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes",
         "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
         "scope3GhgEmissionsInTonnes" : "extendedDecimalScope3GhgEmissionsInTonnes"
+      }
+    },
+    "companyValueEstimation" : {
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "extendedDecimalEstimatedMarketCapitalizationInEUR",
+        "bookValueOfDebtInEUR" : "extendedDecimalEstimatedBookValueOfDebtInEUR",
+        "minoritiesInterestInEUR" : "extendedDecimalEstimatedMinoritiesInterestInEUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityAndDebtInEUR" : "extendedDecimalEstimatedTotalEquityAndDebtInEUR"
+      }
+    },
+    "environmentalEstimation" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "extendedDecimalEstimatedScope1GhgEmissionsInTonnes",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalEstimatedScope2GhgEmissionsMarketBasedInTonnes",
+        "scope3GhgEmissionsInTonnes" : "extendedDecimalEstimatedScope3GhgEmissionsInTonnes"
       }
     }
   }

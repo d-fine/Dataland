@@ -23,7 +23,7 @@ data class QaReportMetaInformation(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val dataType: String,
     @field:JsonProperty(required = true)

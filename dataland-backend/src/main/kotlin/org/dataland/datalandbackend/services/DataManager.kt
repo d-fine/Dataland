@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
@@ -9,7 +8,9 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -20,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param companyQueryManager service for managing query regarding company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
@@ -33,7 +33,6 @@ class DataManager
     @Suppress("LongParameterList")
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val companyQueryManager: CompanyQueryManager,
         private val metaDataManager: DataMetaInformationManager,
         private val storageClient: StorageControllerApi,
@@ -103,7 +102,7 @@ class DataManager
          */
         fun selectPublicDatasetFromTemporaryStorage(dataId: String): String {
             val rawValue = selectRawPublicDatasetFromTemporaryStorage(dataId)
-            return objectMapper.writeValueAsString(rawValue)
+            return defaultObjectMapper.writeValueAsString(rawValue)
         }
 
         /**
@@ -147,7 +146,7 @@ class DataManager
                 "Storing data of type '${storableDataset.dataType}' for company ID '${storableDataset.companyId}'" +
                     " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
             )
-            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
+            storeDataInTemporaryStorage(dataId, defaultObjectMapper.writeValueAsString(storableDataset), correlationId)
             messageQueuePublications.publishDatasetUploadedMessage(dataId, bypassQa, correlationId)
         }
 
@@ -168,8 +167,12 @@ class DataManager
                 "Storing updated data of type '${storableDataset.dataType}' for company ID '${storableDataset.companyId}'" +
                     " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
             )
-            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
-            messageQueuePublications.publishDatasetMetaInfoPatchMessage(dataId, storableDataset.uploaderUserId, correlationId)
+            storeDataInTemporaryStorage(dataId, defaultObjectMapper.writeValueAsString(storableDataset), correlationId)
+            messageQueuePublications.publishDatasetMetaInfoPatchMessage(
+                dataId,
+                storableDataset.uploaderUserId,
+                correlationId,
+            )
         }
 
         /**
@@ -262,13 +265,13 @@ class DataManager
         }
 
         override fun getDatasetData(
-            dataDimensionsSet: Set<BasicDataDimensions>,
+            dataDimensionsSet: Set<BasicDatasetDimensions>,
             correlationId: String,
-        ): Map<BasicDataDimensions, String> =
+        ): Map<BasicDatasetDimensions, String> =
             dataDimensionsSet
                 .associateWith {
                     metaDataManager.getActiveDatasetIdByDataDimensions(it)?.let { dataId ->
-                        getPublicDataset(dataId, DataType.valueOf(it.dataType), correlationId).data
+                        getPublicDataset(dataId, DataType.valueOf(it.framework), correlationId).data
                     } ?: ""
                 }.filterNot { it.value.isEmpty() }
 
@@ -280,16 +283,20 @@ class DataManager
             requireNotNull(searchFilter.companyId) { "Company ID must be provided" }
             val metaInfos =
                 metaDataManager.searchDataMetaInfo(searchFilter).associateBy {
-                    BasicDataDimensions(companyId = it.company.companyId, dataType = it.dataType, reportingPeriod = it.reportingPeriod)
+                    BasicDataDimensions(
+                        companyId = it.company.companyId,
+                        dataType = it.dataType,
+                        reportingPeriod = it.reportingPeriod,
+                    )
                 }
             val authentication = DatalandAuthentication.fromContextOrNull()
 
             val mapOfDataDimensionsWithDataAsString =
                 getDatasetData(
                     metaInfos.values.filter { it.isDatasetViewableByUser(authentication) }.mapTo(mutableSetOf()) {
-                        BasicDataDimensions(
+                        BasicDatasetDimensions(
                             companyId = searchFilter.companyId,
-                            dataType = it.dataType,
+                            framework = it.dataType,
                             reportingPeriod = it.reportingPeriod,
                         )
                     },
@@ -299,8 +306,8 @@ class DataManager
                 logger.info("No dataset could be found using the search criteria. Correlation Id: $correlationId")
             }
 
-            return mapOfDataDimensionsWithDataAsString.mapNotNull { (dataDimension, dataString) ->
-                metaInfos[dataDimension]?.let { metaInfo ->
+            return mapOfDataDimensionsWithDataAsString.mapNotNull { (datasetDimensions, dataString) ->
+                metaInfos[datasetDimensions.toBasicDataDimensions()]?.let { metaInfo ->
                     PlainDataAndMetaInformation(
                         metaInfo = metaInfo.toApiModel(),
                         data = dataString,
@@ -308,4 +315,14 @@ class DataManager
                 }
             }
         }
+
+        @Transactional(readOnly = true)
+        override fun getLatestAvailableData(
+            companyId: String,
+            dataType: String,
+            correlationId: String,
+        ): Pair<String, String>? =
+            metaDataManager.getLatestAvailableDatasetMetaInformation(companyId, dataType)?.let {
+                Pair(it.reportingPeriod, getDatasetData(it.dataId, dataType, correlationId))
+            }
     }

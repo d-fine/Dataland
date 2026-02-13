@@ -5,7 +5,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("20.11.1")
+    version.set("24.9.0")
 }
 
 tasks.register("buildTheme") {

@@ -1,24 +1,140 @@
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
-import { KEYCLOAK_ROLE_PREMIUM_USER } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
+
+const userId = '9bba9b59-c1ab-48f2-be92-196c5ea83d5f';
+const companyId = '43bc3dab-a612-4b1b-9cd7-4e304c7ba580';
+const datalandMemberInheritedRoleMap = {
+  [companyId]: ['DatalandMember'],
+};
+
+interface ConfigurationParameters {
+  inheritedRoleMap: { [p: string]: string[] };
+  keycloakRoles: string[];
+  portfolioResponse: EnrichedPortfolio;
+}
+
+type TestMode = 'member' | 'admin';
+
+let nonMemberConfigurationParameters: ConfigurationParameters;
+let memberConfigurationParametersWithoutMonitoring: ConfigurationParameters;
+let memberConfigurationParametersWithMonitoring: ConfigurationParameters;
+let adminConfigurationParametersWithoutMonitoring: ConfigurationParameters;
+let adminConfigurationParametersWithMonitoring: ConfigurationParameters;
+let largePortfolioConfigurationParameters: ConfigurationParameters;
+
+/**
+ * Intercepts the API calls for inherited roles and portfolio download, mounts the PortfolioDetails component,
+ * and waits for the portfolio download to complete.
+ * @param configurationParameters parameters for configuring the test scenario
+ * @returns A Cypress.Chainable that resolves when the portfolio download is complete
+ */
+function interceptApiCallsAndMountAndWaitForDownload(
+  configurationParameters: ConfigurationParameters
+): Cypress.Chainable {
+  cy.intercept(`**/inherited-roles/${userId}`, configurationParameters.inheritedRoleMap).as('inheritedRolesRetrieved');
+  cy.intercept('**/users/portfolios/*/enriched-portfolio', configurationParameters.portfolioResponse).as(
+    'downloadComplete'
+  );
+
+  return (
+    cy
+      // @ts-ignore
+      .mountWithPlugins(PortfolioDetails, {
+        keycloak: minimalKeycloakMock({
+          userId: userId,
+          roles: configurationParameters.keycloakRoles,
+        }),
+        props: { portfolioId: configurationParameters.portfolioResponse.portfolioId },
+      })
+      .then(() => cy.wait('@downloadComplete'))
+  );
+}
+
+/**
+ * Gets the configuration parameters based on the test mode and monitoring status
+ * @param testMode whether the test is for Dataland members or admins
+ * @param isMonitored whether the test portfolio shall have monitoring activated
+ * @returns The appropriate configuration parameters for the test scenario
+ */
+function getTestModeConfigurationParameters(testMode: TestMode, isMonitored: boolean): ConfigurationParameters {
+  if (testMode === 'member') {
+    return isMonitored ? memberConfigurationParametersWithMonitoring : memberConfigurationParametersWithoutMonitoring;
+  } else {
+    return isMonitored ? adminConfigurationParametersWithMonitoring : adminConfigurationParametersWithoutMonitoring;
+  }
+}
 
 describe('Check the portfolio details view', function (): void {
-  let portfolioFixture: EnrichedPortfolio;
+  let portfolioFixtureWithoutMonitoring: EnrichedPortfolio;
+  let portfolioFixtureWithMonitoring: EnrichedPortfolio;
+  let largePortfolioFixture: EnrichedPortfolio;
+  let portfolioFixtureWithSharing: EnrichedPortfolio;
 
   before(function () {
-    cy.fixture('enrichedPortfolio.json').then(function (jsonContent) {
-      portfolioFixture = jsonContent as EnrichedPortfolio;
-    });
+    cy.fixture('enrichedPortfolio.json')
+      .then(function (jsonContent) {
+        portfolioFixtureWithoutMonitoring = {
+          ...(jsonContent as EnrichedPortfolio),
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: [] as unknown as Set<string>,
+        } as EnrichedPortfolio;
+      })
+      .then(() => {
+        nonMemberConfigurationParameters = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+        memberConfigurationParametersWithoutMonitoring = {
+          inheritedRoleMap: datalandMemberInheritedRoleMap,
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+        portfolioFixtureWithMonitoring = {
+          ...portfolioFixtureWithoutMonitoring,
+          isMonitored: true,
+          monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
+        } as EnrichedPortfolio;
+        memberConfigurationParametersWithMonitoring = {
+          inheritedRoleMap: datalandMemberInheritedRoleMap,
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: portfolioFixtureWithMonitoring,
+        };
+        adminConfigurationParametersWithoutMonitoring = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_ADMIN'],
+          portfolioResponse: portfolioFixtureWithoutMonitoring,
+        };
+
+        adminConfigurationParametersWithMonitoring = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_ADMIN'],
+          portfolioResponse: portfolioFixtureWithMonitoring,
+        };
+
+        portfolioFixtureWithSharing = {
+          ...portfolioFixtureWithoutMonitoring,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          sharedUserIds: ['user-1', 'user-2'] as unknown as Set<string>,
+        } as EnrichedPortfolio;
+      });
+    cy.fixture('largeEnrichedPortfolio.json')
+      .then(function (jsonContent) {
+        largePortfolioFixture = jsonContent as EnrichedPortfolio;
+      })
+      .then(() => {
+        largePortfolioConfigurationParameters = {
+          inheritedRoleMap: {},
+          keycloakRoles: ['ROLE_USER'],
+          portfolioResponse: largePortfolioFixture,
+        };
+      });
   });
 
   it('Check different frameworks', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
       const expectedFirstRow = [
         'Company Name',
         'Country',
@@ -65,96 +181,110 @@ describe('Check the portfolio details view', function (): void {
         checkHeader,
       ];
       const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
-      cy.wait('@downloadComplete').then(() => {
-        assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
-        assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
-      });
+      assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
+      assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
     });
   });
 
   it('Check sorting', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
-        checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
-        checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
-        checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
-      });
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
+      checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
+      checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
+      checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
     });
   });
 
   it('Check filter', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        checkFilter('first-child', 'companyNameFilter', 'b', 2);
-        checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
-        checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
-        checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
-        checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
-        checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
-        checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
-      });
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      checkFilter('first-child', 'companyNameFilter', 'b', 2);
+      checkFilter('nth-child(2)', 'countryFilter', 'Germany', 2);
+      checkFilter('nth-child(3)', 'sectorFilter', 'o', 2);
+      checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
+      checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
+      checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
+      checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
     });
   });
 
-  it('Check Monitoring Button for non premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({}),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
-        cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
-      });
+  it('Check Monitoring Button for non Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      cy.get('[data-test="monitor-portfolio"]').should('be.disabled').and('contain.text', 'ACTIVE MONITORING');
     });
   });
-  it('Check Monitoring Button and Not Monitored Tag for premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolioFixture).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({
-        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
-      }),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
+
+  const testModes = ['member' as TestMode, 'admin' as TestMode];
+
+  for (const testMode of testModes) {
+    it('Check Monitoring Button and Not Monitored Tag for Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, false);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
         cy.get('[data-test="monitor-portfolio"]').should('be.visible').and('contain.text', 'ACTIVE MONITORING');
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio not actively monitored');
       });
     });
-  });
-  it('Check Monitored Tag for premium user', function (): void {
-    cy.intercept('**/users/portfolios/*/enriched-portfolio', {
-      ...portfolioFixture,
-      isMonitored: true,
-      startingMonitoringPeiod: '2024',
-      monitoredFrameworks: new Set('sfdr'),
-    }).as('downloadComplete');
-    // @ts-ignore
-    cy.mountWithPlugins(PortfolioDetails, {
-      keycloak: minimalKeycloakMock({
-        roles: [KEYCLOAK_ROLE_PREMIUM_USER],
-      }),
-      props: { portfolioId: portfolioFixture.portfolioId },
-    }).then(() => {
-      cy.wait('@downloadComplete').then(() => {
+
+    it('Check Monitored Tag for Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, true);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
         cy.get('[data-test="is-monitored-tag"]')
           .should('be.visible')
           .and('contain.text', 'Portfolio actively monitored');
       });
+    });
+  }
+
+  it('Check Share Button for non Dataland member', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      cy.get('[data-test="share-portfolio"]').should('be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+      cy.get('[data-test="shared-users-tag"]').should('not.exist');
+    });
+  });
+
+  for (const testMode of testModes) {
+    it('Check Share Button and No Sharing Tag for not shared portfolio Dataland ' + testMode, function (): void {
+      const configurationParameters = getTestModeConfigurationParameters(testMode, false);
+
+      interceptApiCallsAndMountAndWaitForDownload(configurationParameters).then(() => {
+        cy.get('[data-test="share-portfolio"]').should('not.be.disabled').and('contain.text', 'SHARE PORTFOLIO');
+        cy.get('[data-test="shared-users-tag"]').should('not.exist');
+      });
+    });
+
+    it('Check Shared Users Tag for shared portfolio for Dataland ' + testMode, function (): void {
+      const configWithSharing = {
+        ...getTestModeConfigurationParameters(testMode, false),
+        portfolioResponse: portfolioFixtureWithSharing,
+      };
+
+      interceptApiCallsAndMountAndWaitForDownload(configWithSharing).then(() => {
+        cy.get('[data-test="shared-users-tag"]').should('be.visible').and('contain.text', 'Shared with 2 users');
+      });
+    });
+  }
+
+  it('Check pagination for small portfolios', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
+      cy.get('.p-datatable-paginator-bottom').should('not.exist');
+    });
+  });
+
+  it('Check pagination for large portfolios', function (): void {
+    interceptApiCallsAndMountAndWaitForDownload(largePortfolioConfigurationParameters).then(() => {
+      cy.get('.p-datatable-paginator-bottom').should('be.visible');
+      cy.get('table tr').should('have.length', MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1); // +1 for header row
+      cy.get('[data-pc-section="page"][aria-label="Page 2"]').click();
+      cy.get('table tr:first-child td:first-child').should(
+        'contain.text',
+        `Company ${MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE + 1}`
+      );
+      cy.get('table tr:first-child th:first-child [data-pc-section="sort"]').click();
+      cy.get('table tr:first-child td:first-child').should('contain.text', `Company 110`);
+      cy.get('[data-pc-section="page"][aria-label="Page 1"]').should('have.attr', 'data-p-active', 'true');
     });
   });
 });
@@ -226,7 +356,7 @@ function assertTable(tableSelector: string, expected: (string | number | undefin
     cy.wrap(row).within(() => {
       cy.get('th, td').each((cell, cellIndex) => {
         const element = cy.wrap(cell);
-        const comparator = expected[rowIndex][cellIndex];
+        const comparator = expected[rowIndex]![cellIndex];
         switch (typeof comparator) {
           case 'string':
           case 'number':

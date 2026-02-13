@@ -1,44 +1,52 @@
-import { type ApiClientProvider } from '@/services/ApiClients.ts';
-import { type CompanyInformation, IdentifierType } from '@clients/backend';
+import { type ApiClientProvider } from '@/services/ApiClients';
+import { type CompanyInformation, type CompanyIdAndName, IdentifierType } from '@clients/backend';
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import type Keycloak from 'keycloak-js';
+
+export interface CompanyInformationResult {
+  companyInformation: CompanyInformation | null;
+  parentCompany: CompanyIdAndName | null;
+}
 
 /**
- * Method to get the company information from the backend
- * @param companyId companyId
- * @param apiClientProvider the ApiClientProvider to use for the connection
+ * Gets company information and parent company information.
+ * @param companyId ID of Company
+ * @param apiClientProvider API Client Provider
+ * @param getKeycloakPromise Function for Keycloak Promise
  */
 export async function getCompanyInformation(
   companyId: string,
-  apiClientProvider: ApiClientProvider
-): Promise<CompanyInformation> {
-  const companyDataController = apiClientProvider.backendClients.companyDataController;
-  return (await companyDataController.getCompanyInfo(companyId)).data;
+  apiClientProvider: ApiClientProvider,
+  getKeycloakPromise: () => Promise<Keycloak>
+): Promise<CompanyInformationResult> {
+  let companyInformation: CompanyInformation | null = null;
+  let parentCompany: CompanyIdAndName | null = null;
+
+  try {
+    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
+    companyInformation = (await companyDataControllerApi.getCompanyInfo(companyId)).data;
+    if (companyInformation.parentCompanyLei) {
+      const parentCompanyIdAndName = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+        companyInformation.parentCompanyLei,
+        getKeycloakPromise(),
+        1
+      );
+
+      if (parentCompanyIdAndName.length > 0) {
+        parentCompany = parentCompanyIdAndName[0]!;
+      }
+    }
+  } catch (error) {
+    console.error(`Failed to fetch company information for ${companyId}`, error);
+    throw error;
+  }
+
+  return { companyInformation, parentCompany };
 }
 
 /**
- * Method to get the company name from the backend
- * @param companyId companyId
+ * Gets LEI to be displayed.
  */
-export async function getCompanyName(companyId: string, apiClientProvider: ApiClientProvider): Promise<string> {
-  const companyInformation = await getCompanyInformation(companyId, apiClientProvider);
-  return companyInformation.companyName;
-}
-
-/**
- * Get the id of the parent company. This function may throw an exception.
- * @param companyId the company whose parent shall be found
- * @param apiClientProvider the ApiClientProvider to use for the connection
- */
-export async function getParentCompanyId(
-  companyId: string,
-  apiClientProvider: ApiClientProvider
-): Promise<string | undefined> {
-  const companyInformation = await getCompanyInformation(companyId, apiClientProvider);
-  if (!companyInformation?.parentCompanyLei) return undefined;
-
-  return (
-    await apiClientProvider.backendClients.companyDataController.getCompanyIdByIdentifier(
-      IdentifierType.Lei,
-      companyInformation.parentCompanyLei
-    )
-  ).data.companyId;
+export function getDisplayLei(companyInformation: CompanyInformation | null): string {
+  return companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
 }

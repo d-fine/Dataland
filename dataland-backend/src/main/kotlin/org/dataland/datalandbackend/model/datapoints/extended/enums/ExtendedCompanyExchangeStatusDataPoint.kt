@@ -1,0 +1,19 @@
+package org.dataland.datalandbackend.model.datapoints.extended.enums
+
+import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.pcaf.model.general.company.PcafGeneralCompanyCompanyExchangeStatusOptions
+import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import org.dataland.datalandbackend.model.enums.data.QualityOptions
+
+/**
+ * --- API model ---
+ * "Listed/Unlisted"-exchange status of the company.
+ */
+data class ExtendedCompanyExchangeStatusDataPoint(
+    override val value: PcafGeneralCompanyCompanyExchangeStatusOptions? = null,
+    override val quality: QualityOptions? = null,
+    override val comment: String? = null,
+    @field:Valid
+    override val dataSource: ExtendedDocumentReference? = null,
+) : ExtendedDataPoint<PcafGeneralCompanyCompanyExchangeStatusOptions>

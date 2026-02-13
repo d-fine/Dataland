@@ -5,5 +5,5 @@ package org.dataland.datalanduserservice.model
  */
 interface Portfolio {
     val portfolioName: String
-    val companyIds: Set<String>
+    val identifiers: Set<String>
 }

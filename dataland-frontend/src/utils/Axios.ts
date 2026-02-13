@@ -23,7 +23,7 @@ export function getHeaderIfItIsASingleString(headers: RawAxiosResponseHeaders, h
  */
 export function getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
   const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, 'content-disposition')).split('.');
-  return contentDisposition[contentDisposition.length - 1] as DownloadableFileExtension;
+  return contentDisposition.at(-1) as DownloadableFileExtension;
 }
 
 /**

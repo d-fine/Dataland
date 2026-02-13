@@ -30,6 +30,8 @@
       "enablingActivity" : "YesNo",
       "transitionalActivity" : "YesNo"
     } ],
+    "quality" : "QualityOptions",
+    "comment" : "String",
     "dataSource" : {
       "page" : "String",
       "tagName" : "String",

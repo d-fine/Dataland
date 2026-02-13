@@ -69,14 +69,14 @@
         "adaptation" : 0.2
       },
       "taxonomyAlignedShareNumeratorNAndG428" : {
-        "mitigationAndAdaptation" : 1,
-        "mitigation" : null,
-        "adaptation" : null
+        "mitigationAndAdaptation" : 1.2,
+        "mitigation" : 0.4,
+        "adaptation" : 0.2
       },
       "taxonomyAlignedShareNumeratorNAndG429" : {
-        "mitigationAndAdaptation" : null,
-        "mitigation" : null,
-        "adaptation" : null
+        "mitigationAndAdaptation" : 1.2,
+        "mitigation" : 0.4,
+        "adaptation" : 0.2
       },
       "taxonomyAlignedShareNumeratorNAndG430" : {
         "mitigationAndAdaptation" : 0.3,
@@ -103,7 +103,7 @@
     "comment" : "",
     "dataSource" : {
       "page" : "125",
-      "tagName" : null,
+      "tagName" : "date",
       "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
       "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
       "publicationDate" : "2025-03-02"

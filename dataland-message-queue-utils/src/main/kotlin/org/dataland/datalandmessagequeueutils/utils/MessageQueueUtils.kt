@@ -1,7 +1,7 @@
 package org.dataland.datalandmessagequeueutils.utils
 
 import com.fasterxml.jackson.core.JacksonException
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.json.JSONObject
 import java.util.UUID
@@ -43,12 +43,9 @@ object MessageQueueUtils {
      * Reads the json payload message received from the queue into the generic T type.
      * If a jackson exception is thrown, it is caught and rethrown as MessageQueueRejectException.
      */
-    inline fun <reified T> readMessagePayload(
-        jsonString: String,
-        objectMapper: ObjectMapper,
-    ): T {
+    inline fun <reified T> readMessagePayload(jsonString: String): T {
         try {
-            return objectMapper.readValue(jsonString, T::class.java)
+            return defaultObjectMapper.readValue(jsonString, T::class.java)
         } catch (e: JacksonException) {
             throw MessageQueueRejectException("Failed to parse json into ${T::class.qualifiedName}, json: $jsonString, exception: $e\"")
         }

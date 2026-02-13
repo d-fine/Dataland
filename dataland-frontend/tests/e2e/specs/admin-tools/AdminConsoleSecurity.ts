@@ -1,21 +1,21 @@
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 
-describe('As a user I expect the admin console only to be reachable using admin-proxy and not from remote', (): void => {
-  /**
-   * Verifies that an error page is shown when navigating to the provided url
-   * @param url the url to navigate to expecting an error
-   */
-  function checkThatUrlResolvesToErrorPage(url: string): void {
-    cy.visitAndCheckExternalAdminPage({
-      url: url,
-      elementSelector: 'h2',
-      containsText: 'Sorry an error occurred!',
-      urlShouldInclude: 'nocontent',
-    });
-  }
+/**
+ * Verifies that an error page is shown when navigating to the provided url
+ * @param url the url to navigate to expecting an error
+ */
+function checkThatUrlResolvesToErrorPage(url: string): void {
+  cy.visitAndCheckExternalAdminPage({
+    url: url,
+    elementSelector: 'h2',
+    containsText: 'Sorry an error occurred!',
+    urlShouldInclude: 'nocontent',
+  });
+}
 
+describe('As a user I expect the admin console only to be reachable using admin-proxy and not from remote', (): void => {
   it(`Test Admin Console not reachable from remote`, () => {
-    checkThatUrlResolvesToErrorPage('/keycloak/admin');
+    checkThatUrlResolvesToErrorPage('/keycloak/admin/master/console/');
   });
 
   it(`Master Realm not reachable from remote`, () => {
@@ -24,14 +24,14 @@ describe('As a user I expect the admin console only to be reachable using admin-
 
   it(`Test Admin Console is reachable via dataland-admin`, () => {
     cy.visitAndCheckExternalAdminPage({
-      url: 'http://dataland-admin:6789/keycloak/admin',
+      url: 'http://dataland-admin:6789/keycloak/admin/master/console/',
       interceptPattern: '**/keycloak/**',
       elementSelector: 'h1',
       containsText: 'Sign in to your account',
       urlShouldInclude: 'realms/master',
     });
-    cy.get('#username').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN'), { force: true });
-    cy.get('#password').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN_PASSWORD'), { force: true });
+    cy.get('#username').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME'), { force: true });
+    cy.get('#password').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD'), { force: true });
     cy.get('#kc-login').should('exist').click();
     cy.get('h1').should('exist').should('contain', 'master realm');
   });

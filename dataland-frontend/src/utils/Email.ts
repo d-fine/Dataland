@@ -11,7 +11,7 @@ export function openEmailClient(card?: Card): void {
     const body = card?.text ?? '';
 
     if (email && subject && body) {
-      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      globalThis.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
   }
 }

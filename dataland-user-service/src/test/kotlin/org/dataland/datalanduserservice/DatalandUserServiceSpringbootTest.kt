@@ -4,11 +4,12 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
-import org.dataland.datalanduserservice.service.PortfolioBulkDataRequestService
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -19,14 +20,11 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
-import org.mockito.kotlin.check
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -54,10 +52,7 @@ class DatalandUserServiceSpringbootTest
         private val portfolioApi: PortfolioApi,
     ) {
         @MockitoBean
-        private val mockKeycloakUserService = mock<KeycloakUserService>()
-
-        @MockitoBean
-        private val mockPortfolioBulkDataRequestService = mock<PortfolioBulkDataRequestService>()
+        private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
 
         @MockitoBean
         private val mockCompanyDataController = mock<CompanyDataControllerApi>()
@@ -71,35 +66,35 @@ class DatalandUserServiceSpringbootTest
         private val validCompanyId2 = "valid-company-id-2"
         private val invalidCompanyId = "invalid-company-id"
         private val isMonitored = false
-        private val dummyStartingMonitoringPeriod = "2023"
         private val dummyMonitoredFrameworks = setOf("sfdr", "eutaxonomy")
 
         private val dummyPortfolioUpload1 =
             PortfolioUpload(
                 portfolioName = "Test Portfolio",
-                companyIds = setOf(validCompanyId1, validCompanyId2),
+                identifiers = setOf(validCompanyId1, validCompanyId2),
                 isMonitored,
-                dummyStartingMonitoringPeriod,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
+                sharedUserIds = setOf(userId),
             )
 
         private val dummyPortfolioUpload2 =
             PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
-                companyIds = setOf(validCompanyId1),
+                identifiers = setOf(validCompanyId1),
                 isMonitored,
-                dummyStartingMonitoringPeriod,
                 dummyMonitoredFrameworks,
+                NotificationFrequency.Weekly,
+                sharedUserIds = setOf(userId),
             )
 
         @BeforeEach
         fun setup() {
-            reset(mockCompanyDataController, mockSecurityContext, mockKeycloakUserService)
+            reset(mockCompanyDataController, mockSecurityContext, mockInheritedRolesControllerApi)
             this.resetSecurityContext()
 
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId1)
             doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId2)
-            doNothing().whenever(mockPortfolioBulkDataRequestService).publishBulkDataRequestMessageIfMonitored(any())
             doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
                 .whenever(mockCompanyDataController)
                 .isCompanyIdValid(invalidCompanyId)
@@ -147,12 +142,13 @@ class DatalandUserServiceSpringbootTest
                 assertEquals(dummyPortfolioUpload2.portfolioName, portfolioResponse.portfolioName)
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
-                assertEquals(dummyPortfolioUpload2.companyIds, portfolioResponse.companyIds)
+                assertEquals(dummyPortfolioUpload2.identifiers, portfolioResponse.identifiers)
+                assertEquals(dummyPortfolioUpload2.sharedUserIds, portfolioResponse.sharedUserIds)
             }
 
             @Test
             fun `test that patching monitoring of a portfolio updates monitoring fields correctly`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
+                resetSecurityContext(DatalandRealmRole.ROLE_ADMIN)
 
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
@@ -160,8 +156,9 @@ class DatalandUserServiceSpringbootTest
                 val portfolioMonitoringPatch =
                     PortfolioMonitoringPatch(
                         isMonitored = true,
-                        startingMonitoringPeriod = "2024",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
+                        timeWindowThreshold = TimeWindowThreshold.Standard,
                     )
                 val patchedPortfolio =
                     assertDoesNotThrow {
@@ -173,38 +170,10 @@ class DatalandUserServiceSpringbootTest
 
                 assertEquals(originalPortfolioResponse.portfolioId, patchedPortfolio.portfolioId)
                 assertTrue(patchedPortfolio.isMonitored)
-                assertEquals(portfolioMonitoringPatch.startingMonitoringPeriod, patchedPortfolio.startingMonitoringPeriod)
                 assertEquals(portfolioMonitoringPatch.monitoredFrameworks, patchedPortfolio.monitoredFrameworks)
+                assertEquals(portfolioMonitoringPatch.timeWindowThreshold, patchedPortfolio.timeWindowThreshold)
                 assertEquals(originalPortfolioResponse.creationTimestamp, patchedPortfolio.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < patchedPortfolio.lastUpdateTimestamp)
-            }
-
-            @Test
-            fun `test that patching monitoring triggers community manager bulk data request`() {
-                resetSecurityContext(DatalandRealmRole.ROLE_PREMIUM_USER)
-                val originalPortfolioResponse =
-                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
-
-                val portfolioMonitoringPatch =
-                    PortfolioMonitoringPatch(
-                        isMonitored = true,
-                        startingMonitoringPeriod = "2020",
-                        monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
-                    )
-
-                assertDoesNotThrow {
-                    portfolioApi.patchMonitoring(originalPortfolioResponse.portfolioId, portfolioMonitoringPatch)
-                }
-
-                verify(mockPortfolioBulkDataRequestService)
-                    .publishBulkDataRequestMessageIfMonitored(
-                        check {
-                            assertEquals(originalPortfolioResponse.portfolioId, it.portfolioId)
-                            assertTrue(it.isMonitored)
-                            assertEquals("2020", it.startingMonitoringPeriod)
-                            assertEquals(setOf("sfdr", "eutaxonomy"), it.monitoredFrameworks)
-                        },
-                    )
             }
 
             @Test
@@ -229,7 +198,7 @@ class DatalandUserServiceSpringbootTest
 
             @Test
             fun `test that posting portfolio with invalid companyId throws ClientException`() {
-                val portfolio = dummyPortfolioUpload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
+                val portfolio = dummyPortfolioUpload1.copy(identifiers = setOf(validCompanyId1, invalidCompanyId))
 
                 assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
             }
@@ -238,14 +207,17 @@ class DatalandUserServiceSpringbootTest
             fun `test that patching portfolio with unauthorized user throws ClientException`() {
                 resetSecurityContext(DatalandRealmRole.ROLE_USER)
 
+                doReturn(emptyMap<String, List<String>>()).whenever(mockInheritedRolesControllerApi).getInheritedRoles(userId)
+
                 val originalPortfolioResponse =
                     assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
 
                 val portfolioMonitoringPatch =
                     PortfolioMonitoringPatch(
                         isMonitored = true,
-                        startingMonitoringPeriod = "2024",
                         monitoredFrameworks = setOf("sfdr", "eutaxonomy"),
+                        NotificationFrequency.Weekly,
+                        timeWindowThreshold = TimeWindowThreshold.Standard,
                     )
 
                 assertThrows<AuthorizationDeniedException> {

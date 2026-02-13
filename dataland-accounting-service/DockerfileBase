@@ -1,0 +1,4 @@
+FROM scratch AS builder
+
+WORKDIR /app
+COPY ./dataland-accounting-service/build/libs/*.jar ./dataland-accounting-service/build/libs/

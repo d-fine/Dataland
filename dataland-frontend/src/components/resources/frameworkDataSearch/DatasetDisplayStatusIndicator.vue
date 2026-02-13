@@ -7,10 +7,10 @@
   >
     <span class="flex-1 text-center">{{ warningMessage }}</span>
     <PrimeButton
-      v-if="existsAcceptedVersion && linkToDataSet"
+      v-if="existsAcceptedVersion && linkToDataset"
       :label="buttonLabel"
       icon="pi pi-stopwatch"
-      @click="linkToDataSet()"
+      @click="linkToDataset()"
       data-test="datasetDisplayStatusLink"
     />
   </div>
@@ -42,7 +42,7 @@ export default defineComponent({
     /**
      * Link to the dataset based on its status.
      */
-    linkToDataSet() {
+    linkToDataset() {
       if (!this.linkURL) return;
       void router.push(this.linkURL);
     },

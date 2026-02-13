@@ -103,7 +103,7 @@ export default defineComponent({
 
     checkboxValue(newArr: string[]) {
       if (newArr.length > 1) {
-        const last = newArr[newArr.length - 1];
+        const last = newArr.at(-1);
         this.checkboxValue = [last];
         this.yesNoValue = last;
       } else if (newArr.length === 1) {

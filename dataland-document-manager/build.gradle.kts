@@ -137,14 +137,76 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
 }
 
+tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the internal storage service."
+    group = "clients"
+    val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
+    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/internalstorage")
+            .get()
+            .toString(),
+    )
+    packageName.set(internalStorageClientDestinationPackage)
+    modelPackage.set("$internalStorageClientDestinationPackage.model")
+    apiPackage.set("$internalStorageClientDestinationPackage.api")
+    generatorName.set("kotlin")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
+tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the qa service."
+    group = "clients"
+    val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
+    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/qaservice")
+            .get()
+            .toString(),
+    )
+    packageName.set(qaServiceClientDestinationPackage)
+    modelPackage.set("$qaServiceClientDestinationPackage.model")
+    apiPackage.set("$qaServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateCommunityManagerClient")
+    dependsOn("generateInternalStorageClient")
+    dependsOn("generateQaServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -159,6 +221,8 @@ sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/communitymanager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/internalstorage/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/qaservice/src/main/kotlin"))
 }
 
 ktlint {
@@ -186,9 +250,4 @@ jacoco {
 
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }

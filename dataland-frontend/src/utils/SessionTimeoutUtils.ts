@@ -1,5 +1,5 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
-import { loginAndRedirectToPortfolioPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import { loginAndRedirectToRedirectPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 
@@ -31,8 +31,6 @@ export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
       useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
     }
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -47,8 +45,8 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): number {
-  const functionIdOfSetInterval = window.setInterval(() => {
-    const currentTimestampInMs = new Date().getTime();
+  const functionIdOfSetInterval = globalThis.setInterval(() => {
+    const currentTimestampInMs = Date.now();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, '');
@@ -66,14 +64,14 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
  * @returns a boolean to express if the timestamp has already been reached or not
  */
 export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
-  const currentTimestamp = new Date().getTime();
+  const currentTimestamp = Date.now();
   const refreshTokenExpiryTimestampInMs = useSharedSessionStateStore().refreshTokenExpiryTimestampInMs;
   if (refreshTokenExpiryTimestampInMs) {
     return (
       currentTimestamp + minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck > refreshTokenExpiryTimestampInMs
     );
   } else {
-    throw Error(
+    throw new Error(
       'No expiry timestamp for the current refresh token could be found in the store. ' +
         'This is not acceptable for running Dataland.'
     );
@@ -94,7 +92,7 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   After the grace time, you will be redirected to the usual Keycloak login page.
    */
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-    void loginAndRedirectToPortfolioPage(keycloak);
+    void loginAndRedirectToRedirectPage(keycloak);
   } else {
     void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }

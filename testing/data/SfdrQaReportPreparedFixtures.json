@@ -2,34 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Kirkland",
-			"headquartersPostalCode": "76207",
-			"sector": "markets",
+			"headquarters": "East Modesta",
+			"headquartersPostalCode": "02285-9526",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"HHrIs4SaUVoRFWCU2QJ4"
+				],
 				"Isin": [
-					"I9RUsovUXEmT"
+					"dOZtChBLeDu2"
 				],
-				"PermId": [
-					"K74wC4ngXt"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"nkvcfaLG1"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KH",
+			"countryCode": "KY",
 			"companyContactDetails": [
-				"Rick.Tremblay93@example.com",
-				"Helmer88@example.com",
-				"Adelia_Gutmann91@example.com",
-				"Wayne28@example.com"
+				"Walker5@example.com",
+				"Abraham.Weimann14@example.com",
+				"Mercedes_Kerluke-Swaniawski71@example.com"
 			],
-			"companyAlternativeNames": [
-				"Okuneva - Ritchie"
-			],
-			"companyLegalForm": null,
-			"website": "https://mindless-hydrolyse.biz",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://low-brief.net/",
+			"fiscalYearEnd": "23-Sep",
 			"isTeaserCompany": false
 		},
 		"t": {

@@ -136,9 +136,9 @@ class DataExportUtils private constructor() {
                     .map { it.key }
                     .toSet()
 
-            csvData.forEach { dataSet ->
+            csvData.forEach { dataset ->
                 nonEmptyFields.forEach { headerField ->
-                    dataSet.getOrPut(headerField) { "" }
+                    dataset.getOrPut(headerField) { "" }
                 }
             }
 

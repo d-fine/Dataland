@@ -13,7 +13,7 @@ export function getBasePublicFrameworkDefinition(
 ): BasePublicFrameworkDefinition<object> | undefined {
   for (const key in PublicFrameworkDefinitions) {
     const frameworkDefinition = PublicFrameworkDefinitions[key];
-    if (frameworkDefinition.identifier === identifier) {
+    if (frameworkDefinition?.identifier === identifier) {
       return frameworkDefinition;
     }
   }

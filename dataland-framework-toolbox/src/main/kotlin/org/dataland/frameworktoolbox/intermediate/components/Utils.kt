@@ -22,6 +22,8 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
+        uploadComponentName = component.getUploadComponentName(),
+        dataPointTypeId = component.dataPointTypeId ?: "Framework specification not compiled by the Framework Toolbox",
     )
 }
 
@@ -30,7 +32,6 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  */
 fun UploadCategoryBuilder.addStandardUploadConfigCell(
     component: ComponentBase,
-    uploadComponentName: String,
     frameworkUploadOptions: FrameworkUploadOptions? = null,
     unit: String? = null,
     validation: String? = null,
@@ -45,14 +46,14 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         unit = unit,
         required = component.isRequired,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
-        uploadComponentName = uploadComponentName,
+        uploadComponentName = component.getUploadComponentName(),
         frameworkUploadOptions = frameworkUploadOptions,
         validation = validation,
     )
 }
 
 /**
- * Asserts that a component-bases document-support is in the set of  pre-defined values.
+ * Asserts that a component-bases document-support is in the set of pre-defined values.
  * Used to ensure a unified error-message across components
  */
 fun ComponentBase.requireDocumentSupportIn(allowedValues: Set<DocumentSupport>) {

@@ -17,7 +17,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.method.annotation.HandlerMethodValidationException
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.lang.StringBuilder
 
 /**
@@ -88,6 +90,21 @@ class KnownErrorControllerAdvice(
                 errorType = "route-not-found",
                 summary = "Route not found",
                 message = "The requested route ${ex.requestURL} could not be located",
+                httpStatus = HttpStatus.NOT_FOUND,
+            ),
+            ex,
+        )
+
+    /**
+     * Handles NoResourceFoundException errors (another kind of 404 errors).
+     */
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(ex: NoResourceFoundException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
+            ErrorDetails(
+                errorType = "no-resource-found",
+                summary = "Resource not found",
+                message = "The requested resource could not be located",
                 httpStatus = HttpStatus.NOT_FOUND,
             ),
             ex,
@@ -180,6 +197,40 @@ class KnownErrorControllerAdvice(
                 errorType = "bad-datetime-format",
                 summary = "Invalid DateTime format",
                 message = message.toString(),
+                httpStatus = HttpStatus.BAD_REQUEST,
+            ),
+            ex,
+        )
+    }
+
+    /**
+     * Handles MethodArgumentTypeMismatchException. These occur whenever a parameter cannot be parsed to the expected type
+     * (e.g., if a string is passed for an integer parameter or if an invalid enum value is passed).
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun handleMethodArgumentTypeMismatch(ex: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponse> {
+        val value = ex.value?.toString() ?: "null"
+        val requiredType = ex.requiredType
+        val paramName = ex.name
+
+        val message =
+            if (requiredType?.isEnum == true) {
+                val allowedValues =
+                    requiredType.enumConstants.joinToString(", ") { (it as Enum<*>).name }
+
+                "Invalid value '$value' for parameter '$paramName'. " +
+                    "Expected one of: $allowedValues."
+            } else {
+                val expectedType = requiredType?.simpleName ?: "unknown type"
+                "Invalid value '$value' for parameter '$paramName'. " +
+                    "Expected type: $expectedType."
+            }
+
+        return prepareResponse(
+            ErrorDetails(
+                errorType = "invalid-input",
+                summary = "Invalid parameter",
+                message = message,
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,

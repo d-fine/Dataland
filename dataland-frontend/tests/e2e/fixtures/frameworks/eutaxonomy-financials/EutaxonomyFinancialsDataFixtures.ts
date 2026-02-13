@@ -2,7 +2,7 @@
 import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
-import { EutaxonomyFinancialsGenerator } from '@e2e/fixtures/frameworks/eutaxonomy-financials/EutaxonomyFinancialsGenerator';
+import { EutaxonomyFinancialsGenerator } from '@e2e/fixtures/frameworks/eutaxonomy-financials/EutaxonomyFinancialsGenerator.ts';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import {
   EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions,

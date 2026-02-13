@@ -1,7 +1,6 @@
 import { type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
 import { DataMetaInformationGenerator } from '@e2e/fixtures/data_meta_information/DataMetaInformationFixtures';
 import { faker } from '@faker-js/faker';
-import { range } from '@/utils/ArrayUtils';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
@@ -31,10 +30,21 @@ export function generateMetaInfoDataForOneCompany(): DataMetaInformation[] {
     listOfMetaInfo.push(metaInfo);
   }
 
-  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyFinancials));
-  range(4).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyNonFinancials));
-  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Lksg));
-  range(1).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Sfdr));
+  for (let i = 0; i < 2; i++) {
+    generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyFinancials);
+  }
+
+  for (let i = 0; i < 4; i++) {
+    generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyNonFinancials);
+  }
+
+  for (let i = 0; i < 2; i++) {
+    generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Lksg);
+  }
+
+  for (let i = 0; i < 1; i++) {
+    generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Sfdr);
+  }
 
   return listOfMetaInfo;
 }
@@ -48,11 +58,11 @@ export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
   metaInfoDataForOneCompany: DataMetaInformation[]
 ): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
-  [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
+  for (const dataType of [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg]) {
     holdingObject[dataType] = metaInfoDataForOneCompany
       .filter((metaInfo) => metaInfo.dataType == dataType)
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
-  });
+  }
   return holdingObject;
 }
 

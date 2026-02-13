@@ -15,10 +15,10 @@ describe('Component tests for the ChooseFrameworkForDataUpload page', () => {
     },
   });
 
-  it('Unit tests for getMetaInfoAboutAllDataSetsForCurrentCompany', () => {
+  it('Unit tests for getMetaInfoAboutAllDatasetsForCurrentCompany', () => {
     const dataMetaInfo = { dataType: DataTypeEnum.Lksg, uploadTime: 0, reportingPeriod: '2023' } as DataMetaInformation;
     cy.intercept('**/api/metadata*', { statusCode: 200, body: [dataMetaInfo] }).then(() => {
-      void (wrapper.vm.getMetaInfoAboutAllDataSetsForCurrentCompany as () => Promise<void>)().then(() => {
+      void (wrapper.vm.getMetaInfoAboutAllDatasetsForCurrentCompany as () => Promise<void>)().then(() => {
         expect(wrapper.vm.mapOfDataTypeToListOfDataMetaInfo).to.deep.equal(
           new Map([[DataTypeEnum.Lksg, [dataMetaInfo]]])
         );

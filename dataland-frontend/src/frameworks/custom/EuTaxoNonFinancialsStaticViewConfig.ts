@@ -1,0 +1,1863 @@
+import { type EutaxonomyNonFinancialsData } from '@clients/backend';
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration.ts';
+import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer.ts';
+import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory.ts';
+import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints.ts';
+import { formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable } from '@/components/resources/dataTable/conversion/EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts';
+import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory.ts';
+import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory.ts';
+import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory.ts';
+import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory.ts';
+import {
+  formatAssuranceProviderForDataTable,
+  formatAssuranceForDataTable,
+} from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory.ts';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory.ts';
+import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils.ts';
+export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
+  {
+    type: 'section',
+    label: 'General',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'cell',
+        label: 'Fiscal Year Deviation',
+        explanation: 'Does the fiscal year deviate from the calendar year?',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            ((): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                Deviation: 'Deviation',
+                NoDeviation: 'No Deviation',
+              };
+              return formatStringForDatatable(
+                dataset.general?.fiscalYearDeviation?.value
+                  ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation?.value, mappings)
+                  : ''
+              );
+            })(),
+            'Fiscal Year Deviation',
+            dataset.general?.fiscalYearDeviation
+          ),
+        uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumFiscalYearDeviation',
+      },
+      {
+        type: 'cell',
+        label: 'Fiscal Year End',
+        explanation: 'The date the fiscal year ends.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatStringForDatatable(dataset.general?.fiscalYearEnd?.value),
+            'Fiscal Year End',
+            dataset.general?.fiscalYearEnd
+          ),
+        uploadComponentName: 'DateExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDateFiscalYearEnd',
+      },
+      {
+        type: 'cell',
+        label: 'Scope Of Entities',
+        explanation: 'Are all Group legal entities covered in the reports?',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value),
+            'Scope Of Entities',
+            dataset.general?.scopeOfEntities
+          ),
+        uploadComponentName: 'YesNoNaExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoNaScopeOfEntities',
+      },
+      {
+        type: 'cell',
+        label: 'Is NFRD mandatory?',
+        explanation: 'Is the NFRD mandatory for your company?',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.nfrdMandatory?.value),
+            'Is NFRD mandatory?',
+            dataset.general?.nfrdMandatory
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoIsNfrdMandatory',
+      },
+      {
+        type: 'cell',
+        label: 'EU Taxonomy Activity Level Reporting',
+        explanation: 'Activity level disclosure',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting?.value),
+            'EU Taxonomy Activity Level Reporting',
+            dataset.general?.euTaxonomyActivityLevelReporting
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoEuTaxonomyActivityLevelReporting',
+      },
+      {
+        type: 'cell',
+        label: 'Assurance',
+        explanation: 'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
+      },
+      {
+        type: 'cell',
+        label: 'Assurance Provider',
+        explanation: 'Provider of the Assurance',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatAssuranceProviderForDataTable(dataset.general?.assurance),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'assurance',
+      },
+      {
+        type: 'cell',
+        label: 'Number of Employees',
+        explanation:
+          'Total Number of Employees (including temporary workers with assignment duration longer than 6 months)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatNumberForDatatable(dataset.general?.numberOfEmployees?.value, ''),
+            'Number of Employees',
+            dataset.general?.numberOfEmployees
+          ),
+        uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalNumberOfEmployees',
+      },
+      {
+        type: 'cell',
+        label: 'UN Global Compact Principles Compliance Policy',
+        explanation:
+          'Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.unGlobalCompactPrinciplesCompliancePolicy?.value),
+            'UN Global Compact Principles Compliance Policy',
+            dataset.general?.unGlobalCompactPrinciplesCompliancePolicy
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy',
+      },
+      {
+        type: 'cell',
+        label: 'OECD Guidelines for Multinational Enterprises Compliance Policy',
+        explanation:
+          'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(
+              dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy?.value
+            ),
+            'OECD Guidelines for Multinational Enterprises Compliance Policy',
+            dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy',
+      },
+      {
+        type: 'cell',
+        label: 'ILO Core Labour Standards',
+        explanation: 'Does the company abide by the ILO Core Labour Standards?',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.iloCoreLabourStandards?.value),
+            'ILO Core Labour Standards',
+            dataset.general?.iloCoreLabourStandards
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoIloCoreLabourStandards',
+      },
+      {
+        type: 'cell',
+        label: 'Human Rights Due Diligence',
+        explanation:
+          'Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.humanRightsDueDiligence?.value),
+            'Human Rights Due Diligence',
+            dataset.general?.humanRightsDueDiligence
+          ),
+        uploadComponentName: 'YesNoExtendedDataPointFormField',
+        dataPointTypeId: 'extendedEnumYesNoHumanRightsDueDiligence',
+      },
+    ],
+    labelBadgeColor: 'orange',
+  },
+  {
+    type: 'section',
+    label: 'Revenue',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'cell',
+        label: 'Total Amount',
+        explanation: 'Total revenue per annum',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(dataset.revenue?.totalAmount, 'Total Amount'),
+        uploadComponentName: 'CurrencyDataPointFormField',
+        dataPointTypeId: 'extendedCurrencyTotalAmount',
+      },
+      {
+        type: 'section',
+        label: 'Non-Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.revenue?.nonEligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.revenue?.nonEligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalRevenueNonEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyRevenueNonEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.revenue?.eligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.revenue?.eligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalRevenueEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.revenue?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyRevenueEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Non-Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the revenue that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.revenue?.nonAlignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.revenue?.nonAlignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalRevenueNonAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the revenue that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.revenue?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyRevenueNonAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Non-Aligned Activities',
+        explanation: 'Absolute value and share of the revenue per activity that is not taxonomy-aligned but eligible',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatNonAlignedActivitiesForDataTable(
+            dataset.revenue?.nonAlignedActivities,
+            'Non-Aligned Activities',
+            'revenue'
+          ),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentRevenueNonAlignedActivities',
+      },
+      {
+        type: 'section',
+        label: 'Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.revenue?.alignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.revenue?.alignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalRevenueAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.revenue?.alignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyRevenueAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+        explanation:
+          'Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Aligned Activities',
+        explanation:
+          'Absolute value and share of the revenue per activity that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            dataset.revenue?.alignedActivities,
+            'Aligned Activities',
+            'revenue'
+          ),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentRevenueAlignedActivities',
+      },
+      {
+        type: 'cell',
+        label: 'Enabling Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.enablingShareInPercent?.value),
+            'Enabling Share In Percent',
+            dataset.revenue?.enablingShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueEnablingShareInPercent',
+      },
+      {
+        type: 'cell',
+        label: 'Transitional Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.transitionalShareInPercent?.value),
+            'Transitional Share In Percent',
+            dataset.revenue?.transitionalShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueTransitionalShareInPercent',
+      },
+    ],
+    labelBadgeColor: 'green',
+  },
+  {
+    type: 'section',
+    label: 'CapEx',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'cell',
+        label: 'Total Amount',
+        explanation:
+          'Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(dataset.capex?.totalAmount, 'Total Amount'),
+        uploadComponentName: 'CurrencyDataPointFormField',
+        dataPointTypeId: 'extendedCurrencyCapexTotalAmount',
+      },
+      {
+        type: 'section',
+        label: 'Non-Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.capex?.nonEligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.capex?.nonEligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalCapexNonEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyCapexNonEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.capex?.eligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.capex?.eligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalCapexEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyCapexEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Non-Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the CapEx that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.capex?.nonAlignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.capex?.nonAlignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalCapexNonAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the CapEx that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyCapexNonAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Non-Aligned Activities',
+        explanation: 'Absolute value and share of the CapEx per activity that is not taxonomy-aligned but eligible',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatNonAlignedActivitiesForDataTable(
+            dataset.capex?.nonAlignedActivities,
+            'Non-Aligned Activities',
+            'capex'
+          ),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentCapexNonAlignedActivities',
+      },
+      {
+        type: 'section',
+        label: 'Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.capex?.alignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.capex?.alignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalCapexAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.alignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyCapexAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+        explanation:
+          'Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+        explanation: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+            dataset.capex
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            dataset.capex
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+      },
+      {
+        type: 'cell',
+        label: 'Aligned Activities',
+        explanation:
+          'Absolute value and share of the CapEx per activity that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            dataset.capex?.alignedActivities,
+            'Aligned Activities',
+            'capex'
+          ),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities',
+      },
+      {
+        type: 'cell',
+        label: 'Enabling Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.enablingShareInPercent?.value),
+            'Enabling Share In Percent',
+            dataset.capex?.enablingShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexEnablingShareInPercent',
+      },
+      {
+        type: 'cell',
+        label: 'Transitional Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.transitionalShareInPercent?.value),
+            'Transitional Share In Percent',
+            dataset.capex?.transitionalShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexTransitionalShareInPercent',
+      },
+    ],
+    labelBadgeColor: 'yellow',
+  },
+  {
+    type: 'section',
+    label: 'OpEx',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'cell',
+        label: 'Total Amount',
+        explanation:
+          'Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(dataset.opex?.totalAmount, 'Total Amount'),
+        uploadComponentName: 'CurrencyDataPointFormField',
+        dataPointTypeId: 'extendedCurrencyOpexTotalAmount',
+      },
+      {
+        type: 'section',
+        label: 'Non-Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.opex?.nonEligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.opex?.nonEligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalOpexNonEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyOpexNonEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Eligible Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.opex?.eligibleShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.opex?.eligibleShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalOpexEligibleShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyOpexEligibleShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Non-Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the OpEx that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.opex?.nonAlignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.opex?.nonAlignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalOpexNonAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the OpEx that is associated with non taxonomy-aligned but eligible activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyOpexNonAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Non-Aligned Activities',
+        explanation: 'Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, 'Non-Aligned Activities', 'opex'),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentOpexNonAlignedActivities',
+      },
+      {
+        type: 'section',
+        label: 'Aligned Share',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Relative Share in Percent',
+            explanation:
+              'Relative share of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(dataset.opex?.alignedShare?.relativeShareInPercent?.value),
+                'Relative Share in Percent',
+                dataset.opex?.alignedShare?.relativeShareInPercent
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalOpexAlignedShareRelativeShareInPercent',
+          },
+          {
+            type: 'cell',
+            label: 'Absolute Share',
+            explanation:
+              'Absolute value of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.alignedShare?.absoluteShare, 'Absolute Share'),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId: 'extendedCurrencyOpexAlignedShareAbsoluteShare',
+          },
+        ],
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToClimateChangeMitigationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToClimateChangeAdaptationInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalOpexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId:
+          'extendedDecimalOpexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Aligned Activities',
+        explanation: 'Absolute value and share of taxonomy-aligned OpEx for the activity from total OpEx. ',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            dataset.opex?.alignedActivities,
+            'Aligned Activities',
+            'opex'
+          ),
+        uploadComponentName: 'Non-editable',
+        dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentOpexAlignedActivities',
+      },
+      {
+        type: 'cell',
+        label: 'Enabling Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.opex?.enablingShareInPercent?.value),
+            'Enabling Share In Percent',
+            dataset.opex?.enablingShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexEnablingShareInPercent',
+      },
+      {
+        type: 'cell',
+        label: 'Transitional Share In Percent',
+        explanation:
+          'Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.opex?.transitionalShareInPercent?.value),
+            'Transitional Share In Percent',
+            dataset.opex?.transitionalShareInPercent
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalOpexTransitionalShareInPercent',
+      },
+    ],
+    labelBadgeColor: 'blue',
+  },
+];

@@ -44,7 +44,7 @@ export async function uploadFiles(
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
       if (fileToUpload.fileReference !== backendComputedHash) {
-        throw Error('Locally computed document hash does not concede with the one received by the upload request!');
+        throw new Error('Locally computed document hash does not concede with the one received by the upload request!');
       }
       alreadyUploadedFileReferences.add(fileToUpload.fileReference);
     }

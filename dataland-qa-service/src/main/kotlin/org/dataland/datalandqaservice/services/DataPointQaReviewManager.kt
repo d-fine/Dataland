@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -96,8 +97,8 @@ class DataPointQaReviewManager
             initialQaStatus: CopyQaStatusFromDataset,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataSetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
-            if (dataSetQaReviewEntity == null) {
+            val datasetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
+            if (datasetQaReviewEntity == null) {
                 logger.warn(
                     "Could not find QA review entity for dataset ${initialQaStatus.datasetId} " +
                         "- Setting DataPoint status to Pending (correlationID: $correlationId)",
@@ -114,9 +115,9 @@ class DataPointQaReviewManager
                 companyName = message.companyName,
                 dataPointType = message.dataPointType,
                 reportingPeriod = message.reportingPeriod,
-                timestamp = dataSetQaReviewEntity.timestamp,
-                qaStatus = dataSetQaReviewEntity.qaStatus,
-                triggeringUserId = dataSetQaReviewEntity.triggeringUserId,
+                timestamp = datasetQaReviewEntity.timestamp,
+                qaStatus = datasetQaReviewEntity.qaStatus,
+                triggeringUserId = datasetQaReviewEntity.triggeringUserId,
                 comment = "Status copied from stored dataset during migration.",
             )
         }
@@ -263,6 +264,7 @@ class DataPointQaReviewManager
                     .associate { Triple(it.companyId, it.dataPointType, it.reportingPeriod) to it.dataPointId }
 
             reviewEntitiesWithCorrelationIds.forEach { (reviewEntity, correlationId) ->
+                // this function misuses QaStatusChangeMessage originally made for datasets not datapoints.
                 val qaStatusChangeMessage =
                     QaStatusChangeMessage(
                         dataId = reviewEntity.dataPointId,
@@ -275,6 +277,7 @@ class DataPointQaReviewManager
                                     reviewEntity.reportingPeriod,
                                 ),
                             ],
+                        BasicDataDimensions(reviewEntity.companyId, "", reviewEntity.reportingPeriod), true,
                     )
 
                 logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")

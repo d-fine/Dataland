@@ -6,18 +6,26 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.LksgDataController
+import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
+import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
+import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.utils.DataPointUtils
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -44,6 +52,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DefaultMocks
 internal class DataControllerTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
@@ -53,8 +62,15 @@ internal class DataControllerTest {
     private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
     private val mockSpecificationApi = mock<SpecificationControllerApi>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
+    private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
-        DataExportService(mockDataPointUtils, mockReferencedReportsUtils, mockSpecificationApi)
+        DataExportService<LksgData>(
+            mockDataPointUtils,
+            mockReferencedReportsUtils,
+            mockSpecificationApi,
+            mockCompanyQueryManager,
+            mockDatasetStorageService,
+        )
 
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -80,7 +96,7 @@ internal class DataControllerTest {
 
     lateinit var dataController: LksgDataController
 
-    private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
+    private val testDataDimensions = BasicDatasetDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
     @BeforeEach
     fun setup() {
@@ -108,17 +124,15 @@ internal class DataControllerTest {
                 reportingPeriod = testReportingPeriod,
             ),
         )
-        doReturn(someEuTaxoDataAsString)
-            .whenever(mockDataManager)
-            .getDatasetData(any(), any(), any())
+        doReturn(someEuTaxoDataAsString).whenever(mockDataManager).getDatasetData(any(), any(), any())
 
         dataController =
             LksgDataController(
                 mockDataManager,
                 mockDataMetaInformationManager,
                 dataExportService,
+                DataExportStore(),
                 mockCompanyQueryManager,
-                objectMapper,
             )
     }
 
@@ -155,10 +169,12 @@ internal class DataControllerTest {
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
-            dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriods = listOf(testReportingPeriod),
-                companyIds = listOf(testCompanyId),
-                exportFileType = exportFileType,
+            dataController.postExportJobCompanyAssociatedDataByDimensions(
+                ExportRequestData(
+                    reportingPeriods = listOf(testReportingPeriod),
+                    companyIds = listOf(testCompanyId),
+                    fileFormat = exportFileType,
+                ),
             )
         }
     }
@@ -173,10 +189,12 @@ internal class DataControllerTest {
             .validateCompanyIdentifiers(any())
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertThrows<ResourceNotFoundApiException> {
-            dataController.exportCompanyAssociatedDataByDimensions(
-                reportingPeriods = listOf(testReportingPeriod),
-                companyIds = listOf(testCompanyId),
-                exportFileType = exportFileType,
+            dataController.postExportJobCompanyAssociatedDataByDimensions(
+                ExportRequestData(
+                    reportingPeriods = listOf(testReportingPeriod),
+                    companyIds = listOf(testCompanyId),
+                    fileFormat = exportFileType,
+                ),
             )
         }
     }
@@ -185,7 +203,7 @@ internal class DataControllerTest {
     fun `test that resource not found error is thrown if combination of reportingPeriod and companyId and dataType does not exist`() {
         doReturn(null)
             .whenever(mockDataMetaInformationManager)
-            .getActiveDatasetIdByDataDimensions(any<BasicDataDimensions>())
+            .getActiveDatasetIdByDataDimensions(any<BasicDatasetDimensions>())
 
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedDataByDimensions(
@@ -198,7 +216,7 @@ internal class DataControllerTest {
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
-            val argument = invocation.arguments[0] as Set<BasicDataDimensions>
+            val argument = invocation.getArgument<Set<BasicDatasetDimensions>>(0)
             argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(eq(setOf(testDataDimensions)), any())
         val response =
@@ -214,6 +232,89 @@ internal class DataControllerTest {
         doReturn(emptyMap<BasicDataDimensions, String>()).whenever(mockDataManager).getDatasetData(any(), any())
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedDataByDimensions(testReportingPeriod, testCompanyId)
+        }
+    }
+
+    @Test
+    fun `verify that polling latest data fails if the company identifier is ambiguous`() {
+        val companyLei = randomLei()
+
+        doReturn(listOf("firstCompanyId", "ambiguousCompanyId").map { createCompanyValidationResultMock(it) })
+            .whenever(
+                mockCompanyQueryManager,
+            ).validateCompanyIdentifiers(listOf(companyLei))
+
+        assertThrows<InvalidInputApiException> {
+            dataController.getLatestAvailableCompanyAssociatedData(companyLei)
+        }.also { exception ->
+            Assertions.assertTrue(exception.summary.startsWith("Multiple companies found"))
+        }
+    }
+
+    @Test
+    fun `verify that polling latest data fails if the company identifier is not known`() {
+        val companyLei = randomLei()
+
+        doReturn(emptyList<CompanyIdentifierValidationResult>())
+            .whenever(mockCompanyQueryManager)
+            .validateCompanyIdentifiers(listOf(companyLei))
+
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getLatestAvailableCompanyAssociatedData(companyLei)
+        }.also { exception ->
+            Assertions.assertTrue(exception.summary.endsWith("$companyLei not found."))
+        }
+    }
+
+    @Test
+    fun `verify that polling latest data fails if no data is available`() {
+        val companyLei = randomLei()
+        val companyId = UUID.randomUUID().toString()
+
+        doReturn(listOf(createCompanyValidationResultMock(companyId)))
+            .whenever(mockCompanyQueryManager)
+            .validateCompanyIdentifiers(listOf(companyLei))
+        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(companyId), any(), any())
+
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getLatestAvailableCompanyAssociatedData(companyLei)
+        }.also { exception ->
+            Assertions.assertTrue(exception.summary.startsWith("No available data found"))
+        }
+    }
+
+    @Test
+    fun `verify that polling latest works with an identifier other than the companyID`() {
+        val companyLei = randomLei()
+        val companyId = UUID.randomUUID().toString()
+
+        doReturn(listOf(createCompanyValidationResultMock(companyId)))
+            .whenever(mockCompanyQueryManager)
+            .validateCompanyIdentifiers(listOf(companyLei))
+        doReturn(null).whenever(mockDataManager).getLatestAvailableData(eq(companyId), any(), any())
+        doReturn(Pair(testReportingPeriod, someEuTaxoDataAsString))
+            .whenever(mockDataManager)
+            .getLatestAvailableData(eq(companyId), any(), any())
+
+        val response = dataController.getLatestAvailableCompanyAssociatedData(companyLei)
+        Assertions.assertNotNull(response, "Controller should not return null")
+        Assertions.assertNotNull(response.body, "Response body should not be null")
+
+        Assertions.assertEquals(
+            CompanyAssociatedData(companyId, testReportingPeriod, someEuTaxoData),
+            response.body,
+        )
+    }
+
+    private fun randomLei(): String = (1..20).map { "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".random() }.joinToString("")
+
+    private fun createCompanyValidationResultMock(companyId: String): CompanyIdentifierValidationResult {
+        val companyInfo =
+            BasicCompanyInformation(
+                companyId, "test company name", "test company HQ", "DE", null, null,
+            )
+        return mock<CompanyIdentifierValidationResult> {
+            on { companyInformation } doReturn companyInfo
         }
     }
 

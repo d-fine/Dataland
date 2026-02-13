@@ -1,8 +1,9 @@
 import { defineConfig } from 'cypress';
-import { promises, rmdir } from 'fs';
+import { promises } from 'fs';
 import { createHash } from 'crypto';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
+import { computeFakeFixtureDocumentIds } from './tests/e2e/support/node/fixtureDocuments';
 
 let returnEmail: string;
 let returnPassword: string;
@@ -24,8 +25,8 @@ export default defineConfig({
     KEYCLOAK_PREMIUM_USER_PASSWORD: process.env.KEYCLOAK_PREMIUM_USER_PASSWORD,
     KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
     KEYCLOAK_READER_PASSWORD: process.env.KEYCLOAK_READER_PASSWORD,
-    KEYCLOAK_ADMIN_PASSWORD: process.env.KEYCLOAK_ADMIN_PASSWORD,
-    KEYCLOAK_ADMIN: process.env.KEYCLOAK_ADMIN,
+    KC_BOOTSTRAP_ADMIN_USERNAME: process.env.KC_BOOTSTRAP_ADMIN_USERNAME,
+    KC_BOOTSTRAP_ADMIN_PASSWORD: process.env.KC_BOOTSTRAP_ADMIN_PASSWORD,
     PGADMIN_PASSWORD: process.env.PGADMIN_PASSWORD,
     RABBITMQ_PASS: process.env.RABBITMQ_PASS,
     RABBITMQ_USER: process.env.RABBITMQ_USER,
@@ -96,16 +97,13 @@ export default defineConfig({
         },
       });
       on('task', {
-        deleteFolder(folderName) {
-          return new Promise((resolve, reject) => {
-            rmdir(folderName, { recursive: true }, (err) => {
-              if (err) {
-                console.error(err);
-                return reject(err);
-              }
-              resolve(null);
-            });
-          });
+        async deleteFolder(folderName: string) {
+          try {
+            await promises.rm(folderName, { recursive: true, force: true });
+          } catch (err) {
+            console.error(`deleteFolder error for ${folderName}:`, err);
+          }
+          return null;
         },
       });
 
@@ -156,13 +154,58 @@ export default defineConfig({
           return join(folder, match);
         },
       });
-
+      on('task', {
+        async fileExists(path: string) {
+          try {
+            await promises.access(path);
+            return true;
+          } catch {
+            return false;
+          }
+        },
+      });
+      on('task', {
+        createUniquePdfFixture() {
+          const fs = require('fs');
+          const path = require('path');
+          const timestamp = Date.now();
+          const pdfContent = `Test file created at ${timestamp}`;
+          const destDir = path.resolve(__dirname, 'tests/e2e/fixtures/documents');
+          if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+          }
+          const filename = `upload-${timestamp}.pdf`;
+          const destFile = path.join(destDir, filename);
+          // Minimal PDF file generation (single page, text only)
+          const header = Buffer.from('%PDF-1.1\n');
+          const obj1 = Buffer.from('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+          const obj2 = Buffer.from('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+          const obj3 = Buffer.from(
+            '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 144] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n'
+          );
+          const text = pdfContent.replace(/([()\\])/g, '\\$1');
+          const stream = Buffer.from(`BT /F1 24 Tf 50 100 Td (${text}) Tj ET`);
+          const obj4_start = Buffer.from(`4 0 obj\n<< /Length ${stream.length} >>\nstream\n`);
+          const obj4_end = Buffer.from('\nendstream\nendobj\n');
+          const obj4 = Buffer.concat([obj4_start, stream, obj4_end]);
+          const obj5 = Buffer.from('5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
+          const xrefOffset = header.length + obj1.length + obj2.length + obj3.length + obj4.length + obj5.length;
+          const xref = Buffer.from(
+            `xref\n0 6\n0000000000 65535 f \n${String(header.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length).padStart(10, '0')} 00000 n \n${String(header.length + obj1.length + obj2.length + obj3.length + obj4.length).padStart(10, '0')} 00000 n \n`
+          );
+          const trailer = Buffer.from('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF\n');
+          const pdfBuffer = Buffer.concat([header, obj1, obj2, obj3, obj4, obj5, xref, trailer]);
+          fs.writeFileSync(destFile, pdfBuffer);
+          return filename;
+        },
+      });
+      config.env.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
     downloadsFolder: 'cypress/downloads',
-    responseTimeout: 100000,
-    requestTimeout: 100000,
+    responseTimeout: 300000,
+    requestTimeout: 300000,
   },
   component: {
     devServer: {

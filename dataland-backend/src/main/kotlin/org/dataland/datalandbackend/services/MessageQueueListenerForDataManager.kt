@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -30,13 +29,11 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
  * @param dataManager the dataManager service for public data
  */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
     @Autowired private val sourceabilityDataManager: SourceabilityDataManager,
@@ -76,7 +73,7 @@ class MessageQueueListenerForDataManager(
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
 
         val qaStatusChangeMessage =
-            MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+            MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString)
 
         val updatedDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
@@ -148,7 +145,7 @@ class MessageQueueListenerForDataManager(
         MessageQueueUtils.rejectMessageOnException {
             for (message in messages) {
                 MessageQueueUtils.validateMessageType(message.getType(), MessageType.DATA_STORED)
-                val dataId = message.readMessagePayload<DataIdPayload>(objectMapper).dataId
+                val dataId = message.readMessagePayload<DataIdPayload>().dataId
                 val correlationId = message.getCorrelationId()
                 MessageQueueUtils.validateDataId(dataId)
                 logger

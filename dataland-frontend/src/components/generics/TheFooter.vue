@@ -31,6 +31,19 @@
               <a href="/qa/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">QUALITY ASSURANCE</a>
             </li>
             <li><a href="/users/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">USERS</a></li>
+            <li>
+              <a href="/data-sourcing/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
+                >DATA SOURCING</a
+              >
+            </li>
+            <li>
+              <a href="/accounting/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">ACCOUNTING</a>
+            </li>
+            <li>
+              <a href="/specifications/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
+                >SPECIFICATIONS</a
+              >
+            </li>
           </ul>
         </div>
         <div class="footer__column" @click="isSmallScreen && toggleAccordion('esgframeworks')">
@@ -139,7 +152,7 @@ const openAccordions = ref<Record<string, boolean>>({});
  * Reads from the 'openAccordions' record if the accordion with the title passed as input is open or not
  * @param title
  */
-const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
+const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title]! : false);
 
 /**
  * Toggles the open state of an accordion section. If the accordion section
@@ -151,19 +164,19 @@ function toggleAccordion(title: string): void {
   openAccordions.value[title] = !openAccordions.value[title];
 }
 
-const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
+const isSmallScreen: Ref<boolean> = ref(globalThis.innerWidth < 768);
 
 const updateScreenSize = (): void => {
-  isSmallScreen.value = window.innerWidth < 768;
+  isSmallScreen.value = globalThis.innerWidth < 768;
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateScreenSize);
+  globalThis.addEventListener('resize', updateScreenSize);
   updateScreenSize();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateScreenSize);
+  globalThis.removeEventListener('resize', updateScreenSize);
 });
 </script>
 
@@ -192,6 +205,10 @@ onUnmounted(() => {
     letter-spacing: 0.05rem;
     text-transform: uppercase;
     text-decoration: none;
+    align-items: center;
+    display: inline-flex;
+    gap: 0.25rem;
+    white-space: nowrap;
 
     &:hover {
       text-decoration: underline;
@@ -207,8 +224,7 @@ onUnmounted(() => {
       height: 1rem;
       background-image: url(/static/icons/Arrow--up-right.svg);
       background-size: cover;
-      position: relative;
-      margin-left: 0.5rem;
+      position: static;
       filter: invert(1);
     }
   }
@@ -223,7 +239,7 @@ onUnmounted(() => {
   &__row--top {
     padding-bottom: 2.5rem;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 30% 70%;
   }
 
   &__row--bottom {
@@ -245,12 +261,12 @@ onUnmounted(() => {
 
     &--columns {
       display: grid;
-      grid-template-columns: 2fr 2fr 1fr;
+      grid-template-columns: 4fr 2fr 1fr;
       grid-template-rows: repeat(2, 1fr);
       justify-content: space-between;
       justify-items: start;
       text-align: start;
-      gap: 1rem 0;
+      gap: 1rem 1rem;
     }
 
     &--logo {
@@ -298,6 +314,14 @@ onUnmounted(() => {
 
     &--techhub {
       grid-row: span 2;
+      .footer__column--list {
+        column-count: 2;
+        column-gap: 1rem;
+
+        li {
+          break-inside: avoid;
+        }
+      }
     }
 
     &--integration {

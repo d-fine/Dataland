@@ -163,7 +163,7 @@ describe('check that the document link component works and is displayed correctl
       cy.get(selector).should('exist').invoke('css', 'text-overflow').should('eq', 'ellipsis');
       cy.get(selector).invoke('attr', 'title').should('eq', longName);
       cy.get(selector).then(($el) => {
-        const el = $el[0];
+        const el = $el[0]!;
         expect(el.scrollWidth).to.be.greaterThan(el.clientWidth);
       });
     });

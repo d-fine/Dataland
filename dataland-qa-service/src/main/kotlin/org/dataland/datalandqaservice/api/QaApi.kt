@@ -53,8 +53,8 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,
@@ -208,8 +208,8 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "reportingPeriods",
-            description = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
             required = false,
         )
         reportingPeriods: Set<String>?,
@@ -328,19 +328,19 @@ interface QaApi {
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
-     * Changes the QA review status of a dataset
-     * @param dataPointId the ID of the dataset of which to change the QA review status
-     * @param qaStatus the QA review status to be assigned to a dataset
+     * Changes the QA review status of a data point
+     * @param dataPointId the ID of the data point of which to change the QA review status
+     * @param qaStatus the QA review status to be assigned to a data point
      * @param comment (optional) comment to explain the QA review status change
      */
     @Operation(
-        summary = "Assign a QA review status to a dataset.",
+        summary = "Assign a QA review status to a data point.",
         description =
-            "Assign a QA review status to a dataset.",
+            "Assign a QA review status to a data point.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully assigned QA review status to dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully assigned QA review status to data point."),
         ],
     )
     @PostMapping(

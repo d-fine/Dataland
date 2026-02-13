@@ -36,7 +36,7 @@ export const sfdrDataModel = [
               },
             ],
 
-            component: 'RadioButtonsFormField',
+            component: 'RadioButtonsExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -45,7 +45,7 @@ export const sfdrDataModel = [
             label: 'Fiscal Year End',
             description: 'The date the fiscal year ends.',
 
-            component: 'DateFormField',
+            component: 'DateExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -987,7 +987,7 @@ export const sfdrDataModel = [
             label: 'Average Gross Hourly Earnings Male Employees',
             description: 'Average gross hourly earnings of male employees',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -997,7 +997,7 @@ export const sfdrDataModel = [
             label: 'Average Gross Hourly Earnings Female Employees',
             description: 'Average gross hourly earnings of female employees',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -1301,7 +1301,7 @@ export const sfdrDataModel = [
             description:
               'Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
 
-            component: 'CurrencyDataPointFormField',
+            component: 'CurrencyExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',

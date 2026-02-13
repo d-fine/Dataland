@@ -12,7 +12,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -46,7 +46,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
@@ -59,19 +59,19 @@ jobs:
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: lcovResults-frontend
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
@@ -80,7 +80,7 @@ jobs:
     outputs:
       frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -93,7 +93,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
@@ -105,7 +105,7 @@ jobs:
           echo "frameworkList=$(<./dataland-framework-toolbox/build/framework-list.json)" >> "$GITHUB_OUTPUT"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: JaCoCoResultsToolbox-list
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
@@ -118,7 +118,7 @@ jobs:
       matrix:
         framework: ${{ fromJson(needs.framework-toolbox-list-frameworks.outputs.frameworkList) }}
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -131,7 +131,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
@@ -146,14 +146,14 @@ jobs:
         if: always()
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: JaCoCoResultsToolbox-${{ matrix.framework }}
           path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
   framework-toolbox-integration-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -166,7 +166,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
@@ -175,7 +175,7 @@ jobs:
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
@@ -183,7 +183,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -196,7 +196,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
@@ -210,7 +210,7 @@ jobs:
         run: |
           sudo apt update && sudo apt install libreoffice
           #TODO: look into a more elegant solution for the line below
-          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-user-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test  :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-accounting-service:test :dataland-data-sourcing-service:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-user-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
@@ -223,6 +223,8 @@ jobs:
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
@@ -245,6 +247,8 @@ jobs:
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
@@ -253,7 +257,7 @@ jobs:
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: GradleReports
           path: |
@@ -261,7 +265,7 @@ jobs:
             ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: JaCoCoResultsUnitTests-Gradle
           path: ./**/*.exec
@@ -291,7 +295,7 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
@@ -317,6 +321,8 @@ jobs:
           KEYCLOAK_DB_PASSWORD: "password"
           BACKEND_DB_PASSWORD: "password"
           API_KEY_MANAGER_DB_PASSWORD: "password"
+          ACCOUNTING_SERVICE_DB_PASSWORD: "password"
+          DATA_SOURCING_SERVICE_DB_PASSWORD: "password"
           INTERNAL_STORAGE_DB_PASSWORD: "password"
           DOCUMENT_MANAGER_DB_PASSWORD: "password"
           QA_SERVICE_DB_PASSWORD: "password"
@@ -332,6 +338,8 @@ jobs:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
@@ -348,8 +356,8 @@ jobs:
           KEYCLOAK_PREMIUM_USER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_PREMIUM_USER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_PREMIUM_USER_PASSWORD: "password"
-          KEYCLOAK_ADMIN: "admin"
-          KEYCLOAK_ADMIN_PASSWORD: "password"
+          KC_BOOTSTRAP_ADMIN_USERNAME: "admin"
+          KC_BOOTSTRAP_ADMIN_PASSWORD: "password"
           KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
           KEYCLOAK_GOOGLE_SECRET: "irrelevant_in_ci"
           PROXY_PRIMARY_URL: local-dev.dataland.com
@@ -382,19 +390,19 @@ jobs:
           SLACK_CRITICAL_ALERT_URL: "irrelevant_in_ci"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: lcovResults-${{ matrix.testGroup }}
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: e2eTestReports-${{ matrix.testGroup }}
           path: |
@@ -403,7 +411,7 @@ jobs:
             ./reports
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
@@ -421,7 +429,7 @@ jobs:
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/logObjects
@@ -436,26 +444,26 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: JaCoCoResultsUnitTests
         with:
           pattern: JaCoCoResultsUnitTests-*
           merge-multiple: true
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: JaCoCoResultsE2ETest
         with:
           pattern: JaCoCoResultsE2ETest-*
           merge-multiple: true
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           pattern: JaCoCoResultsToolbox-*
           merge-multiple: true
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         name: lcovResults
         with:
           pattern: lcovResults-*
@@ -491,14 +499,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
@@ -515,62 +523,62 @@ jobs:
     if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Docker Logs Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: dockerLogs
           pattern: dockerLogs-*
           delete-merged: true
       - name: Merge Jacoco E2E Test Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
           delete-merged: true
       - name: Merge Jacoco Framework Toolbox Test Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: JaCoCoResultsToolbox
           pattern: JaCoCoResultsToolbox-*
           delete-merged: true
       - name: Merge lcovResults Test Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: lcovResults
           pattern: lcovResults-*
           delete-merged: true
       - name: Merge E2E Test Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: e2eTestReports
           pattern: e2eTestReports-*
           delete-merged: true
       - name: Merge E2E DB dump Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: e2eTestDatabaseDumps
           pattern: e2eTestDatabaseDumps-*
           delete-merged: true
       - name: Merge Jacoco Unit Test Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: JaCoCoResultsUnitTests
           pattern: JaCoCoResultsUnitTests-*
           delete-merged: true
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: dockerImageVersions

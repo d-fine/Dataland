@@ -21,7 +21,7 @@ export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQa
 
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithOneCorrection(
-      generateFixtureDataset<SfdrQaReport>(generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand, 1)[0]
+      generateFixtureDataset<SfdrQaReport>(generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand, 1)[0]!
     )
   );
   return preparedFixtures;
@@ -70,8 +70,8 @@ export function generateSfdrLinkedQaReports(): {
     general: {
       general: {
         dataDate: dataGenerator.guaranteedFutureDate(),
-        fiscalYearDeviation: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)),
-        fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
+        fiscalYearDeviation: { value: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)) },
+        fiscalYearEnd: { value: dataGenerator.guaranteedFutureDate() },
         referencedReports: dataGenerator.reports,
       },
     },

@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.exceptions
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 
+const val JOB_NOT_FOUND_SUMMARY = "No corresponding job found for associated user."
+
 /**
  * A DownloadDataNotFoundApiException should be thrown if the data to be downloaded does not exist.
  */

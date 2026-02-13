@@ -1,0 +1,191 @@
+import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress.ts';
+// @ts-ignore: Cypress types are internal; safe to ignore missing module
+import { type Interception } from 'cypress/types/net-stubbing';
+import { type SingleRequest } from '@clients/datasourcingservice';
+import { describeIf } from '@e2e/support/TestUtility.ts';
+import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
+import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest.ts';
+import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition.ts';
+import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
+import { assignCompanyRight } from '@e2e/utils/CompanyRightsUtils.ts';
+
+/**
+ * Checks if all expected human-readable labels are visible in the dropdown options
+ */
+function checkDropdownLabels(): void {
+  cy.get('[data-test="datapoint-framework"]').click();
+  for (const framework of FRAMEWORKS_WITH_VIEW_PAGE) {
+    cy.get('.p-select-option').contains(humanizeStringOrNumber(framework)).should('exist');
+  }
+  cy.get('[data-test="datapoint-framework"]').click();
+}
+
+/**
+ * Checks basic validation
+ */
+function checkValidation(): void {
+  cy.get('button[type="submit"]').click();
+  cy.get('div[data-test="reportingPeriods"]')
+    .find('[data-test="reportingPeriodErrorMessage"]')
+    .should('be.visible')
+    .should('contain.text', 'Select at least one reporting period to submit your request');
+
+  cy.get('div[data-test="frameworkErrorMessage"]')
+    .should('exist')
+    .should('be.visible')
+    .should('contain.text', 'Select a framework to submit your request');
+}
+
+describeIf(
+  'As a Dataland member, I want to be able to navigate to the single data request page and submit a request',
+  {
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
+  },
+  () => {
+    const companyMarker = Date.now().toString();
+    const testCompanyName = 'Company-for-single-data-request' + companyMarker;
+    const memberCompanyName = 'Member-company-for-single-data-request' + companyMarker;
+    let testStoredCompany: StoredCompany;
+    let memberStoredCompany: StoredCompany;
+    let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+    const testMessage = 'Frontend test message';
+    const testYear = '2023';
+
+    /**
+     * Uploads a company without data
+     */
+    function uploadCompanyWithoutData(): void {
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
+          memberStoredCompany = storedCompany;
+        });
+      });
+    }
+
+    /**
+     * Uploads a company with lksg data
+     * @param reportingPeriod the year for which the data is uploaded
+     */
+    function uploadCompanyWithData(reportingPeriod: string): void {
+      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          testStoredCompany = storedCompany;
+          return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
+        });
+      });
+    }
+
+    /**
+     * Sets the status of a single data request from open to answered
+     * @param companyId id of the company
+     * @param reportingPeriod the year for which the framework is uploaded
+     */
+    function uploadFrameworkDataForCompany(companyId: string, reportingPeriod: string): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadFrameworkDataForPublicToolboxFramework(
+          LksgBaseFrameworkDefinition,
+          token,
+          companyId,
+          reportingPeriod,
+          getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
+        );
+      });
+    }
+
+    /**
+     * Gives the memberStoredCompany Member rights.
+     */
+    function makeCompanyMember(): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return assignCompanyRight(token, 'Member', memberStoredCompany.companyId);
+      });
+    }
+
+    /**
+     * Makes the Data Reader a Analyst of the memberStoredCompany.
+     */
+    function makeReaderAnalystOfCompany(): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return assignCompanyRole(token, 'Analyst', memberStoredCompany.companyId, reader_userId);
+      });
+    }
+
+    before(() => {
+      cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
+        lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        uploadCompanyWithoutData();
+        makeCompanyMember();
+        makeReaderAnalystOfCompany();
+        uploadCompanyWithData('2020');
+      });
+    });
+    beforeEach(() => {
+      cy.ensureLoggedIn(reader_name, reader_pw);
+    });
+
+    it('Navigate to the single request page via the company cockpit', () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
+      cy.get('[data-test="singleDataRequestButton"]').click();
+      cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
+    });
+
+    it('Navigate to the single request page via the view page and verify that the viewed framework is preselected.', () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="singleDataRequestButton"]').click();
+      cy.url().should('contain', `/singledatarequest/${testStoredCompany.companyId}`);
+      cy.get('[data-test="datapoint-framework"]').find('span').should('have.text', 'LkSG');
+    });
+
+    it('Fill out the request page and check correct validation, request and success message', () => {
+      cy.intercept('POST', '**/data-sourcing/requests').as('postRequestData');
+      cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
+      checkCompanyInfoSheet();
+      checkValidation();
+      singleDataRequestPage.chooseReportingPeriod(testYear);
+      checkDropdownLabels();
+      singleDataRequestPage.chooseFrameworkLksg();
+
+      cy.get('[data-test="enterComment"] input').type(testMessage);
+      cy.get('button[type="submit"]').click();
+      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+        checkIfRequestBodyIsValid(interception);
+      });
+      checkCompanyInfoSheet();
+      cy.get('[data-test="submittedDiv"]').should('exist');
+      cy.get('[data-test="requestStatusText"]').should('contain.text', 'Submitting your data request was successful.');
+      cy.get('[data-test="backToCompanyPageButton"]').click();
+      cy.url().should('contain', '/companies/');
+      checkCompanyInfoSheet();
+    });
+
+    /**
+     * Checks if the request body that is sent to the backend is valid and matches the given information
+     * @param interception the object of interception with the backend
+     */
+    function checkIfRequestBodyIsValid(interception: Interception): void {
+      if (interception.request !== undefined) {
+        const requestBody = interception.request.body as SingleRequest;
+        const expectedRequest: SingleRequest = {
+          companyIdentifier: testStoredCompany.companyId,
+          dataType: DataTypeEnum.Lksg,
+          reportingPeriod: testYear,
+          memberComment: testMessage,
+        };
+        expect(requestBody).to.deep.equal(expectedRequest);
+      }
+    }
+
+    /**
+     * Checks if the information on the company banner is correct
+     */
+    function checkCompanyInfoSheet(): void {
+      cy.get('[data-test="companyNameTitle"]').should('contain.text', testCompanyName);
+    }
+  }
+);

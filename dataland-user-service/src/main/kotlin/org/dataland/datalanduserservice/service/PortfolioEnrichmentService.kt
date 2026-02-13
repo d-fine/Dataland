@@ -129,11 +129,13 @@ class PortfolioEnrichmentService
                 userId = portfolio.userId,
                 entries =
                     getEnrichedEntries(
-                        portfolio.companyIds.toList(),
+                        portfolio.identifiers.toList(),
                         majorFrameworks,
                     ),
                 isMonitored = portfolio.isMonitored,
-                startingMonitoringPeriod = portfolio.startingMonitoringPeriod,
                 monitoredFrameworks = portfolio.monitoredFrameworks,
+                notificationFrequency = portfolio.notificationFrequency,
+                timeWindowThreshold = portfolio.timeWindowThreshold,
+                sharedUserIds = portfolio.sharedUserIds,
             )
     }

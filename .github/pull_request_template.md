@@ -26,3 +26,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
 - [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers (no longer enforced by GitHub)
+- [ ] Ensure that the release notes are written in a way that is understandable to a non-technical audience.

@@ -124,16 +124,16 @@ export default defineComponent({
       const childrenCounterPopulator = (node: TreeNode): void => {
         const children = node.children ?? [];
         let localSum = 0;
-        children.forEach((child) => {
+        for (const child of children) {
           if (selectedTreeNodeSet.has(assertDefined(child.key))) localSum++;
           childrenCounterPopulator(child);
           localSum += assertDefined(newSelectedChildrenCounter.get(assertDefined(child.key)));
-        });
+        }
         newSelectedChildrenCounter.set(assertDefined(node.key), localSum);
       };
-      naceCodeTree.forEach((treeNode) => {
+      for (const treeNode of naceCodeTree) {
         childrenCounterPopulator(treeNode);
-      });
+      }
       this.selectedChildrenCounter = newSelectedChildrenCounter;
     },
     /**
@@ -190,15 +190,15 @@ export default defineComponent({
         const newlySelectedValues = new Set(newValue);
         const currentlySelectedValues = [...this.selectedTreeNodes];
 
-        currentlySelectedValues.forEach((element) => {
+        for (const element of currentlySelectedValues) {
           if (!newlySelectedValues.has(element)) {
             this.selectedTreeNodes.delete(element);
           }
-        });
+        }
 
-        newlySelectedValues.forEach((it) => {
+        for (const it of newlySelectedValues) {
           this.selectedTreeNodes.add(it);
-        });
+        }
       },
     },
   },

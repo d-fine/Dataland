@@ -14,10 +14,10 @@ export function generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(): Re
     string,
     { numberOfProvidedReportingPeriods: number }
   > = {};
-  Object.values(AggregatedDataRequestWithAggregatedPriorityDataTypeEnum).forEach((frameworkName) => {
+  for (const frameworkName of Object.values(AggregatedDataRequestWithAggregatedPriorityDataTypeEnum)) {
     mapOfFrameworkNameToAggregatedFrameworkDataSummary[frameworkName] = {
       numberOfProvidedReportingPeriods: generateInt(30),
     };
-  });
+  }
   return mapOfFrameworkNameToAggregatedFrameworkDataSummary;
 }

@@ -1,8 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -28,13 +27,12 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * This service checks if freshly uploaded and validated data answers a data request
  */
-@Service("DataRequestUpdater")
+@Service("CommunityManagerListener")
 class CommunityManagerListener(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestUpdateManager: DataRequestUpdateManager,
     @Autowired private val investorRelationsManager: InvestorRelationsManager,
 ) {
-    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Checks if, for a given dataset, there are open or nonsourceable requests with matching company identifier,
@@ -66,7 +64,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
-        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload)
         val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -117,7 +115,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
-        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload, objectMapper)
+        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload)
         val dataId = privateDataUploadMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -135,7 +133,9 @@ class CommunityManagerListener(
      * is empty and, if so, throws an appropriate exception.
      */
     private fun checkThatReceivedDataIsComplete(sourceabilityMessage: SourceabilityMessage) {
-        if (sourceabilityMessage.companyId.isEmpty() || sourceabilityMessage.reportingPeriod.isEmpty()) {
+        if (sourceabilityMessage.basicDataDimensions.companyId.isEmpty() ||
+            sourceabilityMessage.basicDataDimensions.reportingPeriod.isEmpty()
+        ) {
             throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
         }
     }
@@ -149,14 +149,6 @@ class CommunityManagerListener(
             throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable.")
         }
     }
-
-    /**
-     * Tries to decode the dataType string field in the message to a DataTypeEnum object to return.
-     * If the decoding fails, an appropriate exception is thrown.
-     */
-    private fun decodeDataTypeIfPossible(sourceabilityMessage: SourceabilityMessage): DataTypeEnum =
-        DataTypeEnum.decode(sourceabilityMessage.dataType)
-            ?: throw MessageQueueRejectException("Framework name could not be understood.")
 
     /**
      * Listens for message that specifies a dataset as non-sourceable
@@ -188,26 +180,23 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload, objectMapper)
+        val sourceabilityInfo = MessageQueueUtils.readMessagePayload<SourceabilityInfo>(payload)
+        val sourceabilityMessage =
+            SourceabilityMessage(
+                BasicDataDimensions(sourceabilityInfo.companyId, sourceabilityInfo.dataType.value, sourceabilityInfo.reportingPeriod),
+                sourceabilityInfo.isNonSourceable,
+                sourceabilityInfo.reason,
+            )
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
-        val dataTypeDecoded = decodeDataTypeIfPossible(sourceabilityMessage)
 
         logger.info(
-            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.dataType}, " +
-                "company ID: ${sourceabilityMessage.companyId} and reporting period: ${sourceabilityMessage.reportingPeriod}. " +
+            "Received data-non-sourceable-message for data type: ${sourceabilityMessage.basicDataDimensions.dataType}, " +
+                "company ID: ${sourceabilityMessage.basicDataDimensions.companyId} and reporting period: " +
+                "${sourceabilityMessage.basicDataDimensions.reportingPeriod}. " +
                 "Correlation ID: $correlationId",
         )
-
-        val sourceabilityInfo =
-            SourceabilityInfo(
-                companyId = sourceabilityMessage.companyId,
-                dataType = dataTypeDecoded,
-                reportingPeriod = sourceabilityMessage.reportingPeriod,
-                isNonSourceable = sourceabilityMessage.isNonSourceable,
-                reason = sourceabilityMessage.reason,
-            )
 
         MessageQueueUtils.rejectMessageOnException {
             dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)

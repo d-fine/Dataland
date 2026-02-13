@@ -2,14 +2,18 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-06-25",
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-07-26",
+				"dataDate": "2024-10-22",
+				"fiscalYearDeviation": {
+					"value": "NoDeviation"
+				},
+				"fiscalYearEnd": {
+					"value": "2024-07-21"
+				},
 				"referencedReports": {
-					"ESEFReport": {
+					"AnnualReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "ESEFReport",
-						"publicationDate": "2023-05-25"
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-10-28"
 					}
 				}
 			}
@@ -17,16 +21,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 3312,
+					"value": 2319,
 					"dataSource": {
-						"page": "526-1202",
-						"fileName": "ESEFReport",
+						"page": "1062-1112",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "schemas",
+						"tagName": "lifetime value",
 						"publicationDate": null
 					},
-					"comment": "connect multi-byte array",
-					"quality": "NoDataFound"
+					"comment": "calculate optical hard drive",
+					"quality": "Incomplete"
 				}
 			}
 		},
@@ -35,26 +39,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "1075",
-						"fileName": "ESEFReport",
+						"page": "522",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "experiences",
+						"tagName": "functionalities",
 						"publicationDate": null
 					},
-					"comment": "navigate virtual bus",
+					"comment": "copy wireless application",
 					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "996-1087",
-						"fileName": "ESEFReport",
+						"page": "479-1251",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "experiences",
+						"tagName": "metrics",
 						"publicationDate": null
 					},
-					"comment": "connect bluetooth array",
-					"quality": "Reported"
+					"comment": "hack neural card",
+					"quality": "Audited"
 				}
 			}
 		}

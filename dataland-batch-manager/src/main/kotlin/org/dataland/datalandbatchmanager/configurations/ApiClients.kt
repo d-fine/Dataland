@@ -1,15 +1,20 @@
 package org.dataland.datalandbatchmanager.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.userService.openApiClient.api.PortfolioControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.dataland.dataSourcingService.openApiClient.api.ActuatorApi as DataSourcingActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
-import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
+import org.dataland.userService.openApiClient.api.ActuatorApi as UserServiceActuatorApi
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
@@ -17,7 +22,9 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as Co
 @Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
-    @Value("\${dataland.communitymanager.base-url}") private val communityManagerBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
+    @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
+    @Value("\${dataland.user-service.base-url}") private val userServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -34,24 +41,62 @@ class ApiClients(
     fun getBackendActuatorApi(): BackendActuatorApi = BackendActuatorApi(backendBaseUrl)
 
     /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the community manager
+     * Creates an auto-authenticated version of the CompanyRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getCompanyRolesControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getInheritedRolesControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the RequestControllerApi of the data sourcing sevice
      */
     @Bean
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): RequestControllerApi = RequestControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+    ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an ActuatorApi of the community manager
+     * Creates an auto-authenticated version of the EnhancedRequestControllerApi of the data sourcing sevice
      */
     @Bean
-    fun getCommunityManagerActuatorApi(): CommunityActuatorApi = CommunityActuatorApi(communityManagerBaseUrl)
+    fun getEnhancedRequestControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): EnhancedRequestControllerApi = EnhancedRequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
+     * Creates an ActuatorApi of the data sourcing service
+     */
+    @Bean
+    fun getDataSourcingServiceActuatorApi(): DataSourcingActuatorApi = DataSourcingActuatorApi(dataSourcingServiceBaseUrl)
+
+    /**
+     * Creates an auto-authenticated version of the IsinLeiDataControllerApi of the backend
      */
     @Bean
     fun getIsinLeiDataControllerApi(
         @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
     ): IsinLeiDataControllerApi = IsinLeiDataControllerApi(backendBaseUrl, patientAuthenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the PortfolioControllerApi of the user-service
+     */
+    @Bean
+    fun getPortfolioControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): PortfolioControllerApi = PortfolioControllerApi(userServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an ActuatorApi of the user-service
+     */
+    @Bean
+    fun getUserServiceActuatorApi(): UserServiceActuatorApi = UserServiceActuatorApi(userServiceBaseUrl)
 }

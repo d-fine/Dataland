@@ -6,15 +6,13 @@
       <br />
       Am Steinernen Stock 1
       <br />
-      Briefkasten Nr. 8
-      <br />
       60320 Frankfurt am Main
     </p>
-    <p>Vertretungsberechtige Geschäftsführer: Frederik Christiaan Breen, Dr. Moritz Benjamin Kiese</p>
+    <p>Vertretungsberechtigter Geschäftsführer: Dr. Moritz Benjamin Kiese</p>
     <p>
-      Telefon: +49 1511 77 22 399
+      Telefon: +49 1622 63 13 04
       <br />
-      E-Mail: erik.breen@dataland.com
+      E-Mail: moritz.kiese@dataland.com
     </p>
     <p>
       Registergericht: Amtsgericht Frankfurt am Main
@@ -22,7 +20,7 @@
       Registernummer: HRB 132445
     </p>
     <p>Umsatzsteuer-Identifikationsnummer: DE363713774</p>
-    <p>Inhaltlich verantwortlich: Frederik Christiaan Breen</p>
+    <p>Inhaltlich verantwortlich: Dr. Moritz Benjamin Kiese</p>
   </LegalPage>
 </template>
 

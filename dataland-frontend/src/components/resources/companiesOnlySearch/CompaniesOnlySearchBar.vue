@@ -60,7 +60,7 @@ export default defineComponent({
   name: 'CompaniesOnlySearchBar',
   components: { AutoComplete, SearchResultHighlighter, IconField, InputIcon },
   mounted() {
-    if (window.innerWidth > 768) {
+    if (globalThis.innerWidth > 768) {
       const inputElement = document.getElementById('autocomplete')?.querySelector('.p-inputtext') as HTMLInputElement;
       inputElement.focus();
     }

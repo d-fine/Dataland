@@ -1,6 +1,6 @@
 import { type AxiosRequestConfig, type AxiosPromise } from 'axios';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
-import { type DataMetaInformation, type ExportFileType } from '@clients/backend';
+import { type DataMetaInformation, type ExportFileType, type ExportJobInfo } from '@clients/backend';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 
 export interface BaseFrameworkDataApi<FrameworkDataType> {
@@ -24,15 +24,14 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     options?: AxiosRequestConfig
   ): AxiosPromise<DataMetaInformation>;
 
-  exportCompanyAssociatedDataByDimensions(
+  postExportJobCompanyAssociatedDataByDimensions(
     reportingPeriods: string[],
     companyIds: string[],
     fileFormat: ExportFileType,
     includeDataMetaInformation?: boolean,
     includeAlias?: boolean,
     options?: AxiosRequestConfig
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): AxiosPromise<any>;
+  ): AxiosPromise<ExportJobInfo>;
 
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,

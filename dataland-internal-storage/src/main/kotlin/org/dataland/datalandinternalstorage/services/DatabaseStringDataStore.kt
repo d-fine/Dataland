@@ -42,7 +42,6 @@ import org.springframework.transaction.annotation.Transactional
  * @param dataItemRepository the repository for data items
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class DatabaseStringDataStore(
@@ -95,21 +94,23 @@ class DatabaseStringDataStore(
                         MessageQueueUtils
                             .readMessagePayload<DataUploadedPayload>(
                                 payload,
-                                objectMapper,
                             ).dataId
                     }
+
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         MessageQueueUtils
                             .readMessagePayload<DataMetaInfoPatchPayload>(
                                 payload,
-                                objectMapper,
                             ).dataId
                     }
-                    else -> throw MessageQueueRejectException(
-                        "Routing Key '$receivedRoutingKey' unknown. " +
-                            "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
-                    )
+
+                    else -> {
+                        throw MessageQueueRejectException(
+                            "Routing Key '$receivedRoutingKey' unknown. " +
+                                "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+                        )
+                    }
                 }
             MessageQueueUtils.validateDataId(dataId)
             val data = retrieveData(dataId, correlationId)
@@ -150,7 +151,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload).dataId
             MessageQueueUtils.validateDataId(dataId)
             deleteDataItemWithoutTransaction(dataId, correlationId)
         }
@@ -186,7 +187,7 @@ class DatabaseStringDataStore(
             val allDataAndCorrelationIds =
                 messages.map {
                     MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
-                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                    Pair(it.readMessagePayload<DataPointUploadedPayload>().dataPointId, it.getCorrelationId())
                 }
             val allContents =
                 temporarilyCachedDataClient.getBatchReceivedPublicData(
@@ -253,7 +254,7 @@ class DatabaseStringDataStore(
         dataIds: List<String>,
         correlationId: String,
     ): Map<String, StorableDataPoint> {
-        val retrievedEntries = dataPointItemRepository.findAllById(dataIds)
+        val retrievedEntries = findDataPointItemsByIdInBatches(dataIds)
         val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
         if (missingIdentifiers.isNotEmpty()) {
             logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
@@ -285,7 +286,7 @@ class DatabaseStringDataStore(
             }.data
 
     /**
-     * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee the write
      * is commited after exit of this method.
      * @param dataId the DataItem to be removed from the storage
      * @param correlationId the correlationId ot the current user process
@@ -298,4 +299,19 @@ class DatabaseStringDataStore(
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)
     }
+
+    /**
+     * Iteratively calls findAllById in batches of size BATCH_SIZE to circumvent the 65535-character limit of Postgres
+     */
+    private fun findDataPointItemsByIdInBatches(
+        dataIds: List<String>,
+        batchSize: Int = 10000,
+    ): List<DataPointItem> =
+        dataIds
+            .chunked(batchSize)
+            .flatMap { batchedDataIds ->
+                dataPointItemRepository
+                    .findAllById(batchedDataIds)
+                    .toList()
+            }
 }

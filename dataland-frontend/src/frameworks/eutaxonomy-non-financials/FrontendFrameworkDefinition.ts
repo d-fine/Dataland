@@ -3,7 +3,7 @@ import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
 } from '@/frameworks/BaseFrameworkDefinition';
-import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-non-financials/ViewConfig';
+import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/custom/EuTaxoNonFinancialsStaticViewConfig.ts';
 import { BaseEutaxonomyNonFinancialsFrameworkDefinition } from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 import { type EutaxonomyNonFinancialsData } from '@clients/backend';
 

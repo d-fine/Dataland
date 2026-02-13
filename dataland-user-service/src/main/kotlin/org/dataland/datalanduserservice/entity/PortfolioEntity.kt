@@ -4,16 +4,20 @@ import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import java.util.UUID
 
 /**
- *
+ * The entity storing portfolio information
  */
 @Entity
 @Table(
@@ -36,15 +40,22 @@ data class PortfolioEntity(
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")
     val companyIds: MutableSet<String>,
-    val isMonitored: Boolean? = false,
-    val startingMonitoringPeriod: String?,
+    val isMonitored: Boolean = false,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "portfolio_monitored_frameworks", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "frameworks")
     val monitoredFrameworks: Set<String>?,
+    @Enumerated(EnumType.STRING)
+    val notificationFrequency: NotificationFrequency = NotificationFrequency.Weekly,
+    @Enumerated(EnumType.STRING)
+    val timeWindowThreshold: TimeWindowThreshold? = null,
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "portfolio_shared_users", joinColumns = [JoinColumn(name = "portfolio_id")])
+    @Column(name = "shared_user_ids")
+    val sharedUserIds: Set<String>?,
 ) {
     /**
-     * create PortfolioResponse from entity
+     * Converts this PortfolioEntity to a BasePortfolio API model.
      */
     fun toBasePortfolio(): BasePortfolio =
         BasePortfolio(
@@ -54,8 +65,10 @@ data class PortfolioEntity(
             creationTimestamp,
             lastUpdateTimestamp,
             companyIds,
-            isMonitored ?: false,
-            startingMonitoringPeriod,
+            isMonitored,
             monitoredFrameworks ?: emptySet(),
+            notificationFrequency,
+            timeWindowThreshold,
+            sharedUserIds ?: emptySet(),
         )
 }

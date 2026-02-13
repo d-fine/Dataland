@@ -1,13 +1,4 @@
-ARG DATALAND_GRADLE_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
+FROM scratch AS builder
 
 WORKDIR /app
-COPY ./dataland-qa-service/ ./dataland-qa-service/
-COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
-COPY ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-specification-service/specificationServiceOpenApi.json
-COPY ./dataland-backend-utils/ ./dataland-backend-utils/
-COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
-COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
-COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
-COPY ./.git/ ./.git
-RUN ./gradlew dataland-qa-service:bootJar --no-daemon --stacktrace
+COPY ./dataland-qa-service/build/libs/*.jar ./dataland-qa-service/build/libs/

@@ -18,7 +18,9 @@ export function convertCurrencyNumbersToNotationWithLetters(
     { value: 1e15, symbol: 'QA' },
     { value: 1e18, symbol: 'QI' },
   ];
-  if (numberToConvert !== undefined) {
+  if (numberToConvert === undefined) {
+    return '';
+  } else {
     const regex = /\.0+$|(\.d*[1-9])0+$/;
     const item = lookup
       .slice()
@@ -29,7 +31,5 @@ export function convertCurrencyNumbersToNotationWithLetters(
           ' ' +
           item.symbol
       : '0';
-  } else {
-    return '';
   }
 }

@@ -4,20 +4,19 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbackendutils.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -37,12 +36,12 @@ class SingleDataRequestManager
         private val dataRequestLogger: DataRequestLogger,
         private val dataRequestRepository: DataRequestRepository,
         private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
-        private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+        private val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
+        private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
         private val dataAccessManager: DataAccessManager,
         private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         private val securityUtilsService: SecurityUtilsService,
         private val companyRolesManager: CompanyRolesManager,
-        private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         /**
@@ -99,7 +98,7 @@ class SingleDataRequestManager
             return buildResponseForSingleDataRequest(
                 singleDataRequest,
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
+                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS]?.toList() ?: listOf(),
             )
         }
@@ -113,10 +112,10 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userIdToUse: String,
         ): PreprocessedRequest {
-            dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
+            keycloakAdapterRequestProcessingUtils.throwExceptionIfNotJwtAuth()
 
             val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
-                dataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
+                communityManagerDataRequestProcessingUtils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
             if (rejectedIdentifiers.isNotEmpty()) {
                 throw ResourceNotFoundApiException(
                     "The company identifier is unknown.",
@@ -158,7 +157,7 @@ class SingleDataRequestManager
                     contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
+            } else if (communityManagerDataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
@@ -167,9 +166,9 @@ class SingleDataRequestManager
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
             ) {
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
+                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
-                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
+                communityManagerDataRequestProcessingUtils.storeDataRequestEntityAsOpen(
                     userId = preprocessedRequest.userId,
                     datalandCompanyId = preprocessedRequest.companyId,
                     dataType = preprocessedRequest.dataType,
@@ -188,7 +187,7 @@ class SingleDataRequestManager
             userId: String,
         ): Boolean {
             val matchingDatasetExists =
-                dataRequestProcessingUtils.matchingDatasetExists(
+                communityManagerDataRequestProcessingUtils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
                     dataType = dataType,
                 )
@@ -210,30 +209,18 @@ class SingleDataRequestManager
             )
         }
 
-        private fun requestIsForPremiumUser(userId: String): Boolean {
-            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
-            return if (userId == authenticationOfLoggedInUser.userId) {
-                authenticationOfLoggedInUser.roles.contains(
-                    DatalandRealmRole.ROLE_PREMIUM_USER,
-                )
-            } else {
-                keycloakUserService.getUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
-            }
-        }
-
         private fun performQuotaCheckForNonPremiumUser(
             userId: String,
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            if (!requestIsForPremiumUser(userId) &&
+            if (!keycloakAdapterRequestProcessingUtils.userIsPremiumUser(userId) &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
                         userId, getEpochTimeStartOfDay(),
                     )
-
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
                     > maxRequestsForUser
                 ) {
@@ -340,6 +327,14 @@ class SingleDataRequestManager
                 reportingPeriodOfStoredAccessRequests,
             )
 
+        /**
+         * Builds a response message for a single data request based on the total number of reporting periods
+         * and the number of reporting periods corresponding to duplicate requests.
+         *
+         * @param totalNumberOfReportingPeriods The total number of reporting periods in the request.
+         * @param numberOfReportingPeriodsCorrespondingToDuplicates The number of reporting periods that correspond to duplicate requests.
+         * @return A response message as a String.
+         */
         private fun buildResponseMessageForSingleDataRequest(
             totalNumberOfReportingPeriods: Int,
             numberOfReportingPeriodsCorrespondingToDuplicates: Int,

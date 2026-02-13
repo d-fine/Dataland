@@ -13,7 +13,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { roundNumber } from '@/utils/NumberConversionUtils';
 import { formatAmountWithCurrency } from '@/utils/Formatter';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
-import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-non-financials/ViewConfig';
+import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/custom/EuTaxoNonFinancialsStaticViewConfig.ts';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
   getCellValueContainer,
@@ -44,20 +44,20 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           ].includes(it.companyInformation.companyName)
         );
 
-        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0].t.revenue?.totalAmount);
+        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0]!.t.revenue?.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
         revenueOfDatasetAlphaTotalAmount.currency = 'EUR';
 
-        betaCapex = assertDefined(fixturesForTests[1].t.capex);
+        betaCapex = assertDefined(fixturesForTests[1]!.t.capex);
 
-        gammaCapex = assertDefined(fixturesForTests[2].t.capex);
+        gammaCapex = assertDefined(fixturesForTests[2]!.t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
         if (!gammaCapexAlignedActivities.value || gammaCapexAlignedActivities.value.length < 1) {
           throw new Error(
             'Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value[0];
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value[0]!;
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
@@ -67,7 +67,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
             'Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value[0];
+        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value[0]!;
         gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
         assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0;
 
@@ -116,7 +116,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
       getCellValueContainer('Total Amount', 2)
         .invoke('text')
-        .should('match', new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
+        .should('match', new RegExp(String.raw`^${gammaCapexTotalAmountFormattedString}\s.*$`));
       getCellValueContainer('Total Amount', 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
@@ -148,7 +148,9 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           .invoke('text')
           .should(
             'match',
-            new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`)
+            new RegExp(
+              String.raw`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\s.*$`
+            )
           );
       });
     });
@@ -158,7 +160,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
     const allReports = fixturesForTests.map((it) => assertDefined(it.t.general?.referencedReports));
     const expectedLatestReportingPeriod = allReportingPeriods[0];
-    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0])[0];
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0]!)[0];
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
       dialogOptions: {
@@ -169,7 +171,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         },
       },
     })(ShowMultipleReportsBanner).then(() => {
-      cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
+      cy.get(`[data-test="frameworkNewDataTableTitle"]`).contains(
         `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
       );
       cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`);

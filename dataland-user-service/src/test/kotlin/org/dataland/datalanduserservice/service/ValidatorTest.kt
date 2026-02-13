@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -45,7 +46,6 @@ class ValidatorTest {
     private val validCompanyId = "valid-company-id"
     private val invalidCompanyId = "invalid-company-id"
     private val isMonitored = true
-    private val dummyStartingMonitoringPeriod = "2023"
     private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
 
     private val validPortfolioUpload =
@@ -53,8 +53,8 @@ class ValidatorTest {
             dummyPortfolioName,
             setOf(validCompanyId),
             isMonitored,
-            dummyStartingMonitoringPeriod,
             dummyMonitoredFrameworks,
+            NotificationFrequency.Weekly,
         )
 
     @BeforeEach
@@ -125,7 +125,7 @@ class ValidatorTest {
 
     @Test
     fun `test that replacing an existing portfolio by portfolio with invalid companyId throws ResourceNotFoundException`() {
-        val invalidPortfolioPayload = validPortfolioUpload.copy(companyIds = setOf(validCompanyId, invalidCompanyId))
+        val invalidPortfolioPayload = validPortfolioUpload.copy(identifiers = setOf(validCompanyId, invalidCompanyId))
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioForUser(dummyPortfolioId.toString(), dummyCorrelationId)
@@ -145,7 +145,7 @@ class ValidatorTest {
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioForUser(dummyPortfolioId.toString(), dummyCorrelationId)
-        doReturn(BasePortfolio(validPortfolioUpload)).whenever(mockPortfolioService).getPortfolio(any())
+        doReturn(BasePortfolio(validPortfolioUpload)).whenever(mockPortfolioService).getPortfolio(any(), any())
         doReturn(true)
             .whenever(mockPortfolioService)
             .existsPortfolioWithNameForUser(invalidPortfolioName, dummyCorrelationId)

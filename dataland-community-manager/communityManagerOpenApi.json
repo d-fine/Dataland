@@ -245,7 +245,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -329,7 +329,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -403,7 +403,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -461,6 +461,130 @@
         ]
       }
     },
+    "/company-rights": {
+      "post": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Post a company right assignment.",
+        "description": "Assign a company right to a Dataland company, specified by its ID.",
+        "operationId": "postCompanyRight",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyRightAssignmentString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully assigned the company right.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyRightAssignmentString"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may assign company rights."
+          },
+          "404": {
+            "description": "Dataland does not know the specified company ID."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Delete a company right assignment.",
+        "description": "Remove a company right from a Dataland company.",
+        "operationId": "deleteCompanyRight",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyRightAssignmentString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the company right assignment.",
+            "content": {}
+          },
+          "403": {
+            "description": "Only Dataland admins may remove company rights."
+          },
+          "404": {
+            "description": "The company right assignment which you want to delete does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/company-ownership/{companyId}": {
       "post": {
         "tags": [
@@ -473,7 +597,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -537,7 +661,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -730,7 +854,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -741,7 +865,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "type": "string"
@@ -820,7 +944,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -928,7 +1052,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1078,7 +1202,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1186,7 +1310,7 @@
           {
             "name": "datalandCompanyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -1259,7 +1383,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1343,6 +1467,84 @@
         ]
       }
     },
+    "/inherited-roles/{userId}": {
+      "get": {
+        "tags": [
+          "inherited-roles-controller"
+        ],
+        "summary": "Get inherited roles for a user.",
+        "description": "For the specified user, get a mapping from company IDs to the lists of associated inherited roles.",
+        "operationId": "getInheritedRoles",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved inherited roles for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "description": "A map from Dataland company IDs to the list of inherited roles in those companies for the specified user.",
+                  "example": {
+                    "c9710c7b-9cd6-446b-85b0-3773d2aceb48": [
+                      "DatalandMember"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query the inherited roles of other users."
+          },
+          "404": {
+            "description": "Dataland does not know the specified user ID."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/emails/{companyId}/recommended-users": {
       "get": {
         "tags": [
@@ -1355,7 +1557,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1436,7 +1638,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string",
@@ -1475,6 +1677,79 @@
           },
           "404": {
             "description": "The specified company does not exist on Dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/company-rights/{companyId}": {
+      "get": {
+        "tags": [
+          "company-rights-controller"
+        ],
+        "summary": "Get company rights.",
+        "description": "Get a list of all rights assigned to a Dataland company, specified via its ID.",
+        "operationId": "getCompanyRights",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of company rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "Member",
+                      "Provider"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query company rights."
+          },
+          "404": {
+            "description": "Dataland does not know the specified company ID."
           },
           "default": {
             "description": "An error occurred",
@@ -1697,7 +1972,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -1733,12 +2008,12 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning the request. If set to false, these updates are listed in the weekly summary email."
           }
         }
       },
@@ -1919,7 +2194,7 @@
           },
           "framework": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -1983,8 +2258,8 @@
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "MemberAdmin",
-          "Member",
+          "Admin",
+          "Analyst",
           "CompanyOwner",
           "DataUploader"
         ]
@@ -2002,13 +2277,35 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {
             "type": "string",
             "description": "The unique identifier of the user in the company role assignment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        }
+      },
+      "CompanyRightAssignmentString": {
+        "required": [
+          "companyId",
+          "companyRight"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyRight": {
+            "type": "string",
+            "description": "One of the Dataland-specific rights which can be assigned to a company on Dataland.",
+            "enum": [
+              "Member",
+              "Provider"
+            ]
           }
         }
       },
@@ -2045,8 +2342,8 @@
           },
           "message": {
             "type": "string",
-            "description": "A text about the result of Dataland processing the data request.",
-            "example": "Your data request was stored successfully."
+            "description": "A message to be sent to the specified company contacts.",
+            "example": "Please consider sharing your data on Dataland."
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
@@ -2134,7 +2431,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2144,7 +2441,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "messageHistory": {
@@ -2285,7 +2582,7 @@
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -2295,7 +2592,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -2346,7 +2643,7 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -2364,7 +2661,7 @@
           },
           "datalandCompanyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "aggregatedPriority": {
@@ -2392,7 +2689,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "userId": {

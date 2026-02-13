@@ -1,21 +1,15 @@
 package org.dataland.datalandbackend.utils
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
-import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -27,30 +21,10 @@ import org.springframework.stereotype.Service
 class DataPointUtils
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
-        private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val specificationService: SpecificationService,
     ) {
-        private val logger = LoggerFactory.getLogger(javaClass)
-
-        /**
-         * Retrieve a framework specification from the specification service
-         * @param framework the name of the framework to retrieve the specification for
-         * @return the FrameworkSpecification object
-         * @throws InvalidInputApiException if the framework is not found
-         */
-        fun getFrameworkSpecification(framework: String): FrameworkSpecification =
-            try {
-                specificationClient.getFrameworkSpecification(framework)
-            } catch (clientException: ClientException) {
-                logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
-                throw InvalidInputApiException(
-                    "Framework $framework not found.",
-                    "The specified framework $framework is not known to the specification service.",
-                )
-            }
-
         /**
          * Retrieve a framework specification from the specification service
          * @param framework the name of the framework to retrieve the specification for
@@ -69,8 +43,8 @@ class DataPointUtils
          * @return a set of all relevant data point types
          */
         fun getRelevantDataPointTypes(framework: String): Set<String> {
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
+            val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
         }
 
@@ -170,79 +144,5 @@ class DataPointUtils
                     }
             }
             return allRelevantDimensions.distinct()
-        }
-
-        /**
-         * Return the template of a specific framework
-         * @param framework the framework for which the template shall be returned
-         */
-        fun getFrameworkTemplate(framework: String): JsonNode {
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
-            referencedReportsUtilities
-                .insertReferencedReportsIntoFrameworkSchema(
-                    frameworkTemplate,
-                    frameworkSpecification.referencedReportJsonPath,
-                )
-            return frameworkTemplate
-        }
-
-        /**
-         * Get basic data point dimensions (companyId, dataPointType, reportingPeriod) for given
-         * data dimensions (companyId, framework, reportingPeriod).
-         * @param dataDimensionsSet a set of data dimensions
-         * @return a map associating each passed data dimension with a list of corresponding data point dimensions
-         */
-        fun getBasicDataPointDimensionsForDataDimensions(
-            dataDimensionsSet: Set<BasicDataDimensions>,
-            correlationId: String,
-        ): Map<BasicDataDimensions, List<BasicDataPointDimensions>> {
-            logger.info("Request data point dimensions for a set of data dimension objects. Correlation ID: $correlationId")
-            val dataDimensionsByFramework = dataDimensionsSet.groupBy { it.dataType }
-            val result = mutableMapOf<BasicDataDimensions, List<BasicDataPointDimensions>>()
-
-            dataDimensionsByFramework.entries.forEach { (framework, frameworkSpecificDataDimensions) ->
-                val relevantDataPointTypes = getRelevantDataPointTypes(framework)
-                result.putAll(
-                    frameworkSpecificDataDimensions.associateWith { dataDimension ->
-                        relevantDataPointTypes.map { dataPointType -> dataDimension.toBasicDataPointDimensions(dataPointType) }
-                    },
-                )
-            }
-
-            return result
-        }
-
-        /**
-         * Assemble a single data set using the provided list of uploaded data points and the framework template
-         * @param dataPoints the data points of the data set as retrieved from the internal storage
-         * @param frameworkTemplate the framework template to be used as a basis
-         */
-        fun assembleSingleDataSet(
-            dataPoints: Collection<UploadedDataPoint>,
-            frameworkTemplate: JsonNode,
-        ): String {
-            val referencedReports = mutableMapOf<String, CompanyReport>()
-            val allDataPoints =
-                dataPoints
-                    .associate {
-                        it.dataPointType to objectMapper.readTree(it.dataPoint)
-                    }.toMutableMap()
-
-            dataPoints.forEach {
-                val companyReports = mutableListOf<CompanyReport>()
-                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
-                companyReports.forEach { companyReport ->
-                    referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
-                }
-            }
-            allDataPoints[REFERENCED_REPORTS_ID] = objectMapper.valueToTree(referencedReports)
-
-            val datasetAsJsonNode =
-                JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) {
-                    allDataPoints[it]
-                }
-
-            return datasetAsJsonNode.toString()
         }
     }

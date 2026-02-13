@@ -6,6 +6,25 @@ import { DataTypeEnum } from '@clients/backend';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import router from '@/router';
 
+/**
+ * Mounts the DatasetOverviewTable with all dataset table entries passed to it
+ * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
+ */
+function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
+  const keycloakMock = minimalKeycloakMock({
+    userId: 'Mock-User-Id',
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
+  });
+  //@ts-ignore
+  cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
+    keycloak: keycloakMock,
+  }).then((mocked) => {
+    void mocked.wrapper.setProps({
+      datasetTableInfos: mockDatasetTableInfos,
+    });
+  });
+}
+
 describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyAlpha = 'Imaginary-Corporate';
   const dataTypeOfDatasetForAlpha = DataTypeEnum.Lksg;
@@ -33,25 +52,6 @@ describe('Component test for DatasetOverviewTable', () => {
     };
   }
 
-  /**
-   * Mounts the DatasetOverviewTable with all dataset table entries passed to it
-   * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
-   */
-  function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
-    const keycloakMock = minimalKeycloakMock({
-      userId: 'Mock-User-Id',
-      roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
-    });
-    //@ts-ignore
-    cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
-      keycloak: keycloakMock,
-    }).then((mocked) => {
-      void mocked.wrapper.setProps({
-        datasetTableInfos: mockDatasetTableInfos,
-      });
-    });
-  }
-
   it('Check if the table rows look as expected', () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
     const expectedRowContents = [
@@ -69,7 +69,7 @@ describe('Component test for DatasetOverviewTable', () => {
       if (index < expectedRowContents.length) {
         expect(element.text()).to.equal(expectedRowContents[index]);
       } else if (index == 4) {
-        expect(Date.parse(element.text()).toString()).not.to.equal(NaN.toString());
+        expect(Date.parse(element.text()).toString()).not.to.equal(Number.NaN.toString());
       } else if (index == 5) {
         expect(element.text()).to.contain('VIEW');
       }
@@ -86,9 +86,9 @@ describe('Component test for DatasetOverviewTable', () => {
   it('Validates the layout of the table header', () => {
     prepareSimpleDatasetOverviewTable([]);
     const expectedHeaders = ['COMPANY', 'DATA FRAMEWORK', 'SUBMISSION DATE', 'REPORTING PERIOD', 'STATUS'];
-    expectedHeaders.forEach((value) => {
+    for (const value of expectedHeaders) {
       cy.get(`table th:contains(${value})`).should('exist');
-    });
+    }
     cy.get('th').each((element) => {
       if (!expectedHeaders.includes(element.text())) {
         expect(element.html()).to.contain('<input');

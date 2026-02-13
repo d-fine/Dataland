@@ -51,6 +51,9 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
+    testImplementation(project(":dataland-backend-utils", "testArtifacts"))
+    testImplementation(libs.testcontainers.postgresql)
+    testImplementation(libs.mockito.kotlin)
 }
 
 openApi {
@@ -120,6 +123,8 @@ tasks.register("generateClients") {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
@@ -135,9 +140,4 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn(":dataland-backend-utils:assemble")
-    dependsOn(":dataland-message-queue-utils:assemble")
 }

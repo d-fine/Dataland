@@ -3,7 +3,7 @@ import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtil
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
-import { uploadAllDocuments } from '@e2e/utils/DocumentUpload';
+import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
 import {
   type PublicApiClientConstructor,
   uploadGenericFrameworkData,
@@ -17,6 +17,36 @@ import { DataTypeEnum, type VsmeData } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 
 const chunkSize = 15;
+
+/**
+ * Checks that all the uploaded company ids and data ids can be retrieved
+ * @param frameworkIdentifier The framework to check
+ * @param expectedNumberOfCompanies The expected number of companies
+ */
+function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCompanies: number): void {
+  it(
+    'Checks that all the uploaded company ids and data ids can be retrieved',
+    {
+      retries: {
+        runMode: 5,
+        openMode: 5,
+      },
+    },
+    () => {
+      cy.getKeycloakToken(admin_name, admin_pw)
+        .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier)))
+        .then((response) => {
+          assert(
+            response.numberOfDatasetsForDataType === expectedNumberOfCompanies &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+            `Found ${response.numberOfCompaniesForDataType} companies having 
+          ${response.numberOfDatasetsForDataType} datasets with datatype ${frameworkIdentifier}, 
+          but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
+          );
+        });
+    }
+  );
+}
 
 describe(
   'As a user, I want to be able to see some data on the Dataland webpage',
@@ -34,38 +64,6 @@ describe(
         uploadAllDocuments(token);
       });
     });
-
-    /**
-     * Checks that all the uploaded company ids and data ids can be retrieved
-     * @param frameworkIdentifier The framework to check
-     * @param expectedNumberOfCompanies The expected number of companies
-     */
-    function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCompanies: number): void {
-      it(
-        'Checks that all the uploaded company ids and data ids can be retrieved',
-        {
-          retries: {
-            runMode: 5,
-            openMode: 5,
-          },
-        },
-        () => {
-          cy.getKeycloakToken(admin_name, admin_pw)
-            .then((token) =>
-              wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier))
-            )
-            .then((response) => {
-              assert(
-                response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                  response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                `Found ${response.numberOfCompaniesForDataType} companies having 
-          ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
-          but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
-              );
-            });
-        }
-      );
-    }
 
     /**
      * A meta-programming function that allows the registration of a new framework for prepopulation

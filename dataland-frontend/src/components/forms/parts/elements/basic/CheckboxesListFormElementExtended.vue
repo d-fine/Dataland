@@ -137,7 +137,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export default defineComponent({
-  name: 'ExtendedDataPointFormField',
+  name: 'CheckboxesListFormElementExtended',
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, ToggleSwitch, Checkbox },
   inject: {
     injectReportsNameAndReferences: {
@@ -164,7 +164,7 @@ export default defineComponent({
       currentReportValue: undefined as string | undefined,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: undefined as string | undefined,
-      checkboxValue: [] as Array<string>,
+      checkboxValue: [] as string[],
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
@@ -218,27 +218,31 @@ export default defineComponent({
   },
   watch: {
     currentValue(newVal: string) {
-      if (!this.firstAssignmentWhileEditModeWasDone) {
+      if (this.firstAssignmentWhileEditModeWasDone) {
+        return;
+      } else {
         this.setCheckboxValue(newVal);
         this.firstAssignmentWhileEditModeWasDone = true;
-      } else {
-        return;
       }
     },
 
     checkboxValue(newArr: string[]) {
       if (newArr.length > 1) {
-        const last = newArr[newArr.length - 1];
+        const last = newArr.at(-1);
+        if (last === undefined) return;
+
         this.checkboxValue = [last];
         this.yesNoValue = last;
-      } else if (newArr.length === 1) {
+        return;
+      }
+      if (newArr.length === 1) {
         const [only] = newArr;
         if (this.yesNoValue !== only) {
           this.yesNoValue = only;
         }
-      } else {
-        this.yesNoValue = undefined;
+        return;
       }
+      this.yesNoValue = undefined;
     },
   },
   methods: {

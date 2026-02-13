@@ -61,12 +61,12 @@ const isAccessRequestFailed = ref(false);
 const requestableOptions = computed<RequestableOption[]>(() => {
   const reportingPeriodToLatestUploadTime = new Map<string, number>();
 
-  props.metaInfoOfAvailableDatasets.forEach((singleMetaInfo) => {
+  for (const singleMetaInfo of props.metaInfoOfAvailableDatasets) {
     const existingMaxUploadTime = reportingPeriodToLatestUploadTime.get(singleMetaInfo.reportingPeriod);
     if (existingMaxUploadTime === undefined || singleMetaInfo.uploadTime > existingMaxUploadTime) {
       reportingPeriodToLatestUploadTime.set(singleMetaInfo.reportingPeriod, singleMetaInfo.uploadTime);
     }
-  });
+  }
 
   return Array.from(reportingPeriodToLatestUploadTime, ([reportingPeriod, maxUploadTime]) => ({
     reportingPeriod,
@@ -84,7 +84,8 @@ async function submitDataRequestsForSelection(): Promise<void> {
     try {
       messageCounter.value++;
       isAccessRequestFailed.value = false;
-      const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
+      const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients
+        .communityManagerRequestController;
       const reportingPeriodsToRequest = selectedOptions.value.map((it) => it.reportingPeriod);
       await requestController.postSingleDataRequest({
         companyIdentifier: props.companyId,

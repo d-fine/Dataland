@@ -11,7 +11,7 @@
     :popup="true"
     :pt="{
       root: {
-        style: 'top: 4rem; right: 0',
+        style: 'position: fixed; top: 4rem; right: 0; z-index: 1000;',
       },
       list: {
         'data-test': 'profileMenu',

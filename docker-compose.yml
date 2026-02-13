@@ -1,4 +1,3 @@
-version: "3.8"
 # Docker-compose file for the dataland stack.
 # Things can be configured by using docker-compose profiles. Valid profiles:
 # production: The profile to be used if the stack is deployed in a production-like setup
@@ -54,6 +53,7 @@ services:
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
+      DISABLE_HSTS: ${DISABLE_HSTS:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -68,6 +68,8 @@ services:
       - backend-db
       - keycloak-db
       - api-key-manager-db
+      - accounting-service-db
+      - data-sourcing-service-db
       - internal-storage-db
       - document-manager-db
       - qa-service-db
@@ -77,7 +79,7 @@ services:
       - grafana
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5441:5433-5441"
+      - "127.0.0.1:5433-5443:5433-5443"
       - "127.0.0.1:5672:5672"
     logging:
       <<: *loki-logging
@@ -114,6 +116,76 @@ services:
       PGUSER: api_key_manager
     logging:
       <<: *loki-logging
+  accounting-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - accounting-service-db
+    image: ${ACCOUNTING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_accounting_service_test:${DATALAND_ACCOUNTING_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
+    depends_on:
+      - accounting-service-db
+    <<: *uncritical-constants-env
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
+  accounting-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - accounting-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+    volumes:
+      - accounting_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: accounting_service
+      POSTGRES_USER: accounting_service
+      POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
+      PGUSER: accounting_service
+    logging:
+      <<: *loki-logging
+  data-sourcing-service:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - internal
+          - data-sourcing-service-db
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        expose:
+          - "8080"
+        depends_on:
+          - data-sourcing-service-db
+        <<: *uncritical-constants-env
+        environment:
+          <<: *rabbit-mq-user-and-pass
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        logging:
+          <<: *loki-logging
+  data-sourcing-service-db:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - data-sourcing-service-db
+        image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+        volumes:
+          - data_sourcing_service_data:/var/lib/postgresql/data
+        environment:
+          POSTGRES_DB: data_sourcing_service
+          POSTGRES_USER: data_sourcing_service
+          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          PGUSER: data_sourcing_service
+        logging:
+          <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -152,7 +224,7 @@ services:
       <<: *loki-logging
   backend:
     restart: always
-    profiles: [ "production", "testing" ]
+    profiles: [ "production", "testing", "developmentContainerBackend" ]
     networks:
       - internal
       - backend-db
@@ -209,8 +281,8 @@ services:
       KEYCLOAK_PREMIUM_USER_PASSWORD: ${KEYCLOAK_PREMIUM_USER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
       GRAFANA_ADMIN: ${GRAFANA_ADMIN}
       GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
@@ -229,7 +301,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.11.1@sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544
+    image: node:24.13.0@sha256:1de022d8459f896fff2e7b865823699dc7a8d5567507e8b87b14a7442e07f206
     networks:
       internal:
         aliases:
@@ -333,8 +405,8 @@ services:
     command: initialize
     environment:
       <<: *mailjet-api-id-and-secret
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_READER_VALUE: ${KEYCLOAK_READER_VALUE}
@@ -348,7 +420,9 @@ services:
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
@@ -374,6 +448,8 @@ services:
       - keycloak-db
       - backend-db
       - api-key-manager-db
+      - accounting-service-db
+      - data-sourcing-service-db
       - internal
       - internal-storage-db
       - document-manager-db
@@ -390,6 +466,8 @@ services:
       KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
+      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -474,6 +552,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
+      USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
     depends_on:
       - user-service-db
@@ -647,7 +726,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:d5f196a551b5cef1c70853c6dd588f456d16ca4ea733e3f31c75bc1ae2f65f3f
+    image: postgres:alpine@sha256:b40d931bd0e7ce6eecc59a5a6ac3b3c04a01e559750e73e7086b6dbd7f8bf545
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -708,6 +787,11 @@ services:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    healthcheck:
+      test: ["CMD", "/usr/bin/loki", "-config.file=/etc/loki/loki-config.yaml", "-verify-config"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:
@@ -738,7 +822,9 @@ networks:
   external:
   keycloak-db:
   backend-db:
+  accounting-service-db:
   api-key-manager-db:
+  data-sourcing-service-db:
   internal-storage-db:
   document-manager-db:
   qa-service-db:
@@ -753,6 +839,10 @@ volumes:
   backend_data:
     driver: local
   api_key_manager_data:
+    driver: local
+  accounting_service_data:
+    driver: local
+  data_sourcing_service_data:
     driver: local
   internal_storage_data:
     driver: local

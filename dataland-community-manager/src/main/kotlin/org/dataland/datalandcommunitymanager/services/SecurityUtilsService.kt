@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -25,14 +26,15 @@ class SecurityUtilsService(
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyRolesManager: CompanyRolesManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
+    @Autowired private val inheritedRolesManager: InheritedRolesManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val roleModificationPermissionsMap =
         mapOf(
             CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
             CompanyRole.DataUploader to emptyList(),
-            CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
-            CompanyRole.Member to emptyList(),
+            CompanyRole.Admin to listOf(CompanyRole.Admin, CompanyRole.Analyst),
+            CompanyRole.Analyst to emptyList(),
         )
 
     /**
@@ -41,6 +43,29 @@ class SecurityUtilsService(
     fun isUserRequestingForOwnId(userIdRequester: String?): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
+    }
+
+    /**
+     * Returns true if the current user is a Dataland member based on their inherited roles.
+     */
+    fun isCurrentUserDatalandMember(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+        val inheritedRoles = inheritedRolesManager.getInheritedRoles(UUID.fromString(userId))
+        return DerivedRightsUtils.isUserDatalandMember(inheritedRoles)
+    }
+
+    /**
+     * Returns true if the current user has the role CompanyOwner or Admin for at least one company.
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserOwnerOrAdminOfAtLeastOneCompany(): Boolean {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return false
+        return companyRoleAssignmentRepository
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = null, userId = userId, companyRole = null,
+            ).any {
+                it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
+            }
     }
 
     /**
@@ -107,7 +132,7 @@ class SecurityUtilsService(
      * Returns true if the user is member of the company
      * @param companyId Dataland company ID
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isUserMemberOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false
@@ -122,13 +147,13 @@ class SecurityUtilsService(
      * @param companyId Dataland company ID
      */
     @Transactional(readOnly = true)
-    fun isUserOwnerOrMemberAdminOfTheCompany(companyId: UUID?): Boolean {
+    fun isUserOwnerOrAdminOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false
         return companyRoleAssignmentRepository.findByCompanyIdAndUserIdAndCompanyRoleIsIn(
             companyId = companyId.toString(),
             userId = userId,
-            companyRoles = listOf(CompanyRole.CompanyOwner, CompanyRole.MemberAdmin),
+            companyRoles = listOf(CompanyRole.CompanyOwner, CompanyRole.Admin),
         ) != null
     }
 
@@ -203,8 +228,8 @@ class SecurityUtilsService(
     fun areAllParametersUnset(vararg parameters: Any?): Boolean =
         parameters.all {
             when (it) {
-                is String -> it.isNullOrBlank()
-                is Collection<*> -> it.isNullOrEmpty()
+                is String -> it.isBlank()
+                is Collection<*> -> it.isEmpty()
                 else -> it == null
             }
         }

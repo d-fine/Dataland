@@ -1,4 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
+// @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 
 /**

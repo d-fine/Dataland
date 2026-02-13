@@ -11,7 +11,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional
 class DataPointQaReportManager(
     @Autowired private val dataPointControllerApi: DataPointControllerApi,
     @Autowired private val qaReportRepository: DataPointQaReportRepository,
-    @Autowired private val dataPointQaReviewManager: DataPointQaReviewManager,
     @Autowired private val qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -69,7 +67,7 @@ class DataPointQaReportManager(
             val exceptionToThrow =
                 if (ex.statusCode == HttpStatus.BAD_REQUEST.value()) {
                     InvalidInputApiException(
-                        "Provided data point verdict does not conform to data point specification",
+                        "Provided 'correctedData' does not conform to data point specification",
                         "The provided data point verdict does not conform to the data point specification for " +
                             "'${dataPointMetaInfo.dataPointType}'",
                         ex,
@@ -95,27 +93,10 @@ class DataPointQaReportManager(
         dataPointId: String,
         reporterUserId: String,
         uploadTime: Long,
-        correlationId: String,
     ): DataPointQaReport {
         val dataPointMetaInfo = ensureDatalandDataPointExists(dataPointId)
         ensureQaReportConformsToSpecification(report, dataPointMetaInfo)
         qaReportRepository.markAllReportsInactiveByDataPointIdAndReportingUserId(dataPointId, reporterUserId)
-
-        val mappedQaStatus = report.verdict.toQaStatus()
-        if (mappedQaStatus != null) {
-            dataPointQaReviewManager.reviewDataPoints(
-                listOf(
-                    ReviewDataPointTask(
-                        dataPointId = dataPointId,
-                        qaStatus = mappedQaStatus,
-                        triggeringUserId = reporterUserId,
-                        comment = report.comment,
-                        correlationId = correlationId,
-                        timestamp = uploadTime,
-                    ),
-                ),
-            )
-        }
 
         return qaReportRepository
             .save(

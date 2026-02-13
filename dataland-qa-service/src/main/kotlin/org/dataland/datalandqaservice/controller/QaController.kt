@@ -78,14 +78,13 @@ class QaController(
                 "(correlationId: $correlationId)",
         )
 
-        val qaReviewEntity =
-            qaReviewManager.saveQaReviewEntity(
-                dataId = dataId,
-                qaStatus = qaStatus,
-                triggeringUserId = reviewerId,
-                comment = comment,
-                correlationId = correlationId,
-            )
+        qaReviewManager.handleQaChange(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            triggeringUserId = reviewerId,
+            comment = comment,
+            correlationId = correlationId,
+        )
         dataPointQaReviewManager.reviewAssembledDataset(
             dataId = dataId,
             qaStatus = qaStatus,
@@ -93,9 +92,6 @@ class QaController(
             comment = comment,
             correlationId = correlationId,
             overwriteDataPointQaStatus = overwriteDataPointQaStatus,
-        )
-        qaReviewManager.sendQaStatusUpdateMessage(
-            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
         )
     }
 
@@ -118,7 +114,7 @@ class QaController(
     }
 
     override fun getDataPointQaReviewInformationByDataId(dataPointId: String): ResponseEntity<List<DataPointQaReviewInformation>> {
-        logger.info("Received request to retrieve the review information of the dataset with identifier $dataPointId")
+        logger.info("Received request to retrieve the review information of the data point with identifier $dataPointId")
         return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewInformationByDataId(dataPointId))
     }
 

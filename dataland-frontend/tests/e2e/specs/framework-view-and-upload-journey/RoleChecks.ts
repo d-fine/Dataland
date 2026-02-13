@@ -57,39 +57,39 @@ describeIf(
 
     it('Check if a non uploader user can access only the corresponding pages', () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
-      readerAndUploaderPages.forEach((page) => {
+      for (const page of readerAndUploaderPages) {
         it(`Non uploader should be able to access ${page}`, () => {
           cy.visit(page);
           cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
         });
-      });
-      uploaderOnlyPages.forEach((page) => {
+      }
+      for (const page of uploaderOnlyPages) {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
-      });
-      reviewerOnlyPages.forEach((page) => {
+      }
+      for (const page of reviewerOnlyPages) {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
-      });
+      }
     });
 
     it('Check if an uploader user can access the corresponding pages', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
-      readerAndUploaderPages.forEach((page) => {
+      for (const page of readerAndUploaderPages) {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
-      });
-      uploaderOnlyPages.forEach((page) => {
+      }
+      for (const page of uploaderOnlyPages) {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
-      });
+      }
     });
     it('Check if an reviewer user can access the corresponding page', () => {
       cy.ensureLoggedIn(reviewer_name, reviewer_pw);
-      reviewerOnlyPages.forEach((page) => {
+      for (const page of reviewerOnlyPages) {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
-      });
+      }
     });
   }
 );

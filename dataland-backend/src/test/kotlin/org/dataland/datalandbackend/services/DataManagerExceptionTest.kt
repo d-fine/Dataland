@@ -6,9 +6,11 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -34,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
+import java.util.UUID
 
 /**
  * A class for testing cases where DataManager should throw an exception.
@@ -42,6 +45,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@DefaultMocks
 @Suppress("LongParameterList")
 class DataManagerExceptionTest
     @Autowired
@@ -214,7 +218,7 @@ class DataManagerExceptionTest
             )
             dataManager =
                 DataManager(
-                    objectMapper, companyQueryManager, mockDataMetaInformationManager,
+                    companyQueryManager, mockDataMetaInformationManager,
                     mockStorageClient, dataManagerUtils, mockMessageQueuePublications,
                 )
             assertThrows<ResourceNotFoundApiException> {
@@ -227,15 +231,19 @@ class DataManagerExceptionTest
 
         @Test
         fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
-            val changedQaStatusDataId = "453545"
-            val updatedQaStatus = QaStatus.Accepted
-            val currentlyActiveDataId = "1273091"
+            val changedQaStatusDataId = UUID.randomUUID().toString()
             val messageWithChangedQAStatus =
                 objectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         changedQaStatusDataId,
-                        updatedQaStatus,
-                        currentlyActiveDataId,
+                        QaStatus.Accepted,
+                        UUID.randomUUID().toString(),
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr",
+                            "2025",
+                        ),
+                        true,
                     ),
                 )
             val thrown =
@@ -260,6 +268,12 @@ class DataManagerExceptionTest
                         dataId = "",
                         updatedQaStatus = QaStatus.Accepted,
                         currentlyActiveDataId = "1273091",
+                        BasicDataDimensions(
+                            UUID.randomUUID().toString(),
+                            "sfdr",
+                            "2025",
+                        ),
+                        true,
                     ),
                 )
             val thrown =

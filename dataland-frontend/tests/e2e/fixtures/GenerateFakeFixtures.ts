@@ -29,10 +29,10 @@ async function main(): Promise<void> {
 
   for (let i = 0; i < frameworkFixtureModules.length; i++) {
     const module = frameworkFixtureModules[i];
-    const frameworkName = frameworkDirectoryContents[i].name;
+    const frameworkName = frameworkDirectoryContents[i]!.name;
     const seed = setupDeterministicFakerEnvironmentForFramework(frameworkName);
     console.log(`Hash seed for framework '${frameworkName}' is '${seed}'`);
-    module.default();
+    module!.default();
   }
 }
 

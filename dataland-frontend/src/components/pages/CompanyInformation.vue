@@ -15,6 +15,13 @@
             icon="pi pi-check-circle"
             severity="success"
           />
+          <Tag
+            v-if="isDatalandMember && isMemberOfCompanyOrAdmin"
+            data-test="datalandMemberBadge"
+            value="Dataland Member"
+            icon="pi pi-star"
+            severity="warning"
+          />
         </div>
         <div class="right-elements">
           <PrimeButton
@@ -92,10 +99,8 @@ import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwn
 import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { getErrorMessage } from '@/utils/ErrorMessageUtils';
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import type { BasePortfolio } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
@@ -104,8 +109,12 @@ import Tag from 'primevue/tag';
 import { useDialog } from 'primevue/usedialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { type NavigationFailure, type RouteLocationNormalizedLoaded } from 'vue-router';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { getCompanyInformation, getDisplayLei } from '@/utils/CompanyInformation.ts';
+import { getErrorMessage } from '@/utils/ErrorMessageUtils.ts';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const authenticated = inject<boolean>('authenticated');
 const dialog = useDialog();
 
@@ -118,6 +127,8 @@ const waitingForData = ref<boolean>(true);
 const companyIdDoesNotExist = ref<boolean>(false);
 const isUserCompanyOwner = ref<boolean>(false);
 const hasCompanyOwner = ref<boolean>(false);
+const isDatalandMember = ref<boolean>(false);
+const isMemberOfCompanyOrAdmin = ref<boolean>(false);
 const dialogIsOpen = ref<boolean>(false);
 const claimIsSubmitted = ref<boolean>(false);
 const hasParentCompany = ref<boolean | undefined>(undefined);
@@ -133,9 +144,7 @@ const displaySector = computed(() => {
   }
 });
 
-const displayLei = computed(() => {
-  return companyInformation.value?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
-});
+const displayLei = computed(() => getDisplayLei(companyInformation.value));
 
 const props = defineProps({
   companyId: {
@@ -148,28 +157,89 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  fetchDataForThisPage();
+onMounted(async () => {
+  await loadDataAndCheckForBadge();
 });
 
 watch(
   () => props.companyId,
-  () => {
-    fetchDataForThisPage();
+  async () => {
+    await loadDataAndCheckForBadge();
   }
 );
 
 /**
+ * Loads all relevant data for the company page
+ */
+async function loadDataAndCheckForBadge(): Promise<void> {
+  await fetchDataForThisPage();
+  await checkIfUserIsMemberOrAdmin();
+  if (isMemberOfCompanyOrAdmin.value) {
+    await checkIfCompanyIsDatalandMember();
+  }
+}
+
+/**
+ * Checks if the company is a Dataland Member.
+ */
+async function checkIfCompanyIsDatalandMember(): Promise<void> {
+  try {
+    const companyRightResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
+      props.companyId
+    );
+    isDatalandMember.value = companyRightResponse.data.some((right) => right.includes('Member'));
+  } catch (error) {
+    console.error(error);
+    isDatalandMember.value = false;
+  }
+}
+/**
+ * Checks if the user has any role in the company or is a Dataland admin
+ */
+async function checkIfUserIsMemberOrAdmin(): Promise<void> {
+  if (!props.companyId) return;
+  const keycloak = await getKeycloakPromise();
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
+  const isAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
+
+  try {
+    const userRoleResponse =
+      await apiClientProvider.apiClients.companyRolesController.getExtendedCompanyRoleAssignments(
+        undefined,
+        props.companyId,
+        keycloakUserId
+      );
+    isMemberOfCompanyOrAdmin.value = userRoleResponse.data.length > 0 || isAdmin;
+  } catch (error) {
+    console.error('Error in retrieving company role:', error);
+    isMemberOfCompanyOrAdmin.value = isAdmin;
+  }
+}
+
+/**
  * A complete fetch of all data that is relevant for UI elements of this page
  */
-function fetchDataForThisPage(): void {
+async function fetchDataForThisPage(): Promise<void> {
   try {
-    void getCompanyInformation();
+    const result = await getCompanyInformation(props.companyId, apiClientProvider, getKeycloakPromise);
+    companyInformation.value = result.companyInformation;
+    parentCompany.value = result.parentCompany;
+    hasParentCompany.value = parentCompany.value !== null;
+
+    emits('fetchedCompanyInformation', companyInformation.value);
+
     void setCompanyOwnershipStatus();
     void updateHasCompanyOwner();
+
     claimIsSubmitted.value = false;
   } catch (error) {
     console.error('Error fetching data for new company:', error);
+    companyInformation.value = null;
+    if (getErrorMessage(error).includes('404')) {
+      companyIdDoesNotExist.value = true;
+    }
+  } finally {
+    waitingForData.value = false;
   }
 }
 
@@ -249,55 +319,6 @@ async function updateHasCompanyOwner(): Promise<void> {
  */
 function onCloseDialog(): void {
   dialogIsOpen.value = false;
-}
-
-/**
- * Gets the parent company based on the lei
- * @param parentCompanyLei lei of the parent company
- */
-async function getParentCompany(parentCompanyLei: string): Promise<void> {
-  try {
-    const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-      parentCompanyLei,
-      assertDefined(getKeycloakPromise)(),
-      1
-    );
-    if (companyIdAndNames.length > 0) {
-      parentCompany.value = companyIdAndNames[0];
-      hasParentCompany.value = true;
-    } else {
-      hasParentCompany.value = false;
-    }
-  } catch {
-    console.error(`Unable to find company with LEI: ${companyInformation.value?.parentCompanyLei}`);
-  }
-}
-
-/**
- * Uses the dataland API to retrieve information about the company identified by the local
- * companyId object.
- */
-async function getCompanyInformation(): Promise<void> {
-  waitingForData.value = true;
-  if (props.companyId === undefined) return;
-  try {
-    const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
-    companyInformation.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data;
-    if (companyInformation.value.parentCompanyLei == null) {
-      hasParentCompany.value = false;
-    } else {
-      await getParentCompany(companyInformation.value.parentCompanyLei);
-    }
-    emits('fetchedCompanyInformation', companyInformation.value);
-  } catch (error) {
-    console.error(error);
-    if (getErrorMessage(error).includes('404')) {
-      companyIdDoesNotExist.value = true;
-    }
-    companyInformation.value = null;
-  } finally {
-    waitingForData.value = false;
-  }
 }
 
 /**

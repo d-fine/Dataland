@@ -73,7 +73,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             apiAccessor.companyDataControllerApi.getCompanies(
                 sectors =
                     if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
-                        setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!)
+                        setOf(uploadInfo.actualStoredCompany.companyInformation.sector)
                     } else {
                         null
                     },

@@ -43,17 +43,17 @@ const slides = computed(() => aboutPrinciplesSection.value?.cards ?? []);
 const slideWidth = ref(440);
 
 const updateSlideWidth = (): void => {
-  slideWidth.value = window.innerWidth > 768 ? 440 : 320;
+  slideWidth.value = globalThis.innerWidth > 768 ? 440 : 320;
 };
 updateSlideWidth();
 
 onMounted(() => {
-  window.addEventListener('resize', updateSlideWidth);
+  globalThis.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSlideWidth);
+  globalThis.removeEventListener('resize', updateSlideWidth);
 });
 </script>
 

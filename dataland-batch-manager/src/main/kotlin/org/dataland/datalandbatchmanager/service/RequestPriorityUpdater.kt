@@ -1,17 +1,17 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.dataland.dataSourcingService.openApiClient.api.EnhancedRequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.DataSourcingEnhancedRequest
+import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
+import org.dataland.dataSourcingService.openApiClient.model.RequestSearchFilterString
+import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
-import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.UUID
-
-private const val RESULTS_PER_PAGE = 100
 
 /**
  * Service class for managing and updating the priorities of data requests in the Dataland community manager.
@@ -20,42 +20,48 @@ private const val RESULTS_PER_PAGE = 100
 class RequestPriorityUpdater
     @Autowired
     constructor(
+        private val companyRolesControllerApi: CompanyRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
         private val requestControllerApi: RequestControllerApi,
+        private val enhancedRequestControllerApi: EnhancedRequestControllerApi,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
+        @Value("\${dataland.batch-manager.results-per-page:100}") private val resultsPerPage: Int,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Processes request priority updates for data requests.
          *
-         * This method identifies premium users and administrators by their roles and updates the priority
-         * of their associated requests to high. Similarly, it lowers the priority of requests for users
-         * who do not belong to these roles.
+         * This method identifies Dataland members by their roles and updates the priority of their associated requests
+         * to High. Similarly, it lowers the priority of requests for non-member users.
          */
         fun processRequestPriorityUpdates() {
-            val premiumUserIds = mutableSetOf<String>()
-            for (roleName in listOf("ROLE_PREMIUM_USER", "ROLE_ADMIN")) {
-                premiumUserIds.addAll(
-                    keycloakUserService.getUsersByRole(roleName).map { it.userId },
-                )
-            }
-            require(premiumUserIds.isNotEmpty()) {
-                "No premium users or administrators found. Scheduled update of request priorities failed."
+            val userIdsOfAdmins = keycloakUserService.getUsersByRole("ROLE_ADMIN").map { it.userId }.toSet()
+            val userIdsOfMembers =
+                companyRolesControllerApi
+                    .getExtendedCompanyRoleAssignments()
+                    .map { it.userId }
+                    .filter { derivedRightsUtilsComponent.isUserDatalandMember(it) }
+                    .toSet()
+
+            val userIdsOfAdminsAndMembers = userIdsOfAdmins + userIdsOfMembers
+            require(userIdsOfAdminsAndMembers.isNotEmpty()) {
+                "No Dataland admins or members found. Scheduled update of request priorities failed."
             }
 
-            logger.info("Found ${premiumUserIds.size} premium users and administrators.")
+            logger.info("Found ${userIdsOfAdminsAndMembers.size} users who are Dataland admins or members.")
 
-            logger.info("Upgrading request priorities from Low to High for premium users.")
+            logger.info("Upgrading request priorities from Low to High for Dataland admins and members.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
-            ) { request -> request.userId in premiumUserIds }
+            ) { request -> request.userId in userIdsOfAdminsAndMembers }
 
-            logger.info("Downgrading request priorities from High to Low for regular users.")
+            logger.info("Downgrading request priorities from High to Low for users who are neither admins nor members.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.High,
                 newPriority = RequestPriority.Low,
-            ) { request -> request.userId !in premiumUserIds }
+            ) { request -> request.userId !in userIdsOfAdminsAndMembers }
         }
 
         /**
@@ -64,24 +70,21 @@ class RequestPriorityUpdater
          * @param currentPriority the current priority of requests to filter.
          * @param newPriority the new priority to assign to the filtered requests.
          * @param filterCondition a lambda function that determines whether a request's priority should be updated.
-         *                        It takes an [ExtendedStoredDataRequest] as input and returns a boolean.
+         *                        It takes a StoredRequest as input and returns a boolean.
          */
         private fun updateRequestPriorities(
             currentPriority: RequestPriority,
             newPriority: RequestPriority,
-            filterCondition: (ExtendedStoredDataRequest) -> Boolean,
+            filterCondition: (DataSourcingEnhancedRequest) -> Boolean,
         ) {
             val requests = getAllRequests(currentPriority)
             requests
                 .filter(filterCondition)
                 .forEach { (dataRequestId) ->
                     runCatching {
-                        requestControllerApi.patchDataRequest(
-                            dataRequestId = UUID.fromString(dataRequestId),
-                            dataRequestPatch =
-                                DataRequestPatch(
-                                    requestPriority = newPriority,
-                                ),
+                        requestControllerApi.patchRequestPriority(
+                            dataRequestId = dataRequestId,
+                            requestPriority = newPriority,
                         )
                     }.onSuccess {
                         logger.info("Updated request priority of request $dataRequestId to $newPriority.")
@@ -91,27 +94,35 @@ class RequestPriorityUpdater
                 }
         }
 
-        private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredDataRequest> {
-            val expectedRequests =
-                requestControllerApi.getNumberOfRequests(
-                    requestStatus = setOf(RequestStatus.Open),
-                    requestPriority = setOf(priority),
+        private fun getAllRequests(priority: RequestPriority): List<DataSourcingEnhancedRequest> {
+            val expectedNumberOfRequests =
+                enhancedRequestControllerApi.postRequestCountQuery(
+                    RequestSearchFilterString(
+                        requestPriorities = listOf(priority),
+                        requestStates = listOf(RequestState.Open, RequestState.Processing),
+                    ),
                 )
-            logger.info("Found $expectedRequests requests with priority $priority to be considered for updating.")
-            val allRequests = mutableListOf<ExtendedStoredDataRequest>()
+            logger.info(
+                "Found $expectedNumberOfRequests requests with priority $priority to be considered for updating.",
+            )
+            val allRequests = mutableListOf<DataSourcingEnhancedRequest>()
+
             var page = 0
 
             while (true) {
-                val requests =
-                    requestControllerApi.getDataRequests(
-                        requestStatus = setOf(RequestStatus.Open),
-                        requestPriority = setOf(priority),
-                        chunkSize = RESULTS_PER_PAGE,
+                val requestsWithSpecifiedState: Collection<DataSourcingEnhancedRequest> =
+                    enhancedRequestControllerApi.postRequestSearch(
+                        requestSearchFilterString =
+                            RequestSearchFilterString(
+                                requestStates = listOf(RequestState.Open, RequestState.Processing),
+                                requestPriorities = listOf(priority),
+                            ),
+                        chunkSize = resultsPerPage,
                         chunkIndex = page,
                     )
-                allRequests.addAll(requests)
+                allRequests.addAll(requestsWithSpecifiedState)
 
-                if (requests.size < RESULTS_PER_PAGE || allRequests.size >= expectedRequests) {
+                if (requestsWithSpecifiedState.size < resultsPerPage || allRequests.size >= expectedNumberOfRequests) {
                     break
                 }
                 page++

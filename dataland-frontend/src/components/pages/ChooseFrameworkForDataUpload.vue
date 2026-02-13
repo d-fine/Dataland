@@ -14,7 +14,7 @@
                 <p>{{ buildSubtitle('EU Taxonomy') }}</p>
               </div>
               <div class="col-9 d-card">
-                <div id="eutaxonomyDataSetsContainer">
+                <div id="eutaxonomyDatasetsContainer">
                   <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
                   <MetaInfoPerCompanyAndFramework
@@ -94,16 +94,16 @@ export default defineComponent({
   },
 
   created() {
-    void this.getMetaInfoAboutAllDataSetsForCurrentCompany();
+    void this.getMetaInfoAboutAllDatasetsForCurrentCompany();
   },
 
   data() {
     return {
       allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
-          [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
+          ![DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].includes(
             frameworkName
-          ) === -1
+          )
       ),
       waitingForData: true,
       DataTypeEnum,
@@ -188,11 +188,11 @@ export default defineComponent({
           listOfDataMetaInfoSortedByReportingPeriod
         );
       const resultArray: DataMetaInformation[] = [];
-      Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
-        (listOfDataMetaInfoForUniqueReportingPeriod) => {
-          resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
-        }
-      );
+      for (const listOfDataMetaInfoForUniqueReportingPeriod of Array.from(
+        mapOfReportingPeriodToListOfDataMetaInfo.values()
+      )) {
+        resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
+      }
       return resultArray;
     },
 
@@ -200,7 +200,7 @@ export default defineComponent({
      * Gets all data meta information of the company identified by the company ID in the URL and fills the lists for
      * data meta information of the various frameworks
      */
-    async getMetaInfoAboutAllDataSetsForCurrentCompany() {
+    async getMetaInfoAboutAllDatasetsForCurrentCompany() {
       try {
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
@@ -214,9 +214,9 @@ export default defineComponent({
           }
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
-        this.mapOfDataTypeToListOfDataMetaInfo.forEach((value, key) => {
+        for (const [key, value] of this.mapOfDataTypeToListOfDataMetaInfo.entries()) {
           this.mapOfDataTypeToListOfDataMetaInfo.set(key, this.groupAndSortListOfDataMetaInfo(value));
-        });
+        }
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -229,10 +229,10 @@ export default defineComponent({
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
-      if (!this.waitingForData) {
-        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) ?? [];
-      } else {
+      if (this.waitingForData) {
         return [];
+      } else {
+        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) ?? [];
       }
     },
   },

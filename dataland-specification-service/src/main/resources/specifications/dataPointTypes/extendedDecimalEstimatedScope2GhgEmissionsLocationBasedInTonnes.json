@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes",
+  "name" : "Scope 2 GHG emissions (location-based)",
+  "businessDefinition" : "Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "pcaf" ],
+  "constraints" : [ "min:0" ]
+}

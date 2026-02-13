@@ -54,12 +54,12 @@ function generateDocumentMetaInformation(
   reportingPeriod: string;
 } {
   return {
-    documentId: dummyDocumentIds[index],
+    documentId: dummyDocumentIds[index]!,
     documentName: 'test_' + (query['documentCategories'] ?? 'document') + `_${index + 1}`,
     documentCategory: (query['documentCategories'] as string) ?? 'AnnualReport',
     companyIds: [(query['companyId'] as string) ?? '???'],
     publicationDate: dummyPublicationDates[index],
-    reportingPeriod: dummyReportingPeriods[index],
+    reportingPeriod: dummyReportingPeriods[index]!,
   };
 }
 
@@ -76,15 +76,20 @@ export function mockRequestsOnMounted(
   companyInformationForTest: CompanyInformation,
   mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>
 ): void {
+  cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance`, {
+    statusCode: 200,
+    body: 100,
+  }).as('fetchCreditsBalance');
+
   cy.intercept(`**/api/companies/*/info`, {
     body: companyInformationForTest,
-    times: 1,
   }).as('fetchCompanyInfo');
   cy.intercept('**/api/companies/*/aggregated-framework-data-summary', {
     body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
-    times: 1,
   }).as('fetchAggregatedFrameworkMetaInfo');
+
   const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
+
   cy.intercept('**/community/company-ownership/*', {
     statusCode: hasCompanyAtLeastOneOwnerStatusCode,
   }).as('fetchCompanyOwnershipExistence');
@@ -101,6 +106,27 @@ export function mockRequestsOnMounted(
       ],
     });
   }).as('fetchDocumentMetadata');
+
+  cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+    const q = req.query as Record<string, string | undefined>;
+    if (q.role === 'Analyst') {
+      req.reply({
+        statusCode: 200,
+        body: [
+          {
+            companyRole: 'Analyst',
+            companyId: dummyCompanyId,
+            userId: dummyUserId,
+            email: dummyEmail,
+            firstName: dummyFirstName,
+            lastName: 'mock-last-name',
+          },
+        ],
+      });
+    } else {
+      req.reply({ statusCode: 200, body: [] });
+    }
+  }).as('fetchRoleAssignments');
 }
 
 /**

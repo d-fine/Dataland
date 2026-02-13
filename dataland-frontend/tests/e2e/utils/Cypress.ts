@@ -1,3 +1,4 @@
+// @ts-ignore: Cypress types are internal;
 import type Bluebird from 'cypress/types/bluebird';
 
 export const reader_name = 'data_reader';
@@ -52,9 +53,9 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
     promise
       .then(
         (result): void => resolve(result),
-        (reason): void => reject(reason)
+        (error_): void => reject(error_)
       )
-      .catch((reason): void => reject(reason));
+      .catch((error_): void => reject(error_));
   });
 }
 

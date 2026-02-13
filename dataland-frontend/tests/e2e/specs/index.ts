@@ -1,7 +1,7 @@
-const testGroupingDisabled = isNaN(Cypress.env('TEST_GROUP') as number);
+const testGroupingDisabled = Number.isNaN(Cypress.env('TEST_GROUP') as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parseInt(Cypress.env('TEST_GROUP') as string);
+  cypressTestGroup = Number.parseInt(Cypress.env('TEST_GROUP') as string);
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.env('SINGLE_POPULATE') === true;
@@ -37,7 +37,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./sfdr');
   require('./lksg');
   require('./company-cockpit');
-  require('./user-experience');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
@@ -46,6 +45,9 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./vsme');
   require('./pcaf');
   require('./company-ownership');
+  require('./user-experience');
+  require('./portfolios');
+  require('./data-sourcing');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
@@ -62,6 +64,5 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
   require('./quality-assurance');
-  require('./community');
   require('./data-download');
 }

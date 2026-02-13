@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -27,21 +28,18 @@ class EmailAddressService
          * and, if so, returns basic information on that user gathered from Keycloak.
          * @param email the email address to validate
          */
-        fun validateEmailAddress(email: String): KeycloakUserInfo {
-            val keycloakUserInfo = keycloakUserService.findUserByEmail(email)
-            if (keycloakUserInfo == null) {
-                throw ResourceNotFoundApiException(
-                    summary = "No user found with this email",
-                    message = "There is no registered Dataland user with this email address.",
+        fun validateEmailAddress(email: String): KeycloakUserInfo =
+            keycloakUserService.findUserByEmail(email)?.let {
+                KeycloakUserInfo(
+                    userId = it.userId,
+                    email = it.email,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
                 )
-            }
-            return KeycloakUserInfo(
-                userId = keycloakUserInfo.userId,
-                email = keycloakUserInfo.email,
-                firstName = keycloakUserInfo.firstName,
-                lastName = keycloakUserInfo.lastName,
+            } ?: throw ResourceNotFoundApiException(
+                summary = "No user found with this email",
+                message = "There is no registered Dataland user with this email address.",
             )
-        }
 
         /**
          * Returns all users whose email address contains one of the subdomains defined in the field
@@ -57,7 +55,7 @@ class EmailAddressService
                 } catch (ex: ClientException) {
                     logger.warn("Company not found or error fetching company for $companyId", ex)
                     throw ResourceNotFoundApiException(
-                        "Company not found",
+                        COMPANY_NOT_FOUND,
                         "Dataland does not know the company ID $companyId",
                     )
                 }

@@ -29,7 +29,8 @@ interface EmailAddressApi {
     /**
      * Post an email address for validation. It will be checked whether the email address belongs to
      * some registered Dataland user and, if so, basic information on the user will be returned. Only
-     * Dataland admins as well as users which are owner or admin of at least one company can use this.
+     * Dataland admins, company owners/admins of any company, or users with any role in a Dataland
+     * Member company can use this.
      */
     @Operation(
         summary = "Validate an email address and obtain user-related information from an email address.",
@@ -66,7 +67,9 @@ interface EmailAddressApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or @CompanyRolesManager.currentUserIsOwnerOrAdminOfAtLeastOneCompany()",
+        "hasRole('ROLE_ADMIN') or " +
+            "@SecurityUtilsService.isCurrentUserOwnerOrAdminOfAtLeastOneCompany() or " +
+            "@SecurityUtilsService.isCurrentUserDatalandMember()",
     )
     fun postEmailAddressValidation(
         @RequestBody emailAddress: EmailAddress,
@@ -108,7 +111,7 @@ interface EmailAddressApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
-            "@SecurityUtilsService.isUserOwnerOrMemberAdminOfTheCompany(#companyId)",
+            "@SecurityUtilsService.isUserOwnerOrAdminOfTheCompany(#companyId)",
     )
     fun getUsersByCompanyAssociatedSubdomains(
         @CompanyIdParameterRequired

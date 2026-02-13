@@ -83,11 +83,12 @@
 <script setup lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type {
-  BasePortfolioName,
-  EnrichedPortfolio,
-  EnrichedPortfolioEntry,
-  PortfolioUpload,
+import {
+  type BasePortfolioName,
+  type EnrichedPortfolio,
+  type EnrichedPortfolioEntry,
+  NotificationFrequency,
+  type PortfolioUpload,
 } from '@clients/userservice';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -222,11 +223,14 @@ async function savePortfolio(): Promise<void> {
     const portfolioUpload: PortfolioUpload = {
       portfolioName: portfolioName.value!,
       // as unknown as Set<string> cast required to ensure proper json is created
-      companyIds: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
+      identifiers: portfolioCompanies.value.map((company) => company.companyId) as unknown as Set<string>,
       isMonitored: enrichedPortfolio.value?.isMonitored ?? false,
-      startingMonitoringPeriod: enrichedPortfolio.value?.startingMonitoringPeriod,
       // as unknown as Set<string> cast required to ensure proper json is created
       monitoredFrameworks: Array.from(enrichedPortfolio.value?.monitoredFrameworks ?? []) as unknown as Set<string>,
+      notificationFrequency: enrichedPortfolio.value?.notificationFrequency ?? NotificationFrequency.Weekly,
+      timeWindowThreshold: enrichedPortfolio.value?.timeWindowThreshold ?? undefined,
+      // as unknown as Set<string> cast required to ensure proper json is created
+      sharedUserIds: Array.from(enrichedPortfolio.value?.sharedUserIds ?? []) as unknown as Set<string>,
     };
     const response = await (portfolioId.value
       ? apiClientProvider.apiClients.portfolioController.replacePortfolio(portfolioId.value, portfolioUpload)
@@ -280,9 +284,7 @@ async function deletePortfolio(): Promise<void> {
  * with commas, then splits and filters the input into a unique list of non-empty identifiers.
  */
 function processCompanyInputString(): string[] {
-  const uniqueIdentifiers = new Set<string>([
-    ...companyIdentifiersInput.value.replace(/(\r\n|\n|\r|;| )/gm, ',').split(','),
-  ]);
+  const uniqueIdentifiers = new Set(companyIdentifiersInput.value.replaceAll(/(\r\n|\n|\r|;| )/gm, ',').split(','));
   uniqueIdentifiers.delete('');
   return Array.from(uniqueIdentifiers);
 }

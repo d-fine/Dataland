@@ -27,13 +27,13 @@ data class StoredDataRequest(
     )
     val dataRequestId: String,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+        description = GeneralOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
     )
     val userId: String,
     @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_EMAIL_ADDRESS_EXAMPLE,
     )
     val userEmailAddress: String?,
     @field:Schema(
@@ -47,7 +47,7 @@ data class StoredDataRequest(
     val creationTimestamp: Long,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE,
+        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
     )
     val dataType: String,
     @field:Schema(

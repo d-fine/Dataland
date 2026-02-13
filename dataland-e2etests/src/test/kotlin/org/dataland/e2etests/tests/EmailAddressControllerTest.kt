@@ -1,14 +1,19 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString
+import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString.CompanyRight
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.EmailAddress
 import org.dataland.communitymanager.openApiClient.model.KeycloakUserInfo
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyRolesTestUtils
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -92,7 +97,7 @@ class EmailAddressControllerTest {
 
         CompanyRole.entries.forEach { role ->
             when (role) {
-                CompanyRole.CompanyOwner, CompanyRole.MemberAdmin -> {
+                CompanyRole.CompanyOwner, CompanyRole.Admin -> {
                     val keycloakUserInfos =
                         assignCompanyRoleAndEnsureEmailSubdomainEndpointDoesNotThrow(
                             user, companyId, role,
@@ -101,7 +106,7 @@ class EmailAddressControllerTest {
                     TechnicalUser.entries.forEach { technicalUser ->
                         assert(
                             keycloakUserInfos.any { userInfo ->
-                                userInfo.id == technicalUser.technicalUserId.toString()
+                                userInfo.id == technicalUser.technicalUserId
                             },
                         )
                     }
@@ -113,6 +118,65 @@ class EmailAddressControllerTest {
                     )
                 }
             }
+        }
+    }
+
+    private fun removeAllCompanyRolesFromUser(userId: UUID) {
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRolesControllerApi
+                .getExtendedCompanyRoleAssignments(userId = userId)
+                .forEach {
+                    apiAccessor.companyRolesControllerApi.removeCompanyRole(it.companyRole, UUID.fromString(it.companyId), userId)
+                }
+        }
+    }
+
+    private fun verifyAdminMailAddress() {
+        apiAccessor.emailAddressControllerApi
+            .postEmailAddressValidation(EmailAddress("data.admin@example.com"))
+            .also { assertEquals(it.id, TechnicalUser.Admin.technicalUserId) }
+    }
+
+    @Test
+    fun `ensure that dataland members but no other users can validate email addresses`() {
+        val user = TechnicalUser.Reader
+        removeAllCompanyRolesFromUser(UUID.fromString(user.technicalUserId))
+        val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+        assignCompanyRole(user, companyId, CompanyRole.Analyst)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        assertThrows<ClientException> { verifyAdminMailAddress() }.also {
+            assertEquals(403, it.statusCode)
+        }
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRightsControllerApi.postCompanyRight(
+                CompanyRightAssignmentString(
+                    companyId.toString(),
+                    CompanyRight.Member,
+                ),
+            )
+        }
+        assertDoesNotThrow { verifyAdminMailAddress() }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = CompanyRole::class)
+    fun `ensure that company owners and admins can validate email addresses`(role: CompanyRole) {
+        val user = TechnicalUser.Reader
+        removeAllCompanyRolesFromUser(UUID.fromString(user.technicalUserId))
+        val companyId = companyRolesTestUtils.uploadCompanyAndReturnCompanyId()
+        assignCompanyRole(user, companyId, role)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+
+        when (role) {
+            CompanyRole.CompanyOwner, CompanyRole.Admin,
+            -> assertDoesNotThrow { verifyAdminMailAddress() }
+            else
+            ->
+                assertThrows<ClientException> { verifyAdminMailAddress() }.also {
+                    assertEquals(403, it.statusCode)
+                }
         }
     }
 }

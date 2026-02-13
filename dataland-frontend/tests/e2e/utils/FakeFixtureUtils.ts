@@ -170,7 +170,7 @@ export class Generator {
     let documentIndex = 0;
     for (const reportName of availableReportNames) {
       referencedReports[reportName] = {
-        fileReference: fixtureDocumentIds[documentIndex++],
+        fileReference: fixtureDocumentIds[documentIndex++]!,
         fileName: reportName,
         publicationDate: this.valueOrNull(generatePastDate()),
       };
@@ -249,5 +249,15 @@ export class Generator {
       provider: provider,
       dataSource: dataSource,
     };
+  }
+
+  /**
+   * Generates a fiscal year end date in the format DD-MMM (e.g., "31-Mar")
+   * @returns the generated fiscal year end date string
+   */
+  generateFiscalYearEnd(): string {
+    const day = this.guaranteedInt(1, 28).toString().padStart(2, '0');
+    const month = faker.date.month({ abbreviated: true });
+    return `${day}-${month}`;
   }
 }

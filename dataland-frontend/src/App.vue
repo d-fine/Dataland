@@ -38,7 +38,7 @@ import { useDialog } from 'primevue/usedialog';
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
-  windowWidth.value = window.innerWidth;
+  windowWidth.value = globalThis.innerWidth;
 };
 export default defineComponent({
   name: 'app',
@@ -103,7 +103,7 @@ export default defineComponent({
       apiClientProvider: computed(() => {
         return this.apiClientProvider;
       }),
-      useMobileView: computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
+      useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
     };
   },
 
@@ -112,10 +112,10 @@ export default defineComponent({
   },
 
   mounted() {
-    window.addEventListener('resize', storeWindowWidth);
+    globalThis.addEventListener('resize', storeWindowWidth);
   },
   unmounted() {
-    window.removeEventListener('resize', storeWindowWidth);
+    globalThis.removeEventListener('resize', storeWindowWidth);
   },
 
   methods: {
@@ -142,7 +142,7 @@ export default defineComponent({
       return keycloak
         .init({
           onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: window.location.origin + '/static/silent-check-sso.html',
+          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
           pkceMethod: 'S256',
         })
         .then((authenticated) => {

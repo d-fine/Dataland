@@ -1,9 +1,11 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
+import org.dataland.datalandinternalstorage.model.DocumentReferencesResponse
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.services.DatabaseBlobDataStore
 import org.dataland.datalandinternalstorage.services.DatabaseStringDataStore
+import org.dataland.datalandinternalstorage.services.DocumentDeletionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -17,41 +19,62 @@ import java.io.ByteArrayInputStream
  * Implementation of Storage Controller
  * @param stringDataStore a database store for strings
  * @param blobDataStore a database store for blobs
+ * @param documentDeletionService service for handling document deletion operations
  */
 @RestController
 @Component("StorageController")
-class StorageController(
-    @Autowired val stringDataStore: DatabaseStringDataStore,
-    @Autowired val blobDataStore: DatabaseBlobDataStore,
-) : StorageAPI {
-    private val logger = LoggerFactory.getLogger(javaClass)
+class StorageController
+    @Autowired
+    constructor(
+        private val stringDataStore: DatabaseStringDataStore,
+        private val blobDataStore: DatabaseBlobDataStore,
+        private val documentDeletionService: DocumentDeletionService,
+    ) : StorageAPI {
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun selectDataById(
-        dataId: String,
-        correlationId: String,
-    ): ResponseEntity<String> {
-        logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataset(dataId, correlationId))
-    }
+        override fun selectDataById(
+            dataId: String,
+            correlationId: String,
+        ): ResponseEntity<String> {
+            logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
+            return ResponseEntity.ok(stringDataStore.selectDataset(dataId, correlationId))
+        }
 
-    override fun selectBlobById(
-        blobId: String,
-        correlationId: String,
-    ): ResponseEntity<InputStreamResource> {
-        logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
-        val blob = blobDataStore.selectBlobById(blobId, correlationId)
-        val stream = ByteArrayInputStream(blob)
-        return ResponseEntity
-            .ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(InputStreamResource(stream))
-    }
+        override fun selectBlobById(
+            blobId: String,
+            correlationId: String,
+        ): ResponseEntity<InputStreamResource> {
+            logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
+            val blob = blobDataStore.selectBlobById(blobId, correlationId)
+            val stream = ByteArrayInputStream(blob)
+            return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(InputStreamResource(stream))
+        }
 
-    override fun selectBatchDataPointsByIds(
-        dataIds: List<String>,
-        correlationId: String,
-    ): ResponseEntity<Map<String, StorableDataPoint>> {
-        logger.info("Selecting ${dataIds.size} data points from the database: $dataIds. Correlation id: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
+        override fun selectBatchDataPointsByIds(
+            dataIds: List<String>,
+            correlationId: String,
+        ): ResponseEntity<Map<String, StorableDataPoint>> {
+            logger.info("Selecting ${dataIds.size} data points from the database. Correlation id: $correlationId.")
+            return ResponseEntity.ok(stringDataStore.selectDataPoints(dataIds, correlationId))
+        }
+
+        override fun getDocumentReferences(
+            documentId: String,
+            correlationId: String,
+        ): ResponseEntity<DocumentReferencesResponse> {
+            logger.info("Retrieving document references for: $documentId. Correlation id: $correlationId.")
+            return ResponseEntity.ok(documentDeletionService.getDocumentReferences(documentId, correlationId))
+        }
+
+        override fun deleteDocument(
+            documentId: String,
+            correlationId: String,
+        ): ResponseEntity<Unit> {
+            logger.info("Removing document: $documentId. Correlation id: $correlationId.")
+            documentDeletionService.deleteDocument(documentId, correlationId)
+            return ResponseEntity.noContent().build()
+        }
     }
-}

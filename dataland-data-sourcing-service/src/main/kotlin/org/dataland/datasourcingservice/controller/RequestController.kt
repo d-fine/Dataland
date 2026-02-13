@@ -1,0 +1,100 @@
+package org.dataland.datasourcingservice.controller
+
+import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datasourcingservice.api.RequestApi
+import org.dataland.datasourcingservice.model.enums.RequestPriority
+import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BulkDataRequest
+import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.dataland.datasourcingservice.model.request.SingleRequestResponse
+import org.dataland.datasourcingservice.model.request.StoredRequest
+import org.dataland.datasourcingservice.services.BulkRequestManager
+import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestCreationService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RestController
+
+/**
+ * Controller for the requests endpoint
+ */
+@RestController
+class RequestController
+    @Autowired
+    constructor(
+        private val existingRequestsManager: ExistingRequestsManager,
+        private val bulkDataRequestManager: BulkRequestManager,
+        private val requestCreationService: RequestCreationService,
+    ) : RequestApi {
+        override fun postBulkDataRequest(
+            bulkDataRequest: BulkDataRequest,
+            userId: String?,
+        ): ResponseEntity<BulkDataRequestResponse> =
+            ResponseEntity.ok(
+                bulkDataRequestManager.processBulkDataRequest(
+                    bulkDataRequest,
+                    userId?.let {
+                        ValidationUtils.convertToUUID(it)
+                    },
+                ),
+            )
+
+        override fun createRequest(
+            singleRequest: SingleRequest,
+            userId: String?,
+        ): ResponseEntity<SingleRequestResponse> =
+            ResponseEntity.ok(
+                requestCreationService.createRequest(
+                    singleRequest,
+                    userId?.let { ValidationUtils.convertToUUID(it) },
+                ),
+            )
+
+        override fun getRequest(dataRequestId: String): ResponseEntity<ExtendedStoredRequest> =
+            ResponseEntity.ok(
+                existingRequestsManager.getRequest(
+                    ValidationUtils.convertToUUID(
+                        dataRequestId,
+                    ),
+                ),
+            )
+
+        override fun patchRequestState(
+            dataRequestId: String,
+            requestState: RequestState,
+            adminComment: String?,
+        ): ResponseEntity<StoredRequest> =
+            ResponseEntity.ok(
+                existingRequestsManager.patchRequestState(
+                    ValidationUtils.convertToUUID(
+                        dataRequestId,
+                    ),
+                    requestState, adminComment,
+                ),
+            )
+
+        override fun patchRequestPriority(
+            dataRequestId: String,
+            requestPriority: RequestPriority,
+            adminComment: String?,
+        ): ResponseEntity<StoredRequest> =
+            ResponseEntity.ok(
+                existingRequestsManager.patchRequestPriority(
+                    ValidationUtils.convertToUUID(dataRequestId),
+                    requestPriority,
+                    adminComment,
+                ),
+            )
+
+        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
+            ResponseEntity
+                .ok(
+                    existingRequestsManager.retrieveRequestHistory(
+                        ValidationUtils.convertToUUID(
+                            dataRequestId,
+                        ),
+                    ),
+                )
+    }

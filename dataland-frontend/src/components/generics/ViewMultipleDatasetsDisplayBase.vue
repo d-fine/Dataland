@@ -207,14 +207,14 @@ export default defineComponent({
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
-        const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
+        const dataMetaInfoForDatasetWithDataIdFromUrl = apiResponse.data;
         if (
-          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
-          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+          dataMetaInfoForDatasetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDatasetWithDataIdFromUrl.dataType != this.dataType
         ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
-          this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
+          this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDatasetWithDataIdFromUrl);
         }
       } catch (error) {
         const axiosError = error as AxiosError;

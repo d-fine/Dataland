@@ -129,7 +129,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,
@@ -164,7 +163,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,
@@ -181,12 +179,44 @@ class EmailMessageListenerTest {
         val sentEmail = emailCaptor.firstValue
 
         assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, allowedBcc)
-        assert(
-            keywords.all { keyword ->
-                sentEmail.content.htmlContent.contains(keyword) &&
-                    sentEmail.content.textContent.contains(keyword)
-            },
-        )
+        keywords.forEach { keyword ->
+            assert(
+                sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
+            ) { "Either htmlContent or textContent does not contain '$keyword'" }
+        }
+    }
+
+    @Test
+    fun `test that correct portfolio changes summary email is sent to correct contacts`() {
+        val typedEmailContent = testData.portfolioChangesSummaryEmailContent
+        val keywords = testData.portfolioChangesSummaryKeywords
+        val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
+        doNothing().whenever(mockEmailSender).sendEmail(any())
+
+        val emailMessageListener =
+            EmailMessageListener(
+                mockEmailSender,
+                mockEmailContactService,
+                mockEmailSubscriptionTracker,
+                dummyProxyPrimaryUrl,
+                true,
+                "  $EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC;;",
+                EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC,
+            )
+        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
+
+        val emailCaptor = argumentCaptor<Email>()
+
+        verify(mockEmailSender).sendEmail(emailCaptor.capture())
+
+        val sentEmail = emailCaptor.firstValue
+
+        assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, allowedBcc)
+        keywords.forEach { keyword ->
+            assert(
+                sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
+            ) { "Either htmlContent or textContent does not contain '$keyword'" }
+        }
     }
 
     @Test
@@ -208,7 +238,6 @@ class EmailMessageListenerTest {
         val emailMessageListener =
             EmailMessageListener(
                 mockEmailSender,
-                objectMapper,
                 mockEmailContactService,
                 mockEmailSubscriptionTracker,
                 dummyProxyPrimaryUrl,

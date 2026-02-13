@@ -1,8 +1,39 @@
-import ReviewRequestButtonsComponent from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import ReviewRequestButtonsLegacyComponent from '@/components/resources/dataRequest/ReviewRequestButtonsLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
-import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
+import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetailsLegacy.ts';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+
+/**
+ * Mocks the answer for patching the request status
+ */
+function interceptPatchRequestsOnMounted(): void {
+  cy.intercept('PATCH', '**/community/requests/*', (request) => {
+    if (request.body.contacts) {
+      assert(request.body.contacts.length);
+    }
+    if (request.body.message) {
+      assert(request.body.message.length);
+    }
+    if (request.body.requestStatus === 'Resolved') {
+      request.alias = 'closeUserRequest';
+      request.reply({
+        body: {
+          requestStatus: RequestStatus.Resolved,
+        } as StoredDataRequest,
+        status: 200,
+      });
+    } else if (request.body.requestStatus === 'Open') {
+      request.alias = 'reOpenUserRequest';
+      request.reply({
+        body: {
+          requestStatus: RequestStatus.Open,
+        } as StoredDataRequest,
+        status: 200,
+      });
+    }
+  });
+}
 
 describe('Component tests for the data request review buttons', function (): void {
   const mockDataRequestId: string = 'Mock-DataRequest-Id';
@@ -59,41 +90,11 @@ describe('Component tests for the data request review buttons', function (): voi
     }).as('fetchSingleDataRequests');
   }
   /**
-   * Mocks the answer for patching the request status
-   */
-  function interceptPatchRequestsOnMounted(): void {
-    cy.intercept('PATCH', '**/community/requests/*', (request) => {
-      if (request.body.contacts) {
-        assert(request.body.contacts.length);
-      }
-      if (request.body.message) {
-        assert(request.body.message.length);
-      }
-      if (request.body.requestStatus === 'Resolved') {
-        request.alias = 'closeUserRequest';
-        request.reply({
-          body: {
-            requestStatus: RequestStatus.Resolved,
-          } as StoredDataRequest,
-          status: 200,
-        });
-      } else if (request.body.requestStatus === 'Open') {
-        request.alias = 'reOpenUserRequest';
-        request.reply({
-          body: {
-            requestStatus: RequestStatus.Open,
-          } as StoredDataRequest,
-          status: 200,
-        });
-      }
-    });
-  }
-  /**
    * Mount review request button component with given props
    */
   function mountReviewRequestButtons(): void {
     //@ts-ignore
-    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
+    cy.mountWithPlugins(ReviewRequestButtonsLegacyComponent, {
       keycloak: minimalKeycloakMock({}),
 
       // @ts-ignore
@@ -128,12 +129,12 @@ describe('Component tests for the data request review buttons', function (): voi
    * Checks the message history
    */
   function checkMessageHistory(): void {
-    messageHistory.forEach((message) => {
-      message.contacts.forEach((contact) => {
+    for (const message of messageHistory) {
+      for (const contact of message.contacts) {
         cy.contains(contact).should('exist');
-      });
+      }
       cy.contains(message.message).should('exist');
       cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should('exist');
-    });
+    }
   }
 });

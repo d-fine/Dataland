@@ -22,7 +22,7 @@ export function generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(): Array
       generateFixtureDataset<EuTaxonomyNonFinancialsQaReport>(
         generateEuTaxonomyNonFinancialsQaReportWithCorrectionForAlignedActivities,
         1
-      )[0]
+      )[0]!
     )
   );
   return preparedFixtures;

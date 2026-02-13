@@ -97,7 +97,8 @@ sonar {
                 "dataland-frontend/src/main.ts," +
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
-                "dataland-internal-storage/src/main/kotlin/db/migration/utils/**",
+                "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
+                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt",
         )
         property(
             "sonar.sources",
@@ -108,7 +109,9 @@ sonar {
         property(
             "sonar.cpd.exclusions",
             // frontend
-            "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
+            "dataland-frontend/src/components/forms/parts/elements/basic/CheckboxesListFormElementExtended.vue," +
+                "dataland-frontend/src/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue," +
+                "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
@@ -131,9 +134,21 @@ sonar {
                 "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
                 "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
+                // frontend legacy files
+                "dataland-frontend/src/components/general/DatalandTagLegacy.vue," +
+                "dataland-frontend/src/components/pages/AdminAllRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/CompanyDataRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/MyDataRequestsOverviewLegacy.vue," +
+                "dataland-frontend/src/components/pages/ViewDataRequestPageLegacy.vue," +
+                "dataland-frontend/src/components/resources/dataRequest/StatusHistoryLegacy.vue," +
+                "dataland-frontend/src/utils/RequestsOverviewPageUtilsLegacy.ts," +
+                "dataland-frontend/tests/component/components/pages/MyDataRequestsOverviewLegacy.cy.ts," +
+                "dataland-frontend/tests/component/components/pages/AdminAllRequestsOverviewLegacy.cy.ts," +
+
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/companies/CompanyInformation.kt," +
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
@@ -155,7 +170,21 @@ sonar {
                 "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt," +
 
                 // community manager
-                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt",
+                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt" +
+
+                // data sourcing service
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/request/StoredRequest.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/request/ExtendedStoredRequest.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/" +
+                "enhanced/DataSourcingEnhancedRequest.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/DataSourcingApi.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/api/RequestApi.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "StoredDataSourcing.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "ReducedDataSourcing.kt," +
+                "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/datasourcing/" +
+                "DataSourcingWithoutReferences.kt",
         )
         property(
             "sonar.exclusions",

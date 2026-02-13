@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -77,12 +78,12 @@ class DataMetaInformationManager(
      * Method to retrieve the dataset ID of the active dataset for a given set of [dataDimensions]
      * @param dataDimensions the data dimensions for which to retrieve the active dataset ID
      */
-    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDataDimensions): String? =
+    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDatasetDimensions): String? =
         dataMetaInformationRepository
             .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
                 reportingPeriod = dataDimensions.reportingPeriod,
                 companyId = dataDimensions.companyId,
-                dataType = dataDimensions.dataType,
+                dataType = dataDimensions.framework,
             )?.dataId
 
     /**
@@ -129,4 +130,17 @@ class DataMetaInformationManager(
             )
         return dataMetaInformationEntities.map { it.toBasicDataDimensions() }
     }
+
+    /**
+     * Method to retrieve the latest available dataset meta information for a certain company and data type
+     * @param companyId the id of the company
+     * @param dataType the type of dataset
+     * @return the latest available dataset meta information, or null if no dataset is found
+     */
+    fun getLatestAvailableDatasetMetaInformation(
+        companyId: String,
+        dataType: String,
+    ): DataMetaInformationEntity? =
+        dataMetaInformationRepository
+            .findFirstByCompanyCompanyIdAndDataTypeAndCurrentlyActiveTrueOrderByReportingPeriodDesc(companyId, dataType)
 }

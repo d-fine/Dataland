@@ -89,6 +89,26 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "10": {
+      "Name": "DataSourcingServiceDb",
+      "Group": "DataSourcingServiceDb",
+      "Port": 5432,
+      "Username": "data_sourcing_service",
+      "Host": "data-sourcing-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
+    },
+    "11": {
+      "Name": "AccountingServiceDb",
+      "Group": "AccountingServiceDb",
+      "Port": 5432,
+      "Username": "accounting_service",
+      "Host": "accounting-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

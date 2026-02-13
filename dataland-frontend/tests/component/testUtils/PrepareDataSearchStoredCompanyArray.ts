@@ -36,7 +36,7 @@ export function prepareSimpleDataSearchStoredCompanyArray(no_iterations = 1): Ba
   const oneMockCompany: BasicCompanyInformation = {
     companyId: mockDataMetaInformation.companyId,
     companyName: mockCompanyInformation.companyName,
-    lei: mockCompanyInformation.identifiers[IdentifierType.Lei][0],
+    lei: mockCompanyInformation.identifiers[IdentifierType.Lei]![0],
     sector: mockCompanyInformation.sector,
     headquarters: mockCompanyInformation.headquarters,
     countryCode: mockCompanyInformation.countryCode,

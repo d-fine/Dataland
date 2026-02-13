@@ -16,7 +16,6 @@ import java.util.UUID
 class PortfolioMonitoringService
     @Autowired
     constructor(
-        private val portfolioBulkDataRequestService: PortfolioBulkDataRequestService,
         private val portfolioRepository: PortfolioRepository,
     ) {
         private val logger = LoggerFactory.getLogger(PortfolioService::class.java)
@@ -37,7 +36,7 @@ class PortfolioMonitoringService
 
             val originalPortfolio =
                 portfolioRepository
-                    .getPortfolioByUserIdAndPortfolioId(portfolio.userId, UUID.fromString(portfolioId))
+                    .getPortfolioByPortfolioId(UUID.fromString(portfolioId))
                     ?.toBasePortfolio()
                     ?: throw PortfolioNotFoundApiException(portfolioId)
 
@@ -47,13 +46,10 @@ class PortfolioMonitoringService
                     originalPortfolio.creationTimestamp,
                     portfolio.lastUpdateTimestamp,
                     portfolio.isMonitored,
-                    portfolio.startingMonitoringPeriod,
                     portfolio.monitoredFrameworks,
+                    portfolio.notificationFrequency,
+                    portfolio.timeWindowThreshold,
                 )
-
-            val updatedPortfolio = updatedPortfolioEntity.toBasePortfolio()
-
-            portfolioBulkDataRequestService.publishBulkDataRequestMessageIfMonitored(updatedPortfolio)
 
             return portfolioRepository
                 .save(updatedPortfolioEntity)

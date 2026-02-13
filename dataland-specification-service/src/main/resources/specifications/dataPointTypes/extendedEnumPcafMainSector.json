@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumPcafMainSector",
+  "name" : "Main PCAF sector",
+  "businessDefinition" : "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
+  "dataPointBaseTypeId" : "extendedEnumPcafMainSector",
+  "frameworkOwnership" : [ "pcaf" ],
+  "constraints" : null
+}

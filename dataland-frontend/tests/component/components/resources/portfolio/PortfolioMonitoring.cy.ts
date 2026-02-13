@@ -31,24 +31,8 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
-  it('shows validation errors when both inputs are missing', function () {
+  it('shows validation errors when framework is missing', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-
-    cy.get('[data-test="saveChangesButton"]').click();
-
-    cy.get('[data-test="reportingPeriodsError"]')
-      .should('contain', 'Please select Starting Period.')
-      .should('be.visible');
-
-    cy.get('[data-test="frameworkError"]')
-      .should('contain', 'Please select at least one Framework.')
-      .should('be.visible');
-  });
-
-  it('shows only framework error if reporting year is selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
 
     cy.get('[data-test="saveChangesButton"]').click();
 
@@ -57,48 +41,33 @@ describe('Portfolio Monitoring Modal', function () {
       .should('be.visible');
   });
 
-  it('shows only reporting year error if framework selected', function () {
+  it('submits successfully if framework is selected', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('activateMonitoring');
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group')
-      .first()
-      .within(() => {
-        cy.get('input[type="checkbox"]').check().should('be.checked');
-      });
 
-    cy.get('[data-test="saveChangesButton"]').click();
-
-    cy.get('[data-test="reportingPeriodsError"]')
-      .should('contain', 'Please select Starting Period.')
-      .should('be.visible');
-  });
-
-  it('submits successfully when both year and framework are selected', function () {
-    cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2024').click();
-
-    cy.get('.framework-switch-group')
+    cy.get('[data-test="frameworkSelection"]')
       .first()
       .within(() => {
         cy.get('input[type="checkbox"]').check();
       });
 
     cy.get('[data-test="saveChangesButton"]').click();
+    cy.get('@activateMonitoring.all').should('have.length', 1);
   });
 
   it('displays EU Taxonomy message when that framework is selected', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
     cy.contains('[data-test="frameworkSelection"]', 'EU Taxonomy').find('input[type="checkbox"]').click();
 
-    cy.get('.dataland-info-text').should(
+    cy.get('[data-test="frameworkSelectionText"]').should(
       'contain.text',
-      'EU Taxonomy creates requests for EU Taxonomy Financials, Non-Financials and Nuclear and Gas'
+      'Select frameworks: SFDR and EU Taxonomy (Financials, Non-Financials, Nuclear & Gas).'
     );
   });
 
   it('toggle all frameworks on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('.framework-switch-group').each(($row) => {
+    cy.get('[data-test="frameworkSelection"]').each(($row) => {
       cy.wrap($row).within(() => {
         cy.get('input[type="checkbox"]').check().should('be.checked');
         cy.get('input[type="checkbox"]').uncheck().should('not.be.checked');
@@ -106,18 +75,55 @@ describe('Portfolio Monitoring Modal', function () {
     });
   });
 
-  it('dropdown lists all years in order', function () {
+  it('renders notification frequency Select and updates value on change', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').find('.p-select-dropdown').click();
-    ['2024', '2023', '2022', '2021', '2020', '2019'].forEach((year) => {
-      cy.contains(year).should('exist');
+    cy.get('[data-test="notification-options"]').should('exist');
+    cy.get('[data-test="notification-options"]').should('contain', 'Daily');
+
+    cy.get('[data-test="notification-options"]').click();
+    cy.get('.p-select-option-selected').should('contain', 'Daily');
+    cy.get('.p-select-option').contains('No Notifications').click();
+
+    cy.get('[data-test="notification-options"]').should('contain', 'No Notifications');
+  });
+
+  it('disables notification Select and framework toggles when monitoring is off', function () {
+    cy.get('[data-test="activateMonitoringToggle"] input').should('not.be.checked');
+    cy.get('[data-test="notification-options"]').should('have.class', 'p-disabled');
+    cy.get('[data-test="frameworkSelection"] [data-test="frameworkToggle"] input').each(($el) => {
+      cy.wrap($el).should('be.disabled');
     });
   });
 
-  it('updates selectedStartingYear when dropdown changes', () => {
+  it('toggles time window threshold on and off', function () {
     cy.get('[data-test="activateMonitoringToggle"]').click();
-    cy.get('[data-test="listOfReportingPeriods"]').click();
-    cy.contains('2022').click();
-    cy.get('[data-test="listOfReportingPeriods"]').should('contain.text', '2022');
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('have.class', 'p-toggleswitch-checked');
+
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+    cy.get('[data-test="timeWindowThresholdToggle"]').should('not.have.class', 'p-toggleswitch-checked');
+  });
+
+  it('sends correct time window threshold value in PATCH request', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="frameworkSelection"]').first().find('input[type="checkbox"]').check();
+    cy.get('[data-test="timeWindowThresholdToggle"]').click();
+
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('equal', 'Extended');
+  });
+
+  it('sends undefined threshold when deactivating monitoring', function () {
+    cy.intercept('PATCH', '**/portfolios/**/monitoring').as('patchMonitoring');
+
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="activateMonitoringToggle"]').click();
+    cy.get('[data-test="saveChangesButton"]').click();
+
+    cy.wait('@patchMonitoring').its('request.body.timeWindowThreshold').should('be.undefined');
   });
 });

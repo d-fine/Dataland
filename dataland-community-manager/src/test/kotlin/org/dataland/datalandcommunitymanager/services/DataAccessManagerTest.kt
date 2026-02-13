@@ -8,8 +8,8 @@ import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -27,6 +27,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import java.time.Instant
 import java.util.UUID
 
@@ -35,7 +36,7 @@ class DataAccessManagerTest {
 
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestLogger: DataRequestLogger
-    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
 
     private val companyId = "companyId"
     private val userId = "userId"
@@ -106,27 +107,27 @@ class DataAccessManagerTest {
         mockDataRequestRepository = createDataRequestRepository()
 
         dataRequestLogger = mock(DataRequestLogger::class.java)
-        mockDataRequestProcessingUtils = createRequestProcessingUtils()
+        mockCommunityManagerDataRequestProcessingUtils = createRequestProcessingUtils()
 
         dataAccessManager =
             DataAccessManager(
                 dataRequestRepository = mockDataRequestRepository, dataRequestLogger = dataRequestLogger,
-                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
+                communityManagerDataRequestProcessingUtils = mockCommunityManagerDataRequestProcessingUtils,
             )
     }
 
-    private fun createRequestProcessingUtils(): DataRequestProcessingUtils {
-        val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
-        doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
+    private fun createRequestProcessingUtils(): CommunityManagerDataRequestProcessingUtils {
+        val communityManagerDataRequestProcessingUtils = mock(CommunityManagerDataRequestProcessingUtils::class.java)
+        doNothing().`when`(communityManagerDataRequestProcessingUtils).addNewRequestStatusToHistory(
             dataRequestEntity = any(), requestStatus = any(),
             accessStatus = any(), requestStatusChangeReason = anyString(),
             modificationTime = any(), answeringDataId = any(),
         )
-        doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
+        doNothing().`when`(communityManagerDataRequestProcessingUtils).addMessageToMessageHistory(
             dataRequestEntity = any(), contacts = anySet(), message = anyString(),
             modificationTime = any(),
         )
-        return dataRequestProcessingUtils
+        return communityManagerDataRequestProcessingUtils
     }
 
     private fun createDataRequestRepository(): DataRequestRepository {
@@ -214,13 +215,13 @@ class DataAccessManagerTest {
             reportingPeriod = revokedAccessReportingYear, contacts = null, message = null,
         )
 
-        verify(mockDataRequestProcessingUtils, times(1))
+        verify(mockCommunityManagerDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = isNull(),
                 modificationTime = any(), answeringDataId = anyOrNull(),
             )
-        verify(mockDataRequestProcessingUtils, times(0))
+        verify(mockCommunityManagerDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 dataRequestEntity = any(), contacts = anySet(), message = anyString(),
                 modificationTime = any(),
@@ -242,13 +243,13 @@ class DataAccessManagerTest {
             reportingPeriod = noRequestReportingYear, contacts = contacts, message = message,
         )
 
-        verify(mockDataRequestProcessingUtils, times(1))
+        verify(mockCommunityManagerDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = isNull(),
                 modificationTime = any(), answeringDataId = anyOrNull(),
             )
-        verify(mockDataRequestProcessingUtils, times(1))
+        verify(mockCommunityManagerDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
                 dataRequestEntity = any(), contacts = eq(contacts), message = eq(message),
                 modificationTime = any(),

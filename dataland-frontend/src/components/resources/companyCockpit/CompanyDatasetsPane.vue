@@ -126,9 +126,9 @@ const isAnyCompanyOwnerExisting = ref(false);
 const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
 
 const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-Object.values(DocumentMetaInfoDocumentCategoryEnum).forEach((category) => {
+for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
   latestDocuments[`latest${category}`] = [];
-});
+}
 const chunkSize = 3;
 
 const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {
@@ -186,9 +186,8 @@ async function setLocalRights(): Promise<void> {
   isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
 
   const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  const roles = assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole);
-  isUserCompanyOwnerOrUploader.value =
-    roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+  const roles = new Set(assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole));
+  isUserCompanyOwnerOrUploader.value = roles.has(CompanyRole.CompanyOwner) || roles.has(CompanyRole.DataUploader);
 
   isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
 }

@@ -17,17 +17,32 @@ object BackendOpenApiDescriptionsAndExamples {
     const val HEADQUARTERS_POSTAL_CODE_DESCRIPTION = "The postal code of the headquarters."
     const val HEADQUARTERS_POSTAL_CODE_EXAMPLE = "10123"
 
+    const val FISCAL_YEAR_END_DESCRIPTION = "The fiscal year-end of the company."
+    const val FISCAL_YEAR_END_EXAMPLE = "31-Mar"
+
+    const val REPORTING_PERIOD_SHIFT_DESCRIPTION = "Difference between fiscal year-end and reporting period."
+    const val REPORTING_PERIOD_SHIFT_EXAMPLE = "-1"
+
     const val SECTOR_DESCRIPTION = "The industry or sector in which the company operates."
     const val SECTOR_EXAMPLE = "Information Technology"
+    const val SECTOR_LIST_EXAMPLE = "[\"$SECTOR_EXAMPLE\"]"
 
     const val SECTOR_CODE_WZ_DESCRIPTION = "The industry classification code according to the NACE compliant WZ method."
     const val SECTOR_CODE_WZ_EXAMPLE = "62.10.4"
 
     const val IDENTIFIERS_DESCRIPTION = "Unique identifiers associated with the company, such as LEI, PermId, ..."
-    const val IDENTIFIERS_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
+    const val IDENTIFIERS_EXAMPLE =
+        "[\"" +
+            "${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
+            "\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
+            "\"]"
+
+    const val IDENTIFIER_MAP_DESCRIPTION = IDENTIFIERS_DESCRIPTION
+    const val IDENTIFIER_MAP_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
 
     const val COUNTRY_CODE_DESCRIPTION = "The ISO 3166-1 alpha-2 code representing the country of origin."
     const val COUNTRY_CODE_EXAMPLE = "DE"
+    const val COUNTRY_CODE_LIST_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
 
     const val IS_TEASER_COMPANY_DESCRIPTION = "A boolean indicating if the company is a teaser company."
 
@@ -45,7 +60,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
     const val REF_EXAMPLE =
         "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/" +
-            "frameworks/eutaxonomy-non-financials/$DATA_ID_EXAMPLE"
+            "frameworks/sfdr/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
     const val LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
@@ -54,7 +69,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION = "The amount of available reporting periods per framework."
     const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
-        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE}\":2}"
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":2}"
 
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
     const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
@@ -112,6 +127,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
 
     const val QA_REPORT_UPLOAD_TIME_DESCRIPTION =
         "The timestamp (epoch milliseconds) at which the QA report was uploaded."
@@ -142,8 +158,12 @@ object BackendOpenApiDescriptionsAndExamples {
     const val QA_REPORT_MAX_UPLOAD_DATE_EXAMPLE = "01-01-2025"
 
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
-        "Either the framework of the wanted dataset or the dataPointType of the wanted data point."
-    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_EXAMPLE
+        "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
+    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =
+        "[\"" +
+            "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
+            "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +
+            "\"]"
 
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
@@ -155,7 +175,8 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val REPORTING_PERIODS_LIST_DESCRIPTION =
         "The reporting periods for which the data export is requested."
-    const val REPORTING_PERIODS_LIST_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
+    const val REPORTING_PERIODS_LIST_EXAMPLE =
+        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."

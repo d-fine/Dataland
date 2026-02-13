@@ -1,7 +1,7 @@
 import { login, logout } from '@e2e/utils/Auth';
-import { authenticator } from 'otplib';
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 import { isString } from '@/utils/TypeScriptUtils';
+import { generate } from 'otplib';
 
 describe('As a user I want to be able to register for an account and be able to log in and out of that account', () => {
   const email = `test_user${Date.now()}@example.com`;
@@ -59,13 +59,11 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.visit('http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users');
       cy.get('h1').should('exist').should('contain', 'Sign in to your account');
       cy.url().should('contain', 'realms/master');
-      cy.get('#username').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN'), { force: true });
-      cy.get('#password').should('exist').type(getStringCypressEnv('KEYCLOAK_ADMIN_PASSWORD'), { force: true });
+      cy.get('#username').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME'), { force: true });
+      cy.get('#password').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD'), { force: true });
       cy.get('#kc-login').should('exist').click();
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com').as('typedUsernameInSearch');
-      cy.get('input')
-        .should('have.class', 'pf-c-text-input-group__text-input')
-        .type(`${returnEmail}{enter}`, { force: true });
+      cy.get('input.pf-v5-c-text-input-group__text-input').type(`${returnEmail}{enter}`, { force: true });
       cy.wait('@typedUsernameInSearch');
       cy.get('table');
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/users/*rue').as('openedDummyUserProfile');
@@ -74,8 +72,8 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.intercept('GET', 'keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true').as(
         'savedUserProfileSettings'
       );
-      cy.get('input[id="kc-user-email-verified"]').click({ force: true });
-      cy.get('button[data-testid="save-user"]').click({ force: true });
+      cy.get('input[id="emailVerified"]').click({ force: true });
+      cy.get('button[data-testid="user-creation-save"]').click({ force: true });
       cy.wait('@savedUserProfileSettings');
     });
   });
@@ -118,14 +116,16 @@ describe('As a user I want to be able to register for an account and be able to 
             .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
             .invoke('text')
             .then((text) => {
-              const totpKey = text.replace(/\s/g, '');
-              cy.get("input[id='totp']").type(authenticator.generate(totpKey));
-              cy.get("input[id='saveTOTPBtn']").click();
-              cy.get(`button:contains('${firstName} ${lastName}')`).click();
-              cy.get("a:contains('Sign out')").should('exist', {
-                timeout: Cypress.env('medium_timeout_in_ms') as number,
+              const totpKey = text.replaceAll(/\s/g, '');
+              return cy.wrap(generate({ secret: totpKey })).then((token) => {
+                cy.get("input[id='totp']").type(token as string);
+                cy.get("input[id='saveTOTPBtn']").click();
+                cy.get(`button:contains('${firstName} ${lastName}')`).click();
+                cy.get("span:contains('Sign out')").should('exist', {
+                  timeout: Cypress.env('medium_timeout_in_ms') as number,
+                });
+                cy.task('setTotpKey', totpKey);
               });
-              cy.task('setTotpKey', totpKey);
             });
         });
       });
@@ -142,7 +142,7 @@ describe('As a user I want to be able to register for an account and be able to 
             cy.wait(Cypress.env('medium_timeout_in_ms') as number);
 
             login(returnEmail, returnPassword, () => {
-              return authenticator.generate(key);
+              return generate({ secret: key });
             });
           });
         });

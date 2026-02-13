@@ -15,7 +15,7 @@ export const dateFormatOptions = {
  * @returns the number of days until endDateInMilliseconds (rounding up)
  */
 export function calculateDaysFromNow(endDateInMilliseconds: number): number {
-  const currentUtcDateInMilliseconds = new Date().getTime();
+  const currentUtcDateInMilliseconds = Date.now();
   const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / MS_PER_DAY;
   return Math.ceil(daysFromNow);
 }
@@ -48,7 +48,7 @@ export function dateStringFormatter(date?: string): string {
  * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"
  */
 export function calculateExpiryDateAsDateString(expiryTimeDays: number): string {
-  const currentUtcDateInMilliseconds = new Date().getTime();
+  const currentUtcDateInMilliseconds = Date.now();
   const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * MS_PER_DAY;
   return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
 }

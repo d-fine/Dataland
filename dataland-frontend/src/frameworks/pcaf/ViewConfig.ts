@@ -25,17 +25,23 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Deviation: 'Deviation',
-                  NoDeviation: 'No Deviation',
-                };
-                return formatStringForDatatable(
-                  dataset.general?.general?.fiscalYearDeviation
-                    ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings)
-                    : ''
-                );
-              })(),
+              wrapDisplayValueWithDatapointInformation(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    dataset.general?.general?.fiscalYearDeviation?.value
+                      ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation?.value, mappings)
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataset.general?.general?.fiscalYearDeviation
+              ),
+            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
+            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -43,7 +49,13 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
+                'Fiscal Year End',
+                dataset.general?.general?.fiscalYearEnd
+              ),
+            uploadComponentName: 'DateExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
         ],
       },
@@ -57,7 +69,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Main PCAF sector',
             explanation:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Machinery"; "Materials"; "Real estate"; "Sovereign"; "Utilities"',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -72,10 +84,10 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                     Industrials: 'Industrials',
                     Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
-                    Machinery: 'Machinery',
                     Materials: 'Materials',
                     RealEstate: 'Real Estate',
                     Sovereign: 'Sovereign',
+                    Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(
                     dataset.general?.company?.mainPcafSector?.value
@@ -86,6 +98,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Main PCAF sector',
                 dataset.general?.company?.mainPcafSector
               ),
+            uploadComponentName: 'ExtendedSingleSelectFormField',
+            dataPointTypeId: 'extendedEnumPcafMainSector',
           },
           {
             type: 'cell',
@@ -111,6 +125,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Company exchange status',
                 dataset.general?.company?.companyExchangeStatus
               ),
+            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
+            dataPointTypeId: 'extendedEnumCompanyExchangeStatus',
           },
         ],
       },
@@ -139,6 +155,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Market capitalization',
                 dataset.companyValue?.listedCompany?.marketCapitalizationInEUR
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalMarketCapitalizationInEUR',
           },
           {
             type: 'cell',
@@ -152,6 +170,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Book value of debt',
                 dataset.companyValue?.listedCompany?.bookValueOfDebtInEUR
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalBookValueOfDebtInEUR',
           },
           {
             type: 'cell',
@@ -165,6 +185,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Minorities interest',
                 dataset.companyValue?.listedCompany?.minoritiesInterestInEUR
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalMinoritiesInterestInEUR',
           },
         ],
       },
@@ -185,6 +207,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Total equity and debt',
                 dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
           },
         ],
       },
@@ -217,6 +241,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalScope1GhgEmissionsInTonnes',
           },
           {
             type: 'cell',
@@ -233,6 +259,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalScope2GhgEmissionsLocationBasedInTonnes',
           },
           {
             type: 'cell',
@@ -249,6 +277,8 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalScope2GhgEmissionsMarketBasedInTonnes',
           },
           {
             type: 'cell',
@@ -265,6 +295,191 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
               ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalScope3GhgEmissionsInTonnes',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'section',
+    label: 'Company Value Estimation',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'section',
+        label: 'Listed company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Market capitalization',
+            explanation: 'Estimation of Market capitalization in EUR calculated as: number of shares * price per share',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR?.value,
+                  'EUR'
+                ),
+                'Market capitalization',
+                dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedMarketCapitalizationInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Book value of debt',
+            explanation:
+              'Estimation of Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR?.value,
+                  'EUR'
+                ),
+                'Book value of debt',
+                dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedBookValueOfDebtInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Minorities interest',
+            explanation:
+              'Estimation of Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR?.value,
+                  'EUR'
+                ),
+                'Minorities interest',
+                dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedMinoritiesInterestInEUR',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Unlisted company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Total equity and debt',
+            explanation: 'Estimation of Sum of total equity and total debt in EUR as listed on the balance sheet',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR?.value,
+                  'EUR'
+                ),
+                'Total equity and debt',
+                dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedTotalEquityAndDebtInEUR',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'section',
+    label: 'Environmental Estimation',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'section',
+        label: 'Greenhouse gas emissions',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Scope 1 GHG emissions',
+            explanation:
+              'Estimation of Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 1 GHG emissions',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedScope1GhgEmissionsInTonnes',
+          },
+          {
+            type: 'cell',
+            label: 'Scope 2 GHG emissions (location-based)',
+            explanation:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
+                    ?.value,
+                  'Tonnes'
+                ),
+                'Scope 2 GHG emissions (location-based)',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes',
+          },
+          {
+            type: 'cell',
+            label: 'Scope 2 GHG emissions (market-based)',
+            explanation:
+              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 2 GHG emissions (market-based)',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsMarketBasedInTonnes',
+          },
+          {
+            type: 'cell',
+            label: 'Scope 3 GHG emissions',
+            explanation:
+              'Estimation of Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 3 GHG emissions',
+                dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEstimatedScope3GhgEmissionsInTonnes',
           },
         ],
       },

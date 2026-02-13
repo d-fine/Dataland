@@ -1,6 +1,26 @@
 import AddCompanyToPortfolios from '@/components/general/AddCompanyToPortfolios.vue';
-import { type BasePortfolio } from '@clients/userservice';
+import { type BasePortfolio, NotificationFrequency } from '@clients/userservice';
+import { BasePortfolioTimeWindowThresholdEnum } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+
+/**
+ * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
+ * using Cypress and the default mocked authentication context.
+ *
+ * @param {object} dialogRef - The mock dialog reference to inject into the component.
+ * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
+ *
+ * @returns {void}
+ */
+function mountComponent(dialogRef: object): void {
+  // @ts-ignore
+  cy.mountWithPlugins(AddCompanyToPortfolios, {
+    keycloak: minimalKeycloakMock({}),
+    global: {
+      provide: { dialogRef },
+    },
+  });
+}
 
 describe('Tests for AddCompanyToPortfolios Component', () => {
   const companyId = 'COMP-123';
@@ -8,35 +28,41 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     {
       portfolioId: 'p1',
       portfolioName: 'One',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 0,
       lastUpdateTimestamp: 1,
       isMonitored: true,
-      startingMonitoringPeriod: '2024',
       monitoredFrameworks: new Set('sfdr'),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p2',
       portfolioName: 'Two',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 123,
       lastUpdateTimestamp: 456,
       isMonitored: false,
-      startingMonitoringPeriod: undefined,
       monitoredFrameworks: new Set(),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: undefined,
+      sharedUserIds: new Set(),
     },
     {
       portfolioId: 'p3',
       portfolioName: 'Three',
-      companyIds: new Set(),
+      identifiers: new Set(),
       userId: 'user-id',
       creationTimestamp: 999,
       lastUpdateTimestamp: 9999,
       isMonitored: true,
-      startingMonitoringPeriod: '2020',
       monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
+      notificationFrequency: NotificationFrequency.NoNotifications,
+      timeWindowThreshold: BasePortfolioTimeWindowThresholdEnum.Standard,
+      sharedUserIds: new Set(),
     },
   ];
 
@@ -70,25 +96,6 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       close: closeStub ?? cy.stub(),
     },
   });
-
-  /**
-   * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
-   * using Cypress and the default mocked authentication context.
-   *
-   * @param {object} dialogRef - The mock dialog reference to inject into the component.
-   * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
-   *
-   * @returns {void}
-   */
-  function mountComponent(dialogRef: object): void {
-    // @ts-ignore
-    cy.mountWithPlugins(AddCompanyToPortfolios, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: { dialogRef },
-      },
-    });
-  }
 
   it('shows empty selection state for a new portfolio', () => {
     mountComponent(getMockDialogRef());
@@ -125,7 +132,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
     const newCompanyId = 'NEW-COMPANY-ID';
     const mockDialogRef = getMockDialogRef(
       mockPortfolios.map((p) => {
-        return p.portfolioId === 'p2' ? { ...p, companyIds: new Set(newCompanyId) } : p;
+        return p.portfolioId === 'p2' ? { ...p, identifiers: new Set(newCompanyId) } : p;
       })
     );
 
@@ -146,7 +153,7 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       expect(['p1', 'p2'].some((id) => url.includes(id))).to.be.true;
 
       const body = interception.request.body;
-      expect(body.companyIds).to.include(newCompanyId);
+      expect(body.identifiers).to.include(newCompanyId);
       expect(body.portfolioName).to.be.a('string');
     });
 

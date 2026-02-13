@@ -1,8 +1,10 @@
 package org.dataland.datalanduserservice.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -14,6 +16,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
+    @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -30,4 +34,20 @@ class ApiClients(
     fun getMetaDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getInheritedRolesControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     */
+    @Bean
+    fun getRequestControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 }

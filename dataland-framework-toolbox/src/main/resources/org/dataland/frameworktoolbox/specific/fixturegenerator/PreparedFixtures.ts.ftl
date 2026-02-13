@@ -15,7 +15,7 @@ export function generate${frameworkBaseName}PreparedFixtures(): Array<FixtureDat
   const preparedFixturesBeforeManipulation = generate${frameworkBaseName}Fixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
+    preparedFixtures.push(manipulatorFunctions[i]!(preparedFixturesBeforeManipulation[i]!));
   }
 
   return preparedFixtures;

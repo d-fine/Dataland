@@ -47,7 +47,7 @@ describe('formatNuclearAndGasTaxonomyShareDataForTable - Unit Tests', () => {
   it('should return ModalLinkWithDataSourceDisplayComponent when value exists', () => {
     const mockValue: NuclearAndGasNonEligible = {
       taxonomyNonEligibleShareNAndG426: 12.5,
-      taxonomyNonEligibleShareNAndG427: 15.0,
+      taxonomyNonEligibleShareNAndG427: 15,
       taxonomyNonEligibleShareNAndG428: null,
       taxonomyNonEligibleShareNAndG429: null,
       taxonomyNonEligibleShareNAndG430: null,

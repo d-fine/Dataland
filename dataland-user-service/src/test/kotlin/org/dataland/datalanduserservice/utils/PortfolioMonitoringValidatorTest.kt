@@ -4,6 +4,8 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 import org.dataland.datalanduserservice.model.PortfolioMonitoringPatch
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -27,7 +29,8 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = setOf("sfdr"),
-                startingMonitoringPeriod = "2022",
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         val violations = validator.validate(monitoring)
@@ -35,25 +38,13 @@ class PortfolioMonitoringValidatorTest {
     }
 
     @Test
-    fun `invalid when monitored but missing frameworks`() {
+    fun `invalid when monitored but missing frameworks and timeWindowThreshold`() {
         val monitoring =
             PortfolioMonitoringPatch(
                 isMonitored = true,
                 monitoredFrameworks = emptySet(),
-                startingMonitoringPeriod = "2024",
-            )
-
-        val violations = validator.validate(monitoring)
-        assertFalse(violations.isEmpty())
-    }
-
-    @Test
-    fun `invalid when monitored but missing starting period`() {
-        val monitoring =
-            PortfolioMonitoringPatch(
-                isMonitored = true,
-                monitoredFrameworks = setOf("eutaxonomy"),
-                startingMonitoringPeriod = "",
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
             )
 
         val violations = validator.validate(monitoring)
@@ -66,7 +57,8 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = setOf("ESG"),
-                startingMonitoringPeriod = "2023",
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = TimeWindowThreshold.Standard,
             )
 
         val violations = validator.validate(monitoring)
@@ -79,7 +71,8 @@ class PortfolioMonitoringValidatorTest {
             PortfolioMonitoringPatch(
                 isMonitored = false,
                 monitoredFrameworks = emptySet(),
-                startingMonitoringPeriod = null,
+                NotificationFrequency.Weekly,
+                timeWindowThreshold = null,
             )
 
         val violations = validator.validate(monitoring)

@@ -2,30 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Fort Nicoton",
-			"headquartersPostalCode": null,
-			"sector": "mindshare",
+			"headquarters": "Kochton",
+			"headquartersPostalCode": "12235",
+			"sector": "models",
 			"identifiers": {
 				"Lei": [
-					"3D7fYT2k4KpYCrC5S46I"
+					"YbnCrZuZpyiP6eUmWfQY"
 				],
 				"Isin": [
-					"0cVwTI0AdFLS"
+					"OhBqvuC7vOeX"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"0MiLPFVLA"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "HT",
-			"companyContactDetails": [],
+			"countryCode": "TD",
+			"companyContactDetails": [
+				"Marilie_Quigley88@example.com",
+				"Katelynn_Jakubowski@example.com"
+			],
 			"companyAlternativeNames": [
-				"Beier and Sons",
-				"Prosacco, Robel and Herzog"
+				"Boyer, Mills and Hagenes",
+				"Kunze, Satterfield and Sipes",
+				"Murphy Inc",
+				"Stehr - Kuhic"
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://poor-reservation.com/",
+			"website": "https://aged-formamide.info/",
+			"fiscalYearEnd": "11-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -93,6 +101,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]

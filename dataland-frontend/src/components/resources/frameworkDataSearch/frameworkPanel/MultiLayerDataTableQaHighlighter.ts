@@ -62,11 +62,11 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 ): MLDTSectionConfig<T> {
   const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
   const displayStatusGettersToPassDownToChildren = ((): Array<(dataset: T) => boolean> => {
-    if (!displayStatusGettersOfAllParents) {
-      return [displayStatusGetterOfThisSection];
-    } else {
+    if (displayStatusGettersOfAllParents) {
       displayStatusGettersOfAllParents.push(displayStatusGetterOfThisSection);
       return displayStatusGettersOfAllParents;
+    } else {
+      return [displayStatusGetterOfThisSection];
     }
   })();
 
@@ -124,16 +124,14 @@ function editCellConfigForHighlightingHiddenFields<T>(
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
       const areAllParentSectionsDisplayed = (): boolean => {
-        if (!cellHasAtLeastOneParent) {
-          return true;
-        } else {
+        if (cellHasAtLeastOneParent) {
           for (const showDisplay of displayStatusGettersOfAllParents) {
             if (!showDisplay(dataset)) {
               return false;
             }
           }
-          return true;
         }
+        return true;
       };
       if (
         areAllParentSectionsDisplayed() &&

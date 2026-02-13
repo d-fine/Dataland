@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.controller
 
 import jakarta.validation.Validation
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -15,12 +16,12 @@ class ValidationTest {
         val portfolio =
             PortfolioUpload(
                 portfolioName = "Invalid Portfolio",
-                companyIds = emptySet(),
+                identifiers = emptySet(),
                 isMonitored = true,
-                startingMonitoringPeriod = "2023",
                 monitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy"),
+                NotificationFrequency.Weekly,
             )
         val violations = validator.validate(portfolio)
-        assertEquals(1, violations.size)
+        assertEquals(2, violations.size)
     }
 }

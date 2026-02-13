@@ -7,6 +7,8 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioService
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -37,7 +39,7 @@ class Validator
                             " Please ensure that portfolio names are unique. CorrelationId: $correlationId",
                 )
             }
-            portfolioUpload.companyIds.forEach { isCompanyIdValid(it, correlationId) }
+            portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
         }
 
         /**
@@ -50,10 +52,11 @@ class Validator
             portfolioUpload: PortfolioUpload,
             correlationId: String,
         ) {
-            if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId)) {
+            val isAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            if (!portfolioService.existsPortfolioForUser(portfolioId, correlationId) && !isAdmin) {
                 throw PortfolioNotFoundApiException(portfolioId)
             }
-            val portfolioToBeReplaced = portfolioService.getPortfolio(portfolioId)
+            val portfolioToBeReplaced = portfolioService.getPortfolio(portfolioId, correlationId)
             if (portfolioService.existsPortfolioWithNameForUser(portfolioUpload.portfolioName, correlationId) &&
                 portfolioToBeReplaced.portfolioName != portfolioUpload.portfolioName
             ) {
@@ -64,7 +67,7 @@ class Validator
                             " Please ensure that portfolio names are unique. CorrelationId: $correlationId",
                 )
             }
-            portfolioUpload.companyIds.forEach { isCompanyIdValid(it, correlationId) }
+            portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
         }
 
         /**

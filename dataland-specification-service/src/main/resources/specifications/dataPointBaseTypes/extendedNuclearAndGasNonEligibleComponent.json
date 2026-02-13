@@ -14,6 +14,8 @@
       "taxonomyNonEligibleShareOtherActivities" : "BigDecimal",
       "taxonomyNonEligibleShare" : "BigDecimal"
     },
+    "quality" : "QualityOptions",
+    "comment" : "String",
     "dataSource" : {
       "page" : "String",
       "tagName" : "String",
@@ -37,7 +39,7 @@
     "comment" : "",
     "dataSource" : {
       "page" : "126",
-      "tagName" : null,
+      "tagName" : "date",
       "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
       "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
       "publicationDate" : "2025-03-02"

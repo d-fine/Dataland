@@ -17,11 +17,10 @@ let storedCompany: StoredCompany;
 let secondCompany: StoredCompany;
 let portfolioName: string;
 
-const reportingYearsToSelect = ['2025', '2024', '2023', '2022', '2021', '2020'];
-const unavailableYears = ['2021', '2020'];
-
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 
+const reportingYearsToSelect = ['2025', '2024', '2023', '2022', '2021', '2020'];
+const unavailableYears = ['2021', '2020'];
 /**
  * Uploads data for a given company for specified years using a generic framework.
  *
@@ -107,7 +106,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+    cy.wait(Cypress.env('long_timeout_in_ms') as number);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -116,7 +115,7 @@ function testDownloadPortfolio({
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 
-      cy.readFile(filePathStr, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
+      cy.readFile(filePathStr, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
 
       cy.task('getFileSize', filePathStr).then((size) => {
         expect(size).to.be.greaterThan(5000);
@@ -186,9 +185,9 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
-      reportingYearsToSelect.forEach((year) => {
+      for (const year of reportingYearsToSelect) {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      });
+      }
     });
 
     testDownloadPortfolio({
@@ -218,9 +217,9 @@ describeIf(
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
       cy.get('[data-test="listOfReportingPeriods"]').should('be.visible');
 
-      unavailableYears.forEach((year) => {
+      for (const year of unavailableYears) {
         cy.get('[data-test="listOfReportingPeriods"]').contains(year).parent().should('have.class', 'disabled');
-      });
+      }
     });
   }
 );

@@ -1,26 +1,6 @@
 export type ObjectType = { [key: string]: string | object };
 
 /**
- * Updates keys from one object to another
- * @param baseObject object to be updated
- * @param objectWithNewData object to be updated
- */
-export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectType): void {
-  for (const key in objectWithNewData) {
-    if (typeof objectWithNewData[key] === 'object' && objectWithNewData[key] !== null) {
-      if (baseObject[key]) {
-        updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
-      } else {
-        baseObject[key] = {};
-        updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
-      }
-    } else if (objectWithNewData[key] !== null) {
-      baseObject[key] = objectWithNewData[key];
-    }
-  }
-}
-
-/**
  * A recursive function that is able to retrieve all values for a provided key in an arbitrarily deeply nested object.
  * Example: the datasource.reference in the EUTaxonomyDataModel occurs for several data points and you might want to get
  * a list of all references in one dataset.
@@ -79,5 +59,5 @@ export function objectDropNull<T>(obj: T): OptionalNullable<T> {
  * @returns the deep copied object
  */
 export function deepCopyObject(obj: ObjectType): ObjectType {
-  return JSON.parse(JSON.stringify(obj)) as ObjectType;
+  return structuredClone(obj);
 }

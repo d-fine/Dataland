@@ -7,6 +7,19 @@ import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 import { type StoredCompany } from '@clients/backend';
 
+/**
+ * This method verifies that the summary panel for each framework is presented as expected
+ */
+function checkFrameworks(): void {
+  for (const frameworkName of FRAMEWORKS_WITH_UPLOAD_FORM) {
+    const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
+    cy.get(frameworkSummaryPanelSelector).should('exist');
+    cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
+      timeout: Cypress.env('long_timeout_in_ms') as number,
+    }).should('exist');
+  }
+}
+
 describeIf(
   'As a user, I expect to be able to upload data for one company for which I am company owner',
   {
@@ -17,17 +30,6 @@ describeIf(
     let testCompanyName: string;
 
     /**
-     * This method verifies that the summary panel for each framework is presented as expected
-     */
-    function checkFrameworks(): void {
-      FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
-        const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-        cy.get(frameworkSummaryPanelSelector).should('exist');
-        cy.get(`[data-test="${frameworkName}-provide-data-button"]`).should('exist');
-      });
-    }
-
-    /*
      * Upload a company and set reader as companyOwner
      */
     before(() => {

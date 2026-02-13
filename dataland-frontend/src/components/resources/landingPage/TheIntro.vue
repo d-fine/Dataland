@@ -52,23 +52,23 @@ const introSection = computed(() => {
   return props.sections?.find((section) => section.title === 'Intro') ?? null;
 });
 
-const isMobile = ref(window.innerWidth < 768);
+const isMobile = ref(globalThis.innerWidth < 768);
 
 watch(
-  () => window.innerWidth,
+  () => globalThis.innerWidth,
   (newWidth) => {
     isMobile.value = newWidth < 768;
   }
 );
 
 const updateIsMobile = (): void => {
-  isMobile.value = window.innerWidth < 768;
+  isMobile.value = globalThis.innerWidth < 768;
 };
 
-window.addEventListener('resize', updateIsMobile);
+globalThis.addEventListener('resize', updateIsMobile);
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateIsMobile);
+  globalThis.removeEventListener('resize', updateIsMobile);
 });
 
 const inputFocused = ref(false);

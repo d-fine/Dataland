@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -26,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.util.Optional
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -42,7 +44,6 @@ class MessageQueueListenerTest(
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         messageQueueListener =
             MessageQueueListener(
-                objectMapper = objectMapper,
                 documentMetaInfoRepository = mockDocumentMetaInfoRepository,
                 inMemoryDocumentStore = inMemoryDocumentStore,
             )
@@ -55,7 +56,9 @@ class MessageQueueListenerTest(
                 QaStatusChangeMessage(
                     dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
-                    currentlyActiveDataId = "",
+                    currentlyActiveDataId = UUID.randomUUID().toString(),
+                    BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                    false,
                 ),
             )
         val thrown =
@@ -74,6 +77,8 @@ class MessageQueueListenerTest(
                     dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = null,
+                    BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
+                    false,
                 ),
             )
 

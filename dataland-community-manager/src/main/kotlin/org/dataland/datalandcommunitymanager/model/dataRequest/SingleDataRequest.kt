@@ -49,13 +49,13 @@ data class SingleDataRequest(
     )
     val contacts: Set<String>?,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_DESCRIPTION,
-        example = CommunityManagerOpenApiDescriptionsAndExamples.POST_MESSAGE_EXAMPLE,
+        description = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_MESSAGE_DESCRIPTION,
+        example = CommunityManagerOpenApiDescriptionsAndExamples.CONTACTS_MESSAGE_EXAMPLE,
     )
     val message: String?,
     @field:JsonProperty(required = false)
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.SINGLE_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION,
     )
     val notifyMeImmediately: Boolean = false,
 )

@@ -21,7 +21,7 @@ describeIf(
 
     before(function () {
       cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent: Array<FixtureData<LksgData>>) {
-        lksgFixture = jsonContent[0];
+        lksgFixture = jsonContent[0]!;
       });
     });
 
@@ -47,7 +47,6 @@ describeIf(
           cy.intercept('**/api/users/**').as('getMyDatasets');
           cy.visit(`/datasets`);
           cy.wait('@getMyDatasets');
-          cy.pause();
           cy.get(`[data-test="view-dataset-button"]`)
             .parents('tr[role=row]')
             .find('[data-test="qa-status"]')

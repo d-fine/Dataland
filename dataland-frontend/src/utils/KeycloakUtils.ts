@@ -54,28 +54,28 @@ export async function checkIfUserHasRole(
  * redirected to
  */
 export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: string): void {
-  const baseUrl = window.location.origin;
+  const baseUrl = globalThis.location.origin;
   const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${additionToBasePath}` });
   location.assign(url);
 }
 
 /**
- * Logs the user in and redirects her/him to the Dataland portfolio overview page.
+ * Logs the user in and redirects her/him to the Dataland redirect page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export async function loginAndRedirectToPortfolioPage(keycloak: Keycloak): Promise<void> {
-  const baseUrl = window.location.origin;
-  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/portfolios` });
+export async function loginAndRedirectToRedirectPage(keycloak: Keycloak): Promise<void> {
+  const baseUrl = globalThis.location.origin;
+  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/platform-redirect` });
   location.assign(url);
 }
 
 /**
- * Registers and logs the user in and redirects her/him to the Dataland companies search page.
+ * Registers and logs the user in and redirects her/him to the Dataland redirect page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export async function registerAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
-  const baseUrl = window.location.origin;
-  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+export async function registerAndRedirectToRedirectPage(keycloak: Keycloak): Promise<void> {
+  const baseUrl = globalThis.location.origin;
+  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/platform-redirect` });
   location.assign(url);
 }
 

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 
 /**
  * Service to store and retrieve datasets from a backing storage engine
@@ -43,9 +43,9 @@ interface DatasetStorageService {
      *         datasets in form of JSON strings (or an empty string if the data is missing)
      */
     fun getDatasetData(
-        dataDimensionsSet: Set<BasicDataDimensions>,
+        dataDimensionsSet: Set<BasicDatasetDimensions>,
         correlationId: String,
-    ): Map<BasicDataDimensions, String>
+    ): Map<BasicDatasetDimensions, String>
 
     /**
      * Retrieves all datasets for a certain company and data type depending on the content of the [searchFilter]
@@ -57,4 +57,17 @@ interface DatasetStorageService {
         searchFilter: DataMetaInformationSearchFilter,
         correlationId: String,
     ): List<PlainDataAndMetaInformation>
+
+    /**
+     * Retrieves the latest available dataset for a certain company and data type
+     * @param companyId the id of the company
+     * @param dataType the type of dataset
+     * @param correlationId the correlation id for the operation
+     * @return the latest available reporting period and the corresponding dataset, or null if no dataset is found
+     */
+    fun getLatestAvailableData(
+        companyId: String,
+        dataType: String,
+        correlationId: String,
+    ): Pair<String, String>?
 }

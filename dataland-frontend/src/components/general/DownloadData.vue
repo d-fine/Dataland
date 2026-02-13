@@ -81,7 +81,7 @@
     <div class="dataland-info-text small">
       Use short aliases, e. g. REV_ELIGIBLE_ABS in export. Only applicable for CSV and Excel file types.
     </div>
-    <Message v-if="dialogRef?.data?.downloadErrors" severity="error" :life="3000">
+    <Message v-if="dialogRef?.data?.downloadErrors" severity="error" class="mt-2">
       {{ dialogRef?.data?.downloadErrors }}
     </Message>
     <div>
@@ -143,9 +143,9 @@ const fileTypeSelectionOptions = computed(() => {
 });
 
 const availableFrameworks = computed(() => {
-  const frameworks = Array.from(reportingPeriodsPerFramework.value.keys());
+  const frameworks = new Set(reportingPeriodsPerFramework.value.keys());
 
-  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.includes(framework)).map((framework) => ({
+  return ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => frameworks.has(framework)).map((framework) => ({
     value: framework,
     label: humanizeStringOrNumber(framework),
   }));

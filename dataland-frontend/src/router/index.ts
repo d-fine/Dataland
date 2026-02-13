@@ -14,14 +14,19 @@ const TheImprint = (): Promise<RouteComponent> => import('@/components/pages/The
 const DataPrivacy = (): Promise<RouteComponent> => import('@/components/pages/DataPrivacy.vue');
 const NoContentFound = (): Promise<RouteComponent> => import('@/components/pages/NoContentFound.vue');
 const ApiKeysPage = (): Promise<RouteComponent> => import('@/components/pages/ApiKeysPage.vue');
-const BulkDataRequest = (): Promise<RouteComponent> => import('@/components/pages/BulkDataRequest.vue');
 const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pages/SingleDataRequest.vue');
 const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pages/ViewFrameworkData.vue');
 const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
+const MyDataRequestsOverviewLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/MyDataRequestsOverviewLegacy.vue');
+
 const PortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/PortfolioOverview.vue');
+const SharedPortfolioOverview = (): Promise<RouteComponent> => import('@/components/pages/SharedPortfolioOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
+const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/ViewDataRequestPageLegacy.vue');
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
@@ -30,9 +35,12 @@ const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pa
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
 const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/AdminAllRequestsOverview.vue');
+const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
+  import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 
 const routes = [
   {
@@ -90,7 +98,7 @@ const routes = [
     name: 'Search Companies for Framework Data',
     component: SearchCompaniesForFrameworkData,
     meta: {
-      initialTabIndex: 1,
+      initialTabId: 'companies',
       requiresAuthentication: true,
     },
   },
@@ -143,7 +151,16 @@ const routes = [
   {
     path: `/companies/:companyId/users`,
     props: true,
-    name: 'CompanyCockpitPage',
+    name: 'CompanyCockpitPageUsers',
+    component: CompanyCockpitPage,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/companies/:companyId/credits`,
+    props: true,
+    name: 'CompanyCockpitPageCredits',
     component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: true,
@@ -154,7 +171,16 @@ const routes = [
     name: 'Admin overview for all requests',
     component: AdminRequestsOverview,
     meta: {
-      initialTabIndex: 6,
+      initialTabId: 'all-data-requests',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/requestoverview-legacy',
+    name: 'Admin overview for all requests (Legacy)',
+    component: AdminRequestsOverviewLegacy,
+    meta: {
+      initialTabId: 'all-data-requests-legacy',
       requiresAuthentication: true,
     },
   },
@@ -163,7 +189,7 @@ const routes = [
     name: 'UI for quality assurance',
     component: QualityAssurance,
     meta: {
-      initialTabIndex: 3,
+      initialTabId: 'qa',
       requiresAuthentication: true,
     },
   },
@@ -172,7 +198,7 @@ const routes = [
     name: 'Dataset Overview',
     component: DatasetOverview,
     meta: {
-      initialTabIndex: 2,
+      initialTabId: 'my-datasets',
       requiresAuthentication: true,
     },
   },
@@ -181,7 +207,16 @@ const routes = [
     name: 'MyDataRequestsOverview',
     component: MyDataRequestsOverview,
     meta: {
-      initialTabIndex: 4,
+      initialTabId: 'my-data-requests',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/requests-legacy',
+    name: 'MyDataRequestsOverview (Legacy)',
+    component: MyDataRequestsOverviewLegacy,
+    meta: {
+      initialTabId: 'my-data-requests-legacy',
       requiresAuthentication: true,
     },
   },
@@ -195,19 +230,20 @@ const routes = [
     },
   },
   {
-    path: `/companyrequests`,
-    name: 'CompanyDataRequestsOverview',
-    component: CompanyDataRequestsOverview,
+    path: `/requests-legacy/:requestId`,
+    name: 'Data Request View Page (Legacy)',
+    props: true,
+    component: ViewDataRequestPageLegacy,
     meta: {
-      initialTabIndex: 5,
       requiresAuthentication: true,
     },
   },
   {
-    path: '/bulkdatarequest',
-    name: 'Bulk Data Request',
-    component: BulkDataRequest,
+    path: `/companyrequests`,
+    name: 'CompanyDataRequestsOverview',
+    component: CompanyDataRequestsOverview,
     meta: {
+      initialTabId: 'data-requests-for-my-company',
       requiresAuthentication: true,
     },
   },
@@ -225,7 +261,16 @@ const routes = [
     name: 'Portfolio Overview',
     component: PortfolioOverview,
     meta: {
-      initialTabIndex: 0,
+      initialTabId: 'my-portfolios',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/shared-portfolios',
+    name: 'Shared Portfolio Overview',
+    component: SharedPortfolioOverview,
+    meta: {
+      initialTabId: 'shared-portfolios',
       requiresAuthentication: true,
     },
   },
@@ -295,6 +340,14 @@ const routes = [
     },
   },
   {
+    path: '/platform-redirect',
+    name: 'Platform Redirect',
+    component: PlatformRedirect,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: '/:notFound(.*)',
     redirect: '/nocontent',
     meta: {
@@ -307,7 +360,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    window.scrollTo(0, 0);
+    globalThis.scrollTo(0, 0);
   },
 });
 

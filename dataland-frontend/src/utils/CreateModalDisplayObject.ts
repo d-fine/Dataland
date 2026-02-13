@@ -43,7 +43,7 @@ export function createModalDisplayObject<T>({
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${activityList.length} activit${activityList.length !== 1 ? 'ies' : 'y'}`,
+      label: `Show ${activityList.length} activit${activityList.length === 1 ? 'y' : 'ies'}`,
       modalComponent,
       modalOptions: {
         props: {

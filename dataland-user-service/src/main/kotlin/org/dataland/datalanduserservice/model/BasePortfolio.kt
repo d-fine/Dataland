@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.time.Instant
 import java.util.UUID
@@ -53,18 +54,12 @@ data class BasePortfolio(
                 example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_COMPANY_IDS_EXAMPLE,
             ),
     )
-    override val companyIds: Set<String>,
+    override val identifiers: Set<String>,
     @field:JsonProperty(required = false)
     @field:Schema(
         description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_IS_MONITORED_DESCRIPTION,
     )
     override val isMonitored: Boolean,
-    @field:JsonProperty(required = false)
-    @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_DESCRIPTION,
-        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_STARTING_MONITORING_PERIOD_EXAMPLE,
-    )
-    override val startingMonitoringPeriod: String?,
     @field:JsonProperty(required = false)
     @field:ArraySchema(
         arraySchema =
@@ -75,18 +70,43 @@ data class BasePortfolio(
             ),
     )
     override val monitoredFrameworks: Set<String>,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_NOTIFICATION_FREQUENCY_EXAMPLE,
+    )
+    override val notificationFrequency: NotificationFrequency,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_DESCRIPTION,
+        example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_TIME_WINDOW_THRESHOLD_EXAMPLE,
+    )
+    override val timeWindowThreshold: TimeWindowThreshold?,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                type = "string",
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_DESCRIPTION,
+                example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_SHARED_USER_IDS_EXAMPLE,
+            ),
+    )
+    override val sharedUserIds: Set<String>,
 ) : Portfolio,
-    PortfolioMonitoring {
+    PortfolioMonitoring,
+    PortfolioSharing {
     constructor(portfolioUpload: PortfolioUpload) : this(
         portfolioId = UUID.randomUUID().toString(),
         portfolioName = portfolioUpload.portfolioName,
         userId = DatalandAuthentication.fromContext().userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = portfolioUpload.companyIds,
+        identifiers = portfolioUpload.identifiers,
         isMonitored = portfolioUpload.isMonitored,
-        startingMonitoringPeriod = portfolioUpload.startingMonitoringPeriod,
         monitoredFrameworks = portfolioUpload.monitoredFrameworks,
+        notificationFrequency = portfolioUpload.notificationFrequency,
+        timeWindowThreshold = portfolioUpload.timeWindowThreshold,
+        sharedUserIds = portfolioUpload.sharedUserIds,
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -95,22 +115,41 @@ data class BasePortfolio(
         userId = DatalandAuthentication.fromContext().userId,
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
-        companyIds = emptySet(),
+        identifiers = emptySet(),
         isMonitored = portfolioMonitoringPatch.isMonitored,
-        startingMonitoringPeriod = portfolioMonitoringPatch.startingMonitoringPeriod,
         monitoredFrameworks = portfolioMonitoringPatch.monitoredFrameworks,
+        notificationFrequency = portfolioMonitoringPatch.notificationFrequency,
+        timeWindowThreshold = portfolioMonitoringPatch.timeWindowThreshold,
+        sharedUserIds = emptySet(),
+    )
+
+    constructor(portfolioSharingPatch: PortfolioSharingPatch) : this(
+        portfolioId = UUID.randomUUID().toString(),
+        portfolioName = "",
+        userId = DatalandAuthentication.fromContext().userId,
+        creationTimestamp = Instant.now().toEpochMilli(),
+        lastUpdateTimestamp = Instant.now().toEpochMilli(),
+        identifiers = emptySet(),
+        isMonitored = false,
+        monitoredFrameworks = emptySet(),
+        notificationFrequency = NotificationFrequency.Weekly,
+        timeWindowThreshold = null,
+        sharedUserIds = portfolioSharingPatch.sharedUserIds,
     )
 
     /**
      * Creates portfolio entity object from BasePortfolio. If parameters are null, the given values remain.
      */
+    @Suppress("LongParameterList")
     fun toPortfolioEntity(
         portfolioId: String? = null,
         creationTimestamp: Long = this.creationTimestamp,
         lastUpdateTimestamp: Long = this.lastUpdateTimestamp,
         isMonitored: Boolean = this.isMonitored,
-        startingMonitoringPeriod: String? = null,
         monitoredFrameworks: Set<String> = this.monitoredFrameworks,
+        notificationFrequency: NotificationFrequency = this.notificationFrequency,
+        timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
+        sharedUserIds: Set<String> = this.sharedUserIds,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -118,9 +157,11 @@ data class BasePortfolio(
             userId = this.userId,
             creationTimestamp = creationTimestamp,
             lastUpdateTimestamp = lastUpdateTimestamp,
-            companyIds = this.companyIds.toMutableSet(),
+            companyIds = this.identifiers.toMutableSet(),
             isMonitored = isMonitored,
-            startingMonitoringPeriod = startingMonitoringPeriod ?: this.startingMonitoringPeriod,
             monitoredFrameworks = monitoredFrameworks,
+            notificationFrequency = notificationFrequency,
+            timeWindowThreshold = timeWindowThreshold,
+            sharedUserIds = sharedUserIds,
         )
 }

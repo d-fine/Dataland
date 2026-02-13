@@ -20,6 +20,246 @@
     }
   ],
   "paths": {
+    "/company-proxies/{proxyId}": {
+      "get": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Get the company proxy for a given id.",
+        "description": "Retrieve the company proxy for the given proxy id. ",
+        "operationId": "getCompanyProxyById",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The unique identifier of the company proxy relation.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may query company proxies."
+          },
+          "404": {
+            "description": "No proxy found for the specified proxy id.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Replace proxy entry for a proxy id.",
+        "description": "Replaces proxy rule defined for the given proxy id. If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
+        "operationId": "putCompanyProxy",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The unique identifier of the company proxy relation.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProxyString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully replaced proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may modify company proxies."
+          },
+          "404": {
+            "description": "No proxy found for the specified company pair.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Delete a proxy relation by technical ID.",
+        "description": "Deletes a single proxy relation identified by its technical ID and returns the deleted rule.",
+        "operationId": "deleteCompanyProxy",
+        "parameters": [
+          {
+            "name": "proxyId",
+            "in": "path",
+            "description": "The proxy ID of the proxy rule entry.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted proxy rule.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may delete company proxies."
+          },
+          "404": {
+            "description": "No proxy relation found for the specified technical ID.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}": {
       "get": {
         "tags": [
@@ -32,7 +272,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -92,7 +332,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -162,7 +402,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -218,7 +458,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -290,7 +530,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -300,7 +540,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -827,6 +1067,88 @@
         ]
       }
     },
+    "/data/sfdr/export-jobs": {
+      "post": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedSfdrDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/pcaf": {
       "post": {
         "tags": [
@@ -865,6 +1187,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/pcaf/export-jobs": {
+      "post": {
+        "tags": [
+          "pcaf-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedPcafDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -967,6 +1371,88 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/export-jobs": {
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedNuclearAndGasDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -1005,6 +1491,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksg/export-jobs": {
+      "post": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedLksgDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1107,6 +1675,88 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials/export-jobs": {
+      "post": {
+        "tags": [
+          "eutaxonomy-non-financials-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-financials": {
       "post": {
         "tags": [
@@ -1145,6 +1795,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-financials/export-jobs": {
+      "post": {
+        "tags": [
+          "eutaxonomy-financials-data-controller"
+        ],
+        "operationId": "postExportJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
+        "parameters": [
+          {
+            "name": "keepValueFieldsOnly",
+            "in": "query",
+            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "includeAliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequestData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully started export job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input parameter could not be found."
           },
           "default": {
             "description": "An error occurred",
@@ -1302,6 +2034,217 @@
         ]
       }
     },
+    "/company-proxies": {
+      "get": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Search company proxies.",
+        "description": "Searches for company proxies matching the given filters.",
+        "operationId": "searchCompanyProxies",
+        "parameters": [
+          {
+            "name": "proxiedCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "proxyCompanyId",
+            "in": "query",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          {
+            "name": "frameworks",
+            "in": "query",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "sfdr",
+              "eutaxonomy-financials"
+            ]
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
+            ]
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies the maximum size of a single chunk. All chunks except possibly the last will have that size.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "description": "Only a chunk of all matching, ordered results is returned. This parameter specifies which chunk to return, starting at 0. The default value is 0, meaning the first chunk is returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved proxies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompanyProxy"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Input.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredCompanyProxy"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Create a proxy.",
+        "description": "Creates a proxy describing which data of one company may be substituted by data of another company. If framework or reportingPeriod are null, the proxy applies to all frameworks or all reporting periods respectively.",
+        "operationId": "postCompanyProxy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProxyString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully stored proxy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredCompanyProxy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may create company proxies."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -1324,7 +2267,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -1346,7 +2289,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -1360,7 +2305,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           },
           {
             "name": "chunkSize",
@@ -1505,11 +2452,10 @@
               "schema": {
                 "type": "array",
                 "description": "Unique identifiers associated with the company, such as LEI, PermId, ...",
-                "example": {
-                  "Lei": [
-                    "5493001KJX4BT0IHAG73"
-                  ]
-                },
+                "example": [
+                  "5493001KJX4BT0IHAG73",
+                  "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+                ],
                 "items": {
                   "type": "string"
                 }
@@ -1882,7 +2828,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1892,7 +2838,7 @@
           {
             "name": "dataType",
             "in": "path",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2213,7 +3159,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "string"
@@ -2223,7 +3169,7 @@
           {
             "name": "dataType",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
@@ -2261,12 +3207,15 @@
                 "type": "string",
                 "format": "uuid"
               }
-            }
+            },
+            "example": [
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ]
           },
           {
             "name": "qaStatus",
             "in": "query",
-            "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
@@ -2399,7 +3348,7 @@
           {
             "name": "companyIds",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifiers under which a company can be found on Dataland.",
             "required": false,
             "schema": {
               "type": "array",
@@ -2407,12 +3356,15 @@
                 "type": "string"
               }
             },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "480238a8-a1d6-452c-93b8-5dc75c7dcd64"
+            ]
           },
           {
             "name": "frameworksOrDataPointTypes",
             "in": "query",
-            "description": "Either the framework of the wanted dataset or the dataPointType of the wanted data point.",
+            "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
             "required": false,
             "schema": {
               "type": "array",
@@ -2420,12 +3372,15 @@
                 "type": "string"
               }
             },
-            "example": "sfdr"
+            "example": [
+              "sfdr",
+              "extendedDateFiscalYearEnd"
+            ]
           },
           {
             "name": "reportingPeriods",
             "in": "query",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
             "required": false,
             "schema": {
               "type": "array",
@@ -2433,7 +3388,10 @@
                 "type": "string"
               }
             },
-            "example": 2023
+            "example": [
+              "2023",
+              "2024"
+            ]
           }
         ],
         "responses": {
@@ -2701,6 +3659,139 @@
             }
           }
         }
+      }
+    },
+    "/export/{exportJobId}/state": {
+      "get": {
+        "tags": [
+          "data-export-controller"
+        ],
+        "summary": "Get information about export job being done.",
+        "description": "Check state of export job.",
+        "operationId": "getExportJobState",
+        "parameters": [
+          {
+            "name": "exportJobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully exported datasets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportJobProgressState"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Export job Id could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/export/{exportJobId}/download": {
+      "get": {
+        "tags": [
+          "data-export-controller"
+        ],
+        "summary": "Export data exportJobId provided.",
+        "description": "Given the exportJobId download the corresponding file. Files can only be downloaded once.",
+        "operationId": "exportCompanyAssociatedDataById",
+        "parameters": [
+          {
+            "name": "exportJobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully exported datasets.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No data for download available."
+          },
+          "404": {
+            "description": "Export job Id could not be found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
     "/data/vsme/{dataId}": {
@@ -2980,88 +4071,64 @@
         ]
       }
     },
-    "/data/sfdr/export": {
+    "/data/sfdr/latest": {
       "get": {
         "tags": [
           "sfdr-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedSfdrDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedSfdrData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -3104,7 +4171,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3197,7 +4264,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3307,88 +4374,64 @@
         ]
       }
     },
-    "/data/pcaf/export": {
+    "/data/pcaf/latest": {
       "get": {
         "tags": [
           "pcaf-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedPcafDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedPcafData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -3431,7 +4474,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3524,7 +4567,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3634,88 +4677,64 @@
         ]
       }
     },
-    "/data/nuclear-and-gas/export": {
+    "/data/nuclear-and-gas/latest": {
       "get": {
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedNuclearAndGasData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -3758,7 +4777,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3851,7 +4870,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -3961,88 +4980,64 @@
         ]
       }
     },
-    "/data/lksg/export": {
+    "/data/lksg/latest": {
       "get": {
         "tags": [
           "lksg-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedLksgDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedLksgData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -4085,7 +5080,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -4178,7 +5173,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -4288,88 +5283,64 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/export": {
+    "/data/eutaxonomy-non-financials/latest": {
       "get": {
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -4412,7 +5383,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -4505,7 +5476,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -4615,88 +5586,64 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/export": {
+    "/data/eutaxonomy-financials/latest": {
       "get": {
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
+        "operationId": "getLatestAvailableCompanyAssociatedEutaxonomyFinancialsData",
         "parameters": [
           {
-            "name": "reportingPeriods",
+            "name": "identifier",
             "in": "query",
-            "description": "The reporting periods for which the data export is requested.",
+            "description": "Unique identifier to find a company.",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          },
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]"
-          },
-          {
-            "name": "fileFormat",
-            "in": "query",
-            "description": "The file format for the data export.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "keepValueFieldsOnly",
-            "in": "query",
-            "description": "If set to true, data is to be exported without additional information like comments on the data or the data\u0027s qa status.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "includeAliases",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
+            "example": "5493001KJX4BT0IHAG73"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported datasets.",
+            "description": "Successfully retrieved dataset.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
                 }
               }
             }
           },
-          "204": {
-            "description": "No data for download available."
+          "400": {
+            "description": "Company identifier is not unique.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to make this query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Company Id could not be found."
+            "description": "Company or dataset could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -4739,7 +5686,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -4832,7 +5779,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -5018,7 +5965,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -5083,7 +6030,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -5145,7 +6092,7 @@
           {
             "name": "companyId",
             "in": "path",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "required": true,
             "schema": {
               "type": "string"
@@ -5277,7 +6224,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "required": false,
             "schema": {
               "uniqueItems": true,
@@ -5299,7 +6246,9 @@
                 "type": "string"
               }
             },
-            "example": "DE"
+            "example": [
+              "DE"
+            ]
           },
           {
             "name": "sectors",
@@ -5313,7 +6262,9 @@
                 "type": "string"
               }
             },
-            "example": "Information Technology"
+            "example": [
+              "Information Technology"
+            ]
           }
         ],
         "responses": {
@@ -5713,6 +6664,74 @@
   },
   "components": {
     "schemas": {
+      "CompanyProxyString": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId"
+        ],
+        "type": "object",
+        "properties": {
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework for which proxying is permitted. Null means all frameworks.",
+            "nullable": true,
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "nullable": true,
+            "example": "2023"
+          }
+        }
+      },
+      "StoredCompanyProxy": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId",
+          "proxyId"
+        ],
+        "type": "object",
+        "properties": {
+          "proxyId": {
+            "type": "string",
+            "description": "The unique identifier of the company proxy relation.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework for which proxying is permitted. Null means all frameworks.",
+            "nullable": true,
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "nullable": true,
+            "example": "2023"
+          }
+        }
+      },
       "CompanyInformation": {
         "required": [
           "companyName",
@@ -5765,6 +6784,19 @@
             "description": "The postal code of the headquarters.",
             "nullable": true,
             "example": "10123"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The fiscal year-end of the company.",
+            "nullable": true,
+            "example": "31-Mar"
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "Difference between fiscal year-end and reporting period.",
+            "format": "int32",
+            "nullable": true,
+            "example": -1
           },
           "sector": {
             "type": "string",
@@ -5856,7 +6888,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -5890,13 +6922,13 @@
             "type": "string",
             "description": "The direct link to the page displaying the specified dataset.",
             "nullable": true,
-            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/eutaxonomy-non-financials/1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "example": "https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/sfdr/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
       "QaStatus": {
         "type": "string",
-        "description": "The status of the document with regard to Dataland\u0027s quality assurance process.",
+        "description": "The status with regard to Dataland\u0027s quality assurance process.",
         "enum": [
           "Pending",
           "Accepted",
@@ -5913,7 +6945,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyInformation": {
@@ -5939,7 +6971,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -5969,7 +7001,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "nullable": true,
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
@@ -6024,12 +7056,12 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
             "type": "string",
-            "description": "The framework of the dataset on Dataland.",
+            "description": "The associated reporting framework or data point type (as applicable).",
             "example": "sfdr"
           },
           "reportingPeriod": {
@@ -6156,6 +7188,7 @@
             "nullable": true
           },
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "publicationDate": {
@@ -6191,6 +7224,7 @@
         "type": "object",
         "properties": {
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "fileName": {
@@ -6261,6 +7295,7 @@
             "nullable": true
           },
           "fileReference": {
+            "minLength": 1,
             "type": "string"
           },
           "publicationDate": {
@@ -7346,6 +8381,73 @@
         "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
         "example": "{\n      \"value\" : 100, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "The date the fiscal year ends.",
+        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
       "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -8240,15 +9342,17 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "description": "The date the fiscal year ends.",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           },
           "referencedReports": {
             "type": "object",
@@ -8268,8 +9372,6 @@
       },
       "SfdrGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "\"Option 1\"",
         "enum": [
           "Deviation",
           "NoDeviation"
@@ -8939,6 +10041,59 @@
           }
         }
       },
+      "ExportFileType": {
+        "type": "string",
+        "description": "The file format for the data export.",
+        "enum": [
+          "CSV",
+          "EXCEL",
+          "JSON"
+        ]
+      },
+      "ExportRequestData": {
+        "required": [
+          "companyIds",
+          "fileFormat",
+          "reportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "reportingPeriods": {
+            "type": "array",
+            "description": "The reporting periods for which the data export is requested.",
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "companyIds": {
+            "type": "array",
+            "description": "A list of Dataland company ids for which the data export is requested.",
+            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fileFormat": {
+            "$ref": "#/components/schemas/ExportFileType"
+          }
+        }
+      },
+      "ExportJobInfo": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "CompanyAssociatedDataPcafData": {
         "required": [
           "companyId",
@@ -9025,7 +10180,42 @@
             ]
           }
         },
-        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Machinery\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\"",
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Does the fiscal year deviate from the calendar year?",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "PcafCompanyValue": {
@@ -9044,6 +10234,27 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/PcafCompanyvalueUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyValueEstimation": {
+        "type": "object",
+        "properties": {
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
               }
             ]
           }
@@ -9091,6 +10302,48 @@
           }
         }
       },
+      "PcafCompanyvalueestimationListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafCompanyvalueestimationUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityAndDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -9117,6 +10370,22 @@
                 "$ref": "#/components/schemas/PcafEnvironmental"
               }
             ]
+          },
+          "companyValueEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyValueEstimation"
+              }
+            ]
+          },
+          "environmentalEstimation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
+              }
+            ]
           }
         }
       },
@@ -9133,7 +10402,57 @@
           }
         }
       },
+      "PcafEnvironmentalEstimation": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
+              }
+            ]
+          }
+        }
+      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
           "scope1GhgEmissionsInTonnes": {
@@ -9231,10 +10550,10 @@
           "Industrials",
           "Industry",
           "InformationTechnology",
-          "Machinery",
           "Materials",
           "RealEstate",
-          "Sovereign"
+          "Sovereign",
+          "Utilities"
         ]
       },
       "PcafGeneralGeneral": {
@@ -9244,22 +10563,22 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "description": "The date the fiscal year ends.",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           }
         }
       },
       "PcafGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "\"Option 1\"",
         "enum": [
           "Deviation",
           "NoDeviation"
@@ -13885,38 +15204,6 @@
           }
         ]
       },
-      "ExtendedDataPointLocalDate": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "The date the fiscal year ends.",
-        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -16218,7 +17505,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
@@ -16253,7 +17540,7 @@
           },
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "reportingPeriod": {
@@ -16311,7 +17598,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -16448,6 +17735,19 @@
             "nullable": true,
             "example": "10123"
           },
+          "fiscalYearEnd": {
+            "type": "string",
+            "description": "The fiscal year-end of the company.",
+            "nullable": true,
+            "example": "31-Mar"
+          },
+          "reportingPeriodShift": {
+            "type": "integer",
+            "description": "Difference between fiscal year-end and reporting period.",
+            "format": "int32",
+            "nullable": true,
+            "example": -1
+          },
           "sector": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
@@ -16547,7 +17847,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataId": {
@@ -16598,7 +17898,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataType": {
@@ -16631,6 +17931,14 @@
           }
         }
       },
+      "ExportJobProgressState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Success",
+          "Failure"
+        ]
+      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -16645,14 +17953,6 @@
             "$ref": "#/components/schemas/VsmeData"
           }
         }
-      },
-      "ExportFileType": {
-        "type": "string",
-        "enum": [
-          "CSV",
-          "EXCEL",
-          "JSON"
-        ]
       },
       "DataAndMetaInformationSfdrData": {
         "required": [
@@ -16765,7 +18065,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "companyName": {
@@ -16814,7 +18114,7 @@
         "properties": {
           "companyId": {
             "type": "string",
-            "description": "The unique identifier under which the company can be found on Dataland.",
+            "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
