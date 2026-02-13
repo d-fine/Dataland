@@ -15,6 +15,7 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestCreationService
+import org.dataland.datasourcingservice.services.RequestHistoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -29,6 +30,7 @@ class RequestController
         private val existingRequestsManager: ExistingRequestsManager,
         private val bulkDataRequestManager: BulkRequestManager,
         private val requestCreationService: RequestCreationService,
+        private val requestHistoryService: RequestHistoryService,
     ) : RequestApi {
         override fun postBulkDataRequest(
             bulkDataRequest: BulkDataRequest,
@@ -93,7 +95,7 @@ class RequestController
         override fun getFullStateHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntry>> =
             ResponseEntity
                 .ok(
-                    existingRequestsManager.retrieveExtendedRequestHistory(
+                    requestHistoryService.retrieveExtendedRequestHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),
@@ -103,7 +105,7 @@ class RequestController
         override fun getBasicStateHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntry>> =
             ResponseEntity
                 .ok(
-                    existingRequestsManager.retrieveRequestHistory(
+                    requestHistoryService.retrieveRequestHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),

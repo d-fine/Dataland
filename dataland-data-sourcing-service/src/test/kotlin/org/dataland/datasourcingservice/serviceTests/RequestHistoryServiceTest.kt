@@ -12,6 +12,7 @@ import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestHistoryService
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -27,10 +28,10 @@ import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureMockMvc
-class ExistingRequestsManagerTest
+class RequestHistoryServiceTest
     @Autowired
     constructor(
-        private val existingRequestsManager: ExistingRequestsManager,
+        private val requestHistoryService: RequestHistoryService,
     ) {
         @MockitoBean
         private lateinit var mockDataRevisionRepository: DataRevisionRepository
@@ -203,13 +204,13 @@ class ExistingRequestsManagerTest
                     true,
                 )
 
-            val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
+            val requestHistory = requestHistoryService.retrieveRequestHistory(requestId)
 
             requestHistory.zipWithNext { a, b ->
                 Assertions.assertTrue(a.modificationDate < b.modificationDate)
             }
 
-            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+            val extendRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
 
             extendRequestHistory.zipWithNext { a, b ->
                 Assertions.assertTrue(a.modificationDate < b.modificationDate)
@@ -229,11 +230,11 @@ class ExistingRequestsManagerTest
                     true,
                 )
 
-            val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
+            val requestHistory = requestHistoryService.retrieveRequestHistory(requestId)
 
             Assertions.assertEquals(2, requestHistory.size)
 
-            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+            val extendRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
 
             Assertions.assertEquals(2, extendRequestHistory.size)
         }
@@ -251,7 +252,7 @@ class ExistingRequestsManagerTest
                     true,
                 )
 
-            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+            val extendRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
 
             Assertions.assertEquals("Request Processing", extendRequestHistory[1].adminComment)
             Assertions.assertEquals("Request Processing", extendRequestHistory[2].adminComment)
@@ -270,14 +271,14 @@ class ExistingRequestsManagerTest
                     true,
                 )
 
-            val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
+            val requestHistory = requestHistoryService.retrieveRequestHistory(requestId)
 
             Assertions.assertEquals(4, requestHistory.size)
             requestHistory.zipWithNext { a, b ->
                 Assertions.assertNotEquals(a.displayedState, b.displayedState)
             }
 
-            val extendedRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+            val extendedRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
             Assertions.assertEquals(5, extendedRequestHistory.size)
         }
     }

@@ -46,7 +46,6 @@ class ExistingRequestsManagerTest {
     private val mockDataSourcingServiceMessageSender = mock<DataSourcingServiceMessageSender>()
     private val mockRequestQueryManager = mock<RequestQueryManager>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockDataSourcingManager = mock<DataSourcingManager>()
 
     private lateinit var dataRequestId: UUID
     private lateinit var companyId: UUID
@@ -60,10 +59,8 @@ class ExistingRequestsManagerTest {
         ExistingRequestsManager(
             mockRequestRepository,
             mockRequestDataSourcingAssigner,
-            mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
             mockRequestQueryManager,
-            mockDataSourcingManager,
         )
 
     private val testDataSourcingManager =

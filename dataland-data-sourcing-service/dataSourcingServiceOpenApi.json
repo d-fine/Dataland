@@ -988,9 +988,9 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get full history of requests by ID",
-        "description": "Retrieve the history of a Request object by its unique identifier.",
-        "operationId": "getRequestHistoryById",
+        "summary": "Get basic request history of requests by ID",
+        "description": "Retrieve the basic request history of a Request object by its unique identifier.",
+        "operationId": "getBasicStateHistoryById",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -1005,20 +1005,91 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved request history.",
+            "description": "Successfully retrieved state history.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
+                    "$ref": "#/components/schemas/RequestHistoryEntry"
                   }
                 }
               }
             }
           },
           "403": {
-            "description": "Only Dataland admins have the right to query request history."
+            "description": "Only Dataland admins have the right to query state history."
+          },
+          "404": {
+            "description": "The specified request ID does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}/extended-history": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get extended request history of requests by ID",
+        "description": "Retrieve the extended request history of a Request object by its unique identifier.",
+        "operationId": "getFullStateHistoryById",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved state history.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedRequestHistoryEntry"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to query state history."
           },
           "404": {
             "description": "The specified request ID does not exist."
@@ -2276,6 +2347,62 @@
             "description": "The email address of the user who created this data request.",
             "nullable": true,
             "example": "test@example.com"
+          }
+        }
+      },
+      "DisplayedState": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Withdrawn",
+          "Validated",
+          "DocumentSourcing",
+          "DocumentVerification",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
+      "RequestHistoryEntry": {
+        "required": [
+          "displayedState",
+          "modificationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "modificationDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "displayedState": {
+            "$ref": "#/components/schemas/DisplayedState"
+          }
+        }
+      },
+      "ExtendedRequestHistoryEntry": {
+        "required": [
+          "displayedState",
+          "modificationDate",
+          "requestState"
+        ],
+        "type": "object",
+        "properties": {
+          "adminComment": {
+            "type": "string"
+          },
+          "dataSourcingState": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "requestState": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "modificationDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "displayedState": {
+            "$ref": "#/components/schemas/DisplayedState"
           }
         }
       },
