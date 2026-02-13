@@ -1,5 +1,6 @@
 package org.dataland.datalandaccountingservice.services
 
+import org.dataland.datalandaccountingservice.entities.TransactionEntity
 import org.dataland.datalandaccountingservice.model.TransactionDto
 import org.dataland.datalandaccountingservice.repositories.BilledRequestRepository
 import org.dataland.datalandaccountingservice.repositories.TransactionRepository
@@ -65,7 +66,7 @@ class CreditsManagerTest {
     @Test
     fun `postTransaction should save transaction and return as DTO String type`() {
         val transactionEntity = validTransactionDto.toTransactionEntity()
-        whenever(mockTransactionRepository.save(any())).thenReturn(transactionEntity)
+        whenever(mockTransactionRepository.save(any<TransactionEntity>())).thenReturn(transactionEntity)
         val result = creditsManager.postTransaction(validTransactionDto)
 
         assertEquals(transactionDtoString, result)

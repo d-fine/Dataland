@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -195,7 +196,7 @@ class BulkRequestManagerTest {
                 mockStored
             },
         ).whenever(mockDataSourcingQueryManager).searchDataSourcings(
-            eq(null), eq(null), eq(null), eq(DataSourcingState.NonSourceable), any(), any(),
+            isNull(), isNull(), isNull(), eq(DataSourcingState.NonSourceable), any(), any(),
         )
 
         doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(

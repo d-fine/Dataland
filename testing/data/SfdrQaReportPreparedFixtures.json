@@ -2,43 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Fort Garlandside",
-			"headquartersPostalCode": null,
-			"sector": "initiatives",
+			"headquarters": "East Modesta",
+			"headquartersPostalCode": "02285-9526",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"WFXz7arHOfpRpJqGs3UA"
+					"HHrIs4SaUVoRFWCU2QJ4"
 				],
 				"Isin": [
-					"LAHiKRTpX1BN",
-					"SOHrVccST0pj"
+					"dOZtChBLeDu2"
 				],
-				"PermId": [
-					"wpgNsxhebN"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"nkvcfaLG1"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"4veCrCIRK2jl7Em"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NA",
+			"countryCode": "KY",
 			"companyContactDetails": [
-				"Lula_Baumbach34@example.com",
-				"Nedra.Effertz80@example.com",
-				"Crawford51@example.com",
-				"Joan30@example.com"
+				"Walker5@example.com",
+				"Abraham.Weimann14@example.com",
+				"Mercedes_Kerluke-Swaniawski71@example.com"
 			],
-			"companyAlternativeNames": [
-				"Bernhard LLC",
-				"Brakus - Bradtke",
-				"Frami LLC",
-				"Labadie - Sanford"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": null,
-			"fiscalYearEnd": "03-Jun",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://low-brief.net/",
+			"fiscalYearEnd": "23-Sep",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -55,6 +46,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2021"
 	}
 ]
