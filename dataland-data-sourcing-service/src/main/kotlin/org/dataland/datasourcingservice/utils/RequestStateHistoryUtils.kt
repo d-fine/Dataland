@@ -9,17 +9,14 @@ import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntr
 import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
-import org.springframework.stereotype.Component
 import kotlin.collections.last
 import kotlin.collections.lastOrNull
 import kotlin.math.sign
 
 /**
- * A utility class that provides functions for processing and combining request history entries and data sourcing
- * history entries.
+ * A utility class for processing request state history and data sourcing state history.
  */
-@Component("RequestStateHistoryUtils")
-class RequestStateHistoryUtils {
+object RequestStateHistoryUtils {
     /**
      * Deletes consecutive entries with the same displayedState, keeping the order stable.
      *
@@ -42,40 +39,6 @@ class RequestStateHistoryUtils {
         }
 
         return result
-    }
-
-    /**
-     * A companion object that contains utility functions related to request state history processing.
-     */
-    companion object {
-        /**
-         * Determines the displayed state based on the request state and data sourcing state.
-         * The displayed state is a user-friendly representation of the current status of the request,
-         * taking into account both the request state and the data sourcing state.
-         *
-         * @param requestState - The current state of the request.
-         * @param dataSourcingState - The current state of the data sourcing process, which can be null if not applicable.
-         * @returns The calculated displayed state for the given request and data sourcing states.
-         */
-        fun getDisplayedState(
-            requestState: RequestState,
-            dataSourcingState: DataSourcingState?,
-        ): DisplayedState =
-            when {
-                requestState == RequestState.Withdrawn -> DisplayedState.Withdrawn
-                requestState == RequestState.Open -> DisplayedState.Open
-                dataSourcingState == null -> DisplayedState.Open
-                else ->
-                    when (dataSourcingState) {
-                        DataSourcingState.Initialized -> DisplayedState.Validated
-                        DataSourcingState.DocumentSourcing -> DisplayedState.DocumentSourcing
-                        DataSourcingState.DocumentSourcingDone -> DisplayedState.DocumentVerification
-                        DataSourcingState.DataExtraction -> DisplayedState.DataExtraction
-                        DataSourcingState.DataVerification -> DisplayedState.DataVerification
-                        DataSourcingState.NonSourceable -> DisplayedState.NonSourceable
-                        DataSourcingState.Done -> DisplayedState.Done
-                    }
-            }
     }
 
     /**
@@ -185,34 +148,6 @@ class RequestStateHistoryUtils {
         }
 
     /**
-     * Creates a RequestHistoryEntry based on the given input
-     *
-     * It determines the appropriate constructor to use for creating the RequestHistoryEntryData object based on
-     * which parameters are provided.
-     *
-     * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
-     *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
-     * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
-     */
-    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
-        when (input) {
-            is HistoryEntryInput.RequestOnly ->
-                RequestHistoryEntryData(input.requestEntity)
-
-            is HistoryEntryInput.DataSourcingOnly ->
-                RequestHistoryEntryData(
-                    input.dataSourcingWithoutReferences,
-                    input.previousHistoryEntry.displayedState,
-                )
-
-            is HistoryEntryInput.Both ->
-                RequestHistoryEntryData(
-                    input.dataSourcingWithoutReferences,
-                    input.requestEntity,
-                )
-        }
-
-    /**
      * Builds a combined history of request state changes and data sourcing state changes, sorted by modification date.
      *
      * @param requestHistory - A list of pairs containing RequestEntity objects, sorted by last modified date,
@@ -278,6 +213,63 @@ class RequestStateHistoryUtils {
     }
 
     /**
+     * Creates a RequestHistoryEntry based on the given input
+     *
+     * It determines the appropriate constructor to use for creating the RequestHistoryEntryData object based on
+     * which parameters are provided.
+     *
+     * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
+     *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
+     * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
+     */
+    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
+        when (input) {
+            is HistoryEntryInput.RequestOnly ->
+                RequestHistoryEntryData(input.requestEntity)
+
+            is HistoryEntryInput.DataSourcingOnly ->
+                RequestHistoryEntryData(
+                    input.dataSourcingWithoutReferences,
+                    input.previousHistoryEntry.displayedState,
+                )
+
+            is HistoryEntryInput.Both ->
+                RequestHistoryEntryData(
+                    input.dataSourcingWithoutReferences,
+                    input.requestEntity,
+                )
+        }
+
+    /**
+     * Determines the displayed state based on the request state and data sourcing state.
+     * The displayed state is a user-friendly representation of the current status of the request,
+     * taking into account both the request state and the data sourcing state.
+     *
+     * @param requestState - The current state of the request.
+     * @param dataSourcingState - The current state of the data sourcing process, which can be null if not applicable.
+     * @returns The calculated displayed state for the given request and data sourcing states.
+     */
+    fun getDisplayedState(
+        requestState: RequestState,
+        dataSourcingState: DataSourcingState?,
+    ): DisplayedState =
+        when {
+            requestState == RequestState.Withdrawn -> DisplayedState.Withdrawn
+            requestState == RequestState.Open -> DisplayedState.Open
+            dataSourcingState == null -> DisplayedState.Open
+            else ->
+                when (dataSourcingState) {
+                    DataSourcingState.Initialized -> DisplayedState.Validated
+                    DataSourcingState.DocumentSourcing -> DisplayedState.DocumentSourcing
+                    DataSourcingState.DocumentSourcingDone -> DisplayedState.DocumentVerification
+                    DataSourcingState.DataExtraction -> DisplayedState.DataExtraction
+                    DataSourcingState.DataVerification -> DisplayedState.DataVerification
+                    DataSourcingState.NonSourceable -> DisplayedState.NonSourceable
+                    DataSourcingState.Done -> DisplayedState.Done
+                }
+        }
+
+    /**
      * Generates a combined history of request state changes and data sourcing state changes, sorted by modification date,
      * and creates ExtendedRequestHistoryEntry objects for each entry in the combined history using the
      * createExtendedHistoryEntry function.
@@ -286,7 +278,7 @@ class RequestStateHistoryUtils {
      * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects sorted by last modified date,
      * @returns A list of ExtendedRequestHistoryEntry objects representing the combined history
      */
-    public fun getExtendedRequestHistory(
+    fun getExtendedRequestHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
     ): List<ExtendedRequestHistoryEntry> = buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
@@ -300,7 +292,7 @@ class RequestStateHistoryUtils {
      * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects sorted by last modified date,
      * @returns A list of RequestHistoryEntry objects representing the combined history
      */
-    public fun getRequestHistory(
+    fun getRequestHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
     ): List<RequestHistoryEntry> =

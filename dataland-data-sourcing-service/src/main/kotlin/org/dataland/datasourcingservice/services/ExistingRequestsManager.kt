@@ -36,7 +36,6 @@ class ExistingRequestsManager
         private val dataSourcingManager: DataSourcingManager,
     ) {
         private val requestLogger = RequestLogger()
-        private val requestStateHistoryUtils = RequestStateHistoryUtils()
 
         /**
          Retrieves a stored data request by its ID.
@@ -177,7 +176,7 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            return requestStateHistoryUtils.getRequestHistory(requestHistory, dataSourcingHistory)
+            return RequestStateHistoryUtils.getRequestHistory(requestHistory, dataSourcingHistory)
         }
 
         /**
@@ -190,6 +189,6 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            return requestStateHistoryUtils.getExtendedRequestHistory(requestHistory, dataSourcingHistory)
+            return RequestStateHistoryUtils.getExtendedRequestHistory(requestHistory, dataSourcingHistory)
         }
     }

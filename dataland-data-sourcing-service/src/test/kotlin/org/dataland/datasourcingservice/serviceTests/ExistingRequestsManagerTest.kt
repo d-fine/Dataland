@@ -61,6 +61,7 @@ class ExistingRequestsManagerTest
                         dataType = "dummyDataType",
                         userId = dummyUserId,
                         creationTimestamp = lastModifiedDateFirstRequest,
+                        adminComment = "Request Opened",
                         memberComment = null,
                         lastModifiedDate = lastModifiedDateFirstRequest,
                         requestPriority = RequestPriority.Low,
@@ -75,6 +76,7 @@ class ExistingRequestsManagerTest
                         reportingPeriod = "2025",
                         dataType = "dummyDataType",
                         userId = dummyUserId,
+                        adminComment = "Request Processing",
                         creationTimestamp = lastModifiedDateFirstRequest + 500L,
                         memberComment = null,
                         lastModifiedDate = lastModifiedDateFirstRequest + 500L,
@@ -82,6 +84,21 @@ class ExistingRequestsManagerTest
                         state = RequestState.Processing,
                     ),
                     lastModifiedDateFirstRequest + 500L,
+                ),
+                Pair(
+                    RequestEntity(
+                        id = requestId,
+                        companyId = dummyCompanyId,
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        userId = dummyUserId,
+                        creationTimestamp = lastModifiedDateFirstRequest + 1000L,
+                        memberComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 1000L,
+                        requestPriority = RequestPriority.Low,
+                        state = RequestState.Withdrawn,
+                    ),
+                    lastModifiedDateFirstRequest + 1000L,
                 ),
             )
 
@@ -98,6 +115,30 @@ class ExistingRequestsManagerTest
                     dataExtractor = null,
                     adminComment = null,
                     lastModifiedDate = lastModifiedDateFirstRequest + 500L,
+                ),
+                DataSourcingWithoutReferences(
+                    dataSourcingId = dataSourcingID.toString(),
+                    companyId = dummyCompanyId.toString(),
+                    reportingPeriod = "2025",
+                    dataType = "dummyDataType",
+                    state = DataSourcingState.DocumentSourcing,
+                    dateOfNextDocumentSourcingAttempt = null,
+                    documentCollector = null,
+                    dataExtractor = null,
+                    adminComment = null,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 800L,
+                ),
+                DataSourcingWithoutReferences(
+                    dataSourcingId = dataSourcingID.toString(),
+                    companyId = dummyCompanyId.toString(),
+                    reportingPeriod = "2025",
+                    dataType = "dummyDataType",
+                    state = DataSourcingState.DataExtraction,
+                    dateOfNextDocumentSourcingAttempt = null,
+                    documentCollector = null,
+                    dataExtractor = null,
+                    adminComment = null,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 1500L,
                 ),
             )
 
@@ -141,13 +182,17 @@ class ExistingRequestsManagerTest
                 mockRequestRepository,
                 mockRequestQueryManager,
             )
-            doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyRequestEntity).whenever(mockRequestRepository).findByIdAndFetchDataSourcingEntity(requestId)
 
             doReturn(dummyExtendedStoredRequest)
                 .whenever(mockRequestQueryManager)
                 .transformRequestEntityToExtendedStoredRequest(dummyRequestEntity)
+        }
+
+        @Test
+        fun `Request history is sorted by timestamps`() {
+            doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory)
                 .whenever(mockDataSourcingManager)
@@ -157,59 +202,25 @@ class ExistingRequestsManagerTest
                     ),
                     true,
                 )
-        }
 
-        @Test
-        fun `request history is sorted by timestamps`() {
             val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
 
-            Assertions.assertEquals(1000, requestHistory[0].modificationDate)
-            Assertions.assertEquals(1500, requestHistory[1].modificationDate)
+            requestHistory.zipWithNext { a, b ->
+                Assertions.assertTrue(a.modificationDate < b.modificationDate)
+            }
 
             val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
 
-            Assertions.assertEquals(1000, extendRequestHistory[0].modificationDate)
-            Assertions.assertEquals(1500, extendRequestHistory[1].modificationDate)
+            extendRequestHistory.zipWithNext { a, b ->
+                Assertions.assertTrue(a.modificationDate < b.modificationDate)
+            }
         }
 
         @Test
-        fun `Check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
-            val requestStateHistory: List<Pair<RequestEntity, Long>> =
-                dummyRequestStateHistory +
-                    Pair(
-                        RequestEntity(
-                            id = requestId,
-                            companyId = dummyCompanyId,
-                            reportingPeriod = "2025",
-                            dataType = "dummyDataType",
-                            userId = dummyUserId,
-                            creationTimestamp = lastModifiedDateFirstRequest + 1000L,
-                            memberComment = null,
-                            lastModifiedDate = lastModifiedDateFirstRequest + 1000L,
-                            requestPriority = RequestPriority.Low,
-                            state = RequestState.Withdrawn,
-                        ),
-                        lastModifiedDateFirstRequest + 1000L,
-                    )
+        fun `Single history entry if state changes in request and data-sourcing for same timestamp`() {
+            doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            val dataSourcingStatHistory: List<DataSourcingWithoutReferences> =
-                dummyDataSourcingStatHistory +
-                    DataSourcingWithoutReferences(
-                        dataSourcingId = dataSourcingID.toString(),
-                        companyId = dummyCompanyId.toString(),
-                        reportingPeriod = "2025",
-                        dataType = "dummyDataType",
-                        state = DataSourcingState.DataExtraction,
-                        dateOfNextDocumentSourcingAttempt = null,
-                        documentCollector = null,
-                        dataExtractor = null,
-                        adminComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest + 1500L,
-                    )
-
-            doReturn(requestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
-
-            doReturn(dataSourcingStatHistory)
+            doReturn(dummyDataSourcingStatHistory.subList(0, 1))
                 .whenever(mockDataSourcingManager)
                 .retrieveDataSourcingHistory(
                     ValidationUtils.convertToUUID(
@@ -220,9 +231,53 @@ class ExistingRequestsManagerTest
 
             val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
 
-            Assertions.assertEquals(3, requestHistory.size)
+            Assertions.assertEquals(2, requestHistory.size)
+
+            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+
+            Assertions.assertEquals(2, extendRequestHistory.size)
+        }
+
+        @Test
+        fun `Same admin comment is visible for equal request states`() {
+            doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
+
+            doReturn(dummyDataSourcingStatHistory.subList(0, 2))
+                .whenever(mockDataSourcingManager)
+                .retrieveDataSourcingHistory(
+                    ValidationUtils.convertToUUID(
+                        dataSourcingID.toString(),
+                    ),
+                    true,
+                )
+
+            val extendRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+
+            Assertions.assertEquals("Request Processing", extendRequestHistory[1].adminComment)
+            Assertions.assertEquals("Request Processing", extendRequestHistory[2].adminComment)
+        }
+
+        @Test
+        fun `Check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
+            doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
+
+            doReturn(dummyDataSourcingStatHistory)
+                .whenever(mockDataSourcingManager)
+                .retrieveDataSourcingHistory(
+                    ValidationUtils.convertToUUID(
+                        dataSourcingID.toString(),
+                    ),
+                    true,
+                )
+
+            val requestHistory = existingRequestsManager.retrieveRequestHistory(requestId)
+
+            Assertions.assertEquals(4, requestHistory.size)
             requestHistory.zipWithNext { a, b ->
                 Assertions.assertNotEquals(a.displayedState, b.displayedState)
             }
+
+            val extendedRequestHistory = existingRequestsManager.retrieveExtendedRequestHistory(requestId)
+            Assertions.assertEquals(5, extendedRequestHistory.size)
         }
     }
