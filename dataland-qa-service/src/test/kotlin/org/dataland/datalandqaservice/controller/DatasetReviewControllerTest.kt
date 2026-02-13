@@ -43,7 +43,7 @@ class DatasetReviewControllerTest {
 
         val result = controller.getDatasetReview(datasetReviewId.toString())
 
-        assertEquals(HttpStatus.CREATED, result.statusCode)
+        assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(response, result.body)
 
         verify(datasetReviewService).getDatasetReviewById(datasetReviewId)
@@ -110,7 +110,7 @@ class DatasetReviewControllerTest {
 
         val result = controller.postDatasetReview(datasetId.toString())
 
-        assertEquals(HttpStatus.OK, result.statusCode)
+        assertEquals(HttpStatus.CREATED, result.statusCode)
         assertEquals(expectedResponse, result.body)
         verify(datasetReviewService).postDatasetReview(datasetId)
     }
