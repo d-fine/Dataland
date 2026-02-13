@@ -1,40 +1,9 @@
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
-import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
+import { type RequestHistoryEntry } from '@clients/datasourcingservice';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Request State History', function (): void {
-  const dummyCreationTimestamp = 1714315046000;
-  const dummyRequest = {
-    id: 'dummy-request-id',
-    companyId: 'dummy-company-id',
-    reportingPeriod: '2024',
-    dataType: 'sfdr',
-    userId: 'dummy-user-id',
-    creationTimestamp: dummyCreationTimestamp,
-    lastModifiedDate: dummyCreationTimestamp,
-    requestPriority: 'Low',
-    state: RequestState.Open,
-  } as StoredRequest;
-  const dummyStateHistory = [
-    dummyRequest,
-    {
-      ...dummyRequest,
-      lastModifiedDate: dummyCreationTimestamp + 600000,
-      state: RequestState.Processing,
-      adminComment: 'Processing started',
-    },
-    {
-      ...dummyRequest,
-      lastModifiedDate: dummyCreationTimestamp + 3 * 600000,
-      state: RequestState.Withdrawn,
-      adminComment: 'Request withdrawn by user',
-    },
-    {
-      ...dummyRequest,
-      lastModifiedDate: dummyCreationTimestamp + 2 * 600000,
-      state: RequestState.Processed,
-    },
-  ] as Array<StoredRequest>;
+  const dummyRequestHistoryEntry: RequestHistoryEntry[] = [];
 
   /**
    * Helper function to check the existence of columns in the state history table based on user role
@@ -43,7 +12,7 @@ describe('Component tests for the Request State History', function (): void {
   function checkColumnExistence(isAdminUser: boolean): void {
     getMountingFunction()(RequestStateHistory, {
       props: {
-        stateHistory: dummyStateHistory,
+        stateHistory: dummyRequestHistoryEntry,
         isAdmin: isAdminUser,
       },
     });

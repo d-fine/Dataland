@@ -186,8 +186,8 @@ import {
   type ExtendedStoredRequest,
   RequestState,
   type SingleRequest,
-  type StoredRequest,
   type StoredDataSourcing,
+  type RequestHistoryEntry,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -218,7 +218,7 @@ const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as ExtendedStoredRequest);
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
-const requestHistory = ref<StoredRequest[]>([]);
+const requestHistory = ref<RequestHistoryEntry[]>([]);
 const dataSourcingHistory = ref<DataSourcingWithoutReferences[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
@@ -253,14 +253,12 @@ async function initializeComponent(): Promise<void> {
   await getRequest()
     .catch((error) => console.error(error))
     .then(async () => {
+      await setUserAccessFields();
       if (getKeycloakPromise) {
         await getAndStoreRequestHistory().catch((error) => console.error(error));
-        await getAndStoreDataSourcingHistory().catch((error) => console.error(error));
         await getAndStoreDataSourcingDetails().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
       }
-      requestHistory.value.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-      await setUserAccessFields();
     })
     .catch((error) => console.error(error));
 }
@@ -270,21 +268,10 @@ async function initializeComponent(): Promise<void> {
  */
 async function getAndStoreRequestHistory(): Promise<void> {
   try {
-    requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
- * Retrieve the data sourcing history and store it if a value was found.
- */
-async function getAndStoreDataSourcingHistory(): Promise<void> {
-  try {
-    if (storedRequest.dataSourcingEntityId) {
-      dataSourcingHistory.value = (
-        await dataSourcingControllerApi.getDataSourcingHistoryById(storedRequest.dataSourcingEntityId, true)
-      ).data;
+    if (isUserKeycloakAdmin.value) {
+      requestHistory.value = (await requestControllerApi.getExtendedRequestHistoryById(requestId.value)).data;
+    } else {
+      requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
     }
   } catch (error) {
     console.error(error);
