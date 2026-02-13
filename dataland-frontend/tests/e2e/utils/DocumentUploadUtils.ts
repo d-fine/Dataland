@@ -5,7 +5,6 @@ import {
   type DocumentMetaInfoPatch,
   type DocumentMetaInfoResponse,
 } from '@clients/documentmanager';
-import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
 /**
@@ -55,7 +54,10 @@ export async function uploadDocumentViaApi(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').update(arr).digest('hex');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', arr);
+  const documentHash = Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
   return await documentControllerApi
     .postDocument(file, documentMetaInfo)
     .then((response) => {
@@ -88,7 +90,6 @@ export async function patchDocumentMetaInfo(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').digest('hex');
   return await documentControllerApi
     .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
@@ -97,10 +98,10 @@ export async function patchDocumentMetaInfo(
     .catch((error: AxiosError) => {
       if (error.status == 403) {
         console.log('You do not have the right to update the companyIds field.');
-        return { documentId: documentHash } as DocumentMetaInfoResponse;
+        return { documentId } as DocumentMetaInfoResponse;
       } else if (error.status == 404) {
         console.log('Document Id does not match any stored document.');
-        return { documentId: documentHash } as DocumentMetaInfoResponse;
+        return { documentId } as DocumentMetaInfoResponse;
       } else {
         throw error;
       }
