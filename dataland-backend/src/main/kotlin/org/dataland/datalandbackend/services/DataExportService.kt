@@ -126,12 +126,9 @@ open class DataExportService<T>(
      * Create a ByteStream of the latest available data per company to be used for export from a list of SingleCompanyExportData.
      *
      * @param companyIds the companies for which the latest data is to be exported
-     * @param framework the framework for which the data is to be exported
-     * @param exportFileType the file type to be exported
      * @param newExportJob correlationId for unique identification
      * @param clazz the class type of the data to be exported
-     * @param keepValueFieldsOnly if true, non value fields are stripped
-     * @param includeAliases if true, human-readable names are used if available
+     * @param exportOptions the export options specifying the export format
      */
     @Async
     open fun startLatestExportJob(
