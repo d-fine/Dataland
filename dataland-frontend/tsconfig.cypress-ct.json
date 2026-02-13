@@ -17,7 +17,8 @@
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"],
       "@ct/*": ["./tests/component/*"],
-      "@sharedUtils/*": ["./tests/sharedUtils/*"]
+      "@sharedUtils/*": ["./tests/sharedUtils/*"],
+      "@testing/*": ["../testing/*"]
     }
   }
 }
