@@ -105,14 +105,14 @@ class DatasetReviewControllerTest {
                 approvedCustomDataPointIds = emptyMap(),
             )
 
-        whenever(datasetReviewService.createDatasetReview(datasetId))
+        whenever(datasetReviewService.postDatasetReview(datasetId))
             .thenReturn(expectedResponse)
 
         val result = controller.postDatasetReview(datasetId.toString())
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(expectedResponse, result.body)
-        verify(datasetReviewService).createDatasetReview(datasetId)
+        verify(datasetReviewService).postDatasetReview(datasetId)
     }
 
     @Test

@@ -35,7 +35,7 @@ class DatasetReviewService
          * Create a dataset review object associated to the given dataset.
          */
         @Transactional
-        fun createDatasetReview(datasetId: UUID): DatasetReviewResponse {
+        fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
             lateinit var datatypeToDatapointIds: Map<String, String>
             try {
                 datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())

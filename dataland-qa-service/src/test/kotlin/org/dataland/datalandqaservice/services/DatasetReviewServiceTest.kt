@@ -143,7 +143,7 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `createDatasetReview builds entity correctly`() {
+    fun `postDatasetReview builds entity correctly`() {
         val dummyDatapointId = UUID.randomUUID().toString()
         doReturn(mapOf(dummyDataPointType to dummyDatapointId))
             .whenever(mockDatasetReviewSupportService)
@@ -164,7 +164,7 @@ class DatasetReviewServiceTest {
             .getInheritedRoles(any())
 
         val createdDatasetReview =
-            datasetReviewService.createDatasetReview(
+            datasetReviewService.postDatasetReview(
                 UUID.randomUUID(),
             )
 

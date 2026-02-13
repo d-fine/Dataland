@@ -26,7 +26,7 @@ class DatasetReviewController(
             )
 
     override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity.ok(datasetReviewService.createDatasetReview(convertToUUID(datasetId)))
+        ResponseEntity.ok(datasetReviewService.postDatasetReview(convertToUUID(datasetId)))
 
     override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetReviewResponse>> =
         ResponseEntity.ok(datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))
