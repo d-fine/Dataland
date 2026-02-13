@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.Async
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import kotlin.collections.associate
 import kotlin.jvm.java
 
 /**
@@ -82,12 +83,9 @@ open class DataExportService<T>(
      * Note that swagger only supports InputStreamResources and not OutputStreams
      *
      * @param dataDimensionsWithDataStrings the plain data to be exported
-     * @param exportFileType the file type to be exported
      * @param newExportJob export job in which the stream will be stored
      * @param clazz the class type of the data to be exported
-     * @param dataType the datatype specifying the framework
-     * @param keepValueFieldsOnly if true, non value fields are stripped
-     * @param includeAliases if true, human-readable names are used if available
+     * @param exportOptions the export options specifying the export format
      */
     private fun buildStream(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
@@ -107,11 +105,9 @@ open class DataExportService<T>(
      * Note that swagger only supports InputStreamResources and not OutputStreams
      *
      * @param listDataDimensions the passed list of SingleCompanyExportData to be exported
-     * @param exportFileType the file type to be exported
      * @param newExportJob export job in which the stream will be stored
      * @param clazz the class type of the data to be exported
-     * @param keepValueFieldsOnly if true, non value fields are stripped
-     * @param includeAliases if true, human-readable names are used if available
+     * @param exportOptions the export options specifying the export format
      */
     @Async
     open fun startExportJob(
@@ -223,18 +219,16 @@ open class DataExportService<T>(
             )
 
         return dataDimensionsWithDataStrings
-            .entries
-            .sortedWith(
-                compareBy<Map.Entry<BasicDatasetDimensions, String>> { it.key.companyId }
-                    .thenBy { it.key.reportingPeriod },
-            ).map {
+            .asSequence()
+            .map {
                 SingleCompanyExportData(
                     companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
                     companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
                     reportingPeriod = it.key.reportingPeriod,
                     data = defaultObjectMapper.readValue(it.value, clazz),
                 )
-            }
+            }.sortedBy { it.companyName }
+            .toList()
     }
 
     /**
