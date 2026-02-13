@@ -14,9 +14,10 @@ import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
+import org.dataland.datasourcingservice.utils.buildHistory
+import org.dataland.datasourcingservice.utils.createExtendedHistoryEntry
+import org.dataland.datasourcingservice.utils.createHistoryEntry
 import org.dataland.datasourcingservice.utils.deleteRepeatingDisplayedStates
-import org.dataland.datasourcingservice.utils.getExtendedRequestHistory
-import org.dataland.datasourcingservice.utils.getRequestHistory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -178,7 +179,7 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            val combinedHistory = getRequestHistory(requestHistory, dataSourcingHistory)
+            val combinedHistory = buildHistory(requestHistory, dataSourcingHistory, ::createHistoryEntry)
             return deleteRepeatingDisplayedStates(combinedHistory)
         }
 
@@ -192,6 +193,6 @@ class ExistingRequestsManager
         @Transactional(readOnly = true)
         fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
-            return getExtendedRequestHistory(requestHistory, dataSourcingHistory)
+            return buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
         }
     }

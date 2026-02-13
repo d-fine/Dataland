@@ -9,6 +9,8 @@ import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntr
 import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
+import kotlin.collections.last
+import kotlin.collections.lastOrNull
 
 /**
  * Deletes consecutive entries with the same displayedState, keeping the order stable.
@@ -73,7 +75,7 @@ fun getDisplayedState(
  * representing the history of data sourcing state changes associated with the request.
  * @returns The time difference in milliseconds between the next request state change and the next data sourcing state change.
  */
-fun getTimeDifferenceBetweenNextRequestAndDataSourcingState(
+fun compareRequestAndDataSourcingTime(
     requestHistorySorted: List<Pair<RequestEntity, Long>>,
     dataSourcingHistorySorted: List<DataSourcingWithoutReferences>,
 ): Long =
@@ -86,118 +88,158 @@ fun getTimeDifferenceBetweenNextRequestAndDataSourcingState(
     }
 
 /**
- * Combines the request history and data sourcing history into a unified list of ExtendedRequestHistoryEntry objects for admin view.
- * It iterates through both histories, comparing timestamps, and creates ExtendedRequestHistoryEntryData objects that include
- * both request state and data sourcing state information, as well as admin comments.
- * The resulting list is sorted by modification date and includes entries from both histories in chronological order.
+ * A sealed interface representing the different types of input that can be used to create a history entry.
+ * It has three implementations: RequestOnly, DataSourcingOnly, and Both, which represent the different combinations
+ * of request and data sourcing information that can be used to create a history entry.
  *
- * @param requestHistory - A list of pairs containing RequestEntity objects and their corresponding revision numbers,
- * representing the history of request state changes.
- * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects representing the history of data
- * sourcing state changes associated with the request.
- * @returns A list of ExtendedRequestHistoryEntry objects representing the combined history of request states and data
- * sourcing states for admin view, sorted by modification date.
+ * @param T - The type of the previous history entry, which can be either RequestHistoryEntry or ExtendedRequestHistoryEntry,
+ * depending on the context in which the HistoryEntryInput is being used.
  */
-fun getExtendedRequestHistory(
+sealed interface HistoryEntryInput<out T> {
+    /**
+     * Represents a history entry input that contains only request information, along with an optional previous history entry.
+     *
+     * @param requestEntity - The RequestEntity object containing the request information for this history entry.
+     * @param previousHistoryEntry - An optional previous history entry of type T, which can
+     * be used to provide context for the request information when creating the new history entry.
+     */
+    data class RequestOnly<T>(
+        val requestEntity: RequestEntity,
+        val previousHistoryEntry: T?,
+    ) : HistoryEntryInput<T>
+
+    /**
+     * Represents a history entry input that contains only data sourcing information, along with a previous history entry.
+     *
+     * @param dataSourcingWithoutReferences - The DataSourcingWithoutReferences object containing the data sourcing
+     * information for this history entry.
+     * @param previousHistoryEntry - A previous history entry of type T, which provides context
+     *  for the data sourcing information when creating the new history entry. This parameter is required for this
+     *  type of input, as the data sourcing
+     *  information alone may not be sufficient to determine the displayed state without the context of the
+     *  previous history entry.
+     */
+    data class DataSourcingOnly<T>(
+        val dataSourcingWithoutReferences: DataSourcingWithoutReferences,
+        val previousHistoryEntry: T,
+    ) : HistoryEntryInput<T>
+
+    /**
+     * Represents a history entry input that contains both request information and data sourcing information.
+     *
+     * This type of input is used when both the request state and the data sourcing state change at the same time,
+     * allowing for the creation of a history entry that reflects both changes simultaneously.
+     * @param requestEntity - The RequestEntity object containing the request information for this history entry.
+     * @param dataSourcingWithoutReferences - The DataSourcingWithoutReferences object containing the
+     *
+     */
+    data class Both(
+        val requestEntity: RequestEntity,
+        val dataSourcingWithoutReferences: DataSourcingWithoutReferences,
+    ) : HistoryEntryInput<Nothing>
+}
+
+/**
+ * Creates an ExtendedRequestHistoryEntry based on the given input
+ *
+ * It determines the appropriate constructor to use for creating the ExtendedRequestHistoryEntryData object based on
+ * which parameters are provided.
+ *
+ * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
+ *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
+ * @returns An ExtendedRequestHistoryEntry object representing the combined state of the request and data sourcing
+ */
+fun createExtendedHistoryEntry(input: HistoryEntryInput<ExtendedRequestHistoryEntry>): ExtendedRequestHistoryEntry =
+    when (input) {
+        is HistoryEntryInput.RequestOnly ->
+            ExtendedRequestHistoryEntryData(
+                input.requestEntity,
+                input.previousHistoryEntry?.dataSourcingState,
+            )
+        is HistoryEntryInput.DataSourcingOnly ->
+            ExtendedRequestHistoryEntryData(
+                input.dataSourcingWithoutReferences,
+                input.previousHistoryEntry.requestState,
+                input.previousHistoryEntry.adminComment,
+            )
+        is HistoryEntryInput.Both ->
+            ExtendedRequestHistoryEntryData(
+                input.requestEntity,
+                input.dataSourcingWithoutReferences.state,
+            )
+    }
+
+/**
+ * Creates a RequestHistoryEntry based on the given input
+ *
+ * It determines the appropriate constructor to use for creating the RequestHistoryEntryData object based on
+ * which parameters are provided.
+ *
+ * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
+ *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
+ * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
+ */
+fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
+    when (input) {
+        is HistoryEntryInput.RequestOnly ->
+            RequestHistoryEntryData(input.requestEntity)
+        is HistoryEntryInput.DataSourcingOnly ->
+            RequestHistoryEntryData(
+                input.dataSourcingWithoutReferences,
+                input.previousHistoryEntry.displayedState,
+            )
+        is HistoryEntryInput.Both ->
+            RequestHistoryEntryData(
+                input.dataSourcingWithoutReferences,
+                input.requestEntity,
+            )
+    }
+
+/**
+ * Builds a combined history of request state changes and data sourcing state changes, sorted by modification date.
+ *
+ * @param requestHistory - A list of pairs containing RequestEntity objects, sorted by last modified date,
+ * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects sorted by last modified date,
+ * @param createHistoryEntry - A function that takes a HistoryEntryInput and creates a Request
+ *                              HistoryEntry object representing the combined state of the request and data sourcing.
+ * @returns A list of RequestHistoryEntry objects representing the combined history of request state
+ * changes and data sourcing state changes, sorted by modification date.
+ *
+ */
+fun <T> buildHistory(
     requestHistory: List<Pair<RequestEntity, Long>>,
     dataSourcingHistory: List<DataSourcingWithoutReferences>,
-): List<ExtendedRequestHistoryEntry> {
+    createHistoryEntry: (HistoryEntryInput<T>) -> T,
+): List<T> {
     var requestHistorySorted = requestHistory.sortedBy { it.first.lastModifiedDate }
     var dataSourcingHistorySorted = dataSourcingHistory.sortedBy { it.lastModifiedDate }
-
-    val requestStateHistory =
-        buildList<ExtendedRequestHistoryEntry> {
+    val history =
+        buildList<T> {
             while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
                 val timeDifferenceBetweenNextRequestAndDataSourcingState =
-                    getTimeDifferenceBetweenNextRequestAndDataSourcingState(requestHistorySorted, dataSourcingHistorySorted)
+                    compareRequestAndDataSourcingTime(requestHistorySorted, dataSourcingHistorySorted)
                 when {
                     timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
                         add(
-                            ExtendedRequestHistoryEntryData(
-                                requestHistorySorted[0].first,
-                                lastOrNull()?.dataSourcingState,
+                            createHistoryEntry(
+                                HistoryEntryInput.RequestOnly(
+                                    requestHistorySorted[0].first, lastOrNull(),
+                                ),
                             ),
                         )
                         requestHistorySorted = requestHistorySorted.drop(1)
                     }
                     timeDifferenceBetweenNextRequestAndDataSourcingState > 0 -> {
-                        add(
-                            ExtendedRequestHistoryEntryData(
-                                dataSourcingHistorySorted[0],
-                                last().requestState,
-                                last().adminComment,
-                            ),
-                        )
+                        add(createHistoryEntry(HistoryEntryInput.DataSourcingOnly(dataSourcingHistorySorted[0], last())))
                         dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
                     }
                     else -> {
-                        add(
-                            ExtendedRequestHistoryEntryData(
-                                requestHistorySorted[0].first,
-                                dataSourcingHistorySorted[0].state,
-                            ),
-                        )
+                        add(createHistoryEntry(HistoryEntryInput.Both(requestHistorySorted[0].first, dataSourcingHistorySorted[0])))
                         requestHistorySorted = requestHistorySorted.drop(1)
                         dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
                     }
                 }
             }
         }
-    return requestStateHistory
-}
-
-/**
- * Combines the request history and data sourcing history into a unified list of RequestHistoryEntry objects for regular view.
- * It iterates through both histories, comparing timestamps, and creates RequestHistoryEntryData objects that include
- * both request state and data sourcing state information for display.
- * The resulting list is sorted by modification date and includes entries from both histories in chronological order.
- *
- * @param requestHistory - A list of pairs containing RequestEntity objects and their corresponding revision numbers,
- * representing the history of request state changes.
- * @param dataSourcingHistory - A list of DataSourcingWithoutReferences objects representing the history of data
- * sourcing state changes associated with the request.
- * @returns A list of RequestHistoryEntry objects representing the combined history of request states and data
- * sourcing states for regular view, sorted by modification date.
- */
-fun getRequestHistory(
-    requestHistory: List<Pair<RequestEntity, Long>>,
-    dataSourcingHistory: List<DataSourcingWithoutReferences>,
-): List<RequestHistoryEntry> {
-    var requestHistorySorted = requestHistory.sortedBy { it.first.lastModifiedDate }
-    var dataSourcingHistorySorted = dataSourcingHistory.sortedBy { it.lastModifiedDate }
-
-    val requestStateHistory =
-        buildList<RequestHistoryEntry> {
-            while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
-                val timeDifferenceBetweenNextRequestAndDataSourcingState =
-                    getTimeDifferenceBetweenNextRequestAndDataSourcingState(requestHistorySorted, dataSourcingHistorySorted)
-                when {
-                    timeDifferenceBetweenNextRequestAndDataSourcingState < 0 -> {
-                        add(
-                            RequestHistoryEntryData(requestHistorySorted[0].first),
-                        )
-                        requestHistorySorted = requestHistorySorted.drop(1)
-                    } timeDifferenceBetweenNextRequestAndDataSourcingState > 0 -> {
-                        add(
-                            RequestHistoryEntryData(
-                                dataSourcingHistorySorted[0],
-                                last().displayedState,
-                            ),
-                        )
-                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
-                    } else -> {
-                        add(
-                            RequestHistoryEntryData(
-                                dataSourcingHistorySorted[0],
-                                last().displayedState,
-                            ),
-                        )
-                        requestHistorySorted = requestHistorySorted.drop(1)
-                        dataSourcingHistorySorted = dataSourcingHistorySorted.drop(1)
-                    }
-                }
-            }
-        }
-
-    return requestStateHistory
+    return history
 }
