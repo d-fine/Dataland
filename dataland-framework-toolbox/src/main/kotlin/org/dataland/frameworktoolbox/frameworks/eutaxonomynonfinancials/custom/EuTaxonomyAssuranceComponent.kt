@@ -7,10 +7,9 @@ import org.dataland.frameworktoolbox.intermediate.components.JsonExamples.EXAMPL
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
@@ -37,11 +36,10 @@ class EuTaxonomyAssuranceComponent(
             documentSupport,
             identifier,
             TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-            listOf(ValidAnnotation) +
-                getSchemaAnnotationWithSuppressMaxLineLength(
-                    uploadPageExplanation,
-                    getExample(EXAMPLE_PLAIN_EU_TAXONOMY_REPORTING_ASSURANCE_COMPONENT),
-                ),
+            getSchemaAnnotationWithSuppressMaxLineLength(
+                uploadPageExplanation,
+                getExample(EXAMPLE_PLAIN_EU_TAXONOMY_REPORTING_ASSURANCE_COMPONENT),
+            ),
         )
     }
 
@@ -50,12 +48,11 @@ class EuTaxonomyAssuranceComponent(
             documentSupport,
             identifier,
             TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-            listOf(ValidAnnotation),
         )
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
@@ -78,14 +75,14 @@ class EuTaxonomyAssuranceComponent(
     override fun getUploadComponentName(): String = "AssuranceFormField"
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
         )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
         val fixtureExpression =
             if (isNullable) {
@@ -122,7 +119,7 @@ class EuTaxonomyAssuranceComponent(
     override fun getExtendedDocumentReference(): List<String> = listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
 
     override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         specificationCategoryBuilder.addDefaultDatapointAndSpecification(
             this,
             "Enum",

@@ -32,7 +32,7 @@ data class PackageBuilder(
 
     /**
      * Add a new DataClass to the package
-     * @param name the name of the datalcass
+     * @param name the name of the dataclass
      * @param comment the comment
      */
     fun addClass(

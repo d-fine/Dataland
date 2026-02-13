@@ -114,7 +114,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
+              formatAssuranceForDataTable(dataset.general?.general?.assurance?.value, 'Assurance'),
             uploadComponentName: 'AssuranceFormField',
             dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
           },
@@ -124,7 +124,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             explanation: 'Provider of the Assurance',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
+              formatAssuranceProviderForDataTable(dataset.general?.general?.assurance?.value),
             uploadComponentName: 'AssuranceFormField',
             dataPointTypeId: 'assurance',
           },

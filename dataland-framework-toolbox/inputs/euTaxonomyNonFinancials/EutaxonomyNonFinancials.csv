@@ -4,7 +4,7 @@ Field Identifier,Category,Sub-Category,Field Name,Alias Export,Tooltip,Component
 1,General,,Scope Of Entities,SCOPE_OF_ENTITIES,Are all Group legal entities covered in the reports?,Yes/No/NA, ,,Extended,,,,,,
 2,General,,NFRD Mandatory,NFRD_MANDATORY,Is the NFRD mandatory for your company?,Yes/No, ,,Extended,,,,,,IsNfrdMandatory
 3,General,,EU Taxonomy Activity Level Reporting,ACTIVITY_LEVEL_REPORTING,Activity level disclosure,Yes/No, ,,Extended,,,,,,
-4,General,,Assurance,ASSURANCE,"Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",Custom EuTaxonomyAssuranceComponent, ,,,,,,,,
+4,General,,Assurance,ASSURANCE,"Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",Custom EuTaxonomyAssuranceComponent, ,,Extended,,,,,,
 5,General,,Number of Employees,NO_OF_EMPLOYEES,Total Number of Employees (including temporary workers with assignment duration longer than 6 months),Number,"Allowed Range: [0, INF]",,Extended,,,,,,
 6,General,,UN Global Compact Principles Compliance Policy,UNGC_PRINCIPLES_COMPLIANCE_POLICY,"Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.",Yes/No,,,Extended,,,,,,
 7,General,,OECD Guidelines for Multinational Enterprises Compliance Policy,OECD_GUIDELINES_COMPLIANCE_POLICY,"Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.",Yes/No,,,Extended,,,,,,

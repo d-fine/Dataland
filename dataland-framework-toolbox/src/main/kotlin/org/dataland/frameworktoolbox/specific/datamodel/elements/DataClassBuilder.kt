@@ -16,7 +16,7 @@ import kotlin.io.path.div
  * supports code-generation.
  * @param name the name of the DataClass
  * @param parentPackage the package in which the DataClass resides
- * @param comment a JavaDoc comment for the class
+ * @param comment a Javadoc comment for the class
  * @param properties a list of properties for the DataClass
  * @param annotations a list of annotations for the DataClass
  */
