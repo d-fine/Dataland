@@ -2,23 +2,18 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-09-20",
+				"dataDate": "2024-10-22",
 				"fiscalYearDeviation": {
 					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2025-01-20"
+					"value": "2024-07-21"
 				},
 				"referencedReports": {
-					"IntegratedReport": {
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-09-15"
-					},
 					"AnnualReport": {
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"fileName": "AnnualReport",
-						"publicationDate": "2023-05-31"
+						"publicationDate": "2023-10-28"
 					}
 				}
 			}
@@ -26,15 +21,15 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 804,
+					"value": 2319,
 					"dataSource": {
-						"page": "731-974",
-						"fileName": "IntegratedReport",
+						"page": "1062-1112",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "relationships",
+						"tagName": "lifetime value",
 						"publicationDate": null
 					},
-					"comment": "bypass bluetooth feed",
+					"comment": "calculate optical hard drive",
 					"quality": "Incomplete"
 				}
 			}
@@ -44,25 +39,25 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "1085-1141",
+						"page": "522",
 						"fileName": "AnnualReport",
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "applications",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "functionalities",
 						"publicationDate": null
 					},
-					"comment": "input solid state sensor",
-					"quality": "Audited"
+					"comment": "copy wireless application",
+					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "856-1295",
-						"fileName": "IntegratedReport",
+						"page": "479-1251",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "large language models",
+						"tagName": "metrics",
 						"publicationDate": null
 					},
-					"comment": "compress auxiliary driver",
+					"comment": "hack neural card",
 					"quality": "Audited"
 				}
 			}
