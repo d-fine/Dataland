@@ -19,14 +19,15 @@ class DatasetReviewController(
 ) : DatasetReviewApi {
     override fun getDatasetReview(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(
+            .ok(
                 datasetReviewService
                     .getDatasetReviewById(convertToUUID(datasetReviewId)),
             )
 
     override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity.ok(datasetReviewService.postDatasetReview(convertToUUID(datasetId)))
+        ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(datasetReviewService.postDatasetReview(convertToUUID(datasetId)))
 
     override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetReviewResponse>> =
         ResponseEntity.ok(datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))
