@@ -303,8 +303,8 @@ class RequestStateHistoryUtils {
     public fun getRequestHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
-    ): List<RequestHistoryEntry> {
-        val combinedHistory = buildHistory(requestHistory, dataSourcingHistory, ::createHistoryEntry)
-        return deleteRepeatingDisplayedStates(combinedHistory)
-    }
+    ): List<RequestHistoryEntry> =
+        deleteRepeatingDisplayedStates(
+            buildHistory(requestHistory, dataSourcingHistory, ::createHistoryEntry),
+        )
 }

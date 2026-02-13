@@ -9,8 +9,10 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
+import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
+import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
@@ -34,7 +36,10 @@ class RetrieveRequestHistoryTest
         private lateinit var mockDataSourcingManager: DataSourcingManager
 
         @MockitoBean
-        private lateinit var mockExistingRequestsManager: ExistingRequestsManager
+        private lateinit var mockRequestRepository: RequestRepository
+
+        @MockitoBean
+        private lateinit var mockRequestQueryManager: RequestQueryManager
 
         private val requestId = UUID.randomUUID()
         private val dummyUserId = UUID.randomUUID()
@@ -93,6 +98,20 @@ class RetrieveRequestHistoryTest
                 ),
             )
 
+        private val dummyRequestEntity =
+            RequestEntity(
+                id = requestId,
+                companyId = dummyCompanyId,
+                reportingPeriod = "2025",
+                dataType = "dummyDataType",
+                userId = dummyUserId,
+                creationTimestamp = lastModifiedDateFirstRequest,
+                memberComment = null,
+                lastModifiedDate = lastModifiedDateFirstRequest,
+                requestPriority = RequestPriority.Low,
+                state = RequestState.Open,
+            )
+
         private val dummyExtendedStoredRequest: ExtendedStoredRequest =
             ExtendedStoredRequest(
                 id = requestId.toString(),
@@ -115,7 +134,11 @@ class RetrieveRequestHistoryTest
         fun `request history is sorted by timestamps`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dummyExtendedStoredRequest).whenever(mockExistingRequestsManager).getRequest(requestId)
+            doReturn(dummyRequestEntity).whenever(mockRequestRepository).findByIdAndFetchDataSourcingEntity(requestId)
+
+            doReturn(dummyExtendedStoredRequest)
+                .whenever(mockRequestQueryManager)
+                .transformRequestEntityToExtendedStoredRequest(dummyRequestEntity)
 
             doReturn(dummyDataSourcingStatHistory)
                 .whenever(mockDataSourcingManager)
