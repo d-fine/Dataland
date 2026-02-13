@@ -7,6 +7,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
@@ -92,11 +93,29 @@ class RetrieveRequestHistoryTest
                 ),
             )
 
+        private val dummyExtendedStoredRequest: ExtendedStoredRequest =
+            ExtendedStoredRequest(
+                id = requestId.toString(),
+                companyId = dummyCompanyId.toString(),
+                reportingPeriod = "2025",
+                dataType = "dummyDataType",
+                userId = dummyUserId.toString(),
+                creationTimestamp = lastModifiedDateFirstRequest,
+                memberComment = null,
+                adminComment = null,
+                lastModifiedDate = lastModifiedDateFirstRequest,
+                requestPriority = RequestPriority.Low,
+                state = RequestState.Open,
+                dataSourcingEntityId = dataSourcingID.toString(),
+                companyName = "Dummy Company",
+                userEmailAddress = "",
+            )
+
         @Test
         fun `request history is sorted by timestamps`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dataSourcingID.toString()).whenever(mockExistingRequestsManager).getRequest(requestId).dataSourcingEntityId
+            doReturn(dummyExtendedStoredRequest).whenever(mockExistingRequestsManager).getRequest(requestId)
 
             doReturn(dummyDataSourcingStatHistory)
                 .whenever(mockDataSourcingManager)
