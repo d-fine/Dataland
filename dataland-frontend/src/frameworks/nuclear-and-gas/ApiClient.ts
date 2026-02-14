@@ -64,6 +64,21 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     );
   }
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociatedNuclearAndGasDataByDimensions(
+      { companyIds, fileFormat },
+      keepValueFieldsOnly,
+      includeAliases,
+      options
+    );
+  }
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,

@@ -46,12 +46,11 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
     });
 
-    it('Check reporting period type selection', function (): void {
-      cy.get('[data-test="listOfReportingPeriods"]').should('exist');
-      const reportingYears = ['2024', '2023', '2022'];
-      for (const year of reportingYears) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      }
+    it('Check reporting period selection via MultiSelect', function (): void {
+      cy.get('[data-test="reportingPeriodSelector"]').should('exist');
+      cy.get('[data-test="reportingPeriodSelector"]').click();
+      cy.get('.p-multiselect-list').contains('2024').click();
+      cy.get('.p-multiselect-list').contains('2023').click();
     });
 
     it('Check error message visibility when no reporting period selected', function (): void {
@@ -64,11 +63,13 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="reportingYearError"]').should('be.visible');
       cy.get('[data-test="reportingYearError"]').should('contain', 'Please select a reporting period.');
     });
+
     it('Check error message visibility when no file type selected', function (): void {
       cy.get('[data-test="downloadDataButtonInModal"]').click();
       cy.get('[data-test="fileTypeError"]').should('be.visible');
       cy.get('[data-test="fileTypeError"]').should('contain', 'Please select a file type.');
     });
+
     it('Check download button functionality', function (): void {
       cy.stub(globalThis, 'XMLHttpRequest').callsFake(function () {
         return {
@@ -84,28 +85,33 @@ describe('Check the Portfolio Download view', function (): void {
       });
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
-      cy.get('[data-test="listOfReportingPeriods"]').contains('2024').click();
+      cy.get('[data-test="reportingPeriodSelector"]').click();
+      cy.get('.p-multiselect-list').contains('2024').click();
+      cy.get('body').click(0, 0);
       cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
     });
 
-    it('Change framework and check that only 2021 is selectable for eu-taxonomy-financials framework', function (): void {
-      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
-      cy.get('.p-select-list-container').contains('SFDR').click();
-      for (const year of ['2024', '2023', '2022']) {
-        cy.get('[data-test="listOfReportingPeriods"]').contains(year).should('be.visible').click();
-      }
+    it('Check that latest reporting period toggle disables reporting period selector', function (): void {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+      cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
+    });
+
+    it('Check that no reporting period error is shown when latest is selected', function (): void {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+      cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('Comma-separated Values').click();
+      cy.get('[data-test="downloadDataButtonInModal"]').click();
+      cy.get('[data-test="reportingYearError"]').should('not.exist');
+    });
+
+    it('Change framework and check that only available periods are shown in dropdown', function (): void {
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Financials').click();
-      cy.get('[data-test="listOfReportingPeriods"]').should('exist');
-      for (const year of ['2025', '2024', '2023', '2022', '2020']) {
-        cy.get('[data-test="listOfReportingPeriods"]')
-          .contains(year)
-          .parents('[data-test="toggle-chip"]')
-          .should('have.class', 'disabled');
-      }
-      cy.get('[data-test="listOfReportingPeriods"]').contains('2021').should('be.visible').click();
+      cy.get('[data-test="reportingPeriodSelector"]').click();
+      cy.get('.p-multiselect-list').contains('2021').should('be.visible');
+      cy.get('.p-multiselect-list').should('not.contain', '2024');
     });
   });
 });
