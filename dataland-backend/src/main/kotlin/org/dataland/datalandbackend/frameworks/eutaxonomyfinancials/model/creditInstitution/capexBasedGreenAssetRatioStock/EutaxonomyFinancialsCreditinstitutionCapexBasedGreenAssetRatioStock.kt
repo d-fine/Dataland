@@ -17,7 +17,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -34,7 +34,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -51,7 +51,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -68,7 +68,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -85,7 +85,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -102,7 +102,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -119,7 +119,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -136,7 +136,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -153,7 +153,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -170,7 +170,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -187,7 +187,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -205,7 +205,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -223,7 +223,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -241,7 +241,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -259,7 +259,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -276,7 +276,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -293,7 +293,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -310,7 +310,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -327,7 +327,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -344,7 +344,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -361,7 +361,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -378,7 +378,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -395,7 +395,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -413,7 +413,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -431,7 +431,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -449,7 +449,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -467,7 +467,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -484,7 +484,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -501,7 +501,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -518,7 +518,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -535,7 +535,7 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

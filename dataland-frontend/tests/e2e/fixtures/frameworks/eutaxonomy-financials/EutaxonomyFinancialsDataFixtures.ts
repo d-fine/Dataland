@@ -47,7 +47,7 @@ export function generateEutaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
         areAllGroupEntitiesCovered: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         isNfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        assurance: dataGenerator.randomExtendedDataPoint(dataGenerator.generateAssuranceDatapoint()),
+        assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
       },
     },
     creditInstitution: {
