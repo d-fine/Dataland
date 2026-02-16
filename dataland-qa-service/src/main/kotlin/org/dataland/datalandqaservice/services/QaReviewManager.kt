@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
+import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -47,11 +48,12 @@ class QaReviewManager
         var objectMapper: ObjectMapper,
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
+        val datasetReviewService: DatasetReviewService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * Add a new qa review entry corresponding to a data set event (upload, qa status change, etc) to the qa review
+         * Add a new qa review entry corresponding to a data set event (upload, qa status change, etc.) to the qa review
          * history
          * @param dataId identifier of the dataset
          * @param bypassQa whether to bypass the qa process or not; if true, qa status of dataset is automatically set to
@@ -163,7 +165,7 @@ class QaReviewManager
             logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
             val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampAsc(dataId)
 
-            requireNotNull(qaReviewEntity, { "QaReviewEntity must not be null." })
+            requireNotNull(qaReviewEntity) { "QaReviewEntity must not be null." }
 
             logger.info(
                 "Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
@@ -364,9 +366,9 @@ class QaReviewManager
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-//        val datasetReviews = datasetReviewService.getDatasetReviewsByDatasetId(this.dataId)
-//        val reviewerUserName = datasetReviews.filter { it.status === DatasetReviewStatus.Pending  }.firstOrNull()?.reviewerUserName
-            val reviewerUserName = null
+            val datasetReviews = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
+            val latestDatasetReview = datasetReviews.firstOrNull()
+            val reviewerUserName = latestDatasetReview?.reviewerUserName
             return QaReviewResponse(
                 dataId = this.dataId,
                 companyId = this.companyId,
@@ -376,6 +378,7 @@ class QaReviewManager
                 timestamp = this.timestamp,
                 qaStatus = this.qaStatus,
                 reviewerUserName = reviewerUserName,
+                datasetReviewId = latestDatasetReview?.dataSetReviewId,
                 numberQaReports = numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,

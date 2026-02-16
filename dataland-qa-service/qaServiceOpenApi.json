@@ -26,7 +26,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "description": "Get the QA review information of uploaded dataset for a given id. Users can get the review information of their own datasets. Admins and reviewer can get the review information for all datasets.",
         "operationId": "getQaReviewResponseByDataId",
         "parameters": [
           {
@@ -7578,6 +7578,9 @@
             "type": "string",
             "description": "The name of the user who is reviewing the dataset.",
             "example": "John Doe"
+          },
+          "datasetReviewId": {
+            "type": "string"
           },
           "numberQaReports": {
             "type": "integer",

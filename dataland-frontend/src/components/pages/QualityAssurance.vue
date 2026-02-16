@@ -175,7 +175,7 @@ let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
 /**
- * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
+ * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
  * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
  * @param input is a value with type DataTypeEnum
  * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
