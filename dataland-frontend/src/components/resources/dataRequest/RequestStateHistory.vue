@@ -4,7 +4,7 @@
       <Column field="timestamp" header="Updated On" :style="isAdmin ? 'width: 20%' : 'width: 40%'">
         <template #body="{ data }">
           <span data-test="lastModifiedDate">
-            {{ convertUnixTimeInMsToDateString(data.timestamp) }}
+            {{ convertUnixTimeInMsToDateString(data.modificationDate) }}
           </span>
         </template>
       </Column>
@@ -12,8 +12,8 @@
       <Column field="State" :header="'State'" :style="isAdmin ? 'width: 20%' : 'width: 60%'">
         <template #body="{ data }">
           <DatalandTag
-            :severity="getMixedState(data.requestState, data.dataSourcingState) || '-'"
-            :value="getDisplayedStateLabel(getMixedState(data.requestState, data.dataSourcingState))"
+            :severity="data.displayedState || '-'"
+            :value="getDisplayedStateLabel(data.displayedState)"
             class="dataland-inline-tag"
           />
         </template>
@@ -21,7 +21,7 @@
 
       <Column v-if="isAdmin" field="requestState" header="Request State" :style="'width: 15%'">
         <template #body="{ data }">
-          <DatalandTag :severity="data.requestState || '-'" :value="data.requestState" class="dataland-inline-tag" />
+          <DatalandTag :severity="data.requestState" :value="data.requestState" class="dataland-inline-tag" />
         </template>
       </Column>
 
@@ -52,13 +52,10 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import { type RequestHistoryEntry } from '@clients/datasourcingservice';
 import DatalandTag from '@/components/general/DatalandTag.vue';
-import { getDisplayedStateLabel, getMixedState } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 
-const props = defineProps<{
+defineProps<{
   stateHistory: RequestHistoryEntry[];
   isAdmin?: boolean;
 }>();
-
-//inserted to allow commit - otherwise eslint would complain about unused variable props
-console.log(props.isAdmin);
 </script>

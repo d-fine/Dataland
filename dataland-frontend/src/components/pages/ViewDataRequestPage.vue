@@ -126,11 +126,7 @@
             </span>
             <Divider />
             <p class="title">State History</p>
-            <RequestStateHistory
-              :stateHistory="requestHistory"
-              :dataSourcingHistory="dataSourcingHistory"
-              :isAdmin="isUserKeycloakAdmin"
-            />
+            <RequestStateHistory :stateHistory="requestHistory" :isAdmin="isUserKeycloakAdmin" />
           </div>
           <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
             <div class="title">Resubmit Request</div>
@@ -226,6 +222,7 @@ const dataExtractorName = ref<string | null>(null);
 
 /**
  * Get the last timestamp to be displayed in the "Request is since ..." text.
+ * einfach der letzte übergebene Eintrag der neuen Datenstruktur
  */
 function getLastTimestampInTable(): string {
   if (dataSourcingHistory.value == null) {
