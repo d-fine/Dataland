@@ -26,7 +26,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Option 1" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -43,7 +43,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "2007-03-05" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -60,7 +60,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -77,7 +77,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -94,7 +94,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -105,13 +105,23 @@ data class EutaxonomyNonFinancialsGeneral(
     )
     @field:Valid()
     val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
-    @field:Valid()
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)""",
-        example = """ "LimitedAssurance"  """,
+        example = """{
+      "value" :  "LimitedAssurance" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company.",
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
     )
-    val assurance: AssuranceDataPoint? = null,
+    @field:Valid()
+    val assurance: ExtendedDataPoint<AssuranceDataPoint?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -119,7 +129,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -136,7 +146,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -153,7 +163,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -170,7 +180,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -187,7 +197,7 @@ data class EutaxonomyNonFinancialsGeneral(
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

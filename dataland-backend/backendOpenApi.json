@@ -7274,7 +7274,17 @@
           }
         },
         "description": "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
-        "example": "{\n      \"value\" : 100.5, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": 100.5,
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDocumentReference": {
         "required": [
@@ -8379,7 +8389,17 @@
           }
         },
         "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
-        "example": "{\n      \"value\" : 100, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": 100,
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointLocalDate": {
         "type": "object",
@@ -8411,7 +8431,17 @@
           }
         },
         "description": "The date the fiscal year ends.",
-        "example": "{\n      \"value\" :  \"2007-03-05\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "2007-03-05",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
         "type": "object",
@@ -8446,7 +8476,17 @@
           }
         },
         "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Option 1",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointYesNo": {
         "type": "object",
@@ -8481,7 +8521,17 @@
           }
         },
         "description": "Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
-        "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "SfdrData": {
         "type": "object",
@@ -10146,7 +10196,17 @@
           }
         },
         "description": "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Option 1",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
         "type": "object",
@@ -10181,7 +10241,17 @@
           }
         },
         "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Option 1",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
         "type": "object",
@@ -10216,7 +10286,17 @@
           }
         },
         "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Option 1",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "PcafCompanyValue": {
         "type": "object",
@@ -10636,7 +10716,52 @@
           }
         },
         "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - CapEx-based",
-        "example": "{\n      \"value\" : {\n      \"taxonomyAlignedShareDenominatorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.3,\n        \"adaptation\" : 0.1\n      },\n      \"taxonomyAlignedShareDenominatorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 0.4,\n        \"adaptation\" : 0.2\n      },\n      \"taxonomyAlignedShareDenominatorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 1,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareDenominatorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 0.3,\n        \"mitigation\" : 2.4,\n        \"adaptation\" : 0.5\n      },\n      \"taxonomyAlignedShareDenominatorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 0.2,\n        \"mitigation\" : 0.5,\n        \"adaptation\" : 0.6\n      },\n      \"taxonomyAlignedShareDenominatorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 1.1,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyAlignedShareDenominator\" : {\n        \"mitigationAndAdaptation\" : 4,\n        \"mitigation\" : 5,\n        \"adaptation\" : 2.5\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": {
+            "taxonomyAlignedShareDenominatorNAndG426": {
+              "mitigationAndAdaptation": 0.2,
+              "mitigation": 0.3,
+              "adaptation": 0.1
+            },
+            "taxonomyAlignedShareDenominatorNAndG427": {
+              "mitigationAndAdaptation": 1.2,
+              "mitigation": 0.4,
+              "adaptation": 0.2
+            },
+            "taxonomyAlignedShareDenominatorNAndG428": {
+              "mitigationAndAdaptation": 1
+            },
+            "taxonomyAlignedShareDenominatorNAndG429": {},
+            "taxonomyAlignedShareDenominatorNAndG430": {
+              "mitigationAndAdaptation": 0.3,
+              "mitigation": 2.4,
+              "adaptation": 0.5
+            },
+            "taxonomyAlignedShareDenominatorNAndG431": {
+              "mitigationAndAdaptation": 0.2,
+              "mitigation": 0.5,
+              "adaptation": 0.6
+            },
+            "taxonomyAlignedShareDenominatorOtherActivities": {
+              "mitigationAndAdaptation": 1.1,
+              "mitigation": 1.4,
+              "adaptation": 1.1
+            },
+            "taxonomyAlignedShareDenominator": {
+              "mitigationAndAdaptation": 4,
+              "mitigation": 5,
+              "adaptation": 2.5
+            }
+          },
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointNuclearAndGasAlignedNumerator": {
         "type": "object",
@@ -10671,7 +10796,52 @@
           }
         },
         "description": "Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based",
-        "example": "{\n      \"value\" : {\n      \"taxonomyAlignedShareNumeratorNAndG426\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 6,\n        \"adaptation\" : 4\n      },\n      \"taxonomyAlignedShareNumeratorNAndG427\" : {\n        \"mitigationAndAdaptation\" : 30,\n        \"mitigation\" : 8,\n        \"adaptation\" : 8\n      },\n      \"taxonomyAlignedShareNumeratorNAndG428\" : {\n        \"mitigationAndAdaptation\" : 25,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyAlignedShareNumeratorNAndG430\" : {\n        \"mitigationAndAdaptation\" : 7.5,\n        \"mitigation\" : 48,\n        \"adaptation\" : 20\n      },\n      \"taxonomyAlignedShareNumeratorNAndG431\" : {\n        \"mitigationAndAdaptation\" : 5,\n        \"mitigation\" : 10,\n        \"adaptation\" : 24\n      },\n      \"taxonomyAlignedShareNumeratorOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 27.5,\n        \"mitigation\" : 28,\n        \"adaptation\" : 44\n      },\n      \"taxonomyAlignedShareNumerator\" : {\n        \"mitigationAndAdaptation\" : 100,\n        \"mitigation\" : 100,\n        \"adaptation\" : 100\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": {
+            "taxonomyAlignedShareNumeratorNAndG426": {
+              "mitigationAndAdaptation": 5,
+              "mitigation": 6,
+              "adaptation": 4
+            },
+            "taxonomyAlignedShareNumeratorNAndG427": {
+              "mitigationAndAdaptation": 30,
+              "mitigation": 8,
+              "adaptation": 8
+            },
+            "taxonomyAlignedShareNumeratorNAndG428": {
+              "mitigationAndAdaptation": 25
+            },
+            "taxonomyAlignedShareNumeratorNAndG429": {},
+            "taxonomyAlignedShareNumeratorNAndG430": {
+              "mitigationAndAdaptation": 7.5,
+              "mitigation": 48,
+              "adaptation": 20
+            },
+            "taxonomyAlignedShareNumeratorNAndG431": {
+              "mitigationAndAdaptation": 5,
+              "mitigation": 10,
+              "adaptation": 24
+            },
+            "taxonomyAlignedShareNumeratorOtherActivities": {
+              "mitigationAndAdaptation": 27.5,
+              "mitigation": 28,
+              "adaptation": 44
+            },
+            "taxonomyAlignedShareNumerator": {
+              "mitigationAndAdaptation": 100,
+              "mitigation": 100,
+              "adaptation": 100
+            }
+          },
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "type": "object",
@@ -10706,7 +10876,54 @@
           }
         },
         "description": "Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
-        "example": "{\n      \"value\" : {\n      \"taxonomyEligibleButNotAlignedShareNAndG426\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.3,\n        \"adaptation\" : 1.1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG427\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 1.4,\n        \"adaptation\" : 1.2\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG428\" : {\n        \"mitigationAndAdaptation\" : 2,\n        \"mitigation\" : 1,\n        \"adaptation\" : 1\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG429\" : {\n        \"mitigationAndAdaptation\" : null,\n        \"mitigation\" : null,\n        \"adaptation\" : null\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG430\" : {\n        \"mitigationAndAdaptation\" : 1.3,\n        \"mitigation\" : 3.4,\n        \"adaptation\" : 1.5\n      },\n      \"taxonomyEligibleButNotAlignedShareNAndG431\" : {\n        \"mitigationAndAdaptation\" : 1.2,\n        \"mitigation\" : 1.5,\n        \"adaptation\" : 1.6\n      },\n      \"taxonomyEligibleButNotAlignedShareOtherActivities\" : {\n        \"mitigationAndAdaptation\" : 2.2,\n        \"mitigation\" : 2.1,\n        \"adaptation\" : 2\n      },\n      \"taxonomyEligibleButNotAlignedShare\" : {\n        \"mitigationAndAdaptation\" : 10.1,\n        \"mitigation\" : 10.7,\n        \"adaptation\" : 8.4\n      }\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": {
+            "taxonomyEligibleButNotAlignedShareNAndG426": {
+              "mitigationAndAdaptation": 1.2,
+              "mitigation": 1.3,
+              "adaptation": 1.1
+            },
+            "taxonomyEligibleButNotAlignedShareNAndG427": {
+              "mitigationAndAdaptation": 2.2,
+              "mitigation": 1.4,
+              "adaptation": 1.2
+            },
+            "taxonomyEligibleButNotAlignedShareNAndG428": {
+              "mitigationAndAdaptation": 2,
+              "mitigation": 1,
+              "adaptation": 1
+            },
+            "taxonomyEligibleButNotAlignedShareNAndG429": {},
+            "taxonomyEligibleButNotAlignedShareNAndG430": {
+              "mitigationAndAdaptation": 1.3,
+              "mitigation": 3.4,
+              "adaptation": 1.5
+            },
+            "taxonomyEligibleButNotAlignedShareNAndG431": {
+              "mitigationAndAdaptation": 1.2,
+              "mitigation": 1.5,
+              "adaptation": 1.6
+            },
+            "taxonomyEligibleButNotAlignedShareOtherActivities": {
+              "mitigationAndAdaptation": 2.2,
+              "mitigation": 2.1,
+              "adaptation": 2
+            },
+            "taxonomyEligibleButNotAlignedShare": {
+              "mitigationAndAdaptation": 10.1,
+              "mitigation": 10.7,
+              "adaptation": 8.4
+            }
+          },
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointNuclearAndGasNonEligible": {
         "type": "object",
@@ -10741,7 +10958,26 @@
           }
         },
         "description": "Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based",
-        "example": "{\n      \"value\" : {\n      \"taxonomyNonEligibleShareNAndG426\" : 1.1,\n      \"taxonomyNonEligibleShareNAndG427\" : 1.2,\n      \"taxonomyNonEligibleShareNAndG428\" : 0.6,\n      \"taxonomyNonEligibleShareNAndG429\" : 0.5,\n      \"taxonomyNonEligibleShareNAndG430\" : 2.8,\n      \"taxonomyNonEligibleShareNAndG431\" : 1.2,\n      \"taxonomyNonEligibleShareOtherActivities\" : 1.9,\n      \"taxonomyNonEligibleShare\" : 9.3\n    }, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": {
+            "taxonomyNonEligibleShareNAndG426": 1.1,
+            "taxonomyNonEligibleShareNAndG427": 1.2,
+            "taxonomyNonEligibleShareNAndG428": 0.6,
+            "taxonomyNonEligibleShareNAndG429": 0.5,
+            "taxonomyNonEligibleShareNAndG430": 2.8,
+            "taxonomyNonEligibleShareNAndG431": 1.2,
+            "taxonomyNonEligibleShareOtherActivities": 1.9,
+            "taxonomyNonEligibleShare": 9.3
+          },
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "NuclearAndGasAlignedDenominator": {
         "type": "object",
@@ -13790,9 +14026,7 @@
             "type": "string",
             "nullable": true
           }
-        },
-        "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
-        "example": "LimitedAssurance"
+        }
       },
       "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
         "required": [
@@ -14406,7 +14640,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AssuranceDataPoint"
+                "$ref": "#/components/schemas/ExtendedDataPointAssuranceDataPoint"
               }
             ]
           },
@@ -15043,6 +15277,51 @@
           }
         }
       },
+      "ExtendedDataPointAssuranceDataPoint": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
+        "example": {
+          "value": "LimitedAssurance",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
+      },
       "ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
         "type": "object",
         "properties": {
@@ -15076,7 +15355,17 @@
           }
         },
         "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Option 1",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointListEuTaxonomyActivity": {
         "type": "object",
@@ -15110,7 +15399,59 @@
           }
         },
         "description": "Absolute value and share of the OpEx per activity that is not taxonomy-aligned but eligible",
-        "example": "{\n      \"value\" : [{\n      \"activityName\" : \"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions\",\n      \"naceCodes\" : [ \"E.38.11\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"InfrastructureForRailTransport\",\n      \"naceCodes\" : [ \"C27.9\", \"C30.20\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }, {\n      \"activityName\" : \"LowCarbonAirportInfrastructure\",\n      \"naceCodes\" : [ \"F41.20\", \"F42.99\" ],\n      \"share\" : {\n        \"relativeShareInPercent\" : 25,\n        \"absoluteShare\" : {\n          \"amount\" : 100.5,\n          \"currency\" : \"EUR\"\n        }\n      }\n    }], \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": [
+            {
+              "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+              "naceCodes": [
+                "E.38.11"
+              ],
+              "share": {
+                "relativeShareInPercent": 25,
+                "absoluteShare": {
+                  "amount": 100.5,
+                  "currency": "EUR"
+                }
+              }
+            },
+            {
+              "activityName": "InfrastructureForRailTransport",
+              "naceCodes": [
+                "C27.9",
+                "C30.20"
+              ],
+              "share": {
+                "relativeShareInPercent": 25,
+                "absoluteShare": {
+                  "amount": 100.5,
+                  "currency": "EUR"
+                }
+              }
+            },
+            {
+              "activityName": "LowCarbonAirportInfrastructure",
+              "naceCodes": [
+                "F41.20",
+                "F42.99"
+              ],
+              "share": {
+                "relativeShareInPercent": 25,
+                "absoluteShare": {
+                  "amount": 100.5,
+                  "currency": "EUR"
+                }
+              }
+            }
+          ],
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "ExtendedDataPointListEuTaxonomyAlignedActivity": {
         "type": "object",
@@ -15237,7 +15578,17 @@
           }
         },
         "description": "Are all Group legal entities covered in the reports?",
-        "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+        "example": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "The value is reported by the company.",
+          "dataSource": {
+            "page": "5-7",
+            "tagName": "monetaryAmount",
+            "fileName": "AnnualReport2020.pdf",
+            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+          }
+        }
       },
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
@@ -17446,51 +17797,6 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
-          }
-        }
-      },
-      "ExtendedDataPointAssuranceDataPoint": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AssuranceDataPoint"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
-        "example": {
-          "value": "LimitedAssurance",
-          "quality": "Reported",
-          "comment": "The value is reported by the company.",
-          "dataSource": {
-            "page": "5-7",
-            "tagName": "monetaryAmount",
-            "fileName": "AnnualReport2020.pdf",
-            "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
           }
         }
       },

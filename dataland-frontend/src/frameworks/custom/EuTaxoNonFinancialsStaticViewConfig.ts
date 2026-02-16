@@ -107,7 +107,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
+          formatAssuranceForDataTable(dataset.general?.assurance?.value, 'Assurance'),
         uploadComponentName: 'Non-editable',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
       },
@@ -117,7 +117,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Provider of the Assurance',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceProviderForDataTable(dataset.general?.assurance),
+          formatAssuranceProviderForDataTable(dataset.general?.assurance?.value),
         uploadComponentName: 'Non-editable',
         dataPointTypeId: 'assurance',
       },

@@ -23,7 +23,7 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -53,7 +53,7 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -70,7 +70,7 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -87,7 +87,7 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -104,7 +104,7 @@ data class VsmeBasicEnergyAndGreenhousGasEmissions(
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

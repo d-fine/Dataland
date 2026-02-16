@@ -134,8 +134,11 @@ function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociated
           value: 'Yes',
         },
         assurance: {
-          value: 'None',
-          provider: 'Assurance Provider',
+          value: {
+            value: 'None',
+            provider: 'Assurance Provider',
+          },
+          quality: 'Reported',
           dataSource: {
             fileName: TEST_PDF_FILE_NAME,
             fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',

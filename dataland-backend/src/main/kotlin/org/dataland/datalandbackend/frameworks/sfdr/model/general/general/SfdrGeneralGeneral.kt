@@ -26,7 +26,7 @@ data class SfdrGeneralGeneral(
         example = """{
       "value" :  "Option 1" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",
@@ -43,7 +43,7 @@ data class SfdrGeneralGeneral(
         example = """{
       "value" :  "2007-03-05" , 
       "quality" : "Reported",
-      "comment" : "The value is reported by the company."
+      "comment" : "The value is reported by the company.",
       "dataSource" : {
         "page" : "5-7",
         "tagName" : "monetaryAmount",

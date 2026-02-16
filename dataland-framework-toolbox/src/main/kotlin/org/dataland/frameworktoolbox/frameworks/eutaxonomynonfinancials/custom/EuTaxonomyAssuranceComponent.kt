@@ -86,7 +86,7 @@ class EuTaxonomyAssuranceComponent(
         val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
         val fixtureExpression =
             if (isNullable) {
-                "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
+                "dataGenerator.randomExtendedDataPoint($guaranteedAssuranceDataPointGenerator)"
             } else {
                 guaranteedAssuranceDataPointGenerator
             }
