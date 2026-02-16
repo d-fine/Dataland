@@ -3,9 +3,9 @@ package org.dataland.datalandcommunitymanager.email
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -28,7 +28,7 @@ class ResourceResponseEmailSenderTest {
 
     @BeforeEach
     fun setupAuthentication() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
     }
 
     private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =

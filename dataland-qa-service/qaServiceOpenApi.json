@@ -173,6 +173,78 @@
         ]
       }
     },
+    "/dataset-reviews/{datasetId}": {
+      "post": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Upload new dataset review object.",
+        "description": "Upload a new dataset review object.",
+        "operationId": "postDatasetReview",
+        "parameters": [
+          {
+            "name": "datasetId",
+            "in": "path",
+            "description": "The unique identifier of the dataset.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully added dataset review object to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}/reports": {
       "get": {
         "tags": [
@@ -1261,6 +1333,426 @@
         ]
       }
     },
+    "/dataset-reviews/{datasetReviewId}/state": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Change the state of a dataset review object.",
+        "description": "Modify state of the dataset review object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
+        "operationId": "setReviewState",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "datasetReviewState",
+            "in": "query",
+            "description": "The state of the dataset review.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DatasetReviewState"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully set state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetReviewId}/reviewer": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Change the reviewer of a dataset review object.",
+        "description": "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
+        "operationId": "setReviewer",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully set yourself as the reviewer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetReviewId}/approvedQaReports": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a qa report to ApprovedQaReports map.",
+        "description": "Adds a datapoint to the ApprovedQaReports map. Removes the data point id and custom data point from approvedDataPoints and approvedCustomDataPoints with same data point type.",
+        "operationId": "acceptQaReport",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "qaReportId",
+            "in": "query",
+            "description": "The unique identifier of the QA report",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved qa report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetReviewId}/approvedDataPoints": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a datapoint to ApprovedDataPoints map.",
+        "description": "Adds a datapoint to the ApprovedDataPoints map. Removes the qa report and custom datapoint from approvedQaReports and approvedCustomDataPoints with same data point type.",
+        "operationId": "acceptOriginalDatapoint",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "dataPointId",
+            "in": "query",
+            "description": "The unique identifier of the datapoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved datapoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetReviewId}/approvedCustomDataPoints": {
+      "patch": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Put a custom data point to ApprovedCustomDataPoints map.",
+        "description": "Adds a custom datapoint to the ApprovedCustomDataPoints map. Removes the data point id and qa report from approvedDataPoints and approvedQaReports with same data point type.",
+        "operationId": "acceptCustomDataPoint",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "dataPoint",
+            "in": "query",
+            "description": "The data point as a JSON string.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": {
+              "value": "No",
+              "quality": "Incomplete",
+              "comment": "program neural circuit",
+              "dataSource": {
+                "page": "1026",
+                "tagName": "web services",
+                "fileName": "SustainabilityReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": "2024-01-07"
+              }
+            }
+          },
+          {
+            "name": "dataPointType",
+            "in": "query",
+            "description": "The data point type of the provided data point.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "extendedEnumYesNoIsNfrdMandatory"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully approved and saved custom data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1882,6 +2374,156 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/QaReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetReviewId}": {
+      "get": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Get a dataset review object by its id.",
+        "description": "Get a dataset review object by its id.",
+        "operationId": "getDatasetReview",
+        "parameters": [
+          {
+            "name": "datasetReviewId",
+            "in": "path",
+            "description": "The unique identifier of the data review.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset review object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/dataset-reviews/{datasetId}/datasetId": {
+      "get": {
+        "tags": [
+          "dataset-review-controller"
+        ],
+        "summary": "Get dataset review objects by dataset id.",
+        "description": "Retrieve all dataset review objects associated with the specified dataset id.",
+        "operationId": "getDatasetReviewsByDatasetId",
+        "parameters": [
+          {
+            "name": "datasetId",
+            "in": "path",
+            "description": "The unique identifier of the dataset.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DatasetReviewResponse"
                   }
                 }
               }
@@ -2806,6 +3448,137 @@
           "Pending",
           "Accepted",
           "Rejected"
+        ]
+      },
+      "DatasetReviewResponse": {
+        "required": [
+          "approvedCustomDataPointIds",
+          "approvedDataPointIds",
+          "approvedQaReportIds",
+          "companyId",
+          "dataSetReviewId",
+          "dataType",
+          "datasetId",
+          "preapprovedDataPointIds",
+          "qaReports",
+          "reportingPeriod",
+          "reviewState"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSetReviewId": {
+            "type": "string",
+            "description": "The unique identifier of the data review.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "datasetId": {
+            "type": "string",
+            "description": "The unique identifier of the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "enum": [
+              "sfdr",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
+              "pcaf",
+              "vsme"
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "reviewState": {
+            "$ref": "#/components/schemas/DatasetReviewState"
+          },
+          "reviewerUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user reviewing the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reviewerUserName": {
+            "type": "string",
+            "description": "The name or email of the user reviewing the dataset.",
+            "example": "Jane Doe"
+          },
+          "preapprovedDataPointIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "Datapoints automatically approved by Dataland.",
+            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
+            "items": {
+              "type": "string",
+              "description": "Datapoints automatically approved by Dataland.",
+              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
+            }
+          },
+          "qaReports": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "QA reports associated to the dataset.",
+            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
+            "items": {
+              "type": "string",
+              "description": "QA reports associated to the dataset.",
+              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
+            }
+          },
+          "approvedDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "Data points approved and to be accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
+            },
+            "description": "Data points approved and to be accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
+            }
+          },
+          "approvedQaReportIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "QA reports approved and to be accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
+            },
+            "description": "QA reports approved and to be accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
+            }
+          },
+          "approvedCustomDataPointIds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+              "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
+            },
+            "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+            "example": {
+              "extendedDateFiscalYearEnd": " 2026-12-31 "
+            }
+          }
+        }
+      },
+      "DatasetReviewState": {
+        "type": "string",
+        "description": "The state of the dataset review.",
+        "enum": [
+          "Pending",
+          "Finished",
+          "Aborted"
         ]
       },
       "CurrencyDataPoint": {
@@ -6787,7 +7560,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "qaReportId": {
             "type": "string",
@@ -7073,7 +7846,7 @@
           "dataPointType": {
             "type": "string",
             "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoNfrdMandatory"
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "reportingPeriod": {
             "type": "string",
