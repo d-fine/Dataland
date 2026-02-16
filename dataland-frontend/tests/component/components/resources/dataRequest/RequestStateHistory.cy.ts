@@ -42,7 +42,7 @@ describe('Component tests for the Request State History', function (): void {
 
     {
       modificationDate: 1697049600000 + 1.5 * 600000,
-      displayedState: DisplayedState.DocumentSourcing,
+      displayedState: DisplayedState.NonSourceable,
       requestState: RequestState.Processing,
       dataSourcingState: DataSourcingState.DocumentSourcing,
       adminComment: 'Processing request',

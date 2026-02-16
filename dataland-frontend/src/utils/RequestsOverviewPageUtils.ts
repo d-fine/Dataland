@@ -7,18 +7,24 @@ import {
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import { type DataSourcingEnhancedRequest, DataSourcingState, RequestState } from '@clients/datasourcingservice';
+import {
+  type DataSourcingEnhancedRequest,
+  DataSourcingState,
+  DisplayedState,
+  RequestState,
+} from '@clients/datasourcingservice';
 
-const stateLabelMap: Partial<Record<DataSourcingState | RequestState, string>> = {
-  [RequestState.Open]: 'Open',
-  [RequestState.Withdrawn]: 'Withdrawn',
-  [DataSourcingState.Initialized]: 'Validated',
-  [DataSourcingState.DocumentSourcing]: 'Document Sourcing',
-  [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
-  [DataSourcingState.DataExtraction]: 'Data Extraction',
-  [DataSourcingState.DataVerification]: 'Data Verification',
-  [DataSourcingState.NonSourceable]: 'Non-Sourceable',
-  [DataSourcingState.Done]: 'Done',
+// @ts-ignore
+const stateLabelMap: Partial<Record<DataSourcingState | RequestState | DisplayedState, string>> = {
+  [RequestState.Open || DisplayedState.Open]: 'Open',
+  [RequestState.Withdrawn || DisplayedState.Withdrawn]: 'Withdrawn',
+  [DataSourcingState.Initialized || DisplayedState.Validated]: 'Validated',
+  [DataSourcingState.DocumentSourcing || DisplayedState.DocumentSourcing]: 'Document Sourcing',
+  [DataSourcingState.DocumentSourcingDone || DisplayedState.DocumentVerification]: 'Document Verification',
+  [DataSourcingState.DataExtraction || DisplayedState.DataExtraction]: 'Data Extraction',
+  [DataSourcingState.DataVerification || DisplayedState.DataVerification]: 'Data Verification',
+  [DataSourcingState.NonSourceable || DisplayedState.NonSourceable]: 'Non-Sourceable',
+  [DataSourcingState.Done || DisplayedState.Done]: 'Done',
 };
 
 const displayedMixedStates: (DataSourcingState | RequestState)[] = [
@@ -87,7 +93,7 @@ export function getDisplayedState(request: DataSourcingEnhancedRequest): DataSou
  * @param displayedState - The state to get the label for, either a DataSourcingState or RequestState.
  * @returns The user-facing label for the given state.
  */
-export function getDisplayedStateLabel(displayedState: DataSourcingState | RequestState): string {
+export function getDisplayedStateLabel(displayedState: DataSourcingState | RequestState | DisplayedState): string {
   return stateLabelMap[displayedState] ?? humanizeStringOrNumber(displayedState);
 }
 

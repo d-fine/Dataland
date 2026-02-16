@@ -114,11 +114,11 @@
             <span style="display: flex; align-items: center">
               <span class="title">Request is:</span>
               <DatalandTag
-                :severity="dataSourcingDetails != null ? dataSourcingDetails.state : storedRequest.state"
+                :severity="requestHistory[requestHistory.length - 1]?.displayedState || ''"
                 :value="
-                  dataSourcingDetails == null
-                    ? getDisplayedStateLabel(storedRequest.state)
-                    : getDisplayedStateLabel(getMixedState(storedRequest.state, dataSourcingDetails.state))
+                  getDisplayedStateLabel(
+                    requestHistory[requestHistory.length - 1]?.displayedState || DisplayedState.Open
+                  )
                 "
                 class="dataland-inline-tag"
               />
@@ -178,12 +178,12 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import {
-  type DataSourcingWithoutReferences,
   type ExtendedStoredRequest,
   RequestState,
   type SingleRequest,
   type StoredDataSourcing,
   type RequestHistoryEntry,
+  DisplayedState,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -192,7 +192,7 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
-import { getDisplayedStateLabel, getMixedState } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
@@ -215,32 +215,17 @@ const storedRequest = reactive({} as ExtendedStoredRequest);
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
 const requestHistory = ref<RequestHistoryEntry[]>([]);
-const dataSourcingHistory = ref<DataSourcingWithoutReferences[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);
 
 /**
  * Get the last timestamp to be displayed in the "Request is since ..." text.
- * einfach der letzte übergebene Eintrag der neuen Datenstruktur
  */
 function getLastTimestampInTable(): string {
-  if (dataSourcingHistory.value == null) {
-    return convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate);
-  } else {
-    const maxTimestamp = Math.max(
-      dataSourcingHistory.value.at(length - 1)?.lastModifiedDate || 0,
-      storedRequest.lastModifiedDate
-    );
-    if (isUserKeycloakAdmin.value) {
-      return convertUnixTimeInMsToDateString(maxTimestamp);
-    }
-    if (storedRequest.state == RequestState.Withdrawn) {
-      return convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate);
-    } else {
-      return convertUnixTimeInMsToDateString(maxTimestamp);
-    }
-  }
+  return requestHistory.value.length > 0
+    ? convertUnixTimeInMsToDateString(requestHistory.value[requestHistory.value.length - 1]!.modificationDate)
+    : '-';
 }
 
 /**

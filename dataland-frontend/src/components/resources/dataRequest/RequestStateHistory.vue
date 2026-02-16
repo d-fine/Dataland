@@ -29,7 +29,7 @@
         <template #body="{ data }">
           <DatalandTag
             :severity="data.dataSourcingState || ''"
-            :value="data.dataSourcingState || ''"
+            :value="getDisplayedStateLabel(data.dataSourcingState || '')"
             class="dataland-inline-tag"
           />
         </template>
