@@ -20,8 +20,8 @@ import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestPr
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -211,7 +211,7 @@ class DataRequestQueryManagerTest {
 
     @BeforeEach
     fun setupDataRequestQueryManager() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_ADMIN)
         setupMocks()
         dataRequestQueryManager =
             DataRequestQueryManager(
@@ -296,7 +296,7 @@ class DataRequestQueryManagerTest {
 
     @Test
     fun `simulate getDataRequestsForRequestingUser call `() {
-        TestUtils.mockSecurityContext(
+        AuthenticationMock.mockSecurityContext(
             keycloakUserAlpha.email ?: "userEmail",
             keycloakUserAlpha.userId,
             DatalandRealmRole.ROLE_USER,

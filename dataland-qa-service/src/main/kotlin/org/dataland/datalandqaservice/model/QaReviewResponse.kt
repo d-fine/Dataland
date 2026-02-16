@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 
 /**
  * Comparable to the QaReviewEntity with the difference that the triggeringUserId is optional.
@@ -36,12 +38,12 @@ data class QaReviewResponse(
     )
     val reportingPeriod: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEW_TIMESTAMP_EXAMPLE,
     )
     val timestamp: Long,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     var qaStatus: QaStatus,
     @field:Schema(
@@ -55,13 +57,30 @@ data class QaReviewResponse(
     )
     var numberQaReports: Long,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.COMMENT_EXAMPLE,
     )
     val comment: String?,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
     )
     val triggeringUserId: String?,
 )
+
+/**
+ * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET Request.
+ * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
+ */
+fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false) =
+    QaReviewResponse(
+        dataId = this.dataId,
+        companyId = this.companyId,
+        companyName = this.companyName,
+        framework = this.framework,
+        reportingPeriod = this.reportingPeriod,
+        timestamp = this.timestamp,
+        qaStatus = this.qaStatus,
+        comment = this.comment,
+        triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
+    )

@@ -22,17 +22,17 @@ kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.21.0"
-junit-jupiter = "6.0.1"
+junit-jupiter = "6.0.2"
 log4j = "2.25.3"
 jackson = "2.18.5"
-logback = "1.5.24"
-flyway = "11.20.0"
+logback = "1.5.28"
+flyway = "11.20.3"
 cloudevents = "4.0.1"
-itext = "9.4.0"
+itext = "9.5.0"
 tika = "3.2.3"
 poi = "5.5.1"
 jodconverter = "4.4.11"
-spring-boot = "3.5.9"
+spring-boot = "3.5.10"
 spring-framework = "6.2.15"
 detekt = "1.23.8"
 bouncy-castle = "1.70"
@@ -41,7 +41,7 @@ testcontainers = "1.21.4"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.2.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.3.1" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
@@ -99,7 +99,7 @@ spring-context = { group = "org.springframework", name = "spring-context", versi
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
 # PostgreSQL
-postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.8" }
+postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.9" }
 
 # H2
 h2 = { group = "com.h2database", name = "h2", version = "2.4.240" }
@@ -123,7 +123,7 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-modul
 
 # Commons
 commons-io = { group = "commons-io", name = "commons-io", version = "2.21.0" }
-commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.20.0" }
+commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.21.0" }
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.15.0" }
 
 # PDFBox
@@ -132,7 +132,7 @@ pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.6" }
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.1.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.2.3" }
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }

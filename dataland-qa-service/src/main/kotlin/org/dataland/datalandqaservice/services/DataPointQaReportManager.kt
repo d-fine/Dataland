@@ -185,7 +185,7 @@ class DataPointQaReportManager(
     ): List<DataPointQaReport> =
         qaReportRepository
             .searchQaReportMetaInformation(
-                dataPointId = dataPointId,
+                dataPointIds = listOf(dataPointId),
                 reporterUserId = reporterUserId,
                 showInactive = showInactive,
             ).map { it.toApiModel() }
