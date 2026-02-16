@@ -59,7 +59,9 @@ describe('Component tests for the Request State History', function (): void {
 
   /**
    * Helper function to check the existence of columns in the state history table based on user role
+   *
    * @param isAdminUser - boolean indicating whether the user is an admin or not
+   * @param requestHistory - array of request history entries to be passed as props to the component
    */
   function checkColumnExistence(isAdminUser: boolean, requestHistory: RequestHistoryEntry[]): void {
     getMountingFunction()(RequestStateHistory, {
