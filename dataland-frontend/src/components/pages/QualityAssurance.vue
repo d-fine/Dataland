@@ -103,14 +103,14 @@
             </Column>
             <Column header="NUMBER OF QA REPORTS" class="w-2">
               <template #body="slotProps">
-                {{ slotProps.data.numberOfQaReports }}
+                {{ slotProps.data.numberQaReports }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="REVIEW AVAILABLE" class="w-2 qa-review-button">
+            <Column field="reviewDataset" header="REVIEW STATUS" class="w-2 qa-review-button">
               <template #body="slotProps">
                 <PrimeButton
-                  @click="goToQaViewPageByButton(slotProps.data)"
-                  label="REVIEW"
+                  @click="createAndViewDatasetReview(slotProps.data)"
+                  :label="slotProps.data.reviewerUserName ?? 'Start'"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
@@ -120,7 +120,7 @@
           </DataTable>
           <div v-if="!waitingForData && displayDataOfPage.length == 0">
             <div class="d-center-div text-center px-7 py-4">
-              <p class="font-medium text-xl">There are no unreviewed datasets on Dataland matching your filters.</p>
+              <p class="font-medium text-xl">This is a Test</p>
             </div>
           </div>
         </div>
@@ -235,12 +235,21 @@ function goToQaViewPage(event: DataTableRowClickEvent): ReturnType<typeof router
 }
 
 /**
- * Navigates to the view framework data page on a click on the row of the company
+ * If no dataset review exists, create one. Then go to corresponding dataset review page.
  * @param qaDataObject stored information about the row
  */
-function goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
+function createAndViewDatasetReview(qaDataObject: QaReviewResponse): void {
+  const createReviewPromise =
+    qaDataObject.datasetReviewId == null
+      ? apiClientProvider.apiClients.datasetReviewController.postDatasetReview(qaDataObject.dataId)
+      : Promise.resolve();
+
   const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-  void router.push(qaUri);
+  createReviewPromise
+    .then(() => router.push(qaUri))
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 /**

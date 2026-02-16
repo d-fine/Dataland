@@ -195,7 +195,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Successfully added dataset review object to dataland.",
+            "description": "Successfully added dataset review object to Dataland.",
             "content": {
               "application/json": {
                 "schema": {
@@ -206,6 +206,16 @@
           },
           "403": {
             "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Only one pending dataset review object should be available at the same time.",
             "content": {
               "application/json": {
                 "schema": {
