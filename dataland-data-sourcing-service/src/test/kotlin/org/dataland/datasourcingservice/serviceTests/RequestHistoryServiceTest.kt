@@ -11,7 +11,6 @@ import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.services.DataSourcingManager
-import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestHistoryService
 import org.dataland.datasourcingservice.services.RequestQueryManager
 import org.junit.jupiter.api.Assertions
@@ -52,6 +51,8 @@ class RequestHistoryServiceTest
 
         private val lastModifiedDateFirstRequest = 1000L
 
+        private val processingComment = "Request Processing"
+
         private val dummyRequestStateHistory: List<Pair<RequestEntity, Long>> =
             listOf(
                 Pair(
@@ -77,7 +78,7 @@ class RequestHistoryServiceTest
                         reportingPeriod = "2025",
                         dataType = "dummyDataType",
                         userId = dummyUserId,
-                        adminComment = "Request Processing",
+                        adminComment = processingComment,
                         creationTimestamp = lastModifiedDateFirstRequest + 500L,
                         memberComment = null,
                         lastModifiedDate = lastModifiedDateFirstRequest + 500L,
@@ -192,7 +193,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `Request history is sorted by timestamps`() {
+        fun `request history is sorted by timestamps`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory)
@@ -218,7 +219,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `Single history entry if state changes in request and data-sourcing for same timestamp`() {
+        fun `single history entry if state changes in request and data-sourcing for same timestamp`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory.subList(0, 1))
@@ -240,7 +241,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `Same admin comment is visible for equal request states`() {
+        fun `same admin comment is visible for equal request states`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory.subList(0, 2))
@@ -254,12 +255,12 @@ class RequestHistoryServiceTest
 
             val extendRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
 
-            Assertions.assertEquals("Request Processing", extendRequestHistory[1].adminComment)
-            Assertions.assertEquals("Request Processing", extendRequestHistory[2].adminComment)
+            Assertions.assertEquals(processingComment, extendRequestHistory[1].adminComment)
+            Assertions.assertEquals(processingComment, extendRequestHistory[2].adminComment)
         }
 
         @Test
-        fun `Check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
+        fun `check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory)
