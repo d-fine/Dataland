@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -60,7 +61,7 @@ data class DataMetaInformation(
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     var qaStatus: QaStatus,
     @field:Schema(

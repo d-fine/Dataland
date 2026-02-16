@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
@@ -69,7 +70,7 @@ interface QaApi {
         @RequestParam(defaultValue = "Pending")
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus,
@@ -114,13 +115,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getQaReviewResponseByDataId(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataId") dataId: UUID,
+        ) dataId: UUID,
     ): ResponseEntity<QaReviewResponse>
 
     /**
@@ -144,31 +144,30 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeQaStatus(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataId") dataId: String,
+        ) dataId: String,
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,
         @RequestParam
         @Parameter(
             name = "comment",
-            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
             required = false,
         )
         comment: String? = null,
         @RequestParam
         @Parameter(
             name = "overwriteDataPointQaStatus",
-            description = BackendOpenApiDescriptionsAndExamples.OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION,
             required = false,
         )
         overwriteDataPointQaStatus: Boolean = false,
@@ -267,7 +266,7 @@ interface QaApi {
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
         qaStatus: QaStatus?,
@@ -318,13 +317,12 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
@@ -348,24 +346,23 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeDataPointQaStatus(
-        @Parameter(
+        @PathVariable @Parameter(
             name = "dataPointId",
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
             required = true,
-        )
-        @PathVariable("dataPointId") dataPointId: String,
+        ) dataPointId: String,
         @RequestParam
         @Parameter(
             name = "qaStatus",
-            description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = true,
         )
         qaStatus: QaStatus,
         @RequestParam
         @Parameter(
             name = "comment",
-            description = BackendOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.COMMENT_DESCRIPTION,
         )
         comment: String? = null,
     )

@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -19,6 +18,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailConten
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -49,7 +49,7 @@ class SingleDataRequestEmailMessageSenderTest {
     @BeforeAll
     fun setup() {
         authenticationMock =
-            TestUtils.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+            AuthenticationMock.mockSecurityContext("requester@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         val companyApiMock = mock(CompanyDataControllerApi::class.java)
         val companyInfoMock = mock(CompanyInformation::class.java)
         `when`(companyInfoMock.companyName).thenReturn(companyName)
