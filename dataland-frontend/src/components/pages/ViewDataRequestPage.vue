@@ -116,13 +116,20 @@
               <DatalandTag
                 :severity="requestHistory[requestHistory.length - 1]?.displayedState || ''"
                 :value="
-                  getDisplayedStateLabel(
-                    requestHistory[requestHistory.length - 1]?.displayedState || DisplayedState.Open
-                  )
+                  requestHistory.length > 0
+                    ? getDisplayedStateLabel(requestHistory[requestHistory.length - 1]!.displayedState)
+                    : ''
                 "
                 class="dataland-inline-tag"
               />
-              <span class="dataland-info-text normal"> since {{ getLastTimestampInTable() }} </span>
+              <span class="dataland-info-text normal">
+                since
+                {{
+                  requestHistory.length > 0
+                    ? convertUnixTimeInMsToDateString(requestHistory[requestHistory.length - 1]!.modificationDate)
+                    : '-'
+                }}
+              </span>
             </span>
             <Divider />
             <p class="title">State History</p>
@@ -183,7 +190,6 @@ import {
   type SingleRequest,
   type StoredDataSourcing,
   type RequestHistoryEntry,
-  DisplayedState,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -218,15 +224,6 @@ const requestHistory = ref<RequestHistoryEntry[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);
-
-/**
- * Get the last timestamp to be displayed in the "Request is since ..." text.
- */
-function getLastTimestampInTable(): string {
-  return requestHistory.value.length > 0
-    ? convertUnixTimeInMsToDateString(requestHistory.value[requestHistory.value.length - 1]!.modificationDate)
-    : '-';
-}
 
 /**
  * Perform all steps required to set up the component.

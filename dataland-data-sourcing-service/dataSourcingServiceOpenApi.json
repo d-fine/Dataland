@@ -2388,11 +2388,11 @@
         ],
         "type": "object",
         "properties": {
-          "dataSourcingState": {
-            "$ref": "#/components/schemas/DataSourcingState"
-          },
           "adminComment": {
             "type": "string"
+          },
+          "dataSourcingState": {
+            "$ref": "#/components/schemas/DataSourcingState"
           },
           "requestState": {
             "$ref": "#/components/schemas/RequestState"

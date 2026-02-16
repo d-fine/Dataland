@@ -19,6 +19,7 @@ import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
 
 /**
  * Utility function to create a minimal Keycloak mock
+ *
  * @param userId the user ID to mock
  * @param roles optional array of roles (e.g. ['ROLE_ADMIN'])
  */
@@ -31,6 +32,7 @@ function getKeycloakMock(userId: string, roles: string[] = ['ROLE_USER']): Retur
 
 /**
  * Mocks company info endpoint for resolving UUIDs to names
+ *
  * @param companyId the company UUID
  * @param companyName the company name to return
  */
@@ -101,9 +103,10 @@ describe('Component tests for the view data request page', function (): void {
 
   /**
    * Checks the presence and content of basic page elements on the view data request page, with conditional checks based on admin status and expected state/time
+   *
    * @param isAdminUser boolean indicating if the user is an admin (affects visibility of certain elements)
    * @param expectedState the expected state to check for in the "Request is" card
-   * @param expectedTime the expected time to check for in the "Request is" card (used to verify the "since" timestamp)
+   * @param expectedTime the expected time to check for in the "Request is" card
    */
   function checkBasicPageElements(isAdminUser: boolean, expectedState: DisplayedState, expectedTime: number): void {
     cy.contains('Data Request').should('exist');
@@ -138,6 +141,7 @@ describe('Component tests for the view data request page', function (): void {
 
   /**
    * Mocks the data-sourcing-manager answer for single data request of the users
+   *
    * @param requestState the request state
    */
   function interceptUserAskForSingleDataRequestsOnMounted(requestState: RequestState): void {
@@ -162,7 +166,36 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Mocks the api-manager answer for basic company information
+   * Mocks the data-sourcing-manager answer for data sourcing details, with optional parameters to customize the response
+   *
+   * @param customCollectorId optional custom collector company ID to include in the response
+   * @param customExtractorId optional custom extractor company ID to include in the response
+   * @param nextDataSourcingDate optional custom date for the "date of next sourcing attempt" field in the response
+   */
+  function interceptDataSourcingDetails(
+    customCollectorId?: string,
+    customExtractorId?: string,
+    nextDataSourcingDate?: string
+  ): void {
+    const dataSourcing: Partial<StoredDataSourcing> = {
+      dataSourcingId: dataSourcingEntityId,
+      companyId: dummyCompanyId,
+      reportingPeriod: dummyReportingYear,
+      dataType: dummyFramework,
+      documentCollector: customCollectorId,
+      dataExtractor: customExtractorId,
+      dateOfNextDocumentSourcingAttempt: nextDataSourcingDate,
+    };
+    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
+      body: dataSourcing,
+      status: 200,
+    });
+  }
+
+  /**
+   * Mocks the data-sourcing-manager answer for active datasets of the user
+   *
+   * @param hasActiveDataset boolean indicating whether to return an active dataset or an empty array
    */
   function interceptUserActiveDatasetOnMounted(hasActiveDataset: boolean): void {
     const dummyMetaData = {
@@ -201,36 +234,27 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Mocks the data-sourcing-manager answer for data sourcing details, with optional parameters to customize the response
+   * Mocks the data-sourcing-manager answer for the request history of a data request, with customizable history entries
    *
-   * @param customCollectorId optional custom collector company ID to include in the response
-   * @param customExtractorId optional custom extractor company ID to include in the response
-   * @param nextDataSourcingDate optional custom date for the "date of next sourcing attempt" field in the response
+   * @param requestHistory the request history entries to return in the mocked response
+   * @param isAdmin boolean indicating whether to mock the extended history endpoint or the regular history endpoint
    */
-  function interceptDataSourcingDetails(
-    customCollectorId?: string,
-    customExtractorId?: string,
-    nextDataSourcingDate?: string
-  ): void {
-    const dataSourcing: Partial<StoredDataSourcing> = {
-      dataSourcingId: dataSourcingEntityId,
-      companyId: dummyCompanyId,
-      reportingPeriod: dummyReportingYear,
-      dataType: dummyFramework,
-      documentCollector: customCollectorId,
-      dataExtractor: customExtractorId,
-      dateOfNextDocumentSourcingAttempt: nextDataSourcingDate,
-    };
-    cy.intercept(`**/data-sourcing/${dataSourcingEntityId}`, {
-      body: dataSourcing,
-      status: 200,
-    });
+  function interceptRequestHistory(requestHistory: RequestHistoryEntry[], isAdmin: boolean): void {
+    if (isAdmin) {
+      cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
+        body: requestHistory,
+        status: 200,
+      });
+    } else {
+      cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
+        body: requestHistory,
+        status: 200,
+      });
+    }
   }
 
   /**
-   * Sets up Cypress interceptions for data sourcing history and details,
-   * and mocks company info for collector and extractor.
-   *
+   * Sets up interceptions for data sourcing details and mocks company info for collector and extractor.
    */
   function setupDataSourcingDetailsInterceptions(): void {
     interceptDataSourcingDetails(collectorId, extractorId);
@@ -250,6 +274,7 @@ describe('Component tests for the view data request page', function (): void {
 
   /**
    * Mounts the ViewDataRequestPage and checks basic page elements as user
+   *
    * @param expectedState the request state to check for
    * @param expectedTime the expected time to check for
    * @param options mounting options (keycloak, router, etc.)
@@ -278,10 +303,8 @@ describe('Component tests for the view data request page', function (): void {
 
     setupDataSourcingDetailsInterceptions();
 
-    cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
-      body: dummyProcessedExtendedRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyProcessedExtendedRequestHistoryEntry, true);
+
     cy.spy(router, 'push').as('routerPush');
     mountAndCheckBasicPageElements(DisplayedState.NonSourceable, dummyLastModifiedDate + 600000, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
@@ -295,10 +318,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page for Withdrawn request without data renders as expected (=no view dataset button)', function () {
     setupRequestInterceptions(RequestState.Withdrawn, false);
-    cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
-      body: dummyWithdrawnExtendedRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyWithdrawnExtendedRequestHistoryEntry, true);
 
     mountAndCheckBasicPageElements(DisplayedState.Withdrawn, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
@@ -309,10 +329,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page as non-admin for Open request without data and verify withdraw button is absent', function () {
     setupRequestInterceptions(RequestState.Open, false);
-    cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
-      body: dummyOpenRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyOpenRequestHistoryEntry, false);
     mountAndCheckBasicPageElements(DisplayedState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_USER']),
     });
@@ -322,20 +339,14 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page as admin for Open request without data and withdraw the data request', function () {
     setupRequestInterceptions(RequestState.Open, false);
-    cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
-      body: dummyOpenExtendedRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyOpenExtendedRequestHistoryEntry, true);
     mountAndCheckBasicPageElements(DisplayedState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_ADMIN']),
     }).then(() => {
       cy.get('[data-test="resubmit-request-button"]').should('not.be.visible');
       cy.get('[data-test="view-dataset-button"]').should('not.exist');
       interceptUserAskForSingleDataRequestsOnMounted(RequestState.Withdrawn);
-      cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
-        body: dummyOpenAndWithdrawnExtendedRequestHistoryEntry,
-        status: 200,
-      });
+      interceptRequestHistory(dummyOpenAndWithdrawnExtendedRequestHistoryEntry, true);
       cy.get('[data-test="card_withdrawn"]').within(() => {
         cy.contains(
           'If you want to stop the processing of this request, you can withdraw it. The data provider will no longer process this request.'
@@ -350,10 +361,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page for Open request with data and check the routing to data view page', function () {
     setupRequestInterceptions(RequestState.Open, true);
-    cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
-      body: dummyOpenRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyOpenRequestHistoryEntry, false);
     cy.spy(router, 'push').as('routerPush');
     mountAndCheckBasicPageElements(DisplayedState.Open, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId, ['ROLE_USER']),
@@ -367,10 +375,7 @@ describe('Component tests for the view data request page', function (): void {
 
   it('Check view data request page for Processed request and check resubmitting the request works as expected', function () {
     setupRequestInterceptions(RequestState.Processed, true);
-    cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
-      body: dummyProcessedRequestHistoryEntry,
-      status: 200,
-    });
+    interceptRequestHistory(dummyProcessedRequestHistoryEntry, false);
     mountAndCheckBasicPageElements(DisplayedState.Done, dummyLastModifiedDate, {
       keycloak: getKeycloakMock(dummyUserId),
       router,
