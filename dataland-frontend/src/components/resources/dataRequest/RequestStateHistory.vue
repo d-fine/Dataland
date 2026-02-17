@@ -19,7 +19,7 @@
         </template>
       </Column>
 
-      <Column v-if="isAdmin" field="requestState" header="Request State" :style="'width: 15%'">
+      <Column v-if="isAdmin" field="requestState" header="Request State" :style="'width: 20%'">
         <template #body="{ data }">
           <DatalandTag :severity="data.requestState" :value="data.requestState" class="dataland-inline-tag" />
         </template>
@@ -35,7 +35,7 @@
         </template>
       </Column>
 
-      <Column v-if="isAdmin" field="adminComment" header="Comment" :style="'width: 25%'">
+      <Column v-if="isAdmin" field="adminComment" header="Comment" :style="'width: 20%'">
         <template #body="{ data }">
           <div style="display: inline-flex" data-test="adminComment">
             {{ data.adminComment || '—' }}
