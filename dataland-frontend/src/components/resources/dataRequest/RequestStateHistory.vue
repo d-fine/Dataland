@@ -13,7 +13,7 @@
         <template #body="{ data }">
           <DatalandTag
             :severity="data.displayedState || '-'"
-            :value="getDisplayedStateLabel(data.displayedState)"
+            :value="getDisplayedStateWithSpaces(data.displayedState)"
             class="dataland-inline-tag"
           />
         </template>
@@ -29,7 +29,7 @@
         <template #body="{ data }">
           <DatalandTag
             :severity="data.dataSourcingState || ''"
-            :value="getDisplayedStateLabel(data.dataSourcingState || '')"
+            :value="getDataSourcingStateWithSpaces(data.dataSourcingState || '')"
             class="dataland-inline-tag"
           />
         </template>
@@ -52,7 +52,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import { type RequestHistoryEntry } from '@clients/datasourcingservice';
 import DatalandTag from '@/components/general/DatalandTag.vue';
-import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDataSourcingStateWithSpaces, getDisplayedStateWithSpaces } from '@/utils/RequestsOverviewPageUtils.ts';
 
 defineProps<{
   stateHistory: RequestHistoryEntry[];

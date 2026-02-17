@@ -15,7 +15,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
-import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDisplayedStateWithSpaces } from '@/utils/RequestsOverviewPageUtils.ts';
 
 /**
  * Utility function to create a minimal Keycloak mock
@@ -129,7 +129,7 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="card_requestIs"]').should('exist');
     cy.get('[data-test="card_requestIs"]').within(() => {
       const searchString =
-        getDisplayedStateLabel(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
+        getDisplayedStateWithSpaces(expectedState) + ' since ' + convertUnixTimeInMsToDateString(expectedTime);
       cy.contains(searchString).should('exist');
     });
     if (expectedState !== DisplayedState.Withdrawn && isAdminUser) {

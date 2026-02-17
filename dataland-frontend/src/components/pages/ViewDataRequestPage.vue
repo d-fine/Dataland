@@ -117,7 +117,7 @@
                 :severity="requestHistory[requestHistory.length - 1]?.displayedState || ''"
                 :value="
                   requestHistory.length > 0
-                    ? getDisplayedStateLabel(requestHistory[requestHistory.length - 1]!.displayedState)
+                    ? getDisplayedStateWithSpaces(requestHistory[requestHistory.length - 1]!.displayedState)
                     : ''
                 "
                 class="dataland-inline-tag"
@@ -198,7 +198,7 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
-import { getDisplayedStateLabel } from '@/utils/RequestsOverviewPageUtils.ts';
+import { getDisplayedStateWithSpaces } from '@/utils/RequestsOverviewPageUtils.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 
 const props = defineProps<{ requestId: string }>();

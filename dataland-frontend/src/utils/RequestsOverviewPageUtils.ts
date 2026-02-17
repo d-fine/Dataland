@@ -39,6 +39,16 @@ const displayedStateLabelMap: Record<DisplayedState, string> = {
   [DisplayedState.Done]: 'Done',
 };
 
+const dataSourcingStateLabelMap: Record<DataSourcingState, string> = {
+  [DataSourcingState.Initialized]: 'Validated',
+  [DataSourcingState.DocumentSourcing]: 'Document Sourcing',
+  [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
+  [DataSourcingState.DataExtraction]: 'Data Extraction',
+  [DataSourcingState.DataVerification]: 'Data Verification',
+  [DataSourcingState.NonSourceable]: 'Non-Sourceable',
+  [DataSourcingState.Done]: 'Done',
+};
+
 const displayedMixedStates: (DataSourcingState | RequestState)[] = [
   RequestState.Open,
   DataSourcingState.Initialized,
@@ -116,7 +126,17 @@ export function getDisplayedStateLabel(displayedState: DataSourcingState | Reque
  * @returns The user-facing label for the DisplayedState.
  */
 export function getDisplayedStateWithSpaces(displayedState: DisplayedState): string {
-  return displayedStateLabelMap[displayedState];
+  return displayedStateLabelMap[displayedState] ?? '';
+}
+
+/**
+ * Returns the display label (including spaces) for a given DataSourcingState.
+ *
+ * @param dataSourcingState - The DisplayedState to label.
+ * @returns The user-facing label for the DisplayedState.
+ */
+export function getDataSourcingStateWithSpaces(dataSourcingState: DataSourcingState): string {
+  return dataSourcingStateLabelMap[dataSourcingState] ?? '';
 }
 
 /**
