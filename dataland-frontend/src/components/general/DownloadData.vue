@@ -29,6 +29,7 @@
         :options="availableReportingPeriodOptions"
         option-label="label"
         option-value="value"
+        option-disabled="disabled"
         placeholder="Select reporting periods"
         data-test="reportingPeriodSelector"
         class="component-styling"
@@ -145,7 +146,7 @@ const showFileTypeError = ref<boolean>(false);
 const selectedReportingPeriods = ref<string[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
-const latestOnly = ref(false);
+const latestOnly = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
@@ -170,9 +171,10 @@ const availableReportingPeriodOptions = computed(() => {
     ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
     : [];
 
-  return DOWNLOADABLE_DATA_REPORTING_PERIODS.filter((period) => reportingPeriods.includes(period)).map((period) => ({
+  return DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
     value: period,
     label: period,
+    disabled: !reportingPeriods.includes(period),
   }));
 });
 

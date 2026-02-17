@@ -68,6 +68,7 @@ describeIf(
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="reportingPeriodSelector"]').click();
       cy.get('.p-multiselect-list').contains(reportingPeriod).click();
       cy.get('body').click(0, 0);

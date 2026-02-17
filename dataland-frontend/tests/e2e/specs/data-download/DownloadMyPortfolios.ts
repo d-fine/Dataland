@@ -188,6 +188,7 @@ describeIf(
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="reportingPeriodSelector"]').click();
       for (const year of reportingYearsToSelect) {
         cy.get('.p-multiselect-list').contains(year).click();
@@ -217,16 +218,18 @@ describeIf(
       fileType: 'Excel File (.xlsx)',
     });
 
-    it('Shows that unavailable reporting periods are not shown in the dropdown', () => {
+    it('Shows that unavailable reporting periods are disabled in the dropdown', () => {
       cy.get('[data-test="reportingPeriodSelector"]').click();
       for (const year of unavailableYears) {
-        cy.get('.p-multiselect-list').should('not.contain', year);
+        cy.get('.p-multiselect-list').contains(year).parent().should('have.attr', 'data-p-disabled', 'true');
       }
     });
 
-    it('Enables latest reporting period toggle and verifies reporting period selector is disabled', () => {
+    it('Verifies latest reporting period toggle controls reporting period selector', () => {
       cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+      cy.get('[data-test="reportingPeriodSelector"]').should('not.have.class', 'p-disabled');
     });
   }
 );

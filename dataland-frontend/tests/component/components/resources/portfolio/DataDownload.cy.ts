@@ -47,6 +47,7 @@ describe('Check the Portfolio Download view', function (): void {
     });
 
     it('Check reporting period selection via MultiSelect', function (): void {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="reportingPeriodSelector"]').should('exist');
       cy.get('[data-test="reportingPeriodSelector"]').click();
       cy.get('.p-multiselect-list').contains('2024').click();
@@ -54,6 +55,7 @@ describe('Check the Portfolio Download view', function (): void {
     });
 
     it('Check error message visibility when no reporting period selected', function (): void {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
@@ -85,6 +87,7 @@ describe('Check the Portfolio Download view', function (): void {
       });
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="reportingPeriodSelector"]').click();
       cy.get('.p-multiselect-list').contains('2024').click();
       cy.get('body').click(0, 0);
@@ -93,25 +96,26 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="downloadDataButtonInModal"]').click();
     });
 
-    it('Check that latest reporting period toggle disables reporting period selector', function (): void {
-      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+    it('Check that latest reporting period toggle is on by default and disables reporting period selector', function (): void {
       cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+      cy.get('[data-test="reportingPeriodSelector"]').should('not.have.class', 'p-disabled');
     });
 
-    it('Check that no reporting period error is shown when latest is selected', function (): void {
-      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+    it('Check that no reporting period error is shown when latest is selected by default', function (): void {
       cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
       cy.get('[data-test="reportingYearError"]').should('not.exist');
     });
 
-    it('Change framework and check that only available periods are shown in dropdown', function (): void {
+    it('Change framework and check that unavailable periods are disabled in dropdown', function (): void {
+      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('EU Taxonomy Financials').click();
       cy.get('[data-test="reportingPeriodSelector"]').click();
       cy.get('.p-multiselect-list').contains('2021').should('be.visible');
-      cy.get('.p-multiselect-list').should('not.contain', '2024');
+      cy.get('.p-multiselect-list').contains('2024').parent().should('have.attr', 'data-p-disabled', 'true');
     });
   });
 });
