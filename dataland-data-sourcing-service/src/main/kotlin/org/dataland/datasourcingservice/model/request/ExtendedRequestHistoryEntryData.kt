@@ -20,17 +20,17 @@ data class ExtendedRequestHistoryEntryData(
     override val modificationDate: Long,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.REQUEST_STATE_EXAMPLE,
+        example = "Processing",
     )
     override val requestState: RequestState,
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE,
+        example = "Initialized",
     )
     override val dataSourcingState: DataSourcingState? = null,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DISPLAYED_STATE_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DISPLAYED_STATE_EXAMPLE,
     )
     override val displayedState: DisplayedState,
     @field:Schema(

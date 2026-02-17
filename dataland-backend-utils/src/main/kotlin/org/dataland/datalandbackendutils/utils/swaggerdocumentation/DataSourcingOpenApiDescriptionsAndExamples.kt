@@ -77,8 +77,8 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
-    const val MIXED_STATE_DESCRIPTION = "The current mixed state of the request."
-    const val MIXED_STATE_EXAMPLE = "Document Sourcing"
+    const val DISPLAYED_STATE_DESCRIPTION = "The current displayed state of the request."
+    const val DISPLAYED_STATE_EXAMPLE = "Validated"
 
     const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_DESCRIPTION =
         "The timestamp (epoch milliseconds) at which the data sourcing object was last modified."

@@ -2352,8 +2352,8 @@
       },
       "DisplayedState": {
         "type": "string",
-        "description": "The current mixed state of the request.",
-        "example": "Document Sourcing",
+        "description": "The current displayed state of the request.",
+        "example": "Validated",
         "enum": [
           "Open",
           "Withdrawn",

@@ -18,8 +18,8 @@ data class RequestHistoryEntryData(
     )
     override val modificationDate: Long,
     @field:Schema(
-        description = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_DESCRIPTION,
-        example = DataSourcingOpenApiDescriptionsAndExamples.MIXED_STATE_EXAMPLE,
+        description = DataSourcingOpenApiDescriptionsAndExamples.DISPLAYED_STATE_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.DISPLAYED_STATE_EXAMPLE,
     )
     override val displayedState: DisplayedState,
 ) : RequestHistoryEntry {

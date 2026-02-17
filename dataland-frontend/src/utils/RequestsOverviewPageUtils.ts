@@ -40,9 +40,9 @@ const displayedStateLabelMap: Record<DisplayedState, string> = {
 };
 
 const dataSourcingStateLabelMap: Record<DataSourcingState, string> = {
-  [DataSourcingState.Initialized]: 'Validated',
+  [DataSourcingState.Initialized]: 'Initialized',
   [DataSourcingState.DocumentSourcing]: 'Document Sourcing',
-  [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
+  [DataSourcingState.DocumentSourcingDone]: 'Document Sourcing Done',
   [DataSourcingState.DataExtraction]: 'Data Extraction',
   [DataSourcingState.DataVerification]: 'Data Verification',
   [DataSourcingState.NonSourceable]: 'Non-Sourceable',
