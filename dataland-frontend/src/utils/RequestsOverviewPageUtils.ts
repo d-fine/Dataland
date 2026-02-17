@@ -15,18 +15,28 @@ import {
 } from '@clients/datasourcingservice';
 
 // @ts-ignore
-const stateLabelMap: Partial<Record<DataSourcingState | RequestState | DisplayedState, string>> = {
-  [RequestState.Open || DisplayedState.Open]: 'Open',
-  [RequestState.Withdrawn || DisplayedState.Withdrawn]: 'Withdrawn',
-  [DataSourcingState.Initialized]: 'Initialized',
+const stateLabelMap: Partial<Record<DataSourcingState | RequestState, string>> = {
+  [RequestState.Open]: 'Open',
+  [RequestState.Withdrawn]: 'Withdrawn',
+  [DataSourcingState.Initialized]: 'Validated',
+  [DataSourcingState.DocumentSourcing]: 'Document Sourcing',
+  [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
+  [DataSourcingState.DataExtraction]: 'Data Extraction',
+  [DataSourcingState.DataVerification]: 'Data Verification',
+  [DataSourcingState.NonSourceable]: 'Non-Sourceable',
+  [DataSourcingState.Done]: 'Done',
+};
+
+const displayedStateLabelMap: Record<DisplayedState, string> = {
+  [DisplayedState.Open]: 'Open',
+  [DisplayedState.Withdrawn]: 'Withdrawn',
   [DisplayedState.Validated]: 'Validated',
-  [DataSourcingState.DocumentSourcing || DisplayedState.DocumentSourcing]: 'Document Sourcing',
-  [DataSourcingState.DocumentSourcingDone]: 'Document Sourcing Done',
+  [DisplayedState.DocumentSourcing]: 'Document Sourcing',
   [DisplayedState.DocumentVerification]: 'Document Verification',
-  [DataSourcingState.DataExtraction || DisplayedState.DataExtraction]: 'Data Extraction',
-  [DataSourcingState.DataVerification || DisplayedState.DataVerification]: 'Data Verification',
-  [DataSourcingState.NonSourceable || DisplayedState.NonSourceable]: 'Non-Sourceable',
-  [DataSourcingState.Done || DisplayedState.Done]: 'Done',
+  [DisplayedState.DataExtraction]: 'Data Extraction',
+  [DisplayedState.DataVerification]: 'Data Verification',
+  [DisplayedState.NonSourceable]: 'Non-Sourceable',
+  [DisplayedState.Done]: 'Done',
 };
 
 const displayedMixedStates: (DataSourcingState | RequestState)[] = [
@@ -95,8 +105,18 @@ export function getDisplayedState(request: DataSourcingEnhancedRequest): DataSou
  * @param displayedState - The state to get the label for, either a DataSourcingState or RequestState.
  * @returns The user-facing label for the given state.
  */
-export function getDisplayedStateLabel(displayedState: DataSourcingState | RequestState | DisplayedState): string {
+export function getDisplayedStateLabel(displayedState: DataSourcingState | RequestState): string {
   return stateLabelMap[displayedState] ?? humanizeStringOrNumber(displayedState);
+}
+
+/**
+ * Returns the display label (including spaces) for a given DisplayedState.
+ *
+ * @param displayedState - The DisplayedState to label.
+ * @returns The user-facing label for the DisplayedState.
+ */
+export function getDisplayedStateWithSpaces(displayedState: DisplayedState): string {
+  return displayedStateLabelMap[displayedState];
 }
 
 /**
