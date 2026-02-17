@@ -4,8 +4,8 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
-import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
-import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.utils.RequestStateHistoryUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,7 +53,7 @@ class RequestHistoryService
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntry> {
+        fun retrieveRequestHistory(requestId: UUID): List<RequestHistoryEntryData> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
             return RequestStateHistoryUtils.getRequestHistory(requestHistory, dataSourcingHistory)
         }
@@ -66,7 +66,7 @@ class RequestHistoryService
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntry> {
+        fun retrieveExtendedRequestHistory(requestId: UUID): List<ExtendedRequestHistoryEntryData> {
             val (requestHistory, dataSourcingHistory) = retrieveStateHistoryByRequestId(requestId)
             return RequestStateHistoryUtils.getExtendedRequestHistory(requestHistory, dataSourcingHistory)
         }

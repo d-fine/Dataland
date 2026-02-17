@@ -6,9 +6,9 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
-import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -92,7 +92,7 @@ class RequestController
                 ),
             )
 
-        override fun getExtendedRequestHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntry>> =
+        override fun getExtendedRequestHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntryData>> =
             ResponseEntity
                 .ok(
                     requestHistoryService.retrieveExtendedRequestHistory(
@@ -102,7 +102,7 @@ class RequestController
                     ),
                 )
 
-        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntry>> =
+        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntryData>> =
             ResponseEntity
                 .ok(
                     requestHistoryService.retrieveRequestHistory(

@@ -189,7 +189,7 @@ import {
   RequestState,
   type SingleRequest,
   type StoredDataSourcing,
-  type RequestHistoryEntry,
+  type RequestHistoryEntryData,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -220,7 +220,7 @@ const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as ExtendedStoredRequest);
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
-const requestHistory = ref<RequestHistoryEntry[]>([]);
+const requestHistory = ref<RequestHistoryEntryData[]>([]);
 const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
 const documentCollectorName = ref<string | null>(null);
 const dataExtractorName = ref<string | null>(null);

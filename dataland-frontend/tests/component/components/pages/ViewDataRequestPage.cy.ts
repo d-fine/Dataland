@@ -7,8 +7,8 @@ import {
   type StoredDataSourcing,
   DataSourcingState,
   DisplayedState,
-  type ExtendedRequestHistoryEntry,
-  type RequestHistoryEntry,
+  type ExtendedRequestHistoryEntryData,
+  type RequestHistoryEntryData,
 } from '@clients/datasourcingservice';
 import type { CompanyInformation } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
@@ -60,7 +60,7 @@ describe('Component tests for the view data request page', function (): void {
   const extractorId = 'extractor-company-uuid';
   const extractorName = 'Extractor GmbH';
 
-  const dummyProcessedExtendedRequestHistoryEntry: ExtendedRequestHistoryEntry[] = [
+  const dummyProcessedExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
     {
       modificationDate: dummyLastModifiedDate + 600000,
       displayedState: DisplayedState.NonSourceable,
@@ -70,7 +70,7 @@ describe('Component tests for the view data request page', function (): void {
     },
   ];
 
-  const dummyWithdrawnExtendedRequestHistoryEntry: ExtendedRequestHistoryEntry[] = [
+  const dummyWithdrawnExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
     {
       modificationDate: dummyLastModifiedDate,
       displayedState: DisplayedState.Withdrawn,
@@ -80,11 +80,11 @@ describe('Component tests for the view data request page', function (): void {
     },
   ];
 
-  const dummyOpenExtendedRequestHistoryEntry: ExtendedRequestHistoryEntry[] = [
+  const dummyOpenExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
     { modificationDate: dummyLastModifiedDate, displayedState: DisplayedState.Open, requestState: RequestState.Open },
   ];
 
-  const dummyOpenAndWithdrawnExtendedRequestHistoryEntry: ExtendedRequestHistoryEntry[] = [
+  const dummyOpenAndWithdrawnExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
     { modificationDate: dummyLastModifiedDate, displayedState: DisplayedState.Open, requestState: RequestState.Open },
     {
       modificationDate: dummyLastModifiedDate + 600000,
@@ -93,11 +93,11 @@ describe('Component tests for the view data request page', function (): void {
     },
   ];
 
-  const dummyOpenRequestHistoryEntry: RequestHistoryEntry[] = [
+  const dummyOpenRequestHistoryEntry: RequestHistoryEntryData[] = [
     { modificationDate: dummyLastModifiedDate, displayedState: DisplayedState.Open },
   ];
 
-  const dummyProcessedRequestHistoryEntry: RequestHistoryEntry[] = [
+  const dummyProcessedRequestHistoryEntry: RequestHistoryEntryData[] = [
     { modificationDate: dummyLastModifiedDate, displayedState: DisplayedState.Done },
   ];
 
@@ -239,7 +239,7 @@ describe('Component tests for the view data request page', function (): void {
    *
    * @param requestHistory the request history entries to return in the mocked response
    */
-  function interceptExtendedRequestHistory(requestHistory: RequestHistoryEntry[]): void {
+  function interceptExtendedRequestHistory(requestHistory: RequestHistoryEntryData[]): void {
     cy.intercept(`**/data-sourcing/requests/${requestId}/extended-history`, {
       body: requestHistory,
       status: 200,
@@ -251,7 +251,7 @@ describe('Component tests for the view data request page', function (): void {
    *
    * @param requestHistory the request history entries to return in the mocked response
    */
-  function interceptRequestHistory(requestHistory: RequestHistoryEntry[]): void {
+  function interceptRequestHistory(requestHistory: RequestHistoryEntryData[]): void {
     cy.intercept(`**/data-sourcing/requests/${requestId}/history`, {
       body: requestHistory,
       status: 200,

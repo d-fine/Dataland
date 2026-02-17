@@ -15,9 +15,9 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
-import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
-import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -284,7 +284,7 @@ interface RequestApi {
     fun getExtendedRequestHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
-    ): ResponseEntity<List<ExtendedRequestHistoryEntry>>
+    ): ResponseEntity<List<ExtendedRequestHistoryEntryData>>
 
     /**
      * Retrieve the request history of a Request object by its ID.
@@ -313,5 +313,5 @@ interface RequestApi {
     fun getRequestHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
-    ): ResponseEntity<List<RequestHistoryEntry>>
+    ): ResponseEntity<List<RequestHistoryEntryData>>
 }

@@ -5,9 +5,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestState
-import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
-import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import kotlin.collections.last
 import kotlin.collections.lastOrNull
@@ -26,11 +24,11 @@ object RequestStateHistoryUtils {
      * @param entries - The combined history entries from which repeating displayed states should be removed.
      * @returns The filtered combined history entries with repeating displayed states removed.
      */
-    private fun deleteRepeatingDisplayedStates(entries: List<RequestHistoryEntry>): List<RequestHistoryEntry> {
+    private fun deleteRepeatingDisplayedStates(entries: List<RequestHistoryEntryData>): List<RequestHistoryEntryData> {
         if (entries.isEmpty()) {
             return entries
         }
-        val result = mutableListOf<RequestHistoryEntry>()
+        val result = mutableListOf<RequestHistoryEntryData>()
         var lastDisplayedState: DisplayedState? = null
 
         for (entry in entries) {
@@ -134,7 +132,7 @@ object RequestStateHistoryUtils {
      *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
      * @returns An ExtendedRequestHistoryEntry object representing the combined state of the request and data sourcing
      */
-    private fun createExtendedHistoryEntry(input: HistoryEntryInput<ExtendedRequestHistoryEntry>): ExtendedRequestHistoryEntry =
+    private fun createExtendedHistoryEntry(input: HistoryEntryInput<ExtendedRequestHistoryEntryData>): ExtendedRequestHistoryEntryData =
         when (input) {
             is HistoryEntryInput.RequestOnly ->
                 ExtendedRequestHistoryEntryData(
@@ -231,7 +229,7 @@ object RequestStateHistoryUtils {
      *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
      * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
      */
-    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntry>): RequestHistoryEntry =
+    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntryData>): RequestHistoryEntryData =
         when (input) {
             is HistoryEntryInput.RequestOnly ->
                 RequestHistoryEntryData(input.requestEntity)
@@ -290,7 +288,7 @@ object RequestStateHistoryUtils {
     fun getExtendedRequestHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
-    ): List<ExtendedRequestHistoryEntry> = buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
+    ): List<ExtendedRequestHistoryEntryData> = buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
 
     /**
      * Generates a combined history of request state changes and data sourcing state changes, sorted by modification date,
@@ -304,7 +302,7 @@ object RequestStateHistoryUtils {
     fun getRequestHistory(
         requestHistory: List<Pair<RequestEntity, Long>>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
-    ): List<RequestHistoryEntry> =
+    ): List<RequestHistoryEntryData> =
         deleteRepeatingDisplayedStates(
             buildHistory(requestHistory, dataSourcingHistory, ::createHistoryEntry),
         )

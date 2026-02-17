@@ -1011,7 +1011,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RequestHistoryEntry"
+                    "$ref": "#/components/schemas/RequestHistoryEntryData"
                   }
                 }
               }
@@ -1082,7 +1082,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExtendedRequestHistoryEntry"
+                    "$ref": "#/components/schemas/ExtendedRequestHistoryEntryData"
                   }
                 }
               }
@@ -2352,6 +2352,8 @@
       },
       "DisplayedState": {
         "type": "string",
+        "description": "The current mixed state of the request.",
+        "example": "Document Sourcing",
         "enum": [
           "Open",
           "Withdrawn",
@@ -2364,7 +2366,7 @@
           "Done"
         ]
       },
-      "RequestHistoryEntry": {
+      "RequestHistoryEntryData": {
         "required": [
           "displayedState",
           "modificationDate"
@@ -2373,14 +2375,16 @@
         "properties": {
           "modificationDate": {
             "type": "integer",
-            "format": "int64"
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "displayedState": {
             "$ref": "#/components/schemas/DisplayedState"
           }
         }
       },
-      "ExtendedRequestHistoryEntry": {
+      "ExtendedRequestHistoryEntryData": {
         "required": [
           "displayedState",
           "modificationDate",
@@ -2388,21 +2392,26 @@
         ],
         "type": "object",
         "properties": {
-          "adminComment": {
-            "type": "string"
-          },
-          "dataSourcingState": {
-            "$ref": "#/components/schemas/DataSourcingState"
+          "modificationDate": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           },
           "requestState": {
             "$ref": "#/components/schemas/RequestState"
           },
-          "modificationDate": {
-            "type": "integer",
-            "format": "int64"
+          "dataSourcingState": {
+            "$ref": "#/components/schemas/DataSourcingState"
           },
           "displayedState": {
             "$ref": "#/components/schemas/DisplayedState"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           }
         }
       },
