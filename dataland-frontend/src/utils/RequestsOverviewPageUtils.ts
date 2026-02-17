@@ -1,7 +1,7 @@
 import { RequestPriority } from '@clients/communitymanager';
 import {
   type FrameworkSelectableItem,
-  type MixedStateSelectableItem,
+  type DisplayedStateSelectableItem,
   type SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
@@ -49,7 +49,7 @@ const dataSourcingStateLabelMap: Record<DataSourcingState, string> = {
   [DataSourcingState.Done]: 'Done',
 };
 
-const displayedMixedStates: (DataSourcingState | RequestState)[] = [
+const displayedStates: (DataSourcingState | RequestState)[] = [
   RequestState.Open,
   DataSourcingState.Initialized,
   DataSourcingState.DocumentSourcing,
@@ -172,11 +172,11 @@ export function retrieveAvailableDataSourcingStates(): Array<SelectableItem> {
 }
 
 /**
- * Gets list with all available mixed states for the filter dropdown.
- * @returns array of MixedStateSelectableItem with user-facing labels and enum values
+ * Gets list with all available displayed states for the filter dropdown.
+ * @returns array of DisplayedStateSelectableItem with user-facing labels and enum values
  */
-export function retrieveAvailableMixedStates(): Array<MixedStateSelectableItem> {
-  return displayedMixedStates.map((state) => ({
+export function retrieveAvailableDisplayedStates(): Array<DisplayedStateSelectableItem> {
+  return displayedStates.map((state) => ({
     displayName: stateLabelMap[state] ?? state,
     stateValue: state,
     disabled: false,
@@ -184,11 +184,11 @@ export function retrieveAvailableMixedStates(): Array<MixedStateSelectableItem> 
 }
 
 /**
- * Converts selected mixed states to separate requestStates and dataSourcingStates arrays for API.
- * @param selectedItems - Array of MixedStateSelectableItem selected in the filter
+ * Converts selected displayed states to separate requestStates and dataSourcingStates arrays for API.
+ * @param selectedItems - Array of DisplayedStateSelectableItem selected in the filter
  * @returns Object with requestStates and dataSourcingStates arrays for API call
  */
-export function convertMixedStatesToApiFilters(selectedItems: MixedStateSelectableItem[]): {
+export function convertDisplayedStatesToApiFilters(selectedItems: DisplayedStateSelectableItem[]): {
   requestStates: RequestState[] | undefined;
   dataSourcingStates: DataSourcingState[] | undefined;
 } {
