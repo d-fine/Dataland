@@ -269,15 +269,15 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import type {
   FrameworkSelectableItem,
-  MixedStateSelectableItem,
+  DisplayedStateSelectableItem,
   SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
   retrieveAvailableReportingPeriods,
-  retrieveAvailableMixedStates,
-  convertMixedStatesToApiFilters,
+  retrieveAvailableDisplayedStates,
+  convertDisplayedStatesToApiFilters,
   getDisplayedState,
   getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
@@ -311,8 +311,8 @@ const searchBarInputCompanySearchString = ref('');
 
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-const availableMixedStates = ref<MixedStateSelectableItem[]>([]);
-const selectedMixedStates = ref<MixedStateSelectableItem[]>([]);
+const availableMixedStates = ref<DisplayedStateSelectableItem[]>([]);
+const selectedMixedStates = ref<DisplayedStateSelectableItem[]>([]);
 const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
@@ -391,7 +391,7 @@ function setChunkAndFirstRowIndexToZero(): void {
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableMixedStates.value = retrieveAvailableMixedStates();
+  availableMixedStates.value = retrieveAvailableDisplayedStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   void getAllRequestsForFilters();
@@ -408,7 +408,7 @@ async function getAllRequestsForFilters(): Promise<void> {
       : undefined
   );
 
-  const mixedStateFilters = computed(() => convertMixedStatesToApiFilters(selectedMixedStates.value));
+  const mixedStateFilters = computed(() => convertDisplayedStatesToApiFilters(selectedMixedStates.value));
 
   const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
     selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined

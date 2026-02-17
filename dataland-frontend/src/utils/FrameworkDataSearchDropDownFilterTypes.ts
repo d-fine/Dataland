@@ -19,6 +19,6 @@ export interface DocumentCategorySelectableItem extends SelectableItem {
   documentCategoryDataType: SearchForDocumentMetaInformationDocumentCategoriesEnum;
 }
 
-export interface MixedStateSelectableItem extends SelectableItem {
+export interface DisplayedStateSelectableItem extends SelectableItem {
   stateValue: DataSourcingState | RequestState;
 }
