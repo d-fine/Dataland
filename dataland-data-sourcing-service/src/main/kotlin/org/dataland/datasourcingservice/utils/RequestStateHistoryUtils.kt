@@ -11,12 +11,15 @@ import org.dataland.datasourcingservice.model.request.RequestHistoryEntry
 import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import kotlin.collections.last
 import kotlin.collections.lastOrNull
+import kotlin.math.abs
 import kotlin.math.sign
 
 /**
  * A utility class for processing request state history and data sourcing state history.
  */
 object RequestStateHistoryUtils {
+    private const val TIME_DIFFERENCE_THRESHOLD_MS = 1000
+
     /**
      * Deletes consecutive entries with the same displayedState, keeping the order stable.
      *
@@ -51,12 +54,18 @@ object RequestStateHistoryUtils {
      * representing the history of data sourcing state changes associated with the request.
      * @returns The time difference in milliseconds between the next request state change and the next data sourcing state change.
      */
-    private fun compareRequestAndDataSourcingTime(
+    private fun compareNextRequestAndDataSourcingTimes(
         requestHistorySorted: List<Pair<RequestEntity, Long>>,
         dataSourcingHistorySorted: List<DataSourcingWithoutReferences>,
     ): Int =
         if (requestHistorySorted.isNotEmpty() && dataSourcingHistorySorted.isNotEmpty()) {
-            (requestHistorySorted[0].first.lastModifiedDate - dataSourcingHistorySorted[0].lastModifiedDate).sign
+            val timeDifference = requestHistorySorted[0].first.lastModifiedDate - dataSourcingHistorySorted[0].lastModifiedDate
+
+            if (abs(timeDifference) < TIME_DIFFERENCE_THRESHOLD_MS) {
+                0
+            } else {
+                timeDifference.sign
+            }
         } else if (dataSourcingHistorySorted.isNotEmpty()) {
             1
         } else {
@@ -169,7 +178,7 @@ object RequestStateHistoryUtils {
             buildList<T> {
                 while (requestHistorySorted.isNotEmpty() || dataSourcingHistorySorted.isNotEmpty()) {
                     val timeDifferenceSign =
-                        compareRequestAndDataSourcingTime(requestHistorySorted, dataSourcingHistorySorted)
+                        compareNextRequestAndDataSourcingTimes(requestHistorySorted, dataSourcingHistorySorted)
                     when {
                         timeDifferenceSign < 0 -> {
                             add(

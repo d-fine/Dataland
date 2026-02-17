@@ -14,11 +14,11 @@ import {
   RequestState,
 } from '@clients/datasourcingservice';
 
-// @ts-ignore
 const stateLabelMap: Partial<Record<DataSourcingState | RequestState | DisplayedState, string>> = {
   [RequestState.Open || DisplayedState.Open]: 'Open',
   [RequestState.Withdrawn || DisplayedState.Withdrawn]: 'Withdrawn',
-  [DataSourcingState.Initialized || DisplayedState.Validated]: 'Validated',
+  [DisplayedState.Validated]: 'Validated',
+  [DataSourcingState.Initialized]: 'Initialized',
   [DataSourcingState.DocumentSourcing || DisplayedState.DocumentSourcing]: 'Document Sourcing',
   [DataSourcingState.DocumentSourcingDone || DisplayedState.DocumentVerification]: 'Document Verification',
   [DataSourcingState.DataExtraction || DisplayedState.DataExtraction]: 'Data Extraction',
