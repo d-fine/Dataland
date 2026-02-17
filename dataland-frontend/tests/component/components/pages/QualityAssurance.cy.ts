@@ -14,6 +14,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
+import router from '@/router';
 
 /**
  * Picks a reporting period to filter for in the date-picker.
@@ -32,6 +33,8 @@ function clickOnReportingPeriod(reportingPeriod: string): void {
  * @param companyId to include
  * @param framework to include
  * @param reportingPeriod to include
+ * @param datasetReviewId
+ * @param reviewerUserName
  * @param timestamp to include
  * @returns the element
  */
@@ -41,6 +44,8 @@ function buildReviewQueueElement(
   companyId: string,
   framework: string,
   reportingPeriod: string,
+  datasetReviewId: string | undefined = undefined,
+  reviewerUserName: string | undefined = undefined,
   timestamp: number = Date.now()
 ): QaReviewResponse {
   return {
@@ -51,6 +56,8 @@ function buildReviewQueueElement(
     framework: framework,
     reportingPeriod: reportingPeriod,
     qaStatus: QaStatus.Pending,
+    datasetReviewId: datasetReviewId,
+    reviewerUserName: reviewerUserName,
     numberQaReports: 0,
   };
 }
@@ -105,12 +112,16 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdBeta = crypto.randomUUID();
   const companyNameBeta = 'Beta Corporate Ltd.';
   const companyIdBeta = crypto.randomUUID();
+  const datasetReviewId = crypto.randomUUID();
+  const reviewerUserName = 'Reviewer user name';
   const reviewQueueElementBeta = buildReviewQueueElement(
     dataIdBeta,
     companyNameBeta,
     companyIdBeta,
     DataTypeEnum.Sfdr,
-    '2023'
+    '2023',
+    datasetReviewId,
+    reviewerUserName
   );
 
   /**
@@ -374,5 +385,19 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
     cy.get('.p-dialog-close-button').click();
+  });
+
+  it('Check routing of review button.', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountQaAssurancePageWithMocks();
+    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+      request.reply(201, {});
+    }).as('createDatasetReview');
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.wait('@createDatasetReview');
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
+    cy.get('button[data-test="goToReviewButton"]').filter(`:contains(${reviewerUserName})`).click();
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
+    cy.get('@createDatasetReview.all').should('have.length', 1);
   });
 });

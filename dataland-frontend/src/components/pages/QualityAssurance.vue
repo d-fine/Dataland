@@ -110,7 +110,8 @@
               <template #body="slotProps">
                 <PrimeButton
                   @click="createAndViewDatasetReview(slotProps.data)"
-                  :label="slotProps.data.reviewerUserName ?? 'Start'"
+                  data-test="goToReviewButton"
+                  :label="slotProps.data.reviewerUserName ?? 'Start Review'"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
