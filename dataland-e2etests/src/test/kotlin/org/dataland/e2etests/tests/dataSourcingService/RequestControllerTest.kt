@@ -4,7 +4,7 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentS
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
 import org.dataland.dataSourcingService.openApiClient.model.DisplayedState
-import org.dataland.dataSourcingService.openApiClient.model.RequestHistoryEntry
+import org.dataland.dataSourcingService.openApiClient.model.RequestHistoryEntryData
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
@@ -149,7 +149,7 @@ class RequestControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
 
-        lateinit var requestHistory: List<RequestHistoryEntry>
+        lateinit var requestHistory: List<RequestHistoryEntryData>
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
