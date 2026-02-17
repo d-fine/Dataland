@@ -1,0 +1,23 @@
+[
+  {
+    "framework": {
+      "id": "lksg",
+      "ref": "/specifications/frameworks/lksg"
+    },
+    "name": "LkSG"
+  },
+  {
+    "framework": {
+      "id": "sfdr",
+      "ref": "/specifications/frameworks/sfdr"
+    },
+    "name": "SFDR"
+  },
+  {
+    "framework": {
+      "id": "eutaxonomy-non-financials",
+      "ref": "/specifications/frameworks/eutaxonomy-non-financials"
+    },
+    "name": "EU Taxonomy for non-financial companies"
+  }
+]
