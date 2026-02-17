@@ -7590,7 +7590,9 @@
             "example": "John Doe"
           },
           "datasetReviewId": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique identifier of the data review.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "numberQaReports": {
             "type": "integer",

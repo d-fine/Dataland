@@ -12,6 +12,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -47,6 +48,7 @@ class QaReviewManagerTest {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
+    private val mockDatasetReviewService: DatasetReviewService = mock<DatasetReviewService>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -88,6 +90,7 @@ class QaReviewManagerTest {
                 objectMapper,
                 mockExceptionForwarder,
                 mockDataPointQaReportManager,
+                mockDatasetReviewService,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
