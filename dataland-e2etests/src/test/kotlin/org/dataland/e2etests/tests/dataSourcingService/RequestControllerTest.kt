@@ -3,10 +3,11 @@ package org.dataland.e2etests.tests.dataSourcingService
 import org.dataland.communitymanager.openApiClient.model.CompanyRightAssignmentString
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
+import org.dataland.dataSourcingService.openApiClient.model.DisplayedState
+import org.dataland.dataSourcingService.openApiClient.model.RequestHistoryEntry
 import org.dataland.dataSourcingService.openApiClient.model.RequestPriority
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
-import org.dataland.dataSourcingService.openApiClient.model.StoredRequest
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -148,7 +149,7 @@ class RequestControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
 
-        lateinit var requestHistory: List<StoredRequest>
+        lateinit var requestHistory: List<RequestHistoryEntry>
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
@@ -156,7 +157,7 @@ class RequestControllerTest {
         }
 
         assertEquals(2, requestHistory.size)
-        assertEquals(RequestState.Open, requestHistory[0].state)
-        assertEquals(RequestState.Processing, requestHistory[1].state)
+        assertEquals(DisplayedState.Open, requestHistory[0].displayedState)
+        assertEquals(DisplayedState.Validated, requestHistory[1].displayedState)
     }
 }
