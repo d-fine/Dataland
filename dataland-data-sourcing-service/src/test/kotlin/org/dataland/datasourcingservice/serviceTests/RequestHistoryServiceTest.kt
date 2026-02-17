@@ -79,13 +79,13 @@ class RequestHistoryServiceTest
                         dataType = "dummyDataType",
                         userId = dummyUserId,
                         adminComment = processingComment,
-                        creationTimestamp = lastModifiedDateFirstRequest + 500L,
+                        creationTimestamp = lastModifiedDateFirstRequest + 600000L,
                         memberComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest + 500L,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 600000L,
                         requestPriority = RequestPriority.Low,
                         state = RequestState.Processing,
                     ),
-                    lastModifiedDateFirstRequest + 500L,
+                    lastModifiedDateFirstRequest + 600000L,
                 ),
                 Pair(
                     RequestEntity(
@@ -94,13 +94,13 @@ class RequestHistoryServiceTest
                         reportingPeriod = "2025",
                         dataType = "dummyDataType",
                         userId = dummyUserId,
-                        creationTimestamp = lastModifiedDateFirstRequest + 1000L,
+                        creationTimestamp = lastModifiedDateFirstRequest + 2 * 600000L,
                         memberComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest + 1000L,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 2 * 600000L,
                         requestPriority = RequestPriority.Low,
                         state = RequestState.Withdrawn,
                     ),
-                    lastModifiedDateFirstRequest + 1000L,
+                    lastModifiedDateFirstRequest + 2 * 600000L,
                 ),
             )
 
@@ -116,7 +116,7 @@ class RequestHistoryServiceTest
                     documentCollector = null,
                     dataExtractor = null,
                     adminComment = null,
-                    lastModifiedDate = lastModifiedDateFirstRequest + 500L,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 600000L + 50L,
                 ),
                 DataSourcingWithoutReferences(
                     dataSourcingId = dataSourcingID.toString(),
@@ -128,7 +128,7 @@ class RequestHistoryServiceTest
                     documentCollector = null,
                     dataExtractor = null,
                     adminComment = null,
-                    lastModifiedDate = lastModifiedDateFirstRequest + 800L,
+                    lastModifiedDate = lastModifiedDateFirstRequest + (1.5 * 600000).toLong(),
                 ),
                 DataSourcingWithoutReferences(
                     dataSourcingId = dataSourcingID.toString(),
@@ -140,7 +140,7 @@ class RequestHistoryServiceTest
                     documentCollector = null,
                     dataExtractor = null,
                     adminComment = null,
-                    lastModifiedDate = lastModifiedDateFirstRequest + 1500L,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 3 * 600000,
                 ),
             )
 
@@ -219,7 +219,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `single history entry if state changes in request and data-sourcing for same timestamp`() {
+        fun `single history entry if state changes in request and data-sourcing are within 1000 ms`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory.subList(0, 1))
