@@ -50,12 +50,12 @@
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import { type RequestHistoryEntry } from '@clients/datasourcingservice';
+import { type RequestHistoryEntryData } from '@clients/datasourcingservice';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import { getDataSourcingStateWithSpaces, getDisplayedStateWithSpaces } from '@/utils/RequestsOverviewPageUtils.ts';
 
 defineProps<{
-  stateHistory: RequestHistoryEntry[];
+  stateHistory: RequestHistoryEntryData[];
   isAdmin?: boolean;
 }>();
 </script>
