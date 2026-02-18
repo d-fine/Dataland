@@ -95,6 +95,7 @@ describeIf(
       cy.get('[data-test="withdraw-request-button"]').click();
       cy.wait('@withdraw');
       cy.get('[data-test="success-modal"]').should('contain.text', 'successfully withdrawn');
+      cy.contains('button', 'OK').click();
       cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Withdrawn');
     });
   }
