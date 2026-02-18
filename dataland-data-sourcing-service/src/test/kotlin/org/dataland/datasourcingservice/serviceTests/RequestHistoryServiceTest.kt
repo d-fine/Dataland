@@ -219,7 +219,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `single history entry if state changes in request and data-sourcing are within 1000 ms`() {
+        fun `single history entry if state changes in request and data sourcing are within 1000 ms`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory.subList(0, 1))
@@ -260,7 +260,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `check that consecutive rows with same displayed status are only shown once in not-extended request history`() {
+        fun `check that consecutive rows with same displayed status are only shown once in not extended request history`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStatHistory)
