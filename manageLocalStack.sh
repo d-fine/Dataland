@@ -136,7 +136,6 @@ parse_arguments() {
       --local-frontend)
         echo "Launching in local frontend mode."
         local_frontend=true
-        export FRONTEND_LOCATION_CONFIG="Localhost"
         shift
         ;;
       --dev-env)
@@ -167,6 +166,10 @@ parse_arguments() {
 
   if [[ "$dev_env" = true ]]; then
     load_dev_environment
+  fi
+
+  if [[ "$local_frontend" = true ]]; then
+    export FRONTEND_LOCATION_CONFIG="Localhost"
   fi
 
   if [[ "$do_stop" = true ]]; then
