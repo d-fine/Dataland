@@ -2,14 +2,14 @@ import RequestStateHistory from '@/components/resources/dataRequest/RequestState
 import {
   DataSourcingState,
   DisplayedState,
-  type ExtendedRequestHistoryEntry,
-  type RequestHistoryEntry,
+  type ExtendedRequestHistoryEntryData,
+  type RequestHistoryEntryData,
   RequestState,
 } from '@clients/datasourcingservice';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Request State History', function (): void {
-  const dummyRequestHistoryEntry: RequestHistoryEntry[] = [
+  const dummyRequestHistoryEntry: RequestHistoryEntryData[] = [
     {
       modificationDate: 1697049600000,
       displayedState: DisplayedState.Open,
@@ -25,7 +25,7 @@ describe('Component tests for the Request State History', function (): void {
     },
   ];
 
-  const dummyExtendedRequestHistoryEntry: ExtendedRequestHistoryEntry[] = [
+  const dummyExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
     {
       modificationDate: 1697049600000,
       displayedState: DisplayedState.Open,
@@ -63,7 +63,7 @@ describe('Component tests for the Request State History', function (): void {
    * @param isAdminUser - boolean indicating whether the user is an admin or not
    * @param requestHistory - array of request history entries to be passed as props to the component
    */
-  function checkColumnExistence(isAdminUser: boolean, requestHistory: RequestHistoryEntry[]): void {
+  function checkColumnExistence(isAdminUser: boolean, requestHistory: RequestHistoryEntryData[]): void {
     getMountingFunction()(RequestStateHistory, {
       props: {
         stateHistory: requestHistory,
