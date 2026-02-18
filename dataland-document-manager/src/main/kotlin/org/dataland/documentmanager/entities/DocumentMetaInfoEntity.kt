@@ -18,6 +18,7 @@ import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DocumentManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -84,7 +85,7 @@ data class DocumentMetaInfoEntity(
     var reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     var qaStatus: QaStatus,
 ) {

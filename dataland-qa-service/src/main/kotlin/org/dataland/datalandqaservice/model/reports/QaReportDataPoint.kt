@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.model.reports
 
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * A data point in a QA report.
@@ -12,17 +12,17 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
  */
 class QaReportDataPoint<T>(
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
     )
     val comment: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
     )
     val verdict: QaReportDataPointVerdict,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
     val correctedData: T?,
 )

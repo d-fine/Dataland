@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -28,25 +29,25 @@ data class QaReportMetaInformation(
     val dataType: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
     )
     val qaReportId: String,
     @field:JsonProperty()
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
     )
     val reporterUserId: String?,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_EXAMPLE,
     )
     val uploadTime: Long,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
     )
     val active: Boolean,
 )
