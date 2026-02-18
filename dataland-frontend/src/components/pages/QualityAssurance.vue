@@ -200,14 +200,18 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
+        this.getQaDataForCurrentPage().catch(err => {
+          console.error("Failed to fetch Qa Data: ", err)
+        });
       }
     },
     availableReportingPeriods() {
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
+        this.getQaDataForCurrentPage().catch(err => {
+          console.error("Failed to fetch Qa Data: ", err);
+        });
       }
     },
     searchBarInput() {
@@ -279,7 +283,8 @@ export default defineComponent({
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as QaReviewResponse;
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+      //const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+      const qaUri = `/qa/review/${qaDataObject.dataId}`;
       return router.push(qaUri);
     },
 
@@ -287,9 +292,9 @@ export default defineComponent({
      * Navigates to the view framework data page on a click on the row of the company
      * @param qaDataObject stored information about the row
      */
-    goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      void router.push(qaUri);
+    goToQaViewPageByButton(qaDataObject: QaReviewResponse) {
+      const qaUri = `/qa/review/${qaDataObject.dataId}`;
+      router.push(qaUri);
     },
 
     /**
@@ -310,7 +315,9 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        void this.getQaDataForCurrentPage();
+        this.getQaDataForCurrentPage().catch(err => {
+          console.log("Pagination Error: ", err)
+        });
       }
     },
     /**
