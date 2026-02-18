@@ -2,15 +2,27 @@
   <TheContent>
     <div class="card p-4 mb-4 border-round-xl surface-border border-1 surface-card">
       <div class="flex justify-content-between align-items-start">
-
         <div>
-          <h1 class="text-3xl font-bold m-0 mb-2">{{ companyName }}</h1>
+          <h1 class="text-3xl font-bold m-0 mb-2">
+            <Skeleton v-if="isLoadingHeader" width="12rem" height="2rem" />
+            <span v-else>{{ companyName }}</span>
+          </h1>
+
           <div class="flex gap-3 text-color-secondary">
-            <span>Sector: {{ sector }}</span>
-            <span>|</span>
-            <span>Headquarter: {{ headquarter }}</span>
-            <span>|</span>
-            <span>LEI: {{ lei }}</span>
+            <template v-if="isLoadingHeader">
+              <Skeleton width="8rem" height="1rem" />
+              <span>|</span>
+              <Skeleton width="8rem" height="1rem" />
+              <span>|</span>
+              <Skeleton width="10rem" height="1rem" />
+            </template>
+            <template v-else>
+              <span>Sector: {{ sector }}</span>
+              <span>|</span>
+              <span>Headquarter: {{ headquarter }}</span>
+              <span>|</span>
+              <span>LEI: {{ lei }}</span>
+            </template>
           </div>
         </div>
 
@@ -32,9 +44,7 @@
           <span class="text-primary font-medium cursor-pointer">Annual_Report_2024</span>
           <span class="text-primary font-medium cursor-pointer underline">All documents</span>
         </div>
-        <div class="font-italic">
-          98 / 107 datapoints to review
-        </div>
+        <div class="font-italic">98 / 107 datapoints to review</div>
       </div>
     </div>
 
@@ -45,47 +55,88 @@
       </IconField>
     </div>
 
-    <div class="card border-1 surface-border border-round-xl surface-card p-0 overflow-hidden">
-      <div class="p-5 text-center surface-50">
-        <i class="pi pi-table text-5xl text-400 mb-3"></i>
-        <h3>Comparison Table Area</h3>
-        <p>This is where the Original vs Corrected vs Custom columns will go.</p>
-        <p class="text-sm text-color-secondary">Data ID: {{ dataId }}</p>
-      </div>
+    <div v-if="isDatasetReviewPending || isCompanyDataPending" class="flex justify-content-center p-5">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
     </div>
-
+    <div v-else-if="isDatasetReviewError || isCompanyDataError">
+      <p class="text-red-500">Failed to load dataset review or company information</p>
+    </div>
+    <div v-else>
+      <DatasetReviewComparisonTable />
+    </div>
   </TheContent>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import { ref, onMounted, computed } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import Skeleton from 'primevue/skeleton';
+import { useQuery } from '@tanstack/vue-query';
+import { useApiClient } from '@/utils/useApiClient.ts';
 
 // Props passed from the router
 const props = defineProps<{
   dataId: string;
 }>();
 
-// Mock Data (Replace with API calls later)
-const companyName = ref('adidas AG');
-const sector = ref('Consumer Discretionary');
-const headquarter = ref('Herzogenaurach');
-const lei = ref('549300D3D0VPX4OKQE33');
+// Api Client
+const apiClientProvider = useApiClient();
+
+const {
+  data: datasetReview,
+  isPending: isDatasetReviewPending,
+  isError: isDatasetReviewError,
+} = useQuery({
+  queryKey: ['qaReviewResponse', props.dataId],
+  queryFn: async () => {
+    const response = await apiClientProvider.apiClients.qaController.getQaReviewResponseByDataId(props.dataId);
+    return response.data;
+  },
+  enabled: !!props.dataId,
+});
+
+const companyId = computed(() => datasetReview.value?.companyId);
+const companyName = computed(() => datasetReview.value?.companyName ?? '—');
+
+const { data: companyData, isPending: isCompanyDataPending } = useQuery({
+  queryKey: ['metaDataForDataId', props.dataId],
+  queryFn: async () => {
+    const response = await apiClientProvider.backendClients.companyDataController.getCompanyById(companyId.value!);
+    return response.data;
+  },
+  enabled: computed(() => !!companyId.value),
+});
+
+const isLoadingHeader = computed(() => isDatasetReviewPending.value || isCompanyDataPending.value);
+const sector = computed(() => companyData.value?.companyInformation?.sector ?? '—');
+const headquarter = computed(() => companyData.value?.companyInformation?.headquarters ?? '—');
+const lei = computed(() => {
+  const leiArray = companyData.value?.companyInformation?.identifiers?.Lei;
+  return leiArray && leiArray.length > 0 ? leiArray[0] : '—';
+});
+
 const currentUserName = ref('Max Mustermann');
 const assignedToMe = ref(false);
 const searchQuery = ref('');
 
 // Actions
-const assignToMe = () => { assignedToMe.value = true; };
-const rejectDataset = () => { alert('Reject logic here'); };
-const finishReview = () => { alert('Finish review logic here'); };
+const assignToMe = () => {
+  assignedToMe.value = true;
+};
+const rejectDataset = () => {
+  alert('Reject logic here');
+};
+const finishReview = () => {
+  alert('Finish review logic here');
+};
 
 onMounted(() => {
-  console.log("Loaded Review Page for Data ID:", props.dataId);
+  console.log('Loaded Review Page for Data ID:', props.dataId);
 });
 </script>
 

@@ -200,8 +200,8 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage().catch(err => {
-          console.error("Failed to fetch Qa Data: ", err)
+        this.getQaDataForCurrentPage().catch((err) => {
+          console.error('Failed to fetch Qa Data: ', err);
         });
       }
     },
@@ -209,8 +209,8 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage().catch(err => {
-          console.error("Failed to fetch Qa Data: ", err);
+        this.getQaDataForCurrentPage().catch((err) => {
+          console.error('Failed to fetch Qa Data: ', err);
         });
       }
     },
@@ -283,7 +283,6 @@ export default defineComponent({
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as QaReviewResponse;
-      //const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
       const qaUri = `/qa/review/${qaDataObject.dataId}`;
       return router.push(qaUri);
     },
@@ -315,8 +314,8 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        this.getQaDataForCurrentPage().catch(err => {
-          console.log("Pagination Error: ", err)
+        this.getQaDataForCurrentPage().catch((err) => {
+          console.log('Pagination Error: ', err);
         });
       }
     },
