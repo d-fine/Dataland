@@ -53,7 +53,7 @@ class QaReviewManager
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * Add a new qa review entry corresponding to a data set event (upload, qa status change, etc.) to the qa review
+         * Add a new qa review entry corresponding to a dataset event (upload, qa status change, etc.) to the qa review
          * history
          * @param dataId identifier of the dataset
          * @param bypassQa whether to bypass the qa process or not; if true, qa status of dataset is automatically set to
@@ -354,6 +354,7 @@ class QaReviewManager
                 dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds)
             } catch (clientException: ClientException) {
                 if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
                     0L
                 } else {
                     throw clientException
@@ -361,7 +362,7 @@ class QaReviewManager
             }
 
         /**
-         * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET Request.
+         * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET request.
          * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {

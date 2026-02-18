@@ -46,7 +46,7 @@ class DatasetReviewService
                     "Dataset with the id: $datasetId could not be found.",
                 )
             }
-            if (!datasetReviewRepository.findAllByDatasetIdAndReviewState(datasetId, DatasetReviewState.Pending).isEmpty()) {
+            if (datasetReviewRepository.findAllByDatasetIdAndReviewState(datasetId, DatasetReviewState.Pending).isNotEmpty()) {
                 throw ConflictApiException(
                     summary = "Pending dataset review entity already exists.",
                     message = "There is already a dataset review entity for this dataset which is pending.",

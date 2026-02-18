@@ -215,7 +215,7 @@
             }
           },
           "409": {
-            "description": "Only one pending dataset review object should be available at the same time.",
+            "description": "A pending review already exists for this dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7586,8 +7586,8 @@
           },
           "reviewerUserName": {
             "type": "string",
-            "description": "The name of the user who is reviewing the dataset.",
-            "example": "John Doe"
+            "description": "The name or email of the user reviewing the dataset.",
+            "example": "Jane Doe"
           },
           "datasetReviewId": {
             "type": "string",

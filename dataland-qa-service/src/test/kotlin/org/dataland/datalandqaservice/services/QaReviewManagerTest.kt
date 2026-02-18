@@ -11,6 +11,8 @@ import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -56,6 +58,7 @@ class QaReviewManagerTest {
     private val dataId: String = UUID.randomUUID().toString()
     private val reportingPeriod: String = "dummyReportingPeriod"
     private val uploaderId = "dummyUploaderId"
+    private val dummyUserName = "dummyUserName"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
     private val mockCompanyInformation = mock<CompanyInformation> { on { companyName } doReturn "dummyCompanyName" }
@@ -67,6 +70,36 @@ class QaReviewManagerTest {
             on { dataType } doReturn DataTypeEnum.sfdr
             on { reportingPeriod } doReturn reportingPeriod
         }
+
+    private val qaReviewEntity =
+        QaReviewEntity(
+            dataId = dataId,
+            companyId = companyId,
+            companyName = "dummyCompanyName",
+            framework = "dummyFramework",
+            reportingPeriod = reportingPeriod,
+            timestamp = 0L,
+            qaStatus = QaStatus.Pending,
+            triggeringUserId = uploaderId,
+            comment = null,
+        )
+
+    private val datasetReviewResponse =
+        DatasetReviewResponse(
+            dataSetReviewId = UUID.randomUUID().toString(),
+            datasetId = dataId,
+            companyId = companyId,
+            dataType = "dummyFramework",
+            reportingPeriod = reportingPeriod,
+            reviewState = DatasetReviewState.Pending,
+            reviewerUserId = UUID.randomUUID().toString(),
+            reviewerUserName = dummyUserName,
+            preapprovedDataPointIds = emptySet(),
+            qaReports = emptySet(),
+            approvedDataPointIds = emptyMap(),
+            approvedQaReportIds = emptyMap(),
+            approvedCustomDataPointIds = emptyMap(),
+        )
 
     private lateinit var qaReviewManager: QaReviewManager
     private lateinit var spyQaReviewManager: QaReviewManager
@@ -80,6 +113,7 @@ class QaReviewManagerTest {
             mockCloudEventMessageHandler,
             mockExceptionForwarder,
             mockDataPointQaReportManager,
+            mockDatasetReviewService,
         )
         qaReviewManager =
             QaReviewManager(
@@ -194,19 +228,6 @@ class QaReviewManagerTest {
 
     @Test
     fun `check that QaReviewResponse includes qa report count and reviewer user name`() {
-        val qaReviewEntity =
-            QaReviewEntity(
-                dataId = dataId,
-                companyId = companyId,
-                companyName = "dummyCompanyName",
-                framework = "dummyFramework",
-                reportingPeriod = reportingPeriod,
-                timestamp = 0L,
-                qaStatus = QaStatus.Pending,
-                triggeringUserId = uploaderId,
-                comment = null,
-            )
-
         doReturn(listOf(qaReviewEntity))
             .whenever(mockQaReviewRepository)
             .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
@@ -216,6 +237,9 @@ class QaReviewManagerTest {
         doReturn(2L)
             .whenever(mockDataPointQaReportManager)
             .countQaReportsForDataPointIds(any())
+        doReturn(listOf(datasetReviewResponse))
+            .whenever(mockDatasetReviewService)
+            .getDatasetReviewsByDatasetId(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(
@@ -235,6 +259,6 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertNull(responses.first().reviewerUserName) // for now, change later
+        Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
     }
 }

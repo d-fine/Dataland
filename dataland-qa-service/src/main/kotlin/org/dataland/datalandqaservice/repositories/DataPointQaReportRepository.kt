@@ -54,7 +54,8 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
      */
     @Query(
         "SELECT COUNT(qaReport) FROM DataPointQaReportEntity qaReport " +
-            "WHERE qaReport.dataPointId IN :dataPointIds",
+            "WHERE qaReport.dataPointId IN :dataPointIds " +
+            "AND qaReport.active = TRUE",
     )
     fun countByDataPointIdIn(
         @Param("dataPointIds") dataPointIds: Set<String>,

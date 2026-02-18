@@ -46,8 +46,8 @@ data class QaReviewResponse(
     )
     val qaStatus: QaStatus,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REVIEWER_USER_NAME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REVIEWER_USER_NAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
     val reviewerUserName: String?,
     @field:Schema(
@@ -56,8 +56,8 @@ data class QaReviewResponse(
     )
     val datasetReviewId: String?,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.NUMBER_QA_REPORTS_EXAMPLE,
     )
     val numberQaReports: Long,
     @field:Schema(
