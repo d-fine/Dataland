@@ -168,7 +168,7 @@ class ExistingRequestsManagerTest {
         whenever(mockDataSourcingRepository.findByIdAndFetchAllStoredFields(any())).thenReturn(
             newDataSourcingEntity,
         )
-        whenever(mockDataSourcingRepository.save(any())).thenAnswer {
+        whenever(mockDataSourcingRepository.save(any<DataSourcingEntity>())).thenAnswer {
             it.arguments[0] as DataSourcingEntity
         }
 
@@ -219,7 +219,7 @@ class ExistingRequestsManagerTest {
 
         whenever(mockRequestRepository.findByIdAndFetchDataSourcingEntity(requestId))
             .thenReturn(requestEntity)
-        whenever(mockRequestRepository.save(any())).thenAnswer { it.arguments[0] }
+        whenever(mockRequestRepository.save(any<RequestEntity>())).thenAnswer { it.arguments[0] as RequestEntity }
 
         existingRequestsManager.patchRequestState(requestId, RequestState.Withdrawn, null)
 

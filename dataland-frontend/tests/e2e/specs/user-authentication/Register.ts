@@ -1,7 +1,7 @@
 import { login, logout } from '@e2e/utils/Auth';
-import { authenticator } from 'otplib';
 import { getStringCypressEnv } from '@e2e/utils/Cypress';
 import { isString } from '@/utils/TypeScriptUtils';
+import { generate } from 'otplib';
 
 describe('As a user I want to be able to register for an account and be able to log in and out of that account', () => {
   const email = `test_user${Date.now()}@example.com`;
@@ -117,13 +117,15 @@ describe('As a user I want to be able to register for an account and be able to 
             .invoke('text')
             .then((text) => {
               const totpKey = text.replaceAll(/\s/g, '');
-              cy.get("input[id='totp']").type(authenticator.generate(totpKey));
-              cy.get("input[id='saveTOTPBtn']").click();
-              cy.get(`button:contains('${firstName} ${lastName}')`).click();
-              cy.get("span:contains('Sign out')").should('exist', {
-                timeout: Cypress.env('medium_timeout_in_ms') as number,
+              return cy.wrap(generate({ secret: totpKey })).then((token) => {
+                cy.get("input[id='totp']").type(token as string);
+                cy.get("input[id='saveTOTPBtn']").click();
+                cy.get(`button:contains('${firstName} ${lastName}')`).click();
+                cy.get("span:contains('Sign out')").should('exist', {
+                  timeout: Cypress.env('medium_timeout_in_ms') as number,
+                });
+                cy.task('setTotpKey', totpKey);
               });
-              cy.task('setTotpKey', totpKey);
             });
         });
       });
@@ -140,7 +142,7 @@ describe('As a user I want to be able to register for an account and be able to 
             cy.wait(Cypress.env('medium_timeout_in_ms') as number);
 
             login(returnEmail, returnPassword, () => {
-              return authenticator.generate(key);
+              return generate({ secret: key });
             });
           });
         });

@@ -7,7 +7,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaLogMessageBuilder
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,9 +30,8 @@ class DataPointQaReportController(
         dataPointId: String,
         qaReport: QaReportDataPoint<String?>,
     ): ResponseEntity<DataPointQaReport> {
-        val correlationId = IdUtils.generateUUID()
         val reportingUser = DatalandAuthentication.fromContext()
-        logger.info(qaLogMessageBuilder.postQaReportMessage(dataPointId, reportingUser.userId, correlationId))
+        logger.info(qaLogMessageBuilder.postQaReportMessage(dataPointId, reportingUser.userId))
         qaReportSecurityPolicy.ensureUserCanViewDataPoint(dataPointId, reportingUser)
         val uploadTime = Instant.now().toEpochMilli()
         val report =
@@ -42,7 +40,6 @@ class DataPointQaReportController(
                 dataPointId = dataPointId,
                 reporterUserId = reportingUser.userId,
                 uploadTime = uploadTime,
-                correlationId = correlationId,
             )
         return ResponseEntity(
             report,

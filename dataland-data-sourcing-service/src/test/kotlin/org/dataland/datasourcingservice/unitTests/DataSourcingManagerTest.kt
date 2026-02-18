@@ -27,7 +27,9 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
@@ -237,6 +239,128 @@ class DataSourcingManagerTest {
 
         assertEquals(1, result.size)
         assertEquals(DataSourcingState.Initialized, result[0].state)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = DataSourcingState::class,
+        names = ["Done", "NonSourceable"],
+        mode = EnumSource.Mode.INCLUDE,
+    )
+    fun `verify that withdrawn requests are not patched when data sourcing enters a final state`(finalState: DataSourcingState) {
+        val withdrawnRequest =
+            RequestEntity(
+                userId = UUID.randomUUID(),
+                companyId = companyId,
+                dataType = "sfdr",
+                reportingPeriod = "2025",
+                memberComment = null,
+                creationTimestamp = 1000000000,
+                requestPriority = RequestPriority.High,
+            ).apply {
+                state = RequestState.Withdrawn
+            }
+
+        val activeRequest =
+            RequestEntity(
+                userId = UUID.randomUUID(),
+                companyId = companyId,
+                dataType = "sfdr",
+                reportingPeriod = "2025",
+                memberComment = null,
+                creationTimestamp = 1000000000,
+                requestPriority = RequestPriority.High,
+            )
+
+        val dataSourcingEntityWithMixedRequests =
+            DataSourcingEntity(
+                dataSourcingId = UUID.randomUUID(),
+                companyId = companyId,
+                reportingPeriod = "2025",
+                dataType = "sfdr",
+                state = DataSourcingState.Initialized,
+                associatedRequests = mutableSetOf(withdrawnRequest, activeRequest),
+            )
+
+        doReturn(dataSourcingEntityWithMixedRequests)
+            .whenever(mockDataSourcingRepository)
+            .findByIdAndFetchAllStoredFields(dataSourcingEntityWithMixedRequests.dataSourcingId)
+
+        dataSourcingManager.patchDataSourcingState(
+            dataSourcingEntityWithMixedRequests.dataSourcingId,
+            finalState,
+        )
+
+        verify(mockExistingRequestsManager).patchRequestState(
+            eq(activeRequest.id),
+            eq(RequestState.Processed),
+            anyOrNull(),
+        )
+
+        verify(mockExistingRequestsManager, never()).patchRequestState(
+            eq(withdrawnRequest.id),
+            any(),
+            anyOrNull(),
+        )
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = DataSourcingState::class,
+        names = ["Done", "NonSourceable"],
+        mode = EnumSource.Mode.INCLUDE,
+    )
+    fun `verify that no requests are patched when all associated requests are withdrawn`(finalState: DataSourcingState) {
+        val withdrawnRequest1 =
+            RequestEntity(
+                userId = UUID.randomUUID(),
+                companyId = companyId,
+                dataType = "sfdr",
+                reportingPeriod = "2025",
+                memberComment = null,
+                creationTimestamp = 1000000000,
+                requestPriority = RequestPriority.High,
+            ).apply {
+                state = RequestState.Withdrawn
+            }
+
+        val withdrawnRequest2 =
+            RequestEntity(
+                userId = UUID.randomUUID(),
+                companyId = companyId,
+                dataType = "sfdr",
+                reportingPeriod = "2025",
+                memberComment = null,
+                creationTimestamp = 1000000000,
+                requestPriority = RequestPriority.High,
+            ).apply {
+                state = RequestState.Withdrawn
+            }
+
+        val dataSourcingEntityWithOnlyWithdrawn =
+            DataSourcingEntity(
+                dataSourcingId = UUID.randomUUID(),
+                companyId = companyId,
+                reportingPeriod = "2025",
+                dataType = "sfdr",
+                state = DataSourcingState.Initialized,
+                associatedRequests = mutableSetOf(withdrawnRequest1, withdrawnRequest2),
+            )
+
+        doReturn(dataSourcingEntityWithOnlyWithdrawn)
+            .whenever(mockDataSourcingRepository)
+            .findByIdAndFetchAllStoredFields(dataSourcingEntityWithOnlyWithdrawn.dataSourcingId)
+
+        dataSourcingManager.patchDataSourcingState(
+            dataSourcingEntityWithOnlyWithdrawn.dataSourcingId,
+            finalState,
+        )
+
+        verify(mockExistingRequestsManager, never()).patchRequestState(
+            any(),
+            any(),
+            anyOrNull(),
+        )
     }
 
     private fun createDataSourcingEntity(

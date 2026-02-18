@@ -8,8 +8,8 @@ import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -52,7 +52,7 @@ class RequestControllerTest {
         val impersonatedUserId = UUID.randomUUID().toString()
         val nonAdminUserRoles = DatalandRealmRole.entries.toMutableSet()
         nonAdminUserRoles.remove(DatalandRealmRole.ROLE_ADMIN)
-        TestUtils.mockSecurityContext("username", "userId", nonAdminUserRoles)
+        AuthenticationMock.mockSecurityContext("username", "userId", nonAdminUserRoles)
         val mockSingleDataRequest = mock<SingleDataRequest>()
         assertThrows<InsufficientRightsApiException> {
             requestController.postSingleDataRequest(
@@ -65,7 +65,7 @@ class RequestControllerTest {
     @Test
     fun `check that an admin user can impersonate another user when posting a single data request`() {
         val impersonatedUserId = UUID.randomUUID().toString()
-        TestUtils.mockSecurityContext("username", "userId", DatalandRealmRole.ROLE_ADMIN)
+        AuthenticationMock.mockSecurityContext("username", "userId", DatalandRealmRole.ROLE_ADMIN)
         val mockSingleDataRequestResponse = mock<SingleDataRequestResponse>()
         doReturn(mockSingleDataRequestResponse).whenever(mockSingleDataRequestManager).processSingleDataRequest(
             any(),

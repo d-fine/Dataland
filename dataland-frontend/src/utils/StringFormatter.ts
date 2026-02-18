@@ -201,3 +201,15 @@ export function documentPublicationDateOrEmpty(document: DocumentMetaInfoRespons
     return '(' + document.publicationDate + ')';
   }
 }
+
+/**
+ * Generates initials from a name string.
+ * @param name - The name to generate initials from
+ * @returns The initials derived from the name
+ */
+export function generateInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('');
+}
