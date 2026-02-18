@@ -23,7 +23,11 @@ let globalJwt = '';
  * @param password the password to use (defaults to the password of data_reader)
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
+export function login(
+  username = reader_name,
+  password = reader_pw,
+  otpGenerator?: () => string | Promise<string>
+): void {
   cy.intercept({ url: 'https://www.youtube.com/**' }, { forceNetworkError: false }).as('youtube');
   cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
@@ -37,7 +41,9 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
       .should('exist')
       .then((it) => {
         // cy.then used to ensure that the OTP is only generated right before it is entered
-        return cy.wrap(it).type(otpGenerator());
+        return cy.wrap(otpGenerator()).then((otp) => {
+          return cy.wrap(it).type(otp as string);
+        });
       })
       .get('#kc-login')
       .should('exist')

@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -58,7 +59,7 @@ data class DataPointMetaInformation(
     )
     val currentlyActive: Boolean,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
     )
     val qaStatus: QaStatus,
 ) : DataPointDimensions

@@ -127,13 +127,15 @@ class DataSourcingManager
             if (state == null) return
 
             if (state in setOf(DataSourcingState.Done, DataSourcingState.NonSourceable)) {
-                dataSourcingEntityWithFetchedRequests.associatedRequests.forEach {
-                    existingRequestsManager.patchRequestState(
-                        it.id,
-                        RequestState.Processed,
-                        null,
-                    )
-                }
+                dataSourcingEntityWithFetchedRequests.associatedRequests
+                    .filter { it.state != RequestState.Withdrawn }
+                    .forEach {
+                        existingRequestsManager.patchRequestState(
+                            it.id,
+                            RequestState.Processed,
+                            null,
+                        )
+                    }
             }
             if (state == DataSourcingState.NonSourceable &&
                 dataSourcingEntityWithFetchedRequests.state != DataSourcingState.NonSourceable

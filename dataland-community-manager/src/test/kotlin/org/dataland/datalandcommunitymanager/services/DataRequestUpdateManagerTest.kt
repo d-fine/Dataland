@@ -19,10 +19,10 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateManagerTestDataProvider
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.datalandqaservice.openApiClient.model.QaReviewResponse
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -33,6 +33,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -204,7 +205,7 @@ class DataRequestUpdateManagerTest {
 
     @BeforeEach
     fun setupDummyDataRequestEntities() {
-        TestUtils.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("user@example.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
         dummyDataRequestEntitiesWithoutEarlierQaApproval = testDataProvider.getDummyDataRequestEntities()
         dummyDataRequestEntityWithoutEarlierQaApproval1 = dummyDataRequestEntitiesWithoutEarlierQaApproval[0]
         dummyDataRequestEntityWithoutEarlierQaApproval2 = dummyDataRequestEntitiesWithoutEarlierQaApproval[1]
@@ -294,7 +295,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(null), eq(false), eq(correlationId),
+                any(), eq(RequestStatus.Answered), isNull(), eq(false), eq(correlationId),
             )
         verify(mockDataRequestSummaryNotificationService, times(1))
             .createUserSpecificNotificationEvent(
@@ -312,7 +313,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Answered), eq(null), any(), eq(correlationId),
+                any(), eq(RequestStatus.Answered), isNull(), any(), eq(correlationId),
             )
     }
 
@@ -325,7 +326,7 @@ class DataRequestUpdateManagerTest {
         )
         verify(mockRequestEmailManager, times(0))
             .sendEmailsWhenRequestStatusChanged(
-                any(), eq(RequestStatus.Closed), eq(null), any(), eq(correlationId),
+                any(), eq(RequestStatus.Closed), isNull(), any(), eq(correlationId),
             )
     }
 
@@ -352,7 +353,7 @@ class DataRequestUpdateManagerTest {
                 .sendEmailsWhenRequestStatusChanged(
                     eq(dummyDataRequestEntitiesWithoutEarlierQaApproval[i]),
                     eq(RequestStatus.Answered),
-                    eq(null),
+                    isNull(),
                     eq(false),
                     eq(correlationId),
                 )

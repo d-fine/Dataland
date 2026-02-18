@@ -14,18 +14,18 @@ import org.springframework.stereotype.Repository
 interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, String> {
     /**
      * Returns all QA reports for a specific dataPointId. Supports filtering by reporterUserId and active status.
-     * @param dataPointId identifier used to uniquely specify data in the data store
+     * @param dataPointIds identifier used to uniquely specify data in the data store
      * @param showInactive flag to include inactive reports in the result
      * @param reporterUserId show only QA reports uploaded by the given user
      */
     @Query(
         "SELECT qaReport FROM DataPointQaReportEntity qaReport " +
-            "WHERE qaReport.dataPointId = :dataPointId " +
+            "WHERE qaReport.dataPointId IN :dataPointIds " +
             "AND (:showInactive = TRUE OR qaReport.active = TRUE) " +
             "AND (:reporterUserId IS NULL OR qaReport.reporterUserId = :reporterUserId)",
     )
     fun searchQaReportMetaInformation(
-        @Param("dataPointId") dataPointId: String,
+        @Param("dataPointIds") dataPointIds: List<String>,
         @Param("showInactive") showInactive: Boolean,
         @Param("reporterUserId") reporterUserId: String?,
     ): List<DataPointQaReportEntity>
@@ -46,4 +46,14 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
         dataPointId: String,
         reporterUserId: String,
     )
+
+    /**
+     * Makes testing easier
+     */
+    @Query(
+        "select qaReport.dataPointType " +
+            "from DataPointQaReportEntity qaReport " +
+            "where qaReport.qaReportId = :qaReportId",
+    )
+    fun findDataPointTypeUsingId(qaReportId: String): String
 }

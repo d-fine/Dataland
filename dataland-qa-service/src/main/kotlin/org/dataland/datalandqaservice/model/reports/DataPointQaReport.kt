@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repo
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 
 /**
@@ -29,36 +30,36 @@ data class DataPointQaReport(
     )
     val dataPointType: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
     )
     val qaReportId: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
     )
     val reporterUserId: String?,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_EXAMPLE,
     )
     val uploadTime: Long,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.IS_REPORT_ACTIVE_DESCRIPTION,
     )
     val active: Boolean,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
     )
     val comment: String,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
     )
     val verdict: QaReportDataPointVerdict,
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
-        example = BackendOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
     val correctedData: String?,
 )

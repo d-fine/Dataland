@@ -76,7 +76,7 @@ describeIf(
       cy.get('[data-test="resubmit-request-button"]').click();
       cy.get('[data-test="resubmit-modal"]').should('be.visible');
       cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
-      cy.get('[data-test="resubmit-confirmation-button"]').click();
+      cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible').click();
       cy.wait('@resubmit');
       cy.get('[data-test="success-modal"]').should('exist').should('contain.text', 'successfully resubmitted');
       cy.get('[data-test="close-success-modal-button"]').should('be.visible').click();

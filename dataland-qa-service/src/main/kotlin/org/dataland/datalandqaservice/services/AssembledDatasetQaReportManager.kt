@@ -48,11 +48,9 @@ class AssembledDatasetQaReportManager
             reporterUserId: String,
             uploadTime: Long,
         ): QaReportMetaInformation {
-            val correlationId = generateUUID()
-
             datalandBackendAccessor.ensureDatalandDataExists(dataId, dataType)
             val dataPointQaReportIds =
-                dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
+                dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime)
 
             if (dataPointQaReportIds.isEmpty()) {
                 throw InvalidInputApiException(
@@ -83,7 +81,6 @@ class AssembledDatasetQaReportManager
             report: QaReportType,
             reporterUserId: String,
             uploadTime: Long,
-            correlationId: String,
         ): MutableList<String> {
             val (associatedDataPoints, decomposedQaReport) = splitQaReportIntoDataPoints(dataType, dataId, report)
 
@@ -114,7 +111,6 @@ class AssembledDatasetQaReportManager
                             dataPointId = dataPointId,
                             reporterUserId = reporterUserId,
                             uploadTime = uploadTime,
-                            correlationId = correlationId,
                         ).qaReportId,
                 )
             }

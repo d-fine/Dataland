@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -11,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipCla
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
 
     @BeforeEach
     fun setupAuthentication() {
-        TestUtils.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("userEmail", userId, DatalandRealmRole.ROLE_USER)
     }
 
     @Test

@@ -15,9 +15,9 @@ import org.dataland.datalandcommunitymanager.services.messaging.SingleDataReques
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -112,7 +112,7 @@ class SingleDataRequestManagerTest {
                 companyRolesManager = mockCompanyRolesManager,
                 maxRequestsForUser = maxRequestsForUser,
             )
-        TestUtils.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
+        AuthenticationMock.mockSecurityContext("requester@bigplayer.com", "1234-221-1111elf", DatalandRealmRole.ROLE_USER)
     }
 
     private fun setUpDataRequestRepositoryMock() {
@@ -168,7 +168,7 @@ class SingleDataRequestManagerTest {
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not applied`() {
-        TestUtils.mockSecurityContext("data.premium-user@example.com", premiumUserId, DatalandRealmRole.ROLE_PREMIUM_USER)
+        AuthenticationMock.mockSecurityContext("data.premium-user@example.com", premiumUserId, DatalandRealmRole.ROLE_PREMIUM_USER)
         for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
@@ -285,7 +285,6 @@ class SingleDataRequestManagerTest {
         assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
-
         verify(spySingleDataRequestManager, times(1)).preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
     }
 

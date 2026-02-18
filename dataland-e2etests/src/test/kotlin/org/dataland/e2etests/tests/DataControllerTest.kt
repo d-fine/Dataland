@@ -222,7 +222,6 @@ class DataControllerTest {
     @Test
     fun `test fetching of dataset of the latest available reporting period`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-
         mapOf(
             "2023" to "2023",
             "2024" to "2024",
