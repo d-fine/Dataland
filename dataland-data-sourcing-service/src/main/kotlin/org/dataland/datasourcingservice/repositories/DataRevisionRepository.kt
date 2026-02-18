@@ -22,32 +22,35 @@ class DataRevisionRepository(
     val entityManager: EntityManager,
 ) {
     /**
-     * List all revisions of an entity of the provided class type by its id with their revision timestamps.
-     * E.g. providing the id of a data sourcing entity and the class type DataSourcingEntity::class.java
-     * will return all previous versions of that data sourcing entity with their timestamps.
+     * List all revisions of an entity of the provided class type by its id.
+     * When withTimestamps is true, queries revision metadata and returns pairs of (entity, timestamp).
+     * When false, queries entities only and returns pairs with a dummy timestamp of 0L.
      * @param id the id of the entity
      * @param classType the class type of the entity
-     * @return a list of pairs containing the entity and its revision timestamp (epoch milliseconds)
+     * @param withTimestamps whether to query and return revision timestamps
+     * @return a list of pairs containing the entity and its revision timestamp (epoch milliseconds), or 0L if not queried
      */
     private fun <T> listDataRevisionsById(
         id: UUID?,
         classType: Class<T>,
+        withTimestamps: Boolean,
     ): List<Pair<T, Long>> {
         val auditReader = AuditReaderFactory.get(entityManager)
 
-        val resultList =
+        val query =
             auditReader
                 .createQuery()
-                .forRevisionsOfEntity(classType, false, false)
+                .forRevisionsOfEntity(classType, !withTimestamps, false)
                 .add(AuditEntity.id().eq(id))
-                .resultList
-                .filterIsInstance<Array<Any>>()
 
-        return resultList.map {
-            val entity = classType.cast(it[0])
-            val revisionEntity = it[1] as DefaultRevisionEntity
-            Pair(entity, revisionEntity.timestamp)
+        if (withTimestamps) {
+            return query.resultList.filterIsInstance<Array<Any>>().map {
+                val entity = classType.cast(it[0])
+                val revisionEntity = it[1] as DefaultRevisionEntity
+                Pair(entity, revisionEntity.timestamp)
+            }
         }
+        return (query.resultList as List<T>).map { Pair(it, 0L) }
     }
 
     /**
@@ -56,12 +59,13 @@ class DataRevisionRepository(
      * @return a list of pairs containing DataSourcingEntity revisions and their timestamps (epoch milliseconds)
      */
     fun listDataSourcingRevisionsById(id: UUID?): List<Pair<DataSourcingEntity, Long>> =
-        listDataRevisionsById(id, DataSourcingEntity::class.java)
+        listDataRevisionsById(id, DataSourcingEntity::class.java, withTimestamps = true)
 
     /**
-     * List all previous versions of a RequestEntity identified by its id with their revision timestamps.
+     * List all previous versions of a RequestEntity identified by its id.
      * @param id the id of the RequestEntity
-     * @return a list of pairs containing RequestEntity revisions and their timestamps (epoch milliseconds)
+     * @return a list of RequestEntity revisions
      */
-    fun listDataRequestRevisionsById(id: UUID?): List<Pair<RequestEntity, Long>> = listDataRevisionsById(id, RequestEntity::class.java)
+    fun listDataRequestRevisionsById(id: UUID?): List<RequestEntity> =
+        listDataRevisionsById(id, RequestEntity::class.java, withTimestamps = false).map { it.first }
 }

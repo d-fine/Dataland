@@ -53,11 +53,11 @@ object RequestStateHistoryUtils {
      * @returns The time difference in milliseconds between the next request state change and the next data sourcing state change.
      */
     private fun compareNextRequestAndDataSourcingTimes(
-        requestHistorySorted: List<Pair<RequestEntity, Long>>,
+        requestHistorySorted: List<RequestEntity>,
         dataSourcingHistorySorted: List<DataSourcingWithoutReferences>,
     ): Int =
         if (requestHistorySorted.isNotEmpty() && dataSourcingHistorySorted.isNotEmpty()) {
-            val timeDifference = requestHistorySorted[0].first.lastModifiedDate - dataSourcingHistorySorted[0].lastModifiedDate
+            val timeDifference = requestHistorySorted[0].lastModifiedDate - dataSourcingHistorySorted[0].lastModifiedDate
 
             if (abs(timeDifference) < TIME_DIFFERENCE_THRESHOLD_MS) {
                 0
@@ -166,11 +166,11 @@ object RequestStateHistoryUtils {
      *
      */
     private fun <T> buildHistory(
-        requestHistory: List<Pair<RequestEntity, Long>>,
+        requestHistory: List<RequestEntity>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
         createHistoryEntry: (HistoryEntryInput<T>) -> T,
     ): List<T> {
-        var requestHistorySorted = requestHistory.sortedBy { it.first.lastModifiedDate }
+        var requestHistorySorted = requestHistory.sortedBy { it.lastModifiedDate }
         var dataSourcingHistorySorted = dataSourcingHistory.sortedBy { it.lastModifiedDate }
         val history =
             buildList<T> {
@@ -182,7 +182,7 @@ object RequestStateHistoryUtils {
                             add(
                                 createHistoryEntry(
                                     HistoryEntryInput.RequestOnly(
-                                        requestHistorySorted[0].first, lastOrNull(),
+                                        requestHistorySorted[0], lastOrNull(),
                                     ),
                                 ),
                             )
@@ -205,7 +205,7 @@ object RequestStateHistoryUtils {
                             add(
                                 createHistoryEntry(
                                     HistoryEntryInput.Both(
-                                        requestHistorySorted[0].first,
+                                        requestHistorySorted[0],
                                         dataSourcingHistorySorted[0],
                                     ),
                                 ),
@@ -286,7 +286,7 @@ object RequestStateHistoryUtils {
      * @returns A list of ExtendedRequestHistoryEntry objects representing the combined history
      */
     fun getExtendedRequestHistory(
-        requestHistory: List<Pair<RequestEntity, Long>>,
+        requestHistory: List<RequestEntity>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
     ): List<ExtendedRequestHistoryEntryData> = buildHistory(requestHistory, dataSourcingHistory, ::createExtendedHistoryEntry)
 
@@ -300,7 +300,7 @@ object RequestStateHistoryUtils {
      * @returns A list of RequestHistoryEntry objects representing the combined history
      */
     fun getRequestHistory(
-        requestHistory: List<Pair<RequestEntity, Long>>,
+        requestHistory: List<RequestEntity>,
         dataSourcingHistory: List<DataSourcingWithoutReferences>,
     ): List<RequestHistoryEntryData> =
         deleteRepeatingDisplayedStates(

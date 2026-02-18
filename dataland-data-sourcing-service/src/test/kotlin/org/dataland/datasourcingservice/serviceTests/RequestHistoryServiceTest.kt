@@ -53,54 +53,45 @@ class RequestHistoryServiceTest
 
         private val processingComment = "Request Processing"
 
-        private val dummyRequestStateHistory: List<Pair<RequestEntity, Long>> =
+        private val dummyRequestStateHistory: List<RequestEntity> =
             listOf(
-                Pair(
-                    RequestEntity(
-                        id = requestId,
-                        companyId = dummyCompanyId,
-                        reportingPeriod = "2025",
-                        dataType = "dummyDataType",
-                        userId = dummyUserId,
-                        creationTimestamp = lastModifiedDateFirstRequest,
-                        adminComment = "Request Opened",
-                        memberComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest,
-                        requestPriority = RequestPriority.Low,
-                        state = RequestState.Open,
-                    ),
-                    lastModifiedDateFirstRequest,
+                RequestEntity(
+                    id = requestId,
+                    companyId = dummyCompanyId,
+                    reportingPeriod = "2025",
+                    dataType = "dummyDataType",
+                    userId = dummyUserId,
+                    creationTimestamp = lastModifiedDateFirstRequest,
+                    adminComment = "Request Opened",
+                    memberComment = null,
+                    lastModifiedDate = lastModifiedDateFirstRequest,
+                    requestPriority = RequestPriority.Low,
+                    state = RequestState.Open,
                 ),
-                Pair(
-                    RequestEntity(
-                        id = requestId,
-                        companyId = dummyCompanyId,
-                        reportingPeriod = "2025",
-                        dataType = "dummyDataType",
-                        userId = dummyUserId,
-                        adminComment = processingComment,
-                        creationTimestamp = lastModifiedDateFirstRequest + 600000L,
-                        memberComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest + 600000L,
-                        requestPriority = RequestPriority.Low,
-                        state = RequestState.Processing,
-                    ),
-                    lastModifiedDateFirstRequest + 600000L,
+                RequestEntity(
+                    id = requestId,
+                    companyId = dummyCompanyId,
+                    reportingPeriod = "2025",
+                    dataType = "dummyDataType",
+                    userId = dummyUserId,
+                    adminComment = processingComment,
+                    creationTimestamp = lastModifiedDateFirstRequest + 600000L,
+                    memberComment = null,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 600000L,
+                    requestPriority = RequestPriority.Low,
+                    state = RequestState.Processing,
                 ),
-                Pair(
-                    RequestEntity(
-                        id = requestId,
-                        companyId = dummyCompanyId,
-                        reportingPeriod = "2025",
-                        dataType = "dummyDataType",
-                        userId = dummyUserId,
-                        creationTimestamp = lastModifiedDateFirstRequest + 2 * 600000L,
-                        memberComment = null,
-                        lastModifiedDate = lastModifiedDateFirstRequest + 2 * 600000L,
-                        requestPriority = RequestPriority.Low,
-                        state = RequestState.Withdrawn,
-                    ),
-                    lastModifiedDateFirstRequest + 2 * 600000L,
+                RequestEntity(
+                    id = requestId,
+                    companyId = dummyCompanyId,
+                    reportingPeriod = "2025",
+                    dataType = "dummyDataType",
+                    userId = dummyUserId,
+                    creationTimestamp = lastModifiedDateFirstRequest + 2 * 600000L,
+                    memberComment = null,
+                    lastModifiedDate = lastModifiedDateFirstRequest + 2 * 600000L,
+                    requestPriority = RequestPriority.Low,
+                    state = RequestState.Withdrawn,
                 ),
             )
 

@@ -33,7 +33,7 @@ class RequestHistoryService
          * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
          */
         @Transactional(readOnly = true)
-        fun retrieveStateHistoryByRequestId(requestId: UUID): Pair<List<Pair<RequestEntity, Long>>, List<DataSourcingWithoutReferences>> {
+        fun retrieveStateHistoryByRequestId(requestId: UUID): Pair<List<RequestEntity>, List<DataSourcingWithoutReferences>> {
             val requestHistory = dataRevisionRepository.listDataRequestRevisionsById(requestId)
             val dataSourcingID = existingRequestsManager.getRequest(requestId).dataSourcingEntityId
             var dataSourcingHistory = emptyList<DataSourcingWithoutReferences>()

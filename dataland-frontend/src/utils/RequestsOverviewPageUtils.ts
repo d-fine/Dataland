@@ -61,6 +61,18 @@ const displayedStates: (DataSourcingState | RequestState)[] = [
   RequestState.Withdrawn,
 ];
 
+const sortOrderRequestState: { [key: string]: number } = {
+  [RequestState.Open]: 0,
+  [DataSourcingState.Initialized]: 1,
+  [DataSourcingState.DocumentSourcing]: 2,
+  [DataSourcingState.DocumentSourcingDone]: 3,
+  [DataSourcingState.DataExtraction]: 4,
+  [DataSourcingState.DataVerification]: 5,
+  [DataSourcingState.Done]: 6,
+  [DataSourcingState.NonSourceable]: 7,
+  [RequestState.Withdrawn]: 8,
+};
+
 /**
  * Compares two states, either data sourcing states or request states
  * @param a state to compare
@@ -73,16 +85,6 @@ export function customCompareForState(
   b: DataSourcingState | RequestState,
   sortOrder: number
 ): number {
-  const sortOrderRequestState: { [key: string]: number } = {};
-  sortOrderRequestState[RequestState.Open] = 0;
-  sortOrderRequestState[DataSourcingState.Initialized] = 1;
-  sortOrderRequestState[DataSourcingState.DocumentSourcing] = 2;
-  sortOrderRequestState[DataSourcingState.DocumentSourcingDone] = 3;
-  sortOrderRequestState[DataSourcingState.DataExtraction] = 4;
-  sortOrderRequestState[DataSourcingState.DataVerification] = 5;
-  sortOrderRequestState[DataSourcingState.Done] = 6;
-  sortOrderRequestState[DataSourcingState.NonSourceable] = 7;
-  sortOrderRequestState[RequestState.Withdrawn] = 8;
   if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
   return sortOrder;
 }

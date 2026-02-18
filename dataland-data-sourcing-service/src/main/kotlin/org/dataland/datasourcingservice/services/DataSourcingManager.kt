@@ -325,19 +325,18 @@ class DataSourcingManager
             if (revisions.isEmpty()) {
                 throw DataSourcingNotFoundApiException(id)
             }
-            val filteredRevisions = if (stateChangesOnly) filterStateChanges(revisions) else revisions
+            val filteredRevisions = if (stateChangesOnly) keepOnlyStateChanges(revisions) else revisions
             return filteredRevisions
                 .map { (entity, timestamp) -> entity.toDataSourcingWithoutReferences(isUserAdmin(), timestamp) }
         }
 
-        private fun filterStateChanges(revisions: List<Pair<DataSourcingEntity, Long>>): List<Pair<DataSourcingEntity, Long>> {
+        private fun keepOnlyStateChanges(revisions: List<Pair<DataSourcingEntity, Long>>): List<Pair<DataSourcingEntity, Long>> {
             if (revisions.isEmpty()) return emptyList()
-            val result = mutableListOf(revisions.first())
-            for (i in 1 until revisions.size) {
-                if (revisions[i].first.state != revisions[i - 1].first.state) {
-                    result.add(revisions[i])
+            return buildList {
+                add(revisions.first())
+                revisions.zipWithNext { prev, current ->
+                    if (current.first.state != prev.first.state) add(current)
                 }
             }
-            return result
         }
     }
