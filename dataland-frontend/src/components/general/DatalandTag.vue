@@ -16,7 +16,7 @@
 import { ExtendedQaStatus } from '@/components/resources/datasetOverview/DatasetTableInfo.ts';
 import Tag from 'primevue/tag';
 import { computed, type Ref } from 'vue';
-import { RequestState, RequestPriority, DataSourcingState } from '@clients/datasourcingservice';
+import { RequestState, RequestPriority, DataSourcingState, DisplayedState } from '@clients/datasourcingservice';
 
 type TagColorDefinition = {
   background: string;
@@ -131,6 +131,8 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case DataSourcingState.DocumentSourcingDone:
     case DataSourcingState.DataExtraction:
     case DataSourcingState.DataVerification:
+    case DisplayedState.Validated:
+    case DisplayedState.DocumentVerification:
       return stateBlueTag;
     case DataSourcingState.Done:
       return stateGreenTag;
