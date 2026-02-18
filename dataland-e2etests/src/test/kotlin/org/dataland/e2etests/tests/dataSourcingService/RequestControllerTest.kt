@@ -25,6 +25,10 @@ class RequestControllerTest {
     private val apiAccessor = ApiAccessor()
     private lateinit var dummyRequest: SingleRequest
 
+    companion object {
+        private const val TIME_TO_WAIT_TO_AVOID_FILTERING = 1000L
+    }
+
     @BeforeEach
     fun setup() {
         val companyId =
@@ -150,6 +154,7 @@ class RequestControllerTest {
         val requestId = apiAccessor.dataSourcingRequestControllerApi.createRequest(dummyRequest).requestId
 
         lateinit var requestHistory: List<RequestHistoryEntryData>
+        Thread.sleep(TIME_TO_WAIT_TO_AVOID_FILTERING)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
