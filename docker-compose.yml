@@ -106,7 +106,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -141,7 +141,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - accounting-service-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - accounting_service_data:/var/lib/postgresql/data
     environment:
@@ -176,7 +176,7 @@ services:
         profiles: [ "production", "testing", "development" ]
         networks:
           - data-sourcing-service-db
-        image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+        image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
         volumes:
           - data_sourcing_service_data:/var/lib/postgresql/data
         environment:
@@ -212,7 +212,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -247,7 +247,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -348,7 +348,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -363,7 +363,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -527,7 +527,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -563,7 +563,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - user-service-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - user_service_data:/var/lib/postgresql/data
     environment:
@@ -619,7 +619,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -671,7 +671,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - email-service-db
-    image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
       - email_service_data:/var/lib/postgresql/data
     environment:
