@@ -16,7 +16,7 @@ import kotlin.math.sign
  * A utility class for processing request state history and data sourcing state history.
  */
 object RequestStateHistoryUtils {
-    private const val TIME_DIFFERENCE_THRESHOLD_MS = 1000
+    private const val TIME_DIFFERENCE_THRESHOLD_MS = 250
 
     /**
      * Deletes consecutive entries with the same displayedState, keeping the order stable.
@@ -155,6 +155,34 @@ object RequestStateHistoryUtils {
         }
 
     /**
+     * Creates a RequestHistoryEntry based on the given input
+     *
+     * It determines the appropriate constructor to use for creating the RequestHistoryEntryData object based on
+     * which parameters are provided.
+     *
+     * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
+     *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
+     * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
+     */
+    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntryData>): RequestHistoryEntryData =
+        when (input) {
+            is HistoryEntryInput.RequestOnly ->
+                RequestHistoryEntryData(input.requestEntity)
+
+            is HistoryEntryInput.DataSourcingOnly ->
+                RequestHistoryEntryData(
+                    input.dataSourcingWithoutReferences,
+                    input.previousHistoryEntry.displayedState,
+                )
+
+            is HistoryEntryInput.Both ->
+                RequestHistoryEntryData(
+                    input.dataSourcingWithoutReferences,
+                    input.requestEntity,
+                )
+        }
+
+    /**
      * Builds a combined history of request state changes and data sourcing state changes, sorted by modification date.
      *
      * @param requestHistory - A list of pairs containing RequestEntity objects, sorted by last modified date,
@@ -218,34 +246,6 @@ object RequestStateHistoryUtils {
             }
         return history
     }
-
-    /**
-     * Creates a RequestHistoryEntry based on the given input
-     *
-     * It determines the appropriate constructor to use for creating the RequestHistoryEntryData object based on
-     * which parameters are provided.
-     *
-     * @param input - A HistoryEntryInput object that can be of type RequestOnly, DataSourcingOnly, or Both,
-     *                  containing the necessary information to create an ExtendedRequestHistoryEntry.
-     * @returns A RequestHistoryEntry object representing the combined state of the request and data sourcing
-     */
-    private fun createHistoryEntry(input: HistoryEntryInput<RequestHistoryEntryData>): RequestHistoryEntryData =
-        when (input) {
-            is HistoryEntryInput.RequestOnly ->
-                RequestHistoryEntryData(input.requestEntity)
-
-            is HistoryEntryInput.DataSourcingOnly ->
-                RequestHistoryEntryData(
-                    input.dataSourcingWithoutReferences,
-                    input.previousHistoryEntry.displayedState,
-                )
-
-            is HistoryEntryInput.Both ->
-                RequestHistoryEntryData(
-                    input.dataSourcingWithoutReferences,
-                    input.requestEntity,
-                )
-        }
 
     /**
      * Determines the displayed state based on the request state and data sourcing state.

@@ -26,7 +26,7 @@ class RequestControllerTest {
     private lateinit var dummyRequest: SingleRequest
 
     companion object {
-        private const val TIME_TO_WAIT_TO_AVOID_FILTERING = 1000L
+        private const val TIME_TO_WAIT_TO_AVOID_FILTERING = 250L
     }
 
     @BeforeEach
