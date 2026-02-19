@@ -108,7 +108,7 @@ services:
       - api-key-manager-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - api_key_manager_data:/var/lib/postgresql/data
+      - api_key_manager_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: api_key_manager
       POSTGRES_USER: api_key_manager
@@ -143,7 +143,7 @@ services:
       - accounting-service-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - accounting_service_data:/var/lib/postgresql/data
+      - accounting_service_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: accounting_service
       POSTGRES_USER: accounting_service
@@ -178,7 +178,7 @@ services:
           - data-sourcing-service-db
         image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
         volumes:
-          - data_sourcing_service_data:/var/lib/postgresql/data
+          - data_sourcing_service_data:/var/lib/postgresql
         environment:
           POSTGRES_DB: data_sourcing_service
           POSTGRES_USER: data_sourcing_service
@@ -214,7 +214,7 @@ services:
       - document-manager-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - document_manager_data:/var/lib/postgresql/data
+      - document_manager_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: document_manager
       POSTGRES_USER: document_manager
@@ -249,7 +249,7 @@ services:
       - backend-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - backend_data:/var/lib/postgresql/data
+      - backend_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: backend
       POSTGRES_USER: backend
@@ -350,7 +350,7 @@ services:
       - internal-storage-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - internal_storage_data:/var/lib/postgresql/data
+      - internal_storage_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: internal_storage
       POSTGRES_USER: internal_storage
@@ -365,7 +365,7 @@ services:
       - keycloak-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - keycloak_data:/var/lib/postgresql/data
+      - keycloak_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -529,7 +529,7 @@ services:
       - qa-service-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - qa_service_data:/var/lib/postgresql/data
+      - qa_service_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: qa_service
       POSTGRES_USER: qa_service
@@ -565,7 +565,7 @@ services:
       - user-service-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - user_service_data:/var/lib/postgresql/data
+      - user_service_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: user_service
       POSTGRES_USER: user_service
@@ -621,7 +621,7 @@ services:
       - community-manager-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - community_manager_data:/var/lib/postgresql/data
+      - community_manager_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: community_manager
       POSTGRES_USER: community_manager
@@ -673,7 +673,7 @@ services:
       - email-service-db
     image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
     volumes:
-      - email_service_data:/var/lib/postgresql/data
+      - email_service_data:/var/lib/postgresql
     environment:
       POSTGRES_DB: email_service
       POSTGRES_USER: email_service
