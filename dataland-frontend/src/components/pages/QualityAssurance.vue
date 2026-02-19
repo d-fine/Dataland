@@ -111,7 +111,7 @@
                 <PrimeButton
                   @click="createAndViewDatasetReview(slotProps.data)"
                   data-test="goToReviewButton"
-                  :label="slotProps.data.reviewerUserName ?? 'Start Review'"
+                  :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
@@ -157,7 +157,8 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const datasetsPerPage = 10;
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const keycloak = await getKeycloakPromise();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const displayDataOfPage = ref<QaReviewResponse[]>([]);
@@ -297,6 +298,20 @@ function validateSearchBarInput(): boolean {
 
   showNotEnoughCharactersWarning.value = false;
   return true;
+}
+
+/**
+ * Determines the label of the review button in the table depending.
+ * @param reviewerUserId the user id of the reviewer of the dataset
+ * @param reviewerUserName the user name of the reviewer of the dataset
+ * @returns the label of the review button
+ */
+function getReviewStatus(reviewerUserId: string | undefined, reviewerUserName: string | undefined): string {
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
+  if (reviewerUserId && reviewerUserName) {
+    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
+  }
+  return 'Start Review';
 }
 
 watch(selectedFrameworks, () => {
