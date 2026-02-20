@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
+import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,31 +91,60 @@ class DataAvailabilityChecker
             }
         }
 
-        /**
-         * Returns most recent available data point IDs.
+        /** Returns most recent data point meta information entities.
          *
-         * Retrieves the latest available data points for a given company and set of data point types,
+         * Retrieves the latest available data point meta information entities from a given collection,
          * ignoring data points that are part of the exclusion list. All meta information items in the
          * returned list belong to the same latest reporting period.
          *
-         * @param companyId the ID of the company
+         * @param entities the collection of data point meta information entities to consider
+         * @return a list of data point meta information entities representing the latest available data points
+         */
+        private fun getMostRecentDataPointMetaInformationEntities(
+            entities: Collection<DataPointMetaInformationEntity>,
+        ): List<DataPointMetaInformationEntity> {
+            val groupedByReportingPeriod =
+                entities
+                    .groupBy { it.reportingPeriod }
+                    .filterValues { sameReportingPeriodEntities ->
+                        DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(
+                            sameReportingPeriodEntities.map { it.dataPointType },
+                        )
+                    }
+            val latestReportingPeriod = groupedByReportingPeriod.maxOfOrNull { it.key } ?: return emptyList()
+            return groupedByReportingPeriod.getValue(latestReportingPeriod)
+        }
+
+        /**
+         * Returns most recent available data point IDs per company.
+         *
+         * Retrieves the latest available data points for a collection of companies and set of data point types,
+         * ignoring data points that are part of the exclusion list. For each company, all meta information items
+         * in the returned list belong to the same latest reporting period.
+         *
+         * If no data is available for a company, it is omitted from the result.
+         *
+         * @param companyIds the IDs of the companies
          * @param dataPointTypes the set of data point types to consider
-         * @return a list of IDs representing the latest available data points
+         * @return a map of company IDs, each associated with a list of IDs representing the latest available data points
          */
         fun getLatestAvailableDataPointIds(
-            companyId: String,
+            companyIds: Collection<String>,
             dataPointTypes: Set<String>,
-        ): List<DataPointMetaInformationEntity> {
-            val allRelevantDataPoints =
-                dataPointMetaInformationRepository
-                    .findByCompanyIdAndDataPointTypeInAndCurrentlyActiveTrue(
-                        companyId,
-                        dataPointTypes,
-                    ).groupBy { it.reportingPeriod }
-                    .filter { dataPoints ->
-                        DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPoints.value.map { it.dataPointType })
+        ): Map<BasicBaseDimensions, List<DataPointMetaInformationEntity>> =
+            dataPointMetaInformationRepository
+                .findByCompanyIdInAndDataPointTypeInAndCurrentlyActiveTrue(
+                    companyIds,
+                    dataPointTypes,
+                ).groupBy { it.companyId }
+                .entries
+                .asSequence()
+                .mapNotNull {
+                    val dataPointMetaInfos = getMostRecentDataPointMetaInformationEntities(it.value)
+                    if (dataPointMetaInfos.isEmpty()) {
+                        null
+                    } else {
+                        BasicBaseDimensions(it.key, dataPointMetaInfos.first().reportingPeriod) to dataPointMetaInfos
                     }
-            val latestReportingPeriod = allRelevantDataPoints.maxOfOrNull { it.key } ?: return emptyList()
-            return allRelevantDataPoints.getValue(latestReportingPeriod)
-        }
+                }.toMap()
     }

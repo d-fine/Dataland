@@ -44,10 +44,19 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
      reportingPeriods: string[],
      companyIds: string[],
      fileFormat: ExportFileType,
-     keepValueFieldsOnly?: Boolean,
-     includeAliases?: Boolean,
+     keepValueFieldsOnly?: boolean,
+     includeAliases?: boolean,
      options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociated${frameworkBaseName}DataByDimensions({reportingPeriods, companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
+  }
+
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+     companyIds: string[],
+     fileFormat: ExportFileType,
+     keepValueFieldsOnly?: boolean,
+     includeAliases?: boolean,
+     options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociated${frameworkBaseName}DataByDimensions({companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
   }
 
   getCompanyAssociatedDataByDimensions(

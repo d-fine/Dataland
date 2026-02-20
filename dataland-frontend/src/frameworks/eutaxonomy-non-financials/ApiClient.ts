@@ -64,6 +64,21 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
     );
   }
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+      { companyIds, fileFormat },
+      keepValueFieldsOnly,
+      includeAliases,
+      options
+    );
+  }
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,

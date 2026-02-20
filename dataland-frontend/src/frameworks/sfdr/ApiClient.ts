@@ -56,6 +56,21 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
     );
   }
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociatedSfdrDataByDimensions(
+      { companyIds, fileFormat },
+      keepValueFieldsOnly,
+      includeAliases,
+      options
+    );
+  }
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,

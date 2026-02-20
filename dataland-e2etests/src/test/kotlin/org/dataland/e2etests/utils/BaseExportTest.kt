@@ -1,146 +1,15 @@
 package org.dataland.e2etests.utils
 
-import org.awaitility.Awaitility
+import org.dataland.datalandbackend.openApiClient.model.ExportFileType
+import org.dataland.datalandbackend.openApiClient.model.ExportLatestRequestData
+import org.dataland.datalandbackend.openApiClient.model.ExportRequestData
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
-import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class BaseExportTest<T> {
-    protected val apiAccessor = ApiAccessor()
-
-    // Common properties that all export tests need
-    protected lateinit var companyWithNullFieldId: String
-    protected lateinit var companyWithNullFieldLei: String
-    protected lateinit var companyWithNonNullFieldId: String
-    protected lateinit var companyWithNonNullFieldLei: String
-    protected val reportingPeriod = "2024"
-
-    // Abstract methods that subclasses must implement
-    protected abstract fun getTestDataWithNullField(): T
-
-    protected abstract fun getTestDataWithNonNullField(): T
-
-    protected abstract fun getFullTestData(): T
-
-    protected abstract fun getNullFieldName(): String
-
-    protected abstract fun retrieveData(companyId: String): Any
-
-    protected abstract fun uploadData(
-        companyId: String,
-        data: T,
-        reportingPeriod: String,
-    )
-
-    protected abstract fun exportDataAsCsv(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-        keepValueFieldsOnly: Boolean = true,
-        includeAliases: Boolean = false,
-    ): File
-
-    private fun exportDataAsCsvWithMetadata(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File = exportDataAsCsv(companyIds, reportingPeriods, keepValueFieldsOnly = false)
-
-    private fun exportDataAsCsvWithAlias(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File =
-        exportDataAsCsv(
-            companyIds = companyIds,
-            reportingPeriods = reportingPeriods,
-            keepValueFieldsOnly = true,
-            includeAliases = true,
-        )
-
-    private fun exportDataAsCsvWithoutAlias(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File =
-        exportDataAsCsv(
-            companyIds = companyIds,
-            reportingPeriods = reportingPeriods,
-            keepValueFieldsOnly = true,
-            includeAliases = false,
-        )
-
-    protected abstract fun exportDataAsExcel(
-        companyIds: List<String>,
-        reportingPeriods: List<String>,
-    ): File
-
-    /**
-     * Uploads a company with a randomly generated Legal Entity Identifier (LEI) and associates it with the
-     * API accessor.
-     *
-     * @return A pair where the first element is the ID of the uploaded company and the second element is the generated LEI.
-     */
-    private fun uploadCompanyWithRandomLei(): Pair<String, String> {
-        val lei = UUID.randomUUID().toString()
-        return Pair(apiAccessor.uploadOneCompanyWithIdentifiers(lei = lei)!!.actualStoredCompany.companyId, lei)
-    }
-
-    /**
-     * Sets up test companies and their associated data for use in export tests.
-     */
-    protected fun setupCompaniesAndData() {
-        // Create two test companies with randomly generated LEIs
-        val companyWithNullFieldIdAndLei = uploadCompanyWithRandomLei()
-        val companyWithNonNullFieldIdAndLei = uploadCompanyWithRandomLei()
-
-        companyWithNullFieldId = companyWithNullFieldIdAndLei.first
-        companyWithNullFieldLei = companyWithNullFieldIdAndLei.second
-        companyWithNonNullFieldId = companyWithNonNullFieldIdAndLei.first
-        companyWithNonNullFieldLei = companyWithNonNullFieldIdAndLei.second
-
-        // Upload test data with null field for first company
-        uploadData(
-            companyId = companyWithNullFieldId,
-            data = getTestDataWithNullField(),
-            reportingPeriod = reportingPeriod,
-        )
-
-        // Upload test data with non-null field for second company
-        uploadData(
-            companyId = companyWithNonNullFieldId,
-            data = getTestDataWithNonNullField(),
-            reportingPeriod = reportingPeriod,
-        )
-
-        waitForDataAvailability()
-    }
-
-    /**
-     * Waits for the data associated with specific test companies to become available.
-     *
-     * This method uses polling to repeatedly check the availability of data for two test companies
-     * identified by their respective IDs (`companyWithNullFieldId` and `companyWithNonNullFieldId`).
-     * It ensures that data retrieval for both companies does not throw any exceptions.
-     *
-     * The method will attempt to verify data availability within a maximum time limit of 10 seconds.
-     * Each polling attempt is performed at intervals of 500 milliseconds until the conditions are met.
-     *
-     * The method is intended to be used as part of the data setup or verification process in export tests,
-     * ensuring that the required data is accessible before proceeding with further test operations.
-     */
-    protected fun waitForDataAvailability() {
-        Awaitility
-            .await()
-            .atMost(10, TimeUnit.SECONDS)
-            .pollInterval(500, TimeUnit.MILLISECONDS)
-            .untilAsserted {
-                assertDoesNotThrow {
-                    retrieveData(companyWithNullFieldId)
-                    retrieveData(companyWithNonNullFieldId)
-                }
-            }
-    }
-
+abstract class BaseExportTest<T> : BaseExportTestSetup<T>() {
     // Common test implementations that can be called from subclasses
 
     /**
@@ -148,7 +17,7 @@ abstract class BaseExportTest<T> {
      * The test ensures that null fields in the source data are properly omitted from the exported CSV file.
      */
     protected fun testCsvExportOmitsColumnForNullField() {
-        // Export only the company with null field
+        // Export only the company with a null field
         val singleCompanyCsvExport =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNullFieldId),
@@ -169,7 +38,7 @@ abstract class BaseExportTest<T> {
     }
 
     protected fun testCsvExportIncludesColumnForNonNullField() {
-        // Export only the company with non-null field
+        // Export only the company with a non-null field
         val singleCompanyCsvExport =
             exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
@@ -212,7 +81,7 @@ abstract class BaseExportTest<T> {
     /**
      * Tests the Excel export functionality for two companies with differing data configurations.
      * The purpose of this test is to ensure that the Excel export functionality correctly integrates
-     * and represents data for multiple companies, while maintaining data validity and consistency.
+     * and represents data for multiple companies while maintaining data validity and consistency.
      */
     protected fun testExcelExportForBothCompanies() {
         // Export both companies as Excel
@@ -259,9 +128,10 @@ abstract class BaseExportTest<T> {
     protected fun testCsvExportIncludeDataMetaInformationFlag(fieldName: String) {
         // Export data with includeDataMetaInformation=true
         val exportWithMetadata =
-            exportDataAsCsvWithMetadata(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
+                keepValueFieldsOnly = false,
             )
 
         // Export data with default includeDataMetaInformation=false
@@ -368,7 +238,7 @@ abstract class BaseExportTest<T> {
      */
     open fun frameworkSpecificValidationForCSVExportBothCompanies(headers: List<String>) {
         // This function can be overwritten in the export tests for the specific frameworks to test cases specific
-        // to those frameworks, e.g. the correct export of the activities arrays
+        // to those frameworks, e.g., the correct export of the activities arrays
         // in the eutaxonomy non financials framework
     }
 
@@ -385,14 +255,15 @@ abstract class BaseExportTest<T> {
     protected fun testCsvExportIncludeAliasFlag(alias: String) {
         // Export data with includeAlias=true
         val exportWithAlias =
-            exportDataAsCsvWithAlias(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
+                includeAliases = true,
             )
 
         // Export data with default includeAlias=false
         val exportWithoutAlias =
-            exportDataAsCsvWithoutAlias(
+            exportDataAsCsv(
                 companyIds = listOf(companyWithNonNullFieldId),
                 reportingPeriods = listOf(reportingPeriod),
             )
@@ -422,6 +293,53 @@ abstract class BaseExportTest<T> {
             columnNamePart = alias,
             shouldExist = false,
             contextMessage = "CSV export with includeAlias=false should not include value of test field",
+        )
+    }
+
+    protected fun testExportLatest() {
+        val companyIds = listOf(companyWithNullFieldId, companyWithNonNullFieldId)
+        val latestData =
+            exportLatestData(
+                ExportLatestRequestData(companyIds, ExportFileType.JSON),
+            )
+        ExportTestUtils.validateExportFile(latestData, "Latest export")
+
+        val oldData =
+            exportData(
+                ExportRequestData(
+                    companyIds = companyIds,
+                    reportingPeriods = listOf((reportingPeriod.toInt() - 1).toString()),
+                    fileFormat = ExportFileType.JSON,
+                ),
+            )
+        val newData =
+            exportData(
+                ExportRequestData(
+                    companyIds = companyIds,
+                    reportingPeriods = listOf(reportingPeriod),
+                    fileFormat = ExportFileType.JSON,
+                ),
+            )
+
+        val latestText = latestData.readText()
+        val oldText = oldData.readText()
+        val newText = newData.readText()
+
+        val objectMapper = defaultObjectMapper
+        val latestJson = objectMapper.readTree(latestText).sortedBy { it.toString() }
+        val newJson = objectMapper.readTree(newText).sortedBy { it.toString() }
+        val oldJson = objectMapper.readTree(oldText).sortedBy { it.toString() }
+
+        Assertions.assertEquals(
+            newJson,
+            latestJson,
+            "Latest export does not match new reporting period (structural JSON comparison)",
+        )
+
+        Assertions.assertNotEquals(
+            latestJson,
+            oldJson,
+            "Latest export should differ from old data export $latestText != $oldText",
         )
     }
 }

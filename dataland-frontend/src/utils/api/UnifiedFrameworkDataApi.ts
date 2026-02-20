@@ -33,6 +33,14 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo>;
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo>;
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,

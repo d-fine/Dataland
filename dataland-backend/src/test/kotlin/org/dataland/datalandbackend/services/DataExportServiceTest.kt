@@ -7,16 +7,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
-import org.dataland.datalandbackend.utils.DataPointUtils
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
-import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -43,16 +40,14 @@ const val QUALITY_STRING = "quality"
 
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
-    private val mockDataPointUtils = mock<DataPointUtils>()
-    private val mockSpecificationApi = mock<SpecificationControllerApi>()
-    private val mockReferencedReportsUtils = mock<ReferencedReportsUtilities>()
+    private val mockDatasetAssembler = mock<DatasetAssembler>()
+    private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val dataExportService =
         DataExportService<LksgData>(
-            mockDataPointUtils,
-            mockReferencedReportsUtils,
-            mockSpecificationApi,
+            mockDatasetAssembler,
+            mockSpecificationService,
             mockCompanyQueryManager,
             mockDatasetStorageService,
         )
@@ -124,10 +119,12 @@ class DataExportServiceTest {
         val jsonStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(lksgCompanyExportTestData),
-                ExportFileType.JSON,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.JSON,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
@@ -139,10 +136,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportDataLksgTestData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
         val predefinedCsv = File("./src/test/resources/dataExport/lksgDataOutput.csv").readText(Charsets.UTF_8)
@@ -155,10 +154,12 @@ class DataExportServiceTest {
         val excelStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportDataLksgTestData),
-                ExportFileType.EXCEL,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.EXCEL,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
         val bytes = excelStream.inputStream.readAllBytes()
         Assertions.assertTrue(bytes.isNotEmpty(), "Excel stream should not be empty")
@@ -194,10 +195,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -233,10 +236,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 listOf(companyExportData),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("lksg"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -273,17 +278,13 @@ class DataExportServiceTest {
             mock<DataPointBaseTypeResolvedSchema> {
                 on { resolvedSchema } doReturn resolvedSchemaJson
             }
-        whenever(mockSpecificationApi.getResolvedFrameworkSpecification("lksg"))
-            .thenReturn(baseTypeSchema)
-        whenever(mockDataPointUtils.getFrameworkSpecificationOrNull("lksg")).thenReturn(
-            FrameworkSpecification(
-                IdWithRef("testId", "testRef"),
-                "testFramework",
-                "testBusinessDefinition",
-                testDataProvider.createTestSpecification(),
-                "testPath",
-            ),
-        )
+        doReturn(baseTypeSchema)
+            .whenever(mockSpecificationService)
+            .getResolvedFrameworkSpecification("sfdr")
+        doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
+            .whenever(mockDatasetAssembler)
+            .getFrameworkTemplate("sfdr")
+        doReturn(true).whenever(mockSpecificationService).isAssembledFramework("sfdr")
     }
 
     @Test
@@ -292,10 +293,12 @@ class DataExportServiceTest {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
                 portfolioDataTwoCompanies,
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -352,10 +355,12 @@ class DataExportServiceTest {
                             ),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("lksg"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -384,10 +389,12 @@ class DataExportServiceTest {
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
-                keepValueFieldsOnly = true,
-                includeAliases = true,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = true,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
@@ -412,10 +419,12 @@ class DataExportServiceTest {
                         data = objectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
-                ExportFileType.CSV,
-                DataType.valueOf("sfdr"),
-                keepValueFieldsOnly = true,
-                includeAliases = false,
+                ExportOptions(
+                    DataType.valueOf("sfdr"),
+                    ExportFileType.CSV,
+                    keepValueFieldsOnly = true,
+                    includeAliases = false,
+                ),
             )
 
         val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
