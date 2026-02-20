@@ -310,18 +310,22 @@ export default defineComponent({
      * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
      */
     async fetchPriorities() {
-      const dimensions: BasicDataDimensions[] = this.displayDataOfPage.map((row) => ({
-        companyId: row.companyId,
-        dataType: row.framework,
-        reportingPeriod: row.reportingPeriod,
-      }));
-      const priorityResponse =
-        await this.apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
-      const newPriorityByDimensions: Record<string, number> = {};
-      priorityResponse.data.forEach((entry) => {
-        newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
-      });
-      this.priorityByDimensions = newPriorityByDimensions;
+      try {
+        const dimensions: BasicDataDimensions[] = this.displayDataOfPage.map((row) => ({
+          companyId: row.companyId,
+          dataType: row.framework,
+          reportingPeriod: row.reportingPeriod,
+        }));
+        const priorityResponse =
+          await this.apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
+        const newPriorityByDimensions: Record<string, number> = {};
+        priorityResponse.data.forEach((entry) => {
+          newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
+        });
+        this.priorityByDimensions = newPriorityByDimensions;
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     /**
