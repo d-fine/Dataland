@@ -68,4 +68,9 @@ data class ReducedDataSourcing(
         example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_EXAMPLE,
     )
     val dataExtractor: String? = null,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+    )
+    val priority: Int? = null,
 )

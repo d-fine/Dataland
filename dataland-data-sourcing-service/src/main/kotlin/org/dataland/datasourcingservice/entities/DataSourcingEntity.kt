@@ -61,6 +61,8 @@ class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
+    @Column(name = "priority")
+    var priority: Int = 10,
     @NotAudited
     @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JsonManagedReference
@@ -88,9 +90,14 @@ class DataSourcingEntity(
     }
 
     /**
-     * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields for non-admins.
+     * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields based on caller permissions.
+     * @param isAdmin whether the requesting user is an admin
+     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
      */
-    fun toStoredDataSourcing(isAdmin: Boolean = false): StoredDataSourcing =
+    fun toStoredDataSourcing(
+        isAdmin: Boolean = false,
+        isAdminOrProvider: Boolean = false,
+    ): StoredDataSourcing =
         StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -104,12 +111,14 @@ class DataSourcingEntity(
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
             associatedRequestIds = if (isAdmin) associatedRequests.map { it.id.toString() }.toMutableSet() else emptySet(),
+            priority = if (isAdminOrProvider) priority else null,
         )
 
     /**
      * Converts this DataSourcingEntity to a ReducedDataSourcing dto.
+     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
      */
-    fun toReducedDataSourcing(): ReducedDataSourcing =
+    fun toReducedDataSourcing(isAdminOrProvider: Boolean = false): ReducedDataSourcing =
         ReducedDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -121,12 +130,18 @@ class DataSourcingEntity(
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
+            priority = if (isAdminOrProvider) priority else null,
         )
 
     /**
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
+     * @param isAdmin whether the requesting user is an admin
+     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
      */
-    fun toDataSourcingWithoutReferences(isAdmin: Boolean): DataSourcingWithoutReferences =
+    fun toDataSourcingWithoutReferences(
+        isAdmin: Boolean,
+        isAdminOrProvider: Boolean = false,
+    ): DataSourcingWithoutReferences =
         DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -137,5 +152,6 @@ class DataSourcingEntity(
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
+            priority = if (isAdminOrProvider) priority else null,
         )
 }
