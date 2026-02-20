@@ -126,7 +126,10 @@ class DataSourcingEntity(
     /**
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
      */
-    fun toDataSourcingWithoutReferences(isAdmin: Boolean): DataSourcingWithoutReferences =
+    fun toDataSourcingWithoutReferences(
+        isAdmin: Boolean,
+        lastModifiedDate: Long,
+    ): DataSourcingWithoutReferences =
         DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -137,5 +140,6 @@ class DataSourcingEntity(
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
+            lastModifiedDate = lastModifiedDate,
         )
 }

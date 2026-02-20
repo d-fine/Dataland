@@ -9,7 +9,11 @@ import {
   CompanyRightsControllerApi,
   RequestControllerApi as CommunityManagerRequestControllerApi,
 } from '@clients/communitymanager';
-import { EnhancedRequestControllerApi, RequestControllerApi } from '@clients/datasourcingservice';
+import {
+  DataSourcingControllerApi,
+  EnhancedRequestControllerApi,
+  RequestControllerApi,
+} from '@clients/datasourcingservice';
 import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
 import { QaControllerApi } from '@clients/qaservice';
@@ -31,6 +35,7 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApi;
+  dataSourcingController: DataSourcingControllerApi;
   enhancedRequestController: EnhancedRequestControllerApi;
   communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
@@ -98,6 +103,7 @@ export class ApiClientProvider {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
       requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
+      dataSourcingController: this.getClientFactory('/data-sourcing')(DataSourcingControllerApi),
       enhancedRequestController: this.getClientFactory('/data-sourcing')(EnhancedRequestControllerApi),
       communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
