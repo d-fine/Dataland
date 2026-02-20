@@ -10,7 +10,7 @@ import org.flywaydb.core.api.migration.Context
 class V2__AddPriorityToDataSourcing : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "ALTER TABLE data_sourcing ADD COLUMN priority INTEGER NOT NULL DEFAULT 10;",
+            "ALTER TABLE data_sourcing ADD COLUMN IF NOT EXISTS priority INTEGER NOT NULL DEFAULT 10;",
         )
     }
 }
