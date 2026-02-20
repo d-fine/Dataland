@@ -1,6 +1,7 @@
 package org.dataland.datasourcingservice.integrationTests.serviceTests
 
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -23,11 +24,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
@@ -42,6 +45,8 @@ class DataSourcingQueryManagerTest
         private val dataSourcingQueryManager: DataSourcingQueryManager,
         private val dataSourcingRepository: DataSourcingRepository,
     ) : BaseIntegrationTest() {
+        @MockBean
+        lateinit var companyRolesControllerApi: CompanyRolesControllerApi
         private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
         private lateinit var dataSourcingEntities: List<DataSourcingEntity>
         private val mockSecurityContext = mock<SecurityContext>()
@@ -59,6 +64,9 @@ class DataSourcingQueryManagerTest
                 )
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
             SecurityContextHolder.setContext(mockSecurityContext)
+            doReturn(emptyList<Any>()).whenever(companyRolesControllerApi).getExtendedCompanyRoleAssignments(
+                anyOrNull(), anyOrNull(), anyOrNull(),
+            )
         }
 
         /**
@@ -112,7 +120,7 @@ class DataSourcingQueryManagerTest
             val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
                 indicesOfExpectedResults
-                    .map { dataSourcingEntities[it].toStoredDataSourcing(isUserAdmin) }
+                    .map { dataSourcingEntities[it].toStoredDataSourcing(isAdmin = isUserAdmin, isAdminOrProvider = isUserAdmin) }
             val actualResults =
                 dataSourcingQueryManager.searchDataSourcings(
                     companyId = companyId?.let { UUID.fromString(it) },
@@ -141,6 +149,7 @@ class DataSourcingQueryManagerTest
                         it.associatedRequestIds.isEmpty(),
                         "Non-admin user should not see associatedRequestIds",
                     )
+                    Assertions.assertNull(it.priority, "Non-admin non-provider user should not see priority")
                 }
         }
     }

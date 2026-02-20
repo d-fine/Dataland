@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -71,6 +72,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingValidator,
             existingRequestsManager,
             mockCloudEventMessageHandler,
+            mock<CompanyRolesControllerApi>(),
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()
 

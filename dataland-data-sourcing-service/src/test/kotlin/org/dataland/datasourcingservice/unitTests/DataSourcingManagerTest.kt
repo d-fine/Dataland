@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.unitTests
 
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -36,6 +37,7 @@ class DataSourcingManagerTest {
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
     private val mockExistingRequestsManager = mock<ExistingRequestsManager>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
+    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
     private lateinit var requestDataSourcingAssigner: RequestDataSourcingAssigner
@@ -88,6 +90,7 @@ class DataSourcingManagerTest {
             mockDataSourcingRepository,
             mockExistingRequestsManager,
             mockCloudEventMessageHandler,
+            mockCompanyRolesControllerApi,
         )
 
         doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
@@ -129,6 +132,7 @@ class DataSourcingManagerTest {
                 dataSourcingRepository = mockDataSourcingRepository,
                 existingRequestsManager = mockExistingRequestsManager,
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
+                companyRolesControllerApi = mockCompanyRolesControllerApi,
             )
 
         requestDataSourcingAssigner =
