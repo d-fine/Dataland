@@ -59,7 +59,7 @@ class DataSourcingQueryManagerTest
             mockAuthentication =
                 AuthenticationMock.mockJwtAuthentication(
                     "userName",
-                    "userId",
+                    "e2a9f1a2-5b3c-4d6e-8f7a-1b2c3d4e5f60",
                     if (isUserAdmin) setOf(DatalandRealmRole.ROLE_ADMIN) else setOf(DatalandRealmRole.ROLE_USER),
                 )
             doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
