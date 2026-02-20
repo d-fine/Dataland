@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -21,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -321,6 +324,63 @@ interface DataSourcingApi {
         @RequestParam
         dateOfNextDocumentSourcingAttempt: LocalDate,
     ): ResponseEntity<ReducedDataSourcing>
+
+    /**
+     * Patch the priority of a DataSourcing object specified by ID.
+     */
+    @Operation(
+        summary = "Patch DataSourcing priority",
+        description = "Patch the priority of a DataSourcing object specified by ID.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched priority."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland Admins have the right to patch the priority of data sourcing objects.",
+                content = [Content(schema = Schema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "DataSourcing object not found.",
+                content = [Content(schema = Schema())],
+            ),
+        ],
+    )
+    @PatchMapping(value = ["/{dataSourcingId}/priority"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDataSourcingPriority(
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
+        )
+        @PathVariable
+        dataSourcingId: String,
+        @Parameter(
+            description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+            example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+        )
+        @RequestParam
+        priority: Int,
+    ): ResponseEntity<StoredDataSourcing>
+
+    /**
+     * Retrieve the priorities of data sourcing objects for a list of data dimensions.
+     */
+    @Operation(
+        summary = "Get priorities for a list of data dimensions",
+        description = "Returns the priority of the data sourcing object matching each provided set of data dimensions.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved priorities."),
+        ],
+    )
+    @PostMapping(value = ["/priorities"], consumes = ["application/json"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDataSourcingPriorities(
+        @RequestBody dataDimensions: List<BasicDataDimensions>,
+    ): ResponseEntity<List<DataSourcingPriorityByDataDimensions>>
 
     /**
      * Search for DataSourcing objects based on various parameters.

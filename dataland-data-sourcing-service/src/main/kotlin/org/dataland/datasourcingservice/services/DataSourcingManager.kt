@@ -3,6 +3,8 @@ package org.dataland.datasourcingservice.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -11,6 +13,7 @@ import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -20,6 +23,7 @@ import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
 import org.dataland.datasourcingservice.utils.isUserAdmin
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -40,6 +44,7 @@ class DataSourcingManager
         private val dataSourcingValidator: DataSourcingValidator,
         private val existingRequestsManager: ExistingRequestsManager,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
+        private val companyRolesControllerApi: CompanyRolesControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -47,16 +52,36 @@ class DataSourcingManager
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
 
+        private fun isCurrentUserAdminOrProviderFor(entity: DataSourcingEntity): Boolean {
+            val userId = DatalandAuthentication.fromContextOrNull()?.userId
+            return isUserAdmin() ||
+                (
+                    userId != null &&
+                        listOfNotNull(entity.documentCollector, entity.dataExtractor).any { companyId ->
+                            companyRolesControllerApi
+                                .getExtendedCompanyRoleAssignments(
+                                    userId = ValidationUtils.convertToUUID(userId),
+                                    companyId = companyId,
+                                ).isNotEmpty()
+                        }
+                )
+        }
+
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
          * @param dataSourcingEntityId the ID of the data sourcing entity to retrieve
          * @return the associated StoredDataSourcing object
          */
         @Transactional(readOnly = true)
-        fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing =
-            getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
-                .toStoredDataSourcing(isUserAdmin())
-                .also { logger.info("Get data sourcing entity with id: $dataSourcingEntityId") }
+        fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing {
+            val entity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger.info("Get data sourcing entity with id: $dataSourcingEntityId")
+            val isAdmin = isUserAdmin()
+            return entity.toStoredDataSourcing(
+                isAdmin = isAdmin,
+                isAdminOrProvider = isAdmin || isCurrentUserAdminOrProviderFor(entity),
+            )
+        }
 
         /**
          * Patches the data sourcing entity with the given ID according to the given patch object.
@@ -73,7 +98,8 @@ class DataSourcingManager
             val correlationId = randomUUID().toString()
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Patch data sourcing entity with id: $dataSourcingEntityId. CorrelationId: $correlationId")
-            return handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch, correlationId).toStoredDataSourcing()
+            val result = handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch, correlationId)
+            return result.toStoredDataSourcing(isAdmin = isUserAdmin(), isAdminOrProvider = true)
         }
 
         /**
@@ -102,6 +128,7 @@ class DataSourcingManager
             }
             updateIfNotNull(dataSourcingPatch.dataExtractor) { fullyFetchedDataSourcingEntity.dataExtractor = it }
             updateIfNotNull(dataSourcingPatch.adminComment) { fullyFetchedDataSourcingEntity.adminComment = it }
+            updateIfNotNull(dataSourcingPatch.priority) { fullyFetchedDataSourcingEntity.priority = it }
             updateIfNotNull(dataSourcingPatch.associatedRequests) { associatedRequest ->
                 fullyFetchedDataSourcingEntity.associatedRequests =
                     associatedRequest
@@ -197,7 +224,7 @@ class DataSourcingManager
                 dataSourcingEntity,
                 DataSourcingPatch(state = state),
                 correlationId,
-            ).toReducedDataSourcing()
+            ).toReducedDataSourcing(isAdminOrProvider = true)
         }
 
         /**
@@ -228,7 +255,7 @@ class DataSourcingManager
                 dataSourcingEntity,
                 DataSourcingPatch(documentIds = newDocumentsIds),
                 correlationId,
-            ).toReducedDataSourcing()
+            ).toReducedDataSourcing(isAdminOrProvider = true)
         }
 
         /**
@@ -252,7 +279,7 @@ class DataSourcingManager
                 dataSourcingEntity,
                 DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date),
                 correlationId,
-            ).toReducedDataSourcing()
+            ).toReducedDataSourcing(isAdminOrProvider = true)
         }
 
         /**
@@ -286,7 +313,7 @@ class DataSourcingManager
                     adminComment = adminComment,
                 ),
                 correlationId,
-            ).toStoredDataSourcing(isUserAdmin())
+            ).toStoredDataSourcing(isAdmin = true, isAdminOrProvider = true)
         }
 
         /**
@@ -301,13 +328,66 @@ class DataSourcingManager
                 "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
-            val isUserAdmin = isUserAdmin()
+            val isAdmin = isUserAdmin()
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(isUserAdmin) }
+            return dataSourcingEntities.map { entity ->
+                entity.toStoredDataSourcing(
+                    isAdmin = isAdmin,
+                    isAdminOrProvider = isAdmin || isCurrentUserAdminOrProviderFor(entity),
+                )
+            }
         }
+
+        /**
+         * Patches the priority of the data sourcing entity with the given ID.
+         * @param dataSourcingEntityId the id of the data sourcing entity to patch
+         * @param priority the new priority value
+         * @return the updated StoredDataSourcing object
+         */
+        @Transactional
+        fun patchPriority(
+            dataSourcingEntityId: UUID,
+            priority: Int,
+        ): StoredDataSourcing {
+            val correlationId = randomUUID().toString()
+            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
+            logger.info(
+                "Patch priority to $priority for data sourcing entity with id: $dataSourcingEntityId." +
+                    " CorrelationId: $correlationId.",
+            )
+            return handlePatchOfDataSourcingEntity(
+                dataSourcingEntity,
+                DataSourcingPatch(priority = priority),
+                correlationId,
+            ).toStoredDataSourcing(isAdmin = true, isAdminOrProvider = true)
+        }
+
+        /**
+         * Retrieves the priority for each provided set of data dimensions.
+         * Data sourcing objects without a match are omitted from the result.
+         * @param dataDimensions list of data dimensions to look up
+         * @return list of priorities paired with their data dimensions
+         */
+        @Transactional(readOnly = true)
+        fun getPrioritiesByDataDimensions(dataDimensions: List<BasicDataDimensions>): List<DataSourcingPriorityByDataDimensions> =
+            dataDimensions.mapNotNull { dimensions ->
+                dataSourcingRepository
+                    .findByDataDimensionAndFetchAllStoredFields(
+                        companyId = ValidationUtils.convertToUUID(dimensions.companyId),
+                        dataType = dimensions.dataType,
+                        reportingPeriod = dimensions.reportingPeriod,
+                    )?.let { entity ->
+                        DataSourcingPriorityByDataDimensions(
+                            companyId = dimensions.companyId,
+                            dataType = dimensions.dataType,
+                            reportingPeriod = dimensions.reportingPeriod,
+                            priority = entity.priority,
+                        )
+                    }
+            }
 
         /**
          * Retrieves the history of revisions for a specific data sourcing object identified by its ID.
@@ -319,9 +399,10 @@ class DataSourcingManager
         @Transactional(readOnly = true)
         fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
+            val isAdmin = isUserAdmin()
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences(isUserAdmin()) }
+                .map { it.toDataSourcingWithoutReferences(isAdmin = isAdmin, isAdminOrProvider = isAdmin) }
                 .ifEmpty {
                     throw DataSourcingNotFoundApiException(id)
                 }
