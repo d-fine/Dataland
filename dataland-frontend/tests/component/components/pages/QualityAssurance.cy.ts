@@ -324,6 +324,22 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('.p-tag').filter(':contains("7")').should('exist');
   });
 
+  it('Check that medium and slate priority tags are displayed when priorities are returned', () => {
+    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
+    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
+    cy.intercept('POST', `**/data-sourcing/priorities`, [
+      { companyId: companyIdAlpha, dataType: DataTypeEnum.Lksg, reportingPeriod: '2022', priority: 5 },
+      { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 10 },
+    ]);
+
+    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
+    assertUnfilteredDatatableState();
+
+    cy.get('.p-tag').filter(':contains("5")').should('exist');
+    cy.get('.p-tag').filter(':contains("10")').should('exist');
+  });
+
   it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
