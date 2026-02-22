@@ -329,6 +329,72 @@
         ]
       }
     },
+    "/data-sourcing/priorities": {
+      "post": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Get priorities for a list of data dimensions",
+        "description": "Returns the priority of the data sourcing object matching each provided set of data dimensions.",
+        "operationId": "getDataSourcingPriorities",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BasicDataDimensions"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved priorities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataSourcingPriorityByDataDimensions"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/{dataRequestId}/state": {
       "patch": {
         "tags": [
@@ -707,6 +773,85 @@
           },
           "403": {
             "description": "Only Dataland Admins have the right to patch states of data sourcing objects. Document Collectors and Data Extractors have the right to patch to specific states."
+          },
+          "404": {
+            "description": "DataSourcing object not found."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-sourcing/{dataSourcingId}/priority": {
+      "patch": {
+        "tags": [
+          "data-sourcing-controller"
+        ],
+        "summary": "Patch DataSourcing priority",
+        "description": "Patch the priority of a DataSourcing object specified by ID.",
+        "operationId": "patchDataSourcingPriority",
+        "parameters": [
+          {
+            "name": "dataSourcingId",
+            "in": "path",
+            "description": "The unique identifier of the data sourcing object.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched priority.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataSourcing"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland Admins have the right to patch the priority of data sourcing objects."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -1930,6 +2075,38 @@
           "Done"
         ]
       },
+      "DataSourcingPriorityByDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "priority",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
       "StoredRequest": {
         "required": [
           "companyId",
@@ -2105,6 +2282,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "priority": {
+            "type": "integer",
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "format": "int32",
+            "example": 1
           }
         }
       },
@@ -2176,6 +2359,12 @@
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "format": "int32",
+            "example": 1
           }
         }
       },
@@ -2320,6 +2509,12 @@
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          },
+          "priority": {
+            "type": "integer",
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "format": "int32",
+            "example": 1
           }
         }
       },

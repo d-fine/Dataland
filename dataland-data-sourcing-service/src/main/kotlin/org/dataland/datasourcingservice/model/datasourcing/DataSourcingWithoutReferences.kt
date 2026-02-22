@@ -54,4 +54,9 @@ data class DataSourcingWithoutReferences(
         example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
     )
     val adminComment: String? = null,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+    )
+    val priority: Int? = null,
 )

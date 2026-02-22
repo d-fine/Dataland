@@ -1,9 +1,12 @@
 package org.dataland.datasourcingservice.services
 
+import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.isUserAdmin
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -16,7 +19,16 @@ import java.util.UUID
 @Service("DataSourcingQueryManager")
 class DataSourcingQueryManager(
     @Autowired private val dataSourcingRepository: DataSourcingRepository,
+    @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
 ) {
+    private fun getCurrentUserProviderCompanyIds(): Set<UUID> {
+        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return emptySet()
+        return companyRolesControllerApi
+            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(userId))
+            .map { UUID.fromString(it.companyId) }
+            .toSet()
+    }
+
     /**
      * Search data sourcings based on the provided filters and return a paginated chunk.
      * @param companyId to filter by
@@ -36,7 +48,8 @@ class DataSourcingQueryManager(
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
     ): List<StoredDataSourcing> {
-        val isUserAdmin = isUserAdmin()
+        val isAdmin = isUserAdmin()
+        val providerCompanyIds = if (isAdmin) emptySet() else getCurrentUserProviderCompanyIds()
         return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
@@ -44,8 +57,14 @@ class DataSourcingQueryManager(
                         companyId, dataType, reportingPeriod, state,
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
-            ).map {
-                it.toStoredDataSourcing(isUserAdmin)
+            ).map { entity ->
+                entity.toStoredDataSourcing(
+                    isAdmin = isAdmin,
+                    isAdminOrProvider =
+                        isAdmin ||
+                            entity.documentCollector in providerCompanyIds ||
+                            entity.dataExtractor in providerCompanyIds,
+                )
             }
     }
 }
