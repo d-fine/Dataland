@@ -82,6 +82,37 @@ class DataSourcingManagerTest {
             )
         }
 
+    private fun buildStoredRequestResponse(): StoredRequest =
+        StoredRequest(
+            id = newRequest.id.toString(),
+            companyId = newRequest.companyId.toString(),
+            reportingPeriod = newRequest.reportingPeriod,
+            dataType = newRequest.dataType,
+            userId = newRequest.userId.toString(),
+            creationTimestamp = newRequest.creationTimestamp,
+            memberComment = newRequest.memberComment,
+            adminComment = newRequest.adminComment,
+            lastModifiedDate = newRequest.lastModifiedDate,
+            requestPriority = newRequest.requestPriority,
+            state = RequestState.Processed,
+            dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
+        )
+
+    private fun setupPatchRequestStateMock(storedRequestResponse: StoredRequest) {
+        doAnswer { invocation ->
+            val requestId = invocation.arguments[0] as UUID
+            val state = invocation.arguments[1] as RequestState
+            if (requestId == newRequest.id) {
+                newRequest.state = state
+            }
+            storedRequestResponse
+        }.whenever(mockExistingRequestsManager).patchRequestState(
+            any<UUID>(),
+            eq(RequestState.Processed),
+            anyOrNull(),
+        )
+    }
+
     @BeforeEach
     fun setup() {
         reset(
@@ -96,34 +127,7 @@ class DataSourcingManagerTest {
         doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockDataSourcingRepository).save(any())
 
-        val storedRequestResponse =
-            StoredRequest(
-                id = newRequest.id.toString(),
-                companyId = newRequest.companyId.toString(),
-                reportingPeriod = newRequest.reportingPeriod,
-                dataType = newRequest.dataType,
-                userId = newRequest.userId.toString(),
-                creationTimestamp = newRequest.creationTimestamp,
-                memberComment = newRequest.memberComment,
-                adminComment = newRequest.adminComment,
-                lastModifiedDate = newRequest.lastModifiedDate,
-                requestPriority = newRequest.requestPriority,
-                state = RequestState.Processed,
-                dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
-            )
-
-        doAnswer { invocation ->
-            val requestId = invocation.arguments[0] as UUID
-            val state = invocation.arguments[1] as RequestState
-            if (requestId == newRequest.id) {
-                newRequest.state = state
-            }
-            storedRequestResponse
-        }.whenever(mockExistingRequestsManager).patchRequestState(
-            any<UUID>(),
-            eq(RequestState.Processed),
-            anyOrNull(),
-        )
+        setupPatchRequestStateMock(buildStoredRequestResponse())
 
         dataSourcingManager =
             DataSourcingManager(

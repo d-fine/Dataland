@@ -282,7 +282,7 @@ export default defineComponent({
           )
         ).data;
         this.waitingForData = false;
-        void this.fetchPriorities();
+        await this.fetchPriorities();
       } catch (error) {
         console.error(error);
       }
