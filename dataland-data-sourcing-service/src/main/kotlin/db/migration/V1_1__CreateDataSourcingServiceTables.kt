@@ -8,7 +8,7 @@ import org.flywaydb.core.api.migration.Context
  * Uses IF NOT EXISTS to handle existing databases that were created before Flyway was introduced.
  */
 @Suppress("ClassName")
-class V1_1__CreateInitialTables : BaseJavaMigration() {
+class V1_1__CreateDataSourcingServiceTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "CREATE TABLE IF NOT EXISTS data_sourcing (" +
