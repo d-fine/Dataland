@@ -26,7 +26,10 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
             freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn"))
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(jvmVersion.majorVersion))
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget
+                    .fromTarget(jvmVersion.majorVersion),
+            )
         }
     }
     sonar {

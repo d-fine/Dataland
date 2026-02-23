@@ -49,7 +49,12 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.file("jacoco/jacoco.exec").get().asFile)
+        setDestinationFile(
+            layout.buildDirectory
+                .file("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
     }
 }
 
@@ -66,7 +71,12 @@ tasks.register(
     description = "Task to generate a Spring web server based on the specification"
     group = "server"
     input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("server/dummyeurodatclientservice").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("server/dummyeurodatclientservice")
+            .get()
+            .toString(),
+    )
     packageName.set(dummyEurodatClientServerDestinationPackage)
     modelPackage.set("$dummyEurodatClientServerDestinationPackage.model")
     apiPackage.set("$dummyEurodatClientServerDestinationPackage.api")
