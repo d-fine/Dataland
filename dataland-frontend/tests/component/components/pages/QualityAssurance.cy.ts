@@ -35,6 +35,7 @@ function clickOnReportingPeriod(reportingPeriod: string): void {
  * @param reportingPeriod to include
  * @param datasetReviewId
  * @param reviewerUserName
+ * @param reviewerUserId
  * @param timestamp to include
  * @returns the element
  */
@@ -46,6 +47,7 @@ function buildReviewQueueElement(
   reportingPeriod: string,
   datasetReviewId: string | undefined = undefined,
   reviewerUserName: string | undefined = undefined,
+  reviewerUserId: string | undefined = undefined,
   timestamp: number = Date.now()
 ): QaReviewResponse {
   return {
@@ -58,6 +60,7 @@ function buildReviewQueueElement(
     qaStatus: QaStatus.Pending,
     datasetReviewId: datasetReviewId,
     reviewerUserName: reviewerUserName,
+    reviewerUserId: reviewerUserId,
     numberQaReports: 0,
   };
 }
@@ -114,6 +117,7 @@ describe('Component tests for the Quality Assurance page', () => {
   const companyIdBeta = crypto.randomUUID();
   const datasetReviewId = crypto.randomUUID();
   const reviewerUserName = 'Reviewer user name';
+  const reviewerUserId = 'Revieweruserid';
   const reviewQueueElementBeta = buildReviewQueueElement(
     dataIdBeta,
     companyNameBeta,
@@ -121,7 +125,8 @@ describe('Component tests for the Quality Assurance page', () => {
     DataTypeEnum.Sfdr,
     '2023',
     datasetReviewId,
-    reviewerUserName
+    reviewerUserName,
+    reviewerUserId,
   );
 
   /**
@@ -391,12 +396,15 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
-      request.reply(201, {});
+      request.reply(201, {
+          companyId: companyIdAlpha,
+          dataType: DataTypeEnum.Lksg,
+      });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.wait('@createDatasetReview');
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
-    cy.get('button[data-test="goToReviewButton"]').filter(`:contains(${reviewerUserName})`).click();
+    cy.contains('td', `${dataIdBeta}`).click();
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
     cy.get('@createDatasetReview.all').should('have.length', 1);
   });
