@@ -5,6 +5,7 @@ import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.model.enums.DisplayedState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
@@ -95,7 +96,7 @@ class RequestHistoryServiceTest
                 ),
             )
 
-        private val dummyDataSourcingStatHistory: List<DataSourcingWithoutReferences> =
+        private val dummyDataSourcingStateHistory: List<DataSourcingWithoutReferences> =
             listOf(
                 DataSourcingWithoutReferences(
                     dataSourcingId = dataSourcingID.toString(),
@@ -187,7 +188,7 @@ class RequestHistoryServiceTest
         fun `request history is sorted by timestamps`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dummyDataSourcingStatHistory)
+            doReturn(dummyDataSourcingStateHistory)
                 .whenever(mockDataSourcingManager)
                 .retrieveDataSourcingHistory(
                     ValidationUtils.convertToUUID(
@@ -213,7 +214,7 @@ class RequestHistoryServiceTest
         fun `single history entry if state changes in request and data sourcing are within 1000 ms`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dummyDataSourcingStatHistory.subList(0, 1))
+            doReturn(dummyDataSourcingStateHistory.subList(0, 1))
                 .whenever(mockDataSourcingManager)
                 .retrieveDataSourcingHistory(
                     ValidationUtils.convertToUUID(
@@ -235,7 +236,7 @@ class RequestHistoryServiceTest
         fun `same admin comment is visible for equal request states`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dummyDataSourcingStatHistory.subList(0, 2))
+            doReturn(dummyDataSourcingStateHistory.subList(0, 2))
                 .whenever(mockDataSourcingManager)
                 .retrieveDataSourcingHistory(
                     ValidationUtils.convertToUUID(
@@ -254,7 +255,7 @@ class RequestHistoryServiceTest
         fun `check that consecutive rows with same displayed status are only shown once in not extended request history`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
-            doReturn(dummyDataSourcingStatHistory)
+            doReturn(dummyDataSourcingStateHistory)
                 .whenever(mockDataSourcingManager)
                 .retrieveDataSourcingHistory(
                     ValidationUtils.convertToUUID(
@@ -272,5 +273,101 @@ class RequestHistoryServiceTest
 
             val extendedRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
             Assertions.assertEquals(5, extendedRequestHistory.size)
+        }
+
+        @Test
+        fun `non-final data sourcing state is carried over when request enters processing`() {
+            doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
+
+            val dummyEarlierDataSourcingStateHistory: List<DataSourcingWithoutReferences> =
+                listOf(
+                    DataSourcingWithoutReferences(
+                        dataSourcingId = dataSourcingID.toString(),
+                        companyId = dummyCompanyId.toString(),
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        state = DataSourcingState.DocumentSourcing,
+                        dateOfNextDocumentSourcingAttempt = null,
+                        documentCollector = null,
+                        dataExtractor = null,
+                        adminComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest - (0.5 * 600000).toLong(),
+                    ),
+                    DataSourcingWithoutReferences(
+                        dataSourcingId = dataSourcingID.toString(),
+                        companyId = dummyCompanyId.toString(),
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        state = DataSourcingState.DataExtraction,
+                        dateOfNextDocumentSourcingAttempt = null,
+                        documentCollector = null,
+                        dataExtractor = null,
+                        adminComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 3 * 600000,
+                    ),
+                )
+
+            doReturn(dummyEarlierDataSourcingStateHistory)
+                .whenever(mockDataSourcingManager)
+                .retrieveDataSourcingHistory(
+                    ValidationUtils.convertToUUID(
+                        dataSourcingID.toString(),
+                    ),
+                    true,
+                )
+
+            val extendedRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
+
+            Assertions.assertEquals(4, extendedRequestHistory.size)
+            Assertions.assertEquals(DisplayedState.DocumentSourcing, extendedRequestHistory[1].displayedState)
+            Assertions.assertEquals(DataSourcingState.DocumentSourcing, extendedRequestHistory[1].dataSourcingState)
+        }
+
+        @Test
+        fun `final data sourcing state creates new initialized entry on processing`() {
+            doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
+
+            val dummyEarlierDataSourcingStateHistory: List<DataSourcingWithoutReferences> =
+                listOf(
+                    DataSourcingWithoutReferences(
+                        dataSourcingId = dataSourcingID.toString(),
+                        companyId = dummyCompanyId.toString(),
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        state = DataSourcingState.Done,
+                        dateOfNextDocumentSourcingAttempt = null,
+                        documentCollector = null,
+                        dataExtractor = null,
+                        adminComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest - (0.5 * 600000).toLong(),
+                    ),
+                    DataSourcingWithoutReferences(
+                        dataSourcingId = dataSourcingID.toString(),
+                        companyId = dummyCompanyId.toString(),
+                        reportingPeriod = "2025",
+                        dataType = "dummyDataType",
+                        state = DataSourcingState.Initialized,
+                        dateOfNextDocumentSourcingAttempt = null,
+                        documentCollector = null,
+                        dataExtractor = null,
+                        adminComment = null,
+                        lastModifiedDate = lastModifiedDateFirstRequest + 600000L,
+                    ),
+                )
+
+            doReturn(dummyEarlierDataSourcingStateHistory)
+                .whenever(mockDataSourcingManager)
+                .retrieveDataSourcingHistory(
+                    ValidationUtils.convertToUUID(
+                        dataSourcingID.toString(),
+                    ),
+                    true,
+                )
+
+            val extendedRequestHistory = requestHistoryService.retrieveExtendedRequestHistory(requestId)
+
+            Assertions.assertEquals(3, extendedRequestHistory.size)
+            Assertions.assertEquals(DisplayedState.Validated, extendedRequestHistory[1].displayedState)
+            Assertions.assertEquals(DataSourcingState.Initialized, extendedRequestHistory[1].dataSourcingState)
         }
     }
