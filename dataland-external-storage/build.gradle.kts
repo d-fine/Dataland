@@ -146,7 +146,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }
 

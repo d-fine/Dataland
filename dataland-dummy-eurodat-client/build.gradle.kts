@@ -49,7 +49,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.file("jacoco/jacoco.exec").get().asFile)
     }
 }
 
@@ -66,7 +66,7 @@ tasks.register(
     description = "Task to generate a Spring web server based on the specification"
     group = "server"
     input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
-    outputDir.set("$buildDir/server/dummyeurodatclientservice")
+    outputDir.set(layout.buildDirectory.dir("server/dummyeurodatclientservice").get().toString())
     packageName.set(dummyEurodatClientServerDestinationPackage)
     modelPackage.set("$dummyEurodatClientServerDestinationPackage.model")
     apiPackage.set("$dummyEurodatClientServerDestinationPackage.api")
@@ -85,13 +85,13 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateDummyEurodatClientService")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateDummyEurodatClientService")
 }
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/server/dummyeurodatclientservice/src")
+    main.kotlin.srcDir(layout.buildDirectory.dir("server/dummyeurodatclientservice/src"))
 }
 
 ktlint {

@@ -198,7 +198,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-keycloak-adapter:assemble")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }
 
