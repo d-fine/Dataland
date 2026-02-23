@@ -46,6 +46,11 @@ data class QaReviewResponse(
     )
     val qaStatus: QaStatus,
     @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
+    )
+    val reviewerUserId: String?,
+    @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )

@@ -370,6 +370,7 @@ class QaReviewManager
             val datasetReviews = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
             val latestDatasetReview = datasetReviews.firstOrNull()
             val reviewerUserName = latestDatasetReview?.reviewerUserName
+            val reviewerUserId = latestDatasetReview?.reviewerUserId
             return QaReviewResponse(
                 dataId = this.dataId,
                 companyId = this.companyId,
@@ -378,6 +379,7 @@ class QaReviewManager
                 reportingPeriod = this.reportingPeriod,
                 timestamp = this.timestamp,
                 qaStatus = this.qaStatus,
+                reviewerUserId = reviewerUserId,
                 reviewerUserName = reviewerUserName,
                 datasetReviewId = latestDatasetReview?.dataSetReviewId,
                 numberQaReports = numberQaReports,

@@ -109,6 +109,9 @@
             <Column field="reviewDataset" header="REVIEW STATUS" class="w-2 qa-review-button">
               <template #body="slotProps">
                 <PrimeButton
+                  v-if="
+                    getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) === 'Start Review'
+                  "
                   @click="createAndViewDatasetReview(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
@@ -116,6 +119,20 @@
                   icon-pos="right"
                   variant="link"
                 />
+                <PrimeButton
+                  v-else-if="
+                    getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) ===
+                    'Continue Review'
+                  "
+                  data-test="goToReviewButton"
+                  :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
+                  icon="pi pi-chevron-right"
+                  icon-pos="right"
+                  variant="link"
+                />
+                <span v-else>
+                  {{ getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) }}
+                </span>
               </template>
             </Column>
           </DataTable>
