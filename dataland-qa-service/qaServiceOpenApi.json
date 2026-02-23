@@ -5373,6 +5373,41 @@
           }
         }
       },
+      "AssuranceDataPoint": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "None",
+              "LimitedAssurance",
+              "ReasonableAssurance"
+            ]
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
       "EuTaxonomyActivity": {
         "required": [
           "activityName"
@@ -5986,6 +6021,9 @@
           "euTaxonomyActivityLevelReporting": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
+          "assurance": {
+            "$ref": "#/components/schemas/QaReportDataPointAssuranceDataPoint"
+          },
           "numberOfEmployees": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -6408,6 +6446,26 @@
             "fileName": "SustainabilityReport",
             "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
             "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "QaReportDataPointAssuranceDataPoint": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/AssuranceDataPoint"
           }
         }
       },
@@ -6899,6 +6957,9 @@
           },
           "isNfrdMandatory": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/QaReportDataPointAssuranceDataPoint"
           }
         }
       },

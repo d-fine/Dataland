@@ -5,6 +5,7 @@ import {
   ExtendedDataPointListEuTaxonomyAlignedActivityQualityEnum,
   QaReportDataPointVerdict,
 } from '@clients/qaservice';
+import { AssuranceDataPointValueEnum } from '@clients/backend';
 
 /**
  * Generates eu taxonomy non-financials qa report prepared fixtures by generating random
@@ -46,6 +47,15 @@ function manipulateFixtureForEuTaxonomyNonFinancialsDatasetWithOneCorrection(
  */
 function generateEuTaxonomyNonFinancialsQaReportWithCorrectionForAlignedActivities(): EuTaxonomyNonFinancialsQaReport {
   return {
+    general: {
+      assurance: {
+        comment: 'some comment',
+        verdict: QaReportDataPointVerdict.QaAccepted,
+        correctedData: {
+          value: AssuranceDataPointValueEnum.LimitedAssurance,
+        },
+      },
+    },
     revenue: {
       alignedActivities: {
         comment: 'some comment',
