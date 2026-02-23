@@ -137,40 +137,32 @@
             </div>
           </div>
         </div>
-      </div>
-      <PrimeDialog
-        :visible="isConfirmationModalVisible"
-        header="Start Review?"
-        modal
-        :dismissable-mask="true"
-        style="min-width: 20rem; text-align: center"
-        data-test="confirmation-modal"
-      >
-        <div style="text-align: center; padding: 8px 0">
-          <div style="margin-top: 8px; white-space: pre-line">
-            Are you sure you want to start a review for this dataset? Once started, the review cannot be deleted and
-            will be visible for other reviewers on Dataland.
+        <PrimeDialog
+          :visible="isConfirmationModalVisible"
+          header="Start Review?"
+          modal
+          :dismissable-mask="true"
+          @close="isConfirmationModalVisible = false"
+          style="min-width: 20rem; text-align: center"
+          data-test="confirmation-modal"
+        >
+          <div style="text-align: center; padding: 8px 0">
+            <div class="confirmation-modal-message">
+              Are you sure you want to start a review for this dataset? Once started, the review cannot be deleted and
+              will be visible for other reviewers on Dataland.
+            </div>
           </div>
-        </div>
-        <template #footer>
-          <PrimeButton
-            label="CANCEL"
-            @click="isConfirmationModalVisible = false"
-            data-test="cancel-confirmation-modal-button"
-          />
-          <PrimeButton
-            label="OK"
-            @click="
-              () => {
-                isConfirmationModalVisible = false;
-                createAndViewDatasetReview(selectedDataId);
-                selectedDataId = '';
-              }
-            "
-            data-test="ok-confirmation-modal-button"
-          />
-        </template>
-      </PrimeDialog>
+          <template #footer>
+            <PrimeButton
+              label="CANCEL"
+              @click="isConfirmationModalVisible = false"
+              variant="outlined"
+              data-test="cancel-confirmation-modal-button"
+            />
+            <PrimeButton label="OK" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
+          </template>
+        </PrimeDialog>
+      </div>
     </AuthorizationWrapper>
   </TheContent>
 </template>
@@ -204,7 +196,6 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const keycloak = await getKeycloakPromise();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 type QaReviewRow = QaReviewResponse & { reviewStatus: string };
@@ -260,10 +251,12 @@ async function getQaDataForCurrentPage(): Promise<void> {
       datasetsPerPage,
       currentChunkIndex.value
     );
-    displayDataOfPage.value = response.data.map((row) => ({
-      ...row,
-      reviewStatus: getReviewStatus(row.reviewerUserId, row.reviewerUserName),
-    }));
+    displayDataOfPage.value = await Promise.all(
+      response.data.map(async (row) => ({
+        ...row,
+        reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+      }))
+    );
     totalRecords.value = (
       await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
         selectedFrameworksAsSet,
@@ -311,6 +304,16 @@ async function createAndViewDatasetReview(dataId: string): Promise<void> {
   } catch (error) {
     console.error(error);
   }
+}
+
+/**
+ * Confirms the start of a dataset review in the confirmation modal.
+ * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
+ */
+function confirmStartReview(): void {
+  isConfirmationModalVisible.value = false;
+  void createAndViewDatasetReview(selectedDataId.value);
+  selectedDataId.value = '';
 }
 
 /**
@@ -365,7 +368,11 @@ function validateSearchBarInput(): boolean {
  * @param reviewerUserName the user name of the reviewer of the dataset
  * @returns the label of the review button
  */
-function getReviewStatus(reviewerUserId: string | undefined, reviewerUserName: string | undefined): string {
+async function getReviewStatus(
+  reviewerUserId: string | undefined,
+  reviewerUserName: string | undefined
+): Promise<string> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
   if (reviewerUserId && reviewerUserName) {
     return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
@@ -461,5 +468,12 @@ onMounted(() => {
 
 .qa-review-button {
   text-align: end;
+}
+
+.confirmation-modal-message {
+  max-width: 24rem;
+  margin: 8px auto 0;
+  white-space: normal;
+  word-break: break-word;
 }
 </style>
