@@ -68,7 +68,7 @@
             :rowHover="true"
             :first="firstRowIndex"
             data-test="qa-review-section"
-            @row-click="goToQaViewPage($event)"
+            @row-click="handleRowClick($event)"
             paginator
             paginator-position="top"
             :rows="datasetsPerPage"
@@ -112,7 +112,7 @@
                   v-if="
                     getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) === 'Start Review'
                   "
-                  @click="createAndViewDatasetReview(slotProps.data)"
+                  @click="createAndViewDatasetReview(slotProps.data.dataId)"
                   data-test="goToReviewButton"
                   :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
                   icon="pi pi-chevron-right"
@@ -143,6 +143,39 @@
           </div>
         </div>
       </div>
+      <PrimeDialog
+        :visible="isConfirmationModalVisible"
+        header="Start Review?"
+        modal
+        :dismissable-mask="true"
+        style="min-width: 20rem; text-align: center"
+        data-test="confirmation-modal"
+      >
+        <div style="text-align: center; padding: 8px 0">
+          <div style="margin-top: 8px; white-space: pre-line">
+            Are you sure you want to start a review for this dataset? Once started, the review cannot be deleted and
+            will be visible for other reviewers on Dataland.
+          </div>
+        </div>
+        <template #footer>
+          <PrimeButton
+            label="CANCEL"
+            @click="isConfirmationModalVisible = false"
+            data-test="cancel-confirmation-modal-button"
+          />
+          <PrimeButton
+            label="OK"
+            @click="
+              () => {
+                isConfirmationModalVisible = false;
+                createAndViewDatasetReview(selectedDataId);
+                selectedDataId = '';
+              }
+            "
+            data-test="ok-confirmation-modal-button"
+          />
+        </template>
+      </PrimeDialog>
     </AuthorizationWrapper>
   </TheContent>
 </template>
@@ -170,6 +203,7 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
+import PrimeDialog from 'primevue/dialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
@@ -188,6 +222,8 @@ const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableReportingPeriods = ref<undefined | Array<Date>>(undefined);
 const showNotEnoughCharactersWarning = ref(false);
+const isConfirmationModalVisible = ref(false);
+const selectedDataId = ref<string>('');
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -243,32 +279,39 @@ async function getQaDataForCurrentPage(): Promise<void> {
 }
 
 /**
- * Navigates to the view framework data page on a click on the row of the company
- * @param event the row click event
- * @returns the promise of the router push action
+ * Navigates to the view framework data page on a click on the row of the company if a dataset review already exists.
+ * If no dataset review exists, opens a confirmation modal. If the user confirms, creates a dataset review and navigates to the corresponding dataset review page.
+ * @param event DataTableRowClickEvent
  */
-function goToQaViewPage(event: DataTableRowClickEvent): ReturnType<typeof router.push> {
+function handleRowClick(event: DataTableRowClickEvent): void {
   const qaDataObject = event.data as QaReviewResponse;
-  const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+  if (qaDataObject.datasetReviewId == null) {
+    selectedDataId.value = qaDataObject.dataId;
+    isConfirmationModalVisible.value = true;
+  } else {
+    void goToQaViewPage(event.data.companyId, event.data.framework, event.data.dataId);
+  }
+}
+
+/**
+ * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
+ */
+function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
+  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
   return router.push(qaUri);
 }
 
 /**
- * If no dataset review exists, create one. Then go to corresponding dataset review page.
- * @param qaDataObject stored information about the row
+ * Creates a dataset review for the dataset with the given dataId and navigates to the corresponding dataset review page.
+ *
  */
-function createAndViewDatasetReview(qaDataObject: QaReviewResponse): void {
-  const createReviewPromise =
-    qaDataObject.datasetReviewId == null
-      ? apiClientProvider.apiClients.datasetReviewController.postDatasetReview(qaDataObject.dataId)
-      : Promise.resolve();
-
-  const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-  createReviewPromise
-    .then(() => router.push(qaUri))
-    .catch((error) => {
-      console.error(error);
-    });
+async function createAndViewDatasetReview(dataId: string): Promise<void> {
+  try {
+    const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
+    await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
