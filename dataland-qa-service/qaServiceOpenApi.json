@@ -7584,6 +7584,11 @@
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
+          "reviewerUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user reviewing the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
           "reviewerUserName": {
             "type": "string",
             "description": "The name or email of the user reviewing the dataset.",

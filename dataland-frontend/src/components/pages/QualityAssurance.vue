@@ -109,29 +109,24 @@
             <Column field="reviewDataset" header="REVIEW STATUS" class="w-2 qa-review-button">
               <template #body="slotProps">
                 <PrimeButton
-                  v-if="
-                    getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) === 'Start Review'
-                  "
-                  @click="createAndViewDatasetReview(slotProps.data.dataId)"
+                  v-if="slotProps.data.reviewStatus === 'Start Review'"
+                  @click.stop="createAndViewDatasetReview(slotProps.data.dataId)"
                   data-test="goToReviewButton"
-                  :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
+                  :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
                 />
                 <PrimeButton
-                  v-else-if="
-                    getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) ===
-                    'Continue Review'
-                  "
+                  v-else-if="slotProps.data.reviewStatus === 'Continue Review'"
                   data-test="goToReviewButton"
-                  :label="getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName)"
+                  :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
                 />
                 <span v-else>
-                  {{ getReviewStatus(slotProps.data.reviewerUserId, slotProps.data.reviewerUserName) }}
+                  {{ slotProps.data.reviewStatus }}
                 </span>
               </template>
             </Column>
@@ -212,7 +207,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const keycloak = await getKeycloakPromise();
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const displayDataOfPage = ref<QaReviewResponse[]>([]);
+type QaReviewRow = QaReviewResponse & { reviewStatus: string };
+const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
 const firstRowIndex = ref(0);
@@ -220,7 +216,7 @@ const totalRecords = ref(0);
 const searchBarInput = ref('');
 const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const availableReportingPeriods = ref<undefined | Array<Date>>(undefined);
+const availableReportingPeriods = ref<Array<Date>>([]);
 const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
@@ -253,7 +249,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
       )
     );
     const reportingPeriodFilter: Set<string> = new Set<string>(
-      availableReportingPeriods.value?.map((date) => date.getFullYear().toString())
+      availableReportingPeriods.value.map((date) => date.getFullYear().toString())
     );
     const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
     const response = await apiClientProvider.apiClients.qaController.getInfoOnDatasets(
@@ -264,7 +260,10 @@ async function getQaDataForCurrentPage(): Promise<void> {
       datasetsPerPage,
       currentChunkIndex.value
     );
-    displayDataOfPage.value = response.data;
+    displayDataOfPage.value = response.data.map((row) => ({
+      ...row,
+      reviewStatus: getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+    }));
     totalRecords.value = (
       await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
         selectedFrameworksAsSet,
@@ -284,7 +283,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
  * @param event DataTableRowClickEvent
  */
 function handleRowClick(event: DataTableRowClickEvent): void {
-  const qaDataObject = event.data as QaReviewResponse;
+  const qaDataObject = event.data as QaReviewRow;
   if (qaDataObject.datasetReviewId == null) {
     selectedDataId.value = qaDataObject.dataId;
     isConfirmationModalVisible.value = true;
