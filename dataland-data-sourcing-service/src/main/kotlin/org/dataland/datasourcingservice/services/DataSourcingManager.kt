@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -312,10 +311,11 @@ class DataSourcingManager
         /**
          * Retrieves the history of revisions for a specific data sourcing object identified by its ID.
          * The returned DTOs do not include lazily fetched references to avoid runtime errors.
+         *
          * @param id The UUID string of the data sourcing object whose history is to be retrieved.
          * @param stateChangesOnly If true, only returns revisions where the state changed.
-         * @return A list of StoredDataSourcing objects representing the revision history.
-         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
+         * @return A list of DataSourcingWithoutReferences objects representing the revision history.
+         * @throws DataSourcingNotFoundApiException If no data sourcing object with the specified ID exists.
          */
         @Transactional(readOnly = true)
         fun retrieveDataSourcingHistory(

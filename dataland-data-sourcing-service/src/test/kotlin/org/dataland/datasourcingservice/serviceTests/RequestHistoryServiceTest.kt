@@ -211,7 +211,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `single history entry if state changes in request and data sourcing are within 1000 ms`() {
+        fun `single history entry if state changes in request and data sourcing are within 250 ms`() {
             doReturn(dummyRequestStateHistory.subList(0, 2)).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             doReturn(dummyDataSourcingStateHistory.subList(0, 1))
@@ -324,7 +324,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `final data sourcing state creates new initialized entry on processing`() {
+        fun `final data sourcing state is not carried over when request enters processing`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             val dummyEarlierDataSourcingStateHistory: List<DataSourcingWithoutReferences> =

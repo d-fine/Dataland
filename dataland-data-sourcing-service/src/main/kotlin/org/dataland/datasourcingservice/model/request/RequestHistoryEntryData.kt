@@ -5,7 +5,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcing
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 
 /**
- * A class that holds the combined states of a request and its associated data sourcing entry, used for the "mixedState"
+ * A class that has the fields needed to display a request history entry for a non admin view
  */
 data class RequestHistoryEntryData(
     @field:Schema(

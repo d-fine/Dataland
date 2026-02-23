@@ -26,6 +26,7 @@ data class ExtendedRequestHistoryEntryData(
     @field:Schema(
         description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
         example = "Initialized",
+        nullable = true,
     )
     override val dataSourcingState: DataSourcingState? = null,
     @field:Schema(

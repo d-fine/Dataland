@@ -3,7 +3,7 @@ package org.dataland.datasourcingservice.model.request
 import org.dataland.datasourcingservice.model.enums.DisplayedState
 
 /**
- * A class that holds the combined states of a request and its associated data sourcing entry, used for the "mixedState"
+ * An interface that holds the common fields of RequestHistoryEntryData and ExtendedRequestHistoryEntryData
  */
 interface RequestHistoryEntry {
     val modificationDate: Long
