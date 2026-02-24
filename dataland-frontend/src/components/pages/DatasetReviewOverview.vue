@@ -91,7 +91,6 @@ import DatasetReviewComparisonTable from '@/components/resources/datasetReview/D
 import { ref, onMounted, computed } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
-import Skeleton from 'primevue/skeleton';
 import { useQuery } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
