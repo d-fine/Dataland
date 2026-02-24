@@ -20,6 +20,7 @@
 
         <DatePicker
           class="search-filter"
+          input-class="w-full"
           data-test="reportingPeriod"
           v-model="availableReportingPeriods"
           :updateModelType="'date'"
@@ -34,6 +35,7 @@
         <FrameworkDataSearchDropdownFilter
           v-model="selectedFrameworks"
           class="search-filter"
+          input-class="w-full"
           :available-items="availableFrameworks"
           filter-name="Framework"
           data-test="framework-picker"
@@ -76,37 +78,37 @@
             :total-records="totalRecords"
             @page="onPage($event)"
           >
-            <Column header="DATA ID" class="w-2">
+            <Column header="DATA ID">
               <template #body="slotProps">
                 {{ slotProps.data.dataId }}
               </template>
             </Column>
-            <Column header="COMPANY NAME" class="w-2">
+            <Column header="COMPANY NAME">
               <template #body="slotProps">
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column header="FRAMEWORK" class="w-2">
+            <Column header="FRAMEWORK">
               <template #body="slotProps">
                 {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
             </Column>
-            <Column header="REPORTING PERIOD" class="w-2">
+            <Column header="REPORTING PERIOD">
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
               </template>
             </Column>
-            <Column header="SUBMISSION DATE" class="w-2">
+            <Column header="SUBMISSION DATE">
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column header="NUMBER OF QA REPORTS" class="w-2">
+            <Column header="NUMBER OF QA REPORTS">
               <template #body="slotProps">
                 {{ slotProps.data.numberQaReports }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="REVIEW STATUS" class="w-2 qa-review-button">
+            <Column field="reviewDataset" header="REVIEW STATUS" body-class="qa-review-status-cell">
               <template #body="slotProps">
                 <PrimeButton
                   v-if="slotProps.data.reviewStatus === 'Start Review'"
@@ -478,8 +480,23 @@ onMounted(() => {
   background-color: white;
 }
 
-.qa-review-button {
-  text-align: end;
+.qa-review-status-cell {
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+
+  .p-button.p-button-link {
+    justify-content: flex-start;
+    text-align: left;
+    padding-inline: 0;
+    min-width: 0;
+  }
+
+  .p-button-label {
+    display: block;
+    text-align: left;
+    padding-inline: 0;
+  }
 }
 
 .confirmation-modal-message {
