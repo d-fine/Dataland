@@ -51,7 +51,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
         )
         datasetReviewId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * A method to store a new dataset review object
@@ -78,7 +78,7 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * @param datasetId identifier used to uniquely specify the dataset
@@ -104,7 +104,7 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetId: String,
-    ): ResponseEntity<List<DatasetReviewResponse>>
+    ): ResponseEntity<List<DatasetReviewResponse<Any>>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -130,7 +130,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
         )
         datasetReviewId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -173,7 +173,7 @@ interface DatasetReviewApi {
             required = true,
         )
         state: DatasetReviewState,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -215,7 +215,7 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
         )
         dataPointId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -257,7 +257,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
         )
         qaReportId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -306,5 +306,5 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_EXAMPLE,
         )
         dataPointType: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetReviewResponse<Any>>
 }
