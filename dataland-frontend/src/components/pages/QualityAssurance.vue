@@ -161,7 +161,7 @@
               variant="outlined"
               data-test="cancel-confirmation-modal-button"
             />
-            <PrimeButton label="OK" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
+            <PrimeButton label="CONFIRM" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
           </template>
         </PrimeDialog>
       </div>

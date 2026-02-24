@@ -26,41 +26,35 @@ function clickOnReportingPeriod(reportingPeriod: string): void {
   cy.get('span[data-test="reportingPeriod"]').should('exist').click();
 }
 
+type ReviewQueueElementOptions = {
+  dataId: string;
+  companyName: string;
+  companyId: string;
+  framework: string;
+  reportingPeriod: string;
+  datasetReviewId?: string;
+  reviewerUserName?: string;
+  reviewerUserId?: string;
+  timestamp?: number;
+};
+
 /**
  * Builds a review queue element.
- * @param dataId to include
- * @param companyName to include
- * @param companyId to include
- * @param framework to include
- * @param reportingPeriod to include
- * @param datasetReviewId
- * @param reviewerUserName
- * @param reviewerUserId
- * @param timestamp to include
+ * @param options to include in the element
  * @returns the element
  */
-function buildReviewQueueElement(
-  dataId: string,
-  companyName: string,
-  companyId: string,
-  framework: string,
-  reportingPeriod: string,
-  datasetReviewId: string | undefined = undefined,
-  reviewerUserName: string | undefined = undefined,
-  reviewerUserId: string | undefined = undefined,
-  timestamp: number = Date.now()
-): QaReviewResponse {
+function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewResponse {
   return {
-    dataId: dataId,
-    timestamp: timestamp,
-    companyName: companyName,
-    companyId: companyId,
-    framework: framework,
-    reportingPeriod: reportingPeriod,
+    dataId: options.dataId,
+    timestamp: options.timestamp || Date.now(),
+    companyName: options.companyName,
+    companyId: options.companyId,
+    framework: options.framework,
+    reportingPeriod: options.reportingPeriod,
     qaStatus: QaStatus.Pending,
-    datasetReviewId: datasetReviewId,
-    reviewerUserName: reviewerUserName,
-    reviewerUserId: reviewerUserId,
+    datasetReviewId: options.datasetReviewId,
+    reviewerUserName: options.reviewerUserName,
+    reviewerUserId: options.reviewerUserId,
     numberQaReports: 0,
   };
 }
@@ -104,13 +98,13 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdAlpha = crypto.randomUUID();
   const companyNameAlpha = 'Alpha Company AG';
   const companyIdAlpha = crypto.randomUUID();
-  const reviewQueueElementAlpha = buildReviewQueueElement(
-    dataIdAlpha,
-    companyNameAlpha,
-    companyIdAlpha,
-    DataTypeEnum.Lksg,
-    '2022'
-  );
+  const reviewQueueElementAlpha = buildReviewQueueElement({
+    dataId: dataIdAlpha,
+    companyName: companyNameAlpha,
+    companyId: companyIdAlpha,
+    framework: DataTypeEnum.Lksg,
+    reportingPeriod: '2022',
+  });
 
   const dataIdBeta = crypto.randomUUID();
   const companyNameBeta = 'Beta Corporate Ltd.';
@@ -118,16 +112,16 @@ describe('Component tests for the Quality Assurance page', () => {
   const datasetReviewId = crypto.randomUUID();
   const reviewerUserName = 'Reviewer user name';
   const reviewerUserId = 'Revieweruserid';
-  const reviewQueueElementBeta = buildReviewQueueElement(
-    dataIdBeta,
-    companyNameBeta,
-    companyIdBeta,
-    DataTypeEnum.Sfdr,
-    '2023',
-    datasetReviewId,
-    reviewerUserName,
-    reviewerUserId
-  );
+  const reviewQueueElementBeta = buildReviewQueueElement({
+    dataId: dataIdBeta,
+    companyName: companyNameBeta,
+    companyId: companyIdBeta,
+    framework: DataTypeEnum.Sfdr,
+    reportingPeriod: '2023',
+    datasetReviewId: datasetReviewId,
+    reviewerUserName: reviewerUserName,
+    reviewerUserId: reviewerUserId,
+  });
 
   /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table

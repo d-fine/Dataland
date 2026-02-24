@@ -56,8 +56,8 @@ describeIf(
           '2022',
           data.t,
           false
-        ).then(() => {
-          testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
+        ).then((dataMetaInfo) => {
+          testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany, dataMetaInfo);
         });
       });
     });
@@ -83,8 +83,12 @@ describeIf(
 /**
  * Tests that the item was added and is visible on the QA list
  * @param storedCompany The company for which a dataset has been uploaded
+ * @param dataMetaInfo the data meta information of the dataset that that was uploaded before
  */
-function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredCompany): void {
+function testSubmittedDatasetIsInReviewListAndAcceptIt(
+  storedCompany: StoredCompany,
+  dataMetaInfo: DataMetaInformation
+): void {
   const companyName = storedCompany.companyInformation.companyName;
   login(uploader_name, uploader_pw);
 
@@ -101,7 +105,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
     .get('[data-test="qa-review-company-name"]')
     .should('contain', companyName);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
+  cy.visit(`/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/${dataMetaInfo.dataId}`);
 
   cy.get('[data-test="qaRejectButton"]').should('exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
@@ -136,7 +140,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   viewRecentlyUploadedDatasetsInQaTable();
 
-  cy.visit(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
+  cy.visit(`/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/${dataMetaInfo.dataId}`);
 
   validateThatViewPageIsInReviewMode();
   cy.get('[data-test="qaRejectButton"]').should('exist').click();
