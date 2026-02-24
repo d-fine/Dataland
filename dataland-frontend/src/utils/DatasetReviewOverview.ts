@@ -1,4 +1,5 @@
 export type AcceptedSource = 'Original' | 'Qa' | 'Custom';
+import type { DataTypeEnum } from '@clients/backend';
 
 export type QaReportSummary = {
   qaReportId: string;
@@ -18,7 +19,7 @@ export type DatasetReviewOverview = {
   datasetReviewId: string;
   datasetId: string;
   companyId: string;
-  framework: string;
+  framework: DataTypeEnum;
   reportingPeriod: string;
   reviewState: 'Pending' | 'Finished' | 'Abandoned';
   reviewerUserId?: string;

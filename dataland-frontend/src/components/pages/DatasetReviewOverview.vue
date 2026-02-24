@@ -1,6 +1,6 @@
 <template>
   <TheContent>
-    <div class="card p-4 mb-4 border-round-xl surface-border border-1 surface-card">
+    <div class="card p-4 mb-4 border-round-xl surface-card">
       <div class="flex justify-content-between align-items-start">
         <div>
           <h1 class="text-3xl font-bold m-0 mb-2 text-left">
@@ -33,9 +33,10 @@
       </div>
     </div>
 
-    <div class="card p-4 mb-4 border-round-xl surface-border border-1 surface-card">
+    <div class="card p-4 mb-4 surface-card">
       <div v-if="isDatasetReviewPending || isCompanyDataPending" class="flex justify-content-center p-5">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+        <p class="font-medium text-xl">Loading Dataset Review..</p>
+        <DatalandProgressSpinner />
       </div>
       <div v-else-if="isDatasetReviewError || isCompanyDataError">
         <p class="text-red-500">Failed to load dataset review or company information</p>
@@ -44,7 +45,7 @@
         <div class="flex justify-content-between align-items-start mb-2">
           <div>
             <h2 class="text-2xl font-bold m-0 mb-3 text-left">
-              <span>SFDR</span>
+              <span>{{ frameworkNameAsString }}</span>
             </h2>
             <div class="font-italic mb-1 text-left">98 / 107 datapoints to review</div>
             <div class="flex align-items-center gap-4">
@@ -77,7 +78,7 @@
         <DatasetReviewComparisonTable
           v-if="datasetReview && !isDatasetReviewPending && !isDatasetReviewError && !isDataMetaInformationPending"
           :company-id="companyId ?? ''"
-          :framework="datasetReview.framework"
+          :framework="dataMetaInformation!.dataType"
           :data-id="props.dataId"
           :dataset-review="datasetReview"
           :data-meta-information="dataMetaInformation!"
@@ -97,6 +98,8 @@ import Skeleton from 'primevue/skeleton';
 import { useQuery } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 // Props passed from the router
 const props = defineProps<{
@@ -180,6 +183,9 @@ const lei = computed(() => {
   return leiArray && leiArray.length > 0 ? leiArray[0] : '—';
 });
 const companyName = computed(() => companyData.value?.companyInformation?.companyName ?? '—');
+const frameworkNameAsString = computed(() =>
+  dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
+);
 
 const currentUserName = ref('Max Mustermann');
 const assignedToMe = ref(false);
