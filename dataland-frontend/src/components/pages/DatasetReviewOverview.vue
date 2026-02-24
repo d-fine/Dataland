@@ -74,7 +74,15 @@
             </div>
           </div>
         </div>
-        <DatasetReviewComparisonTable />
+        <DatasetReviewComparisonTable
+          v-if="datasetReview && !isDatasetReviewPending && !isDatasetReviewError && !isDataMetaInformationPending"
+          :company-id="companyId ?? ''"
+          :framework="datasetReview.framework"
+          :data-id="props.dataId"
+          :dataset-review="datasetReview"
+          :data-meta-information="dataMetaInformation!"
+          :search-query="''"
+        />
       </div>
     </div>
   </TheContent>
@@ -88,6 +96,7 @@ import PrimeButton from 'primevue/button';
 import Skeleton from 'primevue/skeleton';
 import { useQuery } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
+import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
 
 // Props passed from the router
 const props = defineProps<{
@@ -97,6 +106,29 @@ const props = defineProps<{
 // Api Client
 const apiClientProvider = useApiClient();
 
+// MOCK REVIEW OBJECT FOR NOW
+const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
+  datasetReviewId: 'rev-123',
+  datasetId: props.dataId,
+  companyId: 'comp-888',
+  framework: 'sfdr',
+  reportingPeriod: '2023',
+  reviewState: 'Pending',
+  dataPoints: {
+    'datapoint-001': {
+      dataPointTypeId: 'type-a',
+      dataPointId: 'dp-001',
+      qaReport: {
+        qaReportId: 'qa-55',
+        verdict: 'QaRejected',
+        correctedData: '150.5',
+      },
+      acceptedSource: 'Qa',
+      customValue: null,
+    },
+  },
+};
+
 const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
@@ -104,17 +136,35 @@ const {
 } = useQuery({
   queryKey: ['qaReviewResponse', props.dataId],
   queryFn: async () => {
-    const response = await apiClientProvider.apiClients.qaController.getQaReviewResponseByDataId(props.dataId);
+    // Optional: Simulate network latency
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Return the mock instead of the API call
+    return MOCK_DATASET_REVIEW;
+
+    /* const response = await apiClientProvider.apiClients.qaController.getDatasetReviewOverview(props.dataId);
     return response.data;
+    */
   },
   enabled: !!props.dataId,
 });
 
-const companyId = computed(() => datasetReview.value?.companyId);
-const companyName = computed(() => datasetReview.value?.companyName ?? '—');
+const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useQuery({
+  queryKey: ['frameworkData', props.dataId],
+  queryFn: async () => {
+    const response = await apiClientProvider.backendClients.metaDataController.getDataMetaInfo(props.dataId);
+    return response.data;
+  },
+});
 
-const { data: companyData, isPending: isCompanyDataPending } = useQuery({
-  queryKey: ['metaDataForDataId', props.dataId],
+const companyId = computed(() => dataMetaInformation.value?.companyId);
+
+const {
+  data: companyData,
+  isPending: isCompanyDataPending,
+  isError: isCompanyDataError,
+} = useQuery({
+  queryKey: ['companyData', companyId.value],
   queryFn: async () => {
     const response = await apiClientProvider.backendClients.companyDataController.getCompanyById(companyId.value!);
     return response.data;
@@ -129,6 +179,7 @@ const lei = computed(() => {
   const leiArray = companyData.value?.companyInformation?.identifiers?.Lei;
   return leiArray && leiArray.length > 0 ? leiArray[0] : '—';
 });
+const companyName = computed(() => companyData.value?.companyInformation?.companyName ?? '—');
 
 const currentUserName = ref('Max Mustermann');
 const assignedToMe = ref(false);
