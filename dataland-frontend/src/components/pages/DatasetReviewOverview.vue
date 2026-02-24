@@ -2,7 +2,7 @@
   <TheContent>
     <div
       v-if="isInitialLoading"
-      class="card p-8 mb-4 border-round-xl surface-card flex flex-column align-items-center justify-content-center"
+      class="card py-8 px-0 mb-4 border-round-xl surface-card flex flex-column align-items-center justify-content-center"
       style="min-height: 400px"
     >
       <p class="font-medium text-xl mt-3">Loading Company Information...</p>
@@ -10,7 +10,7 @@
     </div>
 
     <template v-else>
-      <div class="card p-4 mb-4 border-round-xl surface-card">
+      <div class="card py-8 px-0 mb-4 border-round-xl surface-card">
         <div class="flex justify-content-between align-items-start">
           <div>
             <h1 class="text-3xl font-bold m-0 mb-2 text-left">
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="card p-4 mb-4 surface-card">
+      <div class="card py-8 px-0 mb-4 surface-card">
         <div v-if="isDatasetReviewError || isCompanyDataError">
           <p class="text-red-500">Failed to load dataset review or company information</p>
         </div>

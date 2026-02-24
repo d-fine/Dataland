@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-0 overflow-hidden border-1 surface-border border-round-xl">
+  <div class="card p-0 overflow-hidden">
     <div class="p-datatable p-component">
       <div class="p-datatable-wrapper overflow-auto">
         <table class="p-datatable-table w-full" aria-label="Dataset review comparison table">
@@ -71,7 +71,7 @@
                 <template v-else>
                   <!-- KPI name column, styled like old table -->
                   <td
-                    class="headers-bg pl-4 vertical-align-top header-column-width"
+                    class="headers-bg vertical-align-top header-column-width"
                     :data-cell-label="row.label"
                     data-row-header="true"
                   >
