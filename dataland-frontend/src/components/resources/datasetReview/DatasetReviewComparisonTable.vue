@@ -174,7 +174,7 @@ const vTooltip = Tooltip;
 
 const {
   data: originalDataAndMeta,
-  isLoading: loadingOriginal,
+  isPending: loadingOriginal,
   error: errorOriginal,
 } = useQuery({
   queryKey: ['frameworkData', props.framework, props.dataId],

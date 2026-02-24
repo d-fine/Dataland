@@ -1,91 +1,88 @@
 <template>
   <TheContent>
-    <div class="card p-4 mb-4 border-round-xl surface-card">
-      <div class="flex justify-content-between align-items-start">
-        <div>
-          <h1 class="text-3xl font-bold m-0 mb-2 text-left">
-            <Skeleton v-if="isLoadingHeader" width="12rem" height="2rem" />
-            <span v-else>{{ companyName }}</span>
-          </h1>
+    <div
+      v-if="isInitialLoading"
+      class="card p-8 mb-4 border-round-xl surface-card flex flex-column align-items-center justify-content-center"
+      style="min-height: 400px"
+    >
+      <p class="font-medium text-xl mt-3">Loading Company Information...</p>
+      <DatalandProgressSpinner />
+    </div>
 
-          <div class="flex gap-3 text-color-secondary">
-            <template v-if="isLoadingHeader">
-              <Skeleton width="8rem" height="1rem" />
-              <span>|</span>
-              <Skeleton width="8rem" height="1rem" />
-              <span>|</span>
-              <Skeleton width="10rem" height="1rem" />
-            </template>
-            <template v-else>
+    <template v-else>
+      <div class="card p-4 mb-4 border-round-xl surface-card">
+        <div class="flex justify-content-between align-items-start">
+          <div>
+            <h1 class="text-3xl font-bold m-0 mb-2 text-left">
+              {{ companyName }}
+            </h1>
+
+            <div class="flex gap-3 text-color-secondary">
               <span>Sector: {{ sector }}</span>
               <span>|</span>
               <span>Headquarter: {{ headquarter }}</span>
               <span>|</span>
               <span>LEI: {{ lei }}</span>
-            </template>
-          </div>
-        </div>
-
-        <div class="flex gap-2 align-items-center">
-          <PrimeButton label="ADD TO PORTFOLIO" icon="pi pi-plus" @click="addToPortfolio" />
-          <PrimeButton label="REQUEST DATA" icon="pi pi-file" @click="requestData" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card p-4 mb-4 surface-card">
-      <div v-if="isDatasetReviewPending || isCompanyDataPending" class="flex justify-content-center p-5">
-        <p class="font-medium text-xl">Loading Dataset Review..</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else-if="isDatasetReviewError || isCompanyDataError">
-        <p class="text-red-500">Failed to load dataset review or company information</p>
-      </div>
-      <div v-else>
-        <div class="flex justify-content-between align-items-start mb-2">
-          <div>
-            <h2 class="text-2xl font-bold m-0 mb-3 text-left">
-              <span>{{ frameworkNameAsString }}</span>
-            </h2>
-            <div class="font-italic mb-1 text-left">98 / 107 datapoints to review</div>
-            <div class="flex align-items-center gap-4">
-              <span class="text-color-secondary">Data extracted from:</span>
-              <span class="text-primary font-medium cursor-pointer">Annual_Report_2024</span>
-              <span class="text-primary font-medium cursor-pointer underline">All documents</span>
             </div>
           </div>
-          <div>
-            <div class="flex gap-2 align-items-center">
-              <div v-if="assignedToMe" class="text-right mr-2">
-                <p class="font-medium m-0">Assigned to you</p>
+
+          <div class="flex gap-2 align-items-center">
+            <PrimeButton label="ADD TO PORTFOLIO" icon="pi pi-plus" @click="addToPortfolio" />
+            <PrimeButton label="REQUEST DATA" icon="pi pi-file" @click="requestData" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-4 mb-4 surface-card">
+        <div v-if="isDatasetReviewError || isCompanyDataError">
+          <p class="text-red-500">Failed to load dataset review or company information</p>
+        </div>
+        <div v-else>
+          <div class="flex justify-content-between align-items-start mb-2">
+            <div>
+              <h2 class="text-2xl font-bold m-0 mb-3 text-left">
+                <span>{{ frameworkNameAsString }}</span>
+              </h2>
+              <div class="font-italic mb-1 text-left">98 / 107 datapoints to review</div>
+              <div class="flex align-items-center gap-4">
+                <span class="text-color-secondary">Data extracted from:</span>
+                <span class="text-primary font-medium cursor-pointer">Annual_Report_2024</span>
+                <span class="text-primary font-medium cursor-pointer underline">All documents</span>
               </div>
-              <PrimeButton v-else label="ASSIGN YOURSELF" icon="pi pi-user" @click="assignToMe" />
-              <PrimeButton
-                label="REJECT DATASET"
-                severity="danger"
-                icon="pi pi-times"
-                outlined
-                @click="rejectDataset"
-              />
-              <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
             </div>
-            <div v-if="!assignedToMe" class="text-left">
-              <p class="text-sm m-0 text-left">Currently assigned to:</p>
-              <p class="text-sm m-0 text-left">{{ currentUserName }}</p>
+            <div>
+              <div class="flex gap-2 align-items-center">
+                <div v-if="assignedToMe" class="text-right mr-2">
+                  <p class="font-medium m-0">Assigned to you</p>
+                </div>
+                <PrimeButton v-else label="ASSIGN YOURSELF" icon="pi pi-user" @click="assignToMe" />
+                <PrimeButton
+                  label="REJECT DATASET"
+                  severity="danger"
+                  icon="pi pi-times"
+                  outlined
+                  @click="rejectDataset"
+                />
+                <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
+              </div>
+              <div v-if="!assignedToMe" class="text-left">
+                <p class="text-sm m-0 text-left">Currently assigned to:</p>
+                <p class="text-sm m-0 text-left">{{ currentUserName }}</p>
+              </div>
             </div>
           </div>
+          <DatasetReviewComparisonTable
+            v-if="datasetReview"
+            :company-id="companyId ?? ''"
+            :framework="dataMetaInformation!.dataType"
+            :data-id="props.dataId"
+            :dataset-review="datasetReview"
+            :data-meta-information="dataMetaInformation!"
+            :search-query="''"
+          />
         </div>
-        <DatasetReviewComparisonTable
-          v-if="datasetReview && !isDatasetReviewPending && !isDatasetReviewError && !isDataMetaInformationPending"
-          :company-id="companyId ?? ''"
-          :framework="dataMetaInformation!.dataType"
-          :data-id="props.dataId"
-          :dataset-review="datasetReview"
-          :data-meta-information="dataMetaInformation!"
-          :search-query="''"
-        />
       </div>
-    </div>
+    </template>
   </TheContent>
 </template>
 
@@ -167,7 +164,7 @@ const {
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
 } = useQuery({
-  queryKey: ['companyData', companyId.value],
+  queryKey: ['companyData', companyId],
   queryFn: async () => {
     const response = await apiClientProvider.backendClients.companyDataController.getCompanyById(companyId.value!);
     return response.data;
@@ -175,6 +172,9 @@ const {
   enabled: computed(() => !!companyId.value),
 });
 
+const isInitialLoading = computed(
+  () => isDatasetReviewPending.value || isCompanyDataPending.value || isDataMetaInformationPending.value
+);
 const isLoadingHeader = computed(() => isDatasetReviewPending.value || isCompanyDataPending.value);
 const sector = computed(() => companyData.value?.companyInformation?.sector ?? '—');
 const headquarter = computed(() => companyData.value?.companyInformation?.headquarters ?? '—');
