@@ -136,7 +136,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 
   viewRecentlyUploadedDatasetsInQaTable();
 
-  cy.contains('td', dataMetaInfo.dataId).click();
+  cy.visit(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
 
   validateThatViewPageIsInReviewMode();
   cy.get('[data-test="qaRejectButton"]').should('exist').click();

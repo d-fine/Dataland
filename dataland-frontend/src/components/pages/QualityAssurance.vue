@@ -110,7 +110,7 @@
               <template #body="slotProps">
                 <PrimeButton
                   v-if="slotProps.data.reviewStatus === 'Start Review'"
-                  @click.stop="createAndViewDatasetReview(slotProps.data.dataId)"
+                  @click.stop="handleReviewButtonClick(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
@@ -119,6 +119,7 @@
                 />
                 <PrimeButton
                   v-else-if="slotProps.data.reviewStatus === 'Continue Review'"
+                  @click.stop="handleReviewButtonClick(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
@@ -266,6 +267,18 @@ async function getQaDataForCurrentPage(): Promise<void> {
     waitingForData.value = false;
   } catch (error) {
     console.error(error);
+  }
+}
+
+/**
+ * Handles the review button click
+ * @param rowData QaReviewRow
+ */
+function handleReviewButtonClick(rowData: QaReviewRow): void {
+  if (rowData.datasetReviewId == null) {
+    void createAndViewDatasetReview(rowData.dataId);
+  } else {
+    void goToQaViewPage(rowData.companyId, rowData.framework, rowData.dataId);
   }
 }
 
