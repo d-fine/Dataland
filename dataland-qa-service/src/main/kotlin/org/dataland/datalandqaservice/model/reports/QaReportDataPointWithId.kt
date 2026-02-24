@@ -12,7 +12,7 @@ import java.util.UUID
  * @property verdict the QA verdict for the data point
  * @property correctedData corrected data for the data point if applicable
  */
-class QaReportDataPointWithId<T>(
+class QaReportDataPointWithId(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
@@ -26,5 +26,5 @@ class QaReportDataPointWithId<T>(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
-    val correctedData: T?,
+    val correctedData: String?,
 )

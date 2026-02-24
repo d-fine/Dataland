@@ -9,7 +9,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpe
 /**
  * API model for the dataset review objects returned.
  */
-data class DatasetReviewResponse<T>(
+data class DatasetReviewResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
@@ -49,5 +49,5 @@ data class DatasetReviewResponse<T>(
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
     var reviewerUserName: String?,
-    var dataPoints: Map<String, DataPointReviewOverview<T>>,
+    var dataPoints: Map<String, DataPointReviewOverview>,
 )
