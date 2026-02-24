@@ -276,7 +276,7 @@ class RequestHistoryServiceTest
         }
 
         @Test
-        fun `non-final data sourcing state is carried over when request enters processing`() {
+        fun `non final data sourcing state is carried over when request enters processing`() {
             doReturn(dummyRequestStateHistory).whenever(mockDataRevisionRepository).listDataRequestRevisionsById(requestId)
 
             val dummyEarlierDataSourcingStateHistory: List<DataSourcingWithoutReferences> =
