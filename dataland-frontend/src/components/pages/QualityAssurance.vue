@@ -138,11 +138,10 @@
           </div>
         </div>
         <PrimeDialog
-          :visible="isConfirmationModalVisible"
+          v-model:visible="isConfirmationModalVisible"
           header="Start Review?"
           modal
           :dismissable-mask="true"
-          @close="isConfirmationModalVisible = false"
           style="min-width: 20rem; text-align: center"
           data-test="confirmation-modal"
         >
@@ -471,9 +470,10 @@ onMounted(() => {
 }
 
 .confirmation-modal-message {
-  max-width: 24rem;
+  max-width: 30rem;
   margin: 8px auto 0;
   white-space: normal;
+  text-align: left;
   word-break: break-word;
 }
 </style>

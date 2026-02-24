@@ -126,7 +126,7 @@ describe('Component tests for the Quality Assurance page', () => {
     '2023',
     datasetReviewId,
     reviewerUserName,
-    reviewerUserId,
+    reviewerUserId
   );
 
   /**
@@ -397,8 +397,8 @@ describe('Component tests for the Quality Assurance page', () => {
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
       request.reply(201, {
-          companyId: companyIdAlpha,
-          dataType: DataTypeEnum.Lksg,
+        companyId: companyIdAlpha,
+        dataType: DataTypeEnum.Lksg,
       });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
