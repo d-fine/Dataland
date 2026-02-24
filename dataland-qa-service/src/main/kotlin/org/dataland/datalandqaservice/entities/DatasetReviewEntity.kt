@@ -7,10 +7,12 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewOverview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import java.util.UUID
+import kotlin.collections.emptyMap
 
 /**
  * The database entity for storing dataset reviews
@@ -55,6 +57,8 @@ class DatasetReviewEntity(
      * Convert to DatasetReview objects for API use.
      */
     fun toDatasetReviewResponse(): DatasetReviewResponse =
+        // qa report IDs
+        //
         DatasetReviewResponse(
             dataSetReviewId.toString(),
             datasetId.toString(),
@@ -64,10 +68,6 @@ class DatasetReviewEntity(
             reviewState,
             reviewerUserId?.toString(),
             null,
-            preapprovedDataPointIds.map { it.toString() }.toSet(),
-            qaReports.map { it.toString() }.toSet(),
-            approvedDataPointIds.mapValues { it.value.toString() },
-            approvedQaReportIds.mapValues { it.value.toString() },
-            approvedCustomDataPointIds.toMap(),
+            emptyMap<String, DataPointReviewOverview>(),
         )
 }
