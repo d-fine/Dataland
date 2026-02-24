@@ -12,10 +12,10 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
  * @property acceptedSource the source from which the accepted value for this data point was derived
  * @property customValue a custom value for this data point if applicable
  */
-data class DataPointReviewOverview<T>(
+data class DataPointReviewOverview(
     val dataPointTypeId: String,
     val dataPointId: String,
-    val qaReport: QaReportDataPointWithId<T>,
+    val qaReport: QaReportDataPointWithId,
     val acceptedSource: AcceptedDataPointSource,
-    val customValue: T?,
+    val customValue: String?,
 )

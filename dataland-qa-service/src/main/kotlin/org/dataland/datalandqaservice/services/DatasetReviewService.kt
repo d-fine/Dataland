@@ -35,7 +35,7 @@ class DatasetReviewService
          * Create a dataset review object associated to the given dataset.
          */
         @Transactional
-        fun postDatasetReview(datasetId: UUID): DatasetReviewResponse<Any> {
+        fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
             lateinit var datatypeToDatapointIds: Map<String, String>
             try {
                 datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
@@ -82,7 +82,7 @@ class DatasetReviewService
          * Method to get dataset review objects by dataset id.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse<Any>> {
+        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> {
             val entities = datasetReviewRepository.findAllByDatasetId(datasetId)
             return entities.toDatasetReviewResponsesWithReviewerUserNames()
         }
@@ -91,7 +91,7 @@ class DatasetReviewService
          * Method to set reviewer to current user.
          */
         @Transactional
-        fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse<Any> {
+        fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
 
@@ -105,7 +105,7 @@ class DatasetReviewService
         fun setReviewState(
             datasetReviewId: UUID,
             state: DatasetReviewState,
-        ): DatasetReviewResponse<Any> {
+        ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
@@ -120,7 +120,7 @@ class DatasetReviewService
         fun acceptOriginalDatapoint(
             datasetReviewId: UUID,
             dataPointId: UUID,
-        ): DatasetReviewResponse<Any> {
+        ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
@@ -144,7 +144,7 @@ class DatasetReviewService
         fun acceptQaReport(
             datasetReviewId: UUID,
             qaReportId: UUID,
-        ): DatasetReviewResponse<Any> {
+        ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
@@ -172,7 +172,7 @@ class DatasetReviewService
             datasetReviewId: UUID,
             dataPoint: String,
             dataPointType: String,
-        ): DatasetReviewResponse<Any> {
+        ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             lateinit var frameworksOfDataPointType: List<String>
@@ -211,8 +211,7 @@ class DatasetReviewService
          * Method to get a dataset review entity by id and convert to response
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse<Any> =
-            getDatasetReview(datasetReviewId).toDatasetReviewResponse()
+        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse = getDatasetReview(datasetReviewId).toDatasetReviewResponse()
 
         /**
          * Helper method to get a dataset review entity by id including exception handling.
@@ -226,13 +225,13 @@ class DatasetReviewService
                 )
             }
 
-        private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse<Any> {
+        private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse {
             val response = this.toDatasetReviewResponse()
             response.reviewerUserName = resolveReviewerUserName(this.reviewerUserId)
             return response
         }
 
-        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse<Any>> {
+        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> {
             val reviewerUserIds = this.mapNotNull { it.reviewerUserId }.distinct()
             val reviewerIdToName = reviewerUserIds.associateWith { resolveReviewerUserName(it) }
 
