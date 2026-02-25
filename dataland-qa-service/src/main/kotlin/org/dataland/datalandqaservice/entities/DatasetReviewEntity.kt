@@ -1,10 +1,12 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
@@ -41,9 +43,8 @@ class DatasetReviewEntity(
     @ElementCollection
     @Column(name = "qa_reporter_companies")
     var qaReporterCompanies: MutableList<QaReporterCompany>,
-    @ElementCollection
-    @Column(name = "data_points")
-    var dataPoints: MutableMap<String, DataPointReviewDetails>,
+    @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
+    val dataPoints: Map<String, DataPointReviewDetails>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
