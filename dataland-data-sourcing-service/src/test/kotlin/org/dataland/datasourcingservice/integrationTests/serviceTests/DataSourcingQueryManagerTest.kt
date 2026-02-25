@@ -14,6 +14,7 @@ import org.dataland.datasourcingservice.utils.DATA_SOURCING_STATE_2
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
 import org.dataland.datasourcingservice.utils.DATA_TYPE_2
 import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_2
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -44,6 +45,7 @@ class DataSourcingQueryManagerTest
     constructor(
         private val dataSourcingQueryManager: DataSourcingQueryManager,
         private val dataSourcingRepository: DataSourcingRepository,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
     ) : BaseIntegrationTest() {
         @MockBean
         lateinit var companyRolesControllerApi: CompanyRolesControllerApi
@@ -120,7 +122,7 @@ class DataSourcingQueryManagerTest
             val indicesOfExpectedResults = indexString.split(';').map { it.toInt() }
             val expectedResults =
                 indicesOfExpectedResults
-                    .map { dataSourcingEntities[it].toStoredDataSourcing(isAdmin = isUserAdmin, isAdminOrProvider = isUserAdmin) }
+                    .map { dataSourcingEntities[it].toStoredDataSourcing(derivedRightsUtilsComponent) }
             val actualResults =
                 dataSourcingQueryManager.searchDataSourcings(
                     companyId = companyId?.let { UUID.fromString(it) },

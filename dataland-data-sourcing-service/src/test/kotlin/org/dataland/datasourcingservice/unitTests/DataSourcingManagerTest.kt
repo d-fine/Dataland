@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.unitTests
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -14,6 +13,7 @@ import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
@@ -37,7 +37,7 @@ class DataSourcingManagerTest {
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
     private val mockExistingRequestsManager = mock<ExistingRequestsManager>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockCompanyRolesControllerApi = mock<CompanyRolesControllerApi>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
     private lateinit var requestDataSourcingAssigner: RequestDataSourcingAssigner
@@ -121,7 +121,7 @@ class DataSourcingManagerTest {
             mockDataSourcingRepository,
             mockExistingRequestsManager,
             mockCloudEventMessageHandler,
-            mockCompanyRolesControllerApi,
+            mockDerivedRightsUtilsComponent,
         )
 
         doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
@@ -136,7 +136,7 @@ class DataSourcingManagerTest {
                 dataSourcingRepository = mockDataSourcingRepository,
                 existingRequestsManager = mockExistingRequestsManager,
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
-                companyRolesControllerApi = mockCompanyRolesControllerApi,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
             )
 
         requestDataSourcingAssigner =
