@@ -70,7 +70,7 @@
             :rowHover="true"
             :first="firstRowIndex"
             data-test="qa-review-section"
-            @row-click="handleRowClick($event)"
+            @row-click="onRowClicked($event)"
             paginator
             paginator-position="top"
             :rows="datasetsPerPage"
@@ -112,7 +112,7 @@
               <template #body="slotProps">
                 <PrimeButton
                   v-if="slotProps.data.reviewStatus === 'Start Review'"
-                  @click.stop="handleReviewButtonClick(slotProps.data)"
+                  @click.stop="handleRowAction(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
@@ -121,7 +121,7 @@
                 />
                 <PrimeButton
                   v-else-if="slotProps.data.reviewStatus === 'Continue Review'"
-                  @click.stop="handleReviewButtonClick(slotProps.data)"
+                  @click.stop="handleRowAction(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
@@ -147,6 +147,7 @@
           :dismissable-mask="true"
           style="min-width: 20rem; text-align: center"
           data-test="confirmation-modal"
+          @hide="closeConfirmationModal"
         >
           <div style="text-align: center; padding: 8px 0">
             <div class="confirmation-modal-message">
@@ -154,10 +155,13 @@
               will be visible for other reviewers on Dataland.
             </div>
           </div>
+          <div v-if="errorMessage" data-test="confirmation-modal-error-message">
+            <Message severity="error" class="my-3">{{ errorMessage }}</Message>
+          </div>
           <template #footer>
             <PrimeButton
               label="CANCEL"
-              @click="isConfirmationModalVisible = false"
+              @click="closeConfirmationModal"
               variant="outlined"
               data-test="cancel-confirmation-modal-button"
             />
@@ -213,6 +217,7 @@ const availableReportingPeriods = ref<Array<Date>>([]);
 const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
+const errorMessage = ref<string>('');
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -273,29 +278,24 @@ async function getQaDataForCurrentPage(): Promise<void> {
 }
 
 /**
- * Handles the review button click
- * @param rowData QaReviewRow
+ * Handles the click on a row in the QA table by calling the handleRowAction function with the data of the clicked row.
+ * @param event is the DataTableRowClickEvent that is emitted when a row in the QA table is clicked. It contains the data of the clicked row.
  */
-function handleReviewButtonClick(rowData: QaReviewRow): void {
-  if (rowData.datasetReviewId == null) {
-    void createAndViewDatasetReview(rowData.dataId);
-  } else {
-    void goToQaViewPage(rowData.companyId, rowData.framework, rowData.dataId);
-  }
+function onRowClicked(event: DataTableRowClickEvent): void {
+  handleRowAction(event.data as QaReviewRow);
 }
 
 /**
- * Navigates to the view framework data page on a click on the row of the company if a dataset review already exists.
- * If no dataset review exists, opens a confirmation modal. If the user confirms, creates a dataset review and navigates to the corresponding dataset review page.
- * @param event DataTableRowClickEvent
+ * Handles the click on a row in the QA table.
+ * If the dataset of the clicked row has not been reviewed before, a confirmation modal will be opened to confirm the start of a new dataset review.
+ * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
  */
-function handleRowClick(event: DataTableRowClickEvent): void {
-  const qaDataObject = event.data as QaReviewRow;
+function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
     selectedDataId.value = qaDataObject.dataId;
     isConfirmationModalVisible.value = true;
   } else {
-    void goToQaViewPage(event.data.companyId, event.data.framework, event.data.dataId);
+    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
   }
 }
 
@@ -316,6 +316,7 @@ async function createAndViewDatasetReview(dataId: string): Promise<void> {
     const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
     await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
   } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'An unknown error occurred';
     console.error(error);
   }
 }
@@ -324,10 +325,20 @@ async function createAndViewDatasetReview(dataId: string): Promise<void> {
  * Confirms the start of a dataset review in the confirmation modal.
  * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
  */
-function confirmStartReview(): void {
+async function confirmStartReview(): Promise<void> {
+  await createAndViewDatasetReview(selectedDataId.value);
+  if (!errorMessage.value) {
+    closeConfirmationModal();
+  }
+}
+
+/**
+ * Closes the confirmation modal and resets the selected data id and error message.
+ */
+function closeConfirmationModal(): void {
   isConfirmationModalVisible.value = false;
-  void createAndViewDatasetReview(selectedDataId.value);
   selectedDataId.value = '';
+  errorMessage.value = '';
 }
 
 /**

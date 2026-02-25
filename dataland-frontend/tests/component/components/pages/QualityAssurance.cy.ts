@@ -386,7 +386,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('.p-dialog-close-button').click();
   });
 
-  it('Check routing of review button.', () => {
+  it('Check routing of Start Review button.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
@@ -396,10 +396,28 @@ describe('Component tests for the Quality Assurance page', () => {
       });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
+  });
+
+  it('Check routing of row click.', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountQaAssurancePageWithMocks();
     cy.contains('td', `${dataIdBeta}`).click();
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
-    cy.get('@createDatasetReview.all').should('have.length', 1);
+  });
+
+  it('Check display of error message.', () => {
+    mountQaAssurancePageWithMocks();
+    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+      request.reply(403, { message: 'Request failed with status code 403' });
+    }).as('createDatasetReviewForbidden');
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
+    cy.wait('@createDatasetReviewForbidden');
+    cy.get('[data-test="confirmation-modal-error-message"]')
+      .should('be.visible')
+      .and('contain', 'Request failed with status code 403');
   });
 });
