@@ -2,15 +2,16 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewOverview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import java.util.UUID
-import kotlin.collections.emptyMap
 
 /**
  * The database entity for storing dataset reviews
@@ -34,7 +35,15 @@ class DatasetReviewEntity(
     @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
-    var reviewerUserId: UUID?,
+    var reviewerUserId: UUID,
+    @Column(name = "reviewer_user_name")
+    var reviewerUserName: String,
+    @ElementCollection
+    @Column(name = "qa_reporter_companies")
+    var qaReporterCompanies: MutableList<QaReporterCompany>,
+    @ElementCollection
+    @Column(name = "data_points")
+    var dataPoints: MutableMap<String, DataPointReviewDetails>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
@@ -49,8 +58,9 @@ class DatasetReviewEntity(
             dataType,
             reportingPeriod,
             reviewState,
-            reviewerUserId?.toString(),
-            null,
-            emptyMap<String, DataPointReviewOverview>(),
+            reviewerUserId.toString(),
+            reviewerUserName,
+            qaReporterCompanies,
+            dataPoints,
         )
 }

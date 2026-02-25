@@ -1,18 +1,21 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.persistence.Embeddable
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import java.util.UUID
 
 /**
- * A data point in a QA report.
- * @param T the type of the corrected data
- * @property qaReportId unique identifier of the QA report
+ * A data point in a QA report with an ID.
+ * @property qaReportId the ID of the QA report this data point belongs to
  * @property verdict the QA verdict for the data point
  * @property correctedData corrected data for the data point if applicable
+ * @property reporterUserId the ID of the user who reported this data point
+ * @property reporterCompanyId the ID of the company of the user who reported this data point
  */
-class QaReportDataPointWithId(
+@Embeddable
+data class QaReportDataPointWithReporterDetails(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
@@ -27,4 +30,9 @@ class QaReportDataPointWithId(
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
     val correctedData: String?,
+
+    val reporterUserId: UUID,
+
+    val reporterCompanyId: UUID,
+
 )

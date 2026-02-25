@@ -3,7 +3,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
@@ -26,7 +25,6 @@ class DatasetReviewService
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
         private val datasetReviewSupportService: DatasetReviewSupportService,
-        private val keycloakUserService: KeycloakUserService,
     ) {
         /**
          * Create a dataset review object associated to the given dataset.
@@ -43,6 +41,9 @@ class DatasetReviewService
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
+                    reviewerUserName = "Hallo",
+                    qaReporterCompanies = mutableListOf(),
+                    dataPoints = mutableMapOf(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
         }
@@ -174,35 +175,14 @@ class DatasetReviewService
 
         private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse {
             val response = this.toDatasetReviewResponse()
-            response.reviewerUserName = resolveReviewerUserName(this.reviewerUserId)
             return response
         }
 
-        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> {
-            val reviewerUserIds = this.mapNotNull { it.reviewerUserId }.distinct()
-            val reviewerIdToName = reviewerUserIds.associateWith { resolveReviewerUserName(it) }
-
-            return this.map {
+        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> =
+            this.map {
                 val response = it.toDatasetReviewResponse()
-                response.reviewerUserName = it.reviewerUserId?.let { reviewerUserId -> reviewerIdToName[reviewerUserId] }
                 response
             }
-        }
-
-        private fun resolveReviewerUserName(reviewerUserId: UUID?): String? {
-            val reviewerUserIdString = reviewerUserId?.toString() ?: return null
-            val userInfo = keycloakUserService.getUser(reviewerUserIdString)
-
-            val firstName = userInfo.firstName?.trim().orEmpty()
-            val lastName = userInfo.lastName?.trim().orEmpty()
-            val fullName = listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ")
-
-            return when {
-                fullName.isNotBlank() -> fullName
-                !userInfo.email.isNullOrBlank() -> userInfo.email
-                else -> reviewerUserIdString
-            }
-        }
 
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.

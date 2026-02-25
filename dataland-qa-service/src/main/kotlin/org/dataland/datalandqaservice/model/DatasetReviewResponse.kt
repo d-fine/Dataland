@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 
 /**
  * API model for the dataset review objects returned.
@@ -43,11 +44,12 @@ data class DatasetReviewResponse(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
     )
-    var reviewerUserId: String?,
+    var qaJudgeUserId: String,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
-    var reviewerUserName: String?,
-    var dataPoints: Map<String, DataPointReviewOverview>,
+    var qaJudgeUserName: String,
+    var qaReporterCompanies: List<QaReporterCompany>,
+    var dataPoints: Map<String, DataPointReviewDetails>,
 )
