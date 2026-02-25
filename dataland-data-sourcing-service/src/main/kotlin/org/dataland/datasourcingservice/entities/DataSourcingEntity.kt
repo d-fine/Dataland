@@ -16,6 +16,7 @@ import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
+import org.dataland.datasourcingservice.utils.isUserAdmin
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
 import java.time.LocalDate
@@ -95,7 +96,7 @@ class DataSourcingEntity(
      * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
     fun toStoredDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): StoredDataSourcing {
-        val isAdmin = derivedRightsUtilsComponent.isCurrentUserAdmin()
+        val isAdmin = isUserAdmin()
         val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
         return StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
@@ -119,8 +120,7 @@ class DataSourcingEntity(
      * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
     fun toReducedDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): ReducedDataSourcing {
-        val isAdminOrProvider =
-            derivedRightsUtilsComponent.isCurrentUserAdmin() || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        val isAdminOrProvider = isUserAdmin() || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
         return ReducedDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
@@ -141,7 +141,7 @@ class DataSourcingEntity(
      * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
     fun toDataSourcingWithoutReferences(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): DataSourcingWithoutReferences {
-        val isAdmin = derivedRightsUtilsComponent.isCurrentUserAdmin()
+        val isAdmin = isUserAdmin()
         val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
         return DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),

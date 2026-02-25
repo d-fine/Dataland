@@ -29,12 +29,6 @@ class DerivedRightsUtilsComponent(
             isUserAdmin()
 
     /**
-     * Check whether the current user is an admin.
-     * @return true if the current user is an admin, false otherwise
-     */
-    fun isCurrentUserAdmin(): Boolean = isUserAdmin()
-
-    /**
      * Check whether the current user is a provider (document collector or data extractor)
      * for the given data sourcing entity.
      * @param entity the data sourcing entity to check against
