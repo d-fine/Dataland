@@ -7,8 +7,10 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -133,13 +135,9 @@ class DatasetReviewService
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
-            if (dataPointId.toString() !in datatypeToDatapointIds.values) {
-                throw ResourceNotFoundApiException(
-                    "Datapoint not found.",
-                    "Datapoint id $dataPointId not part of dataset ${datasetReview.datasetId}.",
-                )
-            }
+            val dataPoint = getDataPointById(datasetReview, dataPointId.toString())
+            dataPoint.acceptedSource = AcceptedDataPointSource.Original
+            dataPoint.companyIdOfAcceptedQaReport = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
@@ -221,6 +219,28 @@ class DatasetReviewService
                     "No Dataset review object with the id: $datasetReviewId could be found.",
                 )
             }
+
+        /**
+         * Method to find a data point by its id, throws ResourceNotFoundApiException if not found.
+         */
+        private fun getDataPointById(
+            datasetReview: DatasetReviewEntity,
+            dataPointId: String,
+        ): DataPointReviewDetails {
+            val dataPointType =
+                datasetReviewSupportService
+                    .getDataMetaInfo(dataPointId)
+                    .dataType
+                    .toString()
+
+            return datasetReview.dataPoints.firstOrNull {
+                it.dataPointType == dataPointType
+            }
+                ?: throw ResourceNotFoundApiException(
+                    "Datapoint not found.",
+                    "No datapoint with type $dataPointType in dataset review.",
+                )
+        }
 
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.

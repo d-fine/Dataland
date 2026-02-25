@@ -24,11 +24,11 @@ import java.util.UUID
 @Table(name = "dataset_review_entity_data_point_review_details")
 data class DataPointReviewDetails(
     @Id val dataPointType: String,
-    val dataPointId: UUID,
+    val dataPointId: UUID?,
     @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
     val qaReports: List<QaReportDataPointWithReporterDetails> = listOf(),
-    val acceptedSource: AcceptedDataPointSource,
-    val companyIdOfAcceptedQaReport: UUID?,
+    var acceptedSource: AcceptedDataPointSource,
+    var companyIdOfAcceptedQaReport: UUID?,
     val customValue: String?,
     @JoinColumn(name = "data_point_review_details_id")
     @ManyToOne
