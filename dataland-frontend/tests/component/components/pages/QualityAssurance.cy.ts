@@ -231,7 +231,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get('[data-test="reset-filters-button"]').click();
 
     assertUnfilteredDatatableState();
   });
@@ -253,7 +253,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    clickOnReportingPeriod(reportingPeriodToFilterFor);
+    cy.get('[data-test="reset-filters-button"]').click();
 
     assertUnfilteredDatatableState();
   });

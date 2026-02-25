@@ -45,7 +45,7 @@
           selected-items-label="{0} frameworks selected"
         />
 
-        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
         <Message
           class="info-message"
           variant="simple"
