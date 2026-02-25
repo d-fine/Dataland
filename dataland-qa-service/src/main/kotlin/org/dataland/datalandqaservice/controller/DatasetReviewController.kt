@@ -67,7 +67,6 @@ class DatasetReviewController(
             .ok(
                 datasetReviewService.acceptQaReport(
                     convertToUUID(datasetReviewId),
-                    convertToUUID(qaReportId),
                 ),
             )
 
