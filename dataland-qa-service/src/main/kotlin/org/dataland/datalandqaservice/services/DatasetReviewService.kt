@@ -5,11 +5,9 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
-import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +26,6 @@ class DatasetReviewService
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
         private val datasetReviewSupportService: DatasetReviewSupportService,
-        private val inheritedRolesControllerApi: InheritedRolesControllerApi,
         private val keycloakUserService: KeycloakUserService,
     ) {
         /**
@@ -36,33 +33,6 @@ class DatasetReviewService
          */
         @Transactional
         fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
-            lateinit var datatypeToDatapointIds: Map<String, String>
-            try {
-                datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
-            } catch (_: BackendClientException) {
-                throw ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "Dataset with the id: $datasetId could not be found.",
-                )
-            }
-            val dataPointQaReportIds =
-                datasetReviewSupportService
-                    .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
-
-            val qaReportIdWithUploaderCompanyIds =
-                dataPointQaReportIds.map {
-                    val uploaderCompanyId =
-                        inheritedRolesControllerApi
-                            .getInheritedRoles(it)
-                            .keys
-                            .firstOrNull()
-                            ?.let { companyId -> convertToUUID(companyId) }
-                    QaReportIdWithUploaderCompanyId(
-                        convertToUUID(it),
-                        uploaderCompanyId,
-                    )
-                }
-
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -73,7 +43,6 @@ class DatasetReviewService
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
-                    qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
         }
@@ -130,10 +99,6 @@ class DatasetReviewService
                     "Datapoint id $dataPointId not part of dataset ${datasetReview.datasetId}.",
                 )
             }
-            val dataPointType = datasetReviewSupportService.getDataPointType(dataPointId)
-            datasetReview.approvedDataPointIds[dataPointType] = dataPointId
-            datasetReview.approvedQaReportIds.remove(dataPointType)
-            datasetReview.approvedCustomDataPointIds.remove(dataPointType)
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }
 
@@ -141,25 +106,10 @@ class DatasetReviewService
          * Method to approve a qa report. Also removes approved data points and custom datapoints accordingly.
          */
         @Transactional
-        fun acceptQaReport(
-            datasetReviewId: UUID,
-            qaReportId: UUID,
-        ): DatasetReviewResponse {
+        fun acceptQaReport(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
-                ?: throw ResourceNotFoundApiException(
-                    "QA report not found.",
-                    "QA report id $qaReportId not part of collected qa reports of " +
-                        "dataset review ${datasetReview.dataSetReviewId}.",
-                )
 
-            val dataPointType =
-                datasetReviewSupportService.findDataPointTypeUsingQaReportId(qaReportId)
-
-            datasetReview.approvedQaReportIds[dataPointType] = qaReportId
-            datasetReview.approvedDataPointIds.remove(dataPointType)
-            datasetReview.approvedCustomDataPointIds.remove(dataPointType)
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }
 
@@ -201,9 +151,6 @@ class DatasetReviewService
                 )
             }
 
-            datasetReview.approvedCustomDataPointIds[dataPointType] = dataPoint
-            datasetReview.approvedDataPointIds.remove(dataPointType)
-            datasetReview.approvedQaReportIds.remove(dataPointType)
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
         }
 
