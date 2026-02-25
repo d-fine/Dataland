@@ -42,8 +42,8 @@ class DatasetReviewService
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = "Hallo",
-                    qaReporterCompanies = mutableListOf(),
-                    dataPoints = mutableMapOf(),
+                    // qaReporterCompanies = mutableListOf(),
+                    // dataPoints = mutableMapOf(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
         }
