@@ -7,6 +7,7 @@ import okhttp3.ResponseBody
 import okio.Buffer
 import okio.BufferedSource
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.utils.BaseDataSourcingControllerTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -23,7 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 
-class DataSourcingControllerTest : AbstractDataSourcingControllerTest() {
+class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
     private val providerCompanyId: UUID = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"

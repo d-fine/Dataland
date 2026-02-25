@@ -1,4 +1,4 @@
-package org.dataland.datasourcingservice.serviceTests
+package org.dataland.datasourcingservice.utils
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
@@ -9,7 +9,6 @@ import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -31,7 +30,7 @@ import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureMockMvc
-abstract class AbstractDataSourcingControllerTest {
+abstract class BaseDataSourcingControllerTest {
     @Autowired
     protected lateinit var dataSourcingRepository: DataSourcingRepository
 

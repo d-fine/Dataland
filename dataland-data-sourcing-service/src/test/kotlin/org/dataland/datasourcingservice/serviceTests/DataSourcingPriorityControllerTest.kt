@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.serviceTests
 
+import org.dataland.datasourcingservice.utils.BaseDataSourcingControllerTest
 import org.dataland.datasourcingservice.utils.COMPANY_ID_1
 import org.dataland.datasourcingservice.utils.DATA_TYPE_1
 import org.dataland.datasourcingservice.utils.REPORTING_PERIOD_1
@@ -14,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 private const val PRIORITY_PATH = "$.priority"
 
-class DataSourcingPriorityControllerTest : AbstractDataSourcingControllerTest() {
+class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
     @Test
     fun `admins can patch priority`() {
         setMockSecurityContext(dummyAdminAuthentication)
