@@ -44,7 +44,7 @@ class DatasetReviewEntity(
     @Column(name = "qa_reporter_companies")
     var qaReporterCompanies: MutableList<QaReporterCompany>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
-    val dataPoints: Map<String, DataPointReviewDetails>,
+    val dataPoints: MutableList<DataPointReviewDetails>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
