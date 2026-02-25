@@ -50,8 +50,7 @@ class DatasetReviewEntity(
      * Convert to DatasetReview objects for API use.
      */
     fun toDatasetReviewResponse(): DatasetReviewResponse =
-        // qa report IDs
-        //
+
         DatasetReviewResponse(
             dataSetReviewId.toString(),
             datasetId.toString(),
@@ -62,6 +61,6 @@ class DatasetReviewEntity(
             reviewerUserId.toString(),
             reviewerUserName,
             qaReporterCompanies,
-            emptyMap(),
+            dataPoints.associateBy { it.dataPointType },
         )
 }

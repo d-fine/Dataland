@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import kotlin.collections.map
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException as SpecificationClientException
 
@@ -94,16 +95,7 @@ class DatasetReviewService
                     qaReporterCompanies = qaReporterCompanies.toMutableList(),
                     dataPoints = mutableListOf(),
                 )
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
-        }
-
-        /**
-         * Method to get dataset review objects by dataset id.
-         */
-        @Transactional(readOnly = true)
-        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> {
-            val entities = datasetReviewRepository.findAllByDatasetId(datasetId)
-            return entities.toDatasetReviewResponsesWithReviewerUserNames()
+            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
         }
 
         /**
@@ -113,8 +105,8 @@ class DatasetReviewService
         fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
-
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            datasetReview.reviewerUserName = DatalandAuthentication.fromContext().name
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -128,8 +120,7 @@ class DatasetReviewService
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
-
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -149,7 +140,7 @@ class DatasetReviewService
                     "Datapoint id $dataPointId not part of dataset ${datasetReview.datasetId}.",
                 )
             }
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -160,7 +151,7 @@ class DatasetReviewService
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
 
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -201,7 +192,7 @@ class DatasetReviewService
                 )
             }
 
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -209,6 +200,15 @@ class DatasetReviewService
          */
         @Transactional(readOnly = true)
         fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse = getDatasetReview(datasetReviewId).toDatasetReviewResponse()
+
+        /**
+         * Method to get dataset review objects by dataset id.
+         */
+        @Transactional(readOnly = true)
+        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> =
+            datasetReviewRepository.findAllByDatasetId(datasetId).map {
+                it.toDatasetReviewResponse()
+            }
 
         /**
          * Helper method to get a dataset review entity by id including exception handling.
@@ -220,17 +220,6 @@ class DatasetReviewService
                     "Dataset review object not found",
                     "No Dataset review object with the id: $datasetReviewId could be found.",
                 )
-            }
-
-        private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse {
-            val response = this.toDatasetReviewResponse()
-            return response
-        }
-
-        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> =
-            this.map {
-                val response = it.toDatasetReviewResponse()
-                response
             }
 
         /**
