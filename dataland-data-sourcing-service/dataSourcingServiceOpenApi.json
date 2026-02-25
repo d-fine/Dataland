@@ -639,9 +639,9 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch provider and/or admin comment",
-        "description": "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID. Null values are ignored.",
-        "operationId": "patchProviderAndAdminComment",
+        "summary": "Patch DataSourcing (admin)",
+        "description": "Patch any admin-only fields of a DataSourcing object specified by ID. Null values are ignored.",
+        "operationId": "patchDataSourcing",
         "parameters": [
           {
             "name": "dataSourcingId",
@@ -652,41 +652,21 @@
               "type": "string"
             },
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
-          },
-          {
-            "name": "documentCollector",
-            "in": "query",
-            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
-          },
-          {
-            "name": "dataExtractor",
-            "in": "query",
-            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
-          },
-          {
-            "name": "adminComment",
-            "in": "query",
-            "description": "A comment that can be set by Dataland admins to provide additional information.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminDataSourcingPatch"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Successfully patched providers and/or admin comment.",
+            "description": "Successfully patched DataSourcing object.",
             "content": {
               "application/json": {
                 "schema": {
@@ -696,7 +676,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Admins to patch document collectors and data extractors."
+            "description": "Only Dataland Admins can patch DataSourcing objects via this endpoint."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -773,85 +753,6 @@
           },
           "403": {
             "description": "Only Dataland Admins have the right to patch states of data sourcing objects. Document Collectors and Data Extractors have the right to patch to specific states."
-          },
-          "404": {
-            "description": "DataSourcing object not found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-sourcing/{dataSourcingId}/priority": {
-      "patch": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Patch DataSourcing priority",
-        "description": "Patch the priority of a DataSourcing object specified by ID.",
-        "operationId": "patchDataSourcingPriority",
-        "parameters": [
-          {
-            "name": "dataSourcingId",
-            "in": "path",
-            "description": "The unique identifier of the data sourcing object.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
-          },
-          {
-            "name": "priority",
-            "in": "query",
-            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "example": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully patched priority.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataSourcing"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only Dataland Admins have the right to patch the priority of data sourcing objects."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -2181,6 +2082,45 @@
             "description": "The unique identifier of the data sourcing object.",
             "nullable": true,
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          }
+        }
+      },
+      "AdminDataSourcingPatch": {
+        "type": "object",
+        "properties": {
+          "documentCollector": {
+            "type": "string"
+          },
+          "dataExtractor": {
+            "type": "string"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "state": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "documentIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expectedPublicationDatesOfDocuments": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
+            }
+          },
+          "dateOfNextDocumentSourcingAttempt": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

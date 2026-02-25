@@ -11,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
+import org.dataland.datasourcingservice.model.datasourcing.AdminDataSourcingPatch
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
@@ -259,34 +260,34 @@ class DataSourcingManager
         }
 
         /**
-         * Patches the document collector and/or data extractor of the data sourcing entity with the given ID.
+         * Patches any admin-only fields of the data sourcing entity with the given ID.
          * Throws a DataSourcingNotFoundApiException if no such data sourcing entity exists.
          * @param dataSourcingEntityId the id of the data sourcing entity to patch
-         * @param documentCollector the ID of the new document collector, or null if no update should be performed
-         * @param dataExtractor the ID of the new data extractor, or null if no update should be performed
-         * @param adminComment an optional admin comment to add to the data sourcing entity
+         * @param patch the patch object containing the fields to update; null fields are ignored
          * @return the StoredDataSourcing object corresponding to the patched entity
          */
         @Transactional
-        fun patchProviderAndAdminComment(
+        fun patchDataSourcing(
             dataSourcingEntityId: UUID,
-            documentCollector: UUID?,
-            dataExtractor: UUID?,
-            adminComment: String?,
+            patch: AdminDataSourcingPatch,
         ): StoredDataSourcing {
             val correlationId = randomUUID().toString()
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
-                "Patch documentCollector: $documentCollector, data extractor: $dataExtractor " +
-                    "and admin comment: $adminComment to data sourcing entity with id ${dataSourcingEntity.dataSourcingId}." +
+                "Admin patch of data sourcing entity with id ${dataSourcingEntity.dataSourcingId}. " +
                     "CorrelationId: $correlationId.",
             )
             return handlePatchOfDataSourcingEntity(
                 dataSourcingEntity,
                 DataSourcingPatch(
-                    documentCollector = documentCollector,
-                    dataExtractor = dataExtractor,
-                    adminComment = adminComment,
+                    documentCollector = patch.documentCollector?.let { ValidationUtils.convertToUUID(it) },
+                    dataExtractor = patch.dataExtractor?.let { ValidationUtils.convertToUUID(it) },
+                    adminComment = patch.adminComment,
+                    priority = patch.priority,
+                    state = patch.state,
+                    documentIds = patch.documentIds,
+                    expectedPublicationDatesOfDocuments = patch.expectedPublicationDatesOfDocuments,
+                    dateOfNextDocumentSourcingAttempt = patch.dateOfNextDocumentSourcingAttempt,
                 ),
                 correlationId,
             ).let { result -> result.toStoredDataSourcing(derivedRightsUtilsComponent) }
@@ -309,30 +310,6 @@ class DataSourcingManager
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
             return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(derivedRightsUtilsComponent) }
-        }
-
-        /**
-         * Patches the priority of the data sourcing entity with the given ID.
-         * @param dataSourcingEntityId the id of the data sourcing entity to patch
-         * @param priority the new priority value
-         * @return the updated StoredDataSourcing object
-         */
-        @Transactional
-        fun patchPriority(
-            dataSourcingEntityId: UUID,
-            priority: Int,
-        ): StoredDataSourcing {
-            val correlationId = randomUUID().toString()
-            val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
-            logger.info(
-                "Patch priority to $priority for data sourcing entity with id: $dataSourcingEntityId." +
-                    " CorrelationId: $correlationId.",
-            )
-            return handlePatchOfDataSourcingEntity(
-                dataSourcingEntity,
-                DataSourcingPatch(priority = priority),
-                correlationId,
-            ).let { result -> result.toStoredDataSourcing(derivedRightsUtilsComponent) }
         }
 
         /**

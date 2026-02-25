@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.controller
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.DataSourcingApi
+import org.dataland.datasourcingservice.model.datasourcing.AdminDataSourcingPatch
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
@@ -72,18 +73,14 @@ class DataSourcingController
                         ),
                 )
 
-        override fun patchProviderAndAdminComment(
+        override fun patchDataSourcing(
             dataSourcingId: String,
-            documentCollector: String?,
-            dataExtractor: String?,
-            adminComment: String?,
+            patch: AdminDataSourcingPatch,
         ): ResponseEntity<StoredDataSourcing> =
             ResponseEntity.ok(
-                dataSourcingManager.patchProviderAndAdminComment(
+                dataSourcingManager.patchDataSourcing(
                     ValidationUtils.convertToUUID(dataSourcingId),
-                    documentCollector?.let { ValidationUtils.convertToUUID(it) },
-                    dataExtractor?.let { ValidationUtils.convertToUUID(it) },
-                    adminComment,
+                    patch,
                 ),
             )
 
@@ -112,17 +109,6 @@ class DataSourcingController
                             dateOfNextDocumentSourcingAttempt,
                         ),
                 )
-
-        override fun patchDataSourcingPriority(
-            dataSourcingId: String,
-            priority: Int,
-        ): ResponseEntity<StoredDataSourcing> =
-            ResponseEntity.ok(
-                dataSourcingManager.patchPriority(
-                    ValidationUtils.convertToUUID(dataSourcingId),
-                    priority,
-                ),
-            )
 
         override fun getDataSourcingPriorities(
             dataDimensions: List<BasicDataDimensions>,

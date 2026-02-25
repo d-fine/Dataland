@@ -14,27 +14,30 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 private const val PRIORITY_PATH = "$.priority"
+private const val PRIORITIES_ENDPOINT = "/data-sourcing/priorities"
 
 class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
     @Test
-    fun `admins can patch priority`() {
+    fun `admins can patch data sourcing via admin patch endpoint`() {
         setMockSecurityContext(dummyAdminAuthentication)
         mockMvc
             .perform(
-                patch("/data-sourcing/$dataSourcingId/priority")
-                    .queryParam("priority", "3")
+                patch("/data-sourcing/$dataSourcingId")
+                    .content("""{"priority": 3}""")
+                    .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk())
             .andExpect(jsonPath(PRIORITY_PATH).value(3))
     }
 
     @Test
-    fun `regular users cannot patch priority`() {
+    fun `regular users cannot patch data sourcing via admin patch endpoint`() {
         setMockSecurityContext(dummyUserAuthentication)
         mockMvc
             .perform(
-                patch("/data-sourcing/$dataSourcingId/priority")
-                    .queryParam("priority", "3")
+                patch("/data-sourcing/$dataSourcingId")
+                    .content("""{"priority": 3}""")
+                    .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isForbidden())
     }
@@ -82,7 +85,7 @@ class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
             """[{"companyId": "$COMPANY_ID_1", "dataType": "$DATA_TYPE_1", "reportingPeriod": "$REPORTING_PERIOD_1"}]"""
         mockMvc
             .perform(
-                post("/data-sourcing/priorities")
+                post(PRIORITIES_ENDPOINT)
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
@@ -97,7 +100,7 @@ class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
             """[{"companyId": "$COMPANY_ID_1", "dataType": "$DATA_TYPE_1", "reportingPeriod": "$REPORTING_PERIOD_1"}]"""
         mockMvc
             .perform(
-                post("/data-sourcing/priorities")
+                post(PRIORITIES_ENDPOINT)
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
@@ -111,7 +114,7 @@ class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
             """[{"companyId": "$COMPANY_ID_1", "dataType": "$DATA_TYPE_1", "reportingPeriod": "$REPORTING_PERIOD_1"}]"""
         mockMvc
             .perform(
-                post("/data-sourcing/priorities")
+                post(PRIORITIES_ENDPOINT)
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
