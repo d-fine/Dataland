@@ -91,6 +91,20 @@ class DataSourcingPriorityControllerTest : BaseDataSourcingControllerTest() {
     }
 
     @Test
+    fun `reviewer can get priorities for a list of data dimensions`() {
+        setMockSecurityContext(dummyReviewerAuthentication)
+        val body =
+            """[{"companyId": "$COMPANY_ID_1", "dataType": "$DATA_TYPE_1", "reportingPeriod": "$REPORTING_PERIOD_1"}]"""
+        mockMvc
+            .perform(
+                post("/data-sourcing/priorities")
+                    .content(body)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk())
+    }
+
+    @Test
     fun `regular user cannot get priorities for data dimensions`() {
         setMockSecurityContext(dummyUserAuthentication)
         val body =

@@ -63,7 +63,14 @@ abstract class BaseDataSourcingControllerTest {
         AuthenticationMock.mockJwtAuthentication(
             username = "DATA_ADMIN",
             userId = adminUserId.toString(),
-            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_USER),
+            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_REVIEWER, DatalandRealmRole.ROLE_USER),
+        )
+
+    protected val dummyReviewerAuthentication: DatalandJwtAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            username = "DATA_REVIEWER",
+            userId = regularUserId.toString(),
+            roles = setOf(DatalandRealmRole.ROLE_REVIEWER, DatalandRealmRole.ROLE_USER),
         )
 
     protected val dummyUserAuthentication: DatalandJwtAuthentication =

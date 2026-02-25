@@ -1,6 +1,5 @@
 package org.dataland.datasourcingservice.unitTests
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -19,6 +18,7 @@ import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
 import org.dataland.datasourcingservice.services.RequestQueryManager
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -72,7 +72,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingValidator,
             existingRequestsManager,
             mockCloudEventMessageHandler,
-            mock<CompanyRolesControllerApi>(),
+            mock<DerivedRightsUtilsComponent>(),
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()
 
