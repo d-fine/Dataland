@@ -31,5 +31,6 @@ data class DataPointReviewDetails(
     val companyIdOfAcceptedQaReport: UUID?,
     val customValue: String?,
     @JoinColumn(name = "data_point_review_details_id")
-    @ManyToOne val datasetReview: DatasetReviewEntity,
+    @ManyToOne
+    val datasetReview: DatasetReviewEntity,
 )
