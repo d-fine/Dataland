@@ -9,7 +9,7 @@ if [[ "$mode" == initialize ]]; then
   echo "Initializing new keycloak realms"
   mkdir -p $dataland_realm_folder
   cp /keycloak_users/datalandsecurity-users-*.json $dataland_realm_folder || echo "No importable users exist"
-  rm $(grep -E -l '"username" : "data_(reader|uploader|reviewer|premium_user|admin)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
+  rm $(grep -E -l '"username" : "data_(reader|uploader|reviewer|premium_user|admin|judge)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
   rm $(grep -E -l '"username" : "test_user.*@example.com"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
   rm $(grep -E -l '"username" : "service-account-dataland-[a-z-]+"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No service account users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
