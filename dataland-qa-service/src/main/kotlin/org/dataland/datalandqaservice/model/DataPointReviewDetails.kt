@@ -1,7 +1,13 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.Embeddable
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporterDetails
 import java.util.UUID
@@ -14,13 +20,17 @@ import java.util.UUID
  * @property acceptedSource the source from which the accepted value for this data point was derived
  * @property customValue a custom value for this data point if applicable
  */
-@Embeddable
+@Entity
+@Table(name = "data_point_review_details")
 data class DataPointReviewDetails(
+    @Id @GeneratedValue val id: UUID? = null,
+    val dataPointKey: String,
     val dataPointTypeId: UUID,
     val dataPointId: UUID,
-    @ElementCollection
-    val qaReport: List<QaReportDataPointWithReporterDetails>,
+    @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
+    val qaReports: List<QaReportDataPointWithReporterDetails> = listOf(),
     val acceptedSource: AcceptedDataPointSource,
     val companyIdOfAcceptedQaReport: UUID?,
     val customValue: String?,
+    @ManyToOne val datasetReview: DatasetReviewEntity? = null,
 )

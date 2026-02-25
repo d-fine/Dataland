@@ -1,9 +1,16 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.persistence.Embeddable
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
 import java.util.UUID
 
 /**
@@ -14,8 +21,13 @@ import java.util.UUID
  * @property reporterUserId the ID of the user who reported this data point
  * @property reporterCompanyId the ID of the company of the user who reported this data point
  */
-@Embeddable
+@Entity
+@Table(name = "qa_report_datapoint")
 data class QaReportDataPointWithReporterDetails(
+    @Id @GeneratedValue val id: UUID? = null,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "data_point_review_details_id")
+    val dataPointReviewDetails: DataPointReviewDetails,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
@@ -30,9 +42,6 @@ data class QaReportDataPointWithReporterDetails(
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
     val correctedData: String?,
-
     val reporterUserId: UUID,
-
     val reporterCompanyId: UUID,
-
 )
