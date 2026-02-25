@@ -161,6 +161,9 @@ class DataSourcingManager
             dataSourcingEntityWithFetchedRequests.state = state
         }
 
+        /**
+         * Builds, logs and sends non-sourceability message to RabbitMQ.
+         */
         private fun sendNonSourceableMessage(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
             correlationId: String,
@@ -398,9 +401,11 @@ class DataSourcingManager
         fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
             val isAdmin = isUserAdmin()
+            val entity = getFullyFetchedDataSourcingEntityById(id)
+            val isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity)
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences(isAdmin = isAdmin, isAdminOrProvider = isAdmin) }
+                .map { it.toDataSourcingWithoutReferences(isAdmin = isAdmin, isAdminOrProvider = isAdminOrProvider) }
                 .ifEmpty {
                     throw DataSourcingNotFoundApiException(id)
                 }
