@@ -3,7 +3,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repo
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -22,9 +21,8 @@ import java.util.UUID
  * @property reporterCompanyId the ID of the company of the user who reported this data point
  */
 @Entity
-@Table(name = "qa_report_datapoint")
+@Table(name = "dataset_review_qa_report_datapoint")
 data class QaReportDataPointWithReporterDetails(
-    @Id @GeneratedValue val id: UUID? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_point_review_details_id")
     val dataPointReviewDetails: DataPointReviewDetails,
@@ -32,7 +30,7 @@ data class QaReportDataPointWithReporterDetails(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
     )
-    val qaReportId: UUID,
+    @Id val qaReportId: UUID,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
     )

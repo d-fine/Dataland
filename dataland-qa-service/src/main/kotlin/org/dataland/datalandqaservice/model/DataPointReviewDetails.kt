@@ -2,8 +2,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
@@ -21,16 +21,15 @@ import java.util.UUID
  * @property customValue a custom value for this data point if applicable
  */
 @Entity
-@Table(name = "data_point_review_details")
+@Table(name = "dataset_review_entity_data_point_review_details")
 data class DataPointReviewDetails(
-    @Id @GeneratedValue val id: UUID? = null,
-    val dataPointKey: String,
-    val dataPointTypeId: UUID,
+    @Id val dataPointType: String,
     val dataPointId: UUID,
     @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
     val qaReports: List<QaReportDataPointWithReporterDetails> = listOf(),
     val acceptedSource: AcceptedDataPointSource,
     val companyIdOfAcceptedQaReport: UUID?,
     val customValue: String?,
-    @ManyToOne val datasetReview: DatasetReviewEntity? = null,
+    @JoinColumn(name = "data_point_review_details_id")
+    @ManyToOne val datasetReview: DatasetReviewEntity,
 )
