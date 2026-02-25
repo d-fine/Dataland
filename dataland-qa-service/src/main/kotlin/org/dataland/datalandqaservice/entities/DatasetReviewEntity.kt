@@ -62,6 +62,6 @@ class DatasetReviewEntity(
             reviewerUserId.toString(),
             reviewerUserName,
             qaReporterCompanies,
-            dataPoints,
+            emptyMap(),
         )
 }

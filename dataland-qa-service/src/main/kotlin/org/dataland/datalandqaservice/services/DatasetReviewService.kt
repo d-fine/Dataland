@@ -43,7 +43,7 @@ class DatasetReviewService
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = "Hallo",
                     qaReporterCompanies = mutableListOf(),
-                    dataPoints = mutableMapOf(),
+                    dataPoints = mutableListOf(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
         }
