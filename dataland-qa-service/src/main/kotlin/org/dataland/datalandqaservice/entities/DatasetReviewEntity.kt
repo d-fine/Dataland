@@ -2,7 +2,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
-import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -10,7 +9,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewOverview
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
 import java.util.UUID
 import kotlin.collections.emptyMap
 
@@ -37,21 +35,6 @@ class DatasetReviewEntity(
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
     var reviewerUserId: UUID?,
-    @ElementCollection
-    @Column(name = "preapproved_data_point_ids")
-    var preapprovedDataPointIds: Set<UUID> = emptySet(),
-    @ElementCollection
-    @Column(name = "qa_reports")
-    var qaReports: Set<QaReportIdWithUploaderCompanyId>,
-    @ElementCollection
-    @Column(name = "approved_qa_report_ids")
-    var approvedQaReportIds: MutableMap<String, UUID> = mutableMapOf(),
-    @ElementCollection
-    @Column(name = "approved_data_point_ids")
-    var approvedDataPointIds: MutableMap<String, UUID> = mutableMapOf(),
-    @ElementCollection
-    @Column(name = "approved_custom_data_point_ids")
-    var approvedCustomDataPointIds: MutableMap<String, String> = mutableMapOf(),
 ) {
     /**
      * Convert to DatasetReview objects for API use.
