@@ -21,6 +21,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 
@@ -216,5 +217,21 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
         stubRoleAssignments(regularUserId, documentCollectorId, emptyList())
         stubRoleAssignments(regularUserId, dataExtractorId, emptyList())
         performPatchStateAndExpect(state, status().isForbidden())
+    }
+
+    @Test
+    fun `admin can patch expected publication dates of documents via admin patch endpoint`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+        mockMvc
+            .perform(
+                patch("/data-sourcing/$dataSourcingId")
+                    .content(
+                        """{"expectedPublicationDatesOfDocuments": """ +
+                            """[{"documentCategory": "Annual Report", "expectedPublicationDate": "2026-06-30"}]}""",
+                    ).contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk())
+            .andExpect(jsonPath("$.expectedPublicationDatesOfDocuments[0].documentCategory").value("Annual Report"))
+            .andExpect(jsonPath("$.expectedPublicationDatesOfDocuments[0].expectedPublicationDate").value("2026-06-30"))
     }
 }
