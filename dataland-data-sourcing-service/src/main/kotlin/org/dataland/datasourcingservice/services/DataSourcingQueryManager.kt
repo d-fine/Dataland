@@ -4,7 +4,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesContr
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.utils.getCurrentUserProviderCompanyIds
+import org.dataland.datasourcingservice.utils.isCurrentUserProviderFor
 import org.dataland.datasourcingservice.utils.isUserAdmin
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -40,7 +40,6 @@ class DataSourcingQueryManager(
         chunkIndex: Int = 0,
     ): List<StoredDataSourcing> {
         val isAdmin = isUserAdmin()
-        val providerCompanyIds = if (isAdmin) emptySet() else companyRolesControllerApi.getCurrentUserProviderCompanyIds()
         return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
@@ -51,10 +50,7 @@ class DataSourcingQueryManager(
             ).map { entity ->
                 entity.toStoredDataSourcing(
                     isAdmin = isAdmin,
-                    isAdminOrProvider =
-                        isAdmin ||
-                            entity.documentCollector in providerCompanyIds ||
-                            entity.dataExtractor in providerCompanyIds,
+                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
                 )
             }
     }
