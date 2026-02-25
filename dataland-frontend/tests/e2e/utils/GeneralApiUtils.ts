@@ -6,7 +6,7 @@ import {
   MetaDataControllerApi,
 } from '@clients/backend';
 
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 
 export interface UploadIds {
   companyId: string;
@@ -105,7 +105,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     }
     const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1]!;
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
-    if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_REVIEWER)) {
+    if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_JUDGE)) {
       incomingRequest.query['bypassQa'] = 'true';
     }
   };

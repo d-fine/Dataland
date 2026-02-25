@@ -126,7 +126,12 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_JUDGE,
+} from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -168,6 +173,7 @@ const isDataProcessedSuccessfully = ref(false);
 const hideEmptyFields = ref(true);
 const hasUserUploaderRights = ref(false);
 const hasUserReviewerRights = ref(false);
+const hasUserJudgeRights = ref(false);
 const dataId = ref(route.params.dataId);
 const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
@@ -198,7 +204,7 @@ const availableReportingPeriods = computed(() => {
 });
 
 const isReviewableByCurrentUser = computed(
-  () => hasUserReviewerRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
+  () => hasUserJudgeRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
 );
 
 const isEditableByCurrentUser = computed(
@@ -253,7 +259,7 @@ watch(mapOfReportingPeriodToActiveDataset, (val) => {
 });
 
 watch(isReviewableByCurrentUser, () => {
-  hideEmptyFields.value = !hasUserReviewerRights.value;
+  hideEmptyFields.value = !hasUserJudgeRights.value;
 });
 
 onMounted(async () => {
@@ -360,6 +366,7 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
  * @returns a promise that resolves to void, so the successful execution of the function can be awaited
  */
 async function setViewPageAttributesForUser(): Promise<void> {
+  hasUserJudgeRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise);
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
   hasUserUploaderRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   hasUserAdminRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
