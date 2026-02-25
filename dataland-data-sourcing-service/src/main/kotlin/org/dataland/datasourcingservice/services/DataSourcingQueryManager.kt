@@ -1,11 +1,9 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.utils.isCurrentUserProviderFor
-import org.dataland.datasourcingservice.utils.isUserAdmin
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -18,7 +16,7 @@ import java.util.UUID
 @Service("DataSourcingQueryManager")
 class DataSourcingQueryManager(
     @Autowired private val dataSourcingRepository: DataSourcingRepository,
-    @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
+    @Autowired private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
 ) {
     /**
      * Search data sourcings based on the provided filters and return a paginated chunk.
@@ -38,20 +36,13 @@ class DataSourcingQueryManager(
         state: DataSourcingState?,
         chunkSize: Int = 100,
         chunkIndex: Int = 0,
-    ): List<StoredDataSourcing> {
-        val isAdmin = isUserAdmin()
-        return dataSourcingRepository
+    ): List<StoredDataSourcing> =
+        dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository
                     .searchDataSourcingEntities(
                         companyId, dataType, reportingPeriod, state,
                         PageRequest.of(chunkIndex, chunkSize),
                     ).content,
-            ).map { entity ->
-                entity.toStoredDataSourcing(
-                    isAdmin = isAdmin,
-                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
-                )
-            }
-    }
+            ).map { entity -> entity.toStoredDataSourcing(derivedRightsUtilsComponent) }
 }

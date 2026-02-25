@@ -4,7 +4,6 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -22,8 +21,7 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
-import org.dataland.datasourcingservice.utils.isCurrentUserProviderFor
-import org.dataland.datasourcingservice.utils.isUserAdmin
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -44,7 +42,7 @@ class DataSourcingManager
         private val dataSourcingValidator: DataSourcingValidator,
         private val existingRequestsManager: ExistingRequestsManager,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
-        private val companyRolesControllerApi: CompanyRolesControllerApi,
+        private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -61,11 +59,7 @@ class DataSourcingManager
         fun getStoredDataSourcing(dataSourcingEntityId: UUID): StoredDataSourcing {
             val entity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Get data sourcing entity with id: $dataSourcingEntityId")
-            val isAdmin = isUserAdmin()
-            return entity.toStoredDataSourcing(
-                isAdmin = isAdmin,
-                isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
-            )
+            return entity.toStoredDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
@@ -84,11 +78,7 @@ class DataSourcingManager
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Patch data sourcing entity with id: $dataSourcingEntityId. CorrelationId: $correlationId")
             val result = handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch, correlationId)
-            val isAdmin = isUserAdmin()
-            return result.toStoredDataSourcing(
-                isAdmin = isAdmin,
-                isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
-            )
+            return result.toStoredDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
@@ -210,8 +200,7 @@ class DataSourcingManager
                         "from state ${dataSourcingEntity.state} to state $state. CorrelationId: $correlationId.",
                 )
             val result = handlePatchOfDataSourcingEntity(dataSourcingEntity, DataSourcingPatch(state = state), correlationId)
-            val isAdmin = isUserAdmin()
-            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
+            return result.toReducedDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
@@ -242,8 +231,7 @@ class DataSourcingManager
                 handlePatchOfDataSourcingEntity(
                     dataSourcingEntity, DataSourcingPatch(documentIds = newDocumentsIds), correlationId,
                 )
-            val isAdmin = isUserAdmin()
-            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
+            return result.toReducedDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
@@ -267,8 +255,7 @@ class DataSourcingManager
                 handlePatchOfDataSourcingEntity(
                     dataSourcingEntity, DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date), correlationId,
                 )
-            val isAdmin = isUserAdmin()
-            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
+            return result.toReducedDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
@@ -302,13 +289,7 @@ class DataSourcingManager
                     adminComment = adminComment,
                 ),
                 correlationId,
-            ).let { result ->
-                val isAdmin = isUserAdmin()
-                result.toStoredDataSourcing(
-                    isAdmin = isAdmin,
-                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
-                )
-            }
+            ).let { result -> result.toStoredDataSourcing(derivedRightsUtilsComponent) }
         }
 
         /**
@@ -323,17 +304,11 @@ class DataSourcingManager
                 "Find all assigned data sourcing objects for " +
                     "company with id: $companyId.",
             )
-            val isAdmin = isUserAdmin()
             val dataSourcingEntities =
                 dataSourcingRepository
                     .findAllByDocumentCollectorAndFetchNonRequestFields(companyId)
                     .plus(dataSourcingRepository.findAllByDataExtractor(companyId))
-            return dataSourcingEntities.map { entity ->
-                entity.toStoredDataSourcing(
-                    isAdmin = isAdmin,
-                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
-                )
-            }
+            return dataSourcingEntities.map { entity -> entity.toStoredDataSourcing(derivedRightsUtilsComponent) }
         }
 
         /**
@@ -357,13 +332,7 @@ class DataSourcingManager
                 dataSourcingEntity,
                 DataSourcingPatch(priority = priority),
                 correlationId,
-            ).let { result ->
-                val isAdmin = isUserAdmin()
-                result.toStoredDataSourcing(
-                    isAdmin = isAdmin,
-                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
-                )
-            }
+            ).let { result -> result.toStoredDataSourcing(derivedRightsUtilsComponent) }
         }
 
         /**
@@ -400,12 +369,9 @@ class DataSourcingManager
         @Transactional(readOnly = true)
         fun retrieveDataSourcingHistory(id: UUID): List<DataSourcingWithoutReferences> {
             logger.info("Retrieve data sourcing history for data sourcing entity with id: $id.")
-            val isAdmin = isUserAdmin()
-            val entity = getFullyFetchedDataSourcingEntityById(id)
-            val isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity)
             return dataRevisionRepository
                 .listDataSourcingRevisionsById(id)
-                .map { it.toDataSourcingWithoutReferences(isAdmin = isAdmin, isAdminOrProvider = isAdminOrProvider) }
+                .map { it.toDataSourcingWithoutReferences(derivedRightsUtilsComponent) }
                 .ifEmpty {
                     throw DataSourcingNotFoundApiException(id)
                 }

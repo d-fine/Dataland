@@ -15,6 +15,7 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
 import java.time.LocalDate
@@ -91,14 +92,12 @@ class DataSourcingEntity(
 
     /**
      * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields based on caller permissions.
-     * @param isAdmin whether the requesting user is an admin
-     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toStoredDataSourcing(
-        isAdmin: Boolean = false,
-        isAdminOrProvider: Boolean = false,
-    ): StoredDataSourcing =
-        StoredDataSourcing(
+    fun toStoredDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): StoredDataSourcing {
+        val isAdmin = derivedRightsUtilsComponent.isCurrentUserAdmin()
+        val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -113,13 +112,16 @@ class DataSourcingEntity(
             associatedRequestIds = if (isAdmin) associatedRequests.map { it.id.toString() }.toMutableSet() else emptySet(),
             priority = if (isAdminOrProvider) priority else null,
         )
+    }
 
     /**
      * Converts this DataSourcingEntity to a ReducedDataSourcing dto.
-     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toReducedDataSourcing(isAdminOrProvider: Boolean = false): ReducedDataSourcing =
-        ReducedDataSourcing(
+    fun toReducedDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): ReducedDataSourcing {
+        val isAdminOrProvider =
+            derivedRightsUtilsComponent.isCurrentUserAdmin() || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return ReducedDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -132,17 +134,16 @@ class DataSourcingEntity(
             dataExtractor = dataExtractor?.toString(),
             priority = if (isAdminOrProvider) priority else null,
         )
+    }
 
     /**
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
-     * @param isAdmin whether the requesting user is an admin
-     * @param isAdminOrProvider whether the requesting user is an admin or data provider for this entity
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toDataSourcingWithoutReferences(
-        isAdmin: Boolean,
-        isAdminOrProvider: Boolean = false,
-    ): DataSourcingWithoutReferences =
-        DataSourcingWithoutReferences(
+    fun toDataSourcingWithoutReferences(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): DataSourcingWithoutReferences {
+        val isAdmin = derivedRightsUtilsComponent.isCurrentUserAdmin()
+        val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -154,4 +155,5 @@ class DataSourcingEntity(
             adminComment = if (isAdmin) adminComment else null,
             priority = if (isAdminOrProvider) priority else null,
         )
+    }
 }
