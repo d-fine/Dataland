@@ -56,6 +56,21 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
     );
   }
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociatedLksgDataByDimensions(
+      { companyIds, fileFormat },
+      keepValueFieldsOnly,
+      includeAliases,
+      options
+    );
+  }
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,

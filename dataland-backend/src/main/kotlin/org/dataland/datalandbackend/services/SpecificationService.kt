@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -113,6 +114,23 @@ class SpecificationService
                 specificationControllerApi.getFrameworkSpecification(framework)
             } catch (clientException: ClientException) {
                 logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
+                throw InvalidInputApiException(
+                    "Framework $framework not found.",
+                    "The specified framework $framework is not known to the specification service.",
+                )
+            }
+
+        /**
+         * Retrieve a resolved framework specification from the specification service
+         * @param framework the name of the framework to retrieve the specification for
+         * @return the resolved schema
+         * @throws InvalidInputApiException if the framework is not found
+         */
+        fun getResolvedFrameworkSpecification(framework: String): DataPointBaseTypeResolvedSchema =
+            try {
+                specificationControllerApi.getResolvedFrameworkSpecification(framework)
+            } catch (clientException: ClientException) {
+                logger.error("Expected resolved framework specification for $framework not found: ${clientException.message}.")
                 throw InvalidInputApiException(
                     "Framework $framework not found.",
                     "The specified framework $framework is not known to the specification service.",
