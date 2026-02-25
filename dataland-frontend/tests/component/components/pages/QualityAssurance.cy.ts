@@ -11,7 +11,7 @@ import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
@@ -86,8 +86,8 @@ describe('Component tests for the Quality Assurance page', () => {
     });
   });
 
-  const keycloakMockWithUploaderAndReviewerRoles = minimalKeycloakMock({
-    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
+  const keycloakMockWithJudgeRole = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_JUDGE],
   });
 
   const dataIdAlpha = crypto.randomUUID();
@@ -131,7 +131,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
     cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
 
-    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
     assertUnfilteredDatatableState();
     cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
@@ -340,7 +340,7 @@ describe('Component tests for the Quality Assurance page', () => {
     ]);
 
     getMountingFunction({
-      keycloak: keycloakMockWithUploaderAndReviewerRoles,
+      keycloak: keycloakMockWithJudgeRole,
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
