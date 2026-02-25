@@ -1,12 +1,16 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,12 +29,57 @@ class DatasetReviewService
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
         private val datasetReviewSupportService: DatasetReviewSupportService,
+        private val inheritedRolesControllerApi: InheritedRolesControllerApi,
+        private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         /**
          * Create a dataset review object associated to the given dataset.
          */
         @Transactional
         fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
+            lateinit var datatypeToDatapointIds: Map<String, String>
+            try {
+                datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
+            } catch (_: BackendClientException) {
+                throw ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "Dataset with the id: $datasetId could not be found.",
+                )
+            }
+            val dataPointQaReportIds =
+                datasetReviewSupportService
+                    .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
+
+            val qaReportIdWithUploaderCompanyIds =
+                dataPointQaReportIds.map {
+                    val uploaderCompanyId =
+                        inheritedRolesControllerApi
+                            .getInheritedRoles(it)
+                            .keys
+                            .firstOrNull()
+                            ?.let { companyId -> convertToUUID(companyId) }
+                    QaReportIdWithUploaderCompanyId(
+                        convertToUUID(it),
+                        uploaderCompanyId,
+                    )
+                }
+
+            val reporterCompanyIDs = qaReportIdWithUploaderCompanyIds.map { it.uploaderCompanyId.toString() }.toSet().toList()
+            val reporterCompanyNames =
+                companyDataControllerApi
+                    .postCompanyValidation(reporterCompanyIDs)
+                    .mapNotNull { it.companyInformation?.companyName }
+            val reporterUserId = List(reporterCompanyIDs.size) { "" }
+
+            val qaReporterCompanies =
+                reporterCompanyIDs.indices.map { i ->
+                    QaReporterCompany(
+                        convertToUUID(reporterCompanyIDs[i]),
+                        reporterCompanyNames[i],
+                        convertToUUID(reporterUserId[i]),
+                    )
+                }
+
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -42,7 +91,7 @@ class DatasetReviewService
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = "Hallo",
-                    qaReporterCompanies = mutableListOf(),
+                    qaReporterCompanies = qaReporterCompanies.toMutableList(),
                     dataPoints = mutableListOf(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
