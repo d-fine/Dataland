@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -318,11 +319,16 @@ class DataManager
 
         @Transactional(readOnly = true)
         override fun getLatestAvailableData(
-            companyId: String,
+            companyIds: Collection<String>,
             dataType: String,
             correlationId: String,
-        ): Pair<String, String>? =
-            metaDataManager.getLatestAvailableDatasetMetaInformation(companyId, dataType)?.let {
-                Pair(it.reportingPeriod, getDatasetData(it.dataId, dataType, correlationId))
-            }
+        ): List<PlainDataAndDimensions> =
+            metaDataManager
+                .getLatestAvailableDatasetMetaInformation(companyIds, dataType)
+                .map {
+                    PlainDataAndDimensions(
+                        BasicDatasetDimensions(it.company.companyId, dataType, it.reportingPeriod),
+                        getDatasetData(it.dataId, dataType, correlationId),
+                    )
+                }
     }

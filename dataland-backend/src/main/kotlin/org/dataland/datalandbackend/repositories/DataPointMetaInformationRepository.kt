@@ -61,10 +61,10 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     ): List<DataPointMetaInformationEntity>
 
     /**
-     * Retrieves all data meta information of active data points matching one of the provided data point types and the company
+     * Retrieves all data meta information of active data points matching one of the provided data point types and the company IDs
      */
-    fun findByCompanyIdAndDataPointTypeInAndCurrentlyActiveTrue(
-        companyId: String,
+    fun findByCompanyIdInAndDataPointTypeInAndCurrentlyActiveTrue(
+        companyId: Collection<String>,
         dataPointTypes: Set<String>,
     ): List<DataPointMetaInformationEntity>
 }

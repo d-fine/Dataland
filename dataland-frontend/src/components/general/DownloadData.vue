@@ -20,14 +20,28 @@
     </div>
     <div>
       <p class="header-styling">Reporting Period</p>
-      <ToggleChipFormInputs
-        :key="selectedFramework || 'no-framework'"
-        name="listOfReportingPeriods"
-        :selectedOptions="selectableReportingPeriodOptions"
-        :availableOptions="allReportingPeriodOptions.filter((option) => option.value)"
-        data-test="listOfReportingPeriods"
-        class="toggle-chip-group"
+      <div class="toggle-switch-wrapper">
+        <ToggleSwitch v-model="latestOnly" data-test="latestReportingPeriodSwitch" @change="onLatestOnlyChange" />
+        <p>Latest reporting period only</p>
+      </div>
+      <MultiSelect
+        v-model="selectedReportingPeriods"
+        :options="availableReportingPeriodOptions"
+        option-label="label"
+        option-value="value"
+        option-disabled="disabled"
+        placeholder="Select reporting periods"
+        data-test="reportingPeriodSelector"
+        class="component-styling"
+        :disabled="latestOnly"
+        :highlightOnSelect="false"
+        :showToggleAll="false"
+        fluid
+        @change="showReportingPeriodError = false"
       />
+      <div v-if="latestOnly" class="dataland-info-text small">
+        For each company in the portfolio, the latest available data is exported.
+      </div>
       <Message
         v-if="showReportingPeriodError"
         severity="error"
@@ -102,8 +116,8 @@
 import { computed, inject, onMounted, type Ref, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
-import ToggleChipFormInputs, { type ToggleChipInputType } from '@/components/general/ToggleChipFormInputs.vue';
 import ToggleSwitch from 'primevue/toggleswitch';
+import MultiSelect from 'primevue/multiselect';
 import type { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, DOWNLOADABLE_DATA_REPORTING_PERIODS } from '@/utils/Constants.ts';
@@ -119,7 +133,8 @@ const emit = defineEmits<{
     fileType: string,
     selectedFramework: string,
     keepValuesOnly: boolean,
-    includeAlias: boolean
+    includeAlias: boolean,
+    latestOnly: boolean
   ): void;
 }>();
 
@@ -128,10 +143,10 @@ const selectedFileType = ref<string>('');
 const showReportingPeriodError = ref<boolean>(false);
 const showFrameworksError = ref<boolean>(false);
 const showFileTypeError = ref<boolean>(false);
-const allReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
-const selectableReportingPeriodOptions = ref<ToggleChipInputType[]>([]);
+const selectedReportingPeriods = ref<string[]>([]);
 const keepValuesOnly = ref(true);
 const includeAlias = ref(true);
+const latestOnly = ref(true);
 const selectedFramework = ref<DataTypeEnum | undefined>(undefined);
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const reportingPeriodsPerFramework = ref<Map<string, string[]>>(new Map());
@@ -151,20 +166,27 @@ const availableFrameworks = computed(() => {
   }));
 });
 
+const availableReportingPeriodOptions = computed(() => {
+  const reportingPeriods = selectedFramework.value
+    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
+    : [];
+
+  return DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
+    value: period,
+    label: period,
+    disabled: !reportingPeriods.includes(period),
+  }));
+});
+
 onMounted(() => {
   const data = dialogRef?.value.data;
   if (data?.reportingPeriodsPerFramework) {
     reportingPeriodsPerFramework.value = new Map(data.reportingPeriodsPerFramework);
   }
 
-  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
-    name: period,
-    value: false,
-  }));
   if (!selectedFramework.value) {
     selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
-  updateReportingPeriod();
 });
 
 /**
@@ -174,7 +196,17 @@ onMounted(() => {
 function onFrameworkChange(event: SelectChangeEvent): void {
   resetErrors();
   selectedFramework.value = event.value as DataTypeEnum;
-  updateReportingPeriod();
+  selectedReportingPeriods.value = [];
+}
+
+/**
+ * Handles toggling the latest-only switch
+ */
+function onLatestOnlyChange(): void {
+  resetErrors();
+  if (latestOnly.value) {
+    selectedReportingPeriods.value = [];
+  }
 }
 
 /**
@@ -187,30 +219,9 @@ function resetErrors(): void {
 }
 
 /**
- * Handles changing framework selections by updating the reporting periods accordingly
- */
-function updateReportingPeriod(): void {
-  const reportingPeriods = selectedFramework.value
-    ? (reportingPeriodsPerFramework.value.get(selectedFramework.value) ?? [])
-    : [];
-
-  allReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
-    name: period,
-    value: reportingPeriods.includes(period),
-  }));
-
-  selectableReportingPeriodOptions.value = DOWNLOADABLE_DATA_REPORTING_PERIODS.map((period) => ({
-    name: period,
-    value: false,
-  }));
-}
-
-/**
  * Handles the clickEvent of the Download Button
  */
 function onDownloadButtonClick(): void {
-  const selectedReportingPeriods = getSelectedReportingPeriods();
-
   checkIfShowErrors();
   downloadProgress.value = 0;
 
@@ -220,27 +231,20 @@ function onDownloadButtonClick(): void {
 
   emit(
     'downloadDataset',
-    selectedReportingPeriods,
+    selectedReportingPeriods.value,
     selectedFileType.value,
     selectedFramework.value ?? '',
     keepValuesOnly.value,
-    includeAlias.value
+    includeAlias.value,
+    latestOnly.value
   );
-}
-
-/**
- * Extracts currently selected reporting periods
- */
-function getSelectedReportingPeriods(): string[] {
-  if (!selectableReportingPeriodOptions.value) return [];
-  return selectableReportingPeriodOptions.value.filter((period) => period.value).map((period) => period.name);
 }
 
 /**
  * Validates the form's fields and displays errors if necessary
  */
 function checkIfShowErrors(): void {
-  showReportingPeriodError.value = getSelectedReportingPeriods().length === 0;
+  showReportingPeriodError.value = !latestOnly.value && selectedReportingPeriods.value.length === 0;
   showFileTypeError.value = selectedFileType.value.length === 0;
 }
 </script>
@@ -270,12 +274,5 @@ function checkIfShowErrors(): void {
   padding: 0.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-}
-
-.toggle-chip-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
 }
 </style>

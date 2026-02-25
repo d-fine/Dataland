@@ -411,13 +411,15 @@ function getCompanyIds(): string[] {
  * @param selectedFramework selected data type
  * @param keepValuesOnly selected export of values only
  * @param includeAlias selected type of field names
+ * @param latestOnly whether to export only the latest reporting period per company
  */
 async function handleDatasetDownload(
   selectedYears: string[],
   selectedFileType: string,
   selectedFramework: DataTypeEnum,
   keepValuesOnly: boolean,
-  includeAlias: boolean
+  includeAlias: boolean,
+  latestOnly: boolean
 ): Promise<void> {
   isDownloading.value = true;
   downloadErrors.value = '';
@@ -432,17 +434,31 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
-    const exportJobId = (
-      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
-        selectedYears,
-        getCompanyIds(),
-        exportFileType,
-        keepValuesOnly,
-        includeAlias
-      )
-    ).data.id;
+    const companyIds = getCompanyIds();
 
-    await pollExportJobStatus(assertDefined(exportJobId), apiClientProvider.apiClients.dataExportController);
+    let exportJobId: string;
+    if (latestOnly) {
+      exportJobId = (
+        await frameworkDataApi.postExportLatestJobCompanyAssociatedDataByDimensions(
+          companyIds,
+          exportFileType,
+          keepValuesOnly,
+          includeAlias
+        )
+      ).data.id;
+    } else {
+      exportJobId = (
+        await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+          selectedYears,
+          companyIds,
+          exportFileType,
+          keepValuesOnly,
+          includeAlias
+        )
+      ).data.id;
+    }
+
+    await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
 
     const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
     const options: AxiosRequestConfig | undefined =

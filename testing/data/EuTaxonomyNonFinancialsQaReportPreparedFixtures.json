@@ -37,6 +37,15 @@
 			"isTeaserCompany": false
 		},
 		"t": {
+			"general": {
+				"assurance": {
+					"comment": "some comment",
+					"verdict": "QaAccepted",
+					"correctedData": {
+						"value": "LimitedAssurance"
+					}
+				}
+			},
 			"revenue": {
 				"alignedActivities": {
 					"comment": "some comment",
