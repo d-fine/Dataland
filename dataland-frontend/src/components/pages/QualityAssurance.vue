@@ -101,7 +101,7 @@
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column header="PRIORITY" class="w-2">
+            <Column v-if="isAdmin" header="PRIORITY" class="w-2">
               <template #body="slotProps">
                 <DatalandTag
                   v-if="getPriorityForRow(slotProps.data) !== undefined"
@@ -144,7 +144,8 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
@@ -203,11 +204,17 @@ export default defineComponent({
       notEnoughCharactersWarningTimeoutId: 0,
       showNotEnoughCharactersWarning: false,
       priorityByDimensions: {} as Record<string, number>,
+      isAdmin: false,
     };
   },
   mounted() {
     this.getQaDataForCurrentPage().catch((error) => console.log(error));
     this.availableFrameworks = retrieveAvailableFrameworks();
+    checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise)
+      .then((isAdmin) => {
+        this.isAdmin = isAdmin;
+      })
+      .catch((error) => console.error(error));
   },
   watch: {
     selectedFrameworks() {

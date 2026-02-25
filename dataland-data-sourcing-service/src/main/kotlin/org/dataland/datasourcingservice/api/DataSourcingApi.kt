@@ -369,7 +369,9 @@ interface DataSourcingApi {
      */
     @Operation(
         summary = "Get priorities for a list of data dimensions",
-        description = "Returns the priority of the data sourcing object matching each provided set of data dimensions.",
+        description =
+            "For each provided set of data dimensions with a matching data sourcing object, " +
+                "returns the data dimensions paired with their priority.",
     )
     @ApiResponses(
         value = [

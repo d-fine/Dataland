@@ -1,12 +1,11 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
+import org.dataland.datasourcingservice.utils.getCurrentUserProviderCompanyIds
 import org.dataland.datasourcingservice.utils.isUserAdmin
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -21,14 +20,6 @@ class DataSourcingQueryManager(
     @Autowired private val dataSourcingRepository: DataSourcingRepository,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
 ) {
-    private fun getCurrentUserProviderCompanyIds(): Set<UUID> {
-        val userId = DatalandAuthentication.fromContextOrNull()?.userId ?: return emptySet()
-        return companyRolesControllerApi
-            .getExtendedCompanyRoleAssignments(userId = ValidationUtils.convertToUUID(userId))
-            .map { UUID.fromString(it.companyId) }
-            .toSet()
-    }
-
     /**
      * Search data sourcings based on the provided filters and return a paginated chunk.
      * @param companyId to filter by
@@ -49,7 +40,7 @@ class DataSourcingQueryManager(
         chunkIndex: Int = 0,
     ): List<StoredDataSourcing> {
         val isAdmin = isUserAdmin()
-        val providerCompanyIds = if (isAdmin) emptySet() else getCurrentUserProviderCompanyIds()
+        val providerCompanyIds = if (isAdmin) emptySet() else companyRolesControllerApi.getCurrentUserProviderCompanyIds()
         return dataSourcingRepository
             .findByIdsAndFetchAllReferences(
                 dataSourcingRepository

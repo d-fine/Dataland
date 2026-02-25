@@ -22,8 +22,8 @@ import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.DataSourcingRepository
 import org.dataland.datasourcingservice.utils.DataSourcingUtils.updateIfNotNull
+import org.dataland.datasourcingservice.utils.isCurrentUserProviderFor
 import org.dataland.datasourcingservice.utils.isUserAdmin
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -52,21 +52,6 @@ class DataSourcingManager
             dataSourcingRepository.findByIdAndFetchAllStoredFields(dataSourcingEntityId)
                 ?: throw DataSourcingNotFoundApiException(dataSourcingEntityId)
 
-        private fun isCurrentUserAdminOrProviderFor(entity: DataSourcingEntity): Boolean {
-            val userId = DatalandAuthentication.fromContextOrNull()?.userId
-            return isUserAdmin() ||
-                (
-                    userId != null &&
-                        listOfNotNull(entity.documentCollector, entity.dataExtractor).any { companyId ->
-                            companyRolesControllerApi
-                                .getExtendedCompanyRoleAssignments(
-                                    userId = ValidationUtils.convertToUUID(userId),
-                                    companyId = companyId,
-                                ).isNotEmpty()
-                        }
-                )
-        }
-
         /**
          * Return the unique StoredDataSourcing object for the given dataSourcingEntityId.
          * @param dataSourcingEntityId the ID of the data sourcing entity to retrieve
@@ -79,7 +64,7 @@ class DataSourcingManager
             val isAdmin = isUserAdmin()
             return entity.toStoredDataSourcing(
                 isAdmin = isAdmin,
-                isAdminOrProvider = isAdmin || isCurrentUserAdminOrProviderFor(entity),
+                isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
             )
         }
 
@@ -99,7 +84,11 @@ class DataSourcingManager
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info("Patch data sourcing entity with id: $dataSourcingEntityId. CorrelationId: $correlationId")
             val result = handlePatchOfDataSourcingEntity(dataSourcingEntity, dataSourcingPatch, correlationId)
-            return result.toStoredDataSourcing(isAdmin = isUserAdmin(), isAdminOrProvider = true)
+            val isAdmin = isUserAdmin()
+            return result.toStoredDataSourcing(
+                isAdmin = isAdmin,
+                isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
+            )
         }
 
         /**
@@ -172,9 +161,6 @@ class DataSourcingManager
             dataSourcingEntityWithFetchedRequests.state = state
         }
 
-        /**
-         * Builds, logs and sends non-sourceability message to RabbitMQ
-         */
         private fun sendNonSourceableMessage(
             dataSourcingEntityWithFetchedRequests: DataSourcingEntity,
             correlationId: String,
@@ -220,11 +206,9 @@ class DataSourcingManager
                     "Patch state of data sourcing entity with id: $dataSourcingEntityId " +
                         "from state ${dataSourcingEntity.state} to state $state. CorrelationId: $correlationId.",
                 )
-            return handlePatchOfDataSourcingEntity(
-                dataSourcingEntity,
-                DataSourcingPatch(state = state),
-                correlationId,
-            ).toReducedDataSourcing(isAdminOrProvider = true)
+            val result = handlePatchOfDataSourcingEntity(dataSourcingEntity, DataSourcingPatch(state = state), correlationId)
+            val isAdmin = isUserAdmin()
+            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
         }
 
         /**
@@ -251,11 +235,12 @@ class DataSourcingManager
                 "Patch documents with ids $documentIds of data sourcing entity with id: $dataSourcingEntityId with " +
                     "appendDocuments = $appendDocuments. CorrelationId: $correlationId.",
             )
-            return handlePatchOfDataSourcingEntity(
-                dataSourcingEntity,
-                DataSourcingPatch(documentIds = newDocumentsIds),
-                correlationId,
-            ).toReducedDataSourcing(isAdminOrProvider = true)
+            val result =
+                handlePatchOfDataSourcingEntity(
+                    dataSourcingEntity, DataSourcingPatch(documentIds = newDocumentsIds), correlationId,
+                )
+            val isAdmin = isUserAdmin()
+            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
         }
 
         /**
@@ -275,11 +260,12 @@ class DataSourcingManager
                 "Patch dateOfNextDocumentSourcingAttempt of data sourcing entity with id: $dataSourcingEntityId with" +
                     " dateOfNextDocumentSourcingAttempt: $date. CorrelationId: $correlationId.",
             )
-            return handlePatchOfDataSourcingEntity(
-                dataSourcingEntity,
-                DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date),
-                correlationId,
-            ).toReducedDataSourcing(isAdminOrProvider = true)
+            val result =
+                handlePatchOfDataSourcingEntity(
+                    dataSourcingEntity, DataSourcingPatch(dateOfNextDocumentSourcingAttempt = date), correlationId,
+                )
+            val isAdmin = isUserAdmin()
+            return result.toReducedDataSourcing(isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result))
         }
 
         /**
@@ -313,7 +299,13 @@ class DataSourcingManager
                     adminComment = adminComment,
                 ),
                 correlationId,
-            ).toStoredDataSourcing(isAdmin = true, isAdminOrProvider = true)
+            ).let { result ->
+                val isAdmin = isUserAdmin()
+                result.toStoredDataSourcing(
+                    isAdmin = isAdmin,
+                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
+                )
+            }
         }
 
         /**
@@ -336,7 +328,7 @@ class DataSourcingManager
             return dataSourcingEntities.map { entity ->
                 entity.toStoredDataSourcing(
                     isAdmin = isAdmin,
-                    isAdminOrProvider = isAdmin || isCurrentUserAdminOrProviderFor(entity),
+                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(entity),
                 )
             }
         }
@@ -362,7 +354,13 @@ class DataSourcingManager
                 dataSourcingEntity,
                 DataSourcingPatch(priority = priority),
                 correlationId,
-            ).toStoredDataSourcing(isAdmin = true, isAdminOrProvider = true)
+            ).let { result ->
+                val isAdmin = isUserAdmin()
+                result.toStoredDataSourcing(
+                    isAdmin = isAdmin,
+                    isAdminOrProvider = isAdmin || companyRolesControllerApi.isCurrentUserProviderFor(result),
+                )
+            }
         }
 
         /**
