@@ -147,7 +147,8 @@
           <Column v-if="isColumnVisible('creationTimestamp')" header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line1 }}</span>
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line2 }}</span>
               </div>
             </template>
           </Column>
@@ -159,7 +160,8 @@
           >
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line1 }}</span>
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line2 }}</span>
               </div>
             </template>
           </Column>
@@ -486,6 +488,28 @@ function resetChunkAndFirstRowIndexAndGetAllRequests(): void {
 function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = event.data.id;
   router.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
+}
+
+/**
+ * Splits the requested date into two lines for display.
+ * @param timestamp - The timestamp to be converted
+ * @returns An object containing the two lines of the split date
+ */
+function splitRequestedDateLines(timestamp: number): { line1: string; line2: string } {
+  const dateString = convertUnixTimeInMsToDateString(timestamp).replaceAll(/\r?\n/g, '');
+  const parts = dateString.split(', ');
+  if (parts.length < 3) {
+    return { line1: dateString, line2: '' };
+  } else {
+    const [weekday, dayMonthYear, time] = parts;
+    const dayMonthYearParts = dayMonthYear!.split(' ');
+    const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
+    const year = dayMonthYearParts[2] + ', ';
+    return {
+      line1: `${weekday}, ${dayMonth} \n`,
+      line2: `${year} ${time}`,
+    };
+  }
 }
 </script>
 
