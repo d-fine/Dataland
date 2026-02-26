@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
+import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -71,6 +72,15 @@ class EutaxonomyNonFinancialsDataController
         ): ResponseEntity<ExportJobInfo> =
             super
                 .postExportJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
+
+        @Operation(operationId = "postExportLatestJobCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions")
+        override fun postExportLatestJobCompanyAssociatedDataByDimensions(
+            exportRequestData: ExportLatestRequestData,
+            keepValueFieldsOnly: Boolean,
+            includeAliases: Boolean,
+        ): ResponseEntity<ExportJobInfo> =
+            super
+                .postExportLatestJobCompanyAssociatedDataByDimensions(exportRequestData, keepValueFieldsOnly, includeAliases)
 
         @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
         override fun getFrameworkDatasetsForCompany(
