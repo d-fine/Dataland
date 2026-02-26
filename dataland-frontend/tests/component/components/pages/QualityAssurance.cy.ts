@@ -408,7 +408,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
   });
 
-  it.only('Check display of error message.', () => {
+  it('Check display of error message.', () => {
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
       request.reply(403, {
