@@ -108,13 +108,14 @@
                 {{ slotProps.data.numberQaReports }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="REVIEW STATUS" body-class="qa-review-status-cell">
+            <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
               <template #body="slotProps">
                 <PrimeButton
                   v-if="
                     slotProps.data.reviewStatus === 'Start Review' || slotProps.data.reviewStatus === 'Continue Review'
                   "
                   @click.stop="handleRowAction(slotProps.data)"
+                  class="qa-review-button"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
@@ -488,19 +489,12 @@ onMounted(() => {
   text-align: left;
   display: inline-flex;
   align-items: center;
+}
 
-  .p-button.p-button-link {
-    justify-content: flex-start;
-    text-align: left;
-    padding-inline: 0;
-    min-width: 0;
-  }
-
-  .p-button-label {
-    display: block;
-    text-align: left;
-    padding-inline: 0;
-  }
+.qa-review-button {
+  justify-content: flex-start;
+  text-align: left;
+  padding-inline: 0;
 }
 
 .confirmation-modal-message {
