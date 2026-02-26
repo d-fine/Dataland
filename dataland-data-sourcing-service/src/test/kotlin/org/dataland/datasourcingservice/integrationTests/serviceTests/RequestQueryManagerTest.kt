@@ -223,6 +223,10 @@ class RequestQueryManagerTest
                         null, null, null, null, null, null, null, "${DATA_SOURCING_STATE_1};${DATA_SOURCING_STATE_2}",
                         "1;3;5;7;9;11;13;15",
                     ),
+                    RequestSearchTestCase(
+                        null, null, null, REQUEST_STATE_1, null, null, null, DATA_SOURCING_STATE_1,
+                        "0;1;2;3;4;6;8;9;10;11;12;14",
+                    ),
                 )
         }
 
