@@ -355,6 +355,45 @@ class RequestQueryManagerTest
         }
 
         @Test
+        fun `searchRequests by dataSourcingState does not return Withdrawn requests`() {
+            val dataSourcingEntity =
+                dataBaseCreationUtils.storeDataSourcing(
+                    dataSourcingId = UUID.fromString("00000000-0000-0000-0000-000000000030"),
+                    companyId = UUID.fromString(COMPANY_ID_1),
+                    reportingPeriod = REPORTING_PERIOD_1,
+                    dataType = DATA_TYPE_1,
+                    state = DataSourcingState.Initialized,
+                )
+
+            val processingRequest =
+                dataBaseCreationUtils.storeRequest(
+                    requestId = UUID.fromString("00000000-0000-0000-0000-000000000031"),
+                    companyId = UUID.fromString(COMPANY_ID_1),
+                    userId = UUID.fromString(firstUser.userId),
+                    dataType = DATA_TYPE_1,
+                    reportingPeriod = REPORTING_PERIOD_1,
+                    state = RequestState.Processing,
+                    dataSourcingEntity = dataSourcingEntity,
+                )
+
+            dataBaseCreationUtils.storeRequest(
+                requestId = UUID.fromString("00000000-0000-0000-0000-000000000032"),
+                companyId = UUID.fromString(COMPANY_ID_2),
+                userId = UUID.fromString(firstUser.userId),
+                dataType = DATA_TYPE_2,
+                reportingPeriod = REPORTING_PERIOD_2,
+                state = RequestState.Withdrawn,
+                dataSourcingEntity = dataSourcingEntity,
+            )
+
+            val filter = RequestSearchFilter<UUID>(dataSourcingStates = setOf(DataSourcingState.Initialized))
+            val results = requestQueryManager.searchRequests(filter)
+
+            Assertions.assertEquals(1, results.size)
+            Assertions.assertEquals(processingRequest.id.toString(), results.first().id)
+        }
+
+        @Test
         fun `searchRequests returns correct document collector and data extractor names`() {
             val dataSourcingWithBoth =
                 dataBaseCreationUtils.storeDataSourcing(
