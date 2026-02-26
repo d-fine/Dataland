@@ -160,8 +160,8 @@
           >
             <template #body="{ data }">
               <div>
-                <span>{{ splitRequestedDateLines(data.creationTimestamp).line1 }}</span>
-                <span>{{ splitRequestedDateLines(data.creationTimestamp).line2 }}</span>
+                <span>{{ splitRequestedDateLines(data.lastModifiedDate).line1 }}</span>
+                <span>{{ splitRequestedDateLines(data.lastModifiedDate).line2 }}</span>
               </div>
             </template>
           </Column>
@@ -173,20 +173,20 @@
               />
             </template>
           </Column>
-          <Column v-if="isColumnVisible('nextSourcingAttempt')" header="NEXT SOURCING ATTEMPT" :sortable="false">
+          <Column
+            v-if="isColumnVisible('nextSourcingAttempt')"
+            header="NEXT SOURCING ATTEMPT"
+            :sortable="false"
+            class="date-column"
+          >
             <template #body="{ data }">
               <div v-if="data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt">
-                <span
-                  >{{
-                    dateStringFormatter(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).split(', ')[0]
-                  }},</span
-                >
-                <span>{{
-                  dateStringFormatter(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt)
-                    .split(', ')
-                    .slice(1)
-                    .join(', ')
-                }}</span>
+                <span>
+                  {{ splitRequestedDataSourcingDate(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).line1 }}
+                </span>
+                <span>
+                  {{ splitRequestedDataSourcingDate(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).line2 }}
+                </span>
               </div>
               <template v-else>-</template>
             </template>
@@ -498,18 +498,32 @@ function onRowClick(event: DataTableRowClickEvent): void {
 function splitRequestedDateLines(timestamp: number): { line1: string; line2: string } {
   const dateString = convertUnixTimeInMsToDateString(timestamp).replaceAll(/\r?\n/g, '');
   const parts = dateString.split(', ');
-  if (parts.length < 3) {
-    return { line1: dateString, line2: '' };
-  } else {
-    const [weekday, dayMonthYear, time] = parts;
-    const dayMonthYearParts = dayMonthYear!.split(' ');
-    const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
-    const year = dayMonthYearParts[2] + ', ';
-    return {
-      line1: `${weekday}, ${dayMonth} \n`,
-      line2: `${year} ${time}`,
-    };
-  }
+  const [weekday, dayMonthYear, time] = parts;
+  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
+  const year = dayMonthYearParts[2];
+  return {
+    line1: `${weekday}, ${dayMonth}`,
+    line2: `${year}, ${time}`,
+  };
+}
+
+/**
+ * Splits the requested date of next data sourcing attempt into two lines for display.
+ * @param date - The timestamp to be converted
+ * @returns An object containing the two lines of the split date
+ */
+function splitRequestedDataSourcingDate(date: string): { line1: string; line2: string } {
+  const dateString = dateStringFormatter(date);
+  const parts = dateString.split(', ');
+  const [weekday, dayMonthYear] = parts;
+  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
+  const year = dayMonthYearParts[2];
+  return {
+    line1: `${weekday}, ${dayMonth}`,
+    line2: `${year}`,
+  };
 }
 </script>
 
@@ -596,5 +610,10 @@ function splitRequestedDateLines(timestamp: number): { line1: string; line2: str
       cursor: pointer;
     }
   }
+}
+
+.date-column span {
+  display: block;
+  white-space: nowrap;
 }
 </style>
