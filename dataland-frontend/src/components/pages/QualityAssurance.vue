@@ -150,7 +150,9 @@
             </div>
           </div>
           <div v-if="errorMessage" data-test="confirmation-modal-error-message">
-            <Message severity="error" class="my-3">{{ errorMessage }}</Message>
+            <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{
+              errorMessage
+            }}</Message>
           </div>
           <template #footer>
             <PrimeButton
@@ -193,6 +195,8 @@ import Message from 'primevue/message';
 import PrimeDialog from 'primevue/dialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { AxiosError } from 'axios';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
@@ -310,8 +314,12 @@ async function createAndViewDatasetReview(dataId: string): Promise<void> {
     const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
     await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'An unknown error occurred';
-    console.error(error);
+    if (error instanceof AxiosError) {
+      errorMessage.value = formatAxiosErrorMessage(error);
+    } else {
+      errorMessage.value = 'Failed to create dataset review.';
+    }
+    console.error(errorMessage.value);
   }
 }
 
