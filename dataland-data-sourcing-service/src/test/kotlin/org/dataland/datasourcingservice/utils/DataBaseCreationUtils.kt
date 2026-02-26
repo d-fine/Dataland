@@ -1,5 +1,7 @@
 package org.dataland.datasourcingservice.utils
 
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -29,6 +31,30 @@ const val USER_EMAIL = "testuser@email.com"
 const val USER_EMAIL_SEARCH_STRING = "testuser"
 const val ADMIN_COMMENT = "This is an admin comment."
 const val ADMIN_COMMENT_SEARCH_STRING = "admin comment"
+
+val DEFAULT_VALIDATION_RESULT_1 =
+    CompanyIdentifierValidationResult(
+        identifier = COMPANY_ID_1,
+        companyInformation =
+            BasicCompanyInformation(
+                companyId = COMPANY_ID_1,
+                companyName = TEST_COMPANY_NAME_1,
+                headquarters = "HQ1",
+                countryCode = "DE",
+            ),
+    )
+
+val DEFAULT_VALIDATION_RESULT_2 =
+    CompanyIdentifierValidationResult(
+        identifier = COMPANY_ID_2,
+        companyInformation =
+            BasicCompanyInformation(
+                companyId = COMPANY_ID_2,
+                companyName = TEST_COMPANY_NAME_2,
+                headquarters = "HQ2",
+                countryCode = "FR",
+            ),
+    )
 
 /**
  * Utility class to create and store test data in the database using SpringBootTests.
