@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.services
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -173,6 +174,21 @@ class DatasetReviewServiceTest {
             setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId).toString()),
             createdDatasetReview.qaReports,
         )
+    }
+
+    @Test
+    fun `postDatasetReview throws ConflictApiException when pending review exists`() {
+        doReturn(mapOf(dummyDataPointType to UUID.randomUUID().toString()))
+            .whenever(mockDatasetReviewSupportService)
+            .getContainedDataPoints(dummyDatasetId.toString())
+
+        doReturn(listOf(datasetReviewEntity))
+            .whenever(mockDatasetReviewRepository)
+            .findAllByDatasetIdAndReviewState(dummyDatasetId, DatasetReviewState.Pending)
+
+        assertThrows<ConflictApiException> {
+            datasetReviewService.postDatasetReview(dummyDatasetId)
+        }
     }
 
     @Test

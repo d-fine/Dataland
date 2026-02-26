@@ -408,16 +408,26 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
   });
 
-  it('Check display of error message.', () => {
+  it.only('Check display of error message.', () => {
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
-      request.reply(403, { message: 'Request failed with status code 403' });
+      request.reply(403, {
+        errors: [
+          {
+            errorType: 'access-denied',
+            summary: 'Access Denied',
+            message:
+              'Access to this resource has been denied. Please contact support if you believe this to be an error',
+            httpStatus: 403,
+          },
+        ],
+      });
     }).as('createDatasetReviewForbidden');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReviewForbidden');
     cy.get('[data-test="confirmation-modal-error-message"]')
       .should('be.visible')
-      .and('contain', 'Request failed with status code 403');
+      .and('contain', 'Access Denied: Access to this resource has been denied.');
   });
 });

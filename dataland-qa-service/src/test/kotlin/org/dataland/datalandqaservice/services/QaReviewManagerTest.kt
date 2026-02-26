@@ -59,6 +59,7 @@ class QaReviewManagerTest {
     private val reportingPeriod: String = "dummyReportingPeriod"
     private val uploaderId = "dummyUploaderId"
     private val dummyUserName = "dummyUserName"
+    private val dummyUserId = "dummyUserId"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
     private val mockCompanyInformation = mock<CompanyInformation> { on { companyName } doReturn "dummyCompanyName" }
@@ -92,7 +93,7 @@ class QaReviewManagerTest {
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
             reviewState = DatasetReviewState.Pending,
-            reviewerUserId = UUID.randomUUID().toString(),
+            reviewerUserId = dummyUserId,
             reviewerUserName = dummyUserName,
             preapprovedDataPointIds = emptySet(),
             qaReports = emptySet(),
@@ -259,6 +260,7 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
+        Assertions.assertEquals(dummyUserId, responses.first().reviewerUserId)
         Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
     }
 }
