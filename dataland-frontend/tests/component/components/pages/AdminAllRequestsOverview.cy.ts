@@ -542,7 +542,7 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Check existence and entries of NEXT SOURCING ATTEMPT column', () => {
     mountAdminAllRequestsPageWithMocks();
     cy.contains('th', 'NEXT SOURCING ATTEMPT');
-    cy.contains('td', '1 Jan 2024');
+    cy.contains('td', 'Mon, 1 Jan');
   });
 
   describe('Column selector functionality', () => {
