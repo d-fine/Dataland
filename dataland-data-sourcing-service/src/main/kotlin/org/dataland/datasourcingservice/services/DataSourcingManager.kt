@@ -272,6 +272,7 @@ class DataSourcingManager
             patch: AdminDataSourcingPatch,
         ): StoredDataSourcing {
             val correlationId = randomUUID().toString()
+            patch.documentIds?.forEach { dataSourcingValidator.validateDocumentId(it) }
             val dataSourcingEntity = getFullyFetchedDataSourcingEntityById(dataSourcingEntityId)
             logger.info(
                 "Admin patch of data sourcing entity with id ${dataSourcingEntity.dataSourcingId}. " +

@@ -165,9 +165,9 @@ interface DataSourcingApi {
      * Patch any admin-only fields of a DataSourcing object specified by ID.
      */
     @Operation(
-        summary = "Patch DataSourcing (admin)",
+        summary = "Patch DataSourcing",
         description =
-            "Patch any admin-only fields of a DataSourcing object specified by ID. Null values are ignored.",
+            "Patch fields of a DataSourcing object specified by ID. Null values are ignored.",
     )
     @ApiResponses(
         value = [
