@@ -639,8 +639,8 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch DataSourcing (admin)",
-        "description": "Patch any admin-only fields of a DataSourcing object specified by ID. Null values are ignored.",
+        "summary": "Patch DataSourcing",
+        "description": "Patch fields of a DataSourcing object specified by ID. Null values are ignored.",
         "operationId": "patchDataSourcing",
         "parameters": [
           {
