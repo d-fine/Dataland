@@ -111,16 +111,9 @@
             <Column field="reviewDataset" header="REVIEW STATUS" body-class="qa-review-status-cell">
               <template #body="slotProps">
                 <PrimeButton
-                  v-if="slotProps.data.reviewStatus === 'Start Review'"
-                  @click.stop="handleRowAction(slotProps.data)"
-                  data-test="goToReviewButton"
-                  :label="slotProps.data.reviewStatus"
-                  icon="pi pi-chevron-right"
-                  icon-pos="right"
-                  variant="link"
-                />
-                <PrimeButton
-                  v-else-if="slotProps.data.reviewStatus === 'Continue Review'"
+                  v-if="
+                    slotProps.data.reviewStatus === 'Start Review' || slotProps.data.reviewStatus === 'Continue Review'
+                  "
                   @click.stop="handleRowAction(slotProps.data)"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
@@ -151,8 +144,8 @@
         >
           <div style="text-align: center; padding: 8px 0">
             <div class="confirmation-modal-message">
-              Are you sure you want to start a review for this dataset? Once started, the review cannot be deleted and
-              will be visible for other reviewers on Dataland.
+              <div>Are you sure you want to start a review for this dataset?</div>
+              <div>Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.</div>
             </div>
           </div>
           <div v-if="errorMessage" data-test="confirmation-modal-error-message">
@@ -516,5 +509,7 @@ onMounted(() => {
   white-space: normal;
   text-align: left;
   word-break: break-word;
+  display: grid;
+  gap: var(--spacing-xs);
 }
 </style>

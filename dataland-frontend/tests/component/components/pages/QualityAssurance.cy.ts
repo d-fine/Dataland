@@ -46,7 +46,7 @@ type ReviewQueueElementOptions = {
 function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewResponse {
   return {
     dataId: options.dataId,
-    timestamp: options.timestamp || Date.now(),
+    timestamp: options.timestamp ?? Date.now(),
     companyName: options.companyName,
     companyId: options.companyId,
     framework: options.framework,
