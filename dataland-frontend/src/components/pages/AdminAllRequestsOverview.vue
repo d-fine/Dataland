@@ -147,12 +147,7 @@
           <Column v-if="isColumnVisible('creationTimestamp')" header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
-                <span>{{
-                  convertUnixTimeInMsToDateString(data.creationTimestamp).split(', ').slice(0, 2).join(', ')
-                }}</span>
-                <span>{{
-                  convertUnixTimeInMsToDateString(data.creationTimestamp).split(', ').slice(2).join(', ')
-                }}</span>
+                <span>{{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}</span>
               </div>
             </template>
           </Column>
@@ -164,12 +159,7 @@
           >
             <template #body="{ data }">
               <div>
-                <span>{{
-                  convertUnixTimeInMsToDateString(data.lastModifiedDate).split(', ').slice(0, 2).join(', ')
-                }}</span>
-                <span>{{
-                  convertUnixTimeInMsToDateString(data.lastModifiedDate).split(', ').slice(2).join(', ')
-                }}</span>
+                <span>{{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}</span>
               </div>
             </template>
           </Column>
