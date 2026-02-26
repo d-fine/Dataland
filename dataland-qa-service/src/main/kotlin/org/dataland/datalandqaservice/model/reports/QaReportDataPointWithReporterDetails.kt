@@ -25,7 +25,7 @@ import java.util.UUID
 data class QaReportDataPointWithReporterDetails(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_point_review_details_id")
-    val dataPointReviewDetails: DataPointReviewDetails,
+    val dataPointReviewDetails: DataPointReviewDetails?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,

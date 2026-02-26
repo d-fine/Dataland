@@ -6,12 +6,13 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporterDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -49,40 +50,12 @@ class DatasetReviewService
                     "Dataset with the id: $datasetId could not be found.",
                 )
             }
-            val dataPointQaReportIds =
+            val qaReportsWithDetails =
                 datasetReviewSupportService
-                    .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
+                    .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
 
-            val qaReportIdWithUploaderCompanyIds =
-                dataPointQaReportIds.map {
-                    val uploaderCompanyId =
-                        inheritedRolesControllerApi
-                            .getInheritedRoles(it)
-                            .keys
-                            .firstOrNull()
-                            ?.let { companyId -> convertToUUID(companyId) }
-                    QaReportIdWithUploaderCompanyId(
-                        convertToUUID(it),
-                        uploaderCompanyId,
-                    )
-                }
-
-            val reporterCompanyIDs = qaReportIdWithUploaderCompanyIds.map { it.uploaderCompanyId.toString() }.toSet().toList()
-            val reporterCompanyNames =
-                companyDataControllerApi
-                    .postCompanyValidation(reporterCompanyIDs)
-                    .mapNotNull { it.companyInformation?.companyName }
-            val reporterUserId = List(reporterCompanyIDs.size) { "" }
-
-            val qaReporterCompanies =
-                reporterCompanyIDs.indices.map { i ->
-                    QaReporterCompany(
-                        convertToUUID(reporterCompanyIDs[i]),
-                        reporterCompanyNames[i],
-                        convertToUUID(reporterUserId[i]),
-                    )
-                }
-
+            val qaReporterCompanies = getQaReporterCompanies(qaReportsWithDetails)
+            val dataPoints = getDataPointsForReview(qaReportsWithDetails)
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -95,9 +68,139 @@ class DatasetReviewService
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = "Hallo",
                     qaReporterCompanies = qaReporterCompanies.toMutableList(),
-                    dataPoints = mutableListOf(),
+                    dataPoints = dataPoints,
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
+        }
+
+        /**
+         * Helper method to get the data points with details for the review process.
+         */
+        private fun getDataPointsForReview(qaReportsWithDetails: List<DataPointQaReportEntity>): MutableList<DataPointReviewDetails> {
+            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
+            val dataPointTypes =
+                latestQaReportForCompanyAndType
+                    .values
+                    .map { it.dataPointType }
+                    .distinct()
+
+            val dataPoints = mutableListOf<DataPointReviewDetails>()
+
+            for (dataPointType in dataPointTypes) {
+                val qaReportsForThisDataPointType =
+                    latestQaReportForCompanyAndType
+                        .values
+                        .filter { it.dataPointType == dataPointType }
+                val dataPointId =
+                    qaReportsForThisDataPointType
+                        .first()
+                        .dataPointId
+
+                dataPoints.add(
+                    DataPointReviewDetails(
+                        dataPointType = dataPointType,
+                        dataPointId = convertToUUID(dataPointId),
+                        qaReports =
+                            qaReportsForThisDataPointType.map {
+                                QaReportDataPointWithReporterDetails(
+                                    dataPointReviewDetails = null, // will be set in DatasetReviewEntity when mapped by JPA
+                                    qaReportId = convertToUUID(it.qaReportId),
+                                    verdict = it.verdict,
+                                    correctedData = it.correctedData,
+                                    reporterUserId = convertToUUID(it.reporterUserId),
+                                    reporterCompanyId =
+                                        convertToUUID(
+                                            inheritedRolesControllerApi
+                                                .getInheritedRoles(it.qaReportId)
+                                                .keys
+                                                .first(),
+                                        ),
+                                )
+                            },
+                        acceptedSource = null,
+                        companyIdOfAcceptedQaReport = null,
+                        customValue = null,
+                        datasetReview = null, // will be set in DatasetReviewEntity when mapped by JPA
+                    ),
+                )
+            }
+            return dataPoints
+        }
+
+        /**
+         * Helper method to get the companies of the reporters of qa reports.
+         *
+         * Only considers the latest qa report for each company and data point type combination
+         * to determine the reporter companies.
+         */
+        private fun getQaReporterCompanies(qaReportsWithDetails: List<DataPointQaReportEntity>): List<QaReporterCompany> {
+            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
+            val uniqueQaReporterUserId = latestQaReportForCompanyAndType.values.map { it.reporterUserId }.distinct()
+            val companyIdsOfUniqueUserIds =
+                latestQaReportForCompanyAndType.values
+                    .groupBy { it.reporterUserId }
+                    .map { (_, reports) -> reports.first().qaReportId }
+                    .map {
+                        inheritedRolesControllerApi
+                            .getInheritedRoles(it)
+                            .keys
+                            .first()
+                    }
+            val companyNameById = getCompanyNameByIdMap(latestQaReportForCompanyAndType)
+
+            val qaReporterCompanies =
+                uniqueQaReporterUserId.indices.map { i ->
+                    QaReporterCompany(
+                        convertToUUID(uniqueQaReporterUserId[i]),
+                        companyNameById[companyIdsOfUniqueUserIds[i]] ?: "Unknown Company",
+                        convertToUUID(companyIdsOfUniqueUserIds[i]),
+                    )
+                }
+            return qaReporterCompanies
+        }
+
+        /**
+         * Helper method to get a map of company names by company id.
+         */
+        private fun getCompanyNameByIdMap(
+            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
+        ): Map<String, String> {
+            val uniqueCompanyIds =
+                latestQaReportForCompanyAndType.values
+                    .map { entry ->
+                        inheritedRolesControllerApi.getInheritedRoles(entry.qaReportId).keys.first()
+                    }.distinct()
+
+            val reporterCompanyNames =
+                companyDataControllerApi
+                    .postCompanyValidation(uniqueCompanyIds)
+                    .mapNotNull { it.companyInformation?.companyName }
+
+            return uniqueCompanyIds.zip(reporterCompanyNames).toMap()
+        }
+
+        /**
+         * Helper method to get the latest qa report for each combination of company and data point type.
+         * This is used to determine which qa report should be considered for each data point in the review process
+         * and which companies are reporting on which data points.
+         */
+        private fun getLatestQaReportForEachCompanyAndDataPointType(
+            qaReportsWithDetails: List<DataPointQaReportEntity>,
+        ): LinkedHashMap<String, DataPointQaReportEntity> {
+            val map = linkedMapOf<String, DataPointQaReportEntity>()
+            for (entry in qaReportsWithDetails) {
+                val companyId =
+                    inheritedRolesControllerApi
+                        .getInheritedRoles(entry.qaReportId)
+                        .keys
+                        .first()
+                val compositeKey = "$companyId|${entry.dataPointType}"
+                val existing = map[compositeKey]
+                if (existing == null || entry.uploadTime > existing.uploadTime) {
+                    map[compositeKey] = entry
+                }
+            }
+            return map
         }
 
         /**

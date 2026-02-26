@@ -27,10 +27,10 @@ data class DataPointReviewDetails(
     val dataPointId: UUID?,
     @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
     val qaReports: List<QaReportDataPointWithReporterDetails> = listOf(),
-    var acceptedSource: AcceptedDataPointSource,
+    var acceptedSource: AcceptedDataPointSource?,
     var companyIdOfAcceptedQaReport: UUID?,
     val customValue: String?,
     @JoinColumn(name = "data_point_review_details_id")
     @ManyToOne
-    val datasetReview: DatasetReviewEntity,
+    val datasetReview: DatasetReviewEntity?,
 )
