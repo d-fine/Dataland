@@ -416,13 +416,15 @@ async function goToUpdateFormByReportingPeriod(reportingPeriod: string): Promise
  * @param selectedFramework selected data type
  * @param keepValuesOnly selected export of values only
  * @param includeAlias selected type of field names
+ * @param latestOnly whether to export only the latest reporting period per company
  */
 async function handleDatasetDownload(
   selectedYears: string[],
   selectedFileType: string,
   selectedFramework: DataTypeEnum,
   keepValuesOnly: boolean,
-  includeAlias: boolean
+  includeAlias: boolean,
+  latestOnly: boolean
 ): Promise<void> {
   isDownloading.value = true;
   downloadErrors.value = '';
@@ -437,15 +439,27 @@ async function handleDatasetDownload(
     const exportFileType = Object.values(ExportFileType).find((t) => t.toString() === selectedFileType);
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
-    const exportJobId = (
-      await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
-        selectedYears,
-        [props.companyID],
-        exportFileType,
-        keepValuesOnly,
-        includeAlias
-      )
-    ).data.id;
+    let exportJobId: string;
+    if (latestOnly) {
+      exportJobId = (
+        await frameworkDataApi.postExportLatestJobCompanyAssociatedDataByDimensions(
+          [props.companyID],
+          exportFileType,
+          keepValuesOnly,
+          includeAlias
+        )
+      ).data.id;
+    } else {
+      exportJobId = (
+        await frameworkDataApi.postExportJobCompanyAssociatedDataByDimensions(
+          selectedYears,
+          [props.companyID],
+          exportFileType,
+          keepValuesOnly,
+          includeAlias
+        )
+      ).data.id;
+    }
 
     await pollExportJobStatus(exportJobId, apiClientProvider.apiClients.dataExportController);
 

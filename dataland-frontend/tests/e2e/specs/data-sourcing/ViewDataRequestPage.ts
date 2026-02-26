@@ -47,6 +47,19 @@ function patchRequestToProcessed(requestId: string): Cypress.Chainable {
   });
 }
 
+/**
+ * Patches the request to 'Processing' state as admin.
+ */
+function patchRequestToProcessing(requestId: string): Cypress.Chainable {
+  return getKeycloakToken(admin_name, admin_pw).then((token) => {
+    return cy.request({
+      method: 'PATCH',
+      url: `${apiBaseUrl}/data-sourcing/requests/${requestId}/state?requestState=Processing&adminComment=`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  });
+}
+
 describeIf(
   'As an admin, I want to be able to view a data sourcing request and ' +
     'resubmit or withdraw it from the request details page',
@@ -65,6 +78,7 @@ describeIf(
       cy.intercept('PATCH', `${apiBaseUrl}/data-sourcing/requests/*/state?requestState=Withdrawn`).as('withdraw');
       createRequest().then((id) => {
         requestId = id;
+        patchRequestToProcessing(requestId);
         patchRequestToProcessed(requestId).then(() => {
           cy.visit(getBaseUrl() + `/requests/${requestId}`);
         });
@@ -74,9 +88,13 @@ describeIf(
     it('should open and close the resubmit modal', () => {
       cy.get('[data-test="card-resubmit"]').should('be.visible');
       cy.get('[data-test="resubmit-request-button"]').click();
-      cy.get('[data-test="resubmit-modal"]').should('be.visible');
-      cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
-      cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible').click();
+      cy.get('[data-test="resubmit-modal"]')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-test="resubmit-message"]').type('Resubmitting for more data.');
+          cy.get('[data-test="resubmit-confirmation-button"]').should('exist');
+          cy.get('[data-test="resubmit-confirmation-button"]').should('be.visible').and('not.be.disabled').click();
+        });
       cy.wait('@resubmit');
       cy.get('[data-test="success-modal"]').should('exist').should('contain.text', 'successfully resubmitted');
       cy.get('[data-test="close-success-modal-button"]').should('be.visible').click();
