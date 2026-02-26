@@ -8,7 +8,6 @@ import java.util.UUID
  */
 @Embeddable
 data class QaReporterCompany(
-    val reportUserId: UUID,
     val reportCompanyName: String,
     val reportCompanyId: UUID,
 )

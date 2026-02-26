@@ -55,7 +55,7 @@ class DatasetReviewService
                     .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
 
             val qaReporterCompanies = getQaReporterCompanies(qaReportsWithDetails)
-            val dataPoints = getDataPointsForReview(qaReportsWithDetails)
+            val dataPoints = getDataPointsForReview(datatypeToDatapointIds, qaReportsWithDetails)
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -76,25 +76,19 @@ class DatasetReviewService
         /**
          * Helper method to get the data points with details for the review process.
          */
-        private fun getDataPointsForReview(qaReportsWithDetails: List<DataPointQaReportEntity>): MutableList<DataPointReviewDetails> {
+        private fun getDataPointsForReview(
+            datatypeToDatapointIds: Map<String, String>,
+            qaReportsWithDetails: List<DataPointQaReportEntity>,
+        ): MutableList<DataPointReviewDetails> {
             val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
-            val dataPointTypes =
-                latestQaReportForCompanyAndType
-                    .values
-                    .map { it.dataPointType }
-                    .distinct()
 
             val dataPoints = mutableListOf<DataPointReviewDetails>()
 
-            for (dataPointType in dataPointTypes) {
+            for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val qaReportsForThisDataPointType =
                     latestQaReportForCompanyAndType
                         .values
                         .filter { it.dataPointType == dataPointType }
-                val dataPointId =
-                    qaReportsForThisDataPointType
-                        .first()
-                        .dataPointId
 
                 dataPoints.add(
                     DataPointReviewDetails(
@@ -135,25 +129,19 @@ class DatasetReviewService
          */
         private fun getQaReporterCompanies(qaReportsWithDetails: List<DataPointQaReportEntity>): List<QaReporterCompany> {
             val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
-            val uniqueQaReporterUserId = latestQaReportForCompanyAndType.values.map { it.reporterUserId }.distinct()
-            val companyIdsOfUniqueUserIds =
-                latestQaReportForCompanyAndType.values
-                    .groupBy { it.reporterUserId }
-                    .map { (_, reports) -> reports.first().qaReportId }
-                    .map {
-                        inheritedRolesControllerApi
-                            .getInheritedRoles(it)
-                            .keys
-                            .first()
-                    }
+            val uniqueCompanyIds =
+                latestQaReportForCompanyAndType.keys
+                    .map { key ->
+                        key.split("|")[0]
+                    }.distinct()
+
             val companyNameById = getCompanyNameByIdMap(latestQaReportForCompanyAndType)
 
             val qaReporterCompanies =
-                uniqueQaReporterUserId.indices.map { i ->
+                uniqueCompanyIds.indices.map { i ->
                     QaReporterCompany(
-                        convertToUUID(uniqueQaReporterUserId[i]),
-                        companyNameById[companyIdsOfUniqueUserIds[i]] ?: "Unknown Company",
-                        convertToUUID(companyIdsOfUniqueUserIds[i]),
+                        companyNameById[uniqueCompanyIds[i]] ?: "Unknown Company",
+                        convertToUUID(uniqueCompanyIds[i]),
                     )
                 }
             return qaReporterCompanies

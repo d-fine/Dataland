@@ -56,7 +56,7 @@ class DatasetReviewSupportService
             dataPointQaReportRepository
                 .searchQaReportMetaInformation(
                     dataPointIds = dataPointIds,
-                    showInactive = false,
+                    showInactive = true,
                     reporterUserId = null,
                 )
 
