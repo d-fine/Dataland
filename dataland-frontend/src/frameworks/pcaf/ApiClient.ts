@@ -56,6 +56,21 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
     );
   }
 
+  postExportLatestJobCompanyAssociatedDataByDimensions(
+    companyIds: string[],
+    fileFormat: ExportFileType,
+    keepValueFieldsOnly?: boolean,
+    includeAliases?: boolean,
+    options?: AxiosRequestConfig
+  ): AxiosPromise<ExportJobInfo> {
+    return this.openApiDataController.postExportLatestJobCompanyAssociatedPcafDataByDimensions(
+      { companyIds, fileFormat },
+      keepValueFieldsOnly,
+      includeAliases,
+      options
+    );
+  }
+
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,
