@@ -12,7 +12,7 @@ import {
 import { EnhancedRequestControllerApi, RequestControllerApi } from '@clients/datasourcingservice';
 import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
-import { QaControllerApi } from '@clients/qaservice';
+import { DatasetReviewControllerApi, QaControllerApi } from '@clients/qaservice';
 import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
@@ -36,6 +36,7 @@ interface ApiClients {
   companyRolesController: CompanyRolesControllerApiInterface;
   inheritedRolesController: InheritedRolesControllerApi;
   qaController: QaControllerApi;
+  datasetReviewController: DatasetReviewControllerApi;
   emailController: EmailControllerApi;
   portfolioController: PortfolioControllerApi;
   emailAddressController: EmailAddressControllerApi;
@@ -103,6 +104,7 @@ export class ApiClientProvider {
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       inheritedRolesController: this.getClientFactory('/community')(InheritedRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
+      datasetReviewController: this.getClientFactory('/qa')(DatasetReviewControllerApi),
       emailController: this.getClientFactory('/email')(EmailControllerApi),
       portfolioController: this.getClientFactory('/users')(PortfolioControllerApi),
       emailAddressController: this.getClientFactory('/community')(EmailAddressControllerApi),
