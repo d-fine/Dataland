@@ -14,6 +14,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
+import router from '@/router';
 
 /**
  * Picks a reporting period to filter for in the date-picker.
@@ -25,32 +26,36 @@ function clickOnReportingPeriod(reportingPeriod: string): void {
   cy.get('span[data-test="reportingPeriod"]').should('exist').click();
 }
 
+type ReviewQueueElementOptions = {
+  dataId: string;
+  companyName: string;
+  companyId: string;
+  framework: string;
+  reportingPeriod: string;
+  datasetReviewId?: string;
+  reviewerUserName?: string;
+  reviewerUserId?: string;
+  timestamp?: number;
+};
+
 /**
  * Builds a review queue element.
- * @param dataId to include
- * @param companyName to include
- * @param companyId to include
- * @param framework to include
- * @param reportingPeriod to include
- * @param timestamp to include
+ * @param options to include in the element
  * @returns the element
  */
-function buildReviewQueueElement(
-  dataId: string,
-  companyName: string,
-  companyId: string,
-  framework: string,
-  reportingPeriod: string,
-  timestamp: number = Date.now()
-): QaReviewResponse {
+function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewResponse {
   return {
-    dataId: dataId,
-    timestamp: timestamp,
-    companyName: companyName,
-    companyId: companyId,
-    framework: framework,
-    reportingPeriod: reportingPeriod,
+    dataId: options.dataId,
+    timestamp: options.timestamp ?? Date.now(),
+    companyName: options.companyName,
+    companyId: options.companyId,
+    framework: options.framework,
+    reportingPeriod: options.reportingPeriod,
     qaStatus: QaStatus.Pending,
+    datasetReviewId: options.datasetReviewId,
+    reviewerUserName: options.reviewerUserName,
+    reviewerUserId: options.reviewerUserId,
+    numberQaReports: 0,
   };
 }
 
@@ -93,24 +98,30 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdAlpha = crypto.randomUUID();
   const companyNameAlpha = 'Alpha Company AG';
   const companyIdAlpha = crypto.randomUUID();
-  const reviewQueueElementAlpha = buildReviewQueueElement(
-    dataIdAlpha,
-    companyNameAlpha,
-    companyIdAlpha,
-    DataTypeEnum.Lksg,
-    '2022'
-  );
+  const reviewQueueElementAlpha = buildReviewQueueElement({
+    dataId: dataIdAlpha,
+    companyName: companyNameAlpha,
+    companyId: companyIdAlpha,
+    framework: DataTypeEnum.Lksg,
+    reportingPeriod: '2022',
+  });
 
   const dataIdBeta = crypto.randomUUID();
   const companyNameBeta = 'Beta Corporate Ltd.';
   const companyIdBeta = crypto.randomUUID();
-  const reviewQueueElementBeta = buildReviewQueueElement(
-    dataIdBeta,
-    companyNameBeta,
-    companyIdBeta,
-    DataTypeEnum.Sfdr,
-    '2023'
-  );
+  const datasetReviewId = crypto.randomUUID();
+  const reviewerUserName = 'Reviewer user name';
+  const reviewerUserId = 'Revieweruserid';
+  const reviewQueueElementBeta = buildReviewQueueElement({
+    dataId: dataIdBeta,
+    companyName: companyNameBeta,
+    companyId: companyIdBeta,
+    framework: DataTypeEnum.Sfdr,
+    reportingPeriod: '2023',
+    datasetReviewId: datasetReviewId,
+    reviewerUserName: reviewerUserName,
+    reviewerUserId: reviewerUserId,
+  });
 
   /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
@@ -221,7 +232,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get('[data-test="reset-filters-button"]').click();
 
     assertUnfilteredDatatableState();
   });
@@ -243,7 +254,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    clickOnReportingPeriod(reportingPeriodToFilterFor);
+    cy.get('[data-test="reset-filters-button"]').click();
 
     assertUnfilteredDatatableState();
   });
@@ -406,5 +417,50 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
     cy.get('.p-dialog-close-button').click();
+  });
+
+  it('Check routing of Start Review button.', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountQaAssurancePageWithMocks();
+    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+      request.reply(201, {
+        companyId: companyIdAlpha,
+        dataType: DataTypeEnum.Lksg,
+      });
+    }).as('createDatasetReview');
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
+    cy.wait('@createDatasetReview');
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
+  });
+
+  it('Check routing of row click.', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountQaAssurancePageWithMocks();
+    cy.contains('td', `${dataIdBeta}`).click();
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
+  });
+
+  it('Check display of error message.', () => {
+    mountQaAssurancePageWithMocks();
+    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+      request.reply(403, {
+        errors: [
+          {
+            errorType: 'access-denied',
+            summary: 'Access Denied',
+            message:
+              'Access to this resource has been denied. Please contact support if you believe this to be an error',
+            httpStatus: 403,
+          },
+        ],
+      });
+    }).as('createDatasetReviewForbidden');
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
+    cy.wait('@createDatasetReviewForbidden');
+    cy.get('[data-test="confirmation-modal-error-message"]')
+      .should('be.visible')
+      .and('contain', 'Access Denied: Access to this resource has been denied.');
   });
 });

@@ -8,7 +8,7 @@
             <InputText
               data-test="companyNameSearchbar"
               v-model="searchBarInput"
-              placeholder="Search by company name"
+              placeholder="Search by Company Name or Identifier"
               fluid
               variant="filled"
             />
@@ -20,10 +20,11 @@
 
         <DatePicker
           class="search-filter"
+          input-class="w-full"
           data-test="reportingPeriod"
           v-model="availableReportingPeriods"
           :updateModelType="'date'"
-          placeholder="Search by reporting period"
+          placeholder="Reporting Period"
           :showIcon="true"
           :manualInput="false"
           view="year"
@@ -34,6 +35,7 @@
         <FrameworkDataSearchDropdownFilter
           v-model="selectedFrameworks"
           class="search-filter"
+          input-class="w-full"
           :available-items="availableFrameworks"
           filter-name="Framework"
           data-test="framework-picker"
@@ -43,7 +45,7 @@
           selected-items-label="{0} frameworks selected"
         />
 
-        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" />
+        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
         <Message
           class="info-message"
           variant="simple"
@@ -68,7 +70,7 @@
             :rowHover="true"
             :first="firstRowIndex"
             data-test="qa-review-section"
-            @row-click="goToQaViewPage($event)"
+            @row-click="onRowClicked($event)"
             paginator
             paginator-position="top"
             :rows="datasetsPerPage"
@@ -76,27 +78,27 @@
             :total-records="totalRecords"
             @page="onPage($event)"
           >
-            <Column header="DATA ID" class="w-2">
+            <Column header="DATA ID">
               <template #body="slotProps">
                 {{ slotProps.data.dataId }}
               </template>
             </Column>
-            <Column header="COMPANY NAME" class="w-2">
+            <Column header="COMPANY NAME">
               <template #body="slotProps">
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column header="FRAMEWORK" class="w-2">
+            <Column header="FRAMEWORK">
               <template #body="slotProps">
-                {{ humanizeString(slotProps.data.framework) }}
+                {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
             </Column>
-            <Column header="REPORTING PERIOD" class="w-2">
+            <Column header="REPORTING PERIOD">
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
               </template>
             </Column>
-            <Column header="SUBMISSION DATE" class="w-2">
+            <Column header="SUBMISSION DATE">
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
@@ -111,15 +113,28 @@
                 />
               </template>
             </Column>
-            <Column field="reviewDataset" header="" class="w-2 qa-review-button">
+            <Column header="NUMBER OF QA REPORTS">
+              <template #body="slotProps">
+                {{ slotProps.data.numberQaReports }}
+              </template>
+            </Column>
+            <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
               <template #body="slotProps">
                 <PrimeButton
-                  @click="goToQaViewPageByButton(slotProps.data)"
-                  label="REVIEW"
+                  v-if="
+                    slotProps.data.reviewStatus === 'Start Review' || slotProps.data.reviewStatus === 'Continue Review'
+                  "
+                  @click.stop="handleRowAction(slotProps.data)"
+                  class="qa-review-button"
+                  data-test="goToReviewButton"
+                  :label="slotProps.data.reviewStatus"
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
                 />
+                <span v-else>
+                  {{ slotProps.data.reviewStatus }}
+                </span>
               </template>
             </Column>
           </DataTable>
@@ -129,12 +144,42 @@
             </div>
           </div>
         </div>
+        <PrimeDialog
+          v-model:visible="isConfirmationModalVisible"
+          header="Start Review?"
+          modal
+          :dismissable-mask="true"
+          style="min-width: 20rem; text-align: center"
+          data-test="confirmation-modal"
+          @hide="closeConfirmationModal"
+        >
+          <div style="text-align: center; padding: 8px 0">
+            <div class="confirmation-modal-message">
+              <div>Are you sure you want to start a review for this dataset?</div>
+              <div>Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.</div>
+            </div>
+          </div>
+          <div v-if="errorMessage" data-test="confirmation-modal-error-message">
+            <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{
+              errorMessage
+            }}</Message>
+          </div>
+          <template #footer>
+            <PrimeButton
+              label="CANCEL"
+              @click="closeConfirmationModal"
+              variant="outlined"
+              data-test="cancel-confirmation-modal-button"
+            />
+            <PrimeButton label="CONFIRM" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
+          </template>
+        </PrimeDialog>
       </div>
     </AuthorizationWrapper>
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -159,253 +204,308 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import { defineComponent, inject } from 'vue';
+import PrimeDialog from 'primevue/dialog';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { AxiosError } from 'axios';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 
-export default defineComponent({
-  name: 'QualityAssurance',
-  components: {
-    DatalandProgressSpinner,
-    DatalandTag,
-    AuthorizationWrapper,
-    TheContent,
-    FrameworkDataSearchDropdownFilter,
-    DataTable,
-    Column,
-    InputText,
-    InputIcon,
-    IconField,
-    PrimeButton,
-    DatePicker,
-    Message,
-  },
-  setup() {
-    return {
-      datasetsPerPage: 10,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    return {
-      apiClientProvider: new ApiClientProvider(assertDefined(this.getKeycloakPromise)()),
-      displayDataOfPage: [] as QaReviewResponse[],
-      waitingForData: true,
-      KEYCLOAK_ROLE_REVIEWER,
-      currentChunkIndex: 0,
-      firstRowIndex: 0,
-      totalRecords: 0,
-      debounceInMs: 300,
-      timerId: 0,
-      searchBarInput: '',
-      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableReportingPeriods: undefined as undefined | Array<Date>,
-      notEnoughCharactersWarningTimeoutId: 0,
-      showNotEnoughCharactersWarning: false,
-      priorityByDimensions: {} as Record<string, number>,
-    };
-  },
-  mounted() {
-    this.getQaDataForCurrentPage().catch((error) => console.log(error));
-    this.availableFrameworks = retrieveAvailableFrameworks();
-  },
-  watch: {
-    selectedFrameworks() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    availableReportingPeriods() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    searchBarInput() {
-      const isValid = this.validateSearchBarInput();
-      if (isValid) {
-        this.currentChunkIndex = 0;
-        this.firstRowIndex = 0;
-        if (this.timerId) {
-          clearTimeout(this.timerId);
-        }
-        this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
-      }
-    },
-  },
-  methods: {
-    convertUnixTimeInMsToDateString,
-    humanizeString: humanizeStringOrNumber,
-    /**
-     * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
-     * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
-     * @param input is a value with type DataTypeEnum
-     * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
-     */
-    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
-      return input as GetInfoOnDatasetsDataTypesEnum;
-    },
-    /**
-     * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
-     */
-    async getQaDataForCurrentPage() {
-      try {
-        this.waitingForData = true;
-        this.displayDataOfPage = [];
+const datasetsPerPage = 10;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
-          this.selectedFrameworks.map((selectableItem) =>
-            this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
-          )
-        );
-        const reportingPeriodFilter: Set<string> = new Set<string>(
-          this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
-        );
-        const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnDatasets(
-          selectedFrameworksAsSet,
-          reportingPeriodFilter,
-          companyNameFilter,
-          undefined,
-          this.datasetsPerPage,
-          this.currentChunkIndex
-        );
-        this.displayDataOfPage = response.data;
-        this.totalRecords = (
-          await this.apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
-            selectedFrameworksAsSet,
-            reportingPeriodFilter,
-            companyNameFilter
-          )
-        ).data;
-        this.waitingForData = false;
-        await this.fetchPriorities();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Returns the DatalandTag severity string for the given numeric data sourcing priority.
-     * @param priority the numeric priority value (1–10)
-     */
-    dataSourcingPrioritySeverity(priority: number): string {
-      if (priority <= 3) return 'sourcing-priority-high';
-      if (priority <= 6) return 'sourcing-priority-medium';
-      if (priority <= 9) return 'sourcing-priority-low';
-      return 'sourcing-priority-slate';
-    },
+type QaReviewRow = QaReviewResponse & { reviewStatus: string };
+const displayDataOfPage = ref<QaReviewRow[]>([]);
+const waitingForData = ref(true);
+const currentChunkIndex = ref(0);
+const firstRowIndex = ref(0);
+const totalRecords = ref(0);
+const searchBarInput = ref('');
+const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableReportingPeriods = ref<Array<Date>>([]);
+const showNotEnoughCharactersWarning = ref(false);
+const isConfirmationModalVisible = ref(false);
+const selectedDataId = ref<string>('');
+const errorMessage = ref<string>('');
+const priorityByDimensions = ref<Record<string, number>>({});
 
-    /**
-     * Returns the priority for the given QA row, or undefined if none is available.
-     * @param row the QA review response row
-     */
-    getPriorityForRow(row: QaReviewResponse): number | undefined {
-      return this.priorityByDimensions[`${row.companyId}|${row.framework}|${row.reportingPeriod}`];
-    },
+const debounceInMs = 300;
+let timerId = 0;
+let notEnoughCharactersWarningTimeoutId = 0;
 
-    /**
-     * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
-     */
-    async fetchPriorities() {
-      try {
-        const dimensions: BasicDataDimensions[] = this.displayDataOfPage.map((row) => ({
-          companyId: row.companyId,
-          dataType: row.framework,
-          reportingPeriod: row.reportingPeriod,
-        }));
-        const priorityResponse =
-          await this.apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
-        const newPriorityByDimensions: Record<string, number> = {};
-        priorityResponse.data.forEach((entry) => {
-          newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
-        });
-        this.priorityByDimensions = newPriorityByDimensions;
-      } catch (error) {
-        console.error(error);
-      }
-    },
+/**
+ * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
+ * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
+ * @param input is a value with type DataTypeEnum
+ * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
+ */
+function manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
+  return input as GetInfoOnDatasetsDataTypesEnum;
+}
 
-    /**
-     * Navigates to the view framework data page on a click on the row of the company
-     * @param event the row click event
-     * @returns the promise of the router push action
-     */
-    goToQaViewPage(event: DataTableRowClickEvent) {
-      const qaDataObject = event.data as QaReviewResponse;
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      return router.push(qaUri);
-    },
+/**
+ * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
+ */
+async function getQaDataForCurrentPage(): Promise<void> {
+  try {
+    waitingForData.value = true;
+    displayDataOfPage.value = [];
 
-    /**
-     * Navigates to the view framework data page on a click on the row of the company
-     * @param qaDataObject stored information about the row
-     */
-    goToQaViewPageByButton(qaDataObject: QaReviewResponse): void {
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      void router.push(qaUri);
-    },
+    const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
+      selectedFrameworks.value.map((selectableItem) =>
+        manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
+      )
+    );
+    const reportingPeriodFilter: Set<string> = new Set<string>(
+      availableReportingPeriods.value.map((date) => date.getFullYear().toString())
+    );
+    const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
+    const response = await apiClientProvider.apiClients.qaController.getInfoOnDatasets(
+      selectedFrameworksAsSet,
+      reportingPeriodFilter,
+      companyNameFilter,
+      undefined,
+      datasetsPerPage,
+      currentChunkIndex.value
+    );
+    displayDataOfPage.value = await Promise.all(
+      response.data.map(async (row) => ({
+        ...row,
+        reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+      }))
+    );
+    totalRecords.value = (
+      await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
+        selectedFrameworksAsSet,
+        reportingPeriodFilter,
+        companyNameFilter
+      )
+    ).data;
+    waitingForData.value = false;
+    await fetchPriorities();
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.currentChunkIndex = 0;
-      this.selectedFrameworks = [];
-      this.availableReportingPeriods = [];
-      this.searchBarInput = '';
-    },
-    /**
-     * Updates the current Page
-     * @param event DataTablePageEvent
-     */
-    onPage(event: DataTablePageEvent) {
-      globalThis.scrollTo(0, 0);
-      if (event.page != this.currentChunkIndex) {
-        this.currentChunkIndex = event.page;
-        this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        void this.getQaDataForCurrentPage();
-      }
-    },
-    /**
-     * Validates the current company name search bar input.
-     * If there are only one or two characters typed, an error message shall be rendered asking the user to
-     * provide at least three characters.
-     * @returns the outcome of the validation
-     */
-    validateSearchBarInput(): boolean {
-      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+/**
+ * Returns the DatalandTag severity string for the given numeric data sourcing priority.
+ * @param priority the numeric priority value (1–10)
+ */
+function dataSourcingPrioritySeverity(priority: number): string {
+  if (priority <= 3) return 'sourcing-priority-high';
+  if (priority <= 6) return 'sourcing-priority-medium';
+  if (priority <= 9) return 'sourcing-priority-low';
+  return 'sourcing-priority-slate';
+}
 
-      const inputLength = this.searchBarInput.length;
-      const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+/**
+ * Returns the priority for the given QA row, or undefined if none is available.
+ * @param row the QA review response row
+ */
+function getPriorityForRow(row: QaReviewRow): number | undefined {
+  return priorityByDimensions.value[`${row.companyId}|${row.framework}|${row.reportingPeriod}`];
+}
 
-      if (notEnoughCharacters) {
-        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
-          this.showNotEnoughCharactersWarning = true;
-        }, 1000);
-        return false;
-      }
+/**
+ * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
+ */
+async function fetchPriorities(): Promise<void> {
+  try {
+    const dimensions: BasicDataDimensions[] = displayDataOfPage.value.map((row) => ({
+      companyId: row.companyId,
+      dataType: row.framework,
+      reportingPeriod: row.reportingPeriod,
+    }));
+    const priorityResponse =
+      await apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
+    const newPriorityByDimensions: Record<string, number> = {};
+    priorityResponse.data.forEach((entry) => {
+      newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
+    });
+    priorityByDimensions.value = newPriorityByDimensions;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-      this.showNotEnoughCharactersWarning = false;
-      return true;
-    },
-  },
-  computed: {
-    numberOfUnreviewedDatasets(): string {
-      if (!this.waitingForData) {
-        if (this.totalRecords === 0) {
-          return 'No results for this search.';
-        } else {
-          const startIndex = this.currentChunkIndex * this.datasetsPerPage + 1;
-          const endIndex = Math.min(startIndex + this.datasetsPerPage - 1, this.totalRecords);
-          return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
-        }
-      }
-      return '';
-    },
-  },
+/**
+ * Handles the click on a row in the QA table by calling the handleRowAction function with the data of the clicked row.
+ * @param event is the DataTableRowClickEvent that is emitted when a row in the QA table is clicked. It contains the data of the clicked row.
+ */
+function onRowClicked(event: DataTableRowClickEvent): void {
+  handleRowAction(event.data as QaReviewRow);
+}
+
+/**
+ * Handles the click on a row in the QA table.
+ * If the dataset of the clicked row has not been reviewed before, a confirmation modal will be opened to confirm the start of a new dataset review.
+ * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
+ */
+function handleRowAction(qaDataObject: QaReviewRow): void {
+  if (qaDataObject.datasetReviewId == null) {
+    selectedDataId.value = qaDataObject.dataId;
+    isConfirmationModalVisible.value = true;
+  } else {
+    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
+  }
+}
+
+/**
+ * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
+ */
+function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
+  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
+  return router.push(qaUri);
+}
+
+/**
+ * Creates a dataset review for the dataset with the given dataId and navigates to the corresponding dataset review page.
+ *
+ */
+async function createAndViewDatasetReview(dataId: string): Promise<void> {
+  try {
+    const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
+    await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      errorMessage.value = formatAxiosErrorMessage(error);
+    } else {
+      errorMessage.value = 'Failed to create dataset review.';
+    }
+    console.error(errorMessage.value);
+  }
+}
+
+/**
+ * Confirms the start of a dataset review in the confirmation modal.
+ * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
+ */
+async function confirmStartReview(): Promise<void> {
+  await createAndViewDatasetReview(selectedDataId.value);
+  if (!errorMessage.value) {
+    closeConfirmationModal();
+  }
+}
+
+/**
+ * Closes the confirmation modal and resets the selected data id and error message.
+ */
+function closeConfirmationModal(): void {
+  isConfirmationModalVisible.value = false;
+  selectedDataId.value = '';
+  errorMessage.value = '';
+}
+
+/**
+ * Resets selected frameworks and searchBarInput
+ */
+function resetFilterAndSearchBar(): void {
+  currentChunkIndex.value = 0;
+  selectedFrameworks.value = [];
+  availableReportingPeriods.value = [];
+  searchBarInput.value = '';
+}
+
+/**
+ * Updates the current Page
+ * @param event DataTablePageEvent
+ */
+function onPage(event: DataTablePageEvent): void {
+  globalThis.scrollTo(0, 0);
+  if (event.page != currentChunkIndex.value) {
+    currentChunkIndex.value = event.page;
+    firstRowIndex.value = currentChunkIndex.value * datasetsPerPage;
+    void getQaDataForCurrentPage();
+  }
+}
+
+/**
+ * Validates the current company name search bar input.
+ * If there are only one or two characters typed, an error message shall be rendered asking the user to
+ * provide at least three characters.
+ * @returns the outcome of the validation
+ */
+function validateSearchBarInput(): boolean {
+  clearTimeout(notEnoughCharactersWarningTimeoutId);
+
+  const inputLength = searchBarInput.value.length;
+  const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+
+  if (notEnoughCharacters) {
+    notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+      showNotEnoughCharactersWarning.value = true;
+    }, 1000);
+    return false;
+  }
+
+  showNotEnoughCharactersWarning.value = false;
+  return true;
+}
+
+/**
+ * Determines the label of the review button in the table depending.
+ * @param reviewerUserId the user id of the reviewer of the dataset
+ * @param reviewerUserName the user name of the reviewer of the dataset
+ * @returns the label of the review button
+ */
+async function getReviewStatus(
+  reviewerUserId: string | undefined,
+  reviewerUserName: string | undefined
+): Promise<string> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
+  const keycloakUserId = keycloak.idTokenParsed?.sub;
+  if (reviewerUserId && reviewerUserName) {
+    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
+  }
+  return 'Start Review';
+}
+
+watch(selectedFrameworks, () => {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+  if (!waitingForData.value) {
+    void getQaDataForCurrentPage();
+  }
+});
+
+watch(availableReportingPeriods, () => {
+  currentChunkIndex.value = 0;
+  firstRowIndex.value = 0;
+  if (!waitingForData.value) {
+    void getQaDataForCurrentPage();
+  }
+});
+
+watch(searchBarInput, () => {
+  const isValid = validateSearchBarInput();
+  if (isValid) {
+    currentChunkIndex.value = 0;
+    firstRowIndex.value = 0;
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => getQaDataForCurrentPage(), debounceInMs);
+  }
+});
+
+const numberOfUnreviewedDatasets = computed((): string => {
+  if (!waitingForData.value) {
+    if (totalRecords.value === 0) {
+      return 'No results for this search.';
+    } else {
+      const startIndex = currentChunkIndex.value * datasetsPerPage + 1;
+      const endIndex = Math.min(startIndex + datasetsPerPage - 1, totalRecords.value);
+      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
+    }
+  }
+  return '';
+});
+
+onMounted(() => {
+  getQaDataForCurrentPage().catch((error) => console.log(error));
+  availableFrameworks.value = retrieveAvailableFrameworks();
 });
 </script>
 
@@ -448,17 +548,25 @@ export default defineComponent({
   background-color: white;
 }
 
-.qa-review-button {
-  text-align: end;
+.qa-review-status-cell {
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
 }
 
-.dataland-tag {
-  height: 1.75rem;
-  padding: 0 0.625rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  white-space: nowrap;
-  vertical-align: middle;
-  border-radius: 4px;
+.qa-review-button {
+  justify-content: flex-start;
+  text-align: left;
+  padding-inline: 0;
+}
+
+.confirmation-modal-message {
+  max-width: 30rem;
+  margin: 8px auto 0;
+  white-space: normal;
+  text-align: left;
+  word-break: break-word;
+  display: grid;
+  gap: var(--spacing-xs);
 }
 </style>
