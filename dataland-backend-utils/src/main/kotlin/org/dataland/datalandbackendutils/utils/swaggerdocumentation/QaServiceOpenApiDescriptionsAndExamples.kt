@@ -76,4 +76,7 @@ object QaServiceOpenApiDescriptionsAndExamples {
 
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
+
+    const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
+    const val NUMBER_QA_REPORTS_EXAMPLE = "5"
 }

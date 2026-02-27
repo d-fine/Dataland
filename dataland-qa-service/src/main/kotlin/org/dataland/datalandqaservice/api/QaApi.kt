@@ -95,8 +95,8 @@ interface QaApi {
     @Operation(
         summary = "Get the QA review information of an uploaded dataset for a given id.",
         description =
-            "Get the QA review information of uploaded dataset for a given id." +
-                "Users can get the review information of their own datasets." +
+            "Get the QA review information of uploaded dataset for a given id. " +
+                "Users can get the review information of their own datasets. " +
                 "Admins and reviewer can get the review information for all datasets.",
     )
     @ApiResponses(

@@ -26,7 +26,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "description": "Get the QA review information of uploaded dataset for a given id. Users can get the review information of their own datasets. Admins and reviewer can get the review information for all datasets.",
         "operationId": "getQaReviewResponseByDataId",
         "parameters": [
           {
@@ -195,7 +195,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Successfully added dataset review object to dataland.",
+            "description": "Successfully added dataset review object to Dataland.",
             "content": {
               "application/json": {
                 "schema": {
@@ -206,6 +206,16 @@
           },
           "403": {
             "description": "Only Dataland admins can access dataset review objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A pending review already exists for this dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7594,6 +7604,7 @@
           "companyName",
           "dataId",
           "framework",
+          "numberQaReports",
           "qaStatus",
           "reportingPeriod",
           "timestamp"
@@ -7633,6 +7644,27 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "reviewerUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user reviewing the dataset.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reviewerUserName": {
+            "type": "string",
+            "description": "The name or email of the user reviewing the dataset.",
+            "example": "Jane Doe"
+          },
+          "datasetReviewId": {
+            "type": "string",
+            "description": "The unique identifier of the data review.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "numberQaReports": {
+            "type": "integer",
+            "description": "The number of QA reports associated with the dataset.",
+            "format": "int64",
+            "example": 5
           },
           "comment": {
             "type": "string",

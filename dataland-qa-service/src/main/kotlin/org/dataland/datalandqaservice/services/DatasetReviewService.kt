@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -47,6 +48,12 @@ class DatasetReviewService
                 throw ResourceNotFoundApiException(
                     "Dataset not found",
                     "Dataset with the id: $datasetId could not be found.",
+                )
+            }
+            if (datasetReviewRepository.findAllByDatasetIdAndReviewState(datasetId, DatasetReviewState.Pending).isNotEmpty()) {
+                throw ConflictApiException(
+                    summary = "Pending dataset review entity already exists.",
+                    message = "There is already a dataset review entity for this dataset which is pending.",
                 )
             }
             val qaReportsWithDetails =
