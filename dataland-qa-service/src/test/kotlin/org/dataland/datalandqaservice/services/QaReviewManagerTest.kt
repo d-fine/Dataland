@@ -93,13 +93,10 @@ class QaReviewManagerTest {
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
             reviewState = DatasetReviewState.Pending,
-            reviewerUserId = dummyUserId,
-            reviewerUserName = dummyUserName,
-            preapprovedDataPointIds = emptySet(),
-            qaReports = emptySet(),
-            approvedDataPointIds = emptyMap(),
-            approvedQaReportIds = emptyMap(),
-            approvedCustomDataPointIds = emptyMap(),
+            qaJudgeUserId = dummyUserId,
+            qaJudgeUserName = dummyUserName,
+            qaReporterCompanies = emptyList(),
+            dataPoints = emptyMap(),
         )
 
     private lateinit var qaReviewManager: QaReviewManager
