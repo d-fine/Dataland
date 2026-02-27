@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * Adds the priority column to the data_sourcing table.
  */
 @Suppress("ClassName")
-class V2__AddPriorityToDataSourcing : BaseJavaMigration() {
+class V1__AddPriorityToDataSourcing : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val connection = context!!.connection
         val hasTable = connection.metaData.getTables(null, null, "data_sourcing", null).next()
