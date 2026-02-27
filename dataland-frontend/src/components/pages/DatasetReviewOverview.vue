@@ -16,6 +16,7 @@
             <CompanyInformationBanner
               :companyId="companyId ?? ''"
               :show-single-data-request-button="false"
+              :show-add-to-portfolio-button="false"
               @fetchedCompanyInformation="onFetchedCompanyInformation"
               class="w-12"
             />
