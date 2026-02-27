@@ -1,7 +1,6 @@
 package org.dataland.datasourcingservice.integrationTests.serviceTests
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
@@ -25,9 +24,7 @@ import org.dataland.datasourcingservice.utils.REQUEST_STATE_1
 import org.dataland.datasourcingservice.utils.REQUEST_STATE_2
 import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME_1
 import org.dataland.datasourcingservice.utils.TEST_COMPANY_NAME_2
-import org.dataland.datasourcingservice.utils.TEST_COMPANY_SEARCH_STRING
 import org.dataland.datasourcingservice.utils.USER_EMAIL
-import org.dataland.datasourcingservice.utils.USER_EMAIL_SEARCH_STRING
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -65,18 +62,12 @@ class RequestQueryManagerResultDetailsTest
         private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
         private val firstUser = KeycloakUserInfo(USER_EMAIL, "19223180-a213-4294-86aa-de3341139bcd", "John", "Doe")
         private val secondUser = mock<KeycloakUserInfo>()
-        private val mockBasicCompanyInfo1 = mock<BasicCompanyInformation>()
 
         @BeforeEach
         fun setupMocks() {
             doReturn(firstUser).whenever(mockKeycloakUserService).getUser(firstUser.userId)
             doReturn(secondUser).whenever(mockKeycloakUserService).getUser(not(eq(firstUser.userId)))
             doReturn(null).whenever(secondUser).email
-            doReturn(listOf(firstUser)).whenever(mockKeycloakUserService).searchUsers(USER_EMAIL_SEARCH_STRING)
-            doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo1).companyId
-            doReturn(listOf(mockBasicCompanyInfo1))
-                .whenever(mockCompanyDataControllerApi)
-                .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
             doReturn(listOf(DEFAULT_VALIDATION_RESULT_1, DEFAULT_VALIDATION_RESULT_2))
                 .whenever(mockCompanyDataControllerApi)
                 .postCompanyValidation(anyOrNull())
