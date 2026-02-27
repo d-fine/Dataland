@@ -13,24 +13,12 @@
       <div class="col-12 text-left p-3">
         <div class="card py-4 px-0 mb-4 border-round-xl surface-card">
           <div class="flex justify-content-between align-items-start">
-            <div>
-              <h1 class="text-3xl font-bold m-0 mb-2 text-left">
-                {{ companyName }}
-              </h1>
-
-              <div class="flex gap-3 text-color-secondary">
-                <span>Sector: {{ sector }}</span>
-                <span>|</span>
-                <span>Headquarter: {{ headquarter }}</span>
-                <span>|</span>
-                <span>LEI: {{ lei }}</span>
-              </div>
-            </div>
-
-            <div class="flex gap-2 align-items-center">
-              <PrimeButton label="ADD TO PORTFOLIO" icon="pi pi-plus" @click="addToPortfolio" />
-              <PrimeButton label="REQUEST DATA" icon="pi pi-file" @click="requestData" />
-            </div>
+            <CompanyInformationBanner
+              :companyId="companyId ?? ''"
+              :show-single-data-request-button="false"
+              @fetchedCompanyInformation="onFetchedCompanyInformation"
+              class="w-12"
+            />
           </div>
         </div>
 
@@ -107,6 +95,8 @@ import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ToggleSwitch from 'primevue/toggleswitch';
+import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
+import type { CompanyInformation } from '@clients/backend';
 
 // Props passed from the router
 const props = defineProps<{
@@ -157,6 +147,11 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
       customValue: null,
     },
   },
+};
+
+const onFetchedCompanyInformation = (info: CompanyInformation) => {
+  // if you still want to keep local companyName/sector, you can set them here
+  // but you can also remove the separate companyData query if you rely purely on CompanyInfoSheet
 };
 
 const {
