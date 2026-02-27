@@ -9,7 +9,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
@@ -18,7 +17,7 @@ import java.util.UUID
 /**
  * The database entity for storing dataset reviews
  */
-@SuppressWarnings("LongParameterList")
+@Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review")
 class DatasetReviewEntity(
@@ -44,13 +43,12 @@ class DatasetReviewEntity(
     @Column(name = "qa_reporter_companies")
     var qaReporterCompanies: MutableList<QaReporterCompany>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
-    val dataPoints: MutableList<DataPointReviewDetails>,
+    val dataPoints: MutableList<DataPointReviewDetailsEntity>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
      */
     fun toDatasetReviewResponse(): DatasetReviewResponse =
-
         DatasetReviewResponse(
             dataSetReviewId.toString(),
             datasetId.toString(),
@@ -61,6 +59,6 @@ class DatasetReviewEntity(
             reviewerUserId.toString(),
             reviewerUserName,
             qaReporterCompanies,
-            dataPoints.associateBy { it.dataPointType },
+            dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
 }
