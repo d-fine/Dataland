@@ -154,13 +154,12 @@ class DatasetReviewSupportServiceTest {
     }
 
     @Test
-    fun `findQaReportIdsForDataPoints returns qaReportIds from repository`() {
+    fun `findQaReportsWithDetails returns entities from repository including inactive`() {
         val dataPointIds = listOf("dp1", "dp2")
-        val expectedQaReportIds = listOf("qa1", "qa2")
 
         val entity1 =
             DataPointQaReportEntity(
-                qaReportId = expectedQaReportIds[0],
+                qaReportId = "qa1",
                 dataPointId = dataPointIds[0],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
@@ -172,7 +171,7 @@ class DatasetReviewSupportServiceTest {
             )
         val entity2 =
             DataPointQaReportEntity(
-                qaReportId = expectedQaReportIds[1],
+                qaReportId = "qa2",
                 dataPointId = dataPointIds[1],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
@@ -180,24 +179,24 @@ class DatasetReviewSupportServiceTest {
                 dataPointType = "dummyType",
                 reporterUserId = "dummyUserId",
                 uploadTime = 1623456789L,
-                active = true,
+                active = false,
             )
 
         whenever(
             dataPointQaReportRepository.searchQaReportMetaInformation(
                 dataPointIds = dataPointIds,
-                showInactive = false,
+                showInactive = true,
                 reporterUserId = null,
             ),
         ).thenReturn(listOf(entity1, entity2))
 
-        val result = service.findQaReportIdsForDataPoints(dataPointIds)
+        val result = service.findQaReportsWithDetails(dataPointIds)
 
-        assertEquals(expectedQaReportIds, result)
+        assertEquals(listOf(entity1, entity2), result)
 
         verify(dataPointQaReportRepository).searchQaReportMetaInformation(
             dataPointIds = dataPointIds,
-            showInactive = false,
+            showInactive = true,
             reporterUserId = null,
         )
     }
