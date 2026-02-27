@@ -18,5 +18,5 @@ export function formatAxiosErrorMessage(error: AxiosError | Error): string {
     errMessage = response.data.errors[0].message;
   }
 
-  return `${errSummary} ${errMessage}`;
+  return `${errSummary}: ${errMessage}`;
 }

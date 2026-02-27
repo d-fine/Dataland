@@ -63,8 +63,9 @@ interface DatasetReviewApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "201", description = "Successfully added dataset review object to dataland."),
+            ApiResponse(responseCode = "201", description = "Successfully added dataset review object to Dataland."),
             ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "409", description = "A pending review already exists for this dataset."),
         ],
     )
     @PostMapping(
