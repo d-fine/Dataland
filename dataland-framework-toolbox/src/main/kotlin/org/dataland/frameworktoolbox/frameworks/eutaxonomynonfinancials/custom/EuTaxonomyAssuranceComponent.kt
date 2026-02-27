@@ -13,7 +13,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -46,11 +45,19 @@ class EuTaxonomyAssuranceComponent(
     }
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addQaPropertyWithDocumentSupport(
-            documentSupport,
+        dataClassBuilder.addProperty(
             identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-            listOf(ValidAnnotation),
+            TypeReference(
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+                isNullable,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.openApiClient.model" +
+                            ".AssuranceDataPoint",
+                        isNullable,
+                    ),
+                ),
+            ),
         )
     }
 
