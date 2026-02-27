@@ -390,22 +390,19 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
-      request.reply(201, {
-        companyId: companyIdAlpha,
-        dataType: DataTypeEnum.Lksg,
-      });
+      request.reply(201, {});
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
-    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${dataIdAlpha}`);
   });
 
   it('Check routing of row click.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.contains('td', `${dataIdBeta}`).click();
-    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${dataIdBeta}`);
   });
 
   it('Check display of error message.', () => {
