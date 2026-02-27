@@ -18,11 +18,16 @@
                   </span>
                 </div>
               </th>
-              <th class="horizontal-headers-size">
+              <!-- dynamic Qa columns depending on number of report companies -->
+              <th
+                v-for="company in datasetReview.qaReporterCompanies"
+                :key="company.reporterCompanyId"
+                class="horizontal-headers-size"
+              >
                 <div class="p-column-header-content">
                   <span class="p-column-title">
                     Corrected Datapoint
-                    <span class="block text-xs font-normal">Quality Assurance company</span>
+                    <span class="block text-xs font-normal">{{ company.reporterCompanyName }}</span>
                   </span>
                 </div>
               </th>
@@ -103,30 +108,26 @@
                   </td>
 
                   <!-- Corrected datapoint -->
-                  <td class="vertical-align-top border-right-1 surface-border">
-                    <span v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === 'Qa'">
-                      {{ getCorrectedDisplay(getReviewInfo(row.dataPointTypeId)) ?? 'QA Accepted' }}
+                  <td
+                    v-for="company in datasetReview.qaReporterCompanies"
+                    :key="company.reporterCompanyId"
+                    class="vertical-align-top border-right-1 surface-border"
+                  >
+                    <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'">
+                      QA Accepted
                     </span>
-                    <span v-else-if="getReviewInfo(row.dataPointTypeId)?.qaReport" class="text-color-secondary italic">
-                      QA suggestion: {{ getCorrectedDisplay(getReviewInfo(row.dataPointTypeId)) ?? '—' }}
+                    <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
+                      {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
                     </span>
-                    <span v-else class="text-color-secondary italic"> No correction </span>
+                    <span v-else class="text-color-secondary italic"> {} </span>
                   </td>
 
-                  <!-- Custom datapoint -->
+                  <!-- Icon column (very simple first pass) -->
                   <td class="vertical-align-top border-right-1 surface-border">
                     <span v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === 'Custom'">
                       {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
                     </span>
                     <span v-else>-</span>
-                  </td>
-
-                  <!-- Icon column (very simple first pass) -->
-                  <td class="p-3 text-center">
-                    <i
-                      v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource"
-                      class="pi pi-check-circle text-xl text-green-500"
-                    />
                   </td>
                 </template>
               </tr>
@@ -154,7 +155,7 @@ import type {
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
-import type { DatasetReviewOverview, DataPointReviewInfo } from '@/utils/DatasetReviewOverview.ts';
+import type { DatasetReviewOverview, DataPointReviewInfo, QaReportSummary } from '@/utils/DatasetReviewOverview.ts';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
@@ -167,6 +168,7 @@ const props = defineProps<{
   searchQuery: string;
   datasetReview: DatasetReviewOverview;
   dataMetaInformation: DataMetaInformation;
+  hideEmptyFields: boolean;
 }>();
 
 const apiClientProvider = useApiClient();
@@ -213,23 +215,78 @@ type CellRow = {
 
 type KpiRow = SectionRow | CellRow;
 
+// --- Helpers to join review info ---
+function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
+  if (!dataPointTypeId) return undefined;
+  return props.datasetReview.dataPoints[dataPointTypeId];
+}
+
+function getQaReportFor(row: CellRow, reporterCompanyID: string): QaReportSummary | undefined {
+  if (!row.dataPointTypeId) return undefined;
+  const dpEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
+  if (!dpEntry) return undefined;
+  return dpEntry.qaReports.find((r) => r.reporterCompanyId === reporterCompanyID);
+}
+
+function getCorrectedDisplayFromQaReport(qaReport: QaReportSummary | undefined): string | null {
+  if (!qaReport?.correctedData) return null;
+  try {
+    const parsed = JSON.parse(qaReport.correctedData as string);
+    return parsed.value == null ? null : parsed.value;
+  } catch {
+    return null;
+  }
+}
+
+function isCellEmpty(cellRow: CellRow): boolean {
+  const original = cellRow.originalDisplay as any;
+
+  let isOriginalEmpty =
+    original == null || original === '' || original.displayValue == null || original.displayValue === '';
+
+  if (!isOriginalEmpty) return false;
+
+  const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
+  if (reviewInfo?.acceptedSource === 'Custom' && reviewInfo.customValue != null && reviewInfo.customValue !== '') {
+    return false;
+  }
+
+  for (const company of props.datasetReview.qaReporterCompanies) {
+    const report = getQaReportFor(cellRow, company.reporterCompanyId);
+    const corrected = getCorrectedDisplayFromQaReport(report);
+    if (corrected != null && corrected !== '') {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Recursively build rows from MLDT config + one dataset
 function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
   const rows: KpiRow[] = [];
   for (const item of config) {
     if (item.type === 'section') {
       const section = item as MLDTSectionConfig<FrameworkData>;
-      rows.push({ type: 'section', label: section.label, level: level });
-      rows.push(...buildRowsFromConfig(section.children, data, level + 1));
+      const childRows = buildRowsFromConfig(section.children, data, level + 1);
+
+      if (childRows.length > 0) {
+        rows.push({ type: 'section', label: section.label, level: level });
+        rows.push(...childRows);
+      }
     } else if (item.type === 'cell') {
       const cell = item as MLDTCellConfig<FrameworkData>;
-      rows.push({
+      const cellRow: CellRow = {
         type: 'cell',
         label: cell.label,
         dataPointTypeId: cell.dataPointTypeId,
         originalDisplay: cell.valueGetter(data),
         explanation: cell.explanation,
-      });
+      };
+
+      // Apply the "Hide Empty Fields" logic
+      if (!props.hideEmptyFields || !isCellEmpty(cellRow)) {
+        rows.push(cellRow);
+      }
     }
   }
   return rows;
@@ -238,10 +295,6 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
 const allRows = computed<KpiRow[]>(() => {
   if (!originalDataAndMeta.value || !mldtConfig.value) return [];
   const rows = buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
-  console.log(
-    'KPI rows in review table:',
-    rows.filter((r) => r.type === 'cell').map((r) => (r as CellRow).label)
-  );
   return rows;
 });
 
@@ -250,23 +303,6 @@ const filteredRows = computed<KpiRow[]>(() => {
   const q = props.searchQuery.toLowerCase();
   return allRows.value.filter((row) => (row.type === 'section' ? true : row.label.toLowerCase().includes(q)));
 });
-
-// --- Helpers to join review info ---
-function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
-  if (!dataPointTypeId) return undefined;
-  return props.datasetReview.dataPoints[dataPointTypeId];
-}
-
-function getCorrectedDisplay(dp: DataPointReviewInfo | undefined): string | null {
-  if (!dp?.qaReport?.correctedData) return null;
-  try {
-    const parsed = JSON.parse(dp.qaReport.correctedData as string);
-    // Many of your correctedData examples are { value, quality, ... }
-    return parsed.value == null ? null : String(parsed.value);
-  } catch {
-    return null;
-  }
-}
 
 function openJudgeModal(row: KpiRow): void {
   if (row.type === 'section') return;
@@ -301,5 +337,22 @@ const toTitleCase = (str: string) => {
   /* nested sections (e.g. Greenhouse Gas Emissions) */
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
+}
+
+.p-datatable-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.p-datatable-table th:first-child,
+.p-datatable-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+/* slightly higher z-index for header so it stays above cells */
+.p-datatable-table thead th:first-child {
+  z-index: 3;
 }
 </style>

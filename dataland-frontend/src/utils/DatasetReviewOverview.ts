@@ -1,28 +1,40 @@
-export type AcceptedSource = 'Original' | 'Qa' | 'Custom';
 import type { DataTypeEnum } from '@clients/backend';
+
+export type ReviewState = 'Pending' | 'Finished' | 'Abandoned';
+export type AcceptedSource = 'Original' | 'Qa' | 'Custom';
+
+export type QaReporterCompany = {
+  reporterCompanyName: string;
+  reporterCompanyId: string;
+};
 
 export type QaReportSummary = {
   qaReportId: string;
   verdict: string;
   correctedData: string | null; // raw JSON string as returned by backend
+  reporterUserId: string;
+  reporterCompanyId: string;
 };
 
 export type DataPointReviewInfo = {
   dataPointTypeId: string;
   dataPointId: string;
-  qaReport: QaReportSummary | null;
+  qaReports: QaReportSummary[];
   acceptedSource: AcceptedSource;
+  companyIdOfAcceptedQaReport: string | null;
   customValue: unknown;
 };
 
 export type DatasetReviewOverview = {
-  datasetReviewId: string;
+  dataSetReviewId: string;
   datasetId: string;
   companyId: string;
-  framework: DataTypeEnum;
+  dataType: DataTypeEnum;
   reportingPeriod: string;
-  reviewState: 'Pending' | 'Finished' | 'Abandoned';
-  reviewerUserId?: string;
-  reviewerUserName?: string;
+  reviewState: ReviewState;
+  qaJudgeUserId?: string;
+  qaJudgeUserName?: string;
+
+  qaReporterCompanies: QaReporterCompany[];
   dataPoints: Record<string, DataPointReviewInfo>;
 };
