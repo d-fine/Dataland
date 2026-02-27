@@ -4,7 +4,7 @@ import jakarta.persistence.Embeddable
 import java.util.UUID
 
 /**
- * Hallo
+ * Embeddable representing a company that submitted QA reports for a dataset under review.
  */
 @Embeddable
 data class QaReporterCompany(

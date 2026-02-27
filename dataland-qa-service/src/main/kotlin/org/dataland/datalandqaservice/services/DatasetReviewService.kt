@@ -8,12 +8,12 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporterDetails
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import kotlin.collections.map
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
@@ -60,8 +59,9 @@ class DatasetReviewService
                 datasetReviewSupportService
                     .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
 
-            val qaReporterCompanies = getQaReporterCompanies(qaReportsWithDetails)
-            val dataPoints = getDataPointsForReview(datatypeToDatapointIds, qaReportsWithDetails)
+            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
+            val qaReporterCompanies = getQaReporterCompanies(latestQaReportForCompanyAndType)
+            val dataPoints = getDataPointsForReview(datatypeToDatapointIds, latestQaReportForCompanyAndType)
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -72,7 +72,7 @@ class DatasetReviewService
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
-                    reviewerUserName = "Hallo",
+                    reviewerUserName = DatalandAuthentication.fromContext().name,
                     qaReporterCompanies = qaReporterCompanies.toMutableList(),
                     dataPoints = dataPoints,
                 )
@@ -84,11 +84,9 @@ class DatasetReviewService
          */
         private fun getDataPointsForReview(
             datatypeToDatapointIds: Map<String, String>,
-            qaReportsWithDetails: List<DataPointQaReportEntity>,
-        ): MutableList<DataPointReviewDetails> {
-            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
-
-            val dataPoints = mutableListOf<DataPointReviewDetails>()
+            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
+        ): MutableList<DataPointReviewDetailsEntity> {
+            val dataPoints = mutableListOf<DataPointReviewDetailsEntity>()
 
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val qaReportsForThisDataPointType =
@@ -97,30 +95,31 @@ class DatasetReviewService
                         .filter { it.dataPointType == dataPointType }
 
                 dataPoints.add(
-                    DataPointReviewDetails(
+                    DataPointReviewDetailsEntity(
                         dataPointType = dataPointType,
                         dataPointId = convertToUUID(dataPointId),
                         qaReports =
-                            qaReportsForThisDataPointType.map {
-                                QaReportDataPointWithReporterDetails(
-                                    dataPointReviewDetails = null, // will be set in DatasetReviewEntity when mapped by JPA
-                                    qaReportId = convertToUUID(it.qaReportId),
-                                    verdict = it.verdict,
-                                    correctedData = it.correctedData,
-                                    reporterUserId = convertToUUID(it.reporterUserId),
-                                    reporterCompanyId =
-                                        convertToUUID(
-                                            inheritedRolesControllerApi
-                                                .getInheritedRoles(it.qaReportId)
-                                                .keys
-                                                .first(),
-                                        ),
-                                )
-                            },
+                            qaReportsForThisDataPointType
+                                .map {
+                                    QaReportDataPointWithReporterDetailsEntity(
+                                        dataPointReviewDetails = null,
+                                        qaReportId = convertToUUID(it.qaReportId),
+                                        verdict = it.verdict,
+                                        correctedData = it.correctedData,
+                                        reporterUserId = convertToUUID(it.reporterUserId),
+                                        reporterCompanyId =
+                                            convertToUUID(
+                                                inheritedRolesControllerApi
+                                                    .getInheritedRoles(it.qaReportId)
+                                                    .keys
+                                                    .first(),
+                                            ),
+                                    )
+                                }.toMutableList(),
                         acceptedSource = null,
                         companyIdOfAcceptedQaReport = null,
                         customValue = null,
-                        datasetReview = null, // will be set in DatasetReviewEntity when mapped by JPA
+                        datasetReview = null,
                     ),
                 )
             }
@@ -133,38 +132,28 @@ class DatasetReviewService
          * Only considers the latest qa report for each company and data point type combination
          * to determine the reporter companies.
          */
-        private fun getQaReporterCompanies(qaReportsWithDetails: List<DataPointQaReportEntity>): List<QaReporterCompany> {
-            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
+        private fun getQaReporterCompanies(
+            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
+        ): List<QaReporterCompany> {
             val uniqueCompanyIds =
                 latestQaReportForCompanyAndType.keys
-                    .map { key ->
-                        key.split("|")[0]
-                    }.distinct()
+                    .map { key -> key.split("|")[0] }
+                    .distinct()
 
-            val companyNameById = getCompanyNameByIdMap(latestQaReportForCompanyAndType)
+            val companyNameById = getCompanyNameByIdMap(uniqueCompanyIds)
 
-            val qaReporterCompanies =
-                uniqueCompanyIds.indices.map { i ->
-                    QaReporterCompany(
-                        companyNameById[uniqueCompanyIds[i]] ?: "Unknown Company",
-                        convertToUUID(uniqueCompanyIds[i]),
-                    )
-                }
-            return qaReporterCompanies
+            return uniqueCompanyIds.map { companyId ->
+                QaReporterCompany(
+                    companyNameById[companyId] ?: "Unknown Company",
+                    convertToUUID(companyId),
+                )
+            }
         }
 
         /**
          * Helper method to get a map of company names by company id.
          */
-        private fun getCompanyNameByIdMap(
-            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
-        ): Map<String, String> {
-            val uniqueCompanyIds =
-                latestQaReportForCompanyAndType.values
-                    .map { entry ->
-                        inheritedRolesControllerApi.getInheritedRoles(entry.qaReportId).keys.first()
-                    }.distinct()
-
+        private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> {
             val reporterCompanyNames =
                 companyDataControllerApi
                     .postCompanyValidation(uniqueCompanyIds)
@@ -175,8 +164,6 @@ class DatasetReviewService
 
         /**
          * Helper method to get the latest qa report for each combination of company and data point type.
-         * This is used to determine which qa report should be considered for each data point in the review process
-         * and which companies are reporting on which data points.
          */
         private fun getLatestQaReportForEachCompanyAndDataPointType(
             qaReportsWithDetails: List<DataPointQaReportEntity>,
@@ -223,7 +210,7 @@ class DatasetReviewService
         }
 
         /**
-         * Method to accept the original data point as the accepted value for a data point in the dataset review
+         * Method to accept the original data point as the accepted value for a data point in the dataset review.
          */
         @Transactional
         fun acceptOriginalDataPoint(
@@ -231,12 +218,12 @@ class DatasetReviewService
             dataPointIndex: Int,
         ): DatasetReviewResponse {
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+            datasetReview.dataPoints[dataPointIndex].customValue = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to accept a QA report data point as the accepted value for a data point in the dataset review,
-         * including setting the company ID of the accepted QA report.
+         * Method to accept a QA report data point as the accepted value for a data point in the dataset review.
          */
         @Transactional
         fun acceptQaReportDataPoint(
@@ -245,12 +232,12 @@ class DatasetReviewService
             companyIdOfAcceptedQaReport: UUID,
         ): DatasetReviewResponse {
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
+            datasetReview.dataPoints[dataPointIndex].customValue = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to accept a custom value for a data point, including validation of the custom value
-         * against the data point type specification.
+         * Method to accept a custom value for a data point, including validation against the data point type spec.
          */
         @Transactional
         fun acceptCustomDataPoint(
@@ -275,8 +262,7 @@ class DatasetReviewService
         }
 
         /**
-         * Method to set the accepted source for a data point in a dataset review, which can be either
-         * the original data point, a QA report, or a custom value.
+         * Method to set the accepted source for a data point in a dataset review.
          */
         @Transactional
         fun setAcceptedSource(
@@ -297,15 +283,21 @@ class DatasetReviewService
                 }
 
                 AcceptedDataPointSource.Qa -> {
-                    checkNotNull(companyIdOfAcceptedQaReport) {
-                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
+                    if (companyIdOfAcceptedQaReport == null) {
+                        throw InvalidInputApiException(
+                            "Missing companyIdOfAcceptedQaReport.",
+                            "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
+                        )
                     }
                     acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(companyIdOfAcceptedQaReport))
                 }
 
                 AcceptedDataPointSource.Custom -> {
-                    checkNotNull(customValue) {
-                        "customValue must be provided when acceptedSource is Custom."
+                    if (customValue == null) {
+                        throw InvalidInputApiException(
+                            "Missing customValue.",
+                            "customValue must be provided when acceptedSource is Custom.",
+                        )
                     }
                     acceptCustomDataPoint(datasetReview, dataPointIndex, dataPointType, customValue)
                 }
@@ -313,7 +305,7 @@ class DatasetReviewService
         }
 
         /**
-         * Method to get a dataset review entity by id and convert to response
+         * Method to get a dataset review entity by id and convert to response.
          */
         @Transactional(readOnly = true)
         fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse = getDatasetReview(datasetReviewId).toDatasetReviewResponse()
@@ -340,7 +332,7 @@ class DatasetReviewService
             }
 
         /**
-         * Method to find a data point by its id, throws ResourceNotFoundApiException if not found.
+         * Method to find a data point by its type, throws ResourceNotFoundApiException if not found.
          */
         private fun getIndexOfDataPointByDataPointType(
             datasetReview: DatasetReviewEntity,
@@ -362,7 +354,7 @@ class DatasetReviewService
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.
          */
-        private fun isUserReviewer(reviewerUserId: UUID?) {
+        private fun isUserReviewer(reviewerUserId: UUID) {
             if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
                 throw InsufficientRightsApiException(
                     summary = "Only the reviewer is allowed to patch this dataset review object.",
