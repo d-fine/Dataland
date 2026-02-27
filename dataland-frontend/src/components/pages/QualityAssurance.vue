@@ -569,4 +569,14 @@ onMounted(() => {
   display: grid;
   gap: var(--spacing-xs);
 }
+
+.dataland-tag {
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 4px;
+}
 </style>
