@@ -30,8 +30,8 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_SALT", "K9nzg086pCNjq8dxl84GZg==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_VALUE", "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_JUDGE_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_JUDGE_SALT", "K9nzg086pCNjq8dxl84GZg==", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("KEYCLOAK_JUDGE_VALUE", "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA==", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("KEYCLOAK_JUDGE_SALT", "z7iDkOaNQfeUQEV3IBpEFQ==", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("KEYCLOAK_JUDGE_VALUE", "a+lk/Ddwa5wWL9T6BTZMhdNGEBiX6dzngWr5ic4Yt44=", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_REVIEWER_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_REVIEWER_SALT", "K9nzg086pCNjq8dxl84GZg==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_REVIEWER_VALUE", "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA==", [System.EnvironmentVariableTarget]::User)
@@ -74,11 +74,10 @@
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
 [Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://app.int.eurodat.org", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("KEY_STORE_FILE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "MIIFqTCCA5GgAwIBAgIILsIxNPh3wjcwDQYJKoZIhvcNAQEMBQAwgYIxCzAJBgNVBAYTAkRFMQ8wDQYDVQQIEwZIZXNzZW4xGjAYBgNVBAcTEUZyYW5rZnVydCBhbSBNYWluMRYwFAYDVQQKEw1EYXRhbGFuZCBHbWJIMRYwFAYDVQQLEw1EYXRhbGFuZCBHbWJIMRYwFAYDVQQDEw1EYXRhbGFuZCBHbWJIMB4XDTI0MDMyMTEwMDAyNFoXDTI1MDMyMTEwMDAyNFowgYIxCzAJBgNVBAYTAkRFMQ8wDQYDVQQIEwZIZXNzZW4xGjAYBgNVBAcTEUZyYW5rZnVydCBhbSBNYWluMRYwFAYDVQQKEw1EYXRhbGFuZCBHbWJIMRYwFAYDVQQLEw1EYXRhbGFuZCBHbWJIMRYwFAYDVQQDEw1EYXRhbGFuZCBHbWJIMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA/GqeIm4DGw7uXrMGh4fqnXzG8SupMAmiKOrl+C9KnJtu76qKvKdCxqtvfRPlagOWhggpN+xHnJl7A1w0uWIUgNXwoUYZuvopPkuD2PakCuX5YYat54IvGcEgKl1ZmHYt0X2ypj4+GTxzS/xSzQUdI2tpbfWPfXvPBltS8550y1qWAnuv5tYhoZ5jc2elrHCoftc9o3l+2b9e4NfMq65n183bvHxyYkZN5DLMBGDheIHwUbTGon//XD5Wx3enZBrx/YzdHdvrA7LxYOxLyQTzntbh+OsY6ajRVCbSvCsHRw9Ar5isXuD/DdToqN+097WM08p28dddgzt1UStdc1KTgw5BMPeJsuG5CX0Na9YokCMVsDriAO6mEJB1jwx2qZKylIEG/AAmVbzHeYWYeXCwwYcq1XFaHbcFSEEVOmsgpAb+f99pJMJEtDx3V/NlO51dyvI4BA1wLWK+YEXllpJixIZzSK0G3K4EBs8ZxbW51J++aWF2HDbo5P2T/YPr5dRirtXaU7TrKZSZn+9tbZLAp5PkdLYxJaC2koGHQtJnAhHO/9f3y7AvDLeGC8bixQ0hC7O3HUQbfNZbulN+hHaQZEzjMv0/ZAI1y9wE2ix+qbQ5DF76/A9CVGgiifVFwoD1PRtO/9B7IFQmzfM/xolSwADu2gLnykTPlqL6iQdL2nkCAwEAAaMhMB8wHQYDVR0OBBYEFMjICs+R2dVE95qOO6SaL+rNH1q9MA0GCSqGSIb3DQEBDAUAA4ICAQDxKAUNamh7DCanBcWhbCvWOqNDmDrUNAzNunc62UVd1oafpTsaeNIXXZQ/yt5YSV6TmrpSD9DTFE1e/k/2EZer7ZPxThXu/nz0gZ/T9W7K7eyj+XzLKYgmFkDHsvET+Ha0LQLfLrsLwV0458YW0/D0POmqGfVzSbfmO/hgPjuObuZo0yjSHDn4rDrGQQxfZym0VL/Wh76LMrKMNl2GpZCZzkr69dRRjSyuK143x/F5yQhe04ab215YFg01QABd7UofxWZ3A/PYCZh3Vy33pxvia6mQNoQRt8U61NWenh1hfFyyDZSBcxW9XIbMD7j+5fAJMmLGda+gr2AprRwbS9va9uKSrMOpZcLpO8Eo/PF4aaiTsLgfiPY+1ZRTx5uMb0e3rY7UM+pKlVpa0q3iUsFFrqFU53D/SpmJsLv1wuj9Iv8iqJKtqZw0Y028oWjG1wY6Zn5g3ZZqp5DiSo0p/1Xj2AqJ4n7VwoRR8ddb4g3hSYpIb+AJpOrh9mimevEC7F2GW1dPpYNtkh1nJRJHeM6zVVlaJN3stAmtHoDEn9sdBM9w4GV3UABuK/Wij4yYo9VoJwkFzURxGtxYRKHmDk0mnNHQJXIo4dVzYCJyinTwU4s2I+UwW4VlYChDHsCbatWB51qJ6s0ffRUgvW4gTOncCMBdJe1YwfyRJFMuPiePeg==", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "Ve8ayUw9W4JcpQ5fXwq89TdlaQ7DUx4S", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "Ve8ayUw9W4JcpQ5fXwq89TdlaQ7DUx4S", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "Ve8ayUw9W4JcpQ5fXwq89TdlaQ7DUx4S", [System.EnvironmentVariableTarget]::User)
 
 [Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "100M", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "1", [System.EnvironmentVariableTarget]::User)
