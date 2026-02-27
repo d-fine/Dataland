@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.collections.map
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
-import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException as SpecificationClientException
 
 /**
  * Service class for dataset review objects.
@@ -217,62 +216,44 @@ class DatasetReviewService
         }
 
         /**
-         * Method to approve a datapoint from dataset. Also removes approved qa reports and custom datapoints accordingly.
+         * Method to accept the original data point as the accepted value for a data point in the dataset review
          */
         @Transactional
-        fun acceptOriginalDatapoint(
-            datasetReviewId: UUID,
-            dataPointId: UUID,
+        fun acceptOriginalDataPoint(
+            datasetReview: DatasetReviewEntity,
+            dataPointIndex: Int,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
-            val dataPoint = getDataPointById(datasetReview, dataPointId.toString())
-            dataPoint.acceptedSource = AcceptedDataPointSource.Original
-            dataPoint.companyIdOfAcceptedQaReport = null
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to approve a qa report. Also removes approved data points and custom datapoints accordingly.
+         * Method to accept a QA report data point as the accepted value for a data point in the dataset review,
+         * including setting the company ID of the accepted QA report.
          */
         @Transactional
-        fun acceptQaReport(datasetReviewId: UUID): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
-
+        fun acceptQaReportDataPoint(
+            datasetReview: DatasetReviewEntity,
+            dataPointIndex: Int,
+            companyIdOfAcceptedQaReport: UUID,
+        ): DatasetReviewResponse {
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to approve a custom data point. Also removes approved data points and qa reports accordingly.
+         * Method to accept a custom value for a data point, including validation of the custom value
+         * against the data point type specification.
          */
-        @Suppress("ThrowsCount")
         @Transactional
         fun acceptCustomDataPoint(
-            datasetReviewId: UUID,
-            dataPoint: String,
+            datasetReview: DatasetReviewEntity,
+            dataPointIndex: Int,
             dataPointType: String,
+            customValue: String,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
-            lateinit var frameworksOfDataPointType: List<String>
             try {
-                frameworksOfDataPointType =
-                    datasetReviewSupportService.getFrameworksForDataPointType(dataPointType)
-            } catch (_: SpecificationClientException) {
-                throw InvalidInputApiException(
-                    "DataPoint type not found.",
-                    "Cannot find DataPoint type $dataPointType on Dataland.",
-                )
-            }
-            if (datasetReview.dataType !in frameworksOfDataPointType) {
-                throw InvalidInputApiException(
-                    "Datapoint type not valid.",
-                    "Datapoint type is not part of the framework ${datasetReview.dataType}.",
-                )
-            }
-            try {
-                datasetReviewSupportService.validateCustomDataPoint(dataPoint, dataPointType)
+                datasetReviewSupportService.validateCustomDataPoint(customValue, dataPointType)
             } catch (e: BackendClientException) {
                 throw InvalidInputApiException(
                     "Datapoint not valid.",
@@ -280,8 +261,48 @@ class DatasetReviewService
                     e,
                 )
             }
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+            datasetReview.dataPoints[dataPointIndex].customValue = customValue
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+        }
+
+        /**
+         * Method to set the accepted source for a data point in a dataset review, which can be either
+         * the original data point, a QA report, or a custom value.
+         */
+        @Transactional
+        fun setAcceptedSource(
+            datasetReviewId: UUID,
+            dataPointType: String,
+            acceptedSource: AcceptedDataPointSource,
+            companyIdOfAcceptedQaReport: String?,
+            customValue: String?,
+        ): DatasetReviewResponse {
+            val datasetReview = getDatasetReview(datasetReviewId)
+            isUserReviewer(datasetReview.reviewerUserId)
+            val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
+            datasetReview.dataPoints[dataPointIndex].acceptedSource = acceptedSource
+
+            return when (acceptedSource) {
+                AcceptedDataPointSource.Original -> {
+                    acceptOriginalDataPoint(datasetReview, dataPointIndex)
+                }
+
+                AcceptedDataPointSource.Qa -> {
+                    checkNotNull(companyIdOfAcceptedQaReport) {
+                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
+                    }
+                    acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(companyIdOfAcceptedQaReport))
+                }
+
+                AcceptedDataPointSource.Custom -> {
+                    checkNotNull(customValue) {
+                        "customValue must be provided when acceptedSource is Custom."
+                    }
+                    acceptCustomDataPoint(datasetReview, dataPointIndex, dataPointType, customValue)
+                }
+            }
         }
 
         /**
@@ -314,23 +335,21 @@ class DatasetReviewService
         /**
          * Method to find a data point by its id, throws ResourceNotFoundApiException if not found.
          */
-        private fun getDataPointById(
+        private fun getIndexOfDataPointByDataPointType(
             datasetReview: DatasetReviewEntity,
-            dataPointId: String,
-        ): DataPointReviewDetails {
-            val dataPointType =
-                datasetReviewSupportService
-                    .getDataMetaInfo(dataPointId)
-                    .dataType
-                    .toString()
-
-            return datasetReview.dataPoints.firstOrNull {
-                it.dataPointType == dataPointType
-            }
-                ?: throw ResourceNotFoundApiException(
+            dataPointType: String,
+        ): Int {
+            val index =
+                datasetReview.dataPoints.indexOfFirst {
+                    it.dataPointType == dataPointType
+                }
+            if (index == -1) {
+                throw ResourceNotFoundApiException(
                     "Datapoint not found.",
                     "No datapoint with type $dataPointType in dataset review.",
                 )
+            }
+            return index
         }
 
         /**

@@ -148,4 +148,10 @@ object BackendOpenApiDescriptionsAndExamples {
             "one of the subsequent periods '.'. They represent the root domain registered by the company together with subdomains " +
             "if applicable. They are used to suggest registered Dataland users when managing company roles."
     const val ASSOCIATED_SUBDOMAINS_EXAMPLE = "[\"my-company\",\"hr.my-company\"]"
+
+    const val ACCEPTED_SOURCE_DESCRIPTION = "The source from which the value of the data point was accepted."
+    const val ACCEPTED_SOURCE_EXAMPLE = "Original"
+
+    const val CUSTOM_VALUE_DESCRIPTION = "A custom value for the data point if applicable."
+    const val CUSTOM_VALUE_EXAMPLE = "79850"
 }

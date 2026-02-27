@@ -29,7 +29,7 @@ data class DataPointReviewDetails(
     val qaReports: List<QaReportDataPointWithReporterDetails> = listOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var companyIdOfAcceptedQaReport: UUID?,
-    val customValue: String?,
+    var customValue: String?,
     @JoinColumn(name = "data_point_review_details_id")
     @ManyToOne
     val datasetReview: DatasetReviewEntity?,
