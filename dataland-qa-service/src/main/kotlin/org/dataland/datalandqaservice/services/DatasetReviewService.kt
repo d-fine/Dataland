@@ -231,7 +231,6 @@ class DatasetReviewService
             dataPointIndex: Int,
         ): DatasetReviewResponse {
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
-            datasetReview.dataPoints[dataPointIndex].customValue = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
@@ -245,7 +244,6 @@ class DatasetReviewService
             companyIdOfAcceptedQaReport: UUID,
         ): DatasetReviewResponse {
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
-            datasetReview.dataPoints[dataPointIndex].customValue = null
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
