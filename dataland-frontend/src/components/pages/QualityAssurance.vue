@@ -1,6 +1,6 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_JUDGE">
       <div class="container">
         <div class="company-search" data-test="companySearchBarWithMessage">
           <IconField id="company-search-bar">
@@ -178,7 +178,7 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';

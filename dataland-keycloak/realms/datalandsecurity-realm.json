@@ -48,7 +48,22 @@
   "maxDeltaTimeSeconds" : 43200,
   "failureFactor" : 30,
   "roles" : {
-    "realm" : [ {
+    "realm" : [
+      {
+        "id": "0965d1ea-ffa8-4b8b-9782-02393f6c7716",
+        "name": "ROLE_JUDGE",
+        "description": "",
+        "composite": true,
+        "composites": {
+          "realm": [
+            "ROLE_USER"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "datalandsecurity",
+        "attributes": {}
+      },
+      {
       "id" : "ca914961-7666-483f-a848-3a01c4a7e228",
       "name" : "ROLE_USER",
       "composite" : false,
@@ -60,7 +75,7 @@
       "name" : "ROLE_ADMIN",
       "composite" : true,
       "composites" : {
-        "realm" : [ "ROLE_USER", "ROLE_PREMIUM_USER", "ROLE_UPLOADER", "ROLE_REVIEWER" ]
+        "realm" : [ "ROLE_JUDGE","ROLE_USER", "ROLE_PREMIUM_USER", "ROLE_UPLOADER", "ROLE_REVIEWER" ]
       },
       "clientRole" : false,
       "containerId" : "datalandsecurity",
@@ -468,6 +483,29 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
     "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "375c4c42-fa50-4f7d-af69-450803fe0ca1",
+    "username" : "data_judge",
+    "firstName" : "Data",
+    "lastName" : "Judge",
+    "email" : "data.judge@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "createdTimestamp" : 1772018819520,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "d5a8ed83-2ad9-4f77-b467-fc0cc2b352d7",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1772117329235,
+      "secretData" : "{\"value\":\"${KEYCLOAK_JUDGE_VALUE}\",\"salt\":\"${KEYCLOAK_JUDGE_SALT}\",\"additionalParameters\":{ }}",
+      "credentialData" : "{\"hashIterations\":600000,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_JUDGE", "default-roles-datalandsecurity" ],
     "notBefore" : 0,
     "groups" : [ ]
   }, {

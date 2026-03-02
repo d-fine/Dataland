@@ -2,7 +2,12 @@ import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_USER,
+  KEYCLOAK_ROLE_JUDGE,
+} from '@/utils/KeycloakRoles';
 import { ref } from 'vue';
 import router from '@/router';
 
@@ -134,6 +139,17 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
   it('Validate tabs for a logged-in Dataland-Reviewer with no company role assignments', function () {
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER], []);
+    assertThatStandardTabsAreAllVisible();
+
+    isTabVisible(RoleBasedTabs.AllDataRequests, false);
+    isTabVisible(RoleBasedTabs.MyCompany, false);
+    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
+
+    isTabVisible(RoleBasedTabs.Qa, false);
+  });
+
+  it('Validate tabs for a logged-in Dataland-Judge with no company role assignments', function () {
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_JUDGE], []);
     assertThatStandardTabsAreAllVisible();
 
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
