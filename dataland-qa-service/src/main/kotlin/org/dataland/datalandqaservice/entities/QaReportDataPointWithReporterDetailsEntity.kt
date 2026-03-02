@@ -25,7 +25,7 @@ class QaReportDataPointWithReporterDetailsEntity(
     val verdict: QaReportDataPointVerdict,
     val correctedData: String?,
     val reporterUserId: UUID,
-    val reporterCompanyId: UUID,
+    val reporterCompanyId: UUID?,
 ) {
     /**
      * Converts this entity to its API response DTO.
