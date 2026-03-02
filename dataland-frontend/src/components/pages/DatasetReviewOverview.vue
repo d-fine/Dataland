@@ -200,14 +200,7 @@ const {
 const isInitialLoading = computed(
   () => isDatasetReviewPending.value || isCompanyDataPending.value || isDataMetaInformationPending.value
 );
-const isLoadingHeader = computed(() => isDatasetReviewPending.value || isCompanyDataPending.value);
-const sector = computed(() => companyData.value?.companyInformation?.sector ?? '—');
-const headquarter = computed(() => companyData.value?.companyInformation?.headquarters ?? '—');
-const lei = computed(() => {
-  const leiArray = companyData.value?.companyInformation?.identifiers?.Lei;
-  return leiArray && leiArray.length > 0 ? leiArray[0] : '—';
-});
-const companyName = computed(() => companyData.value?.companyInformation?.companyName ?? '—');
+
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
 );

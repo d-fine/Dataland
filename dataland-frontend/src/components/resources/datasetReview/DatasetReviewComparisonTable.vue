@@ -100,11 +100,21 @@
 
                   <!-- Original datapoint -->
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <MultiLayerDataTableCell
-                      :content="row.originalDisplay"
-                      :meta-info="dataMetaInformation as DataMetaInformation"
-                      :inReviewMode="true"
-                    />
+                    <div class="flex align-items-center justify-content-between gap-2">
+                      <div class="flex-1 min-w-0">
+                        <MultiLayerDataTableCell
+                          :content="row.originalDisplay"
+                          :meta-info="dataMetaInformation as DataMetaInformation"
+                          :inReviewMode="true"
+                        />
+                      </div>
+                      <i
+                        class="pi decision-icon"
+                        :class="
+                          isOriginalAccepted(row) ? 'pi-check-circle text-green-500' : 'pi-times-circle text-red-500'
+                        "
+                      />
+                    </div>
                   </td>
 
                   <!-- Corrected datapoint -->
@@ -113,21 +123,47 @@
                     :key="company.reporterCompanyId"
                     class="vertical-align-top border-right-1 surface-border"
                   >
-                    <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'">
-                      QA Accepted
-                    </span>
-                    <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
-                      {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
-                    </span>
-                    <span v-else class="text-color-secondary italic"> {} </span>
+                    <div class="flex align-items-center justify-content-between gap-2">
+                      <span
+                        v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'"
+                        class="flex-1 min-w-0"
+                      >
+                        QA Accepted
+                      </span>
+                      <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
+                        {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
+                      </span>
+                      <span v-else class="text-color-secondary italic"> {} </span>
+                      <i
+                        class="pi"
+                        :class="
+                          isQaAccepted(row, company.reporterCompanyId)
+                            ? 'pi-check-circle text-green-500'
+                            : 'pi-times-circle text-red-500'
+                        "
+                      />
+                    </div>
                   </td>
 
-                  <!-- Icon column (very simple first pass) -->
+                  <!-- Custom datapoint -->
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <span v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === 'Custom'">
-                      {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
-                    </span>
-                    <span v-else>-</span>
+                    <div class="flex align-items-center justify-content-between gap-2">
+                      <span
+                        v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === 'Custom'"
+                        class="flex-1 min-w-0"
+                      >
+                        {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
+                      </span>
+                      <span v-else class="flex-1 min-w-0">-</span>
+                      <i
+                        class="pi decision-icon"
+                        :class="
+                          isCustomDatapointAccepted(row)
+                            ? 'pi-check-circle text-green-500'
+                            : 'pi-times-circle text-red-500'
+                        "
+                      />
+                    </div>
                   </td>
                 </template>
               </tr>
@@ -191,14 +227,12 @@ const {
   enabled: !!props.framework && !!props.dataId,
 });
 
-// --- Get MLDT config for this framework (view configuration) ---
 const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework as DataTypeEnum));
 const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
 const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
   () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
 );
 
-// --- Row model ---
 type SectionRow = {
   type: 'section';
   label: string;
@@ -215,7 +249,6 @@ type CellRow = {
 
 type KpiRow = SectionRow | CellRow;
 
-// --- Helpers to join review info ---
 function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
@@ -236,6 +269,21 @@ function getCorrectedDisplayFromQaReport(qaReport: QaReportSummary | undefined):
   } catch {
     return null;
   }
+}
+
+function isOriginalAccepted(row: CellRow): boolean {
+  const info = getReviewInfo(row.dataPointTypeId);
+  return info?.acceptedSource === 'Original';
+}
+
+function isCustomDatapointAccepted(row: CellRow): boolean {
+  const info = getReviewInfo(row.dataPointTypeId);
+  return info?.acceptedSource === 'Custom';
+}
+
+function isQaAccepted(row: CellRow, reporterCompanyId: string): boolean {
+  const info = getReviewInfo(row.dataPointTypeId);
+  return info?.acceptedSource === 'Qa' && info.companyIdOfAcceptedQaReport === reporterCompanyId;
 }
 
 function isCellEmpty(cellRow: CellRow): boolean {
@@ -261,7 +309,6 @@ function isCellEmpty(cellRow: CellRow): boolean {
   return true;
 }
 
-// Recursively build rows from MLDT config + one dataset
 function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
   const rows: KpiRow[] = [];
   for (const item of config) {
@@ -327,14 +374,12 @@ const toTitleCase = (str: string) => {
 }
 
 .section-root {
-  /* top-level section headers (e.g. ENVIRONMENTAL, SOCIAL) */
   text-transform: uppercase;
-  font-size: var(--font-size-base); /* slightly larger than cell text */
-  font-weight: var(--font-weight-medium); /* not full bold */
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
 }
 
 .section-sub {
-  /* nested sections (e.g. Greenhouse Gas Emissions) */
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
 }
