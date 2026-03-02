@@ -100,20 +100,21 @@ class DatasetReviewService
                         dataPointId = convertToUUID(dataPointId),
                         qaReports =
                             qaReportsForThisDataPointType
-                                .map {
+                                .map { qaReport ->
                                     QaReportDataPointWithReporterDetailsEntity(
                                         dataPointReviewDetails = null,
-                                        qaReportId = convertToUUID(it.qaReportId),
-                                        verdict = it.verdict,
-                                        correctedData = it.correctedData,
-                                        reporterUserId = convertToUUID(it.reporterUserId),
+                                        qaReportId = convertToUUID(qaReport.qaReportId),
+                                        verdict = qaReport.verdict,
+                                        correctedData = qaReport.correctedData,
+                                        reporterUserId = convertToUUID(qaReport.reporterUserId),
                                         reporterCompanyId =
-                                            convertToUUID(
-                                                inheritedRolesControllerApi
-                                                    .getInheritedRoles(it.qaReportId)
-                                                    .keys
-                                                    .first(),
-                                            ),
+                                            latestQaReportForCompanyAndType
+                                                .entries
+                                                .firstOrNull { entry -> entry.value == qaReport }
+                                                ?.key
+                                                ?.split("|")
+                                                ?.get(0)
+                                                ?.let { x -> kotlin.runCatching { convertToUUID(x) }.getOrNull() },
                                     )
                                 }.toMutableList(),
                         acceptedSource = null,

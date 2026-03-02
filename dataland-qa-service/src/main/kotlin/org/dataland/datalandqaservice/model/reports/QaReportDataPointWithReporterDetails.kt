@@ -29,5 +29,5 @@ data class QaReportDataPointWithReporterDetails(
     )
     val correctedData: String?,
     val reporterUserId: UUID,
-    val reporterCompanyId: UUID,
+    val reporterCompanyId: UUID?,
 )
