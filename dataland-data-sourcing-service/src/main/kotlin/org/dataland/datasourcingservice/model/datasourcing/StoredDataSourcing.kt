@@ -81,4 +81,9 @@ data class StoredDataSourcing(
             ),
     )
     val associatedRequestIds: Set<String> = emptySet(),
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+    )
+    val priority: Int? = null,
 )

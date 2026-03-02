@@ -2,21 +2,18 @@ package org.dataland.datasourcingservice.model.datasourcing
 
 import org.dataland.datasourcingservice.entities.ExpectedPublicationDateOfDocument
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.model.request.StoredRequest
 import java.time.LocalDate
-import java.util.UUID
 
 /**
- * Patch class for data sourcing entities.
+ * Request body for the admin PATCH endpoint. All fields are nullable — null means the field is not updated.
  */
-data class DataSourcingPatch(
+data class AdminDataSourcingPatch(
+    val documentCollector: String? = null,
+    val dataExtractor: String? = null,
+    val adminComment: String? = null,
+    val priority: Int? = null,
     val state: DataSourcingState? = null,
     val documentIds: Set<String>? = null,
     val expectedPublicationDatesOfDocuments: Set<ExpectedPublicationDateOfDocument>? = null,
     val dateOfNextDocumentSourcingAttempt: LocalDate? = null,
-    val documentCollector: UUID? = null,
-    val dataExtractor: UUID? = null,
-    val adminComment: String? = null,
-    val associatedRequests: Set<StoredRequest>? = null,
-    val priority: Int? = null,
 )

@@ -15,6 +15,8 @@ import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutRe
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
+import org.dataland.datasourcingservice.utils.isUserAdmin
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
 import java.time.LocalDate
@@ -61,6 +63,8 @@ class DataSourcingEntity(
     var dataExtractor: UUID? = null,
     @Column(name = "admin_comment", length = 1000)
     var adminComment: String? = null,
+    @Column(name = "priority")
+    var priority: Int = 10,
     @NotAudited
     @OneToMany(mappedBy = "dataSourcingEntity", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JsonManagedReference
@@ -88,10 +92,13 @@ class DataSourcingEntity(
     }
 
     /**
-     * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields for non-admins.
+     * Converts this DataSourcingEntity to a StoredDataSourcing, hiding sensitive fields based on caller permissions.
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toStoredDataSourcing(isAdmin: Boolean = false): StoredDataSourcing =
-        StoredDataSourcing(
+    fun toStoredDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): StoredDataSourcing {
+        val isAdmin = isUserAdmin()
+        val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return StoredDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -104,13 +111,17 @@ class DataSourcingEntity(
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
             associatedRequestIds = if (isAdmin) associatedRequests.map { it.id.toString() }.toMutableSet() else emptySet(),
+            priority = if (isAdminOrProvider) priority else null,
         )
+    }
 
     /**
      * Converts this DataSourcingEntity to a ReducedDataSourcing dto.
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toReducedDataSourcing(): ReducedDataSourcing =
-        ReducedDataSourcing(
+    fun toReducedDataSourcing(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): ReducedDataSourcing {
+        val isAdminOrProvider = isUserAdmin() || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return ReducedDataSourcing(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -121,16 +132,21 @@ class DataSourcingEntity(
             dateOfNextDocumentSourcingAttempt = dateOfNextDocumentSourcingAttempt,
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
+            priority = if (isAdminOrProvider) priority else null,
         )
+    }
 
     /**
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
+     * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
     fun toDataSourcingWithoutReferences(
-        isAdmin: Boolean,
+        derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
         lastModifiedDate: Long,
-    ): DataSourcingWithoutReferences =
-        DataSourcingWithoutReferences(
+    ): DataSourcingWithoutReferences {
+        val isAdmin = isUserAdmin()
+        val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
+        return DataSourcingWithoutReferences(
             dataSourcingId = dataSourcingId.toString(),
             companyId = companyId.toString(),
             reportingPeriod = reportingPeriod,
@@ -141,5 +157,7 @@ class DataSourcingEntity(
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
             lastModifiedDate = lastModifiedDate,
+            priority = if (isAdminOrProvider) priority else null,
         )
+    }
 }

@@ -1,154 +1,34 @@
 package org.dataland.datasourcingservice.serviceTests
 
-import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
 import okio.Buffer
 import okio.BufferedSource
-import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRoleAssignmentExtended
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
-import org.dataland.datasourcingservice.repositories.DataSourcingRepository
-import org.dataland.datasourcingservice.services.DataSourcingValidator
-import org.dataland.datasourcingservice.utils.DataBaseCreationUtils
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import org.dataland.datasourcingservice.utils.BaseDataSourcingControllerTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
-import org.springframework.test.context.bean.override.mockito.MockitoBean
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 
-@SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureMockMvc
-class DataSourcingControllerTest(
-    @Autowired private val dataSourcingRepository: DataSourcingRepository,
-    @Autowired private val mockMvc: MockMvc,
-) {
-    @MockitoBean
-    private lateinit var mockCompanyRolesControllerApi: CompanyRolesControllerApi
-
-    @MockitoBean
-    private lateinit var mockDataSourcingValidator: DataSourcingValidator
-
-    @MockitoBean
-    private lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
-
-    @MockitoBean
-    @Qualifier("AuthenticatedOkHttpClient")
-    private lateinit var authenticatedOkHttpClient: OkHttpClient
-
-    private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
-
-    private val mockSecurityContext = mock<SecurityContext>()
-
-    private val adminUserId = UUID.randomUUID()
-    private val regularUserId = UUID.randomUUID()
-
-    private val dummyAdminAuthentication =
-        AuthenticationMock.mockJwtAuthentication(
-            username = "DATA_ADMIN",
-            userId = adminUserId.toString(),
-            roles = setOf(DatalandRealmRole.ROLE_ADMIN, DatalandRealmRole.ROLE_USER),
-        )
-
-    private val dummyUserAuthentication =
-        AuthenticationMock.mockJwtAuthentication(
-            username = "DATA_USER",
-            userId = regularUserId.toString(),
-            roles = setOf(DatalandRealmRole.ROLE_USER),
-        )
-
-    private val dataSourcingId = UUID.randomUUID()
-    private val documentCollectorId = UUID.randomUUID()
-    private val dataExtractorId = UUID.randomUUID()
-    private val providerCompanyId = UUID.randomUUID()
+class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
+    private val providerCompanyId: UUID = UUID.randomUUID()
     private val documentId = "my-document-hash"
     private val dateOfNextSourcingAttempt = "2026-01-01"
-
-    private val generalMemberAssignment =
-        CompanyRoleAssignmentExtended(
-            companyRole = CompanyRole.Analyst,
-            userId = regularUserId.toString(),
-            companyId = providerCompanyId.toString(),
-            email = "test@example.com",
-            firstName = "Jane",
-            lastName = "Doe",
-        )
-
-    private val memberAssignmentForDocumentCollector =
-        generalMemberAssignment.copy(companyId = documentCollectorId.toString())
-
-    private val memberAssignmentForDataExtractor =
-        generalMemberAssignment.copy(companyId = dataExtractorId.toString())
-
-    @BeforeEach
-    fun setup() {
-        reset(
-            mockSecurityContext,
-            mockCompanyRolesControllerApi,
-            mockDataSourcingValidator,
-            mockCloudEventMessageHandler,
-            authenticatedOkHttpClient,
-        )
-
-        stubRoleAssignments(adminUserId, documentCollectorId, emptyList())
-
-        dataBaseCreationUtils.storeDataSourcing(
-            dataSourcingId = dataSourcingId,
-            state = DataSourcingState.DocumentSourcing,
-            documentCollector = documentCollectorId,
-            dataExtractor = dataExtractorId,
-        )
-    }
-
-    @AfterEach
-    fun cleanup() {
-        dataSourcingRepository.deleteAll()
-    }
-
-    private fun setMockSecurityContext(authentication: DatalandJwtAuthentication) {
-        doReturn(authentication).whenever(mockSecurityContext).authentication
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun stubRoleAssignments(
-        userId: UUID,
-        companyId: UUID,
-        roles: List<CompanyRoleAssignmentExtended>,
-    ) {
-        doReturn(roles)
-            .whenever(mockCompanyRolesControllerApi)
-            .getExtendedCompanyRoleAssignments(userId = userId, companyId = companyId)
-    }
 
     private fun setupCompanyExistsValidatorMocks() {
         val mockCall = mock<okhttp3.Call>()
@@ -337,5 +217,21 @@ class DataSourcingControllerTest(
         stubRoleAssignments(regularUserId, documentCollectorId, emptyList())
         stubRoleAssignments(regularUserId, dataExtractorId, emptyList())
         performPatchStateAndExpect(state, status().isForbidden())
+    }
+
+    @Test
+    fun `admin can patch expected publication dates of documents via admin patch endpoint`() {
+        setMockSecurityContext(dummyAdminAuthentication)
+        mockMvc
+            .perform(
+                patch("/data-sourcing/$dataSourcingId")
+                    .content(
+                        """{"expectedPublicationDatesOfDocuments": """ +
+                            """[{"documentCategory": "Annual Report", "expectedPublicationDate": "2026-06-30"}]}""",
+                    ).contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk())
+            .andExpect(jsonPath("$.expectedPublicationDatesOfDocuments[0].documentCategory").value("Annual Report"))
+            .andExpect(jsonPath("$.expectedPublicationDatesOfDocuments[0].expectedPublicationDate").value("2026-06-30"))
     }
 }

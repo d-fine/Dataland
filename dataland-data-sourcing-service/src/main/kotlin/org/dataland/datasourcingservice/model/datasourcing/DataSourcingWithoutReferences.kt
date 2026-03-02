@@ -59,4 +59,9 @@ data class DataSourcingWithoutReferences(
         example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_EXAMPLE,
     )
     val lastModifiedDate: Long,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+    )
+    val priority: Int? = null,
 )
