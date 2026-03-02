@@ -146,7 +146,7 @@ class DatasetReviewService
             return uniqueCompanyIds.map { companyId ->
                 QaReporterCompany(
                     companyNameById[companyId] ?: "Unknown Company",
-                    convertToUUID(companyId),
+                    kotlin.runCatching { convertToUUID(companyId) }.getOrNull(),
                 )
             }
         }
@@ -173,7 +173,7 @@ class DatasetReviewService
             for (entry in qaReportsWithDetails) {
                 var companyId =
                     inheritedRolesControllerApi
-                        .getInheritedRoles(entry.qaReportId)
+                        .getInheritedRoles(entry.reporterUserId)
                         .keys
                         .firstOrNull()
                 if (companyId == null) {

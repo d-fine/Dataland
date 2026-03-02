@@ -9,5 +9,5 @@ import java.util.UUID
 @Embeddable
 data class QaReporterCompany(
     val reportCompanyName: String,
-    val reportCompanyId: UUID,
+    val reportCompanyId: UUID?,
 )
