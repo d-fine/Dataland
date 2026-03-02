@@ -121,11 +121,11 @@ interface DatasetReviewApi {
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/judge"],
+        value = ["/{datasetReviewId}/reviewer"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_JUDGE')")
-    fun setJudge(
+    fun setReviewer(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
