@@ -102,7 +102,6 @@ class DatasetReviewService
                             qaReportsForThisDataPointType
                                 .map { qaReport ->
                                     QaReportDataPointWithReporterDetailsEntity(
-                                        dataPointReviewDetails = null,
                                         qaReportId = convertToUUID(qaReport.qaReportId),
                                         verdict = qaReport.verdict,
                                         correctedData = qaReport.correctedData,
@@ -110,17 +109,15 @@ class DatasetReviewService
                                         reporterCompanyId =
                                             latestQaReportForCompanyAndType
                                                 .entries
-                                                .firstOrNull { entry -> entry.value == qaReport }
-                                                ?.key
-                                                ?.split("|")
-                                                ?.get(0)
-                                                ?.let { x -> kotlin.runCatching { convertToUUID(x) }.getOrNull() },
+                                                .first { it.value == qaReport }
+                                                .key
+                                                .substringBefore("|")
+                                                .let { convertToUUID(it) },
                                     )
                                 }.toMutableList(),
                         acceptedSource = null,
                         companyIdOfAcceptedQaReport = null,
                         customValue = null,
-                        datasetReview = null,
                     ),
                 )
             }
@@ -145,8 +142,8 @@ class DatasetReviewService
 
             return uniqueCompanyIds.map { companyId ->
                 QaReporterCompany(
-                    companyNameById[companyId] ?: "Unknown Company",
-                    kotlin.runCatching { convertToUUID(companyId) }.getOrNull(),
+                    companyNameById.getValue(companyId),
+                    convertToUUID(companyId),
                 )
             }
         }
@@ -171,14 +168,16 @@ class DatasetReviewService
         ): LinkedHashMap<String, DataPointQaReportEntity> {
             val map = linkedMapOf<String, DataPointQaReportEntity>()
             for (entry in qaReportsWithDetails) {
-                var companyId =
+                val companyId =
                     inheritedRolesControllerApi
                         .getInheritedRoles(entry.reporterUserId)
                         .keys
                         .firstOrNull()
-                if (companyId == null) {
-                    companyId = "Unknown Company of user " + entry.reporterUserId
-                }
+                        ?: throw ResourceNotFoundApiException(
+                            "Company of QA report reporter not found.",
+                            "Could not find a company for the user ${entry.reporterUserId} who " +
+                                "reported a QA report with id ${entry.qaReportId}.",
+                        )
 
                 val compositeKey = "$companyId|${entry.dataPointType}"
                 val existing = map[compositeKey]

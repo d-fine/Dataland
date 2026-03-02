@@ -28,7 +28,7 @@ class DataPointReviewDetailsEntity(
     var customValue: String?,
     @JoinColumn(name = "dataset_review_id")
     @ManyToOne
-    val datasetReview: DatasetReviewEntity?,
+    val datasetReview: DatasetReviewEntity? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
