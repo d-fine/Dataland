@@ -61,4 +61,13 @@ class DatasetReviewEntity(
             qaReporterCompanies,
             dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
+
+    /**
+     * Add an associated request to this data sourcing entity.
+     * Make sure the data sourcing entity is also added to the request.
+     */
+    fun addAssociatedDataPoints(dataPoint: DataPointReviewDetailsEntity) {
+        dataPoints.add(dataPoint)
+        dataPoint.datasetReview = this
+    }
 }

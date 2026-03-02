@@ -28,7 +28,7 @@ class DataPointReviewDetailsEntity(
     var customValue: String?,
     @JoinColumn(name = "dataset_review_id")
     @ManyToOne
-    val datasetReview: DatasetReviewEntity? = null,
+    var datasetReview: DatasetReviewEntity? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
@@ -42,4 +42,13 @@ class DataPointReviewDetailsEntity(
             companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport,
             customValue = customValue,
         )
+
+    /**
+     * Add an associated request to this data sourcing entity.
+     * Make sure the data sourcing entity is also added to the request.
+     */
+    fun addAssociatedQaReports(qaReport: QaReportDataPointWithReporterDetailsEntity) {
+        qaReports.add(qaReport)
+        qaReport.dataPointReviewDetails = this
+    }
 }

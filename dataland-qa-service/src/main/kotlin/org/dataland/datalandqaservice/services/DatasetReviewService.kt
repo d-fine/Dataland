@@ -61,7 +61,6 @@ class DatasetReviewService
 
             val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportsWithDetails)
             val qaReporterCompanies = getQaReporterCompanies(latestQaReportForCompanyAndType)
-            val dataPoints = getDataPointsForReview(datatypeToDatapointIds, latestQaReportForCompanyAndType)
             val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
@@ -74,54 +73,64 @@ class DatasetReviewService
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = DatalandAuthentication.fromContext().name,
                     qaReporterCompanies = qaReporterCompanies.toMutableList(),
-                    dataPoints = dataPoints,
+                    dataPoints = mutableListOf(),
                 )
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
+
+            val datasetReviewEntityWithDataPoints =
+                setDataPointsForReview(
+                    datasetReviewEntity,
+                    datatypeToDatapointIds,
+                    latestQaReportForCompanyAndType,
+                )
+
+            return datasetReviewRepository.save(datasetReviewEntityWithDataPoints).toDatasetReviewResponse()
         }
 
         /**
          * Helper method to get the data points with details for the review process.
          */
-        private fun getDataPointsForReview(
+        private fun setDataPointsForReview(
+            reviewEntity: DatasetReviewEntity,
             datatypeToDatapointIds: Map<String, String>,
             latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
-        ): MutableList<DataPointReviewDetailsEntity> {
-            val dataPoints = mutableListOf<DataPointReviewDetailsEntity>()
-
+        ): DatasetReviewEntity {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val qaReportsForThisDataPointType =
                     latestQaReportForCompanyAndType
                         .values
                         .filter { it.dataPointType == dataPointType }
 
-                dataPoints.add(
+                val currentDataPointReviewDetails =
                     DataPointReviewDetailsEntity(
                         dataPointType = dataPointType,
                         dataPointId = convertToUUID(dataPointId),
-                        qaReports =
-                            qaReportsForThisDataPointType
-                                .map { qaReport ->
-                                    QaReportDataPointWithReporterDetailsEntity(
-                                        qaReportId = convertToUUID(qaReport.qaReportId),
-                                        verdict = qaReport.verdict,
-                                        correctedData = qaReport.correctedData,
-                                        reporterUserId = convertToUUID(qaReport.reporterUserId),
-                                        reporterCompanyId =
-                                            latestQaReportForCompanyAndType
-                                                .entries
-                                                .first { it.value == qaReport }
-                                                .key
-                                                .substringBefore("|")
-                                                .let { convertToUUID(it) },
-                                    )
-                                }.toMutableList(),
+                        qaReports = mutableListOf(),
                         acceptedSource = null,
                         companyIdOfAcceptedQaReport = null,
                         customValue = null,
-                    ),
-                )
+                    )
+
+                qaReportsForThisDataPointType.forEach { qaReport ->
+                    currentDataPointReviewDetails.addAssociatedQaReports(
+                        QaReportDataPointWithReporterDetailsEntity(
+                            qaReportId = convertToUUID(qaReport.qaReportId),
+                            verdict = qaReport.verdict,
+                            correctedData = qaReport.correctedData,
+                            reporterUserId = convertToUUID(qaReport.reporterUserId),
+                            reporterCompanyId =
+                                latestQaReportForCompanyAndType
+                                    .entries
+                                    .first { it.value == qaReport }
+                                    .key
+                                    .substringBefore("|")
+                                    .let { convertToUUID(it) },
+                        ),
+                    )
+                }
+
+                reviewEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
             }
-            return dataPoints
+            return reviewEntity
         }
 
         /**
