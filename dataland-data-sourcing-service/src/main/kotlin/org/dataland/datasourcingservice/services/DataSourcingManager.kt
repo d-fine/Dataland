@@ -290,7 +290,7 @@ class DataSourcingManager
                     dateOfNextDocumentSourcingAttempt = patch.dateOfNextDocumentSourcingAttempt,
                 ),
                 correlationId,
-            ).let { result -> result.toStoredDataSourcing(derivedRightsUtilsComponent) }
+            ).toStoredDataSourcing(derivedRightsUtilsComponent)
         }
 
         /**
