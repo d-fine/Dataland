@@ -96,11 +96,11 @@ data class RequestSearchFilter<IdType>(
         arraySchema =
             Schema(
                 description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_DESCRIPTION,
-                example = "[${DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_EXAMPLE}]",
+                example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_STATE_LIST_EXAMPLE,
             ),
         schema =
             Schema(
-                implementation = RequestState::class,
+                implementation = DataSourcingState::class,
             ),
     )
     val dataSourcingStates: Set<DataSourcingState>? = null,

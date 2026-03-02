@@ -121,6 +121,11 @@ interface DataSourcingApi {
         )
         @PathVariable
         dataSourcingId: String,
+        @Parameter(
+            description = "If true, only returns revisions where the state changed.",
+        )
+        @RequestParam(defaultValue = "false")
+        stateChangesOnly: Boolean,
     ): ResponseEntity<List<DataSourcingWithoutReferences>>
 
     /**

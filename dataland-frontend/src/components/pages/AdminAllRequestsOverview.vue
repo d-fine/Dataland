@@ -42,7 +42,6 @@
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedFrameworks"
-        ref="frameworkFilter"
         :available-items="availableFrameworks"
         filter-name="Framework"
         data-test="framework-picker"
@@ -53,20 +52,18 @@
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
-        v-model="selectedRequestStates"
-        ref="frameworkFilter"
-        :available-items="availableRequestStates"
-        filter-name="Request State"
-        data-test="request-state-picker"
-        filter-placeholder="Search by Request State"
+        v-model="selectedMixedStates"
+        :available-items="availableMixedStates"
+        filter-name="State"
+        data-test="state-picker"
+        filter-placeholder="Search by State"
         class="search-filter"
         :max-selected-labels="1"
-        selected-items-label="{0} request states"
+        selected-items-label="{0} states"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedPriorities"
-        ref="frameworkFilter"
         :available-items="availablePriorities"
         filter-name="Priority"
         data-test="request-priority-picker"
@@ -78,7 +75,6 @@
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
         v-model="selectedReportingPeriods"
-        ref="frameworkFilter"
         :available-items="availableReportingPeriods"
         filter-name="Reporting Period"
         data-test="reporting-period-picker"
@@ -124,9 +120,9 @@
           :rowHover="true"
           style="cursor: pointer"
         >
-          <Column header="REQUESTER" field="userEmailAddress" :sortable="false" />
-          <Column header="COMPANY" field="companyName" :sortable="false" />
-          <Column header="FRAMEWORK" :sortable="false">
+          <Column v-if="isColumnVisible('requester')" header="REQUESTER" field="userEmailAddress" :sortable="false" />
+          <Column v-if="isColumnVisible('company')" header="COMPANY" field="companyName" :sortable="false" />
+          <Column v-if="isColumnVisible('framework')" header="FRAMEWORK" :sortable="false">
             <template #body="{ data }">
               <div>
                 {{ getFrameworkTitle(data.dataType) }}
@@ -141,33 +137,110 @@
               </div>
             </template>
           </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false" />
-          <Column header="REQUEST ID" field="id" :sortable="false" />
-          <Column header="REQUESTED" :sortable="false">
+          <Column
+            v-if="isColumnVisible('reportingPeriod')"
+            header="REPORTING PERIOD"
+            field="reportingPeriod"
+            :sortable="false"
+          />
+          <Column v-if="isColumnVisible('id')" header="REQUEST ID" field="id" :sortable="false" />
+          <Column v-if="isColumnVisible('creationTimestamp')" header="REQUESTED" :sortable="false" class="date-column">
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.creationTimestamp) }}
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line1 }}</span>
+                <span>{{ splitRequestedDateLines(data.creationTimestamp).line2 }}</span>
               </div>
             </template>
           </Column>
-          <Column header="LAST UPDATED" :sortable="false">
+          <Column
+            v-if="isColumnVisible('lastModifiedDate')"
+            header="LAST UPDATED"
+            :sortable="false"
+            class="date-column"
+          >
             <template #body="{ data }">
               <div>
-                {{ convertUnixTimeInMsToDateString(data.lastModifiedDate) }}
+                <span>{{ splitRequestedDateLines(data.lastModifiedDate).line1 }}</span>
+                <span>{{ splitRequestedDateLines(data.lastModifiedDate).line2 }}</span>
               </div>
             </template>
           </Column>
-          <Column header="REQUEST STATE" :sortable="false">
+          <Column v-if="isColumnVisible('state')" header="STATE" :sortable="false">
             <template #body="{ data }">
-              <DatalandTag :severity="data.state" :value="data.state" rounded />
+              <DatalandTag
+                :severity="getDisplayedState(data)"
+                :value="getDisplayedStateLabel(getDisplayedState(data))"
+              />
             </template>
           </Column>
-          <Column header="REQUEST PRIORITY" :sortable="false">
+          <Column
+            v-if="isColumnVisible('nextSourcingAttempt')"
+            header="NEXT SOURCING ATTEMPT"
+            :sortable="false"
+            class="date-column"
+          >
+            <template #body="{ data }">
+              <div v-if="data.dataSourcingDetails?.dateOfNextDocumentSourcingAttempt">
+                <span>
+                  {{ splitRequestedDataSourcingDate(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).line1 }}
+                </span>
+                <span>
+                  {{ splitRequestedDataSourcingDate(data.dataSourcingDetails.dateOfNextDocumentSourcingAttempt).line2 }}
+                </span>
+              </div>
+              <template v-else>-</template>
+            </template>
+          </Column>
+          <Column v-if="isColumnVisible('priority')" header="REQUEST PRIORITY" :sortable="false">
             <template #body="{ data }">
               <DatalandTag :severity="data.requestPriority" :value="data.requestPriority" />
             </template>
           </Column>
-          <Column header="ADMIN COMMENT" :sortable="false" field="adminComment" />
+          <Column v-if="isColumnVisible('documentCollector')" header="DOCUMENT COLLECTOR" :sortable="false">
+            <template #body="{ data }">
+              {{ data.dataSourcingDetails?.documentCollectorName ?? '-' }}
+            </template>
+          </Column>
+          <Column v-if="isColumnVisible('dataExtractor')" header="DATA EXTRACTOR" :sortable="false">
+            <template #body="{ data }">
+              {{ data.dataSourcingDetails?.dataExtractorName ?? '-' }}
+            </template>
+          </Column>
+          <Column
+            v-if="isColumnVisible('adminComment')"
+            header="ADMIN COMMENT"
+            :sortable="false"
+            field="adminComment"
+          />
+          <template #paginatorstart>
+            <span class="paginator-spacer"></span>
+          </template>
+          <template #paginatorend>
+            <div class="column-selector-container" @click="toggleColumnPopover">
+              <span class="column-selector-label">Select Columns</span>
+              <PrimeButton
+                type="button"
+                icon="pi pi-cog"
+                variant="text"
+                class="column-selector-button"
+                data-test="column-selector-button"
+                aria-label="Configure columns"
+              />
+            </div>
+            <Popover ref="columnPopover" data-test="column-selector-popover">
+              <div class="column-popover-content">
+                <div v-for="col in allColumns" :key="col.field" class="column-checkbox-row">
+                  <Checkbox
+                    v-model="selectedColumns"
+                    :inputId="col.field"
+                    :value="col"
+                    :data-test="`column-checkbox-${col.field}`"
+                  />
+                  <label :for="col.field">{{ col.header }}</label>
+                </div>
+              </div>
+            </Popover>
+          </template>
           <template #empty>
             <div style="text-align: center; font-weight: var(--font-weight-bold)">No requests found.</div>
           </template>
@@ -178,20 +251,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue';
+import { ref, computed, onMounted, inject, watch } from 'vue';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
+import type {
+  FrameworkSelectableItem,
+  DisplayedStateSelectableItem,
+  SelectableItem,
+} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
   retrieveAvailableFrameworks,
   retrieveAvailablePriorities,
-  retrieveAvailableRequestStates,
   retrieveAvailableReportingPeriods,
+  retrieveAvailableDisplayedStates,
+  convertDisplayedStatesToApiFilters,
+  getDisplayedState,
+  getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -201,31 +281,97 @@ import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
-import type { ExtendedStoredRequest, RequestState, RequestPriority } from '@clients/datasourcingservice';
+import Checkbox from 'primevue/checkbox';
+import Popover from 'primevue/popover';
+import { type RequestPriority, type DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
-const frameworkFilter = ref();
 const datasetsPerPage = 100;
+const COLUMN_SELECTION_STORAGE_KEY = 'adminAllRequestsOverview.selectedColumns';
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const router = useRouter();
 
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
 const totalRecords = ref(0);
 const rowsPerPage = ref(datasetsPerPage);
 const firstRowIndex = ref(0);
-const currentDataRequests = ref<ExtendedStoredRequest[]>([]);
+const currentDataRequests = ref<DataSourcingEnhancedRequest[]>([]);
 const searchBarInputEmail = ref('');
 const searchBarInputComment = ref('');
 const searchBarInputCompanySearchString = ref('');
 
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-const availableRequestStates = ref<SelectableItem[]>([]);
-const selectedRequestStates = ref<SelectableItem[]>([]);
+const availableMixedStates = ref<DisplayedStateSelectableItem[]>([]);
+const selectedMixedStates = ref<DisplayedStateSelectableItem[]>([]);
 const availablePriorities = ref<SelectableItem[]>([]);
 const selectedPriorities = ref<SelectableItem[]>([]);
 const availableReportingPeriods = ref<SelectableItem[]>([]);
 const selectedReportingPeriods = ref<SelectableItem[]>([]);
+
+interface ColumnDefinition {
+  field: string;
+  header: string;
+}
+
+const allColumns: ColumnDefinition[] = [
+  { field: 'requester', header: 'Requester' },
+  { field: 'company', header: 'Company' },
+  { field: 'framework', header: 'Framework' },
+  { field: 'reportingPeriod', header: 'Reporting Period' },
+  { field: 'id', header: 'Request ID' },
+  { field: 'creationTimestamp', header: 'Requested' },
+  { field: 'lastModifiedDate', header: 'Last Updated' },
+  { field: 'state', header: 'State' },
+  { field: 'nextSourcingAttempt', header: 'Next Sourcing Attempt' },
+  { field: 'priority', header: 'Request Priority' },
+  { field: 'documentCollector', header: 'Document Collector' },
+  { field: 'dataExtractor', header: 'Data Extractor' },
+  { field: 'adminComment', header: 'Admin Comment' },
+];
+
+const selectedColumns = ref<ColumnDefinition[]>(loadColumnSelection());
+const columnPopover = ref();
+
+/**
+ * Toggles the column selection popover visibility.
+ * @param event - The click event from the button
+ */
+function toggleColumnPopover(event: Event): void {
+  columnPopover.value.toggle(event);
+}
+
+/**
+ * Loads the column selection from localStorage, falling back to all columns if not found.
+ * @returns The saved column selection or all columns as default
+ */
+function loadColumnSelection(): ColumnDefinition[] {
+  const saved = localStorage.getItem(COLUMN_SELECTION_STORAGE_KEY);
+  if (saved) {
+    const savedFields: string[] = JSON.parse(saved);
+    return allColumns.filter((col) => savedFields.includes(col.field));
+  }
+  return [...allColumns];
+}
+
+watch(
+  selectedColumns,
+  (newSelection) => {
+    const fields = newSelection.map((col) => col.field);
+    localStorage.setItem(COLUMN_SELECTION_STORAGE_KEY, JSON.stringify(fields));
+  },
+  { deep: true }
+);
+
+/**
+ * Checks if a column is currently visible based on user selection.
+ * @param field - The field identifier of the column
+ * @returns true if the column is selected for display
+ */
+function isColumnVisible(field: string): boolean {
+  return selectedColumns.value.some((col) => col.field === field);
+}
 
 /**
  * Sets the current chunk index and first row index to zero.
@@ -237,7 +383,7 @@ function setChunkAndFirstRowIndexToZero(): void {
 
 onMounted(() => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableRequestStates.value = retrieveAvailableRequestStates();
+  availableMixedStates.value = retrieveAvailableDisplayedStates();
   availablePriorities.value = retrieveAvailablePriorities();
   availableReportingPeriods.value = retrieveAvailableReportingPeriods();
   void getAllRequestsForFilters();
@@ -254,11 +400,7 @@ async function getAllRequestsForFilters(): Promise<void> {
       : undefined
   );
 
-  const selectedRequestStatesForApi = computed<RequestState[] | undefined>(() =>
-    selectedRequestStates.value.length
-      ? selectedRequestStates.value.map((i) => i.displayName as RequestState)
-      : undefined
-  );
+  const mixedStateFilters = computed(() => convertDisplayedStatesToApiFilters(selectedMixedStates.value));
 
   const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
     selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
@@ -273,7 +415,8 @@ async function getAllRequestsForFilters(): Promise<void> {
       const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
       const filters = {
         dataTypes: selectedFrameworksForApi.value,
-        requestStates: selectedRequestStatesForApi.value,
+        requestStates: mixedStateFilters.value.requestStates,
+        dataSourcingStates: mixedStateFilters.value.dataSourcingStates,
         requestPriorities: selectedPrioritiesForApi.value,
         reportingPeriods: selectedReportingPeriodsForApi.value,
         emailAddress: searchBarInputEmail.value || undefined,
@@ -306,7 +449,7 @@ async function getAllRequestsForFilters(): Promise<void> {
 function resetFilterAndSearchBar(): void {
   currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
-  selectedRequestStates.value = [];
+  selectedMixedStates.value = [];
   selectedPriorities.value = [];
   selectedReportingPeriods.value = [];
   searchBarInputEmail.value = '';
@@ -346,6 +489,42 @@ function onRowClick(event: DataTableRowClickEvent): void {
   const requestIdOfClickedRow = event.data.id;
   router.push(`/requests/${requestIdOfClickedRow}`).catch(console.error);
 }
+
+/**
+ * Splits the requested date into two lines for display.
+ * @param timestamp - The timestamp to be converted
+ * @returns An object containing the two lines of the split date
+ */
+function splitRequestedDateLines(timestamp: number): { line1: string; line2: string } {
+  const dateString = convertUnixTimeInMsToDateString(timestamp).replaceAll(/\r?\n/g, '');
+  const parts = dateString.split(', ');
+  const [weekday, dayMonthYear, time] = parts;
+  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
+  const year = dayMonthYearParts[2];
+  return {
+    line1: `${weekday}, ${dayMonth}`,
+    line2: `${year}, ${time}`,
+  };
+}
+
+/**
+ * Splits the requested date of next data sourcing attempt into two lines for display.
+ * @param date - The timestamp to be converted
+ * @returns An object containing the two lines of the split date
+ */
+function splitRequestedDataSourcingDate(date: string): { line1: string; line2: string } {
+  const dateString = dateStringFormatter(date);
+  const parts = dateString.split(', ');
+  const [weekday, dayMonthYear] = parts;
+  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
+  const year = dayMonthYearParts[2];
+  return {
+    line1: `${weekday}, ${dayMonth}`,
+    line2: `${year}`,
+  };
+}
 </script>
 
 <style scoped lang="scss">
@@ -363,6 +542,11 @@ function onRowClick(event: DataTableRowClickEvent): void {
   .search-bar {
     width: 20%;
   }
+
+  .search-filter {
+    width: 20%;
+    text-align: left;
+  }
 }
 
 .search-container-last-line {
@@ -373,5 +557,63 @@ function onRowClick(event: DataTableRowClickEvent): void {
     width: 20%;
     text-align: left;
   }
+}
+
+.paginator-spacer {
+  width: 3rem;
+}
+
+:deep(.p-datatable-paginator-bottom .column-selector-container) {
+  visibility: hidden;
+}
+
+:deep(.p-paginator-content-end) {
+  flex: none;
+}
+
+.column-selector-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.column-selector-label {
+  font-size: 0.875rem;
+  color: var(--p-primary-color);
+}
+
+:deep(.column-selector-button) {
+  pointer-events: none;
+
+  &:hover {
+    background: transparent;
+  }
+
+  .pi {
+    font-size: 1.25rem;
+  }
+}
+
+.column-popover-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+
+  .column-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
+.date-column span {
+  display: block;
+  white-space: nowrap;
 }
 </style>

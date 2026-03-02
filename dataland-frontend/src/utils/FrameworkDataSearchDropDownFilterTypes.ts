@@ -1,4 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
+import { type DataSourcingState, type RequestState } from '@clients/datasourcingservice';
 import { type SearchForDocumentMetaInformationDocumentCategoriesEnum } from '@clients/documentmanager';
 
 export interface SelectableItem {
@@ -16,4 +17,8 @@ export interface FrameworkSelectableItem extends SelectableItem {
 
 export interface DocumentCategorySelectableItem extends SelectableItem {
   documentCategoryDataType: SearchForDocumentMetaInformationDocumentCategoriesEnum;
+}
+
+export interface DisplayedStateSelectableItem extends SelectableItem {
+  stateValue: DataSourcingState | RequestState;
 }

@@ -60,7 +60,6 @@ class ExistingRequestsManagerTest {
         ExistingRequestsManager(
             mockRequestRepository,
             mockRequestDataSourcingAssigner,
-            mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
             mockRequestQueryManager,
         )

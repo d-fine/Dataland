@@ -140,7 +140,10 @@ class DataSourcingEntity(
      * Converts this DataSourcingEntity to a DataSourcingWithoutReferences dto.
      * @param derivedRightsUtilsComponent used to determine the current user's permissions
      */
-    fun toDataSourcingWithoutReferences(derivedRightsUtilsComponent: DerivedRightsUtilsComponent): DataSourcingWithoutReferences {
+    fun toDataSourcingWithoutReferences(
+        derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
+        lastModifiedDate: Long,
+    ): DataSourcingWithoutReferences {
         val isAdmin = isUserAdmin()
         val isAdminOrProvider = isAdmin || derivedRightsUtilsComponent.isCurrentUserProviderFor(this)
         return DataSourcingWithoutReferences(
@@ -153,6 +156,7 @@ class DataSourcingEntity(
             documentCollector = documentCollector?.toString(),
             dataExtractor = dataExtractor?.toString(),
             adminComment = if (isAdmin) adminComment else null,
+            lastModifiedDate = lastModifiedDate,
             priority = if (isAdminOrProvider) priority else null,
         )
     }

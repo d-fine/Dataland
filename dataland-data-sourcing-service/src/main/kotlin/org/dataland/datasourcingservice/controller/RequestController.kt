@@ -6,13 +6,16 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
 import org.dataland.datasourcingservice.services.BulkRequestManager
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestCreationService
+import org.dataland.datasourcingservice.services.RequestHistoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -27,6 +30,7 @@ class RequestController
         private val existingRequestsManager: ExistingRequestsManager,
         private val bulkDataRequestManager: BulkRequestManager,
         private val requestCreationService: RequestCreationService,
+        private val requestHistoryService: RequestHistoryService,
     ) : RequestApi {
         override fun postBulkDataRequest(
             bulkDataRequest: BulkDataRequest,
@@ -88,10 +92,20 @@ class RequestController
                 ),
             )
 
-        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<StoredRequest>> =
+        override fun getExtendedRequestHistoryById(dataRequestId: String): ResponseEntity<List<ExtendedRequestHistoryEntryData>> =
             ResponseEntity
                 .ok(
-                    existingRequestsManager.retrieveRequestHistory(
+                    requestHistoryService.retrieveExtendedRequestHistory(
+                        ValidationUtils.convertToUUID(
+                            dataRequestId,
+                        ),
+                    ),
+                )
+
+        override fun getRequestHistoryById(dataRequestId: String): ResponseEntity<List<RequestHistoryEntryData>> =
+            ResponseEntity
+                .ok(
+                    requestHistoryService.retrieveRequestHistory(
                         ValidationUtils.convertToUUID(
                             dataRequestId,
                         ),

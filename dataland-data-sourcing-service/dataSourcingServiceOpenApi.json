@@ -329,72 +329,6 @@
         ]
       }
     },
-    "/data-sourcing/priorities": {
-      "post": {
-        "tags": [
-          "data-sourcing-controller"
-        ],
-        "summary": "Get priorities for a list of data dimensions",
-        "description": "For each provided set of data dimensions with a matching data sourcing object, returns the data dimensions paired with their priority.",
-        "operationId": "getDataSourcingPriorities",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/BasicDataDimensions"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved priorities.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataSourcingPriorityByDataDimensions"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/requests/{dataRequestId}/state": {
       "patch": {
         "tags": [
@@ -639,9 +573,9 @@
         "tags": [
           "data-sourcing-controller"
         ],
-        "summary": "Patch DataSourcing",
-        "description": "Patch fields of a DataSourcing object specified by ID. Null values are ignored.",
-        "operationId": "patchDataSourcing",
+        "summary": "Patch provider and/or admin comment",
+        "description": "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID. Null values are ignored.",
+        "operationId": "patchProviderAndAdminComment",
         "parameters": [
           {
             "name": "dataSourcingId",
@@ -652,21 +586,41 @@
               "type": "string"
             },
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          {
+            "name": "documentCollector",
+            "in": "query",
+            "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
+          },
+          {
+            "name": "dataExtractor",
+            "in": "query",
+            "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
+          },
+          {
+            "name": "adminComment",
+            "in": "query",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminDataSourcingPatch"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
-            "description": "Successfully patched DataSourcing object.",
+            "description": "Successfully patched providers and/or admin comment.",
             "content": {
               "application/json": {
                 "schema": {
@@ -676,7 +630,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland Admins can patch DataSourcing objects via this endpoint."
+            "description": "Only Dataland Admins to patch document collectors and data extractors."
           },
           "404": {
             "description": "DataSourcing object not found."
@@ -1034,8 +988,8 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get full history of requests by ID",
-        "description": "Retrieve the history of a Request object by its unique identifier.",
+        "summary": "Get basic request history of requests by ID",
+        "description": "Retrieve the basic request history of a Request object by its unique identifier.",
         "operationId": "getRequestHistoryById",
         "parameters": [
           {
@@ -1051,20 +1005,91 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved request history.",
+            "description": "Successfully retrieved state history.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredRequest"
+                    "$ref": "#/components/schemas/RequestHistoryEntryData"
                   }
                 }
               }
             }
           },
           "403": {
-            "description": "Only Dataland admins have the right to query request history."
+            "description": "Only Dataland admins have the right to query state history."
+          },
+          "404": {
+            "description": "The specified request ID does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}/extended-history": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get extended request history of requests by ID",
+        "description": "Retrieve the extended request history of a Request object by its unique identifier.",
+        "operationId": "getExtendedRequestHistoryById",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "description": "The unique identifier of the data request on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved state history.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedRequestHistoryEntryData"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins have the right to query state history."
           },
           "404": {
             "description": "The specified request ID does not exist."
@@ -1287,6 +1312,16 @@
               "type": "string"
             },
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
+          },
+          {
+            "name": "stateChangesOnly",
+            "in": "query",
+            "description": "If true, only returns revisions where the state changed.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -1745,6 +1780,18 @@
           }
         }
       },
+      "DataSourcingState": {
+        "type": "string",
+        "enum": [
+          "Initialized",
+          "DocumentSourcing",
+          "DocumentSourcingDone",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
       "RequestPriority": {
         "type": "string",
         "enum": [
@@ -1829,9 +1876,12 @@
           "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
-            "example": "[DataVerification]",
+            "example": [
+              "Initialized",
+              "DataVerification"
+            ],
             "items": {
-              "$ref": "#/components/schemas/RequestState"
+              "$ref": "#/components/schemas/DataSourcingState"
             }
           }
         }
@@ -1962,52 +2012,6 @@
           }
         }
       },
-      "DataSourcingState": {
-        "type": "string",
-        "description": "The current state of the data sourcing object.",
-        "example": "DataVerification",
-        "enum": [
-          "Initialized",
-          "DocumentSourcing",
-          "DocumentSourcingDone",
-          "DataExtraction",
-          "DataVerification",
-          "NonSourceable",
-          "Done"
-        ]
-      },
-      "DataSourcingPriorityByDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "priority",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "example": "2023"
-          },
-          "priority": {
-            "type": "integer",
-            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
-            "format": "int32",
-            "example": 1
-          }
-        }
-      },
       "StoredRequest": {
         "required": [
           "companyId",
@@ -2082,45 +2086,6 @@
             "description": "The unique identifier of the data sourcing object.",
             "nullable": true,
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
-          }
-        }
-      },
-      "AdminDataSourcingPatch": {
-        "type": "object",
-        "properties": {
-          "documentCollector": {
-            "type": "string"
-          },
-          "dataExtractor": {
-            "type": "string"
-          },
-          "adminComment": {
-            "type": "string"
-          },
-          "priority": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "state": {
-            "$ref": "#/components/schemas/DataSourcingState"
-          },
-          "documentIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "expectedPublicationDatesOfDocuments": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
-            }
-          },
-          "dateOfNextDocumentSourcingAttempt": {
-            "type": "string",
-            "format": "date"
           }
         }
       },
@@ -2222,12 +2187,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "priority": {
-            "type": "integer",
-            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
-            "format": "int32",
-            "example": 1
           }
         }
       },
@@ -2299,12 +2258,6 @@
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
-          },
-          "priority": {
-            "type": "integer",
-            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
-            "format": "int32",
-            "example": 1
           }
         }
       },
@@ -2397,11 +2350,77 @@
           }
         }
       },
+      "DisplayedState": {
+        "type": "string",
+        "description": "The current displayed state of the request.",
+        "example": "Validated",
+        "enum": [
+          "Open",
+          "Withdrawn",
+          "Validated",
+          "DocumentSourcing",
+          "DocumentVerification",
+          "DataExtraction",
+          "DataVerification",
+          "NonSourceable",
+          "Done"
+        ]
+      },
+      "RequestHistoryEntryData": {
+        "required": [
+          "displayedState",
+          "modificationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "modificationDate": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "displayedState": {
+            "$ref": "#/components/schemas/DisplayedState"
+          }
+        }
+      },
+      "ExtendedRequestHistoryEntryData": {
+        "required": [
+          "displayedState",
+          "modificationDate",
+          "requestState"
+        ],
+        "type": "object",
+        "properties": {
+          "modificationDate": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the request was last modified.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "requestState": {
+            "$ref": "#/components/schemas/RequestState"
+          },
+          "dataSourcingState": {
+            "$ref": "#/components/schemas/DataSourcingState"
+          },
+          "displayedState": {
+            "$ref": "#/components/schemas/DisplayedState"
+          },
+          "adminComment": {
+            "type": "string",
+            "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
+            "example": "The data sourcing process is delayed due to unforeseen circumstances."
+          }
+        }
+      },
       "DataSourcingWithoutReferences": {
         "required": [
           "companyId",
           "dataSourcingId",
           "dataType",
+          "lastModifiedDate",
           "reportingPeriod",
           "state"
         ],
@@ -2450,11 +2469,11 @@
             "description": "A comment that can be set by Dataland admins to provide additional information.",
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
-          "priority": {
+          "lastModifiedDate": {
             "type": "integer",
-            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
-            "format": "int32",
-            "example": 1
+            "description": "The timestamp (epoch milliseconds) at which the data sourcing object was last modified.",
+            "format": "int64",
+            "example": 1751291891271
           }
         }
       },

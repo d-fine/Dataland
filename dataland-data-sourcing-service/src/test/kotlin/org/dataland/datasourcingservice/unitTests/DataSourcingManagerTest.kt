@@ -3,6 +3,7 @@ package org.dataland.datasourcingservice.unitTests
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datasourcingservice.entities.DataSourcingEntity
 import org.dataland.datasourcingservice.entities.RequestEntity
+import org.dataland.datasourcingservice.exceptions.DataSourcingNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
@@ -17,6 +18,8 @@ import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
@@ -60,45 +63,55 @@ class DataSourcingManagerTest {
     private val newRequest = requests.first()
     private val existingRequest = requests.last()
 
-    private val newDataSourcingEntity =
-        DataSourcingEntity(
-            dataSourcingId = UUID.randomUUID(),
-            companyId = companyId,
-            reportingPeriod = "2025",
-            dataType = "sfdr",
-            state = DataSourcingState.Initialized,
-            associatedRequests = mutableSetOf(newRequest),
-        )
+    private lateinit var newDataSourcingEntity: DataSourcingEntity
+    private lateinit var existingDataSourcingEntities: Map<DataSourcingState, DataSourcingEntity>
 
-    private val existingDataSourcingEntities =
-        DataSourcingState.entries.associateWith {
-            DataSourcingEntity(
-                dataSourcingId = UUID.randomUUID(),
-                companyId = companyId,
-                reportingPeriod = "2025",
-                dataType = "sfdr",
-                state = it,
-                associatedRequests = mutableSetOf(existingRequest),
+    @BeforeEach
+    fun setup() {
+        resetMocks()
+        createTestEntities()
+        setupMocks()
+        createManagers()
+    }
+
+    private fun resetMocks() {
+        reset(
+            mockDataSourcingValidator,
+            mockDataRevisionRepository,
+            mockDataSourcingRepository,
+            mockExistingRequestsManager,
+            mockCloudEventMessageHandler,
+        )
+    }
+
+    private fun createTestEntities() {
+        newDataSourcingEntity = createDataSourcingEntity(DataSourcingState.Initialized, mutableSetOf(newRequest))
+        existingDataSourcingEntities =
+            DataSourcingState.entries.associateWith {
+                createDataSourcingEntity(it, mutableSetOf(existingRequest))
+            }
+    }
+
+    private fun setupMocks() {
+        doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
+        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockDataSourcingRepository).save(any())
+
+        val storedRequestResponse =
+            StoredRequest(
+                id = newRequest.id.toString(),
+                companyId = newRequest.companyId.toString(),
+                reportingPeriod = newRequest.reportingPeriod,
+                dataType = newRequest.dataType,
+                userId = newRequest.userId.toString(),
+                creationTimestamp = newRequest.creationTimestamp,
+                memberComment = newRequest.memberComment,
+                adminComment = newRequest.adminComment,
+                lastModifiedDate = newRequest.lastModifiedDate,
+                requestPriority = newRequest.requestPriority,
+                state = RequestState.Processed,
+                dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
             )
-        }
 
-    private fun buildStoredRequestResponse(): StoredRequest =
-        StoredRequest(
-            id = newRequest.id.toString(),
-            companyId = newRequest.companyId.toString(),
-            reportingPeriod = newRequest.reportingPeriod,
-            dataType = newRequest.dataType,
-            userId = newRequest.userId.toString(),
-            creationTimestamp = newRequest.creationTimestamp,
-            memberComment = newRequest.memberComment,
-            adminComment = newRequest.adminComment,
-            lastModifiedDate = newRequest.lastModifiedDate,
-            requestPriority = newRequest.requestPriority,
-            state = RequestState.Processed,
-            dataSourcingEntityId = newDataSourcingEntity.dataSourcingId.toString(),
-        )
-
-    private fun setupPatchRequestStateMock(storedRequestResponse: StoredRequest) {
         doAnswer { invocation ->
             val requestId = invocation.arguments[0] as UUID
             val state = invocation.arguments[1] as RequestState
@@ -113,22 +126,7 @@ class DataSourcingManagerTest {
         )
     }
 
-    @BeforeEach
-    fun setup() {
-        reset(
-            mockDataSourcingValidator,
-            mockDataRevisionRepository,
-            mockDataSourcingRepository,
-            mockExistingRequestsManager,
-            mockCloudEventMessageHandler,
-            mockDerivedRightsUtilsComponent,
-        )
-
-        doReturn(newDataSourcingEntity).whenever(mockDataSourcingRepository).findByIdAndFetchAllStoredFields(any())
-        doAnswer { invocation -> invocation.arguments[0] }.whenever(mockDataSourcingRepository).save(any())
-
-        setupPatchRequestStateMock(buildStoredRequestResponse())
-
+    private fun createManagers() {
         dataSourcingManager =
             DataSourcingManager(
                 dataSourcingValidator = mockDataSourcingValidator,
@@ -178,6 +176,72 @@ class DataSourcingManagerTest {
         } else {
             assertEquals(dataSourcingState, updatedDataSourcing.state)
         }
+    }
+
+    @Test
+    fun `retrieveDataSourcingHistory throws exception when no revisions exist`() {
+        val nonExistentId = UUID.randomUUID()
+        doReturn(emptyList<Pair<DataSourcingEntity, Long>>())
+            .whenever(mockDataRevisionRepository)
+            .listDataSourcingRevisionsById(nonExistentId)
+
+        assertThrows<DataSourcingNotFoundApiException> {
+            dataSourcingManager.retrieveDataSourcingHistory(nonExistentId)
+        }
+    }
+
+    @Test
+    fun `retrieveDataSourcingHistory returns all revisions when stateChangesOnly is false`() {
+        val dataSourcingId = UUID.randomUUID()
+        val revisions =
+            listOf(
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 1000L),
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 2000L),
+                Pair(createDataSourcingEntity(DataSourcingState.DocumentSourcing, dataSourcingId = dataSourcingId), 3000L),
+            )
+        doReturn(revisions).whenever(mockDataRevisionRepository).listDataSourcingRevisionsById(dataSourcingId)
+
+        val result = dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId, stateChangesOnly = false)
+
+        assertEquals(3, result.size)
+    }
+
+    @Test
+    fun `retrieveDataSourcingHistory returns only state changes when stateChangesOnly is true`() {
+        val dataSourcingId = UUID.randomUUID()
+        val revisions =
+            listOf(
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 1000L),
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 2000L),
+                Pair(createDataSourcingEntity(DataSourcingState.DocumentSourcing, dataSourcingId = dataSourcingId), 3000L),
+                Pair(createDataSourcingEntity(DataSourcingState.DocumentSourcing, dataSourcingId = dataSourcingId), 4000L),
+                Pair(createDataSourcingEntity(DataSourcingState.Done, dataSourcingId = dataSourcingId), 5000L),
+            )
+        doReturn(revisions).whenever(mockDataRevisionRepository).listDataSourcingRevisionsById(dataSourcingId)
+
+        val result = dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId, stateChangesOnly = true)
+
+        assertEquals(3, result.size)
+        assertEquals(DataSourcingState.Initialized, result[0].state)
+        assertEquals(DataSourcingState.DocumentSourcing, result[1].state)
+        assertEquals(DataSourcingState.Done, result[2].state)
+    }
+
+    @Test
+    fun `retrieveDataSourcingHistory returns only first revision when no state changes occur`() {
+        val dataSourcingId = UUID.randomUUID()
+        val revisions =
+            listOf(
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 1000L),
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 2000L),
+                Pair(createDataSourcingEntity(DataSourcingState.Initialized, dataSourcingId = dataSourcingId), 3000L),
+            )
+        doReturn(revisions).whenever(mockDataRevisionRepository).listDataSourcingRevisionsById(dataSourcingId)
+
+        val result = dataSourcingManager.retrieveDataSourcingHistory(dataSourcingId, stateChangesOnly = true)
+
+        assertEquals(1, result.size)
+        assertEquals(DataSourcingState.Initialized, result[0].state)
     }
 
     @ParameterizedTest
@@ -301,4 +365,18 @@ class DataSourcingManagerTest {
             anyOrNull(),
         )
     }
+
+    private fun createDataSourcingEntity(
+        state: DataSourcingState,
+        associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
+        dataSourcingId: UUID = UUID.randomUUID(),
+    ): DataSourcingEntity =
+        DataSourcingEntity(
+            dataSourcingId = dataSourcingId,
+            companyId = companyId,
+            reportingPeriod = "2025",
+            dataType = "sfdr",
+            state = state,
+            associatedRequests = associatedRequests,
+        )
 }

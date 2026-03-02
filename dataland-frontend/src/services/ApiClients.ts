@@ -35,6 +35,7 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApi;
+  dataSourcingController: DataSourcingControllerApi;
   enhancedRequestController: EnhancedRequestControllerApi;
   dataSourcingController: DataSourcingControllerApi;
   communityManagerRequestController: CommunityManagerRequestControllerApi;
@@ -104,6 +105,7 @@ export class ApiClientProvider {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
       requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
+      dataSourcingController: this.getClientFactory('/data-sourcing')(DataSourcingControllerApi),
       enhancedRequestController: this.getClientFactory('/data-sourcing')(EnhancedRequestControllerApi),
       dataSourcingController: this.getClientFactory('/data-sourcing')(DataSourcingControllerApi),
       communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),

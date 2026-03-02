@@ -47,7 +47,10 @@ class DataSourcingController
                     ),
             )
 
-        override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
+        override fun getDataSourcingHistoryById(
+            dataSourcingId: String,
+            stateChangesOnly: Boolean,
+        ): ResponseEntity<List<DataSourcingWithoutReferences>> =
             ResponseEntity
                 .ok(
                     dataSourcingManager
@@ -55,6 +58,7 @@ class DataSourcingController
                             ValidationUtils.convertToUUID(
                                 dataSourcingId,
                             ),
+                            stateChangesOnly,
                         ),
                 )
 
