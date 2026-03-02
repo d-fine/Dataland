@@ -9,9 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
+import org.dataland.datasourcingservice.model.datasourcing.AdminDataSourcingPatch
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -21,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -163,23 +167,19 @@ interface DataSourcingApi {
     ): ResponseEntity<ReducedDataSourcing>
 
     /**
-     * Patch providers (document collector, data extractor) and/or admin comment of a DataSourcing object specified by ID.
+     * Patch any admin-only fields of a DataSourcing object specified by ID.
      */
     @Operation(
-        summary = "Patch provider and/or admin comment",
+        summary = "Patch DataSourcing",
         description =
-            "Patch the providers (document collector, data extractor) and/or admin comment of a DataSourcing object " +
-                "specified by ID. Null values are ignored.",
+            "Patch fields of a DataSourcing object specified by ID. Null values are ignored.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Successfully patched providers and/or admin comment.",
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully patched DataSourcing object."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland Admins to patch document collectors and data extractors.",
+                description = "Only Dataland Admins can patch DataSourcing objects via this endpoint.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(
@@ -189,36 +189,17 @@ interface DataSourcingApi {
             ),
         ],
     )
-    @PatchMapping(value = ["/{dataSourcingId}"], produces = ["application/json"])
+    @PatchMapping(value = ["/{dataSourcingId}"], consumes = ["application/json"], produces = ["application/json"])
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchProviderAndAdminComment(
+    fun patchDataSourcing(
         @Parameter(
             description = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_DESCRIPTION,
             example = DataSourcingOpenApiDescriptionsAndExamples.DATA_SOURCING_ID_EXAMPLE,
         )
         @PathVariable
         dataSourcingId: String,
-        @Valid
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.DOCUMENT_COLLECTOR_EXAMPLE,
-        )
-        @RequestParam
-        documentCollector: String?,
-        @Valid
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.DATA_EXTRACTOR_EXAMPLE,
-        )
-        @RequestParam
-        dataExtractor: String?,
-        @Valid
-        @Parameter(
-            description = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_DESCRIPTION,
-            example = DataSourcingOpenApiDescriptionsAndExamples.ADMIN_COMMENT_EXAMPLE,
-        )
-        @RequestParam
-        adminComment: String?,
+        @RequestBody
+        patch: AdminDataSourcingPatch,
     ): ResponseEntity<StoredDataSourcing>
 
     /**
@@ -326,6 +307,26 @@ interface DataSourcingApi {
         @RequestParam
         dateOfNextDocumentSourcingAttempt: LocalDate,
     ): ResponseEntity<ReducedDataSourcing>
+
+    /**
+     * Retrieve the priorities of data sourcing objects for a list of data dimensions.
+     */
+    @Operation(
+        summary = "Get priorities for a list of data dimensions",
+        description =
+            "For each provided set of data dimensions with a matching data sourcing object, " +
+                "returns the data dimensions paired with their priority.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved priorities."),
+        ],
+    )
+    @PostMapping(value = ["/priorities"], consumes = ["application/json"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    fun getDataSourcingPriorities(
+        @RequestBody dataDimensions: List<BasicDataDimensions>,
+    ): ResponseEntity<List<DataSourcingPriorityByDataDimensions>>
 
     /**
      * Search for DataSourcing objects based on various parameters.

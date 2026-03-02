@@ -120,4 +120,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_DETAILS_DESCRIPTION =
         "The data sourcing details associated with this request."
+
+    const val PRIORITY_DESCRIPTION =
+        "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. " +
+            "Null if the requesting user is not an admin or data provider."
+    const val PRIORITY_EXAMPLE = "1"
 }

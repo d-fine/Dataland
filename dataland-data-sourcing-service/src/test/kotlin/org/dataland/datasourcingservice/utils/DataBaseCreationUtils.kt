@@ -116,6 +116,7 @@ class DataBaseCreationUtils(
         documentCollector: UUID? = null,
         dataExtractor: UUID? = null,
         adminComment: String? = null,
+        priority: Int = 10,
         associatedRequests: MutableSet<RequestEntity> = mutableSetOf(),
     ): DataSourcingEntity =
         dataSourcingRepository.saveAndFlush(
@@ -131,6 +132,7 @@ class DataBaseCreationUtils(
                 documentCollector = documentCollector,
                 dataExtractor = dataExtractor,
                 adminComment = adminComment,
+                priority = priority,
                 associatedRequests = associatedRequests,
             ),
         )

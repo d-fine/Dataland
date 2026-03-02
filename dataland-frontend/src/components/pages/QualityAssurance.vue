@@ -103,6 +103,16 @@
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
+            <Column header="PRIORITY" class="w-2">
+              <template #body="slotProps">
+                <DatalandTag
+                  v-if="getPriorityForRow(slotProps.data) !== undefined"
+                  class="dataland-tag"
+                  :severity="dataSourcingPrioritySeverity(getPriorityForRow(slotProps.data)!)"
+                  :value="String(getPriorityForRow(slotProps.data)!)"
+                />
+              </template>
+            </Column>
             <Column header="NUMBER OF QA REPORTS">
               <template #body="slotProps">
                 {{ slotProps.data.numberQaReports }}
@@ -171,6 +181,7 @@
 
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
@@ -182,6 +193,7 @@ import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
+import { type BasicDataDimensions } from '@clients/datasourcingservice';
 import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import DatePicker from 'primevue/datepicker';
@@ -216,6 +228,7 @@ const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
 const errorMessage = ref<string>('');
+const priorityByDimensions = ref<Record<string, number>>({});
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -270,6 +283,48 @@ async function getQaDataForCurrentPage(): Promise<void> {
       )
     ).data;
     waitingForData.value = false;
+    await fetchPriorities();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Returns the DatalandTag severity string for the given numeric data sourcing priority.
+ * @param priority the numeric priority value (1–10)
+ */
+function dataSourcingPrioritySeverity(priority: number): string {
+  if (priority <= 3) return 'sourcing-priority-high';
+  if (priority <= 6) return 'sourcing-priority-medium';
+  if (priority <= 9) return 'sourcing-priority-low';
+  return 'sourcing-priority-slate';
+}
+
+/**
+ * Returns the priority for the given QA row, or undefined if none is available.
+ * @param row the QA review response row
+ */
+function getPriorityForRow(row: QaReviewRow): number | undefined {
+  return priorityByDimensions.value[`${row.companyId}|${row.framework}|${row.reportingPeriod}`];
+}
+
+/**
+ * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
+ */
+async function fetchPriorities(): Promise<void> {
+  try {
+    const dimensions: BasicDataDimensions[] = displayDataOfPage.value.map((row) => ({
+      companyId: row.companyId,
+      dataType: row.framework,
+      reportingPeriod: row.reportingPeriod,
+    }));
+    const priorityResponse =
+      await apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
+    const newPriorityByDimensions: Record<string, number> = {};
+    priorityResponse.data.forEach((entry) => {
+      newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
+    });
+    priorityByDimensions.value = newPriorityByDimensions;
   } catch (error) {
     console.error(error);
   }
@@ -513,5 +568,15 @@ onMounted(() => {
   word-break: break-word;
   display: grid;
   gap: var(--spacing-xs);
+}
+
+.dataland-tag {
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 4px;
 }
 </style>
