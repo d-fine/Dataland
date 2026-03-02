@@ -1,0 +1,17 @@
+{
+  "id": "lksg_numberOfEmployees",
+  "name": "Number of Employees",
+  "businessDefinition": "The total number of employees working for the company, including full-time, part-time, and contract workers. This metric is used to determine the company's size classification under the LkSG.",
+  "dataPointBaseType": {
+    "id": "plainInteger"
+  },
+  "constraints": [
+    "Must be a positive integer",
+    "Minimum value: 1",
+    "Must include all employment types (full-time, part-time, contractors)",
+    "Should be reported as of the reporting period end date"
+  ],
+  "usingFrameworks": [
+    "LkSG"
+  ]
+}

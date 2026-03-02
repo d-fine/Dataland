@@ -1,0 +1,17 @@
+{
+  "id": "lksg_companyName",
+  "name": "Company Name",
+  "businessDefinition": "The full legal name of the company as registered in official business registries. This information is essential for identifying the entity and verifying its legal status.",
+  "dataPointBaseType": {
+    "id": "plainString"
+  },
+  "constraints": [
+    "Must not be empty",
+    "Maximum length: 200 characters",
+    "Must match official registration documents"
+  ],
+  "usingFrameworks": [
+    "LkSG",
+    "SFDR"
+  ]
+}

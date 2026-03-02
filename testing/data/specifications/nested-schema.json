@@ -1,0 +1,6 @@
+{
+  "id": "nested-test",
+  "name": "Deeply Nested Test Framework",
+  "businessDefinition": "Framework with deep nesting for testing recursive rendering",
+  "schema": "{\"level1\":{\"level2\":{\"level3\":{\"level4\":{\"level5\":{\"deepDataPoint\":{\"id\":\"deep_datapoint\",\"ref\":\"plainString\",\"aliasExport\":\"Deeply Nested Data Point\"}}}}}}}"
+}
