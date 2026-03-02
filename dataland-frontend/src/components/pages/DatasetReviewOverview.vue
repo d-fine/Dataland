@@ -19,6 +19,7 @@
               :show-add-to-portfolio-button="false"
               @fetchedCompanyInformation="onFetchedCompanyInformation"
               class="w-12"
+              data-test="companyInformationBanner"
             />
           </div>
         </div>
@@ -77,6 +78,7 @@
               :data-meta-information="dataMetaInformation!"
               :search-query="''"
               :hide-empty-fields="hideEmptyFields"
+              data-test="datasetReviewComparisonTable"
             />
           </div>
         </div>
@@ -150,10 +152,7 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
   },
 };
 
-const onFetchedCompanyInformation = (info: CompanyInformation) => {
-  // if you still want to keep local companyName/sector, you can set them here
-  // but you can also remove the separate companyData query if you rely purely on CompanyInfoSheet
-};
+const onFetchedCompanyInformation = (info: CompanyInformation) => {};
 
 const {
   data: datasetReview,
