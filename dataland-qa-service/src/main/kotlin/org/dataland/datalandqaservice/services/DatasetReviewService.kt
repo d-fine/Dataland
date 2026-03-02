@@ -157,7 +157,7 @@ class DatasetReviewService
             val reporterCompanyNames =
                 companyDataControllerApi
                     .postCompanyValidation(uniqueCompanyIds)
-                    .mapNotNull { it.companyInformation?.companyName }
+                    .map { it.companyInformation?.companyName ?: it.identifier }
 
             return uniqueCompanyIds.zip(reporterCompanyNames).toMap()
         }
@@ -170,11 +170,15 @@ class DatasetReviewService
         ): LinkedHashMap<String, DataPointQaReportEntity> {
             val map = linkedMapOf<String, DataPointQaReportEntity>()
             for (entry in qaReportsWithDetails) {
-                val companyId =
+                var companyId =
                     inheritedRolesControllerApi
                         .getInheritedRoles(entry.qaReportId)
                         .keys
-                        .first()
+                        .firstOrNull()
+                if (companyId == null) {
+                    companyId = "Unknown Company of user " + entry.reporterUserId
+                }
+
                 val compositeKey = "$companyId|${entry.dataPointType}"
                 val existing = map[compositeKey]
                 if (existing == null || entry.uploadTime > existing.uploadTime) {
