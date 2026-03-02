@@ -37,7 +37,6 @@ interface ApiClients {
   requestController: RequestControllerApi;
   dataSourcingController: DataSourcingControllerApi;
   enhancedRequestController: EnhancedRequestControllerApi;
-  dataSourcingController: DataSourcingControllerApi;
   communityManagerRequestController: CommunityManagerRequestControllerApi;
   companyRolesController: CompanyRolesControllerApiInterface;
   inheritedRolesController: InheritedRolesControllerApi;
@@ -107,7 +106,6 @@ export class ApiClientProvider {
       requestController: this.getClientFactory('/data-sourcing')(RequestControllerApi),
       dataSourcingController: this.getClientFactory('/data-sourcing')(DataSourcingControllerApi),
       enhancedRequestController: this.getClientFactory('/data-sourcing')(EnhancedRequestControllerApi),
-      dataSourcingController: this.getClientFactory('/data-sourcing')(DataSourcingControllerApi),
       communityManagerRequestController: this.getClientFactory('/community')(CommunityManagerRequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       inheritedRolesController: this.getClientFactory('/community')(InheritedRolesControllerApi),
