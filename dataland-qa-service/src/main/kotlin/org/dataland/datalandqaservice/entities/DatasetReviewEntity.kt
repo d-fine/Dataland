@@ -58,7 +58,7 @@ class DatasetReviewEntity(
             reviewState,
             reviewerUserId.toString(),
             reviewerUserName,
-            qaReporterCompanies,
+            qaReporterCompanies.toList(),
             dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
 
