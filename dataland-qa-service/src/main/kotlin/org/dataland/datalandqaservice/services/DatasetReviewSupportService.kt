@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,15 +50,15 @@ class DatasetReviewSupportService
         fun getFrameworksForDataPointType(dataPointType: String): List<String> =
             specificationControllerApi.getDataPointTypeSpecification(dataPointType).usedBy.map { it.id }
 
-        /** Finds QA report IDs for given data point IDs.
+        /** Finds QA report IDs and reporter User IDs for given data point IDs.
          */
-        fun findQaReportIdsForDataPoints(dataPointIds: List<String>): List<String> =
+        fun findQaReportsWithDetails(dataPointIds: List<String>): List<DataPointQaReportEntity> =
             dataPointQaReportRepository
                 .searchQaReportMetaInformation(
                     dataPointIds = dataPointIds,
-                    showInactive = false,
+                    showInactive = true,
                     reporterUserId = null,
-                ).map { it.qaReportId }
+                )
 
         /** Finds the data point type using a QA report ID.
          */

@@ -1,21 +1,23 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 import java.util.UUID
 
 /**
  * The database entity for storing dataset reviews
  */
-@SuppressWarnings("LongParameterList")
+@Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review")
 class DatasetReviewEntity(
@@ -34,22 +36,14 @@ class DatasetReviewEntity(
     @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
-    var reviewerUserId: UUID?,
+    var reviewerUserId: UUID,
+    @Column(name = "reviewer_user_name")
+    var reviewerUserName: String,
     @ElementCollection
-    @Column(name = "preapproved_data_point_ids")
-    var preapprovedDataPointIds: Set<UUID> = emptySet(),
-    @ElementCollection
-    @Column(name = "qa_reports")
-    var qaReports: Set<QaReportIdWithUploaderCompanyId>,
-    @ElementCollection
-    @Column(name = "approved_qa_report_ids")
-    var approvedQaReportIds: MutableMap<String, UUID> = mutableMapOf(),
-    @ElementCollection
-    @Column(name = "approved_data_point_ids")
-    var approvedDataPointIds: MutableMap<String, UUID> = mutableMapOf(),
-    @ElementCollection
-    @Column(name = "approved_custom_data_point_ids")
-    var approvedCustomDataPointIds: MutableMap<String, String> = mutableMapOf(),
+    @Column(name = "qa_reporter_companies")
+    var qaReporterCompanies: MutableList<QaReporterCompany>,
+    @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
+    val dataPoints: MutableList<DataPointReviewDetailsEntity>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
@@ -62,12 +56,9 @@ class DatasetReviewEntity(
             dataType,
             reportingPeriod,
             reviewState,
-            reviewerUserId?.toString(),
-            null,
-            preapprovedDataPointIds.map { it.toString() }.toSet(),
-            qaReports.map { it.toString() }.toSet(),
-            approvedDataPointIds.mapValues { it.value.toString() },
-            approvedQaReportIds.mapValues { it.value.toString() },
-            approvedCustomDataPointIds.toMap(),
+            reviewerUserId.toString(),
+            reviewerUserName,
+            qaReporterCompanies,
+            dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
 }

@@ -1,28 +1,29 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
-import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -35,26 +36,36 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.Optional
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 class DatasetReviewServiceTest {
     private val mockDatasetReviewRepository = mock<DatasetReviewRepository>()
     private val mockDatasetReviewSupportService = mock<DatasetReviewSupportService>()
     private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
-    private val mockKeycloakUserService = mock<KeycloakUserService>()
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
     private val datasetReviewService =
         DatasetReviewService(
             mockDatasetReviewRepository,
             mockDatasetReviewSupportService,
             mockInheritedRolesControllerApi,
-            mockKeycloakUserService,
+            mockCompanyDataControllerApi,
         )
 
     private val dummyUserId = UUID.randomUUID()
-    private val dummyDataPointType = "dummy datapoint type"
-    private val dummyQaReportId = UUID.randomUUID()
+    private val dummyDataPointType = "dummy-datapoint-type"
     private val dummyCompanyId = UUID.randomUUID()
     private val dummyDatasetId = UUID.randomUUID()
+
+    private val dummyDataPointReviewDetails =
+        DataPointReviewDetailsEntity(
+            dataPointType = dummyDataPointType,
+            dataPointId = UUID.randomUUID(),
+            acceptedSource = null,
+            companyIdOfAcceptedQaReport = null,
+            customValue = null,
+            datasetReview = null,
+        )
 
     private val datasetReviewEntity =
         DatasetReviewEntity(
@@ -64,7 +75,9 @@ class DatasetReviewServiceTest {
             dataType = "sfdr",
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
-            qaReports = setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, null)),
+            reviewerUserName = "Dummy User",
+            qaReporterCompanies = mutableListOf(),
+            dataPoints = mutableListOf(dummyDataPointReviewDetails),
         )
 
     private val dummyMetaData =
@@ -84,7 +97,7 @@ class DatasetReviewServiceTest {
             mockDatasetReviewRepository,
             mockDatasetReviewSupportService,
             mockInheritedRolesControllerApi,
-            mockKeycloakUserService,
+            mockCompanyDataControllerApi,
         )
 
         AuthenticationMock.mockSecurityContext(
@@ -99,19 +112,6 @@ class DatasetReviewServiceTest {
 
         whenever(mockDatasetReviewRepository.save(any<DatasetReviewEntity>()))
             .thenAnswer { it.arguments[0] as DatasetReviewEntity }
-
-        doReturn(dummyDataPointType)
-            .whenever(mockDatasetReviewSupportService)
-            .findDataPointTypeUsingQaReportId(any())
-
-        whenever(mockKeycloakUserService.getUser(any())).thenReturn(
-            KeycloakUserInfo(
-                email = "reviewer@example.com",
-                userId = dummyUserId.toString(),
-                firstName = "Dummy",
-                lastName = "User",
-            ),
-        )
     }
 
     @Test
@@ -128,8 +128,8 @@ class DatasetReviewServiceTest {
         assertEquals(datasetReviewEntity.dataSetReviewId.toString(), response.dataSetReviewId)
         assertEquals(datasetReviewEntity.datasetId.toString(), response.datasetId)
         assertEquals(datasetReviewEntity.companyId.toString(), response.companyId)
-        assertEquals(dummyUserId.toString(), response.reviewerUserId)
-        assertEquals("Dummy User", response.reviewerUserName)
+        assertEquals(dummyUserId.toString(), response.qaJudgeUserId)
+        assertEquals("Dummy User", response.qaJudgeUserName)
     }
 
     @Test
@@ -144,62 +144,74 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `postDatasetReview builds entity correctly`() {
+    fun `postDatasetReview builds entity with dataPoints and qaReporterCompanies correctly`() {
         val dummyDatapointId = UUID.randomUUID().toString()
+        val reporterCompanyId = UUID.randomUUID().toString()
+        val reporterCompanyName = "Reporter Company"
+        val qaReportId = UUID.randomUUID().toString()
+
         doReturn(mapOf(dummyDataPointType to dummyDatapointId))
             .whenever(mockDatasetReviewSupportService)
             .getContainedDataPoints(any())
 
-        val dummyQaReportIds = listOf(dummyQaReportId.toString())
-        doReturn(dummyQaReportIds)
+        val qaReportEntity =
+            DataPointQaReportEntity(
+                qaReportId = qaReportId,
+                dataPointId = dummyDatapointId,
+                comment = "",
+                verdict = QaReportDataPointVerdict.QaAccepted,
+                correctedData = null,
+                dataPointType = dummyDataPointType,
+                reporterUserId = dummyUserId.toString(),
+                uploadTime = 1000L,
+                active = true,
+            )
+
+        doReturn(listOf(qaReportEntity))
             .whenever(mockDatasetReviewSupportService)
-            .findQaReportIdsForDataPoints(any())
+            .findQaReportsWithDetails(any())
 
         doReturn(dummyMetaData)
             .whenever(mockDatasetReviewSupportService)
             .getDataMetaInfo(any())
 
-        val uploaderCompanyId = UUID.randomUUID()
-        doReturn(mapOf(uploaderCompanyId.toString() to listOf("Role")))
+        doReturn(mapOf(reporterCompanyId to listOf("Role")))
             .whenever(mockInheritedRolesControllerApi)
             .getInheritedRoles(any())
 
-        val createdDatasetReview =
-            datasetReviewService.postDatasetReview(
-                UUID.randomUUID(),
-            )
-
-        assertEquals(dummyCompanyId.toString(), createdDatasetReview.companyId)
-        assertEquals(
-            setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, uploaderCompanyId).toString()),
-            createdDatasetReview.qaReports,
+        whenever(mockCompanyDataControllerApi.postCompanyValidation(any())).thenReturn(
+            listOf(
+                CompanyIdentifierValidationResult(
+                    identifier = reporterCompanyId,
+                    companyInformation =
+                        BasicCompanyInformation(
+                            companyId = reporterCompanyId,
+                            companyName = reporterCompanyName,
+                            headquarters = "Berlin",
+                            countryCode = "DE",
+                        ),
+                ),
+            ),
         )
+
+        val result = datasetReviewService.postDatasetReview(UUID.randomUUID())
+
+        assertEquals(dummyCompanyId.toString(), result.companyId)
+        assertEquals(1, result.qaReporterCompanies.size)
+        assertEquals(reporterCompanyName, result.qaReporterCompanies[0].reportCompanyName)
+        assertEquals(1, result.dataPoints.size)
+        assertEquals(dummyDataPointType, result.dataPoints[dummyDataPointType]?.dataPointType)
+        assertEquals(1, result.dataPoints[dummyDataPointType]?.qaReports?.size)
     }
 
     @Test
-    fun `postDatasetReview throws ConflictApiException when pending review exists`() {
-        doReturn(mapOf(dummyDataPointType to UUID.randomUUID().toString()))
-            .whenever(mockDatasetReviewSupportService)
-            .getContainedDataPoints(dummyDatasetId.toString())
-
-        doReturn(listOf(datasetReviewEntity))
-            .whenever(mockDatasetReviewRepository)
-            .findAllByDatasetIdAndReviewState(dummyDatasetId, DatasetReviewState.Pending)
-
-        assertThrows<ConflictApiException> {
-            datasetReviewService.postDatasetReview(dummyDatasetId)
-        }
-    }
-
-    @Test
-    fun `setReviewer sets reviewer to current user`() {
-        val newReviewId = UUID.randomUUID()
-
-        datasetReviewService.setReviewer(newReviewId)
+    fun `setReviewer sets reviewer user id and name`() {
+        datasetReviewService.setReviewer(UUID.randomUUID())
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
         assertEquals(dummyUserId, captor.firstValue.reviewerUserId)
+        assertEquals(dummyUserId.toString(), captor.firstValue.reviewerUserName)
     }
 
     @Test
@@ -215,10 +227,9 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `setReviewState throws InsufficientRights when current user is not reviewer`() {
-        val otherUserId = UUID.randomUUID()
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
-            otherUserId.toString(),
+            UUID.randomUUID().toString(),
             setOf(DatalandRealmRole.ROLE_ADMIN),
         )
 
@@ -228,154 +239,103 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `acceptOriginalDatapoint approves datapoint and clears others`() {
-        val dummyDatapointId = UUID.randomUUID()
-        doReturn(mapOf(dummyDataPointType to dummyDatapointId.toString()))
-            .whenever(mockDatasetReviewSupportService)
-            .getContainedDataPoints(any())
-        doReturn(dummyDataPointType)
-            .whenever(mockDatasetReviewSupportService)
-            .getDataPointType(any())
-
-        datasetReviewService.acceptOriginalDatapoint(UUID.randomUUID(), dummyDatapointId)
+    fun `setAcceptedSource with Original sets acceptedSource and clears companyIdOfAcceptedQaReport`() {
+        datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Original, null, null)
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
-        val captured = captor.firstValue
-
-        assertTrue(dummyDataPointType in captured.approvedDataPointIds)
-        assertFalse(dummyDataPointType in captured.approvedQaReportIds)
-        assertFalse(dummyDataPointType in captured.approvedCustomDataPointIds)
+        val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
+        assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
+        assertNull(saved.companyIdOfAcceptedQaReport)
     }
 
     @Test
-    fun `acceptOriginalDatapoint throws when datapoint not part of dataset`() {
-        val dummyDatapointId = UUID.randomUUID()
-        doReturn(mapOf(dummyDataPointType to UUID.randomUUID().toString()))
-            .whenever(mockDatasetReviewSupportService)
-            .getContainedDataPoints(any())
+    fun `setAcceptedSource with Qa sets acceptedSource and companyIdOfAcceptedQaReport`() {
+        val reporterCompanyId = UUID.randomUUID()
 
-        assertThrows<ResourceNotFoundApiException> {
-            datasetReviewService.acceptOriginalDatapoint(UUID.randomUUID(), dummyDatapointId)
+        datasetReviewService.setAcceptedSource(
+            UUID.randomUUID(),
+            dummyDataPointType,
+            AcceptedDataPointSource.Qa,
+            reporterCompanyId.toString(),
+            null,
+        )
+
+        val captor = argumentCaptor<DatasetReviewEntity>()
+        verify(mockDatasetReviewRepository).save(captor.capture())
+        val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
+        assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
+        assertEquals(reporterCompanyId, saved.companyIdOfAcceptedQaReport)
+    }
+
+    @Test
+    fun `setAcceptedSource with Custom validates and sets customValue`() {
+        val customValue = """{"value": 42}"""
+
+        datasetReviewService.setAcceptedSource(
+            UUID.randomUUID(),
+            dummyDataPointType,
+            AcceptedDataPointSource.Custom,
+            null,
+            customValue,
+        )
+
+        val captor = argumentCaptor<DatasetReviewEntity>()
+        verify(mockDatasetReviewRepository).save(captor.capture())
+        val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
+        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
+        assertEquals(customValue, saved.customValue)
+        assertNull(saved.companyIdOfAcceptedQaReport)
+        verify(mockDatasetReviewSupportService).validateCustomDataPoint(customValue, dummyDataPointType)
+    }
+
+    @Test
+    fun `setAcceptedSource with Qa without companyIdOfAcceptedQaReport throws InvalidInputApiException`() {
+        assertThrows<InvalidInputApiException> {
+            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Qa, null, null)
         }
     }
 
     @Test
-    fun `acceptQaReport approves qa report and clears others`() {
-        datasetReviewService.acceptQaReport(UUID.randomUUID(), dummyQaReportId)
-
-        val captor = argumentCaptor<DatasetReviewEntity>()
-        verify(mockDatasetReviewRepository).save(captor.capture())
-        val captured = captor.firstValue
-
-        assertTrue(dummyDataPointType in captured.approvedQaReportIds)
-        assertFalse(dummyDataPointType in captured.approvedDataPointIds)
-        assertFalse(dummyDataPointType in captured.approvedCustomDataPointIds)
-    }
-
-    @Test
-    fun `acceptQaReport throws when qa report not part of dataset review`() {
-        val newDummyQaReportId = UUID.randomUUID()
-
-        assertThrows<ResourceNotFoundApiException> {
-            datasetReviewService.acceptQaReport(UUID.randomUUID(), newDummyQaReportId)
+    fun `setAcceptedSource with Custom without customValue throws InvalidInputApiException`() {
+        assertThrows<InvalidInputApiException> {
+            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Custom, null, null)
         }
     }
 
     @Test
-    fun `acceptCustomDataPoint approves custom datapoint and clears others`() {
-        val datasetReviewId = UUID.randomUUID()
-        val entity =
-            DatasetReviewEntity(
-                dataSetReviewId = datasetReviewId,
-                datasetId = dummyDatasetId,
-                companyId = dummyCompanyId,
-                dataType = "sfdr",
-                reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
-                qaReports = emptySet(),
-            ).apply {
-                approvedDataPointIds[dummyDataPointType] = UUID.randomUUID()
-                approvedQaReportIds[dummyDataPointType] = UUID.randomUUID()
-            }
-
-        doReturn(Optional.of(entity))
-            .whenever(mockDatasetReviewRepository)
-            .findById(datasetReviewId)
-
-        val dataPointJson = """{"value": 1}"""
-        val dataPointType = dummyDataPointType
-
-        doReturn(listOf("sfdr"))
-            .whenever(mockDatasetReviewSupportService)
-            .getFrameworksForDataPointType(dataPointType)
-
-        datasetReviewService.acceptCustomDataPoint(datasetReviewId, dataPointJson, dataPointType)
-
-        val captor = argumentCaptor<DatasetReviewEntity>()
-        verify(mockDatasetReviewRepository).save(captor.capture())
-        val savedDatasetReview = captor.firstValue
-
-        assertEquals(dataPointJson, savedDatasetReview.approvedCustomDataPointIds[dataPointType])
-        assertFalse(savedDatasetReview.approvedDataPointIds.containsKey(dataPointType))
-        assertFalse(savedDatasetReview.approvedQaReportIds.containsKey(dataPointType))
-        verify(mockDatasetReviewSupportService).validateCustomDataPoint(dataPointJson, dataPointType)
+    fun `setAcceptedSource throws ResourceNotFound when dataPointType not in review`() {
+        assertThrows<ResourceNotFoundApiException> {
+            datasetReviewService.setAcceptedSource(UUID.randomUUID(), "unknown-type", AcceptedDataPointSource.Original, null, null)
+        }
     }
 
     @Test
-    fun `acceptCustomDataPoint wraps HttpClientErrorException from framework lookup into InvalidInputApiException`() {
-        val datasetReviewId = UUID.randomUUID()
-        val entity =
-            DatasetReviewEntity(
-                dataSetReviewId = datasetReviewId,
-                datasetId = dummyDatasetId,
-                companyId = dummyCompanyId,
-                dataType = "sfdr",
-                reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
-                qaReports = emptySet(),
-            )
+    fun `setAcceptedSource throws InsufficientRights when user is not reviewer`() {
+        AuthenticationMock.mockSecurityContext(
+            "other@example.com",
+            UUID.randomUUID().toString(),
+            setOf(DatalandRealmRole.ROLE_ADMIN),
+        )
 
-        doReturn(Optional.of(entity))
-            .whenever(mockDatasetReviewRepository)
-            .findById(datasetReviewId)
+        assertThrows<InsufficientRightsApiException> {
+            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Original, null, null)
+        }
+    }
 
-        val type = "unknown-type"
-
-        whenever(mockDatasetReviewSupportService.getFrameworksForDataPointType(type))
-            .thenThrow(ClientException())
+    @Test
+    fun `setAcceptedSource with Custom wraps BackendClientException into InvalidInputApiException`() {
+        whenever(mockDatasetReviewSupportService.validateCustomDataPoint(any(), any()))
+            .thenThrow(BackendClientException())
 
         assertThrows<InvalidInputApiException> {
-            datasetReviewService.acceptCustomDataPoint(datasetReviewId, "{}", type)
-        }
-    }
-
-    @Test
-    fun `acceptCustomDataPoint throws InvalidInputApiException when type not part of framework`() {
-        val datasetReviewId = UUID.randomUUID()
-        val entity =
-            DatasetReviewEntity(
-                dataSetReviewId = datasetReviewId,
-                datasetId = dummyDatasetId,
-                companyId = dummyCompanyId,
-                dataType = "sfdr",
-                reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
-                qaReports = emptySet(),
+            datasetReviewService.setAcceptedSource(
+                UUID.randomUUID(),
+                dummyDataPointType,
+                AcceptedDataPointSource.Custom,
+                null,
+                """{"value": 1}""",
             )
-
-        doReturn(Optional.of(entity))
-            .whenever(mockDatasetReviewRepository)
-            .findById(datasetReviewId)
-
-        val type = dummyDataPointType
-
-        doReturn(listOf("other-framework"))
-            .whenever(mockDatasetReviewSupportService)
-            .getFrameworksForDataPointType(type)
-
-        assertThrows<InvalidInputApiException> {
-            datasetReviewService.acceptCustomDataPoint(datasetReviewId, "{}", type)
         }
     }
 
@@ -387,35 +347,6 @@ class DatasetReviewServiceTest {
 
         assertThrows<ResourceNotFoundApiException> {
             datasetReviewService.setReviewer(UUID.randomUUID())
-        }
-    }
-
-    @Test
-    fun `acceptOriginalDatapoint throws InsufficientRights when current user is not reviewer`() {
-        val datasetReviewId = UUID.randomUUID()
-        val entity =
-            DatasetReviewEntity(
-                dataSetReviewId = datasetReviewId,
-                datasetId = dummyDatasetId,
-                companyId = dummyCompanyId,
-                dataType = "sfdr",
-                reportingPeriod = "2026",
-                reviewerUserId = UUID.randomUUID(),
-                qaReports = emptySet(),
-            )
-
-        doReturn(Optional.of(entity))
-            .whenever(mockDatasetReviewRepository)
-            .findById(datasetReviewId)
-
-        AuthenticationMock.mockSecurityContext(
-            "other@example.com",
-            dummyUserId.toString(),
-            setOf(DatalandRealmRole.ROLE_ADMIN),
-        )
-
-        assertThrows<InsufficientRightsApiException> {
-            datasetReviewService.acceptOriginalDatapoint(datasetReviewId, UUID.randomUUID())
         }
     }
 }

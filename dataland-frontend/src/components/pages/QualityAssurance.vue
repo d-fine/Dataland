@@ -293,26 +293,25 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
     selectedDataId.value = qaDataObject.dataId;
     isConfirmationModalVisible.value = true;
   } else {
-    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
+    void goToQaViewPage(qaDataObject.dataId);
   }
 }
 
 /**
  * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
  */
-function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
-  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
+function goToQaViewPage(dataId: string): ReturnType<typeof router.push> {
+  const qaUri = `/qa/review/${dataId}`;
   return router.push(qaUri);
 }
 
 /**
  * Creates a dataset review for the dataset with the given dataId and navigates to the corresponding dataset review page.
- *
  */
 async function createAndViewDatasetReview(dataId: string): Promise<void> {
   try {
-    const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
-    await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
+    await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
+    await goToQaViewPage(dataId);
   } catch (error) {
     if (error instanceof AxiosError) {
       errorMessage.value = formatAxiosErrorMessage(error);

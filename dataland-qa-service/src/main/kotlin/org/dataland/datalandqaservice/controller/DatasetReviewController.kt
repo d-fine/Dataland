@@ -4,6 +4,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -47,40 +48,21 @@ class DatasetReviewController(
                 ),
             )
 
-    override fun acceptOriginalDatapoint(
+    override fun setAcceptedSource(
         datasetReviewId: String,
-        dataPointId: String,
-    ): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity
-            .ok(
-                datasetReviewService.acceptOriginalDatapoint(
-                    convertToUUID(datasetReviewId),
-                    convertToUUID(dataPointId),
-                ),
-            )
-
-    override fun acceptQaReport(
-        datasetReviewId: String,
-        qaReportId: String,
-    ): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity
-            .ok(
-                datasetReviewService.acceptQaReport(
-                    convertToUUID(datasetReviewId),
-                    convertToUUID(qaReportId),
-                ),
-            )
-
-    override fun acceptCustomDataPoint(
-        datasetReviewId: String,
-        dataPoint: String,
         dataPointType: String,
+        acceptedSource: AcceptedDataPointSource,
+        companyIdOfAcceptedQaReport: String?,
+        customValue: String?,
     ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService.acceptCustomDataPoint(
+                datasetReviewService.setAcceptedSource(
                     convertToUUID(datasetReviewId),
-                    dataPoint, dataPointType,
+                    dataPointType,
+                    acceptedSource,
+                    companyIdOfAcceptedQaReport,
+                    customValue,
                 ),
             )
 }

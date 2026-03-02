@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
 
 /**
  * API model for the dataset review objects returned.
@@ -43,35 +44,12 @@ data class DatasetReviewResponse(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
     )
-    var reviewerUserId: String?,
+    var qaJudgeUserId: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
-    var reviewerUserName: String?,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_PREAPPROVED_DATA_POINTS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_PREAPPROVED_DATA_POINTS_EXAMPLE,
-    )
-    var preapprovedDataPointIds: Set<String>,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_QA_REPORTS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_QA_REPORTS_EXAMPLE,
-    )
-    var qaReports: Set<String>,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_APPROVED_DATAPOINT_IDS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_APPROVED_DATAPOINT_IDS_EXAMPLE,
-    )
-    var approvedDataPointIds: Map<String, String>,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_APPROVED_QA_REPORT_IDS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_APPROVED_QA_REPORT_IDS_EXAMPLE,
-    )
-    var approvedQaReportIds: Map<String, String>,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE,
-    )
-    var approvedCustomDataPointIds: Map<String, String>,
+    var qaJudgeUserName: String?,
+    var qaReporterCompanies: List<QaReporterCompany>,
+    var dataPoints: Map<String, DataPointReviewDetails>,
 )

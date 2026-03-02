@@ -3,6 +3,8 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandqaservice.openApiClient.api.DatasetReviewControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.DataPointReviewDetails
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.e2etests.auth.GlobalAuth
@@ -13,6 +15,7 @@ import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -72,42 +75,45 @@ class DatasetReviewTest {
         val datapointId1 = dataPoints[datapointType1]!!
         val datapointId2 = dataPoints[datapointType2]!!
 
-        val uploadedQaReportId1 =
-            QaService.dataPointQaReportControllerApi
-                .postQaReport(datapointId1, dummyQaReport1)
-                .qaReportId
-
-        val uploadedQaReportId2 =
-            QaService.dataPointQaReportControllerApi
-                .postQaReport(datapointId2, dummyQaReport2)
-                .qaReportId
+        QaService.dataPointQaReportControllerApi.postQaReport(datapointId1, dummyQaReport1)
+        QaService.dataPointQaReportControllerApi.postQaReport(datapointId2, dummyQaReport2)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val datasetReviewId = QaService.datasetReviewControllerApi.postDatasetReview(datasetId).dataSetReviewId
-            QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId1)
-            QaService.datasetReviewControllerApi.acceptQaReport(datasetReviewId, uploadedQaReportId2)
-            QaService.datasetReviewControllerApi.acceptOriginalDatapoint(
+            val datasetReview = QaService.datasetReviewControllerApi.postDatasetReview(datasetId)
+            val datasetReviewId = datasetReview.dataSetReviewId
+            val reporterCompanyId = datasetReview.qaReporterCompanies.first().reportCompanyId
+
+            QaService.datasetReviewControllerApi.setAcceptedSource(
                 datasetReviewId,
-                datapointId1,
+                datapointType1,
+                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Original,
+                null,
+                null,
             )
-            QaService.datasetReviewControllerApi.acceptCustomDataPoint(
+            QaService.datasetReviewControllerApi.setAcceptedSource(
                 datasetReviewId,
-                customDataPoint,
+                datapointType2,
+                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Qa,
+                reporterCompanyId.toString(),
+                null,
+            )
+            QaService.datasetReviewControllerApi.setAcceptedSource(
+                datasetReviewId,
                 datapointType3,
+                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Custom,
+                null,
+                customDataPoint,
             )
         }
+
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
-        assertEquals(
-            mapOf(datapointType1 to datapointId1),
-            datasetReview.approvedDataPointIds,
-        )
-        assertEquals(
-            mapOf(datapointType2 to uploadedQaReportId2),
-            datasetReview.approvedQaReportIds,
-        )
-        assertEquals(
-            mapOf(datapointType3 to customDataPoint),
-            datasetReview.approvedCustomDataPointIds,
-        )
+
+        assertEquals(DataPointReviewDetails.AcceptedSource.Original, datasetReview.dataPoints[datapointType1]?.acceptedSource)
+        assertNull(datasetReview.dataPoints[datapointType1]?.companyIdOfAcceptedQaReport)
+
+        assertEquals(DataPointReviewDetails.AcceptedSource.Qa, datasetReview.dataPoints[datapointType2]?.acceptedSource)
+
+        assertEquals(DataPointReviewDetails.AcceptedSource.Custom, datasetReview.dataPoints[datapointType3]?.acceptedSource)
+        assertEquals(customDataPoint, datasetReview.dataPoints[datapointType3]?.customValue)
     }
 }
