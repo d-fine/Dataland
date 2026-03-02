@@ -152,40 +152,40 @@ services:
     logging:
       <<: *loki-logging
   data-sourcing-service:
-        restart: always
-        profiles: [ "production", "testing", "development" ]
-        networks:
-          - internal
-          - data-sourcing-service-db
-        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
-        expose:
-          - "8080"
-        depends_on:
-          - data-sourcing-service-db
-        <<: *uncritical-constants-env
-        environment:
-          <<: *rabbit-mq-user-and-pass
-          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
-        logging:
-          <<: *loki-logging
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - data-sourcing-service-db
+    image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
+    depends_on:
+      - data-sourcing-service-db
+    <<: *uncritical-constants-env
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
   data-sourcing-service-db:
-        restart: always
-        profiles: [ "production", "testing", "development" ]
-        networks:
-          - data-sourcing-service-db
-        image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
-        volumes:
-          - data_sourcing_service_data:/var/lib/postgresql
-        environment:
-          POSTGRES_DB: data_sourcing_service
-          POSTGRES_USER: data_sourcing_service
-          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-          PGUSER: data_sourcing_service
-        logging:
-          <<: *loki-logging
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - data-sourcing-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
+    volumes:
+      - data_sourcing_service_data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: data_sourcing_service
+      POSTGRES_USER: data_sourcing_service
+      POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+      PGUSER: data_sourcing_service
+    logging:
+      <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -278,6 +278,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
+      KEYCLOAK_JUDGE_PASSWORD: ${KEYCLOAK_JUDGE_PASSWORD}
       KEYCLOAK_PREMIUM_USER_PASSWORD: ${KEYCLOAK_PREMIUM_USER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
@@ -413,6 +414,8 @@ services:
       KEYCLOAK_READER_SALT: ${KEYCLOAK_READER_SALT}
       KEYCLOAK_REVIEWER_VALUE: ${KEYCLOAK_REVIEWER_VALUE}
       KEYCLOAK_REVIEWER_SALT: ${KEYCLOAK_REVIEWER_SALT}
+      KEYCLOAK_JUDGE_VALUE: ${KEYCLOAK_JUDGE_VALUE}
+      KEYCLOAK_JUDGE_SALT: ${KEYCLOAK_JUDGE_SALT}
       KEYCLOAK_PREMIUM_USER_VALUE: ${KEYCLOAK_PREMIUM_USER_VALUE}
       KEYCLOAK_PREMIUM_USER_SALT: ${KEYCLOAK_PREMIUM_USER_SALT}
       KEYCLOAK_UPLOADER_VALUE: ${KEYCLOAK_UPLOADER_VALUE}
