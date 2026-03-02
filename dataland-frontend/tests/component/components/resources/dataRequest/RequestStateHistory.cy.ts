@@ -1,51 +1,88 @@
 import RequestStateHistory from '@/components/resources/dataRequest/RequestStateHistory.vue';
-import { RequestState, type StoredRequest } from '@clients/datasourcingservice';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import {
+  DataSourcingState,
+  DisplayedState,
+  type ExtendedRequestHistoryEntryData,
+  type RequestHistoryEntryData,
+  RequestState,
+} from '@clients/datasourcingservice';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Request State History', function (): void {
-  const dummyCreationTimestamp = 1714315046000;
-  const dummyRequest = {
-    id: 'dummy-request-id',
-    companyId: 'dummy-company-id',
-    reportingPeriod: '2024',
-    dataType: 'sfdr',
-    userId: 'dummy-user-id',
-    creationTimestamp: dummyCreationTimestamp,
-    lastModifiedDate: dummyCreationTimestamp,
-    requestPriority: 'Low',
-    state: RequestState.Open,
-  } as StoredRequest;
-  const dummyStateHistory = [
-    dummyRequest,
+  const dummyRequestHistoryEntry: RequestHistoryEntryData[] = [
     {
-      ...dummyRequest,
-      lastModifiedDate: dummyCreationTimestamp + 600000,
-      state: RequestState.Processing,
-      adminComment: 'Processing started',
+      modificationDate: 1697049600000,
+      displayedState: DisplayedState.Open,
     },
     {
-      ...dummyRequest,
-      lastModifiedDate: dummyCreationTimestamp + 2 * 600000,
-      state: RequestState.Processed,
+      modificationDate: 1697049600000 + 600000,
+      displayedState: DisplayedState.Validated,
     },
-  ] as Array<StoredRequest>;
-  it('renders correct state history table', function () {
+
+    {
+      modificationDate: 1697049600000 + 2 * 600000,
+      displayedState: DisplayedState.Withdrawn,
+    },
+  ];
+
+  const dummyExtendedRequestHistoryEntry: ExtendedRequestHistoryEntryData[] = [
+    {
+      modificationDate: 1697049600000,
+      displayedState: DisplayedState.Open,
+      requestState: RequestState.Open,
+      adminComment: 'Request opened',
+    },
+    {
+      modificationDate: 1697049600000 + 600000,
+      displayedState: DisplayedState.Validated,
+      requestState: RequestState.Processing,
+      dataSourcingState: DataSourcingState.Initialized,
+      adminComment: 'Processing request',
+    },
+
+    {
+      modificationDate: 1697049600000 + 1.5 * 600000,
+      displayedState: DisplayedState.NonSourceable,
+      requestState: RequestState.Processing,
+      dataSourcingState: DataSourcingState.DocumentSourcing,
+      adminComment: 'Processing request',
+    },
+
+    {
+      modificationDate: 1697049600000 + 2 * 600000,
+      displayedState: DisplayedState.Withdrawn,
+      requestState: RequestState.Withdrawn,
+      dataSourcingState: DataSourcingState.DocumentSourcing,
+      adminComment: 'Request withdrawn',
+    },
+  ];
+
+  /**
+   * Helper function to check the existence of columns in the state history table based on user role
+   *
+   * @param isAdminUser - boolean indicating whether the user is an admin or not
+   * @param requestHistory - array of request history entries to be passed as props to the component
+   */
+  function checkColumnExistence(isAdminUser: boolean, requestHistory: RequestHistoryEntryData[]): void {
     getMountingFunction()(RequestStateHistory, {
       props: {
-        stateHistory: dummyStateHistory,
+        stateHistory: requestHistory,
+        isAdmin: isAdminUser,
       },
     });
-
     cy.get('[data-test="stateHistoryTable"]').should('exist').and('be.visible');
-    cy.get('[data-test="lastModifiedDate"]').should('have.length', dummyStateHistory.length);
-    for (const [idx, entry] of dummyStateHistory.entries()) {
-      cy.get('[data-test="lastModifiedDate"]')
-        .eq(idx)
-        .should('contain.text', convertUnixTimeInMsToDateString(entry.lastModifiedDate));
-      cy.get('.dataland-inline-tag').eq(idx).should('contain.text', entry.state);
-      const expectedComment = entry.adminComment || '—';
-      cy.get('[data-test="adminComment"]').eq(idx).should('contain.text', expectedComment);
-    }
+    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'Updated On');
+    cy.get('[data-test="stateHistoryTable"] th').should('contain', 'State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Request State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Data Sourcing State');
+    cy.get('[data-test="stateHistoryTable"] th').should(isAdminUser ? 'contain' : 'not.contain', 'Comment');
+  }
+
+  it('Check existence of columns in state history table for Admins', function () {
+    checkColumnExistence(true, dummyExtendedRequestHistoryEntry);
+  });
+
+  it('Check existence of columns in state history table for non admin users', function () {
+    checkColumnExistence(false, dummyRequestHistoryEntry);
   });
 });

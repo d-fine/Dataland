@@ -15,14 +15,15 @@ private const val FILTER_WHERE_CLAUSE =
         "((:#{#companyIds == null} = TRUE) OR request.companyId IN :#{#companyIds}) AND " +
         "((:#{#searchFilter.reportingPeriods == null} = TRUE) OR request.reportingPeriod IN :#{#searchFilter.reportingPeriods}) AND " +
         "(:#{#searchFilter.userId} IS NULL OR request.userId = :#{#searchFilter.userId}) AND " +
-        "((:#{#searchFilter.requestStates == null} = TRUE) OR request.state IN :#{#searchFilter.requestStates}) AND " +
         "((:#{#searchFilter.requestPriorities == null} = TRUE) " +
         "OR request.requestPriority IN :#{#searchFilter.requestPriorities}) AND " +
         "(:#{#searchFilter.adminComment} IS NULL " +
         "OR LOWER(request.adminComment) LIKE LOWER(CONCAT('%', :#{#searchFilter.adminComment}, '%'))) AND " +
         "((:#{#userIds == null} = TRUE) OR request.userId IN :#{#userIds}) AND " +
-        "((:#{#searchFilter.dataSourcingStates == null} = TRUE) OR (dataSourcing IS NOT NULL " +
-        "AND dataSourcing.state IN :#{#searchFilter.dataSourcingStates}))"
+        "((:#{#searchFilter.requestStates == null} = TRUE AND :#{#searchFilter.dataSourcingStates == null} = TRUE) " +
+        "OR (:#{#searchFilter.requestStates == null} = FALSE AND request.state IN :#{#searchFilter.requestStates}) " +
+        "OR (:#{#searchFilter.dataSourcingStates == null} = FALSE AND request.state NOT IN ('Open', 'Withdrawn') " +
+        "AND dataSourcing IS NOT NULL AND dataSourcing.state IN :#{#searchFilter.dataSourcingStates}))"
 
 /**
  * A JPA Repository for managing RequestEntity instances.
