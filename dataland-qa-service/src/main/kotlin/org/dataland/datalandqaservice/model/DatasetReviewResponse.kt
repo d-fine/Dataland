@@ -44,12 +44,12 @@ data class DatasetReviewResponse(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
     )
-    var qaJudgeUserId: String,
+    var qaJudgeUserId: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
-    var qaJudgeUserName: String,
+    var qaJudgeUserName: String?,
     var qaReporterCompanies: List<QaReporterCompany>,
     var dataPoints: Map<String, DataPointReviewDetails>,
 )
