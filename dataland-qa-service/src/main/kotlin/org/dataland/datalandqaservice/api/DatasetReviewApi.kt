@@ -204,7 +204,7 @@ interface DatasetReviewApi {
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/setApprovedDataPointSource"],
+        value = ["/{datasetReviewId}/{dataPointType}/setApprovedDataPointSource"],
         produces = ["application/json"],
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
@@ -214,7 +214,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
         )
         datasetReviewId: String,
-        @Parameter(
+        @PathVariable@Parameter(
             name = "dataPointType",
             required = true,
             description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_DESCRIPTION,

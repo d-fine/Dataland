@@ -15,12 +15,13 @@ import java.util.UUID
  */
 data class QaReportDataPointWithReporterDetails(
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMMENT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
     )
     val qaReportId: UUID,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_VERDICT_EXAMPLE,
     )
     val verdict: QaReportDataPointVerdict,
     @field:Schema(
@@ -28,6 +29,14 @@ data class QaReportDataPointWithReporterDetails(
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
     )
     val correctedData: String?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+    )
     val reporterUserId: UUID,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
+    )
     val reporterCompanyId: UUID?,
 )
