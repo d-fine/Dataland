@@ -65,7 +65,13 @@
                   <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
                 </div>
                 <div v-else class="text-left">
-                  <PrimeButton label="ASSIGN YOURSELF" icon="pi pi-user" @click="assignToMe" />
+                  <PrimeButto
+                    label="ASSIGN YOURSELF"
+                    icon="pi pi-user"
+                    :loading="isAssigningToMe"
+                    :disabled="isAssigningToMe"
+                    @click="assignToMe"
+                  />
                   <p class="text-sm m-0 text-left">Currently assigned to:</p>
                   <p class="text-sm m-0 text-left">{{ datasetReview?.qaJudgeUserName ?? '' }}</p>
                 </div>
@@ -73,7 +79,6 @@
             </div>
             <DatasetReviewComparisonTable
               v-if="datasetReview"
-              :company-id="companyId ?? ''"
               :framework="dataMetaInformation!.dataType"
               :data-id="props.dataId"
               :dataset-review="datasetReview"
@@ -91,10 +96,10 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import {ref, onMounted, computed, inject} from 'vue';
+import { ref, onMounted, computed, inject, watch } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
-import { useQuery } from '@tanstack/vue-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -102,8 +107,8 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import ToggleSwitch from 'primevue/toggleswitch';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import type { CompanyInformation } from '@clients/backend';
-import {assertDefined} from "@/utils/TypeScriptUtils.ts";
-import type Keycloak from "keycloak-js";
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import type Keycloak from 'keycloak-js';
 
 // Props passed from the router
 const props = defineProps<{
@@ -114,6 +119,7 @@ const props = defineProps<{
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = useApiClient();
 const currentUserId = ref<string | undefined>(undefined);
+const queryClient = useQueryClient();
 
 // Empty Fields
 const hideEmptyFields = ref(true);
@@ -125,7 +131,7 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
   dataType: 'sfdr',
   reportingPeriod: '2021',
   reviewState: 'Pending',
-  qaJudgeUserId: 'judge-1',
+  qaJudgeUserId: '1234',
   qaJudgeUserName: 'Jane Doe',
   qaReporterCompanies: [
     { reporterCompanyName: 'Company A', reporterCompanyId: 'COMP-A' },
@@ -167,15 +173,17 @@ const {
 } = useQuery({
   queryKey: ['qaReviewResponse', props.dataId],
   queryFn: async () => {
-    // Optional: Simulate network latency
+    // TODO: REPLACE WITH REAL API CALL
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Return the mock instead of the API call
     return MOCK_DATASET_REVIEW;
 
-    /* const response = await apiClientProvider.apiClients.qaController.getDatasetReviewOverview(props.dataId);
-    return response.data;
-    */
+    //const response = await apiClientProvider.apiClients.datasetReviewController.getDatasetReviewsByDatasetId(
+    //  props.dataId
+    //);
+    //console.log('Dataset Review Response:', response.data);
+    //return response.data[0] ?? null;
   },
   enabled: !!props.dataId,
 });
@@ -226,29 +234,30 @@ const isAssignedToCurrentUser = computed(() => {
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
-// Actions
-async function assignToMe(): Promise<void> {
-  if (!datasetReview.value) return;
-  try {
-    await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
-  } catch (error) {
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
+  mutationFn: async () => {
+    if (!datasetReview.value) throw new Error('No dataset review selected');
+
+    return await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
+    console.log('Successfully assigned!');
+  },
+  onError: (error) => {
     console.error('Error assigning dataset review:', error);
-  }
-}
+  },
+});
+
+const assignToMe = () => {
+  assignToMeMutation();
+};
 
 const rejectDataset = (): void => {
   alert('Reject logic here');
 };
 const finishReview = (): void => {
   alert('Finish review logic here');
-};
-
-const addToPortfolio = (): void => {
-  alert('Add to portfolio logic here');
-};
-
-const requestData = (): void => {
-  alert('Request data logic here');
 };
 
 async function setCurrentUserId(): Promise<void> {
@@ -258,8 +267,23 @@ async function setCurrentUserId(): Promise<void> {
 
 onMounted(() => {
   console.log('Loaded Review Page for Data ID:', props.dataId);
-  setCurrentUserId()
+  setCurrentUserId();
 });
+
+watch(
+  () => [datasetReview.value?.qaJudgeUserId, currentUserId.value],
+  ([qaId, userId]) => {
+    console.log(
+      'qaJudgeUserId:',
+      qaId,
+      'currentUserId:',
+      userId,
+      'isAssignedToCurrentUser:',
+      isAssignedToCurrentUser.value
+    );
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
