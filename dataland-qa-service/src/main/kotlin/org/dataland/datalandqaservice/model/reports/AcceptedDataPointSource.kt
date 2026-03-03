@@ -1,8 +1,13 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * Enum representing the source from which an accepted data point was derived.
  */
+@Schema(
+    enumAsRef = true,
+)
 enum class AcceptedDataPointSource {
     /**
      * The original data point was accepted.

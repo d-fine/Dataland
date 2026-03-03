@@ -100,20 +100,22 @@
 
                   <!-- Original datapoint -->
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <div class="flex align-items-center justify-content-between gap-2">
-                      <div class="flex-1 min-w-0">
-                        <MultiLayerDataTableCell
-                          :content="row.originalDisplay"
-                          :meta-info="dataMetaInformation as DataMetaInformation"
-                          :inReviewMode="true"
-                        />
-                      </div>
-                      <i
-                        class="pi decision-icon"
-                        :class="
-                          isOriginalAccepted(row) ? 'pi-check-circle text-green-500' : 'pi-times-circle text-red-500'
-                        "
+                    <div class="cell-flex">
+                      <MultiLayerDataTableCell
+                        :content="row.originalDisplay"
+                        :meta-info="dataMetaInformation as DataMetaInformation"
+                        :inReviewMode="true"
                       />
+                      <span
+                        v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
+                        class="pi pi-check text-green-500 accepted-check"
+                        aria-label="Accepted source"
+                      ></span>
+                      <span
+                        v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Original)"
+                        class="pi pi-times text-red-500 rejected-check"
+                        aria-label="Rejected source"
+                      ></span>
                     </div>
                   </td>
 
@@ -123,46 +125,44 @@
                     :key="company.reporterCompanyId"
                     class="vertical-align-top border-right-1 surface-border"
                   >
-                    <div class="flex align-items-center justify-content-between gap-2">
-                      <span
-                        v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'"
-                        class="flex-1 min-w-0"
-                      >
+                    <div class="cell-flex">
+                      <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'">
                         QA Accepted
                       </span>
                       <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
                         {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
                       </span>
                       <span v-else class="text-color-secondary italic"> {} </span>
-                      <i
-                        class="pi"
-                        :class="
-                          isQaAccepted(row, company.reporterCompanyId)
-                            ? 'pi-check-circle text-green-500'
-                            : 'pi-times-circle text-red-500'
-                        "
-                      />
+                      <span
+                        v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, company.reporterCompanyId)"
+                        class="pi pi-check text-green-500 accepted-check"
+                        aria-label="Accepted source"
+                      ></span>
+                      <span
+                        v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Qa, company.reporterCompanyId)"
+                        class="pi pi-times text-red-500 rejected-check"
+                        aria-label="Rejected source"
+                      ></span>
                     </div>
                   </td>
 
-                  <!-- Custom datapoint -->
+                  <!-- Icon column (very simple first pass) -->
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <div class="flex align-items-center justify-content-between gap-2">
-                      <span
-                        v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === 'Custom'"
-                        class="flex-1 min-w-0"
-                      >
+                    <div class="cell-flex">
+                      <span v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === AcceptedDataPointSource.Custom">
                         {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
                       </span>
-                      <span v-else class="flex-1 min-w-0">-</span>
-                      <i
-                        class="pi decision-icon"
-                        :class="
-                          isCustomDatapointAccepted(row)
-                            ? 'pi-check-circle text-green-500'
-                            : 'pi-times-circle text-red-500'
-                        "
-                      />
+                      <span v-else>-</span>
+                      <span
+                        v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
+                        class="pi pi-check text-green-500 accepted-check"
+                        aria-label="Accepted source"
+                      ></span>
+                      <span
+                        v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Custom)"
+                        class="pi pi-times text-red-500 rejected-check"
+                        aria-label="Rejected source"
+                      ></span>
                     </div>
                   </td>
                 </template>
@@ -176,26 +176,28 @@
 </template>
 
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-
-defineOptions({ name: 'DatasetReviewComparisonTable' });
-
-import { computed } from 'vue';
+import {useQuery} from '@tanstack/vue-query';
+import {computed} from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
-import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
+import {getFrontendFrameworkDefinition} from '@/frameworks/FrontendFrameworkRegistry';
+import {getFrameworkDataApiForIdentifier} from '@/frameworks/FrameworkApiUtils';
 import type {
-  MLDTConfig,
   MLDTCellConfig,
+  MLDTConfig,
   MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
-import type { DatasetReviewOverview, DataPointReviewInfo, QaReportSummary } from '@/utils/DatasetReviewOverview.ts';
-import { useApiClient } from '@/utils/useApiClient.ts';
-import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import type {AvailableMLDTDisplayObjectTypes} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import type {DataMetaInformation, DataTypeEnum} from '@clients/backend';
+import type {DataPointReviewInfo, DatasetReviewOverview, QaReportSummary} from '@/utils/DatasetReviewOverview.ts';
+import {useApiClient} from '@/utils/useApiClient.ts';
+import type {FrameworkData} from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import {
+  AcceptedDataPointSource
+} from "@clients/qaservice/org/dataland/datalandfrontend/openApiClient/qaservice/model/accepted-data-point-source.ts";
+
+defineOptions({ name: 'DatasetReviewComparisonTable' });
 
 const props = defineProps<{
   companyId: string;
@@ -227,12 +229,14 @@ const {
   enabled: !!props.framework && !!props.dataId,
 });
 
+// --- Get MLDT config for this framework (view configuration) ---
 const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework as DataTypeEnum));
 const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
 const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
   () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
 );
 
+// --- Row model ---
 type SectionRow = {
   type: 'section';
   label: string;
@@ -249,6 +253,7 @@ type CellRow = {
 
 type KpiRow = SectionRow | CellRow;
 
+// --- Helpers to join review info ---
 function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
@@ -271,44 +276,62 @@ function getCorrectedDisplayFromQaReport(qaReport: QaReportSummary | undefined):
   }
 }
 
-function isOriginalAccepted(row: CellRow): boolean {
-  const info = getReviewInfo(row.dataPointTypeId);
-  return info?.acceptedSource === 'Original';
+function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
+  const reviewInfo = getReviewInfo(row.dataPointTypeId);
+  if (reviewInfo?.acceptedSource !== source) return false;
+  if (source !== AcceptedDataPointSource.Qa) return true;
+  return (
+    reporterCompanyId != null &&
+    reviewInfo.companyIdOfAcceptedQaReport != null &&
+    reviewInfo.companyIdOfAcceptedQaReport === reporterCompanyId
+  );
 }
 
-function isCustomDatapointAccepted(row: CellRow): boolean {
-  const info = getReviewInfo(row.dataPointTypeId);
-  return info?.acceptedSource === 'Custom';
-}
-
-function isQaAccepted(row: CellRow, reporterCompanyId: string): boolean {
-  const info = getReviewInfo(row.dataPointTypeId);
-  return info?.acceptedSource === 'Qa' && info.companyIdOfAcceptedQaReport === reporterCompanyId;
-}
-
-function isCellEmpty(cellRow: CellRow): boolean {
-  const original = cellRow.originalDisplay as any;
-
-  let isOriginalEmpty =
-    original == null || original === '' || original.displayValue == null || original.displayValue === '';
-
-  if (!isOriginalEmpty) return false;
-
-  const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
-  if (reviewInfo?.acceptedSource === 'Custom' && reviewInfo.customValue != null && reviewInfo.customValue !== '') {
-    return false;
+function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
+  if (source === AcceptedDataPointSource.Original) {
+    const original = cellRow.originalDisplay as any;
+    return original == null || original === '' || original.displayValue == null || original.displayValue === '';
   }
-
-  for (const company of props.datasetReview.qaReporterCompanies) {
-    const report = getQaReportFor(cellRow, company.reporterCompanyId);
+  if (source === AcceptedDataPointSource.Custom) {
+    const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
+    return reviewInfo?.customValue == null || reviewInfo.customValue === '';
+  }
+  if (source === AcceptedDataPointSource.Qa) {
+    const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
     const corrected = getCorrectedDisplayFromQaReport(report);
-    if (corrected != null && corrected !== '') {
-      return false;
-    }
+    return corrected == null || corrected === '';
   }
   return true;
 }
 
+function shouldShowRejectedIcon(
+  cellRow: CellRow,
+  source: AcceptedDataPointSource,
+  reporterCompanyId?: string
+): boolean {
+  const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
+  if (reviewInfo?.acceptedSource == null) return false;
+  if (isCellEmpty(cellRow, source, reporterCompanyId)) return false;
+  if (isAcceptedSource(cellRow, source, reporterCompanyId)) return false;
+  if (source === AcceptedDataPointSource.Qa) {
+    const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
+    if (!report) return false;
+    return report.verdict !== 'QaAccepted';
+  }
+  return true;
+}
+
+function isRowEmpty(cellRow: CellRow): boolean {
+  const isOriginalEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Original);
+  const isCustomEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Custom);
+  const isQaEmptyForAllCompanies = props.datasetReview.qaReporterCompanies.every((company) =>
+      isCellEmpty(cellRow, AcceptedDataPointSource.Qa, company.reporterCompanyId)
+  );
+
+  return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllCompanies;
+}
+
+// Recursively build rows from MLDT config + one dataset
 function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
   const rows: KpiRow[] = [];
   for (const item of config) {
@@ -331,7 +354,7 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
       };
 
       // Apply the "Hide Empty Fields" logic
-      if (!props.hideEmptyFields || !isCellEmpty(cellRow)) {
+      if (!props.hideEmptyFields || !isRowEmpty(cellRow)) {
         rows.push(cellRow);
       }
     }
@@ -341,8 +364,7 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
 
 const allRows = computed<KpiRow[]>(() => {
   if (!originalDataAndMeta.value || !mldtConfig.value) return [];
-  const rows = buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
-  return rows;
+  return buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
 });
 
 const filteredRows = computed<KpiRow[]>(() => {
@@ -373,13 +395,29 @@ const toTitleCase = (str: string) => {
   cursor: help;
 }
 
+.cell-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.accepted-check {
+  margin-left: auto;
+}
+
+.rejected-check {
+  margin-left: auto;
+}
+
 .section-root {
+  /* top-level section headers (e.g. ENVIRONMENTAL, SOCIAL) */
   text-transform: uppercase;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base); /* slightly larger than cell text */
+  font-weight: var(--font-weight-medium); /* not full bold */
 }
 
 .section-sub {
+  /* nested sections (e.g. Greenhouse Gas Emissions) */
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
 }
