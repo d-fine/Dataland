@@ -51,11 +51,10 @@
                 </div>
               </div>
               <div>
-                <div class="flex gap-2 align-items-center">
-                  <div v-if="assignedToMe" class="text-right mr-2">
+                <div v-if="isAssignedToCurrentUser" class="flex gap-2 align-items-center">
+                  <div class="text-right mr-2">
                     <p class="font-medium m-0">Assigned to you</p>
                   </div>
-                  <PrimeButton v-else label="ASSIGN YOURSELF" icon="pi pi-user" @click="assignToMe" />
                   <PrimeButton
                     label="REJECT DATASET"
                     severity="danger"
@@ -65,9 +64,10 @@
                   />
                   <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
                 </div>
-                <div v-if="!assignedToMe" class="text-left">
+                <div v-else class="text-left">
+                  <PrimeButton label="ASSIGN YOURSELF" icon="pi pi-user" @click="assignToMe" />
                   <p class="text-sm m-0 text-left">Currently assigned to:</p>
-                  <p class="text-sm m-0 text-left">{{ currentUserName }}</p>
+                  <p class="text-sm m-0 text-left">{{ datasetReview?.qaJudgeUserName ?? '' }}</p>
                 </div>
               </div>
             </div>
@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed } from 'vue';
+import {ref, onMounted, computed, inject} from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { useQuery } from '@tanstack/vue-query';
@@ -102,6 +102,8 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import ToggleSwitch from 'primevue/toggleswitch';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import type { CompanyInformation } from '@clients/backend';
+import {assertDefined} from "@/utils/TypeScriptUtils.ts";
+import type Keycloak from "keycloak-js";
 
 // Props passed from the router
 const props = defineProps<{
@@ -109,7 +111,9 @@ const props = defineProps<{
 }>();
 
 // Api Client
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = useApiClient();
+const currentUserId = ref<string | undefined>(undefined);
 
 // Empty Fields
 const hideEmptyFields = ref(true);
@@ -217,13 +221,21 @@ const dataPointsLeftToReview = computed(() => {
   return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
 });
 
-const currentUserName = ref('Max Mustermann');
-const assignedToMe = ref(false);
+const isAssignedToCurrentUser = computed(() => {
+  if (!datasetReview.value) return false;
+  return datasetReview.value.qaJudgeUserId === currentUserId.value;
+});
 
 // Actions
-const assignToMe = (): void => {
-  assignedToMe.value = true;
-};
+async function assignToMe(): Promise<void> {
+  if (!datasetReview.value) return;
+  try {
+    await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
+  } catch (error) {
+    console.error('Error assigning dataset review:', error);
+  }
+}
+
 const rejectDataset = (): void => {
   alert('Reject logic here');
 };
@@ -239,8 +251,14 @@ const requestData = (): void => {
   alert('Request data logic here');
 };
 
+async function setCurrentUserId(): Promise<void> {
+  const keycloak = await assertDefined(getKeycloakPromise)();
+  currentUserId.value = keycloak.idTokenParsed?.sub;
+}
+
 onMounted(() => {
   console.log('Loaded Review Page for Data ID:', props.dataId);
+  setCurrentUserId()
 });
 </script>
 
