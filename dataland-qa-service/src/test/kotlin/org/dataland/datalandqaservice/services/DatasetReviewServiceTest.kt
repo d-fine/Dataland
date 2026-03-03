@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -63,11 +64,24 @@ class DatasetReviewServiceTest {
     private val dummyDataPointType = "dummy-datapoint-type"
     private val dummyCompanyId = UUID.randomUUID()
     private val dummyDatasetId = UUID.randomUUID()
+    private val dummyReporterCompanyId = UUID.randomUUID()
+
+    private val dummyQaReports =
+        mutableListOf(
+            QaReportDataPointWithReporterDetailsEntity(
+                qaReportId = UUID.randomUUID(),
+                verdict = QaReportDataPointVerdict.QaAccepted,
+                correctedData = null,
+                reporterUserId = UUID.randomUUID(),
+                reporterCompanyId = dummyReporterCompanyId,
+            ),
+        )
 
     private val dummyDataPointReviewDetails =
         DataPointReviewDetailsEntity(
             dataPointType = dummyDataPointType,
             dataPointId = UUID.randomUUID(),
+            qaReports = dummyQaReports,
             acceptedSource = null,
             companyIdOfAcceptedQaReport = null,
             customValue = null,
@@ -258,13 +272,11 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `setAcceptedSource with Qa sets acceptedSource and companyIdOfAcceptedQaReport`() {
-        val reporterCompanyId = UUID.randomUUID()
-
         datasetReviewService.setAcceptedSource(
             UUID.randomUUID(),
             dummyDataPointType,
             AcceptedDataPointSource.Qa,
-            reporterCompanyId.toString(),
+            dummyReporterCompanyId.toString(),
             null,
         )
 
@@ -272,7 +284,7 @@ class DatasetReviewServiceTest {
         verify(mockDatasetReviewRepository).save(captor.capture())
         val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertEquals(reporterCompanyId, saved.companyIdOfAcceptedQaReport)
+        assertEquals(dummyReporterCompanyId, saved.companyIdOfAcceptedQaReport)
     }
 
     @Test
