@@ -132,7 +132,7 @@ class DatasetReviewService
             customValue: String,
         ): DatasetReviewResponse {
             try {
-                datasetReviewSupportService.validateCustomDataPoint("""{\"value\":\"""" + customValue + """No\"""", dataPointType)
+                datasetReviewSupportService.validateCustomDataPoint("""{\"value\":\"""" + customValue + """\"""", dataPointType)
             } catch (e: BackendClientException) {
                 throw InvalidInputApiException(
                     "Datapoint not valid.",
