@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
@@ -39,12 +39,12 @@ import { computed, inject, onMounted, type Ref, ref, useTemplateRef } from 'vue'
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const menu = useTemplateRef('menu');
 
-const userIsReviewer = ref(false);
+const userIsJudge = ref(false);
 
 onMounted(() => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      userIsReviewer.value = keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER);
+      userIsJudge.value = keycloak.hasRealmRole(KEYCLOAK_ROLE_JUDGE);
     })
     .catch((error) => console.log(error));
 });
@@ -99,7 +99,7 @@ const menuItems: Ref<MenuItem[]> = computed(() => [
     icon: 'pi pi-shield',
     id: 'profile-picture-dropdown-qa-services-anchor',
     command: (): void => void router.push('/qualityassurance'),
-    disabled: !userIsReviewer.value,
+    disabled: !userIsJudge.value,
   },
   {
     label: 'LOG OUT',
