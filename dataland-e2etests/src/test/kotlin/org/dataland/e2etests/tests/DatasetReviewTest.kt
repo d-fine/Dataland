@@ -3,8 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandqaservice.openApiClient.api.DatasetReviewControllerApi
-import org.dataland.datalandqaservice.openApiClient.model.DataPointReviewDetails
+import org.dataland.datalandqaservice.openApiClient.model.AcceptedDataPointSource
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.e2etests.auth.GlobalAuth
@@ -86,21 +85,21 @@ class DatasetReviewTest {
             QaService.datasetReviewControllerApi.setAcceptedSource(
                 datasetReviewId,
                 datapointType1,
-                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Original,
+                AcceptedDataPointSource.Original,
                 null,
                 null,
             )
             QaService.datasetReviewControllerApi.setAcceptedSource(
                 datasetReviewId,
                 datapointType2,
-                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Qa,
+                AcceptedDataPointSource.Qa,
                 reporterCompanyId.toString(),
                 null,
             )
             QaService.datasetReviewControllerApi.setAcceptedSource(
                 datasetReviewId,
                 datapointType3,
-                DatasetReviewControllerApi.AcceptedSourceSetAcceptedSource.Custom,
+                AcceptedDataPointSource.Custom,
                 null,
                 customDataPoint,
             )
@@ -108,12 +107,12 @@ class DatasetReviewTest {
 
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
 
-        assertEquals(DataPointReviewDetails.AcceptedSource.Original, datasetReview.dataPoints[datapointType1]?.acceptedSource)
+        assertEquals(AcceptedDataPointSource.Original, datasetReview.dataPoints[datapointType1]?.acceptedSource)
         assertNull(datasetReview.dataPoints[datapointType1]?.companyIdOfAcceptedQaReport)
 
-        assertEquals(DataPointReviewDetails.AcceptedSource.Qa, datasetReview.dataPoints[datapointType2]?.acceptedSource)
+        assertEquals(AcceptedDataPointSource.Qa, datasetReview.dataPoints[datapointType2]?.acceptedSource)
 
-        assertEquals(DataPointReviewDetails.AcceptedSource.Custom, datasetReview.dataPoints[datapointType3]?.acceptedSource)
+        assertEquals(AcceptedDataPointSource.Custom, datasetReview.dataPoints[datapointType3]?.acceptedSource)
         assertEquals(customDataPoint, datasetReview.dataPoints[datapointType3]?.customValue)
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import kotlin.text.get
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
@@ -106,6 +107,16 @@ class DatasetReviewService
             dataPointIndex: Int,
             companyIdOfAcceptedQaReport: UUID,
         ): DatasetReviewResponse {
+            val hasQaReportForCompany =
+                datasetReview.dataPoints[dataPointIndex].qaReports.any {
+                    it.reporterCompanyId == companyIdOfAcceptedQaReport
+                }
+            if (!hasQaReportForCompany) {
+                throw InvalidInputApiException(
+                    "QA report not found.",
+                    "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point.",
+                )
+            }
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
