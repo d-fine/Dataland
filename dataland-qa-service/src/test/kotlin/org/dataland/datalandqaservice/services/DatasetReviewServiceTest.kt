@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -9,17 +8,16 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -41,15 +39,13 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 class DatasetReviewServiceTest {
     private val mockDatasetReviewRepository = mock<DatasetReviewRepository>()
     private val mockDatasetReviewSupportService = mock<DatasetReviewSupportService>()
-    private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
-    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
+    private val mockDatasetReviewCreationUtils = mock<DatasetReviewCreationUtils>()
 
     private val datasetReviewService =
         DatasetReviewService(
             mockDatasetReviewRepository,
             mockDatasetReviewSupportService,
-            mockInheritedRolesControllerApi,
-            mockCompanyDataControllerApi,
+            mockDatasetReviewCreationUtils,
         )
 
     private val dummyUserId = UUID.randomUUID()
