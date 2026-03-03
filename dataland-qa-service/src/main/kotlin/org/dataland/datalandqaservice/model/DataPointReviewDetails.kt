@@ -1,6 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
+import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporterDetails
 import java.util.UUID
 

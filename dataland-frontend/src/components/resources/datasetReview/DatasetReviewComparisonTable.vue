@@ -126,7 +126,7 @@
                     class="vertical-align-top border-right-1 surface-border"
                   >
                     <div class="cell-flex">
-                      <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === 'QaAccepted'">
+                      <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === QaReportDataPointVerdict.QaAccepted">
                         QA Accepted
                       </span>
                       <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
@@ -193,9 +193,7 @@ import {useApiClient} from '@/utils/useApiClient.ts';
 import type {FrameworkData} from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import {
-  AcceptedDataPointSource
-} from "@clients/qaservice/org/dataland/datalandfrontend/openApiClient/qaservice/model/accepted-data-point-source.ts";
+import {QaReportDataPointVerdict, AcceptedDataPointSource} from "@clients/qaservice";
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -316,7 +314,7 @@ function shouldShowRejectedIcon(
   if (source === AcceptedDataPointSource.Qa) {
     const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
     if (!report) return false;
-    return report.verdict !== 'QaAccepted';
+    return report.verdict !== QaReportDataPointVerdict.QaAccepted;
   }
   return true;
 }

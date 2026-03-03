@@ -1459,12 +1459,7 @@
             "description": "The source from which the value of the data point was accepted.",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "Original",
-                "Qa",
-                "Custom"
-              ]
+              "$ref": "#/components/schemas/AcceptedDataPointSource"
             },
             "example": "Original"
           },
@@ -3310,6 +3305,14 @@
           "Rejected"
         ]
       },
+      "AcceptedDataPointSource": {
+        "type": "string",
+        "enum": [
+          "Original",
+          "Qa",
+          "Custom"
+        ]
+      },
       "DataPointReviewDetails": {
         "required": [
           "dataPointType",
@@ -3331,12 +3334,7 @@
             }
           },
           "acceptedSource": {
-            "type": "string",
-            "enum": [
-              "Original",
-              "Qa",
-              "Custom"
-            ]
+            "$ref": "#/components/schemas/AcceptedDataPointSource"
           },
           "companyIdOfAcceptedQaReport": {
             "type": "string",
@@ -3354,8 +3352,6 @@
           "dataSetReviewId",
           "dataType",
           "datasetId",
-          "qaJudgeUserId",
-          "qaJudgeUserName",
           "qaReporterCompanies",
           "reportingPeriod",
           "reviewState"
@@ -3444,7 +3440,6 @@
       "QaReportDataPointWithReporterDetails": {
         "required": [
           "qaReportId",
-          "reporterCompanyId",
           "reporterUserId",
           "verdict"
         ],
@@ -3475,7 +3470,6 @@
       },
       "QaReporterCompany": {
         "required": [
-          "reportCompanyId",
           "reportCompanyName"
         ],
         "type": "object",

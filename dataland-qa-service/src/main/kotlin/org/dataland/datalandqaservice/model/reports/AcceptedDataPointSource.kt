@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
+package org.dataland.datalandqaservice.model.reports
 
 import io.swagger.v3.oas.annotations.media.Schema
 
