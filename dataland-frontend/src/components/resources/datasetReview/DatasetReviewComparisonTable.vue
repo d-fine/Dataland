@@ -106,6 +106,9 @@
                         :meta-info="dataMetaInformation as DataMetaInformation"
                         :inReviewMode="true"
                       />
+                      <span v-if="isCellEmpty(row, AcceptedDataPointSource.Original)" class="main-text-color">
+                        &ndash;
+                      </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
                         class="pi pi-check text-green-500 accepted-check"
@@ -126,13 +129,18 @@
                     class="vertical-align-top border-right-1 surface-border"
                   >
                     <div class="cell-flex">
-                      <span v-if="getQaReportFor(row, company.reporterCompanyId)?.verdict === QaReportDataPointVerdict.QaAccepted">
+                      <span
+                        v-if="
+                          getQaReportFor(row, company.reporterCompanyId)?.verdict ===
+                          QaReportDataPointVerdict.QaAccepted
+                        "
+                      >
                         QA Accepted
                       </span>
-                      <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="text-color-secondary">
+                      <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="main-text-color">
                         {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
                       </span>
-                      <span v-else class="text-color-secondary italic"> {} </span>
+                      <span v-else class="main-text-color"> &ndash; </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, company.reporterCompanyId)"
                         class="pi pi-check text-green-500 accepted-check"
@@ -149,10 +157,11 @@
                   <!-- Icon column (very simple first pass) -->
                   <td class="vertical-align-top border-right-1 surface-border">
                     <div class="cell-flex">
-                      <span v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === AcceptedDataPointSource.Custom">
+                      <span
+                        v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === AcceptedDataPointSource.Custom"
+                      >
                         {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
                       </span>
-                      <span v-else>-</span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
                         class="pi pi-check text-green-500 accepted-check"
@@ -176,24 +185,24 @@
 </template>
 
 <script setup lang="ts">
-import {useQuery} from '@tanstack/vue-query';
-import {computed} from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import { computed } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
-import {getFrontendFrameworkDefinition} from '@/frameworks/FrontendFrameworkRegistry';
-import {getFrameworkDataApiForIdentifier} from '@/frameworks/FrameworkApiUtils';
+import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
 import type {
   MLDTCellConfig,
   MLDTConfig,
   MLDTSectionConfig,
 } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import type {AvailableMLDTDisplayObjectTypes} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import type {DataMetaInformation, DataTypeEnum} from '@clients/backend';
-import type {DataPointReviewInfo, DatasetReviewOverview, QaReportSummary} from '@/utils/DatasetReviewOverview.ts';
-import {useApiClient} from '@/utils/useApiClient.ts';
-import type {FrameworkData} from '@/utils/GenericFrameworkTypes.ts';
+import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type { DataPointReviewInfo, DatasetReviewOverview, QaReportSummary } from '@/utils/DatasetReviewOverview.ts';
+import { useApiClient } from '@/utils/useApiClient.ts';
+import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import {QaReportDataPointVerdict, AcceptedDataPointSource} from "@clients/qaservice";
+import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qaservice';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -323,7 +332,7 @@ function isRowEmpty(cellRow: CellRow): boolean {
   const isOriginalEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Original);
   const isCustomEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Custom);
   const isQaEmptyForAllCompanies = props.datasetReview.qaReporterCompanies.every((company) =>
-      isCellEmpty(cellRow, AcceptedDataPointSource.Qa, company.reporterCompanyId)
+    isCellEmpty(cellRow, AcceptedDataPointSource.Qa, company.reporterCompanyId)
   );
 
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllCompanies;
