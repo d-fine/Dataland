@@ -50,7 +50,6 @@ object GeneralOpenApiDescriptionsAndExamples {
 
     const val DATA_TYPE_DESCRIPTION = "The associated reporting framework or data point type (as applicable)."
     const val DATA_TYPE_FRAMEWORK_EXAMPLE = "sfdr"
-    const val DATA_TYPE_DATA_POINT_TYPE_DESCRIPTION = "The data point type."
     const val DATA_TYPE_DATA_POINT_TYPE_EXAMPLE = "extendedDateFiscalYearEnd"
 
     const val DATA_TYPE_TO_UUID_MAP_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \" }"
