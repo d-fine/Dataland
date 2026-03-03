@@ -207,7 +207,6 @@ import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qase
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
 const props = defineProps<{
-  companyId: string;
   framework: DataTypeEnum | string;
   dataId: string;
   searchQuery: string;

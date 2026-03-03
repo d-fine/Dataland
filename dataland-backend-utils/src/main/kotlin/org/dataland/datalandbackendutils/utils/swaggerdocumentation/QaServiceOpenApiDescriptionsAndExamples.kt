@@ -10,7 +10,8 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val QA_REPORT_ID_DESCRIPTION = "The unique identifier of the QA report"
     const val QA_REPORT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The quality decision of this qa report."
+    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The verdict of a QA report regarding a data point."
+    const val QA_REPORT_VERDICT_EXAMPLE = "QaAccepted."
 
     const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "Contains suggested data corrections for the rejected data point."
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
@@ -62,21 +63,40 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION = "The name or email of the user reviewing the dataset."
     const val DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE = "Jane Doe"
 
-    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_DESCRIPTION = "Datapoints automatically approved by Dataland."
-    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
-
-    const val DATA_REVIEW_QA_REPORTS_DESCRIPTION = "QA reports associated to the dataset."
-    const val DATA_REVIEW_QA_REPORTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
-
-    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_DESCRIPTION = "Data points approved and to be accepted."
-    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
-
-    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_DESCRIPTION = "QA reports approved and to be accepted."
-    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
-
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
 
     const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
     const val NUMBER_QA_REPORTS_EXAMPLE = "5"
+
+    const val QA_REPORTER_COMPANIES_DESCRIPTION = "List of companies that contributed a QA report to this dataset."
+    const val QA_REPORTER_COMPANIES_EXAMPLE =
+        "[{ \"companyId\": \"c9710c7b-9cd6-446b-85b0-3773d2aceb48\", " +
+            "\"companyName\": \"ABC Corporation\" }]"
+
+    const val QA_REPORT_COMPANY_NAME_DESCRIPTION = "The name of the company that contributed a QA report to this dataset."
+    const val QA_REPORT_COMPANY_NAME_EXAMPLE = "ABC Corporation"
+
+    const val QA_REPORT_COMPANY_ID_DESCRIPTION =
+        "The unique identifier of the company that contributed a QA report " +
+            "to this dataset."
+    const val QA_REPORT_COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+
+    const val DATA_POINTS_MAP_DESCRIPTION =
+        "Map with details for all datapoints in the dataset. " +
+            "The key is the datapoint type."
+
+    const val DATA_POINT_ID_DESCRIPTION = "The unique identifier of the datapoint."
+    const val DATA_POINT_ID_EXAMPLE = "32c30bc5-ecfd-46ec-b849-628d5328e2e6"
+
+    const val QA_REPORTS_DESCRIPTION =
+        "List of QA reports associated with this data point, including details " +
+            "about the reporter company."
+
+    const val ACCEPTED_DATA_POINT_SOURCE_DESCRIPTION = "The source of the accepted value for this data point, if applicable."
+    const val ACCEPTED_DATA_POINT_SOURCE_EXAMPLE = "Original"
+
+    const val ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION =
+        "The unique identifier of the company whose QA report was " +
+            "accepted for this data point, if applicable."
 }

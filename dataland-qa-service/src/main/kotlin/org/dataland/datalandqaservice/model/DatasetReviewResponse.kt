@@ -50,6 +50,13 @@ data class DatasetReviewResponse(
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
     )
     var qaJudgeUserName: String?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_EXAMPLE,
+    )
     var qaReporterCompanies: List<QaReporterCompany>,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
+    )
     var dataPoints: Map<String, DataPointReviewDetails>,
 )
