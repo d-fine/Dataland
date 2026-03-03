@@ -190,11 +190,7 @@ import { computed } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
-import type {
-  MLDTCellConfig,
-  MLDTConfig,
-  MLDTSectionConfig,
-} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import type { DataPointReviewInfo, DatasetReviewOverview, QaReportSummary } from '@/utils/DatasetReviewOverview.ts';
@@ -207,7 +203,7 @@ import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qase
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
 const props = defineProps<{
-  framework: DataTypeEnum | string;
+  framework: DataTypeEnum;
   dataId: string;
   searchQuery: string;
   datasetReview: DatasetReviewOverview;
@@ -236,7 +232,7 @@ const {
 });
 
 // --- Get MLDT config for this framework (view configuration) ---
-const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework as DataTypeEnum));
+const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework));
 const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
 const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
   () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
@@ -260,11 +256,28 @@ type CellRow = {
 type KpiRow = SectionRow | CellRow;
 
 // --- Helpers to join review info ---
+/**
+ * Look up review information for a single data point type id from the
+ * provided `datasetReview` prop.
+ *
+ * @param {string | undefined} dataPointTypeId - The data point type identifier to look up.
+ * @returns {DataPointReviewInfo | undefined} The review info entry for the data point, or undefined when not found.
+ */
 function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
 }
 
+/**
+ * Returns the QA report for the given table row and reporter company ID.
+ *
+ * Looks up the datasetReview entry for the row's data point type and
+ * returns the QaReportSummary for the given reporter company if present.
+ *
+ * @param {CellRow} row - The table cell row describing the data point.
+ * @param {string} reporterCompanyID - The reporter company identifier to match.
+ * @returns {QaReportSummary | undefined} The matching QA report summary or undefined when not found.
+ */
 function getQaReportFor(row: CellRow, reporterCompanyID: string): QaReportSummary | undefined {
   if (!row.dataPointTypeId) return undefined;
   const dpEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
@@ -272,16 +285,38 @@ function getQaReportFor(row: CellRow, reporterCompanyID: string): QaReportSummar
   return dpEntry.qaReports.find((r) => r.reporterCompanyId === reporterCompanyID);
 }
 
+/**
+ * Extracts the corrected display value from a QA report's JSON payload.
+ *
+ * The QA report stores correctedData as a JSON string. This helper parses
+ * that string and returns the inner `value` property, or null when the
+ * corrected value is not available or parsing fails.
+ *
+ * @param {QaReportSummary | undefined} qaReport - QA report to extract value from.
+ * @returns {string | null} The corrected display value or null when unavailable.
+ */
 function getCorrectedDisplayFromQaReport(qaReport: QaReportSummary | undefined): string | null {
   if (!qaReport?.correctedData) return null;
   try {
-    const parsed = JSON.parse(qaReport.correctedData as string);
+    const parsed = JSON.parse(qaReport.correctedData);
     return parsed.value == null ? null : parsed.value;
   } catch {
     return null;
   }
 }
 
+/**
+ * Determines whether the given source is the accepted source for the provided row.
+ *
+ * For QA sources the function additionally checks that the accepted QA report
+ * originates from the provided reporter company id so the correct QA column can
+ * be marked as accepted.
+ *
+ * @param {CellRow} row - The cell row to check.
+ * @param {AcceptedDataPointSource} source - The source type to compare against.
+ * @param {string} [reporterCompanyId] - Optional reporter company id (required for QA checks).
+ * @returns {boolean} True when the provided source matches the accepted source for the row.
+ */
 function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
   const reviewInfo = getReviewInfo(row.dataPointTypeId);
   if (reviewInfo?.acceptedSource !== source) return false;
@@ -293,6 +328,18 @@ function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporte
   );
 }
 
+/**
+ * Determines whether a cell is considered empty for a specific source column.
+ *
+ * - Original: checks the computed original display object for an empty or missing value.
+ * - Custom: checks the reviewInfo.customValue.
+ * - Qa: checks the corrected QA value for the provided reporter company.
+ *
+ * @param {CellRow} cellRow - The cell row to inspect.
+ * @param {AcceptedDataPointSource} source - The source type to test for emptiness.
+ * @param {string} [reporterCompanyId] - Optional reporter company id for QA lookups.
+ * @returns {boolean} True when the cell for the given source is empty or missing.
+ */
 function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
   if (source === AcceptedDataPointSource.Original) {
     const original = cellRow.originalDisplay as any;
@@ -310,6 +357,19 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
   return true;
 }
 
+/**
+ * Decide whether the UI should render a rejected icon for a specific cell and source.
+ *
+ * The function returns false when there is no accepted source set, when the
+ * cell is empty for the inspected source, or when the inspected source is the
+ * accepted source. For QA sources the verdict on the QA report is also taken
+ * into account (only non-accepted QA reports show as rejected).
+ *
+ * @param {CellRow} cellRow - The cell row to inspect.
+ * @param {AcceptedDataPointSource} source - The source column being inspected.
+ * @param {string} [reporterCompanyId] - Optional reporter company id for QA lookups.
+ * @returns {boolean} True when a rejected icon should be shown.
+ */
 function shouldShowRejectedIcon(
   cellRow: CellRow,
   source: AcceptedDataPointSource,
@@ -327,6 +387,14 @@ function shouldShowRejectedIcon(
   return true;
 }
 
+/**
+ * Returns true when a row has no visible values in any of the available columns
+ * (original, all QA reporters, or custom). Used to honor the "hideEmptyFields"
+ * prop when building the visible rows.
+ *
+ * @param {CellRow} cellRow - The row to test for emptiness.
+ * @returns {boolean} True when the row is empty across all sources.
+ */
 function isRowEmpty(cellRow: CellRow): boolean {
   const isOriginalEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Original);
   const isCustomEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Custom);
@@ -337,12 +405,21 @@ function isRowEmpty(cellRow: CellRow): boolean {
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllCompanies;
 }
 
-// Recursively build rows from MLDT config + one dataset
+/**
+ * Build a flat list of table rows (sections and cell rows) from the MLDT configuration
+ * and a single dataset. This function performs a recursive traversal of the
+ * configuration tree.
+ *
+ * @param {MLDTConfig<FrameworkData>} config - MLDT view configuration for the framework.
+ * @param {FrameworkData} data - The framework data instance to read values from.
+ * @param {number} [level=0] - Current nesting level for section rows (used for styling).
+ * @returns {KpiRow[]} The generated list of rows representing sections and KPI cells.
+ */
 function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
   const rows: KpiRow[] = [];
   for (const item of config) {
     if (item.type === 'section') {
-      const section = item as MLDTSectionConfig<FrameworkData>;
+      const section = item;
       const childRows = buildRowsFromConfig(section.children, data, level + 1);
 
       if (childRows.length > 0) {
@@ -350,7 +427,7 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
         rows.push(...childRows);
       }
     } else if (item.type === 'cell') {
-      const cell = item as MLDTCellConfig<FrameworkData>;
+      const cell = item;
       const cellRow: CellRow = {
         type: 'cell',
         label: cell.label,
@@ -379,13 +456,24 @@ const filteredRows = computed<KpiRow[]>(() => {
   return allRows.value.filter((row) => (row.type === 'section' ? true : row.label.toLowerCase().includes(q)));
 });
 
+/**
+ * Opens judge modal
+ *
+ * @param {KpiRow} row - Input row of data point to open judge modal for.
+ */
 function openJudgeModal(row: KpiRow): void {
   if (row.type === 'section') return;
   console.log('open judge modal for', row.dataPointTypeId, row.label);
   // TODO: integrate judge modal implementation in follow-up ticket
 }
 
-const toTitleCase = (str: string) => {
+/**
+ * Convert a string to Title Case (first letter capitalized for each word).
+ *
+ * @param {string} str - Input string to convert.
+ * @returns {string} Title-cased string.
+ */
+const toTitleCase = (str: string): string => {
   return str
     .toLowerCase()
     .split(' ')
