@@ -1,6 +1,6 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
-import { DataMetaInformation, QaStatus, StoredCompany } from '@clients/backend';
+import { type DataMetaInformation, QaStatus, type StoredCompany } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';

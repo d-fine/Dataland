@@ -1,4 +1,4 @@
-import Keycloak from 'keycloak-js';
+import type Keycloak from 'keycloak-js';
 import { inject } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';

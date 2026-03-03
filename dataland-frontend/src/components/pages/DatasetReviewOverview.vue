@@ -5,7 +5,7 @@
       class="card py-8 px-0 mb-4 border-round-xl surface-card flex flex-column align-items-center justify-content-center"
       style="min-height: 400px"
     >
-      <p class="font-medium text-xl mt-3">Loading Company Information...</p>
+      <p class="font-medium text-xl mt-3">Loading Review Information...</p>
       <DatalandProgressSpinner />
     </div>
 
@@ -17,7 +17,6 @@
               :companyId="companyId ?? ''"
               :show-single-data-request-button="false"
               :show-add-to-portfolio-button="false"
-              @fetchedCompanyInformation="onFetchedCompanyInformation"
               class="w-12"
               data-test="companyInformationBanner"
             />
@@ -25,7 +24,7 @@
         </div>
 
         <div class="card py-4 px-0 mb-4 surface-card">
-          <div v-if="isDatasetReviewError || isCompanyDataError">
+          <div v-if="isDatasetReviewError">
             <p class="text-red-500">Failed to load dataset review or company information</p>
           </div>
           <div v-else>
@@ -65,7 +64,7 @@
                   <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
                 </div>
                 <div v-else class="text-left">
-                  <PrimeButto
+                  <PrimeButton
                     label="ASSIGN YOURSELF"
                     icon="pi pi-user"
                     :loading="isAssigningToMe"
@@ -96,7 +95,7 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed, inject, watch } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
@@ -106,7 +105,6 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ToggleSwitch from 'primevue/toggleswitch';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
-import type { CompanyInformation } from '@clients/backend';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 
@@ -164,8 +162,6 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
   },
 };
 
-const onFetchedCompanyInformation = (info: CompanyInformation) => {};
-
 const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
@@ -198,22 +194,7 @@ const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = u
 
 const companyId = computed(() => dataMetaInformation.value?.companyId);
 
-const {
-  data: companyData,
-  isPending: isCompanyDataPending,
-  isError: isCompanyDataError,
-} = useQuery({
-  queryKey: ['companyData', companyId],
-  queryFn: async () => {
-    const response = await apiClientProvider.backendClients.companyDataController.getCompanyById(companyId.value!);
-    return response.data;
-  },
-  enabled: computed(() => !!companyId.value),
-});
-
-const isInitialLoading = computed(
-  () => isDatasetReviewPending.value || isCompanyDataPending.value || isDataMetaInformationPending.value
-);
+const isInitialLoading = computed(() => isDatasetReviewPending.value || isDataMetaInformationPending.value);
 
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
@@ -240,8 +221,8 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
 
     return await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
   },
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
+  onSuccess: async () => {
+    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
     console.log('Successfully assigned!');
   },
   onError: (error) => {
@@ -249,7 +230,7 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
   },
 });
 
-const assignToMe = () => {
+const assignToMe = (): void => {
   assignToMeMutation();
 };
 
@@ -257,33 +238,24 @@ const rejectDataset = (): void => {
   alert('Reject logic here');
 };
 const finishReview = (): void => {
-  alert('Finish review logic here');
+  alert(
+    'Finish review logic here (seperate Ticket). Note: Make sure to -make sure all data is valid as is, then update the review state to finished '
+  );
 };
 
+/**
+ * Identifies and sets the current user's ID via the Keycloak token.
+ * @returns {Promise<void>} Resolves when the user ID has been set.
+ */
 async function setCurrentUserId(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   currentUserId.value = keycloak.idTokenParsed?.sub;
 }
 
-onMounted(() => {
+onMounted(async () => {
   console.log('Loaded Review Page for Data ID:', props.dataId);
-  setCurrentUserId();
+  await setCurrentUserId();
 });
-
-watch(
-  () => [datasetReview.value?.qaJudgeUserId, currentUserId.value],
-  ([qaId, userId]) => {
-    console.log(
-      'qaJudgeUserId:',
-      qaId,
-      'currentUserId:',
-      userId,
-      'isAssignedToCurrentUser:',
-      isAssignedToCurrentUser.value
-    );
-  },
-  { immediate: true }
-);
 </script>
 
 <style scoped>
