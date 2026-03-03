@@ -34,7 +34,9 @@
                 <h2 class="text-2xl font-bold m-0 mb-3 text-left">
                   <span>{{ frameworkNameAsString }}</span>
                 </h2>
-                <div class="font-italic mb-1 text-left">98 / 107 datapoints to review</div>
+                <div class="font-italic mb-1 text-left">
+                  {{ dataPointsLeftToReview }} / {{ dataPointsTotal }} data points to review
+                </div>
 
                 <div class="flex align-items-center gap-4">
                   <span class="text-color-secondary">Data extracted from:</span>
@@ -204,6 +206,16 @@ const isInitialLoading = computed(
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
 );
+
+const dataPointsTotal = computed(() => {
+  const dataPoints = datasetReview.value?.dataPoints ?? {};
+  return Object.keys(dataPoints).length;
+});
+
+const dataPointsLeftToReview = computed(() => {
+  const dataPoints = datasetReview.value?.dataPoints ?? {};
+  return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
+});
 
 const currentUserName = ref('Max Mustermann');
 const assignedToMe = ref(false);
