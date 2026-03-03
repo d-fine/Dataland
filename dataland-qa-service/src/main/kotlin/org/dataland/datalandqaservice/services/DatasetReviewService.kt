@@ -50,14 +50,14 @@ class DatasetReviewService
                 )
             }
 
-            val datasetReviewEntityWithDataPoints =
+            val datasetReviewEntity =
                 datasetReviewCreationUtils.createDatasetReviewEntity(
                     datasetReviewSupportService.getDataMetaInfo(datasetId.toString()),
                     datasetId,
                     datatypeToDatapointIds,
                 )
 
-            return datasetReviewRepository.save(datasetReviewEntityWithDataPoints).toDatasetReviewResponse()
+            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
         }
 
         /**
@@ -121,7 +121,7 @@ class DatasetReviewService
             customValue: String,
         ): DatasetReviewResponse {
             try {
-                datasetReviewSupportService.validateCustomDataPoint(customValue, dataPointType)
+                datasetReviewSupportService.validateCustomDataPoint("""{\"value\":\"""" + customValue + """No\"""", dataPointType)
             } catch (e: BackendClientException) {
                 throw InvalidInputApiException(
                     "Datapoint not valid.",
