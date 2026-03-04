@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
@@ -86,6 +87,88 @@ class DatasetReviewService
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
+        /**
+         * Helper method to validate and return the custom data point value to be set for a data point in a dataset review.
+         * If the new custom data point is null, the old custom data point will be returned, otherwise the new custom
+         * data point will be validated and returned.
+         */
+        fun getCustomDataPoint(
+            dataPointType: String,
+            newCustomDataPoint: String?,
+            oldCustomDataPoint: String?,
+            acceptedSource: AcceptedDataPointSource?,
+        ): String? {
+            if (newCustomDataPoint == null) {
+                if (acceptedSource == AcceptedDataPointSource.Custom && oldCustomDataPoint == null) {
+                    throw ConflictApiException(
+                        "Missing custom data point.",
+                        "Custom data point has to exist or be provided when acceptedSource is Custom.",
+                    )
+                }
+                return oldCustomDataPoint
+            }
+            try {
+                datasetReviewSupportService.validateCustomDataPoint(newCustomDataPoint, dataPointType)
+            } catch (e: BackendClientException) {
+                throw InvalidInputApiException(
+                    "Custom datapoint not valid.",
+                    "Custom datapoint given does not match the specification of $dataPointType.",
+                    e,
+                )
+            }
+            return newCustomDataPoint
+        }
+
+        /**
+         * Helper method to validate that the company id of the accepted QA report is correctly provided according to the accepted source.
+         * If the accepted source is QA, a company id of the accepted QA report must be provided, otherwise it must not be provided.
+         */
+        fun getCompanyIdOfAcceptedQaReportIfValid(
+            acceptedDataPoint: AcceptedDataPointSource?,
+            qaReports: MutableList<QaReportDataPointWithReporterDetailsEntity>,
+            companyIdOfAcceptedQaReport: String?,
+        ): String? {
+            if (acceptedDataPoint == AcceptedDataPointSource.Qa) {
+                if (companyIdOfAcceptedQaReport == null) {
+                    throw InvalidInputApiException(
+                        "Missing companyIdOfAcceptedQaReport.",
+                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
+                    )
+                }
+                val hasQaReportForCompany =
+                    qaReports.any {
+                        it.reporterCompanyId == convertToUUID(companyIdOfAcceptedQaReport)
+                    }
+                if (!hasQaReportForCompany) {
+                    throw InvalidInputApiException(
+                        "QA report not found.",
+                        "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point.",
+                    )
+                }
+            } else {
+                if (companyIdOfAcceptedQaReport != null) {
+                    throw InvalidInputApiException(
+                        "Invalid input.",
+                        "companyIdOfAcceptedQaReport must be null when acceptedSource is not Qa.",
+                    )
+                }
+            }
+            return companyIdOfAcceptedQaReport
+        }
+
+    /**
+     * Helper method to determine the accepted source to be set for a data point in a dataset review. If the new accepted
+     * source is null, the old accepted source will be returned, otherwise the new accepted source will be returned.
+     */
+    fun getAcceptedSourceOfDataPoint(
+            newAcceptedDataPointSource: AcceptedDataPointSource?,
+            oldAcceptedDataPointSource: AcceptedDataPointSource?,
+        ): AcceptedDataPointSource? {
+            if (newAcceptedDataPointSource == null) {
+                return oldAcceptedDataPointSource
+            }
+            return newAcceptedDataPointSource
+        }
 
         /**
          * Method to set the accepted source for a data point in a dataset review.
@@ -96,87 +179,41 @@ class DatasetReviewService
             dataPointType: String,
             patch: ReviewDetailsPatch,
         ): DatasetReviewResponse {
-            var datasetReview = getDatasetReview(datasetReviewId)
+            val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
-            var modifiedPatch = ReviewDetailsPatch()
-
-
             if (patch.customDataPoint == null && patch.acceptedSource == null) {
                 throw InvalidInputApiException(
                     "Invalid input.",
                     "Custom value or accepted source have to be specified.",
                 )
             }
+            val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
+            val modifiedPatch = ReviewDetailsPatch()
 
-            if (patch.customDataPoint != null) {
-                try {
-                    datasetReviewSupportService.validateCustomDataPoint(patch.customDataPoint!!, dataPointType)
-                } catch (e: BackendClientException) {
-                    throw InvalidInputApiException(
-                        "Custom datapoint not valid.",
-                        "Custom datapoint given does not match the specification of $dataPointType.",
-                        e,
-                    )
-                }
-                modifiedPatch.customDataPoint = patch.customDataPoint
-            } else
-            {
-                modifiedPatch.customDataPoint = datasetReview.dataPoints[dataPointIndex].customValue
-            }
+            modifiedPatch.companyIdOfAcceptedQaReport =
+                getCompanyIdOfAcceptedQaReportIfValid(
+                    patch.acceptedSource,
+                    datasetReview.dataPoints[dataPointIndex].qaReports,
+                    patch.companyIdOfAcceptedQaReport,
+                )
 
-            if (patch.acceptedSource == AcceptedDataPointSource.Custom) {
-                if (datasetReview.dataPoints[dataPointIndex].customValue == null) {
-                    throw ConflictApiException(
-                        "Missing custom data point.",
-                        "Custom data point has to exist or be provided when acceptedSource is Custom.",
-                    )
-                }
-                if (patch.companyIdOfAcceptedQaReport != null) {
-                    throw InvalidInputApiException(
-                        "Invalid input.",
-                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Custom.",
-                    )
-                }
+            modifiedPatch.customDataPoint =
+                getCustomDataPoint(
+                    dataPointType,
+                    patch.customDataPoint,
+                    datasetReview.dataPoints[dataPointIndex].customValue,
+                    patch.acceptedSource,
+                )
 
-                modifiedPatch.companyIdOfAcceptedQaReport = null
-                modifiedPatch.acceptedSource = patch.acceptedSource
-            }
-
-            if (patch.acceptedSource == AcceptedDataPointSource.Original) {
-                if (patch.companyIdOfAcceptedQaReport != null) {
-                    throw InvalidInputApiException(
-                        "Invalid input.",
-                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Original.",
-                    )
-                }
-                modifiedPatch.companyIdOfAcceptedQaReport = null
-                modifiedPatch.acceptedSource = patch.acceptedSource
-            }
-
-            if (patch.acceptedSource == AcceptedDataPointSource.Qa) {
-                if (patch.companyIdOfAcceptedQaReport == null) {
-                    throw InvalidInputApiException(
-                        "Missing companyIdOfAcceptedQaReport.",
-                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
-                    )
-                }
-                val hasQaReportForCompany =
-                    datasetReview.dataPoints[dataPointIndex].qaReports.any {
-                        it.reporterCompanyId == convertToUUID(patch.companyIdOfAcceptedQaReport!!)
-                    }
-                if (!hasQaReportForCompany) {
-                    throw InvalidInputApiException(
-                        "QA report not found.",
-                        "No QA report from company with id $patch.companyIdOfAcceptedQaReport found for this data point.",
-                    )
-                }
-                modifiedPatch.acceptedSource = patch.acceptedSource
-                modifiedPatch.companyIdOfAcceptedQaReport = patch.companyIdOfAcceptedQaReport
-            }
+            modifiedPatch.acceptedSource =
+                getAcceptedSourceOfDataPoint(
+                    patch.acceptedSource,
+                    datasetReview.dataPoints[dataPointIndex].acceptedSource,
+                )
 
             datasetReview.dataPoints[dataPointIndex].acceptedSource = modifiedPatch.acceptedSource
-            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = convertToUUID(modifiedPatch.companyIdOfAcceptedQaReport!!)
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport =
+                convertToUUID(modifiedPatch.companyIdOfAcceptedQaReport!!)
             datasetReview.dataPoints[dataPointIndex].customValue = modifiedPatch.customDataPoint
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
