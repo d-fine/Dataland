@@ -31,7 +31,15 @@ class DatasetReviewCreationUtils
         private val datasetReviewSupportService: DatasetReviewSupportService,
     ) {
         /**
-         * Helper method to create a dataset review entity from the given qa reports, dataset metadata and data points in the dataset.
+         * Helper method to create a dataset review entity from the given QA reports, dataset metadata, and data points.
+         *
+         * The resulting entity includes the latest QA report per company and data point type, the list of QA reporter
+         * companies, and one review-details entry per data point in the dataset.
+         *
+         * @param datasetMetaData Metadata of the dataset used to populate company, data type, and reporting period.
+         * @param datasetId Unique identifier of the dataset for which the review is created.
+         * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
+         * @return A fully initialized DatasetReviewEntity ready for persistence.
          */
         fun createDatasetReviewEntity(
             datasetMetaData: DataMetaInformation,
@@ -68,7 +76,15 @@ class DatasetReviewCreationUtils
         }
 
         /**
-         * Helper method to get the data points with details for the review process.
+         * Helper method to populate the dataset review with data point review details.
+         *
+         * For each data point type in the dataset, this method creates a review-details entry and attaches the
+         * latest QA reports for that data point type, then adds it to the given review entity.
+         *
+         * @param reviewEntity The dataset review entity to enrich with data point review details.
+         * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
+         * @param latestQaReportForCompanyAndType Latest QA report per company and data point type.
+         * @return The same DatasetReviewEntity instance with populated data points.
          */
         private fun setDataPointsForReview(
             reviewEntity: DatasetReviewEntity,
@@ -115,10 +131,13 @@ class DatasetReviewCreationUtils
         }
 
         /**
-         * Helper method to get the companies of the reporters of qa reports.
+         * Helper method to get the companies of the reporters of QA reports.
          *
-         * Only considers the latest qa report for each company and data point type combination
-         * to determine the reporter companies.
+         * Only considers the latest QA report for each company and data point type combination to determine
+         * the reporter companies.
+         *
+         * @param latestQaReportForCompanyAndType Latest QA report per company and data point type.
+         * @return List of reporter companies derived from the latest QA reports.
          */
         private fun getQaReporterCompanies(
             latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
@@ -140,6 +159,11 @@ class DatasetReviewCreationUtils
 
         /**
          * Helper method to get a map of company names by company id.
+         *
+         * Resolves the provided company ids to display names via the company validation API.
+         *
+         * @param uniqueCompanyIds List of unique company ids to resolve.
+         * @return Map of company id to company name for the provided ids.
          */
         private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> {
             val reporterCompanyNames =
@@ -151,7 +175,13 @@ class DatasetReviewCreationUtils
         }
 
         /**
-         * Helper method to get the latest qa report for each combination of company and data point type.
+         * Helper method to get the latest QA report for each combination of company and data point type.
+         *
+         * Resolves the reporter's company for each QA report, then keeps only the most recent report per
+         * company and data point type combination.
+         *
+         * @param qaReportEntities List of QA report entities to evaluate.
+         * @return Map keyed by "companyId|dataPointType" containing the latest QA report for each key.
          */
         private fun getLatestQaReportForEachCompanyAndDataPointType(
             qaReportEntities: List<DataPointQaReportEntity>,

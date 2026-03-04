@@ -24,19 +24,34 @@ class DatasetReviewSupportService
         private val dataPointQaReportRepository: DataPointQaReportRepository,
     ) {
         /**
-         * Retrieves meta data of a dataset
+         * Retrieves meta data of a dataset.
+         *
+         * @param datasetId Identifier of the dataset.
+         * @return Metadata of the dataset.
          */
         fun getDataMetaInfo(datasetId: String): DataMetaInformation = metaDataControllerApi.getDataMetaInfo(datasetId)
 
-        /**  Retrieves the data points contained in a dataset.
+        /**
+         * Retrieves the data points contained in a dataset.
+         *
+         * @param datasetId Identifier of the dataset.
+         * @return Map of data point type to data point id contained in the dataset.
          */
         fun getContainedDataPoints(datasetId: String): Map<String, String> = metaDataControllerApi.getContainedDataPoints(datasetId)
 
-        /**  Retrieves the data point type for a given data point.
+        /**
+         * Retrieves the data point type for a given data point.
+         *
+         * @param dataPointId Identifier of the data point.
+         * @return Data point type of the specified data point.
          */
         fun getDataPointType(dataPointId: UUID): String = dataPointControllerApi.getDataPointMetaInfo(dataPointId.toString()).dataPointType
 
-        /**  Validates a custom data point.
+        /**
+         * Validates a custom data point.
+         *
+         * @param dataPoint Data point value to validate.
+         * @param dataPointType Type of the data point for validation.
          */
         fun validateCustomDataPoint(
             dataPoint: String,
@@ -45,12 +60,20 @@ class DatasetReviewSupportService
             dataPointControllerApi.validateDataPoint(DataPointToValidate(dataPoint, dataPointType))
         }
 
-        /**  Retrieves the frameworks that use a given data point type.
+        /**
+         * Retrieves the frameworks that use a given data point type.
+         *
+         * @param dataPointType Data point type to look up.
+         * @return List of framework ids that use the data point type.
          */
         fun getFrameworksForDataPointType(dataPointType: String): List<String> =
             specificationControllerApi.getDataPointTypeSpecification(dataPointType).usedBy.map { it.id }
 
-        /** Finds QA report IDs and reporter User IDs for given data point IDs.
+        /**
+         * Finds QA report IDs and reporter user IDs for given data point IDs.
+         *
+         * @param dataPointIds List of data point ids to search for.
+         * @return List of QA report entities with meta information for the given data point ids.
          */
         fun findQaReportsWithDetails(dataPointIds: List<String>): List<DataPointQaReportEntity> =
             dataPointQaReportRepository
@@ -60,7 +83,11 @@ class DatasetReviewSupportService
                     reporterUserId = null,
                 )
 
-        /** Finds the data point type using a QA report ID.
+        /**
+         * Finds the data point type using a QA report ID.
+         *
+         * @param qaReportId Identifier of the QA report.
+         * @return Data point type associated with the QA report.
          */
         fun findDataPointTypeUsingQaReportId(qaReportId: UUID): String =
             dataPointQaReportRepository.findDataPointTypeUsingId(qaReportId.toString())
