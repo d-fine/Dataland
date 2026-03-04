@@ -161,7 +161,7 @@ class DatasetReviewService
 
             datasetReview.dataPoints[dataPointIndex].acceptedSource = modifiedPatch.acceptedSource
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport =
-                convertToUUID(modifiedPatch.companyIdOfAcceptedQaReport!!)
+                modifiedPatch.companyIdOfAcceptedQaReport?.let { convertToUUID(it) }
             datasetReview.dataPoints[dataPointIndex].customValue = modifiedPatch.customDataPoint
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
