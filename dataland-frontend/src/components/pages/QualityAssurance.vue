@@ -272,7 +272,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
     displayDataOfPage.value = await Promise.all(
       response.data.map(async (row) => ({
         ...row,
-        reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+        reviewStatus: await getReviewStatus(row.ownerId, row.ownerName),
       }))
     );
     totalRecords.value = (
@@ -446,18 +446,15 @@ function validateSearchBarInput(): boolean {
 
 /**
  * Determines the label of the review button in the table depending.
- * @param reviewerUserId the user id of the judge of the dataset
- * @param reviewerUserName the user name of the judge of the dataset
+ * @param ownerId the user id of the owner of the dataset
+ * @param ownerName the user name of the owner of the dataset
  * @returns the label of the review button
  */
-async function getReviewStatus(
-  reviewerUserId: string | undefined,
-  reviewerUserName: string | undefined
-): Promise<string> {
+async function getReviewStatus(ownerId: string | undefined, ownerName: string | undefined): Promise<string> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
-  if (reviewerUserId && reviewerUserName) {
-    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
+  if (ownerId && ownerName) {
+    return keycloakUserId === ownerId ? 'Continue Review' : ownerName;
   }
   return 'Start Review';
 }

@@ -111,21 +111,21 @@ interface DatasetReviewApi {
      * @param datasetReviewId identifier used to uniquely specify the data review object
      */
     @Operation(
-        summary = "Change the judge of a dataset review object.",
-        description = "Set yourself as the judge of the dataset review object. Other users cannot modify this object.",
+        summary = "Change the owner of a dataset review object.",
+        description = "Set yourself as the owner of the dataset review object. Other users cannot modify this object.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully set yourself as the judge."),
+            ApiResponse(responseCode = "200", description = "Successfully set yourself as the owner."),
             ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/reviewer"],
+        value = ["/{datasetReviewId}/owner"], // change to owner?
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_JUDGE')")
-    fun setReviewer(
+    fun setOwner(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
@@ -141,7 +141,7 @@ interface DatasetReviewApi {
         summary = "Change the state of a dataset review object.",
         description =
             "Modify state of the dataset review object. Approves or rejects associated data set. " +
-                    "Uploads new datapoints and approves them, rejects unneeded datapoints.",
+                "Uploads new datapoints and approves them, rejects unneeded datapoints.",
     )
     @PatchMapping(
         value = ["/{datasetReviewId}/state"],
@@ -153,8 +153,8 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the judge " +
-                            "for this object via the appropriate PATCH endpoint before editing it.",
+                    "Forbidden. You must first assign yourself as the owner " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],
     )
@@ -184,7 +184,8 @@ interface DatasetReviewApi {
         summary = "Put a datapoint to ApprovedDataPoints map.",
         description =
             "Adds a datapoint to the ApprovedDataPoints map. " +
-                    "Removes the qa report and custom datapoint from approvedQaReports and approvedCustomDataPoints with same data point type.",
+                "Removes the qa report and custom datapoint from approvedQaReports " +
+                "and approvedCustomDataPoints with same data point type.",
     )
     @ApiResponses(
         value = [
@@ -192,8 +193,8 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the judge " +
-                            "for this object via the appropriate PATCH endpoint before editing it.",
+                    "Forbidden. You must first assign yourself as the owner " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
             ),
 
         ],
@@ -226,8 +227,8 @@ interface DatasetReviewApi {
         summary = "Put a qa report to ApprovedQaReports map.",
         description =
             "Adds a datapoint to the ApprovedQaReports map. " +
-                    "Removes the data point id and custom data point from " +
-                    "approvedDataPoints and approvedCustomDataPoints with same data point type.",
+                "Removes the data point id and custom data point from " +
+                "approvedDataPoints and approvedCustomDataPoints with same data point type.",
     )
     @ApiResponses(
         value = [
@@ -235,8 +236,8 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the judge " +
-                            "for this object via the appropriate PATCH endpoint before editing it.",
+                    "Forbidden. You must first assign yourself as the owner " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],
     )
@@ -269,7 +270,7 @@ interface DatasetReviewApi {
         summary = "Put a custom data point to ApprovedCustomDataPoints map.",
         description =
             "Adds a custom datapoint to the ApprovedCustomDataPoints map. " +
-                    "Removes the data point id and qa report from approvedDataPoints and approvedQaReports with same data point type.",
+                "Removes the data point id and qa report from approvedDataPoints and approvedQaReports with same data point type.",
     )
     @ApiResponses(
         value = [
@@ -277,8 +278,8 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the judge " +
-                            "for this object via the appropriate PATCH endpoint before editing it.",
+                    "Forbidden. You must first assign yourself as the owner " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],
     )

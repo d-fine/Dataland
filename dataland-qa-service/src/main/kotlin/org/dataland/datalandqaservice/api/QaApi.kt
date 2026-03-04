@@ -44,7 +44,7 @@ interface QaApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') ",
+            "or hasRole('ROLE_JUDGE') ",
     )
     fun getInfoOnDatasets(
         @RequestParam
@@ -99,8 +99,8 @@ interface QaApi {
         summary = "Get the QA review information of an uploaded dataset for a given id.",
         description =
             "Get the QA review information of uploaded dataset for a given id." +
-                    "Users can get the review information of their own datasets." +
-                    "Admins, judges and reviewer can get the review information for all datasets.",
+                "Users can get the review information of their own datasets." +
+                "Admins, judges and reviewer can get the review information for all datasets.",
     )
     @ApiResponses(
         value = [
@@ -114,8 +114,8 @@ interface QaApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') " +
-                "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
+            "or hasRole('ROLE_JUDGE') " +
+            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getQaReviewResponseByDataId(
         @PathVariable @Parameter(
@@ -199,9 +199,8 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "" +
-                "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') ",
+        "hasRole('ROLE_REVIEWER') " +
+            "or hasRole('ROLE_JUDGE') ",
     )
     fun getNumberOfPendingDatasets(
         @RequestParam
@@ -246,9 +245,8 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "" +
-                "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') ",
+        "hasRole('ROLE_REVIEWER') " +
+            "or hasRole('ROLE_JUDGE') ",
     )
     fun getDataPointQaReviewInformation(
         @RequestParam
@@ -309,8 +307,8 @@ interface QaApi {
         summary = "Get the QA review information of an uploaded data point for a given id.",
         description =
             "Get the QA review information of uploaded data point for a given id." +
-                    "Users can get the review information of their own data points." +
-                    "Admins, judges and reviewer can get the review information for all data points.",
+                "Users can get the review information of their own data points." +
+                "Admins, judges and reviewer can get the review information for all data points.",
     )
     @ApiResponses(
         value = [
@@ -324,8 +322,8 @@ interface QaApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') " +
-                "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
+            "or hasRole('ROLE_JUDGE') " +
+            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
         @PathVariable @Parameter(
@@ -394,9 +392,8 @@ interface QaApi {
         value = ["/data-points/queue"],
     )
     @PreAuthorize(
-        "" +
-                "hasRole('ROLE_REVIEWER') " +
-                "or hasRole('ROLE_JUDGE') ",
+        "hasRole('ROLE_REVIEWER') " +
+            "or hasRole('ROLE_JUDGE') ",
     )
     fun getDataPointReviewQueue(): ResponseEntity<List<DataPointQaReviewInformation>>
 }

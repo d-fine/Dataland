@@ -33,8 +33,8 @@ type ReviewQueueElementOptions = {
   framework: string;
   reportingPeriod: string;
   datasetReviewId?: string;
-  reviewerUserName?: string;
-  reviewerUserId?: string;
+  ownerName?: string;
+  ownerId?: string;
   timestamp?: number;
 };
 
@@ -53,8 +53,8 @@ function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewRe
     reportingPeriod: options.reportingPeriod,
     qaStatus: QaStatus.Pending,
     datasetReviewId: options.datasetReviewId,
-    reviewerUserName: options.reviewerUserName,
-    reviewerUserId: options.reviewerUserId,
+    ownerName: options.ownerName,
+    ownerId: options.ownerId,
     numberQaReports: 0,
   };
 }
@@ -110,8 +110,8 @@ describe('Component tests for the Quality Assurance page', () => {
   const companyNameBeta = 'Beta Corporate Ltd.';
   const companyIdBeta = crypto.randomUUID();
   const datasetReviewId = crypto.randomUUID();
-  const reviewerUserName = 'Reviewer user name';
-  const reviewerUserId = 'Revieweruserid';
+  const ownerName = 'Owner user name';
+  const ownerId = 'Owneruserid';
   const reviewQueueElementBeta = buildReviewQueueElement({
     dataId: dataIdBeta,
     companyName: companyNameBeta,
@@ -119,8 +119,8 @@ describe('Component tests for the Quality Assurance page', () => {
     framework: DataTypeEnum.Sfdr,
     reportingPeriod: '2023',
     datasetReviewId: datasetReviewId,
-    reviewerUserName: reviewerUserName,
-    reviewerUserId: reviewerUserId,
+    ownerName: ownerName,
+    ownerId: ownerId,
   });
 
   /**
@@ -428,7 +428,7 @@ describe('Component tests for the Quality Assurance page', () => {
         dataType: DataTypeEnum.Lksg,
       });
     }).as('createDatasetReview');
-    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${ownerName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
@@ -456,7 +456,7 @@ describe('Component tests for the Quality Assurance page', () => {
         ],
       });
     }).as('createDatasetReviewForbidden');
-    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${ownerName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReviewForbidden');
     cy.get('[data-test="confirmation-modal-error-message"]')

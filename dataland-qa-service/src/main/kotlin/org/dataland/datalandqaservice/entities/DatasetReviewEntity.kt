@@ -33,8 +33,8 @@ class DatasetReviewEntity(
     @Column(name = "review_state")
     @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
-    @Column(name = "reviewer_user_id")
-    var reviewerUserId: UUID?,
+    @Column(name = "owner_id")
+    var ownerID: UUID?,
     @ElementCollection
     @Column(name = "preapproved_data_point_ids")
     var preapprovedDataPointIds: Set<UUID> = emptySet(),
@@ -62,7 +62,7 @@ class DatasetReviewEntity(
             dataType,
             reportingPeriod,
             reviewState,
-            reviewerUserId?.toString(),
+            ownerID?.toString(),
             null,
             preapprovedDataPointIds.map { it.toString() }.toSet(),
             qaReports.map { it.toString() }.toSet(),

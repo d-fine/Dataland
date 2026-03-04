@@ -63,7 +63,7 @@ class DatasetReviewServiceTest {
             companyId = dummyCompanyId,
             dataType = "sfdr",
             reportingPeriod = "2026",
-            reviewerUserId = dummyUserId,
+            ownerID = dummyUserId,
             qaReports = setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, null)),
         )
 
@@ -106,7 +106,7 @@ class DatasetReviewServiceTest {
 
         whenever(mockKeycloakUserService.getUser(any())).thenReturn(
             KeycloakUserInfo(
-                email = "reviewer@example.com",
+                email = "owner@example.com",
                 userId = dummyUserId.toString(),
                 firstName = "Dummy",
                 lastName = "User",
@@ -128,8 +128,8 @@ class DatasetReviewServiceTest {
         assertEquals(datasetReviewEntity.dataSetReviewId.toString(), response.dataSetReviewId)
         assertEquals(datasetReviewEntity.datasetId.toString(), response.datasetId)
         assertEquals(datasetReviewEntity.companyId.toString(), response.companyId)
-        assertEquals(dummyUserId.toString(), response.reviewerUserId)
-        assertEquals("Dummy User", response.reviewerUserName)
+        assertEquals(dummyUserId.toString(), response.ownerId)
+        assertEquals("Dummy User", response.ownerName)
     }
 
     @Test
@@ -192,18 +192,18 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setReviewer sets reviewer to current user`() {
+    fun `setOwner sets owner to current user`() {
         val newReviewId = UUID.randomUUID()
 
-        datasetReviewService.setReviewer(newReviewId)
+        datasetReviewService.setOwner(newReviewId)
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
-        assertEquals(dummyUserId, captor.firstValue.reviewerUserId)
+        assertEquals(dummyUserId, captor.firstValue.ownerID)
     }
 
     @Test
-    fun `setReviewState updates status when user is reviewer`() {
+    fun `setReviewState updates status when user is owner`() {
         val newState = DatasetReviewState.Aborted
 
         datasetReviewService.setReviewState(UUID.randomUUID(), newState)
@@ -214,7 +214,7 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setReviewState throws InsufficientRights when current user is not reviewer`() {
+    fun `setReviewState throws InsufficientRights when current user is not owner`() {
         val otherUserId = UUID.randomUUID()
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
@@ -292,7 +292,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
+                ownerID = dummyUserId,
                 qaReports = emptySet(),
             ).apply {
                 approvedDataPointIds[dummyDataPointType] = UUID.randomUUID()
@@ -332,7 +332,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
+                ownerID = dummyUserId,
                 qaReports = emptySet(),
             )
 
@@ -360,7 +360,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                reviewerUserId = dummyUserId,
+                ownerID = dummyUserId,
                 qaReports = emptySet(),
             )
 
@@ -380,18 +380,18 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setReviewer throws ResourceNotFound when datasetReview does not exist`() {
+    fun `setOwner throws ResourceNotFound when datasetReview does not exist`() {
         doReturn(Optional.empty<DatasetReviewEntity>())
             .whenever(mockDatasetReviewRepository)
             .findById(any())
 
         assertThrows<ResourceNotFoundApiException> {
-            datasetReviewService.setReviewer(UUID.randomUUID())
+            datasetReviewService.setOwner(UUID.randomUUID())
         }
     }
 
     @Test
-    fun `acceptOriginalDatapoint throws InsufficientRights when current user is not reviewer`() {
+    fun `acceptOriginalDatapoint throws InsufficientRights when current user is not owner`() {
         val datasetReviewId = UUID.randomUUID()
         val entity =
             DatasetReviewEntity(
@@ -400,7 +400,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                reviewerUserId = UUID.randomUUID(),
+                ownerID = UUID.randomUUID(),
                 qaReports = emptySet(),
             )
 
