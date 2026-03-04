@@ -139,7 +139,7 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
   dataType: 'sfdr',
   reportingPeriod: '2021',
   reviewState: 'Pending',
-  qaJudgeUserId: '123',
+  qaJudgeUserId: '136a9394-4873-4a61-a25b-65b1e8e7cc2f',
   qaJudgeUserName: 'Jane Doe',
   qaReporterCompanies: [
     { reporterCompanyName: 'Company A', reporterCompanyId: 'COMP-A' },
@@ -341,8 +341,10 @@ const rejectDataset = (): void => {
 };
 
 const finishReview = (): void => {
-  alert(
-    'Finish review logic here (seperate Ticket). Note: Make sure to -make sure all data is valid as is, then update the review state to finished '
+  openConfirmationModal(
+    'Finish Review',
+    'Are you sure you want to mark this dataset review as finished? This can only be undone by a dataland admin!',
+    () => {} // Implement action here in seperate ticket
   );
 };
 
