@@ -90,6 +90,14 @@
         </div>
       </div>
     </template>
+    <PopupConfirmationModal
+      v-model:visible="confirmationModal.visible"
+      :header="confirmationModal.header"
+      :message="confirmationModal.message"
+      :error-message="confirmationModal.errorMessage"
+      :is-loading="isModalActionPending"
+      @confirm="confirmationModal.onConfirm"
+    />
   </TheContent>
 </template>
 
@@ -107,6 +115,7 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
+import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 
 // Props passed from the router
 const props = defineProps<{
@@ -129,7 +138,7 @@ const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
   dataType: 'sfdr',
   reportingPeriod: '2021',
   reviewState: 'Pending',
-  qaJudgeUserId: '1234',
+  qaJudgeUserId: '123',
   qaJudgeUserName: 'Jane Doe',
   qaReporterCompanies: [
     { reporterCompanyName: 'Company A', reporterCompanyId: 'COMP-A' },
@@ -215,28 +224,96 @@ const isAssignedToCurrentUser = computed(() => {
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
+/*
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
   mutationFn: async () => {
     if (!datasetReview.value) throw new Error('No dataset review selected');
-
     return await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
   },
   onSuccess: async () => {
     await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
     console.log('Successfully assigned!');
+    confirmationModal.value.visible = false;
   },
   onError: (error) => {
     console.error('Error assigning dataset review:', error);
+    confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
+  },
+});
+*/
+
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
+  mutationFn: async () => {
+    if (!datasetReview.value) throw new Error('No dataset review selected');
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const fallbackId = currentUserId.value || 'local-dev-user-id';
+
+    MOCK_DATASET_REVIEW.qaJudgeUserId = fallbackId;
+    MOCK_DATASET_REVIEW.qaJudgeUserName = 'Current User (Mocked)';
+
+    return { ...MOCK_DATASET_REVIEW };
+  },
+  onSuccess: (newDatasetReviewCopy) => {
+    queryClient.setQueryData(['qaReviewResponse', props.dataId], newDatasetReviewCopy);
+
+    if (!currentUserId.value) {
+      currentUserId.value = 'local-dev-user-id';
+    }
+    confirmationModal.value.visible = false;
+
+    console.log('Successfully assigned (Mocked)! UI should update now.');
+    console.log('isAssignedToCurrentUser:', isAssignedToCurrentUser.value);
+  },
+  onError: (error) => {
+    console.error('Error assigning dataset review:', error);
+    confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
   },
 });
 
+interface confirmationModelState {
+  visible: boolean;
+  header: string;
+  message: string;
+  errorMessage?: string;
+  isLoading?: boolean;
+  onConfirm?: () => void;
+}
+const confirmationModal = ref<confirmationModelState>({
+  visible: false,
+  header: '',
+  message: '',
+  errorMessage: '',
+  isLoading: false,
+  onConfirm: () => {},
+});
+
+const openConfirmationModal = (header: string, message: string, onConfirm?: () => void) => {
+  confirmationModal.value = {
+    visible: true,
+    header: header,
+    message: message,
+    errorMessage: '',
+    onConfirm,
+  };
+};
+
+const isModalActionPending = computed(() => isAssigningToMe.value);
+
 const assignToMe = (): void => {
-  assignToMeMutation();
+  openConfirmationModal(
+    'Assign Yourself',
+    'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
+    () => {
+      assignToMeMutation();
+    }
+  );
 };
 
 const rejectDataset = (): void => {
   alert('Reject logic here');
 };
+
 const finishReview = (): void => {
   alert(
     'Finish review logic here (seperate Ticket). Note: Make sure to -make sure all data is valid as is, then update the review state to finished '
