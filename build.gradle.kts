@@ -25,7 +25,7 @@ subprojects {
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
-            freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn"))
+            freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn", "-Xannotation-default-target=param-property"))
             jvmTarget.set(
                 org.jetbrains.kotlin.gradle.dsl.JvmTarget
                     .fromTarget(jvmVersion.majorVersion),
