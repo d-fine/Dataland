@@ -32,7 +32,16 @@ class DatasetReviewService
         private val datasetReviewCreationUtils: DatasetReviewCreationUtils,
     ) {
         /**
-         * Create a dataset review object associated to the given dataset.
+         * Creates and stores a new dataset review for the given dataset ID.
+         *
+         * Retrieves associated metadata and data points and checks for existing pending reviews.
+         * Throws an exception if the dataset does not exist or a pending review is already present.
+         * Returns the persisted review entity as API response.
+         *
+         * @param datasetId The UUID of the dataset to review.
+         * @return DatasetReviewResponse API response with created review details.
+         * @throws ResourceNotFoundApiException If the dataset is not found.
+         * @throws ConflictApiException If a pending review exists.
          */
         @Transactional
         fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
@@ -74,7 +83,16 @@ class DatasetReviewService
         }
 
         /**
-         * Method to set state of dataset review object.
+         * Sets the review state for a dataset review entity.
+         *
+         * Validates reviewer permissions and updates the review state to the specified value.
+         * Persists the change and returns the updated dataset review as an API response.
+         * Throws an exception if the current user is not the reviewer.
+         *
+         * @param datasetReviewId The UUID of the dataset review to update.
+         * @param state The new review state to apply.
+         * @return DatasetReviewResponse The API response with updated review details.
+         * @throws InsufficientRightsApiException If the current user is not authorized to update the review.
          */
         @Transactional
         fun setReviewState(
@@ -88,10 +106,21 @@ class DatasetReviewService
         }
 
         /**
-         * Helper method to validate and return the custom data point value to be set for a data point in a dataset review.
-         * If the new custom data point is null, the old custom data point will be returned, otherwise the new custom
-         * data point will be validated and returned.
+         * Determines the valid custom value for a data point type.
+         *
+         * Validates a new custom data point, falls back to the old value where appropriate, and checks specification compliance.
+         * Throws an exception if a required custom value is missing or invalid for the selected source.
+         * Returns the new or existing custom value, or null if not applicable.
+         *
+         * @param dataPointType The type identifier for the data point.
+         * @param newCustomDataPoint The proposed new custom value, if any.
+         * @param oldCustomDataPoint The existing custom value, if any.
+         * @param acceptedSource The selected source for data point acceptance.
+         * @return The valid custom value, or null.
+         * @throws ConflictApiException If a required custom value is missing.
+         * @throws InvalidInputApiException If the custom value does not match the specification.
          */
+        @Transactional
         fun getCustomDataPoint(
             dataPointType: String,
             newCustomDataPoint: String?,
@@ -120,47 +149,64 @@ class DatasetReviewService
         }
 
         /**
-         * Helper method to validate that the company id of the accepted QA report is correctly provided according to the accepted source.
-         * If the accepted source is QA, a company id of the accepted QA report must be provided, otherwise it must not be provided.
+         * Validates and returns the accepted QA report company ID for a data point.
+         *
+         * Ensures the company ID is correctly provided or omitted based on the accepted source and checks for the existence
+         * of a QA report from the specified company.
+         * Throws an exception if validation fails for presence, absence, or existence conditions.
+         * Returns the valid company ID or null if not applicable.
+         *
+         * @param acceptedDataPoint The selected data point source.
+         * @param qaReports The list of QA reports for the data point.
+         * @param companyIdOfAcceptedQaReport The company ID to validate as accepted QA report source.
+         * @return The validated company ID or null.
+         * @throws InvalidInputApiException If the company ID is missing, incorrectly provided, or does not correspond to a valid QA report.
          */
+        @Transactional
         fun getCompanyIdOfAcceptedQaReportIfValid(
             acceptedDataPoint: AcceptedDataPointSource?,
-            qaReports: MutableList<QaReportDataPointWithReporterDetailsEntity>,
+            qaReports: List<QaReportDataPointWithReporterDetailsEntity>,
             companyIdOfAcceptedQaReport: String?,
         ): String? {
+            var errorSummary: String? = null
+            var errorMessage: String? = null
+
             if (acceptedDataPoint == AcceptedDataPointSource.Qa) {
-                if (companyIdOfAcceptedQaReport == null) {
-                    throw InvalidInputApiException(
-                        "Missing companyIdOfAcceptedQaReport.",
-                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
-                    )
-                }
-                val hasQaReportForCompany =
-                    qaReports.any {
-                        it.reporterCompanyId == convertToUUID(companyIdOfAcceptedQaReport)
+                when {
+                    companyIdOfAcceptedQaReport == null -> {
+                        errorSummary = "Missing companyIdOfAcceptedQaReport."
+                        errorMessage = "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
                     }
-                if (!hasQaReportForCompany) {
-                    throw InvalidInputApiException(
-                        "QA report not found.",
-                        "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point.",
-                    )
+                    qaReports.none { it.reporterCompanyId == convertToUUID(companyIdOfAcceptedQaReport) } -> {
+                        errorSummary = "QA report not found."
+                        errorMessage = "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point."
+                    }
                 }
             } else {
                 if (companyIdOfAcceptedQaReport != null) {
-                    throw InvalidInputApiException(
-                        "Invalid input.",
-                        "companyIdOfAcceptedQaReport must be null when acceptedSource is not Qa.",
-                    )
+                    errorSummary = "Invalid input."
+                    errorMessage = "companyIdOfAcceptedQaReport must be null when acceptedSource is not Qa."
                 }
             }
+            if (errorSummary != null && errorMessage != null) {
+                throw InvalidInputApiException(errorSummary, errorMessage)
+            }
+
             return companyIdOfAcceptedQaReport
         }
 
-    /**
-     * Helper method to determine the accepted source to be set for a data point in a dataset review. If the new accepted
-     * source is null, the old accepted source will be returned, otherwise the new accepted source will be returned.
-     */
-    fun getAcceptedSourceOfDataPoint(
+        /**
+         * Determines the accepted source for a data point based on provided values.
+         *
+         * Returns the new accepted data point source if specified; otherwise falls back to the previous source.
+         * Used to maintain or update the acceptance status of a data point during review processes.
+         *
+         * @param newAcceptedDataPointSource The proposed new accepted source for the data point.
+         * @param oldAcceptedDataPointSource The existing accepted source for the data point.
+         * @return The resolved accepted data point source, or null if neither is available.
+         */
+        @Transactional
+        fun getAcceptedSourceOfDataPoint(
             newAcceptedDataPointSource: AcceptedDataPointSource?,
             oldAcceptedDataPointSource: AcceptedDataPointSource?,
         ): AcceptedDataPointSource? {
@@ -171,7 +217,17 @@ class DatasetReviewService
         }
 
         /**
-         * Method to set the accepted source for a data point in a dataset review.
+         * Updates review details for a specific data point in a dataset review.
+         *
+         * Validates and applies patch values for accepted source, custom value, and QA report company ID to the specified data point.
+         * Throws exceptions for invalid input or missing required values, and persists the updated review entity.
+         * Returns the modified dataset review as API response.
+         *
+         * @param datasetReviewId The UUID of the dataset review to update.
+         * @param dataPointType The type identifier for the data point to patch.
+         * @param patch The patch object containing updates for review details.
+         * @return DatasetReviewResponse API response with updated review details.
+         * @throws InvalidInputApiException If input values are invalid or required values are missing.
          */
         @Transactional
         fun patchReviewDetails(
@@ -193,7 +249,7 @@ class DatasetReviewService
             modifiedPatch.companyIdOfAcceptedQaReport =
                 getCompanyIdOfAcceptedQaReportIfValid(
                     patch.acceptedSource,
-                    datasetReview.dataPoints[dataPointIndex].qaReports,
+                    datasetReview.dataPoints[dataPointIndex].qaReports.toList(),
                     patch.companyIdOfAcceptedQaReport,
                 )
 
