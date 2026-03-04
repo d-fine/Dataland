@@ -44,11 +44,11 @@ const isVisible = computed({
   set: (val) => emit('update:visible', val),
 });
 
-const handleConfirm = () => {
+const handleConfirm = (): void => {
   emit('confirm');
 };
 
-const handleCancel = () => {
+const handleCancel = (): void => {
   if (!props.isLoading) {
     emit('cancel');
     isVisible.value = false;

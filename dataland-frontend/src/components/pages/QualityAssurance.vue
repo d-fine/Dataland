@@ -170,7 +170,6 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import PrimeDialog from 'primevue/dialog';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
@@ -217,7 +216,7 @@ const confirmationModal = ref<confirmationModalState>({
   onConfirm: () => {},
 });
 
-const openConfirmationModal = (header: string, message: string, onConfirm?: () => void) => {
+const openConfirmationModal = (header: string, message: string, onConfirm?: () => void): void => {
   confirmationModal.value = {
     visible: true,
     header: header,
@@ -301,7 +300,7 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
       'Start Review',
       'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
       () => {
-        confirmStartReview();
+        void confirmStartReview();
       }
     );
   } else {
@@ -501,15 +500,5 @@ onMounted(() => {
   justify-content: flex-start;
   text-align: left;
   padding-inline: 0;
-}
-
-.confirmation-modal-message {
-  max-width: 30rem;
-  margin: 8px auto 0;
-  white-space: normal;
-  text-align: left;
-  word-break: break-word;
-  display: grid;
-  gap: var(--spacing-xs);
 }
 </style>

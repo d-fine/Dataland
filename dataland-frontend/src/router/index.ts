@@ -41,6 +41,7 @@ const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/component
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
+const DatasetReviewOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetReviewOverview.vue');
 
 const routes = [
   {
@@ -193,15 +194,15 @@ const routes = [
       requiresAuthentication: true,
     },
   },
-    {
-        path: `/qa/review/:dataId`,
-        name: 'DatasetReviewOverview',
-        component: () => import('@/components/pages/DatasetReviewOverview.vue'),
-        props: true,
-        meta: {
-            requiresAuthentication: true,
-        },
+  {
+    path: `/qa/review/:dataId`,
+    name: 'DatasetReviewOverview',
+    component: DatasetReviewOverview,
+    props: true,
+    meta: {
+      requiresAuthentication: true,
     },
+  },
   {
     path: '/datasets',
     name: 'Dataset Overview',
