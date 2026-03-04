@@ -1,10 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
-import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -51,18 +51,14 @@ class DatasetReviewController(
     override fun setAcceptedSource(
         datasetReviewId: String,
         dataPointType: String,
-        acceptedSource: AcceptedDataPointSource,
-        companyIdOfAcceptedQaReport: String?,
-        customValue: String?,
+        patch: AcceptedSourcePatch,
     ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.setAcceptedSource(
                     convertToUUID(datasetReviewId),
                     dataPointType,
-                    acceptedSource,
-                    companyIdOfAcceptedQaReport,
-                    customValue,
+                    patch,
                 ),
             )
 }

@@ -9,6 +9,7 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -153,38 +154,40 @@ class DatasetReviewService
         fun setAcceptedSource(
             datasetReviewId: UUID,
             dataPointType: String,
-            acceptedSource: AcceptedDataPointSource,
-            companyIdOfAcceptedQaReport: String?,
-            customValue: String?,
+            patch: AcceptedSourcePatch,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
-            datasetReview.dataPoints[dataPointIndex].acceptedSource = acceptedSource
+            if (patch.acceptedSource == null) {
+                return datasetReview.toDatasetReviewResponse()
+            }
 
-            return when (acceptedSource) {
+            datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+
+            return when (patch.acceptedSource) {
                 AcceptedDataPointSource.Original -> {
                     acceptOriginalDataPoint(datasetReview, dataPointIndex)
                 }
 
                 AcceptedDataPointSource.Qa -> {
-                    if (companyIdOfAcceptedQaReport == null) {
+                    if (patch.companyIdOfAcceptedQaReport == null) {
                         throw InvalidInputApiException(
                             "Missing companyIdOfAcceptedQaReport.",
                             "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
                         )
                     }
-                    acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(companyIdOfAcceptedQaReport))
+                    acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(patch.companyIdOfAcceptedQaReport))
                 }
 
                 AcceptedDataPointSource.Custom -> {
-                    if (customValue == null) {
+                    if (patch.customValue == null) {
                         throw InvalidInputApiException(
                             "Missing customValue.",
                             "customValue must be provided when acceptedSource is Custom.",
                         )
                     }
-                    acceptCustomDataPoint(datasetReview, dataPointIndex, dataPointType, customValue)
+                    acceptCustomDataPoint(datasetReview, dataPointIndex, dataPointType, patch.customValue)
                 }
             }
         }
