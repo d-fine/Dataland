@@ -126,7 +126,12 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_JUDGE,
+} from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -374,7 +379,7 @@ async function setViewPageAttributesForUser(): Promise<void> {
     );
   }
 
-  hideEmptyFields.value = !hasUserReviewerRights.value;
+  hideEmptyFields.value = !hasUserJudgeRights.value;
 }
 
 /**
