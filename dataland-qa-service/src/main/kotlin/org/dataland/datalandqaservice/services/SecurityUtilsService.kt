@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewHelper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ import java.util.UUID
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired val datasetReviewService: DatasetReviewService,
+    @Autowired val datasetReviewHelper: DatasetReviewHelper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -41,7 +42,7 @@ class SecurityUtilsService(
      * @return True if the user can patch the dataset review, false otherwise.
      */
     fun canUserPatchDatasetReview(datasetReviewId: String): Boolean {
-        val datasetReview = datasetReviewService.getDatasetReview(convertToUUID(datasetReviewId))
+        val datasetReview = datasetReviewHelper.getDatasetReview(convertToUUID(datasetReviewId))
         val userId =
             try {
                 DatalandAuthentication.fromContext().userId
