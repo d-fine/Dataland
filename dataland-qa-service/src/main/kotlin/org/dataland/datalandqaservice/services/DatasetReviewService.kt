@@ -86,28 +86,6 @@ class DatasetReviewService
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
-        /**
-         * Method to accept a QA report data point as the accepted value for a data point in the dataset review.
-         */
-        @Transactional
-        fun acceptQaReportDataPoint(
-            datasetReview: DatasetReviewEntity,
-            dataPointIndex: Int,
-            companyIdOfAcceptedQaReport: UUID,
-        ): DatasetReviewResponse {
-            val hasQaReportForCompany =
-                datasetReview.dataPoints[dataPointIndex].qaReports.any {
-                    it.reporterCompanyId == companyIdOfAcceptedQaReport
-                }
-            if (!hasQaReportForCompany) {
-                throw InvalidInputApiException(
-                    "QA report not found.",
-                    "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point.",
-                )
-            }
-            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
-        }
 
         /**
          * Method to set the accepted source for a data point in a dataset review.
@@ -121,10 +99,19 @@ class DatasetReviewService
             var datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
+            var modifiedPatch = ReviewDetailsPatch()
+
+
+            if (patch.customDataPoint == null && patch.acceptedSource == null) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Custom value or accepted source have to be specified.",
+                )
+            }
 
             if (patch.customDataPoint != null) {
                 try {
-                    datasetReviewSupportService.validateCustomDataPoint(patch.customDataPoint, dataPointType)
+                    datasetReviewSupportService.validateCustomDataPoint(patch.customDataPoint!!, dataPointType)
                 } catch (e: BackendClientException) {
                     throw InvalidInputApiException(
                         "Custom datapoint not valid.",
@@ -132,7 +119,10 @@ class DatasetReviewService
                         e,
                     )
                 }
-                datasetReview.dataPoints[dataPointIndex].customValue = patch.customDataPoint
+                modifiedPatch.customDataPoint = patch.customDataPoint
+            } else
+            {
+                modifiedPatch.customDataPoint = datasetReview.dataPoints[dataPointIndex].customValue
             }
 
             if (patch.acceptedSource == AcceptedDataPointSource.Custom) {
@@ -148,9 +138,9 @@ class DatasetReviewService
                         "companyIdOfAcceptedQaReport must be null when acceptedSource is Custom.",
                     )
                 }
-                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
-                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
-                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+
+                modifiedPatch.companyIdOfAcceptedQaReport = null
+                modifiedPatch.acceptedSource = patch.acceptedSource
             }
 
             if (patch.acceptedSource == AcceptedDataPointSource.Original) {
@@ -160,9 +150,8 @@ class DatasetReviewService
                         "companyIdOfAcceptedQaReport must be null when acceptedSource is Original.",
                     )
                 }
-                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
-                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
-                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+                modifiedPatch.companyIdOfAcceptedQaReport = null
+                modifiedPatch.acceptedSource = patch.acceptedSource
             }
 
             if (patch.acceptedSource == AcceptedDataPointSource.Qa) {
@@ -172,16 +161,24 @@ class DatasetReviewService
                         "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
                     )
                 }
-                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
-                return acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(patch.companyIdOfAcceptedQaReport))
+                val hasQaReportForCompany =
+                    datasetReview.dataPoints[dataPointIndex].qaReports.any {
+                        it.reporterCompanyId == convertToUUID(patch.companyIdOfAcceptedQaReport!!)
+                    }
+                if (!hasQaReportForCompany) {
+                    throw InvalidInputApiException(
+                        "QA report not found.",
+                        "No QA report from company with id $patch.companyIdOfAcceptedQaReport found for this data point.",
+                    )
+                }
+                modifiedPatch.acceptedSource = patch.acceptedSource
+                modifiedPatch.companyIdOfAcceptedQaReport = patch.companyIdOfAcceptedQaReport
             }
 
-            if (patch.customDataPoint == null) {
-                throw InvalidInputApiException(
-                    "Invalid input.",
-                    "Custom value or accepted source have to be specified.",
-                )
-            }
+            datasetReview.dataPoints[dataPointIndex].acceptedSource = modifiedPatch.acceptedSource
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = convertToUUID(modifiedPatch.companyIdOfAcceptedQaReport!!)
+            datasetReview.dataPoints[dataPointIndex].customValue = modifiedPatch.customDataPoint
+
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 

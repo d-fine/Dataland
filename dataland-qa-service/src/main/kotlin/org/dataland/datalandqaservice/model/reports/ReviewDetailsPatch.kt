@@ -13,15 +13,15 @@ data class ReviewDetailsPatch(
         description = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_EXAMPLE,
     )
-    val acceptedSource: AcceptedDataPointSource? = null,
+    var acceptedSource: AcceptedDataPointSource? = null,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
     )
-    val companyIdOfAcceptedQaReport: String? = null,
+    var companyIdOfAcceptedQaReport: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_EXAMPLE,
     )
-    val customDataPoint: String? = null,
+    var customDataPoint: String? = null,
 )
