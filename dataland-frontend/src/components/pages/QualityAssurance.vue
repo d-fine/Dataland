@@ -134,39 +134,17 @@
             </div>
           </div>
         </div>
-        <PrimeDialog
-          v-model:visible="isConfirmationModalVisible"
-          header="Start Review?"
-          modal
-          :dismissable-mask="true"
-          style="min-width: 20rem; text-align: center"
-          data-test="confirmation-modal"
-          @hide="closeConfirmationModal"
-        >
-          <div style="text-align: center; padding: 8px 0">
-            <div class="confirmation-modal-message">
-              <div>Are you sure you want to start a review for this dataset?</div>
-              <div>Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.</div>
-            </div>
-          </div>
-          <div v-if="errorMessage" data-test="confirmation-modal-error-message">
-            <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{
-              errorMessage
-            }}</Message>
-          </div>
-          <template #footer>
-            <PrimeButton
-              label="CANCEL"
-              @click="closeConfirmationModal"
-              variant="outlined"
-              data-test="cancel-confirmation-modal-button"
-            />
-            <PrimeButton label="CONFIRM" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
-          </template>
-        </PrimeDialog>
       </div>
     </AuthorizationWrapper>
   </TheContent>
+  <PopupConfirmationModal
+    v-model:visible="confirmationModal.visible"
+    :header="confirmationModal.header"
+    :message="confirmationModal.message"
+    :error-message="confirmationModal.errorMessage"
+    :is-loading="isCreatingReview"
+    @confirm="confirmationModal.onConfirm"
+  />
 </template>
 
 <script setup lang="ts">
@@ -197,6 +175,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
@@ -213,13 +192,40 @@ const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableReportingPeriods = ref<Array<Date>>([]);
 const showNotEnoughCharactersWarning = ref(false);
-const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
-const errorMessage = ref<string>('');
+const isCreatingReview = ref(false);
 
 const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
+
+interface confirmationModalState {
+  visible: boolean;
+  header: string;
+  message: string;
+  errorMessage?: string;
+  isLoading?: boolean;
+  onConfirm?: () => void;
+}
+
+const confirmationModal = ref<confirmationModalState>({
+  visible: false,
+  header: '',
+  message: '',
+  errorMessage: '',
+  isLoading: false,
+  onConfirm: () => {},
+});
+
+const openConfirmationModal = (header: string, message: string, onConfirm?: () => void) => {
+  confirmationModal.value = {
+    visible: true,
+    header: header,
+    message: message,
+    errorMessage: '',
+    onConfirm,
+  };
+};
 
 /**
  * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
@@ -291,7 +297,13 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
     selectedDataId.value = qaDataObject.dataId;
-    isConfirmationModalVisible.value = true;
+    openConfirmationModal(
+      'Start Review',
+      'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
+      () => {
+        confirmStartReview();
+      }
+    );
   } else {
     void goToQaViewPage(qaDataObject.dataId);
   }
@@ -306,40 +318,27 @@ function goToQaViewPage(dataId: string): ReturnType<typeof router.push> {
 }
 
 /**
- * Creates a dataset review for the dataset with the given dataId and navigates to the corresponding dataset review page.
- */
-async function createAndViewDatasetReview(dataId: string): Promise<void> {
-  try {
-    await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
-    await goToQaViewPage(dataId);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      errorMessage.value = formatAxiosErrorMessage(error);
-    } else {
-      errorMessage.value = 'Failed to create dataset review.';
-    }
-    console.error(errorMessage.value);
-  }
-}
-
-/**
  * Confirms the start of a dataset review in the confirmation modal.
  * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
  */
 async function confirmStartReview(): Promise<void> {
-  await createAndViewDatasetReview(selectedDataId.value);
-  if (!errorMessage.value) {
-    closeConfirmationModal();
-  }
-}
+  // 1. Start the loading spinner on the button
+  isCreatingReview.value = true;
 
-/**
- * Closes the confirmation modal and resets the selected data id and error message.
- */
-function closeConfirmationModal(): void {
-  isConfirmationModalVisible.value = false;
-  selectedDataId.value = '';
-  errorMessage.value = '';
+  try {
+    await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(selectedDataId.value);
+    confirmationModal.value.visible = false;
+    await goToQaViewPage(selectedDataId.value);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
+    } else {
+      confirmationModal.value.errorMessage = 'Failed to create dataset review.';
+    }
+    console.error(confirmationModal.value.errorMessage);
+  } finally {
+    isCreatingReview.value = false;
+  }
 }
 
 /**
