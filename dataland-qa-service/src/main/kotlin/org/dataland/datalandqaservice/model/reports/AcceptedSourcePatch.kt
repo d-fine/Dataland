@@ -8,5 +8,5 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 data class AcceptedSourcePatch(
     val acceptedSource: AcceptedDataPointSource? = null,
     val companyIdOfAcceptedQaReport: String? = null,
-    val customValue: String? = null,
+    // val customValue: String? = null,
 )

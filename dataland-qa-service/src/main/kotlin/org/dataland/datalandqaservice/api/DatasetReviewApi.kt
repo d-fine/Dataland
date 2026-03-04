@@ -224,4 +224,51 @@ interface DatasetReviewApi {
         @RequestBody
         patch: AcceptedSourcePatch,
     ): ResponseEntity<DatasetReviewResponse>
+
+    /**
+     * @param datasetReviewId identifier used to uniquely specify the data review object
+     * @param dataPointType the type of the data point for which the accepted source should be set
+     * @param acceptedSource the accepted source to set for the data point
+     * @param companyIdOfAcceptedQaReport if the accepted source is a QA report datapoint, the company id of the accepted QA report
+     * @param customValue if the accepted source is custom, a custom value needs to be provided
+     */
+    @Operation(
+        summary = "Patch accepted data point source and/or custom value.",
+        description =
+            "Change the accepted source of a datapoint. " +
+                "In case a custom or qa report data point is accepted, provide additional information.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully approved datapoint."),
+            ApiResponse(
+                responseCode = "403",
+                description =
+                    "Forbidden. You must first assign yourself as the reviewer " +
+                        "for this object via the appropriate PATCH endpoint before editing it.",
+            ),
+
+        ],
+    )
+    @PatchMapping(
+        value = ["/{datasetReviewId}/{dataPointType}/setApprovedDataPointSource"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
+    fun setAcceptedSource(
+        @PathVariable@Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        )
+        datasetReviewId: String,
+        @PathVariable@Parameter(
+            name = "dataPointType",
+            required = true,
+            description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_EXAMPLE,
+        )
+        dataPointType: String,
+        @RequestBody
+        patch: AcceptedSourcePatch,
+    ): ResponseEntity<DatasetReviewResponse>
 }
