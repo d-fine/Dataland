@@ -83,11 +83,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
-tasks.getByName("sourcesJar") {
+tasks.named("sourcesJar") {
     dependsOn("generateClients")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }
 

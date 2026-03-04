@@ -18,7 +18,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "2.0.0"
+kotlin = "2.2.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.21.0"

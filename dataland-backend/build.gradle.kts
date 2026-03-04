@@ -104,7 +104,7 @@ tasks.register<Copy>("getTestData") {
     )
 }
 
-tasks.getByName("processTestResources") {
+tasks.named("processTestResources") {
     dependsOn("getTestData")
 }
 

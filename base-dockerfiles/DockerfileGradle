@@ -6,4 +6,32 @@ COPY ./gradle/ ./gradle/
 COPY ./gradlew .
 RUN  ./gradlew --version
 COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
+
+# Gradle 9 requires all included project directories to exist at settings evaluation time
+RUN mkdir -p \
+    dataland-accounting-service \
+    dataland-backend-utils \
+    dataland-backend \
+    dataland-api-key-manager \
+    dataland-data-sourcing-service \
+    dataland-internal-storage \
+    dataland-e2etests \
+    dataland-frontend \
+    dataland-keycloak/dataland_theme/login \
+    dataland-keycloak-adapter \
+    dataland-qa-service \
+    dataland-message-queue-utils \
+    dataland-document-manager \
+    dataland-batch-manager \
+    dataland-framework-toolbox \
+    dataland-community-manager \
+    dataland-email-service \
+    dataland-external-storage \
+    dataland-dummy-eurodat-client \
+    dataland-data-exporter \
+    dataland-specification-lib \
+    dataland-specification-service \
+    dataland-user-service \
+    dataland-reduced-local-stack
+
 RUN ./gradlew --no-daemon --stacktrace
