@@ -288,7 +288,7 @@ const confirmationModal = ref<confirmationModelState>({
   onConfirm: () => {},
 });
 
-const openConfirmationModal = (header: string, message: string, onConfirm?: () => void) => {
+const openConfirmationModal = (header: string, message: string, onConfirm?: () => void): void => {
   confirmationModal.value = {
     visible: true,
     header: header,

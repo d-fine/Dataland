@@ -17,7 +17,7 @@ describe('DatasetReviewOverview page', () => {
   const mockMetaInfo: DataMetaInformation = {
     dataId: dataId,
     companyId: companyId,
-    dataType: 'sfdr' as any,
+    dataType: 'sfdr',
     uploadTime: Date.now(),
     reportingPeriod: '2021',
     currentlyActive: true,
@@ -36,9 +36,15 @@ describe('DatasetReviewOverview page', () => {
     dataRegisteredByDataland: [],
   };
 
-  function mountPage() {
-    cy.intercept('GET', `**/api/companies/${companyId}`, mockCompanyInfo);
-    cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
+  /**
+   * Mounts the DatasetReviewOverview page pre-configured for tests.
+   * @returns {void} No return value; the function performs side-effects
+   *   (network stubs and mounting) necessary for the tests.
+   */
+  function mountPage(): void {
+    // Alias these intercepts so tests can wait for the requests by name
+    cy.intercept('GET', `**/api/companies/${companyId}`, mockCompanyInfo).as('getCompanyInfo');
+    cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo).as('getMetaInfo');
 
     cy.intercept('GET', '**/api/data/**', { statusCode: 200, body: { data: {}, meta: {} } });
     cy.intercept('GET', `**/api/companies/${companyId}/info`, {

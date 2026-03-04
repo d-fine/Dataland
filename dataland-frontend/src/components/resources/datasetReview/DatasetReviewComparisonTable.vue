@@ -342,8 +342,8 @@ function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporte
  */
 function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
   if (source === AcceptedDataPointSource.Original) {
-    const original = cellRow.originalDisplay as any;
-    return original == null || original === '' || original.displayValue == null || original.displayValue === '';
+    const original = cellRow.originalDisplay;
+    return original == null || original.displayValue == null || original.displayValue === '';
   }
   if (source === AcceptedDataPointSource.Custom) {
     const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
