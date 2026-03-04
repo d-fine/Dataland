@@ -145,7 +145,7 @@ interface QaApi {
     @PostMapping(
         value = ["/datasets/{dataId}"],
     )
-    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun changeQaStatus(
         @PathVariable @Parameter(
             name = "dataId",
