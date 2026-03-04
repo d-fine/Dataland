@@ -4,8 +4,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.CustomDataPointJSON
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -49,31 +48,17 @@ class DatasetReviewController(
                 ),
             )
 
-    override fun setAcceptedSource(
+    override fun patchReviewDetails(
         datasetReviewId: String,
         dataPointType: String,
-        patch: AcceptedSourcePatch,
+        patchReviewDetails: ReviewDetailsPatch,
     ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService.setAcceptedSource(
+                datasetReviewService.patchReviewDetails(
                     convertToUUID(datasetReviewId),
                     dataPointType,
-                    patch,
-                ),
-            )
-
-    override fun setCustomDatapoint(
-        datasetReviewId: String,
-        dataPointType: String,
-        patchCustomValue: CustomDataPointJSON,
-    ): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity
-            .ok(
-                datasetReviewService.setCustomDatapoint(
-                    convertToUUID(datasetReviewId),
-                    dataPointType,
-                    patchCustomValue,
+                    patchReviewDetails,
                 ),
             )
 }
