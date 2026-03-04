@@ -116,6 +116,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
+import { DatasetReviewState } from '@clients/qaservice';
 
 // Props passed from the router
 const props = defineProps<{
@@ -271,6 +272,25 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
   },
 });
 
+const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useMutation({
+  mutationFn: async () => {
+    if (!datasetReview.value) throw new Error('No dataset review selected');
+    return await apiClientProvider.apiClients.datasetReviewController.setReviewState(
+      datasetReview.value.dataSetReviewId,
+      DatasetReviewState.Aborted
+    );
+  },
+  onSuccess: async () => {
+    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
+    console.log('Rejected review!');
+    confirmationModal.value.visible = false;
+  },
+  onError: (error) => {
+    console.error('Error rejecting dataset review:', error);
+    confirmationModal.value.errorMessage = 'Failed to reject dataset review. Please try again.';
+  },
+});
+
 interface confirmationModelState {
   visible: boolean;
   header: string;
@@ -298,7 +318,7 @@ const openConfirmationModal = (header: string, message: string, onConfirm?: () =
   };
 };
 
-const isModalActionPending = computed(() => isAssigningToMe.value);
+const isModalActionPending = computed(() => isAssigningToMe.value || isRejectReviewMutationPending.value);
 
 const assignToMe = (): void => {
   openConfirmationModal(
@@ -311,7 +331,13 @@ const assignToMe = (): void => {
 };
 
 const rejectDataset = (): void => {
-  alert('Reject logic here');
+  openConfirmationModal(
+    'Reject Dataset',
+    'Are you sure you want to reject this dataset review? This can only be undone by a dataland admin!',
+    () => {
+      rejectReviewMutation();
+    }
+  );
 };
 
 const finishReview = (): void => {
