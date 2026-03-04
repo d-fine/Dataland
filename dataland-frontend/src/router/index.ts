@@ -193,6 +193,15 @@ const routes = [
       requiresAuthentication: true,
     },
   },
+    {
+        path: `/qa/review/:dataId`,
+        name: 'DatasetReviewOverview',
+        component: () => import('@/components/pages/DatasetReviewOverview.vue'),
+        props: true,
+        meta: {
+            requiresAuthentication: true,
+        },
+    },
   {
     path: '/datasets',
     name: 'Dataset Overview',

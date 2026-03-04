@@ -1,0 +1,42 @@
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
+
+import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import java.util.UUID
+
+/**
+ * API response DTO for a QA report data point with reporter details.
+ * @property qaReportId the ID of the QA report this data point belongs to
+ * @property verdict the QA verdict for the data point
+ * @property correctedData corrected data for the data point if applicable
+ * @property reporterUserId the ID of the user who reported this data point
+ * @property reporterCompanyId the ID of the company of the user who reported this data point
+ */
+data class QaReportDataPointWithReporterDetails(
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
+    )
+    val qaReportId: UUID,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_VERDICT_EXAMPLE,
+    )
+    val verdict: QaReportDataPointVerdict,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_CORRECTED_DATA_EXAMPLE,
+    )
+    val correctedData: String?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+    )
+    val reporterUserId: UUID,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
+    )
+    val reporterCompanyId: UUID?,
+)

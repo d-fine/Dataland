@@ -16,7 +16,7 @@ import {
 } from '@clients/datasourcingservice';
 import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
-import { DatasetReviewControllerApi, QaControllerApi } from '@clients/qaservice';
+import { QaControllerApi, DatasetReviewControllerApi } from '@clients/qaservice';
 import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';

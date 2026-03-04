@@ -4,21 +4,21 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
-import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportIdWithUploaderCompanyId
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import kotlin.text.get
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
-import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException as SpecificationClientException
 
 /**
  * Service class for dataset review objects.
@@ -29,8 +29,7 @@ class DatasetReviewService
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
         private val datasetReviewSupportService: DatasetReviewSupportService,
-        private val inheritedRolesControllerApi: InheritedRolesControllerApi,
-        private val keycloakUserService: KeycloakUserService,
+        private val datasetReviewCreationUtils: DatasetReviewCreationUtils,
     ) {
         /**
          * Create a dataset review object associated to the given dataset.
@@ -52,46 +51,15 @@ class DatasetReviewService
                     message = "There is already a dataset review entity for this dataset which is pending.",
                 )
             }
-            val dataPointQaReportIds =
-                datasetReviewSupportService
-                    .findQaReportIdsForDataPoints(datatypeToDatapointIds.values.toList())
-
-            val qaReportIdWithUploaderCompanyIds =
-                dataPointQaReportIds.map {
-                    val uploaderCompanyId =
-                        inheritedRolesControllerApi
-                            .getInheritedRoles(it)
-                            .keys
-                            .firstOrNull()
-                            ?.let { companyId -> convertToUUID(companyId) }
-                    QaReportIdWithUploaderCompanyId(
-                        convertToUUID(it),
-                        uploaderCompanyId,
-                    )
-                }
-
-            val datasetMetaData = datasetReviewSupportService.getDataMetaInfo(datasetId.toString())
 
             val datasetReviewEntity =
-                DatasetReviewEntity(
-                    dataSetReviewId = UUID.randomUUID(),
-                    datasetId = datasetId,
-                    companyId = convertToUUID(datasetMetaData.companyId),
-                    dataType = datasetMetaData.dataType.toString(),
-                    reportingPeriod = datasetMetaData.reportingPeriod,
-                    reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
-                    qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
+                datasetReviewCreationUtils.createDatasetReviewEntity(
+                    datasetReviewSupportService.getDataMetaInfo(datasetId.toString()),
+                    datasetId,
+                    datatypeToDatapointIds,
                 )
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
-        }
 
-        /**
-         * Method to get dataset review objects by dataset id.
-         */
-        @Transactional(readOnly = true)
-        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> {
-            val entities = datasetReviewRepository.findAllByDatasetId(datasetId)
-            return entities.toDatasetReviewResponsesWithReviewerUserNames()
+            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
         }
 
         /**
@@ -101,8 +69,8 @@ class DatasetReviewService
         fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
             datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
-
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            datasetReview.reviewerUserName = DatalandAuthentication.fromContext().name
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
@@ -116,109 +84,122 @@ class DatasetReviewService
             val datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
-
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to approve a datapoint from dataset. Also removes approved qa reports and custom datapoints accordingly.
+         * Method to accept a QA report data point as the accepted value for a data point in the dataset review.
          */
         @Transactional
-        fun acceptOriginalDatapoint(
-            datasetReviewId: UUID,
-            dataPointId: UUID,
+        fun acceptQaReportDataPoint(
+            datasetReview: DatasetReviewEntity,
+            dataPointIndex: Int,
+            companyIdOfAcceptedQaReport: UUID,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
-            val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
-            if (dataPointId.toString() !in datatypeToDatapointIds.values) {
-                throw ResourceNotFoundApiException(
-                    "Datapoint not found.",
-                    "Datapoint id $dataPointId not part of dataset ${datasetReview.datasetId}.",
-                )
-            }
-            val dataPointType = datasetReviewSupportService.getDataPointType(dataPointId)
-            datasetReview.approvedDataPointIds[dataPointType] = dataPointId
-            datasetReview.approvedQaReportIds.remove(dataPointType)
-            datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
-        }
-
-        /**
-         * Method to approve a qa report. Also removes approved data points and custom datapoints accordingly.
-         */
-        @Transactional
-        fun acceptQaReport(
-            datasetReviewId: UUID,
-            qaReportId: UUID,
-        ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
-            datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
-                ?: throw ResourceNotFoundApiException(
+            val hasQaReportForCompany =
+                datasetReview.dataPoints[dataPointIndex].qaReports.any {
+                    it.reporterCompanyId == companyIdOfAcceptedQaReport
+                }
+            if (!hasQaReportForCompany) {
+                throw InvalidInputApiException(
                     "QA report not found.",
-                    "QA report id $qaReportId not part of collected qa reports of " +
-                        "dataset review ${datasetReview.dataSetReviewId}.",
+                    "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point.",
                 )
-
-            val dataPointType =
-                datasetReviewSupportService.findDataPointTypeUsingQaReportId(qaReportId)
-
-            datasetReview.approvedQaReportIds[dataPointType] = qaReportId
-            datasetReview.approvedDataPointIds.remove(dataPointType)
-            datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            }
+            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to approve a custom data point. Also removes approved data points and qa reports accordingly.
+         * Method to set the accepted source for a data point in a dataset review.
          */
-        @Suppress("ThrowsCount")
         @Transactional
-        fun acceptCustomDataPoint(
+        fun patchReviewDetails(
             datasetReviewId: UUID,
-            dataPoint: String,
             dataPointType: String,
+            patch: ReviewDetailsPatch,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
+            var datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
-            lateinit var frameworksOfDataPointType: List<String>
-            try {
-                frameworksOfDataPointType =
-                    datasetReviewSupportService.getFrameworksForDataPointType(dataPointType)
-            } catch (_: SpecificationClientException) {
-                throw InvalidInputApiException(
-                    "DataPoint type not found.",
-                    "Cannot find DataPoint type $dataPointType on Dataland.",
-                )
-            }
-            if (datasetReview.dataType !in frameworksOfDataPointType) {
-                throw InvalidInputApiException(
-                    "Datapoint type not valid.",
-                    "Datapoint type is not part of the framework ${datasetReview.dataType}.",
-                )
-            }
-            try {
-                datasetReviewSupportService.validateCustomDataPoint(dataPoint, dataPointType)
-            } catch (e: BackendClientException) {
-                throw InvalidInputApiException(
-                    "Datapoint not valid.",
-                    "Datapoint given does not match the specification of $dataPointType.",
-                    e,
-                )
+            val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
+
+            if (patch.customDataPoint != null) {
+                try {
+                    datasetReviewSupportService.validateCustomDataPoint(patch.customDataPoint, dataPointType)
+                } catch (e: BackendClientException) {
+                    throw InvalidInputApiException(
+                        "Custom datapoint not valid.",
+                        "Custom datapoint given does not match the specification of $dataPointType.",
+                        e,
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].customValue = patch.customDataPoint
             }
 
-            datasetReview.approvedCustomDataPointIds[dataPointType] = dataPoint
-            datasetReview.approvedDataPointIds.remove(dataPointType)
-            datasetReview.approvedQaReportIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            if (patch.acceptedSource == AcceptedDataPointSource.Custom) {
+                if (datasetReview.dataPoints[dataPointIndex].customValue == null) {
+                    throw ConflictApiException(
+                        "Missing custom data point.",
+                        "Custom data point has to exist or be provided when acceptedSource is Custom.",
+                    )
+                }
+                if (patch.companyIdOfAcceptedQaReport != null) {
+                    throw InvalidInputApiException(
+                        "Invalid input.",
+                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Custom.",
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            }
+
+            if (patch.acceptedSource == AcceptedDataPointSource.Original) {
+                if (patch.companyIdOfAcceptedQaReport != null) {
+                    throw InvalidInputApiException(
+                        "Invalid input.",
+                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Original.",
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            }
+
+            if (patch.acceptedSource == AcceptedDataPointSource.Qa) {
+                if (patch.companyIdOfAcceptedQaReport == null) {
+                    throw InvalidInputApiException(
+                        "Missing companyIdOfAcceptedQaReport.",
+                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(patch.companyIdOfAcceptedQaReport))
+            }
+
+            if (patch.customDataPoint == null) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Custom value or accepted source have to be specified.",
+                )
+            }
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
-         * Method to get a dataset review entity by id and convert to response
+         * Method to get a dataset review entity by id and convert to response.
          */
         @Transactional(readOnly = true)
         fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse = getDatasetReview(datasetReviewId).toDatasetReviewResponse()
+
+        /**
+         * Method to get dataset review objects by dataset id.
+         */
+        @Transactional(readOnly = true)
+        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> =
+            datasetReviewRepository.findAllByDatasetId(datasetId).map {
+                it.toDatasetReviewResponse()
+            }
 
         /**
          * Helper method to get a dataset review entity by id including exception handling.
@@ -232,42 +213,30 @@ class DatasetReviewService
                 )
             }
 
-        private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse {
-            val response = this.toDatasetReviewResponse()
-            response.reviewerUserName = resolveReviewerUserName(this.reviewerUserId)
-            return response
-        }
-
-        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> {
-            val reviewerUserIds = this.mapNotNull { it.reviewerUserId }.distinct()
-            val reviewerIdToName = reviewerUserIds.associateWith { resolveReviewerUserName(it) }
-
-            return this.map {
-                val response = it.toDatasetReviewResponse()
-                response.reviewerUserName = it.reviewerUserId?.let { reviewerUserId -> reviewerIdToName[reviewerUserId] }
-                response
+        /**
+         * Method to find a data point by its type, throws ResourceNotFoundApiException if not found.
+         */
+        private fun getIndexOfDataPointByDataPointType(
+            datasetReview: DatasetReviewEntity,
+            dataPointType: String,
+        ): Int {
+            val index =
+                datasetReview.dataPoints.indexOfFirst {
+                    it.dataPointType == dataPointType
+                }
+            if (index == -1) {
+                throw ResourceNotFoundApiException(
+                    "Datapoint not found.",
+                    "No datapoint with type $dataPointType in dataset review.",
+                )
             }
-        }
-
-        private fun resolveReviewerUserName(reviewerUserId: UUID?): String? {
-            val reviewerUserIdString = reviewerUserId?.toString() ?: return null
-            val userInfo = keycloakUserService.getUser(reviewerUserIdString)
-
-            val firstName = userInfo.firstName?.trim().orEmpty()
-            val lastName = userInfo.lastName?.trim().orEmpty()
-            val fullName = listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ")
-
-            return when {
-                fullName.isNotBlank() -> fullName
-                !userInfo.email.isNullOrBlank() -> userInfo.email
-                else -> reviewerUserIdString
-            }
+            return index
         }
 
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.
          */
-        private fun isUserReviewer(reviewerUserId: UUID?) {
+        private fun isUserReviewer(reviewerUserId: UUID) {
             if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
                 throw InsufficientRightsApiException(
                     summary = "Only the reviewer is allowed to patch this dataset review object.",
