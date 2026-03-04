@@ -9,7 +9,7 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -88,18 +88,6 @@ class DatasetReviewService
         }
 
         /**
-         * Method to accept the original data point as the accepted value for a data point in the dataset review.
-         */
-        @Transactional
-        fun acceptOriginalDataPoint(
-            datasetReview: DatasetReviewEntity,
-            dataPointIndex: Int,
-        ): DatasetReviewResponse {
-            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
-        }
-
-        /**
          * Method to accept a QA report data point as the accepted value for a data point in the dataset review.
          */
         @Transactional
@@ -123,73 +111,79 @@ class DatasetReviewService
         }
 
         /**
-         * Method to accept a custom value for a data point, including validation against the data point type spec.
-         */
-        @Transactional
-        fun acceptCustomDataPoint(
-            datasetReview: DatasetReviewEntity,
-            dataPointIndex: Int,
-            dataPointType: String,
-            customValue: String,
-        ): DatasetReviewResponse {
-            try {
-                datasetReviewSupportService.validateCustomDataPoint("""{\"value\":\"""" + customValue + """\}"""", dataPointType)
-            } catch (e: BackendClientException) {
-                throw InvalidInputApiException(
-                    "Datapoint not valid.",
-                    "Datapoint given does not match the specification of $dataPointType.",
-                    e,
-                )
-            }
-            datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
-            datasetReview.dataPoints[dataPointIndex].customValue = customValue
-
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
-        }
-
-        /**
          * Method to set the accepted source for a data point in a dataset review.
          */
         @Transactional
-        fun setAcceptedSource(
+        fun patchReviewDetails(
             datasetReviewId: UUID,
             dataPointType: String,
-            patch: AcceptedSourcePatch,
+            patch: ReviewDetailsPatch,
         ): DatasetReviewResponse {
-            val datasetReview = getDatasetReview(datasetReviewId)
+            var datasetReview = getDatasetReview(datasetReviewId)
             isUserReviewer(datasetReview.reviewerUserId)
             val dataPointIndex = getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
-            if (patch.acceptedSource == null) {
-                return datasetReview.toDatasetReviewResponse()
+
+            if (patch.customDataPoint != null) {
+                try {
+                    datasetReviewSupportService.validateCustomDataPoint(patch.customDataPoint, dataPointType)
+                } catch (e: BackendClientException) {
+                    throw InvalidInputApiException(
+                        "Custom datapoint not valid.",
+                        "Custom datapoint given does not match the specification of $dataPointType.",
+                        e,
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].customValue = patch.customDataPoint
             }
 
-            datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
-
-            return when (patch.acceptedSource) {
-                AcceptedDataPointSource.Original -> {
-                    acceptOriginalDataPoint(datasetReview, dataPointIndex)
+            if (patch.acceptedSource == AcceptedDataPointSource.Custom) {
+                if (datasetReview.dataPoints[dataPointIndex].customValue == null) {
+                    throw ConflictApiException(
+                        "Missing custom data point.",
+                        "Custom data point has to exist or be provided when acceptedSource is Custom.",
+                    )
                 }
-
-                AcceptedDataPointSource.Qa -> {
-                    if (patch.companyIdOfAcceptedQaReport == null) {
-                        throw InvalidInputApiException(
-                            "Missing companyIdOfAcceptedQaReport.",
-                            "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
-                        )
-                    }
-                    acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(patch.companyIdOfAcceptedQaReport))
+                if (patch.companyIdOfAcceptedQaReport != null) {
+                    throw InvalidInputApiException(
+                        "Invalid input.",
+                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Custom.",
+                    )
                 }
-
-                AcceptedDataPointSource.Custom -> {
-                    if (patch.customValue == null) {
-                        throw InvalidInputApiException(
-                            "Missing customValue.",
-                            "customValue must be provided when acceptedSource is Custom.",
-                        )
-                    }
-                    acceptCustomDataPoint(datasetReview, dataPointIndex, dataPointType, patch.customValue)
-                }
+                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
             }
+
+            if (patch.acceptedSource == AcceptedDataPointSource.Original) {
+                if (patch.companyIdOfAcceptedQaReport != null) {
+                    throw InvalidInputApiException(
+                        "Invalid input.",
+                        "companyIdOfAcceptedQaReport must be null when acceptedSource is Original.",
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport = null
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            }
+
+            if (patch.acceptedSource == AcceptedDataPointSource.Qa) {
+                if (patch.companyIdOfAcceptedQaReport == null) {
+                    throw InvalidInputApiException(
+                        "Missing companyIdOfAcceptedQaReport.",
+                        "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
+                    )
+                }
+                datasetReview.dataPoints[dataPointIndex].acceptedSource = patch.acceptedSource
+                return acceptQaReportDataPoint(datasetReview, dataPointIndex, convertToUUID(patch.companyIdOfAcceptedQaReport))
+            }
+
+            if (patch.customDataPoint == null) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Custom value or accepted source have to be specified.",
+                )
+            }
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
 
         /**
