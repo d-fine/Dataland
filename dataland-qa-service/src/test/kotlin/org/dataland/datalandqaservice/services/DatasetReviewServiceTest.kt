@@ -23,6 +23,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewHelper
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -54,11 +55,18 @@ class DatasetReviewServiceTest {
             mockDatasetReviewSupportService,
         )
 
+    private val datasetReviewHelper =
+        DatasetReviewHelper(
+            mockDatasetReviewRepository,
+            mockDatasetReviewSupportService,
+        )
+
     private val datasetReviewService =
         DatasetReviewService(
             mockDatasetReviewRepository,
             mockDatasetReviewSupportService,
             datasetReviewCreationUtils,
+            datasetReviewHelper,
         )
 
     private val dummyUserId = UUID.randomUUID()
