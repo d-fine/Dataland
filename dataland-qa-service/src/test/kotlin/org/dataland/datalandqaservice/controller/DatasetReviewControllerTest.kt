@@ -4,12 +4,12 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -120,29 +120,26 @@ class DatasetReviewControllerTest {
     }
 
     @Test
-    fun `setAcceptedSource delegates to service with all params`() {
+    fun `patchReviewDetails delegates to service with all params`() {
         val reviewId = UUID.randomUUID()
         val dataPointType = "dummyType"
-        val acceptedSource = AcceptedDataPointSource.Qa
-        val companyId = UUID.randomUUID().toString()
+        val patch = ReviewDetailsPatch(AcceptedDataPointSource.Qa, UUID.randomUUID().toString(), null)
         val serviceResponse = mock<DatasetReviewResponse>()
 
         whenever(
-            datasetReviewService.setAcceptedSource(reviewId, dataPointType, acceptedSource, companyId, null),
+            datasetReviewService.patchReviewDetails(reviewId, dataPointType, patch),
         ).thenReturn(serviceResponse)
 
-        val result = controller.setAcceptedSource(reviewId.toString(), dataPointType, acceptedSource, companyId, null)
+        val result = controller.patchReviewDetails(reviewId.toString(), dataPointType, patch)
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).setAcceptedSource(
+        verify(datasetReviewService).patchReviewDetails(
             idCaptor.capture(),
             eq(dataPointType),
-            eq(acceptedSource),
-            eq(companyId),
-            isNull(),
+            eq(patch),
         )
         assertEquals(reviewId, idCaptor.firstValue)
     }

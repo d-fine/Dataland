@@ -218,6 +218,6 @@ interface DatasetReviewApi {
         )
         dataPointType: String,
         @RequestBody
-        patchCustomValue: ReviewDetailsPatch,
+        patch: ReviewDetailsPatch,
     ): ResponseEntity<DatasetReviewResponse>
 }

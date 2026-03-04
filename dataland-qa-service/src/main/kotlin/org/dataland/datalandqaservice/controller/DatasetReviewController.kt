@@ -51,14 +51,14 @@ class DatasetReviewController(
     override fun patchReviewDetails(
         datasetReviewId: String,
         dataPointType: String,
-        patchReviewDetails: ReviewDetailsPatch,
+        patch: ReviewDetailsPatch,
     ): ResponseEntity<DatasetReviewResponse> =
         ResponseEntity
             .ok(
                 datasetReviewService.patchReviewDetails(
                     convertToUUID(datasetReviewId),
                     dataPointType,
-                    patchReviewDetails,
+                    patch,
                 ),
             )
 }

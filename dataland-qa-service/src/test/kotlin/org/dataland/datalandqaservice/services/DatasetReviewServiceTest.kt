@@ -18,6 +18,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
@@ -260,8 +261,12 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setAcceptedSource with Original sets acceptedSource and clears companyIdOfAcceptedQaReport`() {
-        datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Original, null, null)
+    fun `patchReviewDetails with Original sets acceptedSource and clears companyIdOfAcceptedQaReport`() {
+        datasetReviewService.patchReviewDetails(
+            UUID.randomUUID(),
+            dummyDataPointType,
+            ReviewDetailsPatch(AcceptedDataPointSource.Original, null, null),
+        )
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
@@ -271,13 +276,11 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setAcceptedSource with Qa sets acceptedSource and companyIdOfAcceptedQaReport`() {
-        datasetReviewService.setAcceptedSource(
+    fun `patchReviewDetails with Qa sets acceptedSource and companyIdOfAcceptedQaReport`() {
+        datasetReviewService.patchReviewDetails(
             UUID.randomUUID(),
             dummyDataPointType,
-            AcceptedDataPointSource.Qa,
-            dummyReporterCompanyId.toString(),
-            null,
+            ReviewDetailsPatch(AcceptedDataPointSource.Qa, dummyReporterCompanyId.toString(), null),
         )
 
         val captor = argumentCaptor<DatasetReviewEntity>()
@@ -288,49 +291,47 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `setAcceptedSource with Custom validates and sets customValue`() {
+    fun `patchReviewDetails with Custom validates and sets customValue`() {
         val customValue = """{"value": 42}"""
 
-        datasetReviewService.setAcceptedSource(
+        datasetReviewService.patchReviewDetails(
             UUID.randomUUID(),
             dummyDataPointType,
-            AcceptedDataPointSource.Custom,
-            null,
-            customValue,
+            ReviewDetailsPatch(null, null, customValue),
         )
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
         val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
-        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
         assertEquals(customValue, saved.customValue)
         assertNull(saved.companyIdOfAcceptedQaReport)
         verify(mockDatasetReviewSupportService).validateCustomDataPoint(customValue, dummyDataPointType)
     }
 
     @Test
-    fun `setAcceptedSource with Qa without companyIdOfAcceptedQaReport throws InvalidInputApiException`() {
+    fun `patchReviewDetails with Qa without companyIdOfAcceptedQaReport throws InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
-            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Qa, null, null)
+            datasetReviewService.patchReviewDetails(
+                UUID.randomUUID(),
+                dummyDataPointType,
+                ReviewDetailsPatch(AcceptedDataPointSource.Qa, null, null),
+            )
         }
     }
 
     @Test
-    fun `setAcceptedSource with Custom without customValue throws InvalidInputApiException`() {
-        assertThrows<InvalidInputApiException> {
-            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Custom, null, null)
-        }
-    }
-
-    @Test
-    fun `setAcceptedSource throws ResourceNotFound when dataPointType not in review`() {
+    fun `patchReviewDetails throws ResourceNotFound when dataPointType not in review`() {
         assertThrows<ResourceNotFoundApiException> {
-            datasetReviewService.setAcceptedSource(UUID.randomUUID(), "unknown-type", AcceptedDataPointSource.Original, null, null)
+            datasetReviewService.patchReviewDetails(
+                UUID.randomUUID(),
+                "unknown-type",
+                ReviewDetailsPatch(AcceptedDataPointSource.Original, null, null),
+            )
         }
     }
 
     @Test
-    fun `setAcceptedSource throws InsufficientRights when user is not reviewer`() {
+    fun `patchReviewDetails throws InsufficientRights when user is not reviewer`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
@@ -338,22 +339,24 @@ class DatasetReviewServiceTest {
         )
 
         assertThrows<InsufficientRightsApiException> {
-            datasetReviewService.setAcceptedSource(UUID.randomUUID(), dummyDataPointType, AcceptedDataPointSource.Original, null, null)
+            datasetReviewService.patchReviewDetails(
+                UUID.randomUUID(),
+                dummyDataPointType,
+                ReviewDetailsPatch(AcceptedDataPointSource.Original, null, null),
+            )
         }
     }
 
     @Test
-    fun `setAcceptedSource with Custom wraps BackendClientException into InvalidInputApiException`() {
+    fun `patchReviewDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
         whenever(mockDatasetReviewSupportService.validateCustomDataPoint(any(), any()))
             .thenThrow(BackendClientException())
 
         assertThrows<InvalidInputApiException> {
-            datasetReviewService.setAcceptedSource(
+            datasetReviewService.patchReviewDetails(
                 UUID.randomUUID(),
                 dummyDataPointType,
-                AcceptedDataPointSource.Custom,
-                null,
-                """{"value": 1}""",
+                ReviewDetailsPatch(null, null, """{"value": 1}"""),
             )
         }
     }
