@@ -5,6 +5,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.Dataset
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.CustomDataPointJSON
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -59,6 +60,20 @@ class DatasetReviewController(
                     convertToUUID(datasetReviewId),
                     dataPointType,
                     patch,
+                ),
+            )
+
+    override fun setCustomDatapoint(
+        datasetReviewId: String,
+        dataPointType: String,
+        patchCustomValue: CustomDataPointJSON,
+    ): ResponseEntity<DatasetReviewResponse> =
+        ResponseEntity
+            .ok(
+                datasetReviewService.setCustomDatapoint(
+                    convertToUUID(datasetReviewId),
+                    dataPointType,
+                    patchCustomValue,
                 ),
             )
 }

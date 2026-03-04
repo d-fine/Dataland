@@ -11,6 +11,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpe
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.AcceptedSourcePatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.CustomDataPointJSON
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -204,7 +205,7 @@ interface DatasetReviewApi {
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/{dataPointType}/setApprovedDataPointSource"],
+        value = ["/{datasetReviewId}/{dataPointType}/set-approved-data-point-source"],
         produces = ["application/json"],
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
@@ -228,19 +229,15 @@ interface DatasetReviewApi {
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
      * @param dataPointType the type of the data point for which the accepted source should be set
-     * @param acceptedSource the accepted source to set for the data point
-     * @param companyIdOfAcceptedQaReport if the accepted source is a QA report datapoint, the company id of the accepted QA report
-     * @param customValue if the accepted source is custom, a custom value needs to be provided
      */
     @Operation(
-        summary = "Patch accepted data point source and/or custom value.",
+        summary = "Patch custom data point for a data point type.",
         description =
-            "Change the accepted source of a datapoint. " +
-                "In case a custom or qa report data point is accepted, provide additional information.",
+            "Modify the custom data point within a review object for a specific data point type.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully approved datapoint."),
+            ApiResponse(responseCode = "200", description = "Successfully patched the custom data point."),
             ApiResponse(
                 responseCode = "403",
                 description =
@@ -251,11 +248,11 @@ interface DatasetReviewApi {
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/{dataPointType}/setApprovedDataPointSource"],
+        value = ["/{datasetReviewId}/{dataPointType}/custom-data-point"],
         produces = ["application/json"],
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetReview(#datasetReviewId)")
-    fun setAcceptedSource(
+    fun setCustomDatapoint(
         @PathVariable@Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
@@ -269,6 +266,6 @@ interface DatasetReviewApi {
         )
         dataPointType: String,
         @RequestBody
-        patch: AcceptedSourcePatch,
+        patchCustomValue: CustomDataPointJSON,
     ): ResponseEntity<DatasetReviewResponse>
 }
