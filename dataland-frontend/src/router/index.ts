@@ -1,5 +1,4 @@
-import { createWebHistory, createRouter, type RouteComponent } from 'vue-router';
-import { type RouteLocationNormalized } from 'vue-router';
+import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
 const LandingPage = (): Promise<RouteComponent> => import('@/components/pages/LandingPage.vue');
@@ -199,7 +198,7 @@ const routes = [
     path: `/qa/review/:dataId`,
     name: 'DatasetReviewOverview',
     component: DatasetReviewOverview,
-    props: (route: RouteLocationNormalized) => ({
+    props: (route: RouteLocationNormalized): { dataId: string; datasetReviewId: string | undefined } => ({
       dataId: route.params.dataId as string,
       datasetReviewId: route.query.datasetReviewId as string | undefined,
     }),

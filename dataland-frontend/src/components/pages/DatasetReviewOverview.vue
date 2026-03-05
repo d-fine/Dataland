@@ -108,7 +108,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import type { DatasetReviewOverview } from '@/utils/DatasetReviewOverview.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -224,7 +223,7 @@ const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending }
   },
 });
 
-interface confirmationModelState {
+interface ConfirmationModalState {
   visible: boolean;
   header: string;
   message: string;
@@ -232,7 +231,7 @@ interface confirmationModelState {
   isLoading?: boolean;
   onConfirm?: () => void;
 }
-const confirmationModal = ref<confirmationModelState>({
+const confirmationModal = ref<ConfirmationModalState>({
   visible: false,
   header: '',
   message: '',

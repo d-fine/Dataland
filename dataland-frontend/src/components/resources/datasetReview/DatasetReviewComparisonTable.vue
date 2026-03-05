@@ -194,9 +194,9 @@ import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import {
-  DatasetReviewResponse,
-  DataPointReviewDetails,
-  QaReportDataPointWithReporterDetails,
+  type DatasetReviewResponse,
+  type DataPointReviewDetails,
+  type QaReportDataPointWithReporterDetails,
   AcceptedDataPointSource,
   QaReportDataPointVerdict,
 } from '@clients/qaservice';
