@@ -121,6 +121,7 @@ import { DatasetReviewState } from '@clients/qaservice';
 // Props passed from the router
 const props = defineProps<{
   dataId: string;
+  datasetReviewId?: string;
 }>();
 
 // Api Client
@@ -131,67 +132,30 @@ const queryClient = useQueryClient();
 
 // Empty Fields
 const hideEmptyFields = ref(true);
-// MOCK REVIEW OBJECT FOR NOW
-const MOCK_DATASET_REVIEW: DatasetReviewOverview = {
-  dataSetReviewId: 'rev-123',
-  datasetId: props.dataId,
-  companyId: '9af067dc-8280-4172-8974-1ae363c56260',
-  dataType: 'sfdr',
-  reportingPeriod: '2021',
-  reviewState: 'Pending',
-  qaJudgeUserId: '136a9394-4873-4a61-a25b-65b1e8e7cc2f',
-  qaJudgeUserName: 'Jane Doe',
-  qaReporterCompanies: [
-    { reporterCompanyName: 'Company A', reporterCompanyId: 'COMP-A' },
-    { reporterCompanyName: 'Company B', reporterCompanyId: 'COMP-B' },
-  ],
-  dataPoints: {
-    extendedDateFiscalYearEnd: {
-      dataPointTypeId: 'extendedDateFiscalYearEnd',
-      dataPointId: 'dp-001',
-      qaReports: [
-        {
-          qaReportId: 'QAR-A-1',
-          verdict: 'QaAccepted',
-          correctedData: null,
-          reporterUserId: 'bot-a',
-          reporterCompanyId: 'COMP-A',
-        },
-        {
-          qaReportId: 'QAR-B-1',
-          verdict: 'QaRejected',
-          correctedData: '{"value":"2026-12-31","quality":"Incomplete"}',
-          reporterUserId: 'bot-b',
-          reporterCompanyId: 'COMP-B',
-        },
-      ],
-      acceptedSource: 'Original',
-      companyIdOfAcceptedQaReport: null,
-      customValue: null,
-    },
-  },
-};
 
 const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
 } = useQuery({
-  queryKey: ['qaReviewResponse', props.dataId],
+  queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId],
   queryFn: async () => {
-    // TODO: REPLACE WITH REAL API CALL
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { datasetReviewId, dataId } = props;
+    const { datasetReviewController } = apiClientProvider.apiClients;
 
-    // Return the mock instead of the API call
-    return MOCK_DATASET_REVIEW;
+    if (datasetReviewId) {
+      const { data } = await datasetReviewController.getDatasetReview(datasetReviewId);
+      return data;
+    }
 
-    //const response = await apiClientProvider.apiClients.datasetReviewController.getDatasetReviewsByDatasetId(
-    //  props.dataId
-    //);
-    //console.log('Dataset Review Response:', response.data);
-    //return response.data[0] ?? null;
+    if (dataId) {
+      const { data } = await datasetReviewController.getDatasetReviewsByDatasetId(dataId);
+      return data[0] ?? null;
+    }
+
+    return null;
   },
-  enabled: !!props.dataId,
+  enabled: !!props.dataId || !!props.datasetReviewId,
 });
 
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useQuery({
@@ -225,46 +189,15 @@ const isAssignedToCurrentUser = computed(() => {
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
-/*
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
   mutationFn: async () => {
     if (!datasetReview.value) throw new Error('No dataset review selected');
     return await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
   },
   onSuccess: async () => {
-    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
+    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId] });
     console.log('Successfully assigned!');
     confirmationModal.value.visible = false;
-  },
-  onError: (error) => {
-    console.error('Error assigning dataset review:', error);
-    confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
-  },
-});
-*/
-
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
-  mutationFn: async () => {
-    if (!datasetReview.value) throw new Error('No dataset review selected');
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const fallbackId = currentUserId.value || 'local-dev-user-id';
-
-    MOCK_DATASET_REVIEW.qaJudgeUserId = fallbackId;
-    MOCK_DATASET_REVIEW.qaJudgeUserName = 'Current User (Mocked)';
-
-    return { ...MOCK_DATASET_REVIEW };
-  },
-  onSuccess: (newDatasetReviewCopy) => {
-    queryClient.setQueryData(['qaReviewResponse', props.dataId], newDatasetReviewCopy);
-
-    if (!currentUserId.value) {
-      currentUserId.value = 'local-dev-user-id';
-    }
-    confirmationModal.value.visible = false;
-
-    console.log('Successfully assigned (Mocked)! UI should update now.');
-    console.log('isAssignedToCurrentUser:', isAssignedToCurrentUser.value);
   },
   onError: (error) => {
     console.error('Error assigning dataset review:', error);
@@ -281,7 +214,7 @@ const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending }
     );
   },
   onSuccess: async () => {
-    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId] });
+    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId] });
     console.log('Rejected review!');
     confirmationModal.value.visible = false;
   },
