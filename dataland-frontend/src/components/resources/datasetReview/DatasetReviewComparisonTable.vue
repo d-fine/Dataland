@@ -27,7 +27,7 @@
                 <div class="p-column-header-content">
                   <span class="p-column-title">
                     Corrected Datapoint
-                    <span class="block text-xs font-normal">{{ company.reporterCompanyName }}</span>
+                    <span class="block text-xs font-normal">{{ company.reportCompanyName }}</span>
                   </span>
                 </div>
               </th>
@@ -193,12 +193,18 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
-import type { DataPointReviewInfo, DatasetReviewOverview, QaReportSummary } from '@/utils/DatasetReviewOverview.ts';
+import {
+  DatasetReviewResponse,
+  DataPointReviewDetails,
+  QaReportDataPointWithReporterDetails,
+  AcceptedDataPointSource,
+  QaReportDataPointVerdict,
+} from '@clients/qaservice';
+
 import { useApiClient } from '@/utils/useApiClient.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qaservice';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -206,10 +212,16 @@ const props = defineProps<{
   framework: DataTypeEnum;
   dataId: string;
   searchQuery: string;
-  datasetReview: DatasetReviewOverview;
+  datasetReview: DatasetReviewResponse;
   dataMetaInformation: DataMetaInformation;
   hideEmptyFields: boolean;
 }>();
+
+const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework));
+const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
+const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
+  () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
+);
 
 const apiClientProvider = useApiClient();
 const vTooltip = Tooltip;
@@ -231,14 +243,6 @@ const {
   enabled: !!props.framework && !!props.dataId,
 });
 
-// --- Get MLDT config for this framework (view configuration) ---
-const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework));
-const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
-const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
-  () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
-);
-
-// --- Row model ---
 type SectionRow = {
   type: 'section';
   label: string;
@@ -255,15 +259,67 @@ type CellRow = {
 
 type KpiRow = SectionRow | CellRow;
 
+/**
+ * Build a flat list of table rows (sections and cell rows) from the MLDT configuration
+ * and a single dataset. This function performs a recursive traversal of the
+ * configuration tree.
+ *
+ * @param {MLDTConfig<FrameworkData>} config - MLDT view configuration for the framework.
+ * @param {FrameworkData} data - The framework data instance to read values from.
+ * @param {number} [level=0] - Current nesting level for section rows (used for styling).
+ * @returns {KpiRow[]} The generated list of rows representing sections and KPI cells.
+ */
+function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
+  const rows: KpiRow[] = [];
+  for (const item of config) {
+    if (item.type === 'section') {
+      const section = item;
+      const childRows = buildRowsFromConfig(section.children, data, level + 1);
+
+      if (childRows.length > 0) {
+        rows.push({ type: 'section', label: section.label, level: level }, ...childRows);
+      }
+    } else if (item.type === 'cell') {
+      const cell = item;
+      const cellRow: CellRow = {
+        type: 'cell',
+        label: cell.label,
+        dataPointTypeId: cell.dataPointTypeId,
+        originalDisplay: cell.valueGetter(data),
+        explanation: cell.explanation,
+      };
+
+      // Apply the "Hide Empty Fields" logic
+      if (!props.hideEmptyFields || !isRowEmpty(cellRow)) {
+        rows.push(cellRow);
+      }
+    }
+  }
+  return rows;
+}
+
+const allRows = computed<KpiRow[]>(() => {
+  if (!originalDataAndMeta.value || !mldtConfig.value) return [];
+  return buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
+});
+
+const filteredRows = computed<KpiRow[]>(() => {
+  if (!props.searchQuery) return allRows.value;
+  const q = props.searchQuery.toLowerCase();
+  return allRows.value.filter((row) => (row.type === 'section' ? true : row.label.toLowerCase().includes(q)));
+});
+
+// (5) Review Helpers
+
 // --- Helpers to join review info ---
 /**
  * Look up review information for a single data point type id from the
  * provided `datasetReview` prop.
  *
  * @param {string | undefined} dataPointTypeId - The data point type identifier to look up.
- * @returns {DataPointReviewInfo | undefined} The review info entry for the data point, or undefined when not found.
+ * @returns {DataPointReviewDetails | undefined} The review info entry for the data point, or undefined when not found.
  */
-function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefined {
+function getReviewInfo(dataPointTypeId?: string): DataPointReviewDetails | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
 }
@@ -272,17 +328,17 @@ function getReviewInfo(dataPointTypeId?: string): DataPointReviewInfo | undefine
  * Returns the QA report for the given table row and reporter company ID.
  *
  * Looks up the datasetReview entry for the row's data point type and
- * returns the QaReportSummary for the given reporter company if present.
+ * returns the QaReportDataPointWithReporterDetails for the given reporter company if present.
  *
  * @param {CellRow} row - The table cell row describing the data point.
- * @param {string} reporterCompanyID - The reporter company identifier to match.
- * @returns {QaReportSummary | undefined} The matching QA report summary or undefined when not found.
+ * @param {string} reporterCompanyId - The reporter company identifier to match.
+ * @returns {QaReportDataPointWithReporterDetails | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(row: CellRow, reporterCompanyID: string): QaReportSummary | undefined {
+function getQaReportFor(row: CellRow, reporterCompanyId: string): QaReportDataPointWithReporterDetails | undefined {
   if (!row.dataPointTypeId) return undefined;
   const dpEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
   if (!dpEntry) return undefined;
-  return dpEntry.qaReports.find((r) => r.reporterCompanyId === reporterCompanyID);
+  return dpEntry.qaReports.find((r) => r.reporterCompanyId === reporterCompanyId);
 }
 
 /**
@@ -292,10 +348,10 @@ function getQaReportFor(row: CellRow, reporterCompanyID: string): QaReportSummar
  * that string and returns the inner `value` property, or null when the
  * corrected value is not available or parsing fails.
  *
- * @param {QaReportSummary | undefined} qaReport - QA report to extract value from.
+ * @param {QaReportDataPointWithReporterDetails | undefined} qaReport - QA report to extract value from.
  * @returns {string | null} The corrected display value or null when unavailable.
  */
-function getCorrectedDisplayFromQaReport(qaReport: QaReportSummary | undefined): string | null {
+function getCorrectedDisplayFromQaReport(qaReport: QaReportDataPointWithReporterDetails | undefined): string | null {
   if (!qaReport?.correctedData) return null;
   try {
     const parsed = JSON.parse(qaReport.correctedData);
@@ -406,57 +462,6 @@ function isRowEmpty(cellRow: CellRow): boolean {
 }
 
 /**
- * Build a flat list of table rows (sections and cell rows) from the MLDT configuration
- * and a single dataset. This function performs a recursive traversal of the
- * configuration tree.
- *
- * @param {MLDTConfig<FrameworkData>} config - MLDT view configuration for the framework.
- * @param {FrameworkData} data - The framework data instance to read values from.
- * @param {number} [level=0] - Current nesting level for section rows (used for styling).
- * @returns {KpiRow[]} The generated list of rows representing sections and KPI cells.
- */
-function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkData, level = 0): KpiRow[] {
-  const rows: KpiRow[] = [];
-  for (const item of config) {
-    if (item.type === 'section') {
-      const section = item;
-      const childRows = buildRowsFromConfig(section.children, data, level + 1);
-
-      if (childRows.length > 0) {
-        rows.push({ type: 'section', label: section.label, level: level });
-        rows.push(...childRows);
-      }
-    } else if (item.type === 'cell') {
-      const cell = item;
-      const cellRow: CellRow = {
-        type: 'cell',
-        label: cell.label,
-        dataPointTypeId: cell.dataPointTypeId,
-        originalDisplay: cell.valueGetter(data),
-        explanation: cell.explanation,
-      };
-
-      // Apply the "Hide Empty Fields" logic
-      if (!props.hideEmptyFields || !isRowEmpty(cellRow)) {
-        rows.push(cellRow);
-      }
-    }
-  }
-  return rows;
-}
-
-const allRows = computed<KpiRow[]>(() => {
-  if (!originalDataAndMeta.value || !mldtConfig.value) return [];
-  return buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
-});
-
-const filteredRows = computed<KpiRow[]>(() => {
-  if (!props.searchQuery) return allRows.value;
-  const q = props.searchQuery.toLowerCase();
-  return allRows.value.filter((row) => (row.type === 'section' ? true : row.label.toLowerCase().includes(q)));
-});
-
-/**
  * Opens judge modal
  *
  * @param {KpiRow} row - Input row of data point to open judge modal for.
@@ -464,7 +469,6 @@ const filteredRows = computed<KpiRow[]>(() => {
 function openJudgeModal(row: KpiRow): void {
   if (row.type === 'section') return;
   console.log('open judge modal for', row.dataPointTypeId, row.label);
-  // TODO: integrate judge modal implementation in follow-up ticket
 }
 
 /**
