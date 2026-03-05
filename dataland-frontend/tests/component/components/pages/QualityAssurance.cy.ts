@@ -351,7 +351,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('.p-tag').filter(':contains("10")').should('exist');
   });
 
-  it.only('Check if dataset can be reviewed on the view page', () => {
+  it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',

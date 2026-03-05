@@ -7,7 +7,7 @@ import {
 import { describeIf } from '@e2e/support/TestUtility';
 import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw, getBaseUrl, judge_name, judge_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -128,7 +128,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
   dataMetaInfo: DataMetaInformation
 ): void {
-  login(judge_name, judge_pw);
+  login(admin_name, admin_pw);
 
   viewRecentlyUploadedDatasetsInQaTable();
 
