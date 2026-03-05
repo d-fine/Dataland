@@ -3440,6 +3440,7 @@
       "QaReportDataPointWithReporterDetails": {
         "required": [
           "qaReportId",
+          "reporterCompanyId",
           "reporterUserId",
           "verdict"
         ],
@@ -3476,8 +3477,8 @@
       },
       "QaReporterCompany": {
         "required": [
-          "reportCompanyId",
-          "reportCompanyName"
+          "reportCompanyName",
+          "reporterCompanyId"
         ],
         "type": "object",
         "properties": {
@@ -3486,7 +3487,7 @@
             "description": "The name of the company that contributed a QA report to this dataset.",
             "example": "ABC Corporation"
           },
-          "reportCompanyId": {
+          "reporterCompanyId": {
             "type": "string",
             "description": "The unique identifier of the company that contributed a QA report to this dataset.",
             "format": "uuid",
