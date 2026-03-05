@@ -27,6 +27,9 @@
           <div v-if="isDatasetReviewError">
             <p class="text-red-500">Failed to load dataset review or company information</p>
           </div>
+          <div v-else-if="!datasetReview">
+            <p class="text-color-secondary">No dataset review found for this dataset.</p>
+          </div>
           <div v-else>
             <div class="flex justify-content-between align-items-start mb-2">
               <div>
@@ -117,19 +120,15 @@ import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetReviewState } from '@clients/qaservice';
 
-// Props passed from the router
 const props = defineProps<{
   dataId: string;
   datasetReviewId?: string;
 }>();
 
-// Api Client
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = useApiClient();
 const currentUserId = ref<string | undefined>(undefined);
 const queryClient = useQueryClient();
-
-// Empty Fields
 const hideEmptyFields = ref(true);
 
 const {
@@ -166,9 +165,7 @@ const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = u
 });
 
 const companyId = computed(() => dataMetaInformation.value?.companyId);
-
 const isInitialLoading = computed(() => isDatasetReviewPending.value || isDataMetaInformationPending.value);
-
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
 );
@@ -294,7 +291,3 @@ onMounted(async () => {
   await setCurrentUserId();
 });
 </script>
-
-<style scoped>
-/* Optional tweaks to match Figma exactly */
-</style>
