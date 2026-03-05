@@ -76,6 +76,7 @@ function humanizeViaMapping(rawText: string): string {
     no: HumanizedYesNoNa.No,
     na: HumanizedYesNoNa.NA,
     'eutaxonomy-financials': 'EU Taxonomy for financial companies',
+    'eutaxonomy-financials-2026-73': 'EU Taxonomy for financial companies (2026/73)',
     'eutaxonomy-non-financials': 'EU Taxonomy for non-financial companies',
     lksg: 'LkSG',
     sfdr: 'SFDR',
