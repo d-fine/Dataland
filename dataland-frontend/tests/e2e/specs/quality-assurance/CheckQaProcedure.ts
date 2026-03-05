@@ -38,7 +38,7 @@ describeIf(
       });
     });
 
-    it('Check whether newly added dataset has Pending status and can be approved by a judge', () => {
+    it('Check whether newly added dataset has Pending status and can be approved by an admin', () => {
       const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
@@ -87,7 +87,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
   testDatasetPresentWithCorrectStatus(companyName, 'Pending');
 
   safeLogout();
-  login(judge_name, judge_pw);
+  login(admin_name, admin_pw);
 
   viewRecentlyUploadedDatasetsInQaTable();
 

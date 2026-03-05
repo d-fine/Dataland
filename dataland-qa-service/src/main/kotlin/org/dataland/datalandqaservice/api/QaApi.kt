@@ -113,7 +113,8 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_REVIEWER') " +
+        "hasRole('ROLE_ADMIN') " +
+            "or hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_JUDGE') " +
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
@@ -321,7 +322,8 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_REVIEWER') " +
+        "hasRole('ROLE_ADMIN') " +
+            "or hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_JUDGE') " +
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )

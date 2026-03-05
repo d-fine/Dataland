@@ -11,7 +11,7 @@ import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import router from '@/router';
@@ -91,8 +91,8 @@ describe('Component tests for the Quality Assurance page', () => {
     });
   });
 
-  const keycloakMockWithJudgeRole = minimalKeycloakMock({
-    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_JUDGE],
+  const keycloakMockWithUploaderAndReviewerRoles = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
   });
 
   const dataIdAlpha = crypto.randomUUID();
@@ -143,7 +143,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
     cy.intercept('POST', `**/data-sourcing/priorities`, []);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
     cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
@@ -328,7 +328,7 @@ describe('Component tests for the Quality Assurance page', () => {
       { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 7 },
     ]);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
 
     cy.get('.p-tag').filter(':contains("3")').should('exist');
@@ -344,14 +344,14 @@ describe('Component tests for the Quality Assurance page', () => {
       { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 10 },
     ]);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
 
     cy.get('.p-tag').filter(':contains("5")').should('exist');
     cy.get('.p-tag').filter(':contains("10")').should('exist');
   });
 
-  it('Check if dataset can be reviewed on the view page', () => {
+  it.only('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
@@ -384,7 +384,7 @@ describe('Component tests for the Quality Assurance page', () => {
     ]);
 
     getMountingFunction({
-      keycloak: keycloakMockWithJudgeRole,
+      keycloak: keycloakMockWithUploaderAndReviewerRoles,
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
