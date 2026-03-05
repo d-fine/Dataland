@@ -5,6 +5,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.e2etests.ADMIN_USER_NAME
 import org.dataland.e2etests.ADMIN_USER_PASSWORD
+import org.dataland.e2etests.JUDGE_USER_NAME
+import org.dataland.e2etests.JUDGE_USER_PASSWORD
 import org.dataland.e2etests.PATH_TO_KEYCLOAK_TOKENENDPOINT
 import org.dataland.e2etests.PREMIUM_USER_NAME
 import org.dataland.e2etests.PREMIUM_USER_PASSWORD
@@ -58,6 +60,7 @@ class JwtAuthenticationHelper {
                 TechnicalUser.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
                 TechnicalUser.Uploader -> requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
                 TechnicalUser.Reviewer -> requestToken(REVIEWER_USER_NAME, REVIEWER_USER_PASSWORD)
+                TechnicalUser.Judge -> requestToken(JUDGE_USER_NAME, JUDGE_USER_PASSWORD)
                 TechnicalUser.PremiumUser -> requestToken(PREMIUM_USER_NAME, PREMIUM_USER_PASSWORD)
             }
         return token
