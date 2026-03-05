@@ -1424,14 +1424,14 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/setApprovedDataPointSource": {
+    "/dataset-reviews/{datasetReviewId}/reviewer": {
       "patch": {
         "tags": [
           "dataset-review-controller"
         ],
-        "summary": "Patch accepted data point source and/or custom value.",
-        "description": "Change the accepted source of a datapoint. In case a custom or qa report data point is accepted, provide additional information.",
-        "operationId": "setAcceptedSource",
+        "summary": "Change the reviewer of a dataset review object.",
+        "description": "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
+        "operationId": "setReviewer",
         "parameters": [
           {
             "name": "datasetReviewId",
@@ -1442,51 +1442,11 @@
               "type": "string"
             },
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          {
-            "name": "dataPointType",
-            "in": "query",
-            "description": "The data point type of the provided data point.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "extendedEnumYesNoIsNfrdMandatory"
-          },
-          {
-            "name": "acceptedSource",
-            "in": "query",
-            "description": "The source from which the value of the data point was accepted.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/AcceptedDataPointSource"
-            },
-            "example": "Original"
-          },
-          {
-            "name": "companyIdOfAcceptedQaReport",
-            "in": "query",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "customValue",
-            "in": "query",
-            "description": "A custom value for the data point if applicable.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": 79850
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully approved datapoint.",
+            "description": "Successfully set yourself as the reviewer.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1496,7 +1456,7 @@
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Only Dataland admins can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1536,14 +1496,14 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/reviewer": {
+    "/dataset-reviews/{datasetReviewId}/data-points/{dataPointType}": {
       "patch": {
         "tags": [
           "dataset-review-controller"
         ],
-        "summary": "Change the reviewer of a dataset review object.",
-        "description": "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
-        "operationId": "setReviewer",
+        "summary": "Patch review details for a data point",
+        "description": "Updates acceptedSource, companyIdOfAcceptedQaReport and customValue of a data point within a dataset review.",
+        "operationId": "patchReviewDetails",
         "parameters": [
           {
             "name": "datasetReviewId",
@@ -1554,11 +1514,31 @@
               "type": "string"
             },
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "dataPointType",
+            "in": "path",
+            "description": "The data point type of the provided data point.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewDetailsPatch"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Successfully set yourself as the reviewer.",
+            "description": "Successfully patched review details.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1568,7 +1548,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3307,6 +3287,8 @@
       },
       "AcceptedDataPointSource": {
         "type": "string",
+        "description": "The source of the accepted value for this data point, if applicable.",
+        "example": "Original",
         "enum": [
           "Original",
           "Qa",
@@ -3321,14 +3303,19 @@
         "type": "object",
         "properties": {
           "dataPointType": {
-            "type": "string"
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoIsNfrdMandatory"
           },
           "dataPointId": {
             "type": "string",
-            "format": "uuid"
+            "description": "The unique identifier of the datapoint.",
+            "format": "uuid",
+            "example": "32c30bc5-ecfd-46ec-b849-628d5328e2e6"
           },
           "qaReports": {
             "type": "array",
+            "description": "List of QA reports associated with this data point, including details about the reporter company.",
             "items": {
               "$ref": "#/components/schemas/QaReportDataPointWithReporterDetails"
             }
@@ -3338,12 +3325,16 @@
           },
           "companyIdOfAcceptedQaReport": {
             "type": "string",
+            "description": "The unique identifier of the company that contributed a QA report to this dataset.",
             "format": "uuid"
           },
           "customValue": {
-            "type": "string"
+            "type": "string",
+            "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+            "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
           }
-        }
+        },
+        "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
       },
       "DatasetReviewResponse": {
         "required": [
@@ -3406,6 +3397,13 @@
           },
           "qaReporterCompanies": {
             "type": "array",
+            "description": "List of companies that contributed a QA report to this dataset.",
+            "example": [
+              {
+                "companyId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+                "companyName": "ABC Corporation"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/QaReporterCompany"
             }
@@ -3414,7 +3412,8 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/DataPointReviewDetails"
-            }
+            },
+            "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
           }
         }
       },
@@ -3429,7 +3428,8 @@
       },
       "QaReportDataPointVerdict": {
         "type": "string",
-        "description": "The quality decision of this qa report.",
+        "description": "The verdict of a QA report regarding a data point.",
+        "example": "QaAccepted.",
         "enum": [
           "QaAccepted",
           "QaRejected",
@@ -3447,8 +3447,9 @@
         "properties": {
           "qaReportId": {
             "type": "string",
-            "description": "A comment explaining the verdict.",
-            "format": "uuid"
+            "description": "The unique identifier of the QA report",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "verdict": {
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
@@ -3460,13 +3461,18 @@
           },
           "reporterUserId": {
             "type": "string",
-            "format": "uuid"
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "reporterCompanyId": {
             "type": "string",
-            "format": "uuid"
+            "description": "The unique identifier of the company that contributed a QA report to this dataset.",
+            "format": "uuid",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
-        }
+        },
+        "description": "List of QA reports associated with this data point, including details about the reporter company."
       },
       "QaReporterCompany": {
         "required": [
@@ -3475,13 +3481,24 @@
         "type": "object",
         "properties": {
           "reportCompanyName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the company that contributed a QA report to this dataset.",
+            "example": "ABC Corporation"
           },
           "reportCompanyId": {
             "type": "string",
-            "format": "uuid"
+            "description": "The unique identifier of the company that contributed a QA report to this dataset.",
+            "format": "uuid",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
-        }
+        },
+        "description": "List of companies that contributed a QA report to this dataset.",
+        "example": [
+          {
+            "companyId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+            "companyName": "ABC Corporation"
+          }
+        ]
       },
       "CurrencyDataPoint": {
         "type": "object",
@@ -7467,6 +7484,24 @@
       },
       "JsonNode": {
         "type": "object"
+      },
+      "ReviewDetailsPatch": {
+        "type": "object",
+        "properties": {
+          "acceptedSource": {
+            "$ref": "#/components/schemas/AcceptedDataPointSource"
+          },
+          "companyIdOfAcceptedQaReport": {
+            "type": "string",
+            "description": "The unique identifier of the company that contributed a QA report to this dataset.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "customDataPoint": {
+            "type": "string",
+            "description": "The data point as a JSON string.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+          }
+        }
       },
       "QaReportStatusPatch": {
         "required": [

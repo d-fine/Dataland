@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.AcceptedDataPointSource
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.openApiClient.model.ReviewDetailsPatch
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -28,7 +29,7 @@ class DatasetReviewTest {
     private val apiAccessor = ApiAccessor()
     private val datapointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
     private val datapointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
-    private val datapointType3 = "extendedDecimalScope2GhgEmissionsInTonnes"
+    private val datapointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
     private val customDataPoint = "{ \"value\": \" 1000\", \"quality\": \"Reported\"}"
 
     private val dummyQaReport1 =
@@ -82,26 +83,32 @@ class DatasetReviewTest {
             val datasetReviewId = datasetReview.dataSetReviewId
             val reporterCompanyId = datasetReview.qaReporterCompanies.first().reportCompanyId
 
-            QaService.datasetReviewControllerApi.setAcceptedSource(
+            QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
                 datapointType1,
-                AcceptedDataPointSource.Original,
-                null,
-                null,
+                ReviewDetailsPatch(
+                    AcceptedDataPointSource.Original,
+                    null,
+                    null,
+                ),
             )
-            QaService.datasetReviewControllerApi.setAcceptedSource(
+            QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
                 datapointType2,
-                AcceptedDataPointSource.Qa,
-                reporterCompanyId.toString(),
-                null,
+                ReviewDetailsPatch(
+                    AcceptedDataPointSource.Qa,
+                    reporterCompanyId.toString(),
+                    null,
+                ),
             )
-            QaService.datasetReviewControllerApi.setAcceptedSource(
+            QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
                 datapointType3,
-                AcceptedDataPointSource.Custom,
-                null,
-                customDataPoint,
+                ReviewDetailsPatch(
+                    AcceptedDataPointSource.Custom,
+                    null,
+                    customDataPoint,
+                ),
             )
         }
 
