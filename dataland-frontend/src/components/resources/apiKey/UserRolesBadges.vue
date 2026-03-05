@@ -15,10 +15,10 @@
       severity="danger"
     ></Tag>
     <Tag
-        v-if="userRoles.includes(KEYCLOAK_ROLE_JUDGE)"
-        data-test="userRoleJudge"
-        value="JUDGE"
-        severity="secondary"
+      v-if="userRoles.includes(KEYCLOAK_ROLE_JUDGE)"
+      data-test="userRoleJudge"
+      value="JUDGE"
+      severity="secondary"
     ></Tag>
     <Tag v-if="userRoles.includes(KEYCLOAK_ROLE_ADMIN)" data-test="userRoleAdmin" value="ADMIN" severity="info"></Tag>
   </div>
