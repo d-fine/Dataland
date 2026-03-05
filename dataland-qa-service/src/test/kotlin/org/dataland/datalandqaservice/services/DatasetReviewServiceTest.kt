@@ -311,8 +311,13 @@ class DatasetReviewServiceTest {
             .whenever(mockDatasetReviewSupportService)
             .getContainedDataPoints(any())
 
-        val result = datasetReviewService.postDatasetReview(UUID.randomUUID())
-        print("Hallo")
+        doReturn(listOf(datasetReviewEntity))
+            .whenever(mockDatasetReviewRepository)
+            .findAllByDatasetIdAndReviewState(any(), any())
+
+        assertThrows<ConflictApiException> {
+            datasetReviewService.postDatasetReview(UUID.randomUUID())
+        }
     }
 
     @Test
