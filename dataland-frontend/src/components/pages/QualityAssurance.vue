@@ -198,7 +198,7 @@ const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
-interface confirmationModalState {
+interface ConfirmationModalState {
   visible: boolean;
   header: string;
   message: string;
@@ -207,7 +207,7 @@ interface confirmationModalState {
   onConfirm?: () => void;
 }
 
-const confirmationModal = ref<confirmationModalState>({
+const confirmationModal = ref<ConfirmationModalState>({
   visible: false,
   header: '',
   message: '',

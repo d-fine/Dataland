@@ -109,7 +109,7 @@ import DatasetReviewComparisonTable from '@/components/resources/datasetReview/D
 import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
@@ -119,6 +119,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetReviewState } from '@clients/qaservice';
+import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 
 const props = defineProps<{
   dataId: string;
@@ -131,38 +133,19 @@ const currentUserId = ref<string | undefined>(undefined);
 const queryClient = useQueryClient();
 const hideEmptyFields = ref(true);
 
+const dataIdRef = computed(() => props.dataId);
+const datasetReviewIdRef = computed(() => props.datasetReviewId);
+
 const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
-} = useQuery({
-  queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId],
-  queryFn: async () => {
-    const { datasetReviewId, dataId } = props;
-    const { datasetReviewController } = apiClientProvider.apiClients;
-
-    if (datasetReviewId) {
-      const { data } = await datasetReviewController.getDatasetReview(datasetReviewId);
-      return data;
-    }
-
-    if (dataId) {
-      const { data } = await datasetReviewController.getDatasetReviewsByDatasetId(dataId);
-      return data[0] ?? null;
-    }
-
-    return null;
-  },
-  enabled: !!props.dataId || !!props.datasetReviewId,
+} = useDatasetReviewQuery({
+  dataId: dataIdRef,
+  datasetReviewId: datasetReviewIdRef,
 });
 
-const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useQuery({
-  queryKey: ['frameworkData', props.dataId],
-  queryFn: async () => {
-    const response = await apiClientProvider.backendClients.metaDataController.getDataMetaInfo(props.dataId);
-    return response.data;
-  },
-});
+const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
 const companyId = computed(() => dataMetaInformation.value?.companyId);
 const isInitialLoading = computed(() => isDatasetReviewPending.value || isDataMetaInformationPending.value);
