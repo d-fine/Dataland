@@ -446,8 +446,8 @@ function validateSearchBarInput(): boolean {
 
 /**
  * Determines the label of the review button in the table depending.
- * @param ownerId the user id of the owner of the dataset
- * @param ownerName the user name of the owner of the dataset
+ * @param ownerId the user id of the owner of the dataset review
+ * @param ownerName the user name of the owner of the dataset review
  * @returns the label of the review button
  */
 async function getReviewStatus(ownerId: string | undefined, ownerName: string | undefined): Promise<string> {
