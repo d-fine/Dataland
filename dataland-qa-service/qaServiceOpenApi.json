@@ -3476,6 +3476,7 @@
       },
       "QaReporterCompany": {
         "required": [
+          "reportCompanyId",
           "reportCompanyName"
         ],
         "type": "object",
