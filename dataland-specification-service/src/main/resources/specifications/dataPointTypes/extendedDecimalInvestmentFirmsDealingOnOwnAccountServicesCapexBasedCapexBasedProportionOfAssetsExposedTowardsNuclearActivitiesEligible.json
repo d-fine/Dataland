@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible",
+  "name" : "CapEx-based Proportion of Assets Exposed towards Nuclear Activities - Eligible",
+  "businessDefinition" : "Taxonomy-eligible CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Nuclear Activities",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ]
+}

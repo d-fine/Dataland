@@ -3,6 +3,6 @@
   "name" : "Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned",
   "businessDefinition" : "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }
