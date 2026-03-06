@@ -1,25 +1,28 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { type DataMetaInformation, QaStatus, type StoredCompany } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
-import PrimeVue from 'primevue/config';
+import { type DatasetReviewResponse, DatasetReviewState } from '@clients/qaservice';
 
-describe('DatasetReviewOverview page', () => {
+describe('DatasetReviewOverview page details', () => {
   const keycloakMockWithReviewer = minimalKeycloakMock({
-    roles: [KEYCLOAK_ROLE_REVIEWER],
+    userId: 'current-reviewer-id',
+    roles: [KEYCLOAK_ROLE_ADMIN],
   });
 
   const dataId = 'test-data-id';
   const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
+  const reportingPeriod = '2021';
+  const framework = 'sfdr';
 
   const mockMetaInfo: DataMetaInformation = {
     dataId: dataId,
     companyId: companyId,
-    dataType: 'sfdr',
+    dataType: framework,
     uploadTime: Date.now(),
-    reportingPeriod: '2021',
+    reportingPeriod: reportingPeriod,
     currentlyActive: true,
     qaStatus: QaStatus.Pending,
   };
@@ -36,22 +39,68 @@ describe('DatasetReviewOverview page', () => {
     dataRegisteredByDataland: [],
   };
 
+  const baseDatasetReview: DatasetReviewResponse = {
+    dataSetReviewId: 'test-review-id',
+    datasetId: dataId,
+    companyId: companyId,
+    reportingPeriod: reportingPeriod,
+    dataType: framework,
+    reviewState: DatasetReviewState.Pending,
+    qaJudgeUserId: 'assigned-reviewer-id',
+    qaJudgeUserName: 'Assigned Reviewer',
+    qaReporterCompanies: [
+      { reporterCompanyId: 'reporter-company-1', reportCompanyName: 'Reporter Company 1' },
+      { reporterCompanyId: 'reporter-company-2', reportCompanyName: 'Reporter Company 2' },
+    ],
+    dataPoints: {
+      datapoint1: {
+        dataPointType: 'datapoint1',
+        qaReports: [],
+        acceptedSource: null,
+      },
+      datapoint2: {
+        dataPointType: 'datapoint2',
+        qaReports: [],
+        acceptedSource: 'Qa',
+      },
+      datapoint3: {
+        dataPointType: 'datapoint3',
+        qaReports: [],
+        acceptedSource: null,
+      },
+    } as unknown as DatasetReviewResponse['dataPoints'],
+  };
+
   /**
    * Mounts the DatasetReviewOverview page pre-configured for tests.
    * @returns {void} No return value; the function performs side-effects
    *   (network stubs and mounting) necessary for the tests.
    */
-  function mountPage(): void {
-    // Alias these intercepts so tests can wait for the requests by name
-    cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo).as('getCompanyInfo');
+  function mountPage(options?: {
+    datasetReviewResponse?: DatasetReviewResponse | null;
+    datasetReviewStatusCode?: number;
+  }): void {
+    const datasetReviewResponse = options?.datasetReviewResponse ?? baseDatasetReview;
 
+    cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo).as('getCompanyInfo');
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo).as('getMetaInfo');
+
+    cy.intercept('GET', '**/qa/dataset-reviews/**', (req) => {
+      if (options?.datasetReviewStatusCode != null) {
+        req.reply({ statusCode: options.datasetReviewStatusCode });
+        return;
+      }
+      if (datasetReviewResponse === null) {
+        req.reply([]);
+        return;
+      }
+      req.reply([datasetReviewResponse]);
+    }).as('getDatasetReview');
 
     cy.intercept('GET', '**/api/data/**', { statusCode: 200, body: { data: {}, meta: {} } });
     cy.intercept('GET', '**/community/company-role-assignments*', { statusCode: 200, body: [] });
     cy.intercept('GET', '**/api/company-rights/**', { statusCode: 200, body: [] });
     cy.intercept('HEAD', `**/community/company-ownership/${companyId}`, { statusCode: 200, body: [] });
-
     cy.intercept('HEAD', '**/community/company-role-assignments/CompanyOwner/**', { statusCode: 200, body: [] });
 
     const queryClient = new QueryClient({
@@ -65,92 +114,147 @@ describe('DatasetReviewOverview page', () => {
     mount(DatasetReviewOverview, {
       props: { dataId },
       global: {
-        plugins: [[VueQueryPlugin, { queryClient }], PrimeVue],
+        plugins: [[VueQueryPlugin, { queryClient }]],
       },
     });
   }
 
-  // LOADING AND ERROR BANNERS
-  it('Shows and then hides the loading banner during the initial load', () => {
+
+  it('displays the correct information', () => {
     mountPage();
-    cy.contains(/Loading Review Information/i).should('exist');
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
+    cy.wait('@getDatasetReview');
+
+    cy.contains('SFDR').should('be.visible');
+    cy.contains('2 / 3 data points to review').should('be.visible');
+    cy.contains('Data extracted from:').should('be.visible');
+    cy.contains('Annual_Report_2024').should('be.visible');
+    cy.contains('All documents').should('be.visible');
     cy.get('[data-test="companyInformationBanner"]').should('be.visible');
+    cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
+    cy.get('[data-test="datasetReviewComparisonTable"] thead tr th').should('have.length', 5);
   });
 
-  it.skip('shows an error when dataset review fails to load', () => {
-    cy.intercept('GET', '**/qa/dataset-reviews/**', {
-      statusCode: 500,
+  it('shows assignment button when not assigned to the current user', () => {
+    mountPage();
+    cy.wait('@getDatasetReview');
+
+    cy.contains('ASSIGN YOURSELF').should('be.visible');
+    cy.contains('Currently assigned to:').should('be.visible');
+    cy.contains('Assigned Reviewer').should('be.visible');
+    cy.contains('REJECT DATASET').should('not.exist');
+    cy.contains('FINISH REVIEW').should('not.exist');
+  });
+
+  it('shows reviewer action buttons when assigned to the current user', () => {
+    mountPage({
+      datasetReviewResponse: {
+        ...baseDatasetReview,
+        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
+        qaJudgeUserName: 'Current Reviewer',
+      },
     });
-    mountPage();
-    cy.contains('Failed to load dataset review or company information', { timeout: 10000 }).should('be.visible');
-    cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
+    cy.wait('@getDatasetReview');
+
+    cy.contains('Assigned to you').should('be.visible');
+    cy.contains('REJECT DATASET').should('be.visible');
+    cy.contains('FINISH REVIEW').should('be.visible');
+    cy.contains('ASSIGN YOURSELF').should('not.exist');
   });
 
-  // COMPANY INFORMATION BANNER
-  it('Company Information banner is visible', () => {
+  it('defaults the hide empty fields toggle to on and allows toggling', () => {
     mountPage();
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
-    cy.get('[data-test="companyInformationBanner"]').should('be.visible');
-  });
-
-  // TABLE HEADER
-  it('Table header renders the framework name', () => {
-    mountPage();
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
-
-    cy.contains(/sfdr/i).should('exist');
-  });
-
-  it('hide empty fields toggle is checked by default and can be toggled', () => {
-    mountPage();
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
+    cy.wait('@getDatasetReview');
 
     cy.get('#hideEmptyDataToggleButton').should('be.checked');
+    cy.contains('Hide empty fields').should('be.visible');
     cy.get('#hideEmptyDataToggleButton').click();
     cy.get('#hideEmptyDataToggleButton').should('not.be.checked');
   });
 
-  // BUTTONS
-  it('allows assigning the review to the current user', () => {
-    mountPage();
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
+  it('shows an error message when loading the dataset review fails', () => {
+    mountPage({ datasetReviewStatusCode: 500 });
+    cy.wait('@getDatasetReview');
 
-    cy.contains('ASSIGN YOURSELF').should('exist');
-    cy.contains('Currently assigned to:').should('exist');
-    cy.contains('Assigned to you').should('not.exist');
+    cy.contains('Failed to load dataset review or company information').should('be.visible');
+    cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
+  });
+
+  it('shows a fallback message when no dataset review is found', () => {
+    mountPage({ datasetReviewResponse: null });
+    cy.wait('@getDatasetReview');
+
+    cy.contains('No dataset review found for this dataset.').should('be.visible');
+    cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
+  });
+
+  it('opens and confirms the assign-to-me modal', () => {
+    mountPage();
+    cy.wait('@getDatasetReview');
+
+    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/reviewer' }, { statusCode: 200, body: {} }).as(
+        'setReviewer'
+    );
 
     cy.contains('ASSIGN YOURSELF').click();
     cy.contains('Assign Yourself').should('be.visible');
+    cy.contains('Are you sure you want to assign this dataset review to yourself?').should('be.visible');
     cy.contains('CONFIRM').click();
 
-    cy.contains('Assigned to you', { timeout: 5000 }).should('exist');
-    cy.contains('ASSIGN YOURSELF').should('not.exist');
-    cy.contains('Currently assigned to:').should('not.exist');
+    cy.wait('@setReviewer').then((interception) => {
+      expect(interception.request.method).to.eq('PATCH');
+      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/reviewer`);
+    });
   });
 
-  it('wires reject and finish review buttons', () => {
-    // Note from Florian: These will fail once the button functionality is implemented, but that is intended to alert the developer that the test needs to be updated to reflect the actual logic instead of the placeholder alert logic
-    mountPage();
-    cy.contains(/Loading Review Information/i, { timeout: 10000 }).should('not.exist');
-
-    cy.window().then((win) => {
-      cy.stub(win, 'alert').as('alert');
+  it('opens the reject dataset modal when assigned', () => {
+    mountPage({
+      datasetReviewResponse: {
+        ...baseDatasetReview,
+        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
+        qaJudgeUserName: 'Current Reviewer',
+      },
     });
+    cy.wait('@getDatasetReview');
+
+    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
+        'setReviewState'
+    );
 
     cy.contains('REJECT DATASET').click();
-    cy.get('@alert').should('have.been.calledWith', 'Reject logic here');
+    cy.contains('Reject Dataset').should('be.visible');
+    cy.contains('Are you sure you want to reject this dataset review?').should('be.visible');
+    cy.contains('CONFIRM').click();
 
-    cy.contains('FINISH REVIEW').click();
-    cy.get('@alert').should('have.been.calledWith', 'Finish review logic here');
+    cy.wait('@setReviewState').then((interception) => {
+      expect(interception.request.method).to.eq('PATCH');
+      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`);
+      expect(interception.request.url).to.contain('datasetReviewState=Aborted');
+    });
   });
 
-  // COMPARISON TABLE CONTENTS
-  it('Renders the comparison table with the correct (number of) headers', () => {
-    mountPage();
-    cy.wait('@getCompanyInfo');
-    cy.wait('@getMetaInfo');
-    cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
-    cy.get('[data-test="datasetReviewComparisonTable"] thead tr th').should('have.length', 5);
+  it('opens the finish review modal when assigned', () => {
+    mountPage({
+      datasetReviewResponse: {
+        ...baseDatasetReview,
+        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
+        qaJudgeUserName: 'Current Reviewer',
+      },
+    });
+    cy.wait('@getDatasetReview');
+
+    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
+        'finishReview'
+    );
+
+    cy.contains('FINISH REVIEW').click();
+    cy.contains('Finish Review').should('be.visible');
+    cy.contains('Are you sure you want to mark this dataset review as finished?').should('be.visible');
+    cy.contains('CONFIRM').click();
+
+    cy.wait('@finishReview').then((interception) => {
+      expect(interception.request.method).to.eq('PATCH');
+      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`);
+      expect(interception.request.url).to.contain('datasetReviewState=Finished');
+    });
   });
 });
