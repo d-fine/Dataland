@@ -170,6 +170,16 @@ const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending }
   DatasetReviewState.Aborted
 );
 
+const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
+  datasetReviewIdRef,
+  DatasetReviewState.Finished
+);
+
+const isModalActionPending = computed(
+  () => isAssigningToMe.value || isRejectReviewMutationPending.value || isFinishReviewMutationPending.value
+);
+const isActionSuccess = ref(false);
+
 interface ConfirmationModalState {
   visible: boolean;
   header: string;
@@ -196,9 +206,6 @@ const openConfirmationModal = (header: string, message: string, onConfirm?: () =
     onConfirm,
   };
 };
-
-const isModalActionPending = computed(() => isAssigningToMe.value || isRejectReviewMutationPending.value);
-const isActionSuccess = ref(false);
 
 const assignToMe = (): void => {
   openConfirmationModal(
@@ -245,7 +252,22 @@ const finishReview = (): void => {
   openConfirmationModal(
     'Finish Review',
     'Are you sure you want to mark this dataset review as finished? This can only be undone by a dataland admin!',
-    () => {} // Implement action here in seperate ticket
+    () => {
+      finishReviewMutation(undefined, {
+        onSuccess: () => {
+          isActionSuccess.value = true;
+          confirmationModal.value.message = 'Dataset review completed. Rerouting to QA page ...';
+          setTimeout(() => {
+            confirmationModal.value.visible = false;
+            isActionSuccess.value = false;
+            void goToQaPage();
+          }, 3200);
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + error.message;
+        },
+      });
+    } // Implement action here in seperate ticket
   );
 };
 

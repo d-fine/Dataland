@@ -11,7 +11,7 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val QA_REPORT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The verdict of a QA report regarding a data point."
-    const val QA_REPORT_VERDICT_EXAMPLE = "QaAccepted."
+    const val QA_REPORT_VERDICT_EXAMPLE = "QaAccepted"
 
     const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "Contains suggested data corrections for the rejected data point."
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
