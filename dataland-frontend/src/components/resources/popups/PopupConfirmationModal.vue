@@ -9,18 +9,23 @@
     data-test="confirmation-modal"
     @hide="handleCancel"
   >
-    <div class="flex flex-column align-items-center p-3">
-      <div v-if="isSuccess" class="text-green-500 mb-3 animate-fade-in">
-        <i class="pi pi-check-circle" style="font-size: 3rem"></i>
-      </div>
-      <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
-        <slot> {{ message }} </slot>
-      </div>
+    <div v-if="isSuccess" class="text-green-500 mb-3">
+      <i class="pi pi-check-circle" style="font-size: 3rem"></i>
+    </div>
+
+    <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
+      <slot>
+        {{ message }}
+      </slot>
     </div>
 
     <div v-if="errorMessage" data-test="confirmation-modal-error-message">
-      <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{ errorMessage }}</Message>
+      <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">
+        {{ errorMessage }}
+      </Message>
     </div>
+
+    <!-- Hide footer when isSuccess = true -->
     <template #footer v-if="!isSuccess">
       <PrimeButton
         label="CANCEL"
