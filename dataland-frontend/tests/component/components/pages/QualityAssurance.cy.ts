@@ -91,8 +91,11 @@ describe('Component tests for the Quality Assurance page', () => {
     });
   });
 
-  const keycloakMockWithJudgeAndReviewerRoles = minimalKeycloakMock({
-    roles: [KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_REVIEWER],
+  const keycloakMockWithReviewerRole = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_REVIEWER],
+  });
+  const keycloakMockWithJudgeRole = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_JUDGE],
   });
 
   const dataIdAlpha = crypto.randomUUID();
@@ -143,7 +146,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
     cy.intercept('POST', `**/data-sourcing/priorities`, []);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeAndReviewerRoles })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
     assertUnfilteredDatatableState();
     cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
@@ -328,7 +331,7 @@ describe('Component tests for the Quality Assurance page', () => {
       { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 7 },
     ]);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeAndReviewerRoles })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
     assertUnfilteredDatatableState();
 
     cy.get('.p-tag').filter(':contains("3")').should('exist');
@@ -344,7 +347,7 @@ describe('Component tests for the Quality Assurance page', () => {
       { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 10 },
     ]);
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeAndReviewerRoles })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
     assertUnfilteredDatatableState();
 
     cy.get('.p-tag').filter(':contains("5")').should('exist');
@@ -384,7 +387,7 @@ describe('Component tests for the Quality Assurance page', () => {
     ]);
 
     getMountingFunction({
-      keycloak: keycloakMockWithJudgeAndReviewerRoles,
+      keycloak: keycloakMockWithReviewerRole,
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
