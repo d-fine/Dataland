@@ -1,5 +1,16 @@
 <template>
   <div class="card p-0 overflow-hidden">
+    <ShowMultipleReportsBanner
+      data-test="multipleReportsBanner"
+      v-if="
+        framework == DataTypeEnum.EutaxonomyFinancials ||
+        framework == DataTypeEnum.EutaxonomyNonFinancials ||
+        framework == DataTypeEnum.Sfdr ||
+        framework == DataTypeEnum.NuclearAndGas
+      "
+      :reporting-periods="sortedReportingPeriods"
+      :reports="sortedReports"
+    />
     <div class="p-datatable p-component">
       <div class="p-datatable-wrapper overflow-auto">
         <table class="p-datatable-table w-full" aria-label="Dataset review comparison table">
@@ -190,7 +201,14 @@ import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayer
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import type {
+  DataMetaInformation,
+  EutaxonomyFinancialsData,
+  EutaxonomyNonFinancialsData,
+  NuclearAndGasData,
+  SfdrData,
+} from '@clients/backend';
+import { DataTypeEnum } from '@clients/backend';
 import {
   type DatasetReviewResponse,
   type DataPointReviewDetails,
@@ -203,6 +221,7 @@ import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
+import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -233,6 +252,37 @@ const {
 } = useGetFrameworkDataQuery({
   framework: frameworkRef,
   dataId: dataIdRef,
+});
+
+const sortedReportingPeriods = computed(() => {
+  const reportingPeriod = originalDataAndMeta.value?.reportingPeriod;
+  return reportingPeriod ? [reportingPeriod] : [];
+});
+
+const sortedReports = computed(() => {
+  const data = originalDataAndMeta.value?.data;
+  if (!data) return [];
+  switch (props.framework) {
+    case DataTypeEnum.EutaxonomyNonFinancials: {
+      const reports = (data as EutaxonomyNonFinancialsData).general?.referencedReports;
+      return reports ? [reports] : [];
+    }
+    case DataTypeEnum.EutaxonomyFinancials: {
+      const reports = (data as EutaxonomyFinancialsData).general?.general?.referencedReports;
+      return reports ? [reports] : [];
+    }
+    case DataTypeEnum.Sfdr: {
+      const reports = (data as SfdrData).general?.general?.referencedReports;
+      return reports ? [reports] : [];
+    }
+    case DataTypeEnum.NuclearAndGas: {
+      const reports = (data as NuclearAndGasData).general?.general?.referencedReports;
+      return reports ? [reports] : [];
+    }
+    default: {
+      return [];
+    }
+  }
 });
 
 type SectionRow = {

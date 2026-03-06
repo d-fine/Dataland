@@ -40,11 +40,6 @@
                   {{ dataPointsLeftToReview }} / {{ dataPointsTotal }} data points to review
                 </div>
 
-                <div class="flex align-items-center gap-4">
-                  <span class="text-color-secondary">Data extracted from:</span>
-                  <span class="text-primary font-medium cursor-pointer">Annual_Report_2024</span>
-                  <span class="text-primary font-medium cursor-pointer underline">All documents</span>
-                </div>
                 <div class="flex align-items-center gap-2">
                   <ToggleSwitch inputId="hideEmptyDataToggleButton" v-model="hideEmptyFields" />
                   <label for="hideEmptyDataToggleButton" class="font-semibold text-sm cursor-pointer">
@@ -235,7 +230,7 @@ const rejectDataset = (): void => {
           setTimeout(() => {
             confirmationModal.value.visible = false;
             isActionSuccess.value = false;
-            goToQaPage();
+            void goToQaPage();
           }, 3200);
         },
         onError: (error) => {
@@ -254,7 +249,10 @@ const finishReview = (): void => {
   );
 };
 
-function goToQaPage() {
+/**
+ * Navigates the user to the Quality Assurance overview page.
+ */
+function goToQaPage(): ReturnType<typeof router.push> {
   return router.push({ name: 'UI for quality assurance' });
 }
 

@@ -1,7 +1,7 @@
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
-import { type DataMetaInformation, DataTypeEnum, QaStatus, type SfdrData } from '@clients/backend';
+import { type CompanyReport, type DataMetaInformation, DataTypeEnum, QaStatus, type SfdrData } from '@clients/backend';
 import {
   AcceptedDataPointSource,
   DatasetReviewState,
@@ -129,6 +129,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
       body: {
         data: options?.data ?? baseSfdrData,
         meta: {},
+        reportingPeriod: reportingPeriod,
       },
     }).as('getFrameworkData');
 
@@ -207,5 +208,26 @@ describe('DatasetReviewComparisonTable component tests', () => {
     mountComponent({ hideEmptyFields: false });
 
     cy.contains('span', 'Scope 2 GHG emissions').should('be.visible');
+  });
+
+  it('renders the company reports banner with referenced reports', () => {
+    const reportName = 'Annual_Report_2024';
+    const dataWithReports: SfdrData = {
+      ...baseSfdrData,
+      general: {
+        ...baseSfdrData.general,
+        general: {
+          ...baseSfdrData.general?.general,
+          referencedReports: {
+            [reportName]: {} as CompanyReport,
+          },
+        },
+      },
+    } as SfdrData;
+
+    mountComponent({ data: dataWithReports });
+
+    cy.get('[data-test="multipleReportsBanner"]').should('be.visible');
+    cy.get(`[data-test="report-link-${reportName}"]`).should('be.visible');
   });
 });
