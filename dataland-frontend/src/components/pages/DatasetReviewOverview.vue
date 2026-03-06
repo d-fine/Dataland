@@ -100,6 +100,7 @@
       :error-message="confirmationModal.errorMessage"
       :is-loading="isModalActionPending"
       @confirm="confirmationModal.onConfirm"
+      :is-success="isActionSuccess"
     />
   </TheContent>
 </template>
@@ -121,6 +122,7 @@ import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/u
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
+import router from '@/router';
 
 const props = defineProps<{
   dataId: string;
@@ -201,6 +203,7 @@ const openConfirmationModal = (header: string, message: string, onConfirm?: () =
 };
 
 const isModalActionPending = computed(() => isAssigningToMe.value || isRejectReviewMutationPending.value);
+const isActionSuccess = ref(false);
 
 const assignToMe = (): void => {
   openConfirmationModal(
@@ -227,8 +230,13 @@ const rejectDataset = (): void => {
     () => {
       rejectReviewMutation(undefined, {
         onSuccess: () => {
-          confirmationModal.value.visible = false;
-          confirmationModal.value.errorMessage = '';
+          isActionSuccess.value = true;
+          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+          setTimeout(() => {
+            confirmationModal.value.visible = false;
+            isActionSuccess.value = false;
+            goToQaPage();
+          }, 3200);
         },
         onError: (error) => {
           confirmationModal.value.errorMessage = 'Failed to reject dataset review. Please try again.';
@@ -245,6 +253,10 @@ const finishReview = (): void => {
     () => {} // Implement action here in seperate ticket
   );
 };
+
+function goToQaPage() {
+  return router.push({ name: 'UI for quality assurance' });
+}
 
 /**
  * Identifies and sets the current user's ID via the Keycloak token.

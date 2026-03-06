@@ -9,16 +9,32 @@
     data-test="confirmation-modal"
     @hide="handleCancel"
   >
-    <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
-      <slot> {{ message }} </slot>
+    <div class="flex flex-column align-items-center p-3">
+      <div v-if="isSuccess" class="text-green-500 mb-3 animate-fade-in">
+        <i class="pi pi-check-circle" style="font-size: 3rem"></i>
+      </div>
+      <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
+        <slot> {{ message }} </slot>
+      </div>
     </div>
 
     <div v-if="errorMessage" data-test="confirmation-modal-error-message">
       <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{ errorMessage }}</Message>
     </div>
-    <template #footer>
-      <PrimeButton label="CANCEL" @click="handleCancel" variant="outlined" :disabled="isLoading" data-test="cancel-confirmation-modal-button"/>
-      <PrimeButton label="CONFIRM" @click="handleConfirm" :loading="isLoading" data-test="ok-confirmation-modal-button" />
+    <template #footer v-if="!isSuccess">
+      <PrimeButton
+        label="CANCEL"
+        @click="handleCancel"
+        variant="outlined"
+        :disabled="isLoading"
+        data-test="cancel-confirmation-modal-button"
+      />
+      <PrimeButton
+        label="CONFIRM"
+        @click="handleConfirm"
+        :loading="isLoading"
+        data-test="ok-confirmation-modal-button"
+      />
     </template>
   </PrimeDialog>
 </template>
@@ -35,6 +51,7 @@ const props = defineProps<{
   message: string;
   errorMessage?: string;
   isLoading?: boolean;
+  isSuccess?: boolean;
 }>();
 
 const emit = defineEmits<{
