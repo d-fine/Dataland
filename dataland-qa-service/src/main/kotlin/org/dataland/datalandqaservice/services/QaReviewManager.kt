@@ -3,6 +3,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
@@ -49,6 +50,7 @@ class QaReviewManager
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
         val datasetReviewService: DatasetReviewService,
+        val dataSourcingControllerApi: DataSourcingControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -92,6 +94,7 @@ class QaReviewManager
             dataTypes: Set<DataTypeEnum>?,
             reportingPeriods: Set<String>?,
             companyName: String?,
+            priorities: Set<Int>?,
             qaStatus: QaStatus = QaStatus.Pending,
             chunkSize: Int,
             chunkIndex: Int,

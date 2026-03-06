@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -50,4 +51,12 @@ class ApiClients(
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the DataSourcingControllerApi of the data sourcing service
+     */
+    @Bean
+    fun getDataSourcingControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): DataSourcingControllerApi = DataSourcingControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 }
