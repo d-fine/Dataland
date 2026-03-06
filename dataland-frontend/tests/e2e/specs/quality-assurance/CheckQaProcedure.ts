@@ -7,15 +7,7 @@ import {
 import { describeIf } from '@e2e/support/TestUtility';
 import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import {
-  admin_name,
-  admin_pw,
-  getBaseUrl,
-  reviewer_name,
-  reviewer_pw,
-  uploader_name,
-  uploader_pw,
-} from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -46,7 +38,7 @@ describeIf(
       });
     });
 
-    it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
+    it('Check whether newly added dataset has Pending status and can be approved by an admin', () => {
       const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
@@ -95,7 +87,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
   testDatasetPresentWithCorrectStatus(companyName, 'Pending');
 
   safeLogout();
-  login(reviewer_name, reviewer_pw);
+  login(admin_name, admin_pw);
 
   viewRecentlyUploadedDatasetsInQaTable();
 
@@ -136,7 +128,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
   dataMetaInfo: DataMetaInformation
 ): void {
-  login(reviewer_name, reviewer_pw);
+  login(admin_name, admin_pw);
 
   viewRecentlyUploadedDatasetsInQaTable();
 
