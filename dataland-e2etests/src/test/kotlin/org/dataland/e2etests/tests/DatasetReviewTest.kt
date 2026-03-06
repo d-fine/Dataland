@@ -81,7 +81,7 @@ class DatasetReviewTest {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetReview = QaService.datasetReviewControllerApi.postDatasetReview(datasetId)
             val datasetReviewId = datasetReview.dataSetReviewId
-            val reporterCompanyId = datasetReview.qaReporterCompanies.first().reportCompanyId
+            val reporterCompanyId = datasetReview.qaReporterCompanies.first().reporterCompanyId
 
             QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
