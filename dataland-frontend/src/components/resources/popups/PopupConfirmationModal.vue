@@ -6,15 +6,19 @@
     :closable="false"
     :dismissable-mask="!isLoading"
     style="min-width: 20rem; text-align: center"
+    data-test="confirmation-modal"
     @hide="handleCancel"
   >
+    <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
+      <slot> {{ message }} </slot>
+    </div>
+
     <div v-if="errorMessage" data-test="confirmation-modal-error-message">
       <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{ errorMessage }}</Message>
     </div>
-    <slot> {{ message }} </slot>
     <template #footer>
-      <PrimeButton label="CANCEL" @click="handleCancel" variant="outlined" :disabled="isLoading" />
-      <PrimeButton label="CONFIRM" @click="handleConfirm" :loading="isLoading" />
+      <PrimeButton label="CANCEL" @click="handleCancel" variant="outlined" :disabled="isLoading" data-test="cancel-confirmation-modal-button"/>
+      <PrimeButton label="CONFIRM" @click="handleConfirm" :loading="isLoading" data-test="ok-confirmation-modal-button" />
     </template>
   </PrimeDialog>
 </template>

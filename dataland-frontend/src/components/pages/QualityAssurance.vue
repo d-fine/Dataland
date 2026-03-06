@@ -298,7 +298,8 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
     selectedDataId.value = qaDataObject.dataId;
     openConfirmationModal(
       'Start Review',
-      'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
+      'Are you sure you want to start a review for this dataset? ' +
+        'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
       () => {
         void confirmStartReview();
       }
@@ -324,7 +325,6 @@ function goToQaViewPage(dataId: string, datasetReviewId?: string): ReturnType<ty
  * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
  */
 async function confirmStartReview(): Promise<void> {
-  // 1. Start the loading spinner on the button
   isCreatingReview.value = true;
 
   try {
