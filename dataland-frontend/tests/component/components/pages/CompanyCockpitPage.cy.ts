@@ -122,8 +122,9 @@ describe('Component test for the company cockpit', () => {
         validateVsmeFrameworkSummaryPanel(isCompanyOwner);
         return;
       }
+      const frameworksWithoutProvideDataButton = new Set(['lksg', 'eutaxonomy-financials-2026-73']);
       if (isProvideDataButtonExpected) {
-        if (frameworkName != 'lksg' && frameworkName != 'eutaxonomy-financials-2026-73') {
+        if (!frameworksWithoutProvideDataButton.has(frameworkName)) {
           cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
         }
       } else {
