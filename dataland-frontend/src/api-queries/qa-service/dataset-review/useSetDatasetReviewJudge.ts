@@ -16,7 +16,7 @@ export function useSetDatasetReviewJudge(datasetReviewId: Ref<string | undefined
       return apiClientProvider.apiClients.datasetReviewController.setReviewer(id);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.all });
+      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetReviewId.value) });
     },
     onError: (error) => {
       console.error('Error setting dataset review judge:', error);

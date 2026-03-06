@@ -21,7 +21,7 @@ export function useSetDatasetReviewStateMutation(
       return await apiClient.apiClients.datasetReviewController.setReviewState(id, targetState);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.all });
+      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetReviewId.value) });
     },
     onError: (error) => {
       console.error('Error setting dataset review state:', error);

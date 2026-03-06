@@ -136,7 +136,6 @@ const {
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
 } = useDatasetReviewQuery({
-  dataId: dataIdRef,
   datasetReviewId: datasetReviewIdRef,
 });
 
