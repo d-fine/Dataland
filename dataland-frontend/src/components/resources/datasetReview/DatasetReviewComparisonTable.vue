@@ -185,11 +185,9 @@
 </template>
 
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
 import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
@@ -201,10 +199,10 @@ import {
   QaReportDataPointVerdict,
 } from '@clients/qaservice';
 
-import { useApiClient } from '@/utils/useApiClient.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -223,24 +221,18 @@ const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
   () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
 );
 
-const apiClientProvider = useApiClient();
 const vTooltip = Tooltip;
+
+const frameworkRef = computed(() => props.framework);
+const dataIdRef = computed(() => props.dataId);
 
 const {
   data: originalDataAndMeta,
   isPending: loadingOriginal,
   error: errorOriginal,
-} = useQuery({
-  queryKey: ['frameworkData', props.framework, props.dataId],
-  queryFn: async () => {
-    const api = getFrameworkDataApiForIdentifier(props.framework, apiClientProvider);
-    if (!api) {
-      throw new Error(`No data API for ${props.framework}`);
-    }
-    const response = await api.getFrameworkData(props.dataId);
-    return response.data;
-  },
-  enabled: !!props.framework && !!props.dataId,
+} = useGetFrameworkDataQuery({
+  framework: frameworkRef,
+  dataId: dataIdRef,
 });
 
 type SectionRow = {
