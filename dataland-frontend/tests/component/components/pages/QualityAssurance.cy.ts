@@ -96,6 +96,7 @@ describe('Component tests for the Quality Assurance page', () => {
   });
 
   const dataIdAlpha = crypto.randomUUID();
+  const datasetReviewIdAlpha = crypto.randomUUID();
   const companyNameAlpha = 'Alpha Company AG';
   const companyIdAlpha = crypto.randomUUID();
   const reviewQueueElementAlpha = buildReviewQueueElement({
@@ -109,7 +110,7 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdBeta = crypto.randomUUID();
   const companyNameBeta = 'Beta Corporate Ltd.';
   const companyIdBeta = crypto.randomUUID();
-  const datasetReviewId = crypto.randomUUID();
+  const datasetReviewIdBeta = crypto.randomUUID();
   const reviewerUserName = 'Reviewer user name';
   const reviewerUserId = 'Revieweruserid';
   const reviewQueueElementBeta = buildReviewQueueElement({
@@ -118,7 +119,7 @@ describe('Component tests for the Quality Assurance page', () => {
     companyId: companyIdBeta,
     framework: DataTypeEnum.Sfdr,
     reportingPeriod: '2023',
-    datasetReviewId: datasetReviewId,
+    datasetReviewId: datasetReviewIdBeta,
     reviewerUserName: reviewerUserName,
     reviewerUserId: reviewerUserId,
   });
@@ -390,19 +391,21 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
-      request.reply(201, {});
+      request.reply(201, {
+            dataSetReviewId: datasetReviewIdAlpha,
+      });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
-    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${dataIdAlpha}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdAlpha}`);
   });
 
   it('Check routing of row click.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.contains('td', `${dataIdBeta}`).click();
-    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${dataIdBeta}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdBeta}`);
   });
 
   it('Check display of error message.', () => {

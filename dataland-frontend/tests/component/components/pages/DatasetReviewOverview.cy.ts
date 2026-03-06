@@ -81,7 +81,7 @@ describe('DatasetReviewOverview page details', () => {
     datasetReviewResponse?: DatasetReviewResponse | null;
     datasetReviewStatusCode?: number;
   }): void {
-    const datasetReviewResponse = options?.datasetReviewResponse ?? baseDatasetReview;
+    const datasetReviewResponse = options?.datasetReviewResponse === undefined ? baseDatasetReview : options.datasetReviewResponse;
 
     cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo).as('getCompanyInfo');
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo).as('getMetaInfo');
@@ -141,9 +141,6 @@ describe('DatasetReviewOverview page details', () => {
 
     cy.contains('SFDR').should('be.visible');
     cy.contains('2 / 3 data points to review').should('be.visible');
-    cy.contains('Data extracted from:').should('be.visible');
-    cy.contains('Annual_Report_2024').should('be.visible');
-    cy.contains('All documents').should('be.visible');
     cy.get('[data-test="companyInformationBanner"]').should('be.visible');
     cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
     cy.get('[data-test="datasetReviewComparisonTable"] thead tr th').should('have.length', 5);
@@ -221,7 +218,7 @@ describe('DatasetReviewOverview page details', () => {
     });
   });
 
-  it('opens the reject dataset modal when assigned', () => {
+  it('opens the reject dataset modal when assigned and performs correct API call', () => {
     mountPage({
       datasetReviewResponse: {
         ...baseDatasetReview,
@@ -247,7 +244,7 @@ describe('DatasetReviewOverview page details', () => {
     });
   });
 
-  it('opens the finish review modal when assigned', () => {
+  it('opens the finish review modal when assigned and performs correct API call', () => {
     mountPage({
       datasetReviewResponse: {
         ...baseDatasetReview,

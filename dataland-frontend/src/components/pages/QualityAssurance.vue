@@ -305,19 +305,16 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
       }
     );
   } else {
-    void goToQaViewPage(qaDataObject.dataId, qaDataObject.datasetReviewId);
+    void goToQaViewPage(qaDataObject.datasetReviewId);
   }
 }
 
 /**
  * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
  */
-function goToQaViewPage(dataId: string, datasetReviewId?: string): ReturnType<typeof router.push> {
-  return router.push({
-    name: 'DatasetReviewOverview',
-    params: { dataId },
-    query: datasetReviewId ? { datasetReviewId } : {},
-  });
+function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
+  const qaUri = `/qa/review/${datasetReviewId}`;
+  return router.push(qaUri);
 }
 
 /**
@@ -332,7 +329,7 @@ async function confirmStartReview(): Promise<void> {
     const datasetReviewId = response.data.dataSetReviewId;
 
     confirmationModal.value.visible = false;
-    await goToQaViewPage(selectedDataId.value, datasetReviewId);
+    await goToQaViewPage(datasetReviewId);
   } catch (error) {
     if (error instanceof AxiosError) {
       confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);

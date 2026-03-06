@@ -77,7 +77,7 @@
             <DatasetReviewComparisonTable
               v-if="datasetReview"
               :framework="dataMetaInformation!.dataType"
-              :data-id="props.dataId"
+              :data-id="datasetReview.datasetId"
               :dataset-review="datasetReview"
               :data-meta-information="dataMetaInformation!"
               :search-query="''"
@@ -120,7 +120,6 @@ import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-revie
 import router from '@/router';
 
 const props = defineProps<{
-  dataId: string;
   datasetReviewId: string;
 }>();
 
@@ -128,7 +127,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 
-const dataIdRef = computed(() => props.dataId);
+const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetReviewIdRef = computed(() => props.datasetReviewId);
 
 const {
@@ -287,7 +286,7 @@ async function setCurrentUserId(): Promise<void> {
 }
 
 onMounted(async () => {
-  console.log('Loaded Review Page for Data ID:', props.dataId);
+  console.log('Loaded Review Page for Dataset Review ID:', props.datasetReviewId);
   await setCurrentUserId();
 });
 </script>
