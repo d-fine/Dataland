@@ -61,7 +61,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     cy.get('.p-multiselect-list-container').scrollTo('bottom');
 
     cy.get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     verifySearchResultTableExists();
 
@@ -79,7 +79,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           `&framework=${frameworkThree}`
       )
       .get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}` + `&framework=${frameworkThree}`);
   });

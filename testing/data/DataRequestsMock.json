@@ -4,7 +4,7 @@
 		"userId": "4020388f-6b10-410c-a950-7915339a096a",
 		"creationTimestamp": 55,
 		"notifyMeImmediately": false,
-		"dataType": "eutaxonomy-financials",
+		"dataType": "sfdr",
 		"reportingPeriod": "2023",
 		"datalandCompanyId": "16f0b1d9-bec6-4d21-b823-7ebe639937bb",
 		"messageHistory": [
