@@ -195,7 +195,7 @@ const routes = [
     },
   },
   {
-    path: `/qa/review/:dataId`,
+    path: `/qa/review/:datasetReviewId`,
     name: 'DatasetReviewOverview',
     component: DatasetReviewOverview,
     props: (route: RouteLocationNormalized): { datasetReviewId: string } => ({
