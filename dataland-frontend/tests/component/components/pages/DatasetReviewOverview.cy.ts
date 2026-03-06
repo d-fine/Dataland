@@ -13,6 +13,7 @@ describe('DatasetReviewOverview page details', () => {
   });
 
   const dataId = 'test-data-id';
+  const datasetReviewId = 'test-review-id';
   const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
   const reportingPeriod = '2021';
   const framework = 'sfdr';
@@ -40,7 +41,7 @@ describe('DatasetReviewOverview page details', () => {
   };
 
   const baseDatasetReview: DatasetReviewResponse = {
-    dataSetReviewId: 'test-review-id',
+    dataSetReviewId: datasetReviewId,
     datasetId: dataId,
     companyId: companyId,
     reportingPeriod: reportingPeriod,
@@ -85,17 +86,32 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo).as('getCompanyInfo');
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo).as('getMetaInfo');
 
-    cy.intercept('GET', '**/qa/dataset-reviews/**', (req) => {
+    const detailReviewUrl = `**/qa/dataset-reviews/${datasetReviewId}`;
+    const listReviewUrlMatcher = /\/qa\/dataset-reviews\?.*/;
+
+    cy.intercept('GET', detailReviewUrl, (req) => {
       if (options?.datasetReviewStatusCode != null) {
         req.reply({ statusCode: options.datasetReviewStatusCode });
         return;
       }
       if (datasetReviewResponse === null) {
-        req.reply([]);
+        req.reply({ statusCode: 200, body: null as unknown as object });
         return;
       }
-      req.reply([datasetReviewResponse]);
+      req.reply({ statusCode: 200, body: datasetReviewResponse });
     }).as('getDatasetReview');
+
+    cy.intercept('GET', listReviewUrlMatcher, (req) => {
+      if (options?.datasetReviewStatusCode != null) {
+        req.reply({ statusCode: options.datasetReviewStatusCode });
+        return;
+      }
+      if (datasetReviewResponse === null) {
+        req.reply({ statusCode: 200, body: [] });
+        return;
+      }
+      req.reply({ statusCode: 200, body: [datasetReviewResponse] });
+    }).as('getDatasetReviewList');
 
     cy.intercept('GET', '**/api/data/**', { statusCode: 200, body: { data: {}, meta: {} } });
     cy.intercept('GET', '**/community/company-role-assignments*', { statusCode: 200, body: [] });
@@ -112,13 +128,12 @@ describe('DatasetReviewOverview page details', () => {
     const mount = getMountingFunction({ keycloak: keycloakMockWithReviewer });
 
     mount(DatasetReviewOverview, {
-      props: { dataId },
+      props: { dataId, datasetReviewId },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
       },
     });
   }
-
 
   it('displays the correct information', () => {
     mountPage();
@@ -192,7 +207,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.wait('@getDatasetReview');
 
     cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/reviewer' }, { statusCode: 200, body: {} }).as(
-        'setReviewer'
+      'setReviewer'
     );
 
     cy.contains('ASSIGN YOURSELF').click();
@@ -217,7 +232,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.wait('@getDatasetReview');
 
     cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
-        'setReviewState'
+      'setReviewState'
     );
 
     cy.contains('REJECT DATASET').click();
@@ -243,7 +258,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.wait('@getDatasetReview');
 
     cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
-        'finishReview'
+      'finishReview'
     );
 
     cy.contains('FINISH REVIEW').click();
