@@ -121,7 +121,7 @@ interface DatasetReviewApi {
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/owner"], // change to owner?
+        value = ["/{datasetReviewId}/owner"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_JUDGE')")
