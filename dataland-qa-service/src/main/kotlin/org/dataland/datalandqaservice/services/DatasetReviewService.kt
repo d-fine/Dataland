@@ -79,7 +79,7 @@ class DatasetReviewService
                     companyId = convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    ownerID = convertToUUID(DatalandAuthentication.fromContext().userId),
+                    ownerId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
                 )
             return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithOwnerName()
@@ -100,7 +100,7 @@ class DatasetReviewService
         @Transactional
         fun setOwner(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            datasetReview.ownerID = convertToUUID(DatalandAuthentication.fromContext().userId)
+            datasetReview.ownerId = convertToUUID(DatalandAuthentication.fromContext().userId)
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
@@ -114,7 +114,7 @@ class DatasetReviewService
             state: DatasetReviewState,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserOwner(datasetReview.ownerID)
+            isUserOwner(datasetReview.ownerId)
             datasetReview.reviewState = state
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
@@ -129,7 +129,7 @@ class DatasetReviewService
             dataPointId: UUID,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserOwner(datasetReview.ownerID)
+            isUserOwner(datasetReview.ownerId)
             val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
             if (dataPointId.toString() !in datatypeToDatapointIds.values) {
                 throw ResourceNotFoundApiException(
@@ -153,7 +153,7 @@ class DatasetReviewService
             qaReportId: UUID,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserOwner(datasetReview.ownerID)
+            isUserOwner(datasetReview.ownerId)
             datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
                 ?: throw ResourceNotFoundApiException(
                     "QA report not found.",
@@ -181,7 +181,7 @@ class DatasetReviewService
             dataPointType: String,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserOwner(datasetReview.ownerID)
+            isUserOwner(datasetReview.ownerId)
             lateinit var frameworksOfDataPointType: List<String>
             try {
                 frameworksOfDataPointType =
@@ -234,17 +234,17 @@ class DatasetReviewService
 
         private fun DatasetReviewEntity.toDatasetReviewResponseWithOwnerName(): DatasetReviewResponse {
             val response = this.toDatasetReviewResponse()
-            response.ownerName = resolveOwnerName(this.ownerID)
+            response.ownerName = resolveOwnerName(this.ownerId)
             return response
         }
 
         private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithOwnerNames(): List<DatasetReviewResponse> {
-            val ownerIds = this.mapNotNull { it.ownerID }.distinct()
+            val ownerIds = this.mapNotNull { it.ownerId }.distinct()
             val ownerIdToName = ownerIds.associateWith { resolveOwnerName(it) }
 
             return this.map {
                 val response = it.toDatasetReviewResponse()
-                response.ownerName = it.ownerID?.let { ownerId -> ownerIdToName[ownerId] }
+                response.ownerName = it.ownerId?.let { ownerId -> ownerIdToName[ownerId] }
                 response
             }
         }

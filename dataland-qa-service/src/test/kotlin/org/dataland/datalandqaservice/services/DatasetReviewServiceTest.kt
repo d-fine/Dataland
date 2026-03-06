@@ -63,7 +63,7 @@ class DatasetReviewServiceTest {
             companyId = dummyCompanyId,
             dataType = "sfdr",
             reportingPeriod = "2026",
-            ownerID = dummyUserId,
+            ownerId = dummyUserId,
             qaReports = setOf(QaReportIdWithUploaderCompanyId(dummyQaReportId, null)),
         )
 
@@ -199,7 +199,7 @@ class DatasetReviewServiceTest {
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
-        assertEquals(dummyUserId, captor.firstValue.ownerID)
+        assertEquals(dummyUserId, captor.firstValue.ownerId)
     }
 
     @Test
@@ -292,7 +292,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                ownerID = dummyUserId,
+                ownerId = dummyUserId,
                 qaReports = emptySet(),
             ).apply {
                 approvedDataPointIds[dummyDataPointType] = UUID.randomUUID()
@@ -332,7 +332,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                ownerID = dummyUserId,
+                ownerId = dummyUserId,
                 qaReports = emptySet(),
             )
 
@@ -360,7 +360,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                ownerID = dummyUserId,
+                ownerId = dummyUserId,
                 qaReports = emptySet(),
             )
 
@@ -400,7 +400,7 @@ class DatasetReviewServiceTest {
                 companyId = dummyCompanyId,
                 dataType = "sfdr",
                 reportingPeriod = "2026",
-                ownerID = UUID.randomUUID(),
+                ownerId = UUID.randomUUID(),
                 qaReports = emptySet(),
             )
 
