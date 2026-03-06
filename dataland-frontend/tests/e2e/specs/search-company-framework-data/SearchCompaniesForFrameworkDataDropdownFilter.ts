@@ -66,7 +66,10 @@ describe('As a user, I expect the search functionality on the /companies page to
     verifySearchResultTableExists();
 
     cy.get('div.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkThree)})`)
+      .contains(
+        '.p-multiselect-option',
+        new RegExp(`^${escapeParenthesisInRegExp(humanizeStringOrNumber(frameworkThree))}$`)
+      )
       .click();
     verifySearchResultTableExists();
     cy.url()
