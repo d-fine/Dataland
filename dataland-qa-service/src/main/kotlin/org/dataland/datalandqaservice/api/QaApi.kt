@@ -67,6 +67,14 @@ interface QaApi {
             required = false,
         )
         companyName: String?,
+        @RequestParam
+        @Parameter(
+            name = "Priority",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            required = false,
+        )
+        priorities: Set<Int>?,
         @RequestParam(defaultValue = "Pending")
         @Parameter(
             name = "qaStatus",

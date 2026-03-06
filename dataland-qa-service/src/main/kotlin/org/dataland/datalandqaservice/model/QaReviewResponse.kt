@@ -75,4 +75,5 @@ data class QaReviewResponse(
         example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
     )
     val triggeringUserId: String?,
+    val priorityOfAssociatedDataSourcing: Int?
 )
