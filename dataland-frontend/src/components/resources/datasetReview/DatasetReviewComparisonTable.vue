@@ -438,7 +438,6 @@ function shouldShowRejectedIcon(
   if (source === AcceptedDataPointSource.Qa) {
     const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
     if (!report) return false;
-    return report.verdict !== QaReportDataPointVerdict.QaAccepted;
   }
   return true;
 }
