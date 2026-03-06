@@ -49,7 +49,7 @@
     "@faker-js/faker": "10.3.0",
     "@tsconfig/node24": "24.0.4",
     "@types/markdown-it": "14.1.2",
-    "@types/node": "24.10.13",
+    "@types/node": "24.10.15",
     "@vitejs/plugin-vue": "6.0.4",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.6.0",
@@ -59,9 +59,9 @@
     "cypress-wait-until": "3.0.2",
     "depcheck": "1.4.7",
     "dompurify": "3.3.1",
-    "eslint": "9.39.2",
+    "eslint": "9.39.3",
     "eslint-plugin-cypress": "5.3.0",
-    "eslint-plugin-jsdoc": "62.5.4",
+    "eslint-plugin-jsdoc": "62.5.5",
     "eslint-plugin-vue": "10.7.0",
     "git-commit-id": "2.0.1",
     "lint-staged": "16.2.7",
@@ -77,6 +77,6 @@
     "vite": "7.3.1",
     "vite-plugin-istanbul": "7.2.1",
     "vue-markdown-render": "2.3.0",
-    "vue-tsc": "3.2.4"
+    "vue-tsc": "3.2.5"
   }
 }
