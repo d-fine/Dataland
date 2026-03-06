@@ -109,8 +109,6 @@ import DatasetReviewComparisonTable from '@/components/resources/datasetReview/D
 import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { useApiClient } from '@/utils/useApiClient.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -121,16 +119,16 @@ import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmat
 import { DatasetReviewState } from '@clients/qaservice';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
+import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
+import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
 
 const props = defineProps<{
   dataId: string;
-  datasetReviewId?: string;
+  datasetReviewId: string;
 }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = useApiClient();
 const currentUserId = ref<string | undefined>(undefined);
-const queryClient = useQueryClient();
 const hideEmptyFields = ref(true);
 
 const dataIdRef = computed(() => props.dataId);
@@ -168,40 +166,12 @@ const isAssignedToCurrentUser = computed(() => {
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useMutation({
-  mutationFn: async () => {
-    if (!datasetReview.value) throw new Error('No dataset review selected');
-    return await apiClientProvider.apiClients.datasetReviewController.setReviewer(datasetReview.value.dataSetReviewId);
-  },
-  onSuccess: async () => {
-    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId] });
-    console.log('Successfully assigned!');
-    confirmationModal.value.visible = false;
-  },
-  onError: (error) => {
-    console.error('Error assigning dataset review:', error);
-    confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
-  },
-});
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetReviewIdRef);
 
-const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useMutation({
-  mutationFn: async () => {
-    if (!datasetReview.value) throw new Error('No dataset review selected');
-    return await apiClientProvider.apiClients.datasetReviewController.setReviewState(
-      datasetReview.value.dataSetReviewId,
-      DatasetReviewState.Aborted
-    );
-  },
-  onSuccess: async () => {
-    await queryClient.invalidateQueries({ queryKey: ['qaReviewResponse', props.dataId, props.datasetReviewId] });
-    console.log('Rejected review!');
-    confirmationModal.value.visible = false;
-  },
-  onError: (error) => {
-    console.error('Error rejecting dataset review:', error);
-    confirmationModal.value.errorMessage = 'Failed to reject dataset review. Please try again.';
-  },
-});
+const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
+  datasetReviewIdRef,
+  DatasetReviewState.Aborted
+);
 
 interface ConfirmationModalState {
   visible: boolean;
@@ -237,7 +207,15 @@ const assignToMe = (): void => {
     'Assign Yourself',
     'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
     () => {
-      assignToMeMutation();
+      assignToMeMutation(undefined, {
+        onSuccess: () => {
+          confirmationModal.value.visible = false;
+          confirmationModal.value.errorMessage = '';
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
+        },
+      });
     }
   );
 };
@@ -247,7 +225,15 @@ const rejectDataset = (): void => {
     'Reject Dataset',
     'Are you sure you want to reject this dataset review? This can only be undone by a dataland admin!',
     () => {
-      rejectReviewMutation();
+      rejectReviewMutation(undefined, {
+        onSuccess: () => {
+          confirmationModal.value.visible = false;
+          confirmationModal.value.errorMessage = '';
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to reject dataset review. Please try again.';
+        },
+      });
     }
   );
 };
