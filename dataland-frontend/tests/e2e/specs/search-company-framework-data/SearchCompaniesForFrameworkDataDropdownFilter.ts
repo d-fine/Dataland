@@ -58,8 +58,6 @@ describe('As a user, I expect the search functionality on the /companies page to
     verifySearchResultTableExists();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}`);
 
-    cy.get('.p-multiselect-list-container').scrollTo('bottom');
-
     cy.get('.p-multiselect-list-container')
       .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
