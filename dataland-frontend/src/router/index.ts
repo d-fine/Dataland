@@ -40,6 +40,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+const SpecificationsViewer = (): Promise<RouteComponent> => import('@/components/pages/SpecificationsViewer.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 
 const routes = [
@@ -190,6 +191,15 @@ const routes = [
     component: QualityAssurance,
     meta: {
       initialTabId: 'qa',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/framework-specifications',
+    name: 'SpecificationsViewer',
+    component: SpecificationsViewer,
+    meta: {
+      initialTabId: 'specifications',
       requiresAuthentication: true,
     },
   },
@@ -362,6 +372,18 @@ const router = createRouter({
   scrollBehavior() {
     globalThis.scrollTo(0, 0);
   },
+});
+
+// Navigation guard: Remove trailing slashes to normalize URLs
+router.beforeEach((to) => {
+  if (to.path !== '/' && to.path.endsWith('/')) {
+    // Redirect to the same path without trailing slash, preserving query and hash
+    return {
+      path: to.path.slice(0, -1),
+      query: to.query,
+      hash: to.hash,
+    };
+  }
 });
 
 export { routes };

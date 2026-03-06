@@ -18,6 +18,7 @@ import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
 import { DatasetReviewControllerApi, QaControllerApi } from '@clients/qaservice';
 import { PortfolioControllerApi } from '@clients/userservice';
+import { SpecificationControllerApi } from '@clients/specificationservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
@@ -49,6 +50,7 @@ interface ApiClients {
   dataExportController: DataExportControllerApi;
   companyRightsController: CompanyRightsControllerApi;
   creditsController: CreditsControllerApi;
+  specificationController: SpecificationControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -118,6 +120,7 @@ export class ApiClientProvider {
       dataExportController: this.getClientFactory('/api')(DataExportControllerApi),
       companyRightsController: this.getClientFactory('/community')(CompanyRightsControllerApi),
       creditsController: this.getClientFactory('/accounting')(CreditsControllerApi),
+      specificationController: this.getClientFactory('/specifications')(SpecificationControllerApi),
     };
   }
 

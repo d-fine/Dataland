@@ -213,3 +213,75 @@ export function generateInitials(name: string): string {
     .map((word) => word.charAt(0).toUpperCase())
     .join('');
 }
+
+/**
+ * Truncates text to a maximum length at word boundaries.
+ * If the text is longer than maxLength, it will be truncated and "..." will be appended.
+ * @param text - The text to truncate
+ * @param maxLength - The maximum length of the truncated text (including "...")
+ * @returns An object containing the truncated text and a flag indicating if truncation occurred
+ */
+export function truncateText(text: string, maxLength: number): { truncated: string; needsTruncation: boolean } {
+  if (text.length <= maxLength) {
+    return { truncated: text, needsTruncation: false };
+  }
+
+  // Find the last space within the maxLength (accounting for "...")
+  const ellipsis = '...';
+  const targetLength = maxLength - ellipsis.length;
+  const lastSpaceIndex = text.lastIndexOf(' ', targetLength);
+
+  // If no space found, just cut at target length
+  const cutIndex = lastSpaceIndex > 0 ? lastSpaceIndex : targetLength;
+  const truncated = text.substring(0, cutIndex) + ellipsis;
+
+  return { truncated, needsTruncation: true };
+}
+
+/**
+ * Converts a data point base type ID to a human-readable label.
+ * Used to display user-friendly type names alongside technical IDs in the specification viewer.
+ * 
+ * @param baseTypeId - The technical base type ID (e.g., "plainString", "extendedDecimal")
+ * @returns A human-readable label for the type
+ * 
+ * @example
+ * humanizeDataPointBaseType("plainString") // Returns "Text"
+ * humanizeDataPointBaseType("plainDate") // Returns "Date"
+ * humanizeDataPointBaseType("extendedDecimal") // Returns "Number"
+ * humanizeDataPointBaseType("extendedEnumPcafMainSector") // Returns "Selection"
+ */
+export function humanizeDataPointBaseType(baseTypeId: string): string {
+  // Map of common base types to user-friendly labels
+  const typeMapping: { [key: string]: string } = {
+    plainString: 'Text',
+    plainDate: 'Date',
+    plainInteger: 'Number',
+    plainDecimal: 'Number',
+    extendedDecimal: 'Number',
+    plainBoolean: 'Yes/No',
+    extendedEnum: 'Selection',
+    plainEnum: 'Selection',
+    extendedArray: 'List',
+  };
+
+  // Check if we have a direct mapping
+  if (typeMapping[baseTypeId]) {
+    return typeMapping[baseTypeId];
+  }
+
+  // Detect common patterns in the type ID for better fallback labels
+  const lowerCaseId = baseTypeId.toLowerCase();
+  
+  // Pattern-based detection for partial matches
+  if (lowerCaseId.includes('enum')) return 'Selection';
+  if (lowerCaseId.includes('date')) return 'Date';
+  if (lowerCaseId.includes('decimal') || lowerCaseId.includes('integer') || lowerCaseId.includes('number')) return 'Number';
+  if (lowerCaseId.includes('boolean')) return 'Yes/No';
+  if (lowerCaseId.includes('array') || lowerCaseId.includes('list')) return 'List';
+  if (lowerCaseId.includes('string') || lowerCaseId.includes('text')) return 'Text';
+  if (lowerCaseId.includes('document') || lowerCaseId.includes('file')) return 'Document';
+  
+  // If no pattern matches, return a simple generic label
+  return 'Data';
+}
