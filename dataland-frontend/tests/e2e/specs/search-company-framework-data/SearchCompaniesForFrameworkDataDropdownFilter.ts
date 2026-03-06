@@ -58,15 +58,16 @@ describe('As a user, I expect the search functionality on the /companies page to
     verifySearchResultTableExists();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}`);
 
-    cy.get('.p-multiselect-list-container').scrollTo('bottom');
-
     cy.get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     verifySearchResultTableExists();
 
     cy.get('div.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkThree)})`)
+      .contains(
+        '.p-multiselect-option',
+        new RegExp(`^${escapeParenthesisInRegExp(humanizeStringOrNumber(frameworkThree))}$`)
+      )
       .click();
     verifySearchResultTableExists();
     cy.url()
@@ -79,7 +80,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           `&framework=${frameworkThree}`
       )
       .get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}` + `&framework=${frameworkThree}`);
   });

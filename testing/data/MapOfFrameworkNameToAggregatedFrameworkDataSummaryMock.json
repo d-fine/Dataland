@@ -5,19 +5,22 @@
 	"eutaxonomy-financials": {
 		"numberOfProvidedReportingPeriods": 6
 	},
-	"eutaxonomy-non-financials": {
+	"eutaxonomy-financials-2026-73": {
 		"numberOfProvidedReportingPeriods": 6
 	},
-	"nuclear-and-gas": {
+	"eutaxonomy-non-financials": {
 		"numberOfProvidedReportingPeriods": 24
 	},
-	"lksg": {
+	"nuclear-and-gas": {
 		"numberOfProvidedReportingPeriods": 30
 	},
-	"pcaf": {
+	"lksg": {
 		"numberOfProvidedReportingPeriods": 22
 	},
-	"vsme": {
+	"pcaf": {
 		"numberOfProvidedReportingPeriods": 20
+	},
+	"vsme": {
+		"numberOfProvidedReportingPeriods": 26
 	}
 }

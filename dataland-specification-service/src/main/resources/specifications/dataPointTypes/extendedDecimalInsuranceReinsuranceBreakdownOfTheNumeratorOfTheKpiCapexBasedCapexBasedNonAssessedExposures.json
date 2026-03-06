@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposures",
+  "name" : "CapEx-based Non-Assessed Exposures",
+  "businessDefinition" : "Proportion of CapEx-based KPI of which non-assessed exposures",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ]
+}

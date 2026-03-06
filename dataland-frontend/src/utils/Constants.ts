@@ -11,21 +11,34 @@ export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
 );
 export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
-const MAIN_FRAMEWORKS = new Set(['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas', 'sfdr']);
-export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
+const MAIN_FRAMEWORKS = new Set([
+  'eutaxonomy-financials',
+  'eutaxonomy-financials-2026-73',
+  'eutaxonomy-non-financials',
+  'nuclear-and-gas',
+  'sfdr',
+]);
+export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
+  (framework) => framework !== 'eutaxonomy-financials-2026-73'
+) as DataTypeEnum[];
 export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
   MAIN_FRAMEWORKS.has(framework)
+);
+export const PORTFOLIO_OVERVIEW_FRAMEWORKS = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
+  (framework) => framework !== 'eutaxonomy-financials-2026-73'
 );
 export const ALL_FRAMEWORKS_IN_DISPLAYED_ORDER = [...MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER];
 ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
 export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+  ['eutaxonomy-financials', 'eutaxonomy-financials-2026-73', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(
+    framework
+  )
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eutaxonomy-financials', 'nuclear-and-gas'].includes(framework)
+  ['eutaxonomy-financials', 'eutaxonomy-financials-2026-73', 'nuclear-and-gas'].includes(framework)
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
