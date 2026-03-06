@@ -109,6 +109,9 @@ describe('DatasetReviewComparisonTable component tests', () => {
     },
   };
 
+  /**
+   * Helper function to mount the component with default or overridden options.
+   */
   function mountComponent(options?: {
     datasetReview?: DatasetReviewResponse;
     searchQuery?: string;
@@ -206,4 +209,3 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', 'Scope 2 GHG emissions').should('be.visible');
   });
 });
-

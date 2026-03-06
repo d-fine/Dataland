@@ -213,7 +213,7 @@ const assignToMe = (): void => {
           confirmationModal.value.errorMessage = '';
         },
         onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself. Please try again.';
+          confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself: ' + error.message;
         },
       });
     }
@@ -231,7 +231,7 @@ const rejectDataset = (): void => {
           confirmationModal.value.errorMessage = '';
         },
         onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to reject dataset review. Please try again.';
+          confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
         },
       });
     }
