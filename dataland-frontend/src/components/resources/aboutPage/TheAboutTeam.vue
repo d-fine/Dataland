@@ -2,8 +2,8 @@
   <section class="about-team" role="region" aria-labelledby="team-heading">
     <div class="about-team__wrapper">
       <h2 id="team-heading" class="about-team__heading">Leadership Team</h2>
-      <div class="grid">
-        <div v-for="person in LEADERSHIP_TEAM" :key="person.name" class="col-12 md:col-6 xl:col-4">
+      <div class="about-team__grid">
+        <div v-for="person in LEADERSHIP_TEAM" :key="person.name" class="about-team__grid-item">
           <PersonCard :person="person" variant="leadership" />
         </div>
       </div>
@@ -35,12 +35,36 @@ import PersonCard from '@/components/resources/aboutPage/PersonCard.vue';
     font-weight: 700;
     margin: 0;
     color: var(--p-text-color, #1b1b1b);
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  &__grid-item {
+    display: flex;
+    justify-content: center;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .about-team {
     padding: 2.5rem 1rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .about-team__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .about-team__grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>

@@ -55,6 +55,7 @@ const { openModal } = useContactModal();
 
   &__cta {
     min-height: 48px;
+    align-self: center;
   }
 }
 

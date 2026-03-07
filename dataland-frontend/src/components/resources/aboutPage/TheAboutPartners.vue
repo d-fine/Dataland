@@ -17,7 +17,7 @@ import LogoChip from '@/components/resources/aboutPage/LogoChip.vue';
 <style scoped lang="scss">
 .about-partners {
   padding: 4rem 2rem;
-  background: var(--p-surface-0, #ffffff);
+  background: var(--grey-tones-100, #f6f6f6);
   border-bottom: 1px solid var(--p-surface-200, #dadada);
 
   &__wrapper {

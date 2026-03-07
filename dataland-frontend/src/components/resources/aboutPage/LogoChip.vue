@@ -24,21 +24,21 @@ const imageError = ref(false);
 
 <style scoped lang="scss">
 .logo-chip {
-  height: 48px;
+  height: 124px;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &__img {
-    height: 48px;
+    height: auto;
     width: auto;
-    max-width: 160px;
+    max-width: 200px;
     object-fit: contain;
     display: block;
   }
 
   &__fallback {
-    height: 48px;
+    height: 124px;
     padding: 0 1rem;
     border: 1px solid var(--p-surface-200, #dadada);
     border-radius: 4px;

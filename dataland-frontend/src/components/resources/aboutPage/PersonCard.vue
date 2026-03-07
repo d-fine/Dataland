@@ -39,7 +39,7 @@ const imageError = ref(false);
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
 
   &__photo-container {
@@ -61,6 +61,8 @@ const imageError = ref(false);
   &__content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 0.25rem;
   }
 
