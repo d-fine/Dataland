@@ -14,7 +14,7 @@
         <Button
           label="GET IN TOUCH"
           data-test="get-in-touch-button"
-          @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
+          @click="openModal"
           rounded
           :pt="{
             root: {
@@ -33,8 +33,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
-import { openEmailClient } from '@/utils/Email';
 import Button from 'primevue/button';
+import { useContactModal } from '@/composables/useContactModal';
+
+const { openModal } = useContactModal();
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 

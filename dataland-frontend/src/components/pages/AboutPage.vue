@@ -1,18 +1,25 @@
 <template>
   <main role="main">
-    <TheAboutIntro :sections="aboutPage?.sections" />
-    <TheAboutPrinciples :sections="aboutPage?.sections" />
+    <ContactInquiryModal />
+    <TheAboutHero />
+    <TheAboutTrustPillars />
+    <TheAboutTeam />
+    <TheAboutAdvisoryBoard />
+    <TheAboutSponsors />
+    <TheAboutPartners />
+    <TheAboutBottomCTA />
   </main>
 </template>
 
 <script setup lang="ts">
-import TheAboutIntro from '@/components/resources/aboutPage/TheAboutIntro.vue';
-import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-
-const content: Content = contentData;
-const aboutPage: Page | undefined = content.pages.find((page) => page.url === '/about');
+import ContactInquiryModal from '@/components/general/ContactInquiryModal.vue';
+import TheAboutHero from '@/components/resources/aboutPage/TheAboutHero.vue';
+import TheAboutTrustPillars from '@/components/resources/aboutPage/TheAboutTrustPillars.vue';
+import TheAboutTeam from '@/components/resources/aboutPage/TheAboutTeam.vue';
+import TheAboutAdvisoryBoard from '@/components/resources/aboutPage/TheAboutAdvisoryBoard.vue';
+import TheAboutSponsors from '@/components/resources/aboutPage/TheAboutSponsors.vue';
+import TheAboutPartners from '@/components/resources/aboutPage/TheAboutPartners.vue';
+import TheAboutBottomCTA from '@/components/resources/aboutPage/TheAboutBottomCTA.vue';
 </script>
 
 <style lang="scss" scoped>
