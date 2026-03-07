@@ -4,6 +4,7 @@ import org.dataland.datalandcommunitymanager.api.InquiryApi
 import org.dataland.datalandcommunitymanager.model.inquiry.InquiryData
 import org.dataland.datalandcommunitymanager.services.InquiryNotificationService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,6 +19,6 @@ class InquiryController
     ) : InquiryApi {
         override fun postInquiry(inquiryData: InquiryData): ResponseEntity<Unit> {
             inquiryNotificationService.processInquiry(inquiryData)
-            return ResponseEntity.ok().build()
+            return ResponseEntity.status(HttpStatus.CREATED).build()
         }
     }

@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @RequestMapping("/inquiry")
 @Tag(name = "Inquiry")
-interface InquiryApi {
+fun interface InquiryApi {
     /**
      * Accepts a contact inquiry from an unauthenticated visitor and notifies the Dataland team via email.
      * @param inquiryData the contact inquiry payload
-     * @return 200 OK if the inquiry was received and the notification was dispatched
+     * @return 201 Created if the inquiry was received and the notification was dispatched
      */
-    @Operation(operationId = "postInquiry", summary = "Submit a contact enquiry")
+    @Operation(operationId = "postInquiry", summary = "Submit a contact inquiry")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Enquiry received and notification sent"),
+            ApiResponse(responseCode = "201", description = "Inquiry received and notification dispatched"),
             ApiResponse(
                 responseCode = "400",
                 description = "Validation failed — field-level errors returned",
@@ -43,7 +43,6 @@ interface InquiryApi {
     )
     @PostMapping(
         consumes = ["application/json"],
-        produces = ["application/json"],
     )
     fun postInquiry(
         @Valid @RequestBody inquiryData: InquiryData,

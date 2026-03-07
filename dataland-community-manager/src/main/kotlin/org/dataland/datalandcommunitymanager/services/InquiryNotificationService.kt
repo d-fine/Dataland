@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -41,11 +42,11 @@ class InquiryNotificationService
          * or [InternalServerErrorApiException] (→ 500) if email dispatch fails.
          */
         fun processInquiry(inquiryData: InquiryData) {
-            validateInquiry(inquiryData)
             val correlationId = UUID.randomUUID().toString()
+            validateInquiry(inquiryData)
             try {
                 sendEmailNotification(inquiryData, correlationId)
-            } catch (e: Exception) {
+            } catch (e: AmqpException) {
                 logger.warn("Inquiry notification dispatch failed. Exception: ${e.message}")
                 throw InternalServerErrorApiException(
                     publicSummary = "Notification dispatch failed",

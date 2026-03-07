@@ -1,21 +1,30 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.InvalidEmailFormatApiException
 import org.dataland.datalandcommunitymanager.model.inquiry.InquiryData
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
+import org.dataland.datalandmessagequeueutils.messages.email.Value
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.amqp.AmqpException
 
 class InquiryNotificationServiceTest {
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
@@ -135,12 +144,35 @@ class InquiryNotificationServiceTest {
     }
 
     @Test
-    fun `notification dispatch failure throws InternalServerErrorApiException and not 200`() {
-        doThrow(RuntimeException("queue unavailable"))
+    fun `notification dispatch failure throws InternalServerErrorApiException and not 201`() {
+        doThrow(AmqpException("queue unavailable"))
             .whenever(mockCloudEventMessageHandler)
             .buildCEMessageAndSendToQueue(any(), any(), any(), any(), any())
         assertThrows<InternalServerErrorApiException> {
             service.processInquiry(validInquiry)
         }
+    }
+
+    @Test
+    fun `serialized EmailMessage round-trips correctly and contains type discriminator`() {
+        val realObjectMapper = jacksonObjectMapper().findAndRegisterModules()
+        val realService = InquiryNotificationService(mockCloudEventMessageHandler, realObjectMapper)
+        val bodyCaptor = argumentCaptor<String>()
+
+        realService.processInquiry(validInquiry)
+
+        verify(mockCloudEventMessageHandler).buildCEMessageAndSendToQueue(
+            bodyCaptor.capture(), any(), any(), any(), any(),
+        )
+        val serializedJson = bodyCaptor.firstValue
+
+        assertTrue(serializedJson.contains("\"type\":\"InternalEmailContentTable\""))
+
+        val deserialized = realObjectMapper.readValue(serializedJson, EmailMessage::class.java)
+        assertInstanceOf(InternalEmailContentTable::class.java, deserialized.typedEmailContent)
+        val content = deserialized.typedEmailContent as InternalEmailContentTable
+        assertTrue(content.subject.contains("Inquiry"))
+        assertEquals(Value.Text("Jane Doe"), content.table.first { it.first == "Name" }.second)
+        assertEquals(Value.Text("jane.doe@example.com"), content.table.first { it.first == "Email" }.second)
     }
 }

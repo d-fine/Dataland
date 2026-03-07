@@ -36,17 +36,17 @@ class InquiryControllerMockMvcTest {
     }
 
     @Test
-    fun `POST inquiry without Authorization header returns 200 not 401`() {
+    fun `post inquiry without authorization header returns 201 not 401`() {
         mockMvc
             .perform(
                 post("/inquiry")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(validPayload),
-            ).andExpect(status().isOk)
+            ).andExpect(status().isCreated)
     }
 
     @Test
-    fun `notification service failure returns 500 not 200`() {
+    fun `notification service failure returns 500 not 201`() {
         doThrow(InternalServerErrorApiException("dispatch failed"))
             .whenever(mockInquiryNotificationService)
             .processInquiry(any())

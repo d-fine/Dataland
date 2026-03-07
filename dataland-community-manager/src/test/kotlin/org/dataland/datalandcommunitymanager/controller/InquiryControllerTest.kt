@@ -32,7 +32,7 @@ class InquiryControllerTest {
     }
 
     @Test
-    fun `valid payload with all fields delegates to service and returns 200`() {
+    fun `valid payload with all fields delegates to service and returns 201`() {
         assertDoesNotThrow {
             inquiryController.postInquiry(validInquiryData)
         }
@@ -40,7 +40,7 @@ class InquiryControllerTest {
     }
 
     @Test
-    fun `valid payload without organisation delegates to service and returns 200`() {
+    fun `valid payload without organisation delegates to service and returns 201`() {
         val inquiryWithoutOrganisation = validInquiryData.copy(organisation = null)
         assertDoesNotThrow {
             inquiryController.postInquiry(inquiryWithoutOrganisation)
