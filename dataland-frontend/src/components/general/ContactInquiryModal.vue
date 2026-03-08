@@ -101,6 +101,9 @@ const isFormValid = computed(
     message.value.trim().length > 0,
 );
 
+/**
+ * Resets form state and closes the contact inquiry modal.
+ */
 function handleClose(): void {
   state.value = 'idle';
   contactName.value = '';
@@ -109,6 +112,10 @@ function handleClose(): void {
   closeModal();
 }
 
+/**
+ * Submits the contact inquiry form to the backend.
+ * @param values the form values to submit
+ */
 async function handleSubmit(values: InquiryFormValues): Promise<void> {
   state.value = 'submitting';
   try {

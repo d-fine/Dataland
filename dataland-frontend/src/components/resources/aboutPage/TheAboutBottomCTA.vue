@@ -3,23 +3,39 @@
     <div class="about-bottom-cta__content">
       <h2 id="bottom-cta-heading" class="about-bottom-cta__headline">{{ BOTTOM_CTA_COPY.headline }}</h2>
       <p class="about-bottom-cta__subheadline">{{ BOTTOM_CTA_COPY.subheadline }}</p>
-      <Button
-        :label="BOTTOM_CTA_COPY.ctaLabel"
-        class="about-bottom-cta__cta"
-        aria-label="Get in touch with Dataland"
-        rounded
-        @click="openModal"
-      />
+      <div class="about-bottom-cta__actions">
+        <Button
+          :label="BOTTOM_CTA_COPY.primaryCtaLabel"
+          class="about-bottom-cta__cta"
+          aria-label="Talk to our team"
+          rounded
+          @click="openModal"
+        />
+        <Button
+          :label="BOTTOM_CTA_COPY.secondaryCtaLabel"
+          class="about-bottom-cta__cta"
+          aria-label="Learn more about our data"
+          severity="secondary"
+          rounded
+          @click="navigateToFrameworks"
+        />
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import Button from 'primevue/button';
+import { useRouter } from 'vue-router';
 import { BOTTOM_CTA_COPY } from '@/components/resources/aboutPage/aboutContent';
 import { useContactModal } from '@/composables/useContactModal';
 
 const { openModal } = useContactModal();
+const router = useRouter();
+
+const navigateToFrameworks = (): void => {
+  void router.push({ path: '/', hash: '#frameworks' });
+};
 </script>
 
 <style scoped lang="scss">
@@ -52,14 +68,26 @@ const { openModal } = useContactModal();
     line-height: 1.6;
   }
 
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   &__cta {
     min-height: 48px;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .about-bottom-cta {
     padding: 3rem 1rem;
+
+    &__actions {
+      flex-direction: column;
+      width: 100%;
+    }
 
     &__cta {
       width: 100%;

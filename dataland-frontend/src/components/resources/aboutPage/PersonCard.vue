@@ -16,7 +16,14 @@
         {{ (person as Person).bio }}
       </p>
       <p v-if="variant === 'advisory'" data-test="person-organisation" class="person-card__organisation">
-        {{ (person as AdvisoryPerson).organisation }}
+        <a
+          v-if="(person as AdvisoryPerson).url"
+          :href="(person as AdvisoryPerson).url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="person-card__organisation-link"
+        >{{ (person as AdvisoryPerson).organisation }}</a>
+        <template v-else>{{ (person as AdvisoryPerson).organisation }}</template>
       </p>
     </figcaption>
   </figure>
@@ -93,6 +100,16 @@ const imageError = ref(false);
     font-weight: 400;
     margin: 0.25rem 0 0;
     color: var(--p-text-muted-color, #585858);
+  }
+
+  &__organisation-link {
+    color: var(--p-primary-color, #ff6813);
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

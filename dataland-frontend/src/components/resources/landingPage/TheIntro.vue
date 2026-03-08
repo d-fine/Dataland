@@ -2,8 +2,9 @@
   <section
     v-if="introSection"
     class="intro"
+    role="region"
     aria-label="Introduction"
-    :style="isMobile && inputFocused ? { marginTop: '0' } : {}"
+    :style="isMobile() && inputFocused ? { marginTop: '0' } : {}"
   >
     <img
       v-for="(img, index) in introSection.image"
@@ -11,18 +12,19 @@
       :src="img"
       :alt="introSection.text.join(' ')"
       class="intro__img"
-      v-show="!inputFocused || !isMobile"
+      v-show="!inputFocused || !isMobile()"
     />
 
-    <h1 class="intro__text" v-show="!inputFocused || !isMobile">
+    <h1 class="intro__text" v-show="!inputFocused || !isMobile()">
       <span class="intro__text" v-for="(part, index) in introSection.text" :key="index">
         {{ part }}
         <br v-if="index === 1" />
       </span>
     </h1>
-    <div class="intro__blurred-overlay" v-if="inputFocused && isMobile"></div>
-    <div v-if="inputFocused && isMobile" class="back-button" @click="handleInputBlur">Back</div>
+    <div class="intro__blurred-overlay" v-if="inputFocused && isMobile()"></div>
+    <button v-if="inputFocused && isMobile()" type="button" class="back-button" @click="handleInputBlur">Back</button>
 
+    <label for="hero-search" class="intro__search-label">Search for a company's ESG data</label>
     <CompaniesOnlySearchBar
       @select-company="router.push(`/companies/${$event.companyId}`)"
       input-class="h-3rem search__field"
@@ -37,14 +39,35 @@
         },
       }"
     />
+    <div class="intro__cta-group" v-show="!inputFocused || !isMobile()">
+      <Button
+        label="Create Free Account"
+        data-test="hero-register-button"
+        rounded
+        @click="register"
+      />
+      <Button
+        label="Get in Touch"
+        data-test="hero-contact-button"
+        severity="secondary"
+        rounded
+        @click="openModal"
+      />
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onUnmounted } from 'vue';
+import { computed, inject, ref } from 'vue';
 import type { Section } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
+import Button from 'primevue/button';
 import router from '@/router';
+import { useBreakpoint } from '@/composables/useBreakpoint';
+import { useContactModal } from '@/composables/useContactModal';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 
 const props = defineProps<{ sections?: Section[] }>();
 
@@ -52,42 +75,29 @@ const introSection = computed(() => {
   return props.sections?.find((section) => section.title === 'Intro') ?? null;
 });
 
-const isMobile = ref(globalThis.innerWidth < 768);
+const { isMobile } = useBreakpoint();
+const { openModal } = useContactModal();
 
-watch(
-  () => globalThis.innerWidth,
-  (newWidth) => {
-    isMobile.value = newWidth < 768;
-  }
-);
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-const updateIsMobile = (): void => {
-  isMobile.value = globalThis.innerWidth < 768;
+const register = (): void => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      if (keycloak.authenticated) return;
+      void registerAndRedirectToRedirectPage(keycloak);
+    })
+    .catch((error: unknown) => console.error(error));
 };
-
-globalThis.addEventListener('resize', updateIsMobile);
-
-onUnmounted(() => {
-  globalThis.removeEventListener('resize', updateIsMobile);
-});
 
 const inputFocused = ref(false);
 
 const handleInputFocus = (): void => {
   inputFocused.value = true;
-  if (isMobile.value) {
-    const header = document.querySelector('.header') as HTMLElement;
-    if (header) header.style.display = 'none';
-  }
 };
 
 const handleInputBlur = (): void => {
   setTimeout(() => {
     inputFocused.value = false;
-    if (isMobile.value) {
-      const header = document.querySelector('.header') as HTMLElement;
-      if (header) header.style.display = '';
-    }
   }, 300);
 };
 </script>
@@ -126,9 +136,24 @@ const handleInputBlur = (): void => {
       margin-top: 80px;
     }
   }
+
+  &__search-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--grey-tones-600);
+    margin: 32px 0 8px;
+  }
+
+  &__cta-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+  }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: $bp-xl) {
   .intro {
     &__img {
       margin-bottom: 31px;
@@ -151,7 +176,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: $bp-lg) {
   .intro {
     &__text {
       font-size: 48px;
@@ -169,7 +194,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
@@ -203,6 +228,9 @@ const handleInputBlur = (): void => {
       font-weight: 600;
       line-height: 24px;
       letter-spacing: 0.25px;
+      background: none;
+      border: none;
+      color: inherit;
 
       &::before {
         content: '';
@@ -229,6 +257,15 @@ const handleInputBlur = (): void => {
       bottom: 0;
       background: var(--default-neutral-white);
       z-index: 10;
+    }
+  }
+}
+
+@media only screen and (max-width: $bp-sm) {
+  .intro {
+    &__cta-group {
+      flex-direction: column;
+      align-items: center;
     }
   }
 }
@@ -292,7 +329,7 @@ const handleInputBlur = (): void => {
     background: var(--default-neutral-white);
     box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
-    @media only screen and (max-width: 1440px) {
+    @media only screen and (max-width: $bp-xl) {
       max-width: 701px !important;
       width: calc(100% + 52px) !important;
     }
@@ -343,14 +380,14 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: $bp-xl) {
   .search {
     margin-top: 31px;
     max-width: 701px;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .search__autocomplete {
     padding: 0;
     top: 47px !important;

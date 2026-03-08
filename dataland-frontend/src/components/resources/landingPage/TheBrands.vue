@@ -1,5 +1,5 @@
 <template>
-  <section v-if="brandsSection" class="brands" aria-label="Brands Statement">
+  <section v-if="brandsSection" class="brands" role="region" aria-label="Brands Statement">
     <div class="brands-container">
       <h2 id="brands-heading" aria-labelledby="brands-heading" class="brands__text">
         {{ brandsSection.text[0] }}
@@ -84,7 +84,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: $bp-xl) {
   .brands {
     &__wrap {
       grid-template-columns: repeat(12, 1fr);
@@ -102,7 +102,7 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: $bp-lg) {
   .brands {
     padding: 32px 0 80px;
     gap: 24px;
@@ -131,7 +131,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .brands {
     &__wrap {
       gap: 24px 16px;

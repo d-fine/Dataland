@@ -1,5 +1,5 @@
 <template>
-  <section v-if="struggleSection" class="struggle" aria-label="Struggle Statement">
+  <section v-if="struggleSection" class="struggle" role="region" aria-label="Struggle Statement">
     <div class="struggle__wrapper">
       <h2 id="struggle-heading">
         <span>{{ struggleSection.text[0] }}</span>
@@ -44,10 +44,10 @@ const struggleSection = computed(() => {
   h2,
   h2 * {
     grid-column: 1 / -1;
-    font-size: 100px;
+    font-size: 64px;
     font-style: normal;
     font-weight: 700;
-    line-height: 106px; /* 106% */
+    line-height: 72px;
     letter-spacing: 0.25px;
 
     margin: 0 0 68px;
@@ -102,7 +102,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: $bp-lg) {
   .struggle {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -111,8 +111,8 @@ const struggleSection = computed(() => {
     }
     h2 {
       grid-column: 2 / 10;
-      font-size: 64px;
-      line-height: 72px;
+      font-size: 48px;
+      line-height: 56px;
       letter-spacing: 0.25px;
       margin: 0;
     }
@@ -130,7 +130,7 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .struggle {
     padding: 80px 0;
     &__wrapper {
@@ -138,8 +138,8 @@ const struggleSection = computed(() => {
       padding: 0 16px;
     }
     h2 {
-      font-size: 32px;
-      line-height: 40px;
+      font-size: 40px;
+      line-height: 48px;
     }
     &__grid {
       grid-template-columns: 1fr;
@@ -152,6 +152,15 @@ const struggleSection = computed(() => {
         font-size: 20px;
         line-height: 28px;
       }
+    }
+  }
+}
+
+@media only screen and (max-width: $bp-sm) {
+  .struggle {
+    h2 {
+      font-size: 32px;
+      line-height: 40px;
     }
   }
 }

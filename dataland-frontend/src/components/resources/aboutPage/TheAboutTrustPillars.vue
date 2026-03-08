@@ -48,17 +48,17 @@ import TrustPillarCard from '@/components/resources/aboutPage/TrustPillarCard.vu
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .about-trust-pillars {
     padding: 2.5rem 1rem;
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: $bp-md) {
   .about-trust-pillars__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: $bp-lg) {
   .about-trust-pillars__grid { grid-template-columns: repeat(4, 1fr); }
 }
 </style>

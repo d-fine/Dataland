@@ -33,7 +33,8 @@ const { openModal } = useContactModal();
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 1.5rem;
   }
 
@@ -55,11 +56,10 @@ const { openModal } = useContactModal();
 
   &__cta {
     min-height: 48px;
-    align-self: center;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .about-hero {
     padding: 3rem 1rem 2.5rem;
 

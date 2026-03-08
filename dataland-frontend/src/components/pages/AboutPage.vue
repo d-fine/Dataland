@@ -1,12 +1,12 @@
 <template>
-  <main role="main">
+  <main id="main-content" role="main">
     <ContactInquiryModal />
     <TheAboutHero />
     <TheAboutTrustPillars />
     <TheAboutTeam />
+    <TheAboutPrinciples />
     <TheAboutAdvisoryBoard />
-    <TheAboutSponsors />
-    <TheAboutPartners />
+    <TheAboutEcosystem />
     <TheAboutBottomCTA />
   </main>
 </template>
@@ -16,16 +16,16 @@ import ContactInquiryModal from '@/components/general/ContactInquiryModal.vue';
 import TheAboutHero from '@/components/resources/aboutPage/TheAboutHero.vue';
 import TheAboutTrustPillars from '@/components/resources/aboutPage/TheAboutTrustPillars.vue';
 import TheAboutTeam from '@/components/resources/aboutPage/TheAboutTeam.vue';
+import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
 import TheAboutAdvisoryBoard from '@/components/resources/aboutPage/TheAboutAdvisoryBoard.vue';
-import TheAboutSponsors from '@/components/resources/aboutPage/TheAboutSponsors.vue';
-import TheAboutPartners from '@/components/resources/aboutPage/TheAboutPartners.vue';
+import TheAboutEcosystem from '@/components/resources/aboutPage/TheAboutEcosystem.vue';
 import TheAboutBottomCTA from '@/components/resources/aboutPage/TheAboutBottomCTA.vue';
 </script>
 
 <style lang="scss" scoped>
 main {
   margin-top: 132px;
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: $bp-md) {
     margin-top: 80px;
   }
 }

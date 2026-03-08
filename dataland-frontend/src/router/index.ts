@@ -60,6 +60,16 @@ const routes = [
     },
   },
   {
+    path: '/success-stories/:slug',
+    name: 'success-story',
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    component: () => import('@/components/pages/SuccessStoryPage.vue'),
+    meta: {
+      layout: 'landing',
+      requiresAuthentication: false,
+    },
+  },
+  {
     path: '/preview',
     name: 'View Sample Data in Preview Mode',
     component: ViewTeaserCompanyData,

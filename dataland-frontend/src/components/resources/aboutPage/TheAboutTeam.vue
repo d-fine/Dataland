@@ -50,19 +50,19 @@ import PersonCard from '@/components/resources/aboutPage/PersonCard.vue';
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .about-team {
     padding: 2.5rem 1rem;
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: $bp-md) {
   .about-team__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: $bp-lg) {
   .about-team__grid {
     grid-template-columns: repeat(3, 1fr);
   }

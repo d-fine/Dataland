@@ -16,11 +16,18 @@ export interface AdvisoryPerson {
   role: string;
   organisation: string;
   imagePath: string;
+  url?: string;
 }
 
 export interface Logo {
   name: string;
   imagePath: string;
+}
+
+export interface Principle {
+  icon: string;
+  title: string;
+  description: string;
 }
 
 export const TRUST_PILLARS: TrustPillar[] = [
@@ -43,8 +50,9 @@ export const TRUST_PILLARS: TrustPillar[] = [
   },
   {
     icon: 'pi pi-microchip',
-    title: 'AI at non-profit scale',
-    description: 'AI extraction applied exclusively to public company disclosures — efficiency without the commercial motive.',
+    title: 'Transparent Technology',
+    description:
+      'Human-supervised AI extraction applied to public company disclosures — always with expert review, always with full traceability.',
   },
 ];
 
@@ -59,13 +67,13 @@ export const LEADERSHIP_TEAM: Person[] = [
     name: 'Andreas Höcherl',
     role: 'Head of Product',
     bio: 'Andreas shapes the product vision, working closely with regulatory stakeholders and institutional members.',
-    imagePath: '/static/about/team-andreas-hoecherl.webp',
+    imagePath: '/static/about/team-andreas-hoecherl.svg', // [PLACEHOLDER] SVG avatar with initials. Replace with real photo.
   },
   {
     name: 'Sören Vorsmann',
     role: 'Head of Operations',
     bio: 'Sören oversees platform operations, infrastructure, and member onboarding.',
-    imagePath: '/static/about/team-soeren-vorsmann.webp',
+    imagePath: '/static/about/team-soeren-vorsmann.svg', // [PLACEHOLDER] SVG avatar with initials. Replace with real photo.
   },
 ];
 
@@ -74,13 +82,15 @@ export const ADVISORY_BOARD: AdvisoryPerson[] = [
     name: 'Rudi Siebel',
     role: 'Advisory Board Member',
     organisation: 'BVI',
-    imagePath: '/static/about/team-rudi-siebel.webp',
+    imagePath: '/static/about/team-rudi-siebel.svg', // [PLACEHOLDER] SVG avatar with initials. Replace with real photo.
+    url: 'https://www.bvi.de',
   },
   {
     name: 'Stephan Henkel',
     role: 'Advisory Board Member',
     organisation: 'VOEB',
-    imagePath: '/static/about/team-stephan-henkel.webp',
+    imagePath: '/static/about/team-stephan-henkel.svg', // [PLACEHOLDER] SVG avatar with initials. Replace with real photo.
+    url: 'https://www.voeb.de',
   },
 ];
 
@@ -92,10 +102,44 @@ export const SPONSORS: Logo[] = [
 ];
 
 export const PARTNERS: Logo[] = [
-  { name: 'Eskua AI', imagePath: '/static/about/logo-eskua-ai.webp' },
-  { name: 'Keynum', imagePath: '/static/about/logo-keynum.webp' },
-  { name: 'FACT First Cloud', imagePath: '/static/about/logo-fact-first-cloud.webp' },
-  { name: 'Sopra Steria', imagePath: '/static/about/logo-sopra-steria.webp' },
+  { name: 'Eskua AI', imagePath: '/static/about/logo-eskua-ai.svg' }, // [PLACEHOLDER] SVG text logo. Replace with real logo.
+  { name: 'Keynum', imagePath: '/static/about/logo-keynum.svg' }, // [PLACEHOLDER] SVG text logo. Replace with real logo.
+  { name: 'FACT First Cloud', imagePath: '/static/about/logo-fact-first-cloud.svg' }, // [PLACEHOLDER] SVG text logo. Replace with real logo.
+  { name: 'Sopra Steria', imagePath: '/static/about/logo-sopra-steria.svg' }, // [PLACEHOLDER] SVG text logo. Replace with real logo.
+];
+
+export const PRINCIPLES: Principle[] = [
+  {
+    icon: 'pi pi-verified',
+    title: 'Integrity',
+    description: 'We need comparable and reliable sustainability data to create value.',
+  },
+  {
+    icon: 'pi pi-eye',
+    title: 'Disclosure',
+    description: 'We seek disclosure of sustainability data from our business relations.',
+  },
+  {
+    icon: 'pi pi-unlock',
+    title: 'Transparency',
+    description: 'We respect and promote data sovereignty.',
+  },
+  {
+    icon: 'pi pi-check-circle',
+    title: 'Accountability',
+    description: 'Data should be timely and easily accessible at fair cost.',
+  },
+  {
+    icon: 'pi pi-balance-scale',
+    title: 'Neutrality',
+    description:
+      'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
+  },
+  {
+    icon: 'pi pi-users',
+    title: 'Collaboration',
+    description: 'We work together to achieve these principles and promote their acceptance.',
+  },
 ];
 
 export const HERO_COPY = {
@@ -106,7 +150,9 @@ export const HERO_COPY = {
 };
 
 export const BOTTOM_CTA_COPY = {
-  headline: 'Ready to Learn More?',
-  subheadline: 'Have a question about Dataland? We would be glad to hear from you.',
-  ctaLabel: 'Get in Touch',
+  headline: 'Let Us Start the Conversation',
+  subheadline:
+    'Whether you want to consume data, contribute data, or support the platform as a sponsor \u2014 there is a place for you.',
+  primaryCtaLabel: 'Talk to Our Team',
+  secondaryCtaLabel: 'Learn More About Our Data',
 };
