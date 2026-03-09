@@ -18,6 +18,7 @@ const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pa
 const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pages/ViewFrameworkData.vue');
 const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
+const DataModelPage = (): Promise<RouteComponent> => import('@/components/pages/DataModelPage.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
 const MyDataRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/MyDataRequestsOverviewLegacy.vue');
@@ -200,6 +201,15 @@ const routes = [
     meta: {
       initialTabId: 'my-datasets',
       requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/datasets/data-model',
+    name: 'Data Model',
+    component: DataModelPage,
+    meta: {
+      initialTabId: 'data-model',
+      requiresAuthentication: false,
     },
   },
   {
