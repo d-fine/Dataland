@@ -115,25 +115,26 @@ class QaReviewManager
                 ).map { it.toQaReviewResponse(userIsAdmin) }
         }
 
-    private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
-        return qaReviewResponses.map { qaReviewResponse ->
-            val dimension = BasicDataDimensions(
-                companyId = qaReviewResponse.companyId,
-                dataType = qaReviewResponse.framework,
-                reportingPeriod = qaReviewResponse.reportingPeriod,
-            )
-            val priorityOfAssociatedDataSourcing = try {
-                dataSourcingControllerApi.getDataSourcingPriorities(dimension)
-            } catch (clientException: ClientException) {
-                if ((clientException.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
-                    null
-                } else {
-                    throw clientException
-                }
+        private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> =
+            qaReviewResponses.map { qaReviewResponse ->
+                val dimension =
+                    BasicDataDimensions(
+                        companyId = qaReviewResponse.companyId,
+                        dataType = qaReviewResponse.framework,
+                        reportingPeriod = qaReviewResponse.reportingPeriod,
+                    )
+                val priorityOfAssociatedDataSourcing =
+                    try {
+                        dataSourcingControllerApi.getDataSourcingPriorities(dimension)
+                    } catch (clientException: ClientException) {
+                        if ((clientException.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
+                            null
+                        } else {
+                            throw clientException
+                        }
+                    }
+                qaReviewResponse.copy(priorityOfAssociatedDataSourcing = priorityOfAssociatedDataSourcing)
             }
-            qaReviewResponse.copy(priorityOfAssociatedDataSourcing = priorityOfAssociatedDataSourcing)
-        }
-    }
 
         /**
          * This method returns the number of unreviewed datasets for a specific set of filters

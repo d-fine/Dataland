@@ -51,12 +51,4 @@ class ApiClients(
     fun getRequestControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi = RequestControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
-
-    /**
-     * Creates an auto-authenticated version of the DataSourcingControllerApi of the data sourcing service
-     */
-    @Bean
-    fun getDataSourcingControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): DataSourcingControllerApi = DataSourcingControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 }
