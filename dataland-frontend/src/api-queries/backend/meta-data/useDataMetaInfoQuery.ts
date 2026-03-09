@@ -3,7 +3,7 @@ import { computed, type Ref } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient';
 import { metaDataKeys } from '@/api-queries/backend/meta-data/metaDataKeys';
-import { DataMetaInformation } from '@clients/backend';
+import { type DataMetaInformation } from '@clients/backend';
 
 /**
  * Hook to fetch metadata information for a given data identifier.

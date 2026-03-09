@@ -2,8 +2,8 @@ import { useMutation, useQueryClient, type UseMutationReturnType } from '@tansta
 import type { Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
-import { DatasetReviewResponse } from '@clients/qaservice';
-import { AxiosResponse } from 'axios';
+import { type DatasetReviewResponse } from '@clients/qaservice';
+import { type AxiosResponse } from 'axios';
 
 /**
  * Set the judge for a dataset review.

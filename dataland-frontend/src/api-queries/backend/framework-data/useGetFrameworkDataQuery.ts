@@ -5,7 +5,7 @@ import type { DataTypeEnum } from '@clients/backend';
 import { useApiClient } from '@/utils/useApiClient';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
 import { frameworkDataKeys } from './frameworkDataKeys';
-import { CompanyAssociatedData } from '@/api-models/CompanyAssociatedData.ts';
+import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData.ts';
 
 /**
  * Hook to fetch framework-specific data by framework type and data id.

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import { type Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { DatasetReviewResponse, type DatasetReviewState } from '@clients/qaservice';
+import { type DatasetReviewResponse, type DatasetReviewState } from '@clients/qaservice';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
-import { AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 
 /**
  * Set a dataset review's state.
