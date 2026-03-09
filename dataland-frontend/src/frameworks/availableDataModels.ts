@@ -45,6 +45,12 @@ export const AVAILABLE_DATA_MODELS: AvailableModel[] = [
     label: 'Nuclear and Gas',
     loader: () => import('./nuclear-and-gas/UploadConfig'),
   },
+  {
+    id: 'eutaxonomy-non-financials',
+    label: 'EU Taxonomy (Non-Financials)',
+    // this framework's UploadConfig lives under `custom/` as a static file
+    loader: () => import('./custom/EuTaxoNonFinancialsStaticUploadConfig'),
+  },
 ];
 
 // Helper to extract the actual data-model array from a loaded module.
