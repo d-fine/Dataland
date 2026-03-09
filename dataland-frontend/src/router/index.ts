@@ -210,6 +210,7 @@ const routes = [
     meta: {
       initialTabId: 'data-model',
       requiresAuthentication: false,
+      useLandingPageHeader: false,
     },
   },
   {
