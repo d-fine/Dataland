@@ -1,7 +1,16 @@
 <template>
   <TheContent class="container">
     <main class="data-model-page">
-      <h1>Data Model — EU Taxonomy Financials</h1>
+      <div class="header-row">
+        <h1>Data Model — {{ selectedModelLabel }}</h1>
+        <div class="model-select">
+          <label for="modelSelect">Model</label>
+          <select id="modelSelect" v-model="selectedModelId">
+            <option v-for="m in AVAILABLE_DATA_MODELS" :key="m.id" :value="m.id">{{ m.label }}</option>
+          </select>
+          <span v-if="loadingModel">Loading…</span>
+        </div>
+      </div>
 
       <div class="search-row">
         <input
@@ -45,9 +54,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
-import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
+import { AVAILABLE_DATA_MODELS, extractDataModel } from '@/frameworks/availableDataModels';
 
 interface Row {
   id: string;
@@ -60,9 +69,47 @@ interface Row {
 
 const q = ref('');
 
+const selectedModelId = ref<string>(AVAILABLE_DATA_MODELS[0]?.id ?? '');
+const selectedModelLabel = ref<string>(AVAILABLE_DATA_MODELS[0]?.label ?? 'Data Model');
+const selectedDataModel = ref<any[]>([]);
+const loadingModel = ref(false);
+
+async function loadModel(id: string) {
+  const entry = AVAILABLE_DATA_MODELS.find((e) => e.id === id);
+  if (!entry) {
+    selectedDataModel.value = [];
+    selectedModelLabel.value = 'Data Model';
+    return;
+  }
+  selectedModelLabel.value = entry.label;
+  loadingModel.value = true;
+  try {
+    if (entry.dataModel) {
+      selectedDataModel.value = entry.dataModel as any[];
+    } else if (entry.loader) {
+      const mod = await entry.loader();
+      const dm = await extractDataModel(mod);
+      selectedDataModel.value = dm ?? [];
+    } else {
+      selectedDataModel.value = [];
+    }
+  } catch (err) {
+    // swallow errors and present empty model
+    selectedDataModel.value = [];
+  } finally {
+    loadingModel.value = false;
+  }
+}
+
+onMounted(() => {
+  if (selectedModelId.value) loadModel(selectedModelId.value);
+});
+
+watch(selectedModelId, (v) => loadModel(v));
+
 const rows = computed<Row[]>(() => {
   const out: Row[] = [];
-  (eutaxonomyFinancialsDataModel as any[]).forEach((category: any) => {
+  (selectedDataModel.value as any[]).forEach((category: any) => {
     const catName = category.name ?? category.label ?? 'category';
     (category.subcategories || []).forEach((subcat: any) => {
       const subName = subcat.name ?? subcat.label ?? 'subcategory';
@@ -109,6 +156,16 @@ const filteredRows = computed(() => {
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.model-select { display:flex; align-items:center; gap:0.5rem; }
+.model-select label { font-size:0.9rem; }
 .table-wrap {
   overflow-x: auto;
 }
