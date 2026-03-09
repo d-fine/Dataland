@@ -40,8 +40,8 @@ class DatasetReviewEntity(
     @Column(name = "reviewer_user_name")
     var reviewerUserName: String,
     @ElementCollection
-    @Column(name = "qa_reporter_companies")
-    var qaReporterCompanies: MutableList<QaReporter>,
+    @Column(name = "qa_reporters")
+    var qaReporters: MutableList<QaReporter>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
     val dataPoints: MutableList<DataPointReviewDetailsEntity>,
 ) {
@@ -58,7 +58,7 @@ class DatasetReviewEntity(
             reviewState,
             reviewerUserId.toString(),
             reviewerUserName,
-            qaReporterCompanies.toList(),
+            qaReporters.toList(),
             dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
 

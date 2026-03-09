@@ -113,7 +113,7 @@ class DatasetReviewServiceTest {
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
             reviewerUserName = "Dummy User",
-            qaReporterCompanies = mutableListOf(),
+            qaReporters = mutableListOf(),
             dataPoints = mutableListOf(dummyDataPointReviewDetails),
         )
 

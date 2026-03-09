@@ -2,7 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
@@ -29,6 +29,7 @@ class DatasetReviewCreationUtils
         private val inheritedRolesControllerApi: InheritedRolesControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val datasetReviewSupportService: DatasetReviewSupportService,
+        private val keycloakUserService: KeycloakUserService,
     ) {
         /**
          * Helper method to create a dataset review entity from the given QA reports, dataset metadata, and data points.
@@ -46,12 +47,26 @@ class DatasetReviewCreationUtils
             datasetId: UUID,
             datatypeToDatapointIds: Map<String, String>,
         ): DatasetReviewEntity {
-            val qaReportEntities =
+            val activeQaReports =
                 datasetReviewSupportService
                     .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
 
-            val latestQaReportForCompanyAndType = getLatestQaReportForEachCompanyAndDataPointType(qaReportEntities)
-            val qaReporterCompanies = getQaReporterCompanies(latestQaReportForCompanyAndType)
+            val mapDataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(activeQaReports)
+
+            val reporterUserIds =
+                mapDataPointTypeToQaReports
+                    .values
+                    .flatten()
+                    .map { it.reporterUserId }
+                    .distinct()
+
+            val reporterIdToCompanyId = getCompanyIdsFromUserIds(reporterUserIds)
+
+            val qaReporters =
+                getQaReporters(
+                    reporterUserIds,
+                    reporterIdToCompanyId,
+                )
 
             val datasetReviewEntity =
                 DatasetReviewEntity(
@@ -62,7 +77,7 @@ class DatasetReviewCreationUtils
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = DatalandAuthentication.fromContext().name,
-                    qaReporterCompanies = qaReporterCompanies.toMutableList(),
+                    qaReporters = qaReporters,
                     dataPoints = mutableListOf(),
                 )
 
@@ -70,91 +85,96 @@ class DatasetReviewCreationUtils
                 setDataPointsForReview(
                     datasetReviewEntity,
                     datatypeToDatapointIds,
-                    latestQaReportForCompanyAndType,
+                    mapDataPointTypeToQaReports,
+                    reporterIdToCompanyId,
                 )
             return datasetReviewEntityWithDataPoints
         }
 
         /**
-         * Helper method to populate the dataset review with data point review details.
+         * Helper Method to group QA reports by data point type and keeps only the latest upload per reporter.
          *
-         * For each data point type in the dataset, this method creates a review-details entry and attaches the
-         * latest QA reports for that data point type, then adds it to the given review entity.
+         * For each data point type, the returned list contains at most one report per reporter user id,
+         * selected by the greatest upload time.
          *
-         * @param reviewEntity The dataset review entity to enrich with data point review details.
-         * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
-         * @param latestQaReportForCompanyAndType Latest QA report per company and data point type.
-         * @return The same DatasetReviewEntity instance with populated data points.
+         * @param activeQaReports QA reports to evaluate.
+         * @return Map keyed by data point type with the latest reports per reporter.
          */
-        private fun setDataPointsForReview(
-            reviewEntity: DatasetReviewEntity,
-            datatypeToDatapointIds: Map<String, String>,
-            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
-        ): DatasetReviewEntity {
-            for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
-                val qaReportsForThisDataPointType =
-                    latestQaReportForCompanyAndType
-                        .values
-                        .filter { it.dataPointType == dataPointType }
-
-                val currentDataPointReviewDetails =
-                    DataPointReviewDetailsEntity(
-                        dataPointType = dataPointType,
-                        dataPointId = convertToUUID(dataPointId),
-                        qaReports = mutableListOf(),
-                        acceptedSource = null,
-                        companyIdOfAcceptedQaReport = null,
-                        customValue = null,
-                    )
-
-                qaReportsForThisDataPointType.forEach { qaReport ->
-                    currentDataPointReviewDetails.addAssociatedQaReports(
-                        QaReportDataPointWithReporterDetailsEntity(
-                            qaReportId = convertToUUID(qaReport.qaReportId),
-                            verdict = qaReport.verdict,
-                            correctedData = qaReport.correctedData,
-                            reporterUserId = convertToUUID(qaReport.reporterUserId),
-                            reporterCompanyId =
-                                latestQaReportForCompanyAndType
-                                    .entries
-                                    .first { it.value == qaReport }
-                                    .key
-                                    .substringBefore("|")
-                                    .let { convertToUUID(it) },
-                        ),
-                    )
+        private fun getLatestQaReportsByDataPointTypeAndReporter(
+            activeQaReports: List<DataPointQaReportEntity>,
+        ): Map<String, List<DataPointQaReportEntity>> {
+            val latestByType = mutableMapOf<String, MutableList<DataPointQaReportEntity>>()
+            for (qaReport in activeQaReports) {
+                val reportsForType = latestByType.getOrPut(qaReport.dataPointType) { mutableListOf() }
+                val existingIndex = reportsForType.indexOfFirst { it.reporterUserId == qaReport.reporterUserId }
+                if (existingIndex >= 0) {
+                    if (qaReport.uploadTime > reportsForType[existingIndex].uploadTime) {
+                        reportsForType[existingIndex] = qaReport
+                    }
+                } else {
+                    reportsForType.add(qaReport)
                 }
-
-                reviewEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
             }
-            return reviewEntity
+            return latestByType
         }
 
         /**
-         * Helper method to get the companies of the reporters of QA reports.
+         * Builds a list of QA reporters from QA reports grouped by data point type.
          *
-         * Only considers the latest QA report for each company and data point type combination to determine
-         * the reporter companies.
+         * Extracts distinct reporter user ids from the map values, resolves the reporter company ids,
+         * fetches company names in bulk, and enriches each reporter with Keycloak user details.
          *
-         * @param latestQaReportForCompanyAndType Latest QA report per company and data point type.
-         * @return List of reporter companies derived from the latest QA reports.
+         * @param mapDataPointTypeToQaReports Map of data point type to associated QA reports.
+         * @return List of QA reporters with user and company information when available.
          */
-        private fun getQaReporterCompanies(
-            latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
-        ): List<QaReporter> {
-            val uniqueCompanyIds =
-                latestQaReportForCompanyAndType.keys
-                    .map { key -> key.split("|")[0] }
-                    .distinct()
-
-            val companyNameById = getCompanyNameByIdMap(uniqueCompanyIds)
-
-            return uniqueCompanyIds.map { companyId ->
-                QaReporter(
-                    companyNameById.getValue(companyId),
-                    convertToUUID(companyId),
+        private fun getQaReporters(
+            reporterUserIds: List<String>,
+            reporterIdToCompanyId: Map<String, String>,
+        ): MutableList<QaReporter> {
+            val companyIdToName = getCompanyNameByIdMap(reporterIdToCompanyId.values.distinct())
+            val qaReportersFinalList = mutableListOf<QaReporter>()
+            for (reporterUserId in reporterUserIds) {
+                val companyId = reporterIdToCompanyId[reporterUserId]
+                val userInfo = keycloakUserService.getUser(reporterUserId)
+                qaReportersFinalList.add(
+                    QaReporter(
+                        reporterUserId = convertToUUID(reporterUserId),
+                        reporterUserName =
+                            listOfNotNull(userInfo.firstName, userInfo.lastName)
+                                .joinToString(" ")
+                                .ifBlank { null },
+                        reporterEmailAddress = userInfo.email,
+                        reportCompanyName = companyId?.let { companyIdToName[it] },
+                        reporterCompanyId = companyId?.let { convertToUUID(it) },
+                    ),
                 )
             }
+
+            return qaReportersFinalList
+        }
+
+        /**
+         * Helper Method to resolve the reporter company id for each reporter user id.
+         *
+         * Uses the inherited roles API to look up the company id for every reporter user id and returns
+         * a map keyed by reporter user id with the corresponding company id as value.
+         *
+         * @param reporterUserIds Reporter user ids to resolve.
+         * @return Map of reporter user id to company id for all resolvable reporters.
+         */
+        private fun getCompanyIdsFromUserIds(reporterUserIds: List<String>): Map<String, String> {
+            val reporterIdToCompanyId = mutableMapOf<String, String>()
+            for (reporterUserId in reporterUserIds) {
+                val companyId =
+                    inheritedRolesControllerApi
+                        .getInheritedRoles(reporterUserId)
+                        .keys
+                        .firstOrNull()
+                if (companyId != null) {
+                    reporterIdToCompanyId[reporterUserId] = companyId
+                }
+            }
+            return reporterIdToCompanyId
         }
 
         /**
@@ -175,36 +195,54 @@ class DatasetReviewCreationUtils
         }
 
         /**
-         * Helper method to get the latest QA report for each combination of company and data point type.
+         * Helper method to populate the dataset review with data point review details.
          *
-         * Resolves the reporter's company for each QA report, then keeps only the most recent report per
-         * company and data point type combination.
+         * For each data point type in the dataset, this method creates a review-details entry and attaches
+         * the latest QA reports for that data point type. Each attached report is enriched with the
+         * reporter company id resolved from the provided mapping.
          *
-         * @param qaReportEntities List of QA report entities to evaluate.
-         * @return Map keyed by "companyId|dataPointType" containing the latest QA report for each key.
+         * @param reviewEntity The dataset review entity to enrich with data point review details.
+         * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
+         * @param latestQaReportsByDataPointTypeAndReporter Latest QA reports grouped by data point type.
+         * @param reporterIdToCompanyId Map of reporter user id to reporter company id.
+         * @return The same DatasetReviewEntity instance with populated data points.
          */
-        private fun getLatestQaReportForEachCompanyAndDataPointType(
-            qaReportEntities: List<DataPointQaReportEntity>,
-        ): LinkedHashMap<String, DataPointQaReportEntity> {
-            val map = linkedMapOf<String, DataPointQaReportEntity>()
-            for (entry in qaReportEntities) {
-                val companyId =
-                    inheritedRolesControllerApi
-                        .getInheritedRoles(entry.reporterUserId)
-                        .keys
-                        .firstOrNull()
-                        ?: throw ResourceNotFoundApiException(
-                            "Company of QA report reporter not found.",
-                            "Could not find a company for the user ${entry.reporterUserId} who " +
-                                "reported a QA report with id ${entry.qaReportId}.",
-                        )
+        private fun setDataPointsForReview(
+            reviewEntity: DatasetReviewEntity,
+            datatypeToDatapointIds: Map<String, String>,
+            latestQaReportsByDataPointTypeAndReporter: Map<String, List<DataPointQaReportEntity>>,
+            reporterIdToCompanyId: Map<String, String>,
+        ): DatasetReviewEntity {
+            for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
+                val currentDataPointReviewDetails =
+                    DataPointReviewDetailsEntity(
+                        dataPointType = dataPointType,
+                        dataPointId = convertToUUID(dataPointId),
+                        qaReports = mutableListOf(),
+                        acceptedSource = null,
+                        companyIdOfAcceptedQaReport = null,
+                        customValue = null,
+                    )
 
-                val compositeKey = "$companyId|${entry.dataPointType}"
-                val existing = map[compositeKey]
-                if (existing == null || entry.uploadTime > existing.uploadTime) {
-                    map[compositeKey] = entry
-                }
+                latestQaReportsByDataPointTypeAndReporter[dataPointType]
+                    .orEmpty()
+                    .forEach { qaReport ->
+                        currentDataPointReviewDetails
+                            .addAssociatedQaReports(
+                                QaReportDataPointWithReporterDetailsEntity(
+                                    qaReportId = convertToUUID(qaReport.qaReportId),
+                                    verdict = qaReport.verdict,
+                                    correctedData = qaReport.correctedData,
+                                    reporterUserId = convertToUUID(qaReport.reporterUserId),
+                                    reporterCompanyId =
+                                        reporterIdToCompanyId[qaReport.reporterUserId]
+                                            ?.let { convertToUUID(it) },
+                                ),
+                            )
+                    }
+
+                reviewEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
             }
-            return map
+            return reviewEntity
         }
     }

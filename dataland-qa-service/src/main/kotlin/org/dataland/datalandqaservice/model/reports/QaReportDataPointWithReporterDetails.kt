@@ -38,5 +38,5 @@ data class QaReportDataPointWithReporterDetails(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
     )
-    val reporterCompanyId: UUID,
+    val reporterCompanyId: UUID?,
 )
