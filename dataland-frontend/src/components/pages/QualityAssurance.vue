@@ -106,10 +106,10 @@
             <Column header="PRIORITY" class="w-2">
               <template #body="slotProps">
                 <DatalandTag
-                  v-if="getPriorityForRow(slotProps.data) !== undefined"
+                  v-if="slotProps.data.priorityOfAssociatedDataSourcing !== undefined"
                   class="dataland-tag"
-                  :severity="dataSourcingPrioritySeverity(getPriorityForRow(slotProps.data)!)"
-                  :value="String(getPriorityForRow(slotProps.data)!)"
+                  :severity="dataSourcingPrioritySeverity(slotProps.data.priorityOfAssociatedDataSourcing!)"
+                  :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />
               </template>
             </Column>
