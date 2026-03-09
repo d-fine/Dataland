@@ -9,7 +9,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -141,7 +141,7 @@ class DatasetReviewCreationUtils
          */
         private fun getQaReporterCompanies(
             latestQaReportForCompanyAndType: LinkedHashMap<String, DataPointQaReportEntity>,
-        ): List<QaReporterCompany> {
+        ): List<QaReporter> {
             val uniqueCompanyIds =
                 latestQaReportForCompanyAndType.keys
                     .map { key -> key.split("|")[0] }
@@ -150,7 +150,7 @@ class DatasetReviewCreationUtils
             val companyNameById = getCompanyNameByIdMap(uniqueCompanyIds)
 
             return uniqueCompanyIds.map { companyId ->
-                QaReporterCompany(
+                QaReporter(
                     companyNameById.getValue(companyId),
                     convertToUUID(companyId),
                 )

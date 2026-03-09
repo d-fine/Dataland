@@ -40,6 +40,12 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
     const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
 
+    const val REPORTER_USERNAME_EXAMPLE = "Bot 1 of Dataland"
+    const val REPORTER_USERNAME_DESCRIPTION = "The name of the user who uploaded the QA report."
+
+    const val REPORTER_USER_EMAIL_EXAMPLE = "bot1@dataland.com"
+    const val REPORTER_USER_EMAIL_DESCRIPTION = "The email of the user who uploaded the QA report."
+
     const val REVIEWER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
     const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 

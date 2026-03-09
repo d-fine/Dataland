@@ -11,7 +11,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
 
 /**
@@ -41,7 +41,7 @@ class DatasetReviewEntity(
     var reviewerUserName: String,
     @ElementCollection
     @Column(name = "qa_reporter_companies")
-    var qaReporterCompanies: MutableList<QaReporterCompany>,
+    var qaReporterCompanies: MutableList<QaReporter>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
     val dataPoints: MutableList<DataPointReviewDetailsEntity>,
 ) {

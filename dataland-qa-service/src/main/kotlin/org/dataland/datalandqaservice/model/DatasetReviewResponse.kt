@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporterCompany
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 
 /**
  * API model for the dataset review objects returned.
@@ -54,7 +54,7 @@ data class DatasetReviewResponse(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_EXAMPLE,
     )
-    var qaReporterCompanies: List<QaReporterCompany>,
+    var qaReporterCompanies: List<QaReporter>,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
     )
