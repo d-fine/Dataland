@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
@@ -48,12 +49,14 @@ class DatasetReviewServiceTest {
     private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockDatasetReviewSupportService = mock<DatasetReviewSupportService>()
     private val mockInheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private val datasetReviewCreationUtils =
         DatasetReviewCreationUtils(
             mockInheritedRolesControllerApi,
             mockCompanyDataControllerApi,
             mockDatasetReviewSupportService,
+            mockKeycloakUserService,
         )
 
     private val datasetReviewHelper =

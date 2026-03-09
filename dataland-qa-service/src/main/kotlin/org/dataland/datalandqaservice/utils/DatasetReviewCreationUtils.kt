@@ -119,12 +119,13 @@ class DatasetReviewCreationUtils
         }
 
         /**
-         * Builds a list of QA reporters from QA reports grouped by data point type.
+         * Helper method to build a list of QA reporters for the provided reporter user ids.
          *
-         * Extracts distinct reporter user ids from the map values, resolves the reporter company ids,
-         * fetches company names in bulk, and enriches each reporter with Keycloak user details.
+         * Resolves company names from the provided reporter-to-company mapping and enriches each reporter
+         * with user details from Keycloak.
          *
-         * @param mapDataPointTypeToQaReports Map of data point type to associated QA reports.
+         * @param reporterUserIds Distinct reporter user ids to process.
+         * @param reporterIdToCompanyId Mapping of reporter user id to company id, if available.
          * @return List of QA reporters with user and company information when available.
          */
         private fun getQaReporters(
