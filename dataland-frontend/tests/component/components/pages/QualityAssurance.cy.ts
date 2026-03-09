@@ -392,7 +392,7 @@ describe('Component tests for the Quality Assurance page', () => {
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
       request.reply(201, {
-            dataSetReviewId: datasetReviewIdAlpha,
+        dataSetReviewId: datasetReviewIdAlpha,
       });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
