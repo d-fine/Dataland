@@ -1,7 +1,6 @@
 package org.dataland.datalanduserservice.configurations
 
 import okhttp3.OkHttpClient
-import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
