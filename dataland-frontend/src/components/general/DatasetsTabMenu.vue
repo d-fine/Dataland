@@ -52,7 +52,6 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'data-model', label: 'DATA MODEL', route: '/datasets/data-model', isVisible: true },
   { id: 'my-company', label: 'MY COMPANY', route: '/companies', isVisible: false },
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { id: 'data-model', label: 'DATA MODEL', route: '/datasets/data-model', isVisible: true },
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { id: 'my-data-requests-legacy', label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
