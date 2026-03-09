@@ -192,9 +192,6 @@ import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDow
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataTypeEnum } from '@clients/backend';
-import { type BasicDataDimensions } from '@clients/datasourcingservice';
-import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
@@ -209,6 +206,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import { type QaReviewResponse } from '@clients/qaservice';
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
@@ -228,21 +226,10 @@ const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
 const errorMessage = ref<string>('');
-const priorityByDimensions = ref<Record<string, number>>({});
 
 const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
-
-/**
- * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
- * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
- * @param input is a value with type DataTypeEnum
- * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
- */
-function manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
-  return input as GetInfoOnDatasetsDataTypesEnum;
-}
 
 /**
  * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
@@ -252,38 +239,16 @@ async function getQaDataForCurrentPage(): Promise<void> {
     waitingForData.value = true;
     displayDataOfPage.value = [];
 
-    const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
-      selectedFrameworks.value.map((selectableItem) =>
-        manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
-      )
-    );
-    const reportingPeriodFilter: Set<string> = new Set<string>(
-      availableReportingPeriods.value.map((date) => date.getFullYear().toString())
-    );
     const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
-    const response = await apiClientProvider.apiClients.qaController.getInfoOnDatasets(
-      selectedFrameworksAsSet,
-      reportingPeriodFilter,
-      companyNameFilter,
-      undefined,
-      datasetsPerPage,
-      currentChunkIndex.value
-    );
+    const response = await apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(companyNameFilter);
     displayDataOfPage.value = await Promise.all(
       response.data.map(async (row) => ({
         ...row,
         reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
       }))
     );
-    totalRecords.value = (
-      await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
-        selectedFrameworksAsSet,
-        reportingPeriodFilter,
-        companyNameFilter
-      )
-    ).data;
+    totalRecords.value = displayDataOfPage.value.length;
     waitingForData.value = false;
-    await fetchPriorities();
   } catch (error) {
     console.error(error);
   }
@@ -298,36 +263,6 @@ function dataSourcingPrioritySeverity(priority: number): string {
   if (priority <= 6) return 'sourcing-priority-medium';
   if (priority <= 9) return 'sourcing-priority-low';
   return 'sourcing-priority-slate';
-}
-
-/**
- * Returns the priority for the given QA row, or undefined if none is available.
- * @param row the QA review response row
- */
-function getPriorityForRow(row: QaReviewRow): number | undefined {
-  return priorityByDimensions.value[`${row.companyId}|${row.framework}|${row.reportingPeriod}`];
-}
-
-/**
- * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
- */
-async function fetchPriorities(): Promise<void> {
-  try {
-    const dimensions: BasicDataDimensions[] = displayDataOfPage.value.map((row) => ({
-      companyId: row.companyId,
-      dataType: row.framework,
-      reportingPeriod: row.reportingPeriod,
-    }));
-    const priorityResponse =
-      await apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
-    const newPriorityByDimensions: Record<string, number> = {};
-    priorityResponse.data.forEach((entry) => {
-      newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
-    });
-    priorityByDimensions.value = newPriorityByDimensions;
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 /**
