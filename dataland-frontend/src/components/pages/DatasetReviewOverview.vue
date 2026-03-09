@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed, inject } from 'vue';
+import { ref, onMounted, computed, inject, watchEffect } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -141,7 +141,10 @@ const {
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
 const companyId = computed(() => dataMetaInformation.value?.companyId);
-const isInitialLoading = computed(() => isDatasetReviewPending.value || isDataMetaInformationPending.value);
+const isInitialLoading = computed(() => {
+  const hasDataId = !!dataIdRef.value;
+  return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
+});
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
 );
@@ -288,5 +291,13 @@ async function setCurrentUserId(): Promise<void> {
 onMounted(async () => {
   console.log('Loaded Review Page for Dataset Review ID:', props.datasetReviewId);
   await setCurrentUserId();
+});
+watchEffect(() => {
+  console.log('DEBUG QA flags', {
+    isDatasetReviewPending: isDatasetReviewPending.value,
+    isDatasetReviewError: isDatasetReviewError.value,
+    isDataMetaInformationPending: isDataMetaInformationPending.value,
+    isInitialLoading: isInitialLoading.value,
+  });
 });
 </script>

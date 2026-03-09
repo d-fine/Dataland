@@ -5,6 +5,9 @@ import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { type DatasetReviewResponse, DatasetReviewState } from '@clients/qaservice';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { computed } from 'vue';
+import type Keycloak from 'keycloak-js';
 
 describe('DatasetReviewOverview page details', () => {
   const keycloakMockWithReviewer = minimalKeycloakMock({
@@ -80,16 +83,23 @@ describe('DatasetReviewOverview page details', () => {
   function mountPage(options?: {
     datasetReviewResponse?: DatasetReviewResponse | null;
     datasetReviewStatusCode?: number;
+    datasetReviewNetworkError?: boolean;
+    forceDatasetReviewError?: boolean;
   }): void {
-    const datasetReviewResponse = options?.datasetReviewResponse === undefined ? baseDatasetReview : options.datasetReviewResponse;
+    const datasetReviewResponse =
+      options?.datasetReviewResponse === undefined ? baseDatasetReview : options.datasetReviewResponse;
 
-    cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo).as('getCompanyInfo');
-    cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo).as('getMetaInfo');
+    cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo);
+    cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
 
     const detailReviewUrl = `**/qa/dataset-reviews/${datasetReviewId}`;
     const listReviewUrlMatcher = /\/qa\/dataset-reviews\?.*/;
 
     cy.intercept('GET', detailReviewUrl, (req) => {
+      if (options?.datasetReviewNetworkError) {
+        req.reply({ forceNetworkError: true });
+        return;
+      }
       if (options?.datasetReviewStatusCode != null) {
         req.reply({ statusCode: options.datasetReviewStatusCode });
         return;
@@ -102,6 +112,10 @@ describe('DatasetReviewOverview page details', () => {
     }).as('getDatasetReview');
 
     cy.intercept('GET', listReviewUrlMatcher, (req) => {
+      if (options?.datasetReviewNetworkError) {
+        req.reply({ forceNetworkError: true });
+        return;
+      }
       if (options?.datasetReviewStatusCode != null) {
         req.reply({ statusCode: options.datasetReviewStatusCode });
         return;
@@ -111,7 +125,7 @@ describe('DatasetReviewOverview page details', () => {
         return;
       }
       req.reply({ statusCode: 200, body: [datasetReviewResponse] });
-    }).as('getDatasetReviewList');
+    });
 
     cy.intercept('GET', '**/api/data/**', { statusCode: 200, body: { data: {}, meta: {} } });
     cy.intercept('GET', '**/community/company-role-assignments*', { statusCode: 200, body: [] });
@@ -125,12 +139,27 @@ describe('DatasetReviewOverview page details', () => {
       },
     });
 
-    const mount = getMountingFunction({ keycloak: keycloakMockWithReviewer });
+    const mount = getMountingFunction();
+    const keycloakPromise = Promise.resolve(keycloakMockWithReviewer as unknown as Keycloak);
+    const apiClientProvider = new ApiClientProvider(keycloakPromise);
+
+    if (options?.forceDatasetReviewError) {
+      apiClientProvider.apiClients.datasetReviewController.getDatasetReview = () => {
+        return Promise.reject(new Error('Test: dataset review load failed'));
+      };
+    }
 
     mount(DatasetReviewOverview, {
-      props: { dataId, datasetReviewId },
+      props: {
+        datasetReviewId,
+      },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
+        provide: {
+          getKeycloakPromise: () => keycloakPromise,
+          authenticated: computed(() => true),
+          apiClientProvider: computed(() => apiClientProvider),
+        },
       },
     });
   }
@@ -184,9 +213,10 @@ describe('DatasetReviewOverview page details', () => {
   });
 
   it('shows an error message when loading the dataset review fails', () => {
-    mountPage({ datasetReviewStatusCode: 500 });
+    mountPage({ datasetReviewNetworkError: true });
     cy.wait('@getDatasetReview');
 
+    cy.contains('Loading Review Information...').should('not.exist');
     cy.contains('Failed to load dataset review or company information').should('be.visible');
     cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
   });
