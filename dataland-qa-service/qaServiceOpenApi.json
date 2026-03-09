@@ -3343,7 +3343,7 @@
           "dataSetReviewId",
           "dataType",
           "datasetId",
-          "qaReporterCompanies",
+          "qaReporters",
           "reportingPeriod",
           "reviewState"
         ],
@@ -3395,7 +3395,7 @@
             "description": "The name or email of the user reviewing the dataset.",
             "example": "Jane Doe"
           },
-          "qaReporterCompanies": {
+          "qaReporters": {
             "type": "array",
             "description": "List of companies that contributed a QA report to this dataset.",
             "example": [
@@ -3405,7 +3405,7 @@
               }
             ],
             "items": {
-              "$ref": "#/components/schemas/QaReporterCompany"
+              "$ref": "#/components/schemas/QaReporter"
             }
           },
           "dataPoints": {
@@ -3440,7 +3440,6 @@
       "QaReportDataPointWithReporterDetails": {
         "required": [
           "qaReportId",
-          "reporterCompanyId",
           "reporterUserId",
           "verdict"
         ],
@@ -3475,13 +3474,28 @@
         },
         "description": "List of QA reports associated with this data point, including details about the reporter company."
       },
-      "QaReporterCompany": {
+      "QaReporter": {
         "required": [
-          "reportCompanyName",
-          "reporterCompanyId"
+          "reporterUserId"
         ],
         "type": "object",
         "properties": {
+          "reporterUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reporterUserName": {
+            "type": "string",
+            "description": "The name of the user who uploaded the QA report.",
+            "example": "Bot 1 of Dataland"
+          },
+          "reporterEmailAddress": {
+            "type": "string",
+            "description": "The email of the user who uploaded the QA report.",
+            "example": "bot1@dataland.com"
+          },
           "reportCompanyName": {
             "type": "string",
             "description": "The name of the company that contributed a QA report to this dataset.",
