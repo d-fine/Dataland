@@ -30,7 +30,7 @@ class DatasetReviewControllerTest {
             reviewState = DatasetReviewState.Pending,
             qaJudgeUserId = UUID.randomUUID().toString(),
             qaJudgeUserName = "Dummy User",
-            qaReporterCompanies = emptyList(),
+            qaReporters = emptyList(),
             dataPoints = emptyMap(),
         )
 

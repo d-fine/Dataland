@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
@@ -79,6 +80,9 @@ class DatasetReviewServiceTest {
     private val dummyDatasetId = UUID.randomUUID()
     private val dummyReporterCompanyId = UUID.randomUUID()
     private val dummyUserName = "Dummy User"
+    private val dummyUserEmail = "dummyUser@dataland.com"
+    private val dummyUserFirstName = "Dummy"
+    private val dummyUserLastName = "User"
 
     private val dummyDatapointId = UUID.randomUUID().toString()
     private val reporterCompanyId = UUID.randomUUID().toString()
@@ -117,7 +121,7 @@ class DatasetReviewServiceTest {
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
             reviewerUserName = dummyUserName,
-            qaReporterCompanies = mutableListOf(),
+            qaReporters = mutableListOf(),
             dataPoints = mutableListOf(dummyDataPointReviewDetails),
         )
 
@@ -297,11 +301,22 @@ class DatasetReviewServiceTest {
             ),
         )
 
+        doReturn(
+            KeycloakUserInfo(
+                dummyUserEmail,
+                dummyUserId.toString(),
+                dummyUserFirstName,
+                dummyUserLastName,
+            ),
+        ).whenever(mockKeycloakUserService)
+            .getUser(any())
+
         val result = datasetReviewService.postDatasetReview(UUID.randomUUID())
 
         assertEquals(dummyCompanyId.toString(), result.companyId)
-        assertEquals(1, result.qaReporterCompanies.size)
-        assertEquals(reporterCompanyName, result.qaReporterCompanies[0].reportCompanyName)
+        assertEquals(1, result.qaReporters.size)
+        assertEquals(reporterCompanyName, result.qaReporters[0].reportCompanyName)
+        assertEquals(dummyUserName, result.qaReporters[0].reporterUserName)
         assertEquals(1, result.dataPoints.size)
         assertEquals(dummyDataPointType, result.dataPoints[dummyDataPointType]?.dataPointType)
         assertEquals(1, result.dataPoints[dummyDataPointType]?.qaReports?.size)

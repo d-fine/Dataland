@@ -54,7 +54,7 @@ data class DatasetReviewResponse(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_EXAMPLE,
     )
-    var qaReporterCompanies: List<QaReporter>,
+    var qaReporters: List<QaReporter>,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
     )

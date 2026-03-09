@@ -95,7 +95,7 @@ class QaReviewManagerTest {
             reviewState = DatasetReviewState.Pending,
             qaJudgeUserId = dummyUserId,
             qaJudgeUserName = dummyUserName,
-            qaReporterCompanies = emptyList(),
+            qaReporters = emptyList(),
             dataPoints = emptyMap(),
         )
 
