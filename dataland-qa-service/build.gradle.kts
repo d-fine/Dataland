@@ -213,6 +213,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/data-sourcing-service/src/main/kotlin"))
 }
 
 ktlint {
