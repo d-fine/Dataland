@@ -3429,7 +3429,7 @@
       "QaReportDataPointVerdict": {
         "type": "string",
         "description": "The verdict of a QA report regarding a data point.",
-        "example": "QaAccepted.",
+        "example": "QaAccepted",
         "enum": [
           "QaAccepted",
           "QaRejected",
