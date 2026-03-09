@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
+import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
 
 /**
  * A service class for managing QA report meta-information
@@ -101,40 +102,97 @@ class QaReviewManager
         ): List<QaReviewResponse> {
             val offset = (chunkIndex) * (chunkSize)
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            return qaReviewRepository
-                .getSortedAndFilteredQaReviewMetadataset(
-                    QaSearchFilter(
-                        dataTypes = dataTypes,
-                        reportingPeriods = reportingPeriods,
-                        companyIds = getCompanyIdsForCompanyName(companyName),
-                        companyName = companyName,
-                        qaStatuses = setOf(qaStatus),
-                    ),
-                    resultOffset = offset,
-                    resultLimit = chunkSize,
-                ).map { it.toQaReviewResponse(userIsAdmin) }
+            val qaReviewResponses =
+                qaReviewRepository
+                    .getSortedAndFilteredQaReviewMetadataset(
+                        QaSearchFilter(
+                            dataTypes = dataTypes,
+                            reportingPeriods = reportingPeriods,
+                            companyIds = getCompanyIdsForCompanyName(companyName),
+                            companyName = companyName,
+                            qaStatuses = setOf(qaStatus),
+                        ),
+                        resultOffset = offset,
+                        resultLimit = chunkSize,
+                    ).map { it.toQaReviewResponse(userIsAdmin) }
+            val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
+            return filterByPriority(qaReviewResponsesWithPriorities, priorities)
         }
 
-        private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> =
-            qaReviewResponses.map { qaReviewResponse ->
-                val dimension =
-                    BasicDataDimensions(
+        /**
+         * Filters the list of QaReviewResponses by the priority of associated data sourcing if priorities is not null.
+         * If priorities is null, the original list is returned.
+         *
+         * @param qaReviewResponses the list of QaReviewResponses to filter
+         * @param priorities the set of priorities to filter by, or null to not filter by priority
+         * @return the filtered list of QaReviewResponses
+         */
+        private fun filterByPriority(
+            qaReviewResponses: List<QaReviewResponse>,
+            priorities: Set<Int>?,
+        ): List<QaReviewResponse> {
+            if (priorities.isNullOrEmpty()) return qaReviewResponses
+            return qaReviewResponses.filter { priorities.contains(it.priorityOfAssociatedDataSourcing) }
+        }
+
+        /**
+         * This method adds the priority of associated data sourcing to the QaReviewResponse if it can be retrieved from the
+         * data sourcing service. If the data sourcing service returns a 404 error, it is assumed that there is no associated
+         * data sourcing and the priority is set to null. If any other error occurs when calling the data sourcing service,
+         * the exception is propagated.
+         *
+         * The data sourcing service might not return priorities in the same order as the requested dimensions. Therefore,
+         * we create a map from dimensions -> priority and then look up the priority for each response using its dimensions.
+         *
+         * @param qaReviewResponses the list of QaReviewResponses for which to add the priority of associated data sourcing
+         * @return the list of QaReviewResponses with the priority of associated data sourcing added
+         */
+        private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
+            val dsDimensions =
+                qaReviewResponses.map { qaReviewResponse ->
+                    DsBasicDataDimensions(
                         companyId = qaReviewResponse.companyId,
                         dataType = qaReviewResponse.framework,
                         reportingPeriod = qaReviewResponse.reportingPeriod,
                     )
-                val priorityOfAssociatedDataSourcing =
-                    try {
-                        dataSourcingControllerApi.getDataSourcingPriorities(dimension)
-                    } catch (clientException: ClientException) {
-                        if ((clientException.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
-                            null
-                        } else {
-                            throw clientException
-                        }
+                }
+            val prioritiesOfAssociatedDataSourcing =
+                try {
+                    dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
+                } catch (clientException: ClientException) {
+                    if ((clientException.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        null
+                    } else {
+                        throw clientException
                     }
-                qaReviewResponse.copy(priorityOfAssociatedDataSourcing = priorityOfAssociatedDataSourcing)
+                }
+
+            if (prioritiesOfAssociatedDataSourcing.isNullOrEmpty()) {
+                return qaReviewResponses.map { it.copy(priorityOfAssociatedDataSourcing = null) }
             }
+
+            val priorityMap: Map<BasicDataDimensions, Int?> =
+                prioritiesOfAssociatedDataSourcing.associate { item ->
+                    val key =
+                        BasicDataDimensions(
+                            companyId = item.companyId,
+                            dataType = item.dataType,
+                            reportingPeriod = item.reportingPeriod,
+                        )
+                    key to item.priority
+                }
+
+            return qaReviewResponses.map { response ->
+                val key =
+                    BasicDataDimensions(
+                        companyId = response.companyId,
+                        dataType = response.framework,
+                        reportingPeriod = response.reportingPeriod,
+                    )
+                val priority = priorityMap[key]
+                response.copy(priorityOfAssociatedDataSourcing = priority)
+            }
+        }
 
         /**
          * This method returns the number of unreviewed datasets for a specific set of filters
@@ -409,6 +467,7 @@ class QaReviewManager
                 numberQaReports = numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
+                priorityOfAssociatedDataSourcing = null,
             )
         }
     }
