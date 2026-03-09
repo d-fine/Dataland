@@ -143,12 +143,6 @@ describe('DatasetReviewOverview page details', () => {
     const keycloakPromise = Promise.resolve(keycloakMockWithReviewer as unknown as Keycloak);
     const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
-    if (options?.forceDatasetReviewError) {
-      apiClientProvider.apiClients.datasetReviewController.getDatasetReview = () => {
-        return Promise.reject(new Error('Test: dataset review load failed'));
-      };
-    }
-
     mount(DatasetReviewOverview, {
       props: {
         datasetReviewId,

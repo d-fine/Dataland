@@ -9,7 +9,7 @@ import {
   type DatasetReviewResponse,
 } from '@clients/qaservice';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import Keycloak from 'keycloak-js';
+import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 

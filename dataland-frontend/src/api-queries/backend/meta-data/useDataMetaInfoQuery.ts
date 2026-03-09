@@ -1,10 +1,18 @@
 // src/api-queries/backend/meta-data/useDataMetaInfoQuery.ts
 import { computed, type Ref } from 'vue';
-import { useQuery } from '@tanstack/vue-query';
+import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient';
 import { metaDataKeys } from '@/api-queries/backend/meta-data/metaDataKeys';
 
-export function useDataMetaInfoQuery(dataId: Ref<string | undefined>) {
+/**
+ * Hook to fetch metadata information for a given data identifier.
+ * @param {Ref<string | undefined>} dataId - Reactive reference containing the id of the
+ *   data whose metadata should be fetched. If `dataId.value` is false or not defined the query is
+ *   disabled and no request will be made.
+ * @returns {UseQueryReturnType<unknown, Error>} A Vue Query result object. The
+ *   `data` property (when available) contains the backend response's `data`.
+ */
+export function useDataMetaInfoQuery(dataId: Ref<string | undefined>): UseQueryReturnType<unknown, Error> {
   const apiClientProvider = useApiClient();
 
   return useQuery({

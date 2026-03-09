@@ -1,10 +1,17 @@
 import { computed, type Ref } from 'vue';
-import { useQuery } from '@tanstack/vue-query';
+import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import type { DatasetReviewResponse } from '@clients/qaservice';
 import { useApiClient } from '@/utils/useApiClient';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
 
-export function useDatasetReviewQuery(options: { datasetReviewId: Ref<string> }) {
+/**
+ * Fetch a dataset review by id.
+ *
+ * @param {{ datasetReviewId: Ref<string> }} options - Reactive ref with the dataset review id.
+ * @returns {UseQueryReturnType<DatasetReviewResponse | null, Error>} Vue Query result; `data` holds
+ *   the backend response (or null). The query is disabled when `datasetReviewId.value` is falsy.
+ */
+export function useDatasetReviewQuery(options: { datasetReviewId: Ref<string> }): UseQueryReturnType<unknown, Error> {
   const apiClientProvider = useApiClient();
 
   return useQuery<DatasetReviewResponse | null>({

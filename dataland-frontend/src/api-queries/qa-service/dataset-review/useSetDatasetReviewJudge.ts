@@ -1,9 +1,18 @@
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import type { Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
 
-export function useSetDatasetReviewJudge(datasetReviewId: Ref<string | undefined>) {
+/**
+ * Set the judge for a dataset review.
+ *
+ * @param {Ref<string | undefined>} datasetReviewId - Reactive ref with the dataset review id.
+ * @returns {UseMutationReturnType<unknown, Error, void, unknown>} Mutation result; on success it
+ * invalidates the corresponding dataset review detail query.
+ */
+export function useSetDatasetReviewJudge(
+  datasetReviewId: Ref<string | undefined>
+): UseMutationReturnType<unknown, Error, void, unknown> {
   const queryClient = useQueryClient();
   const apiClientProvider = useApiClient();
 
