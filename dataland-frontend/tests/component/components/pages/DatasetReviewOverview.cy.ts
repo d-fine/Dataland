@@ -223,74 +223,95 @@ describe('DatasetReviewOverview page details', () => {
     cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
   });
 
-  it('opens and confirms the assign-to-me modal', () => {
-    mountPage();
-    cy.wait('@getDatasetReview');
+  /**
+   * Mounts the DatasetReviewOverview page with the dataset review assigned to the current user.
+   * @returns {void} No return value;
+   */
+  function mountPageAssignedToCurrentUser(): void {
+    mountPage({
+      datasetReviewResponse: {
+        ...baseDatasetReview,
+        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
+        qaJudgeUserName: 'Current Reviewer',
+      },
+    });
+  }
 
-    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/reviewer' }, { statusCode: 200, body: {} }).as(
-      'setReviewer'
+  interface ButtonAndModalTestConfig {
+    mountAssignedToCurrentUser: boolean;
+    interceptUrl: string;
+    interceptAlias: string;
+    triggerButtonText: string;
+    modalTitle: string;
+    modalBody: string;
+    expectedUrlSuffix: string;
+    expectedStateParam?: string;
+  }
+
+  /**
+   * Executes a test flow: Clicking a button opens a modal, confirming the action, and checking the API call.
+   * @returns {void} No return value;
+   */
+  function testButtonAndModalFlow(config: ButtonAndModalTestConfig): void {
+    if (config.mountAssignedToCurrentUser) {
+      mountPageAssignedToCurrentUser();
+    } else {
+      mountPage();
+    }
+    cy.wait('@getDatasetReview');
+    cy.intercept({ method: 'PATCH', url: config.interceptUrl }, { statusCode: 200, body: {} }).as(
+      config.interceptAlias
     );
 
-    cy.contains('ASSIGN YOURSELF').click();
-    cy.contains('Assign Yourself').should('be.visible');
-    cy.contains('Are you sure you want to assign this dataset review to yourself?').should('be.visible');
+    cy.contains(config.triggerButtonText).click();
+    cy.contains(config.modalTitle).should('be.visible');
+    cy.contains(config.modalBody).should('be.visible');
     cy.contains('CONFIRM').click();
 
-    cy.wait('@setReviewer').then((interception) => {
+    cy.wait(`@${config.interceptAlias}`).then((interception) => {
       expect(interception.request.method).to.eq('PATCH');
-      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/reviewer`);
+      expect(interception.request.url).to.contain(config.expectedUrlSuffix);
+      if (config.expectedStateParam != null) {
+        expect(interception.request.url).to.contain(config.expectedStateParam);
+      }
+    });
+  }
+
+  it('opens and confirms the assign-to-me modal', () => {
+    testButtonAndModalFlow({
+      mountAssignedToCurrentUser: false,
+      interceptUrl: '**/qa/dataset-reviews/**/reviewer',
+      interceptAlias: 'setReviewer',
+      triggerButtonText: 'ASSIGN YOURSELF',
+      modalTitle: 'Assign Yourself',
+      modalBody: 'Are you sure you want to assign this dataset review to yourself?',
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/reviewer`,
     });
   });
 
   it('opens the reject dataset modal when assigned and performs correct API call', () => {
-    mountPage({
-      datasetReviewResponse: {
-        ...baseDatasetReview,
-        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
-        qaJudgeUserName: 'Current Reviewer',
-      },
-    });
-    cy.wait('@getDatasetReview');
-
-    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
-      'setReviewState'
-    );
-
-    cy.contains('REJECT DATASET').click();
-    cy.contains('Reject Dataset').should('be.visible');
-    cy.contains('Are you sure you want to reject this dataset review?').should('be.visible');
-    cy.contains('CONFIRM').click();
-
-    cy.wait('@setReviewState').then((interception) => {
-      expect(interception.request.method).to.eq('PATCH');
-      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`);
-      expect(interception.request.url).to.contain('datasetReviewState=Aborted');
+    testButtonAndModalFlow({
+      mountAssignedToCurrentUser: true,
+      interceptUrl: '**/qa/dataset-reviews/**/state**',
+      interceptAlias: 'rejectReview',
+      triggerButtonText: 'REJECT DATASET',
+      modalTitle: 'Reject Dataset',
+      modalBody: 'Are you sure you want to reject this dataset review?',
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`,
+      expectedStateParam: 'datasetReviewState=Aborted',
     });
   });
 
   it('opens the finish review modal when assigned and performs correct API call', () => {
-    mountPage({
-      datasetReviewResponse: {
-        ...baseDatasetReview,
-        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
-        qaJudgeUserName: 'Current Reviewer',
-      },
-    });
-    cy.wait('@getDatasetReview');
-
-    cy.intercept({ method: 'PATCH', url: '**/qa/dataset-reviews/**/state**' }, { statusCode: 200, body: {} }).as(
-      'finishReview'
-    );
-
-    cy.contains('FINISH REVIEW').click();
-    cy.contains('Finish Review').should('be.visible');
-    cy.contains('Are you sure you want to mark this dataset review as finished?').should('be.visible');
-    cy.contains('CONFIRM').click();
-
-    cy.wait('@finishReview').then((interception) => {
-      expect(interception.request.method).to.eq('PATCH');
-      expect(interception.request.url).to.contain(`/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`);
-      expect(interception.request.url).to.contain('datasetReviewState=Finished');
+    testButtonAndModalFlow({
+      mountAssignedToCurrentUser: true,
+      interceptUrl: '**/qa/dataset-reviews/**/state**',
+      interceptAlias: 'finishReview',
+      triggerButtonText: 'FINISH REVIEW',
+      modalTitle: 'Finish Review',
+      modalBody: 'Are you sure you want to mark this dataset review as finished?',
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`,
+      expectedStateParam: 'datasetReviewState=Finished',
     });
   });
 });

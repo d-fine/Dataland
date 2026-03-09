@@ -78,6 +78,7 @@ class DatasetReviewServiceTest {
     private val dummyCompanyId = UUID.randomUUID()
     private val dummyDatasetId = UUID.randomUUID()
     private val dummyReporterCompanyId = UUID.randomUUID()
+    private val dummyUserName = "Dummy User"
 
     private val dummyDatapointId = UUID.randomUUID().toString()
     private val reporterCompanyId = UUID.randomUUID().toString()
@@ -115,8 +116,8 @@ class DatasetReviewServiceTest {
             dataType = "sfdr",
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
-            reviewerUserName = "Dummy User",
-            qaReporters = mutableListOf(),
+            reviewerUserName = dummyUserName,
+            qaReporterCompanies = mutableListOf(),
             dataPoints = mutableListOf(dummyDataPointReviewDetails),
         )
 
@@ -169,7 +170,7 @@ class DatasetReviewServiceTest {
         assertEquals(datasetReviewEntity.datasetId.toString(), response.datasetId)
         assertEquals(datasetReviewEntity.companyId.toString(), response.companyId)
         assertEquals(dummyUserId.toString(), response.qaJudgeUserId)
-        assertEquals("Dummy User", response.qaJudgeUserName)
+        assertEquals(dummyUserName, response.qaJudgeUserName)
     }
 
     @Test
@@ -191,7 +192,7 @@ class DatasetReviewServiceTest {
         assertEquals(datasetReviewEntity.datasetId.toString(), result.datasetId)
         assertEquals(datasetReviewEntity.companyId.toString(), result.companyId)
         assertEquals(dummyUserId.toString(), result.qaJudgeUserId)
-        assertEquals("Dummy User", result.qaJudgeUserName)
+        assertEquals(dummyUserName, result.qaJudgeUserName)
     }
 
     @Test
