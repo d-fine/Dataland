@@ -118,6 +118,7 @@ import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMet
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
 import router from '@/router';
+import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 
 const props = defineProps<{
   datasetReviewId: string;
@@ -181,32 +182,7 @@ const isModalActionPending = computed(
 );
 const isActionSuccess = ref(false);
 
-interface ConfirmationModalState {
-  visible: boolean;
-  header: string;
-  message: string;
-  errorMessage?: string;
-  isLoading?: boolean;
-  onConfirm?: () => void;
-}
-const confirmationModal = ref<ConfirmationModalState>({
-  visible: false,
-  header: '',
-  message: '',
-  errorMessage: '',
-  isLoading: false,
-  onConfirm: () => {},
-});
-
-const openConfirmationModal = (header: string, message: string, onConfirm?: () => void): void => {
-  confirmationModal.value = {
-    visible: true,
-    header: header,
-    message: message,
-    errorMessage: '',
-    onConfirm,
-  };
-};
+const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 
 const assignToMe = (): void => {
   openConfirmationModal(

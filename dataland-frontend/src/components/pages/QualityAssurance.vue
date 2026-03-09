@@ -175,6 +175,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
+import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
@@ -198,33 +199,7 @@ const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
-interface ConfirmationModalState {
-  visible: boolean;
-  header: string;
-  message: string;
-  errorMessage?: string;
-  isLoading?: boolean;
-  onConfirm?: () => void;
-}
-
-const confirmationModal = ref<ConfirmationModalState>({
-  visible: false,
-  header: '',
-  message: '',
-  errorMessage: '',
-  isLoading: false,
-  onConfirm: () => {},
-});
-
-const openConfirmationModal = (header: string, message: string, onConfirm?: () => void): void => {
-  confirmationModal.value = {
-    visible: true,
-    header: header,
-    message: message,
-    errorMessage: '',
-    onConfirm,
-  };
-};
+const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 
 /**
  * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
