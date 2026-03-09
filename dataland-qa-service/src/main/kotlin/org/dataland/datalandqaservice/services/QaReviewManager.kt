@@ -95,44 +95,45 @@ class QaReviewManager
             dataTypes: Set<DataTypeEnum>?,
             reportingPeriods: Set<String>?,
             companyName: String?,
-            priorities: Set<Int>?,
             qaStatus: QaStatus = QaStatus.Pending,
             chunkSize: Int,
             chunkIndex: Int,
         ): List<QaReviewResponse> {
             val offset = (chunkIndex) * (chunkSize)
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            return qaReviewRepository
+                .getSortedAndFilteredQaReviewMetadataset(
+                    QaSearchFilter(
+                        dataTypes = dataTypes,
+                        reportingPeriods = reportingPeriods,
+                        companyIds = getCompanyIdsForCompanyName(companyName),
+                        companyName = companyName,
+                        qaStatuses = setOf(qaStatus),
+                    ),
+                    resultOffset = offset,
+                    resultLimit = chunkSize,
+                ).map { it.toQaReviewResponse(userIsAdmin) }
+        }
+
+        /**
+         * The method returns a list of unreviewed datasets with corresponding information for the specified company name,
+         * which are still pending review (qaStatus = Pending).
+         */
+        @Transactional
+        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             val qaReviewResponses =
                 qaReviewRepository
                     .getSortedAndFilteredQaReviewMetadataset(
                         QaSearchFilter(
-                            dataTypes = dataTypes,
-                            reportingPeriods = reportingPeriods,
+                            dataTypes = null,
+                            reportingPeriods = null,
                             companyIds = getCompanyIdsForCompanyName(companyName),
                             companyName = companyName,
-                            qaStatuses = setOf(qaStatus),
+                            qaStatuses = setOf(QaStatus.Pending),
                         ),
-                        resultOffset = offset,
-                        resultLimit = chunkSize,
                     ).map { it.toQaReviewResponse(userIsAdmin) }
-            val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
-            return filterByPriority(qaReviewResponsesWithPriorities, priorities)
-        }
-
-        /**
-         * Filters the list of QaReviewResponses by the priority of associated data sourcing if priorities is not null.
-         * If priorities is null, the original list is returned.
-         *
-         * @param qaReviewResponses the list of QaReviewResponses to filter
-         * @param priorities the set of priorities to filter by, or null to not filter by priority
-         * @return the filtered list of QaReviewResponses
-         */
-        private fun filterByPriority(
-            qaReviewResponses: List<QaReviewResponse>,
-            priorities: Set<Int>?,
-        ): List<QaReviewResponse> {
-            if (priorities.isNullOrEmpty()) return qaReviewResponses
-            return qaReviewResponses.filter { priorities.contains(it.priorityOfAssociatedDataSourcing) }
+            return addPrioritiesToResponse(qaReviewResponses)
         }
 
         /**
