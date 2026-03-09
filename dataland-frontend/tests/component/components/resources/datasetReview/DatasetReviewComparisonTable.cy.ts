@@ -8,6 +8,10 @@ import {
   QaReportDataPointVerdict,
   type DatasetReviewResponse,
 } from '@clients/qaservice';
+import { getMountingFunction } from '@ct/testUtils/Mount.ts';
+import Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { computed } from 'vue';
 
 describe('DatasetReviewComparisonTable component tests', () => {
   const dataId = 'test-data-id';
@@ -133,12 +137,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
       },
     }).as('getFrameworkData');
 
-    // @ts-ignore
-    cy.mountWithPlugins(DatasetReviewComparisonTable, {
-      keycloak: minimalKeycloakMock({}),
+    const mount = getMountingFunction();
+    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
+    const apiClientProvider = new ApiClientProvider(keycloakPromise);
+
+    mount(DatasetReviewComparisonTable, {
       props: {
-        framework: framework,
-        dataId: dataId,
+        framework,
+        dataId,
         searchQuery: options?.searchQuery ?? '',
         datasetReview: options?.datasetReview ?? baseDatasetReview,
         dataMetaInformation: mockMetaInformation,
@@ -146,6 +152,11 @@ describe('DatasetReviewComparisonTable component tests', () => {
       },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
+        provide: {
+          getKeycloakPromise: () => keycloakPromise,
+          authenticated: computed(() => true),
+          apiClientProvider: computed(() => apiClientProvider),
+        },
       },
     });
 

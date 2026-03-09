@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed, inject, watchEffect } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -291,13 +291,5 @@ async function setCurrentUserId(): Promise<void> {
 onMounted(async () => {
   console.log('Loaded Review Page for Dataset Review ID:', props.datasetReviewId);
   await setCurrentUserId();
-});
-watchEffect(() => {
-  console.log('DEBUG QA flags', {
-    isDatasetReviewPending: isDatasetReviewPending.value,
-    isDatasetReviewError: isDatasetReviewError.value,
-    isDataMetaInformationPending: isDataMetaInformationPending.value,
-    isInitialLoading: isInitialLoading.value,
-  });
 });
 </script>
