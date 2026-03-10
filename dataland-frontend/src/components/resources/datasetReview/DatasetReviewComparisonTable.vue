@@ -167,7 +167,6 @@
                     </div>
                   </td>
 
-                  <!-- Icon column (very simple first pass) -->
                   <td class="vertical-align-top border-right-1 surface-border">
                     <div class="cell-flex">
                       <span
@@ -467,7 +466,7 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
  *
  * @param {CellRow} cellRow - The cell row to inspect.
  * @param {AcceptedDataPointSource} source - The source column being inspected.
- * @param {string} [reporterUserId] - Optional reporter reporter id for QA lookups.
+ * @param {string} [reporterUserId] - Optional reporter id for QA lookups.
  * @returns {boolean} True when a rejected icon should be shown.
  */
 function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSource, reporterUserId?: string): boolean {

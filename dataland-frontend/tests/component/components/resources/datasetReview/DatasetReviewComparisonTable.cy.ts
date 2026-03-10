@@ -44,9 +44,33 @@ describe('DatasetReviewComparisonTable component tests', () => {
     },
   } as unknown as SfdrData;
 
-  const qaReporterCompanies: DatasetReviewResponse['qaReporterCompanies'] = [
-    { reporterCompanyId: 'qa-company-1', reportCompanyName: 'QA Company 1' },
-    { reporterCompanyId: 'qa-company-2', reportCompanyName: 'QA Company 2' },
+  const qaReporter1 = {
+    reporterUserId: 'reporter-user-id-1',
+    reporterUserName: 'reporter-user-1',
+    reporterEmailAddress: 'user1@gmail.com',
+    reporterCompanyId: 'reporter-company-id-1',
+  };
+
+  const qaReporter2 = {
+    reporterUserId: 'reporter-user-id-2',
+    reporterUserName: 'reporter-user-2',
+    reporterEmailAddress: 'user2@gmail.com',
+    reporterCompanyId: 'reporter-company-id-2',
+  };
+
+  const qaReporterUsers: DatasetReviewResponse['qaReporters'] = [
+    {
+      reporterUserId: qaReporter1.reporterUserId,
+      reporterUserName: qaReporter1.reporterUserName,
+      reporterEmailAddress: qaReporter1.reporterEmailAddress,
+      reporterCompanyId: qaReporter1.reporterCompanyId,
+    },
+    {
+      reporterUserId: qaReporter2.reporterUserId,
+      reporterUserName: qaReporter2.reporterUserName,
+      reporterEmailAddress: qaReporter2.reporterEmailAddress,
+      reporterCompanyId: qaReporter2.reporterCompanyId,
+    },
   ];
 
   const baseDatasetReview: DatasetReviewResponse = {
@@ -56,7 +80,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     dataType: framework as DatasetReviewResponse['dataType'],
     reportingPeriod: reportingPeriod,
     reviewState: DatasetReviewState.Pending,
-    qaReporterCompanies: qaReporterCompanies,
+    qaReporters: qaReporterUsers,
     dataPoints: {
       plainDateSfdrDataDate: {
         dataPointType: 'plainDateSfdrDataDate',
@@ -64,8 +88,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
           {
             qaReportId: 'qa-report-0',
             verdict: QaReportDataPointVerdict.QaAccepted,
-            reporterUserId: 'qa-user-1',
-            reporterCompanyId: 'qa-company-1',
+            reporterUserId: qaReporter1.reporterUserId,
+            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Original,
@@ -76,19 +100,19 @@ describe('DatasetReviewComparisonTable component tests', () => {
           {
             qaReportId: 'qa-report-1',
             verdict: QaReportDataPointVerdict.QaAccepted,
-            reporterUserId: 'qa-user-1',
-            reporterCompanyId: 'qa-company-1',
+            reporterUserId: qaReporter1.reporterUserId,
+            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
           {
             qaReportId: 'qa-report-2',
             verdict: QaReportDataPointVerdict.QaRejected,
             correctedData: JSON.stringify({ value: 'No Deviation' }),
-            reporterUserId: 'qa-user-2',
-            reporterCompanyId: 'qa-company-2',
+            reporterUserId: qaReporter2.reporterUserId,
+            reporterCompanyId: qaReporter2.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Qa,
-        companyIdOfAcceptedQaReport: 'qa-company-2',
+        reporterUserIdOfAcceptedQaReport: qaReporter2.reporterUserId,
       },
       extendedDateFiscalYearEnd: {
         dataPointType: 'extendedDateFiscalYearEnd',
@@ -96,15 +120,15 @@ describe('DatasetReviewComparisonTable component tests', () => {
           {
             qaReportId: 'qa-report-3',
             verdict: QaReportDataPointVerdict.QaAccepted,
-            reporterUserId: 'qa-user-1',
-            reporterCompanyId: 'qa-company-1',
+            reporterUserId: qaReporter1.reporterUserId,
+            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
           {
             qaReportId: 'qa-report-4',
             verdict: QaReportDataPointVerdict.QaRejected,
             correctedData: JSON.stringify({ value: '2023-11-30' }),
-            reporterUserId: 'qa-user-2',
-            reporterCompanyId: 'qa-company-2',
+            reporterUserId: qaReporter2.reporterUserId,
+            reporterCompanyId: qaReporter2.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Custom,
@@ -169,8 +193,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.get('table[aria-label="Dataset review comparison table"]').should('exist');
     cy.contains('th', 'Original Datapoint').should('be.visible');
     cy.contains('th', 'Corrected Datapoint').should('be.visible');
-    cy.contains('span', 'QA Company 1').should('be.visible');
-    cy.contains('span', 'QA Company 2').should('be.visible');
+    cy.contains('span', qaReporter1.reporterUserName).should('be.visible');
+    cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Datapoint').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
     cy.contains('span', 'Data Date').should('be.visible');
