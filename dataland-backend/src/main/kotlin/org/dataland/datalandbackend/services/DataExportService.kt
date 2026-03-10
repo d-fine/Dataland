@@ -40,6 +40,8 @@ open class DataExportService<T>(
         private const val COMPANY_NAME_POSITION = -3
         private const val COMPANY_LEI_POSITION = -2
         private const val REPORTING_PERIOD_POSITION = -1
+        private const val FIXED_COLUMN_WIDTH = 20 * 256
+        private const val EXCEL_FONT_HEIGHT: Short = 11
     }
 
     private val objectMapper = defaultObjectMapper
@@ -156,13 +158,22 @@ open class DataExportService<T>(
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data")
 
+        val defaultStyle = workbook.createCellStyle()
+        val font = workbook.createFont()
+        font.fontName = "Arial"
+        font.fontHeightInPoints = EXCEL_FONT_HEIGHT
+        defaultStyle.setFont(font)
+
         // Step 1: Get the ordered columns from csvSchema
         val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
 
         // Step 2: Write the header row
         val headerRow = sheet.createRow(HEADER_ROW_INDEX)
         orderedColumns.forEachIndexed { colIndex, columnName ->
-            headerRow.createCell(colIndex).setCellValue(columnName)
+            headerRow.createCell(colIndex).apply {
+                setCellValue(columnName)
+                cellStyle = defaultStyle
+            }
         }
 
         // Step 3: Write the data rows
@@ -170,11 +181,14 @@ open class DataExportService<T>(
             val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
             orderedColumns.forEachIndexed { colIndex, columnName ->
                 val cellValue = dataMap[columnName] ?: ""
-                row.createCell(colIndex).setCellValue(cellValue)
+                row.createCell(colIndex).apply {
+                    setCellValue(cellValue)
+                    cellStyle = defaultStyle
+                }
             }
         }
         orderedColumns.forEachIndexed { index, _ ->
-            sheet.autoSizeColumn(index)
+            sheet.setColumnWidth(index, FIXED_COLUMN_WIDTH)
         }
         workbook.write(outputStream)
         workbook.close()
