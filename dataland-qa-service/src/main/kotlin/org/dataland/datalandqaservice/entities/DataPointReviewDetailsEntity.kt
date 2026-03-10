@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -26,6 +27,7 @@ class DataPointReviewDetailsEntity(
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
     var companyIdOfAcceptedQaReport: UUID?,
+    @Column(columnDefinition = "TEXT", nullable = true)
     var customValue: String?,
     @JoinColumn(name = "dataset_review_id")
     @ManyToOne
