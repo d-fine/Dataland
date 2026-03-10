@@ -129,6 +129,7 @@
             </Column>
             <Column
               field="priorityOfAssociatedDataSourcing"
+              sortField="priorityWithNullHandling"
               header="PRIORITY"
               sortable
               filterMatchMode="between"
@@ -138,7 +139,10 @@
             >
               <template #body="slotProps">
                 <DatalandTag
-                  v-if="slotProps.data.priorityOfAssociatedDataSourcing !== undefined"
+                  v-if="
+                    slotProps.data.priorityOfAssociatedDataSourcing !== undefined &&
+                    slotProps.data.priorityOfAssociatedDataSourcing !== null
+                  "
                   class="dataland-tag"
                   :severity="dataSourcingPrioritySeverity(slotProps.data.priorityOfAssociatedDataSourcing!)"
                   :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
@@ -289,7 +293,10 @@ const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-type QaReviewRow = QaReviewResponse & { reviewStatus: string };
+type QaReviewRow = QaReviewResponse & {
+  reviewStatus: string;
+  priorityWithNullHandling: number;
+};
 const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
 const currentChunkIndex = ref(0);
@@ -303,6 +310,7 @@ const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
 const errorMessage = ref<string>('');
+const MAX_PRIORITY_VALUE = 10;
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -322,6 +330,10 @@ async function getQaDataForCurrentPage(): Promise<void> {
       response.data.map(async (row) => ({
         ...row,
         reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+        priorityWithNullHandling:
+          row.priorityOfAssociatedDataSourcing === null || row.priorityOfAssociatedDataSourcing === undefined
+            ? MAX_PRIORITY_VALUE + 1
+            : row.priorityOfAssociatedDataSourcing,
       }))
     );
     totalRecords.value = displayDataOfPage.value.length;
