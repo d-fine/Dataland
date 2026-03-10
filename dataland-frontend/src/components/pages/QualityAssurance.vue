@@ -64,15 +64,15 @@
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column field="framework" header="FRAMEWORK" filterMatchMode="Equals" :showFilterMenu="false">
+            <Column field="framework" header="FRAMEWORK" :filterMatchMode="FilterMatchMode.IN" :showFilterMenu="false">
               <template #body="slotProps">
                 {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
-              <template #filter>
+              <template #filter="{ filterModel, filterCallback }">
                 <FrameworkDataSearchDropdownFilter
-                  v-model="selectedFrameworks"
+                  v-model="filterModel.value"
                   class="search-filter"
-                  appendTo="self"
+                  appendTo="body"
                   input-class="w-full"
                   :available-items="availableFrameworks"
                   filter-name="Framework"
@@ -81,18 +81,24 @@
                   filter-placeholder="Search by Frameworks"
                   :max-selected-labels="1"
                   selected-items-label="{0} frameworks selected"
+                  @update:modelValue="filterCallback"
                 />
               </template>
             </Column>
-            <Column field="reportingPeriod" header="REPORTING PERIOD" filterMatchMode="DateIs" :showFilterMenu="false">
+            <Column
+              field="reportingPeriod"
+              header="REPORTING PERIOD"
+              :filterMatchMode="FilterMatchMode.IN"
+              :showFilterMenu="false"
+            >
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
               </template>
-              <template #filter>
+              <template #filter="{ filterModel, filterCallback }">
                 <DatePicker
                   class="w-full"
                   input-class="w-full"
-                  v-model="availableReportingPeriods"
+                  v-model="filterModel.value"
                   :updateModelType="'date'"
                   placeholder="Reporting Period"
                   :showIcon="true"
@@ -100,6 +106,7 @@
                   view="year"
                   dateFormat="yy"
                   selectionMode="multiple"
+                  @update:modelValue="filterCallback"
                 />
               </template>
             </Column>
@@ -111,7 +118,7 @@
             <Column
               field="priorityOfAssociatedDataSourcing"
               header="PRIORITY"
-              sortable
+              sortable:true
               filterMatchMode="between"
               :showFilterMenu="false"
             >
@@ -124,12 +131,34 @@
                 />
               </template>
               <template #filter="{ filterModel, filterCallback }">
-                <div class="flex flex-column gap-2 p-2" style="min-width: 12rem">
-                  <Slider v-model="filterModel.value" :min="0" :max="10" :step="1" range @slideend="filterCallback()" />
-                  <small>
-                    {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
-                  </small>
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 10rem">
+                  <Slider
+                    v-model="filterModel.value"
+                    :min="0"
+                    :max="10"
+                    :step="1"
+                    range
+                    @slideend="filterCallback()"
+                    style="flex: 1"
+                  />
+                  <PrimeButton
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    size="small"
+                    variant="text"
+                    class="p-datatable-filter-clear-button"
+                    @click="
+                      () => {
+                        filterModel.value = null;
+                        filterCallback();
+                      }
+                    "
+                  />
                 </div>
+
+                <small class="whitespace-nowrap">
+                  {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
+                </small>
               </template>
             </Column>
             <Column header="NUMBER OF QA REPORTS">
@@ -230,9 +259,13 @@ import { FilterMatchMode } from '@primevue/core/api';
 import Slider from 'primevue/slider';
 
 const filters = ref({
+  framework: {
+    value: null,
+    matchMode: FilterMatchMode.IN,
+  },
   reportingPeriod: {
     value: null,
-    matchMode: FilterMatchMode.DATE_IS,
+    matchMode: FilterMatchMode.IN,
   },
   priorityOfAssociatedDataSourcing: {
     value: null,
@@ -373,6 +406,10 @@ function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
   availableReportingPeriods.value = [];
   searchBarInput.value = '';
+
+  filters.value.framework.value = null;
+  filters.value.reportingPeriod.value = null;
+  filters.value.priorityOfAssociatedDataSourcing.value = null;
 }
 
 /**
@@ -428,22 +465,6 @@ async function getReviewStatus(
   }
   return 'Start Review';
 }
-
-watch(selectedFrameworks, () => {
-  currentChunkIndex.value = 0;
-  firstRowIndex.value = 0;
-  if (!waitingForData.value) {
-    void getQaDataForCurrentPage();
-  }
-});
-
-watch(availableReportingPeriods, () => {
-  currentChunkIndex.value = 0;
-  firstRowIndex.value = 0;
-  if (!waitingForData.value) {
-    void getQaDataForCurrentPage();
-  }
-});
 
 watch(searchBarInput, () => {
   const isValid = validateSearchBarInput();
