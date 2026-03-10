@@ -71,9 +71,9 @@ class DatasetReviewServiceTest {
             helper,
         )
 
-    private val mockDatasetReviewUtilities = MockDatasetReviewEntityForTest
-    private val datasetReviewEntity = mockDatasetReviewUtilities.createDummyDatasetReviewEntity()
-    private val dummyMetaData = mockDatasetReviewUtilities.createDummyMetaData()
+    private val mockDatasetReviewEntityForTest = MockDatasetReviewEntityForTest
+    private val datasetReviewEntity = mockDatasetReviewEntityForTest.createDummyDatasetReviewEntity()
+    private val dummyMetaData = mockDatasetReviewEntityForTest.createDummyMetaData()
 
     @BeforeEach
     fun setup() {
@@ -86,7 +86,7 @@ class DatasetReviewServiceTest {
 
         AuthenticationMock.mockSecurityContext(
             "data.admin@example.com",
-            mockDatasetReviewUtilities.dummyUserId.toString(),
+            mockDatasetReviewEntityForTest.dummyUserId.toString(),
             setOf(DatalandRealmRole.ROLE_ADMIN),
         )
 
@@ -108,7 +108,7 @@ class DatasetReviewServiceTest {
         source: AcceptedDataPointSource?,
         reporterUserId: String? = null,
         customValue: String? = null,
-        dataPointType: String = mockDatasetReviewUtilities.dummyDataPointType,
+        dataPointType: String = mockDatasetReviewEntityForTest.dummyDataPointType,
     ): DataPointReviewDetailsEntity {
         service.patchReviewDetails(
             UUID.randomUUID(),
@@ -128,8 +128,8 @@ class DatasetReviewServiceTest {
         assertEquals(entity.dataSetReviewId.toString(), response.dataSetReviewId)
         assertEquals(entity.datasetId.toString(), response.datasetId)
         assertEquals(entity.companyId.toString(), response.companyId)
-        assertEquals(mockDatasetReviewUtilities.dummyUserId.toString(), response.qaJudgeUserId)
-        assertEquals(mockDatasetReviewUtilities.dummyUserName, response.qaJudgeUserName)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), response.qaJudgeUserId)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserName, response.qaJudgeUserName)
     }
 
     @Test
@@ -138,7 +138,7 @@ class DatasetReviewServiceTest {
             .whenever(datasetReviewRepository)
             .findAllByDatasetId(any())
 
-        val result = service.getDatasetReviewsByDatasetId(mockDatasetReviewUtilities.dummyDatasetId)
+        val result = service.getDatasetReviewsByDatasetId(mockDatasetReviewEntityForTest.dummyDatasetId)
 
         assertEquals(1, result.size)
         assertMatches(datasetReviewEntity, result.first())
@@ -157,7 +157,7 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `getDatasetReviewById returns expected response`() {
-        val result = service.getDatasetReviewById(mockDatasetReviewUtilities.dummyDatasetId)
+        val result = service.getDatasetReviewById(mockDatasetReviewEntityForTest.dummyDatasetId)
         assertMatches(datasetReviewEntity, result)
     }
 
@@ -168,7 +168,7 @@ class DatasetReviewServiceTest {
             .findById(any())
 
         assertThrows<ResourceNotFoundApiException> {
-            service.getDatasetReviewById(mockDatasetReviewUtilities.dummyDatasetId)
+            service.getDatasetReviewById(mockDatasetReviewEntityForTest.dummyDatasetId)
         }
     }
 
@@ -177,8 +177,8 @@ class DatasetReviewServiceTest {
         service.setReviewer(UUID.randomUUID())
 
         val saved = captureSavedReview()
-        assertEquals(mockDatasetReviewUtilities.dummyUserId, saved.reviewerUserId)
-        assertEquals(mockDatasetReviewUtilities.dummyUserId.toString(), saved.reviewerUserName)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.reviewerUserId)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), saved.reviewerUserName)
     }
 
     @Test
@@ -217,19 +217,36 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `postDatasetReview builds entity with dataPoints and qaReporterCompanies correctly`() {
-        doReturn(mapOf(mockDatasetReviewUtilities.dummyDataPointType to mockDatasetReviewUtilities.dummyDatapointId))
+        stubsForPostDatasetReview()
+        val result = service.postDatasetReview(UUID.randomUUID())
+
+        assertEquals(mockDatasetReviewEntityForTest.dummyCompanyId.toString(), result.companyId)
+        assertEquals(1, result.qaReporters.size)
+        assertEquals(mockDatasetReviewEntityForTest.reporterCompanyName, result.qaReporters[0].reportCompanyName)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserName, result.qaReporters[0].reporterUserName)
+        assertEquals(1, result.dataPoints.size)
+        assertEquals(
+            mockDatasetReviewEntityForTest.dummyDataPointType,
+            result.dataPoints[mockDatasetReviewEntityForTest.dummyDataPointType]
+                ?.dataPointType,
+        )
+        assertEquals(1, result.dataPoints[mockDatasetReviewEntityForTest.dummyDataPointType]?.qaReports?.size)
+    }
+
+    private fun stubsForPostDatasetReview() {
+        doReturn(mapOf(mockDatasetReviewEntityForTest.dummyDataPointType to mockDatasetReviewEntityForTest.dummyDatapointId))
             .whenever(datasetReviewSupportService)
             .getContainedDataPoints(any())
 
         val qaReportEntity =
             DataPointQaReportEntity(
-                qaReportId = mockDatasetReviewUtilities.qaReportId,
-                dataPointId = mockDatasetReviewUtilities.dummyDatapointId,
+                qaReportId = mockDatasetReviewEntityForTest.qaReportId,
+                dataPointId = mockDatasetReviewEntityForTest.dummyDatapointId,
                 comment = "",
                 verdict = QaReportDataPointVerdict.QaAccepted,
                 correctedData = null,
-                dataPointType = mockDatasetReviewUtilities.dummyDataPointType,
-                reporterUserId = mockDatasetReviewUtilities.dummyUserId.toString(),
+                dataPointType = mockDatasetReviewEntityForTest.dummyDataPointType,
+                reporterUserId = mockDatasetReviewEntityForTest.dummyUserId.toString(),
                 uploadTime = 1000L,
                 active = true,
             )
@@ -242,7 +259,7 @@ class DatasetReviewServiceTest {
             .whenever(datasetReviewSupportService)
             .getDataMetaInfo(any())
 
-        doReturn(mapOf(mockDatasetReviewUtilities.reporterCompanyId to listOf("Role")))
+        doReturn(mapOf(mockDatasetReviewEntityForTest.reporterCompanyId to listOf("Role")))
             .whenever(inheritedRolesControllerApi)
             .getInheritedRoles(any())
 
@@ -250,11 +267,11 @@ class DatasetReviewServiceTest {
             .thenReturn(
                 listOf(
                     CompanyIdentifierValidationResult(
-                        identifier = mockDatasetReviewUtilities.reporterCompanyId,
+                        identifier = mockDatasetReviewEntityForTest.reporterCompanyId,
                         companyInformation =
                             BasicCompanyInformation(
-                                companyId = mockDatasetReviewUtilities.reporterCompanyId,
-                                companyName = mockDatasetReviewUtilities.reporterCompanyName,
+                                companyId = mockDatasetReviewEntityForTest.reporterCompanyId,
+                                companyName = mockDatasetReviewEntityForTest.reporterCompanyName,
                                 headquarters = "Berlin",
                                 countryCode = "DE",
                             ),
@@ -264,34 +281,20 @@ class DatasetReviewServiceTest {
 
         doReturn(
             KeycloakUserInfo(
-                mockDatasetReviewUtilities.dummyUserEmail,
-                mockDatasetReviewUtilities.dummyUserId.toString(),
-                mockDatasetReviewUtilities.dummyUserFirstName,
-                mockDatasetReviewUtilities.dummyUserLastName,
+                mockDatasetReviewEntityForTest.dummyUserEmail,
+                mockDatasetReviewEntityForTest.dummyUserId.toString(),
+                mockDatasetReviewEntityForTest.dummyUserFirstName,
+                mockDatasetReviewEntityForTest.dummyUserLastName,
             ),
         ).whenever(keycloakUserService)
             .getUser(any())
-
-        val result = service.postDatasetReview(UUID.randomUUID())
-
-        assertEquals(mockDatasetReviewUtilities.dummyCompanyId.toString(), result.companyId)
-        assertEquals(1, result.qaReporters.size)
-        assertEquals(mockDatasetReviewUtilities.reporterCompanyName, result.qaReporters[0].reportCompanyName)
-        assertEquals(mockDatasetReviewUtilities.dummyUserName, result.qaReporters[0].reporterUserName)
-        assertEquals(1, result.dataPoints.size)
-        assertEquals(
-            mockDatasetReviewUtilities.dummyDataPointType,
-            result.dataPoints[mockDatasetReviewUtilities.dummyDataPointType]
-                ?.dataPointType,
-        )
-        assertEquals(1, result.dataPoints[mockDatasetReviewUtilities.dummyDataPointType]?.qaReports?.size)
     }
 
     @Test
     fun `postDatasetReview throws ConflictApiException when dataset review status is pending`() {
         val dummyDatapointId = UUID.randomUUID().toString()
 
-        doReturn(mapOf(mockDatasetReviewUtilities.dummyDataPointType to dummyDatapointId))
+        doReturn(mapOf(mockDatasetReviewEntityForTest.dummyDataPointType to dummyDatapointId))
             .whenever(datasetReviewSupportService)
             .getContainedDataPoints(any())
 
@@ -318,12 +321,12 @@ class DatasetReviewServiceTest {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetReviewUtilities.dummyUserId.toString(),
+                reporterUserId = mockDatasetReviewEntityForTest.dummyUserId.toString(),
             )
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertEquals(mockDatasetReviewUtilities.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
-        assertEquals(mockDatasetReviewUtilities.dummyReporterCompanyId, saved.companyIdOfAcceptedQaReport)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
+        assertEquals(mockDatasetReviewEntityForTest.dummyReporterCompanyId, saved.companyIdOfAcceptedQaReport)
     }
 
     @Test
@@ -331,7 +334,7 @@ class DatasetReviewServiceTest {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Custom,
-                customValue = mockDatasetReviewUtilities.customValue,
+                customValue = mockDatasetReviewEntityForTest.customValue,
             )
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
@@ -344,7 +347,7 @@ class DatasetReviewServiceTest {
         assertThrows<ConflictApiException> {
             service.patchReviewDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewUtilities.dummyDataPointType,
+                mockDatasetReviewEntityForTest.dummyDataPointType,
                 ReviewDetailsPatch(AcceptedDataPointSource.Custom, null, null),
             )
         }
@@ -355,12 +358,12 @@ class DatasetReviewServiceTest {
         val saved =
             patchAndGetDataPoint(
                 source = null,
-                customValue = mockDatasetReviewUtilities.customValue,
+                customValue = mockDatasetReviewEntityForTest.customValue,
             )
 
-        assertEquals(mockDatasetReviewUtilities.customValue, saved.customValue)
+        assertEquals(mockDatasetReviewEntityForTest.customValue, saved.customValue)
         verify(datasetReviewSupportService)
-            .validateCustomDataPoint(mockDatasetReviewUtilities.customValue, mockDatasetReviewUtilities.dummyDataPointType)
+            .validateCustomDataPoint(mockDatasetReviewEntityForTest.customValue, mockDatasetReviewEntityForTest.dummyDataPointType)
     }
 
     @Test
@@ -368,7 +371,7 @@ class DatasetReviewServiceTest {
         assertThrows<InvalidInputApiException> {
             service.patchReviewDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewUtilities.dummyDataPointType,
+                mockDatasetReviewEntityForTest.dummyDataPointType,
                 ReviewDetailsPatch(AcceptedDataPointSource.Qa, null, null),
             )
         }
@@ -396,7 +399,7 @@ class DatasetReviewServiceTest {
         assertThrows<InsufficientRightsApiException> {
             service.patchReviewDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewUtilities.dummyDataPointType,
+                mockDatasetReviewEntityForTest.dummyDataPointType,
                 ReviewDetailsPatch(AcceptedDataPointSource.Original, null, null),
             )
         }
@@ -410,7 +413,7 @@ class DatasetReviewServiceTest {
         assertThrows<InvalidInputApiException> {
             service.patchReviewDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewUtilities.dummyDataPointType,
+                mockDatasetReviewEntityForTest.dummyDataPointType,
                 ReviewDetailsPatch(null, null, """{"value": 1}"""),
             )
         }
