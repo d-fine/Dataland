@@ -73,7 +73,7 @@
               </template>
               <template #filter="{ filterModel, filterCallback }">
                 <FrameworkDataSearchDropdownFilter
-                  v-model="filterModel.value"
+                  :modelValue="selectedFrameworks"
                   class="search-filter"
                   appendTo="body"
                   input-class="w-full"
@@ -84,7 +84,13 @@
                   filter-placeholder="Search by Frameworks"
                   :max-selected-labels="1"
                   selected-items-label="{0} frameworks selected"
-                  @update:modelValue="filterCallback"
+                  @update:modelValue="
+                    (items) => {
+                      selectedFrameworks = items;
+                      filterModel.value = items && items.length ? items.map((item) => item.frameworkDataType) : null;
+                      filterCallback();
+                    }
+                  "
                 />
               </template>
             </Column>
@@ -105,7 +111,7 @@
                   class="w-full"
                   input-class="w-full"
                   v-model="filterModel.value"
-                  :updateModelType="'date'"
+                  :updateModelType="'string'"
                   placeholder="Reporting Period"
                   :showIcon="true"
                   :manualInput="false"
@@ -262,10 +268,11 @@ import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import { type QaReviewResponse } from '@clients/qaservice';
 import { FilterMatchMode } from '@primevue/core/api';
 import Slider from 'primevue/slider';
+import { type DataTypeEnum } from '@clients/backend';
 
 const filters = ref({
   framework: {
-    value: null,
+    value: null as DataTypeEnum[] | null,
     matchMode: FilterMatchMode.IN,
   },
   reportingPeriod: {
