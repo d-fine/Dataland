@@ -24,6 +24,7 @@ class DataPointReviewDetailsEntity(
     @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
     val qaReports: MutableList<QaReportDataPointWithReporterDetailsEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
+    var reporterUserIdOfAcceptedQaReport: UUID?,
     var companyIdOfAcceptedQaReport: UUID?,
     var customValue: String?,
     @JoinColumn(name = "dataset_review_id")
@@ -39,6 +40,7 @@ class DataPointReviewDetailsEntity(
             dataPointId = dataPointId,
             qaReports = qaReports.map { it.toQaReportDataPointWithReporterDetails() },
             acceptedSource = acceptedSource,
+            reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
             companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport,
             customValue = customValue,
         )

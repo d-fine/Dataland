@@ -105,4 +105,9 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION =
         "The unique identifier of the company whose QA report was " +
             "accepted for this data point, if applicable."
+
+    const val ACCEPTED_REPORTER_USER_ID_DESCRIPTION =
+        "The unique identifier of the user whose QA report was " +
+            "accepted for this data point, if applicable."
+    const val ACCEPTED_REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 }

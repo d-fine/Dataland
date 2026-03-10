@@ -81,7 +81,7 @@ class DatasetReviewTest {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetReview = QaService.datasetReviewControllerApi.postDatasetReview(datasetId)
             val datasetReviewId = datasetReview.dataSetReviewId
-            val reporterCompanyId = datasetReview.qaReporterCompanies.first().reporterCompanyId
+            val reporterUserId = datasetReview.qaReporters.first().reporterUserId
 
             QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
@@ -97,7 +97,7 @@ class DatasetReviewTest {
                 datapointType2,
                 ReviewDetailsPatch(
                     AcceptedDataPointSource.Qa,
-                    reporterCompanyId.toString(),
+                    reporterUserId.toString(),
                     null,
                 ),
             )
@@ -115,6 +115,7 @@ class DatasetReviewTest {
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
 
         assertEquals(AcceptedDataPointSource.Original, datasetReview.dataPoints[datapointType1]?.acceptedSource)
+        assertNull(datasetReview.dataPoints[datapointType1]?.reporterUserIdOfAcceptedQaReport)
         assertNull(datasetReview.dataPoints[datapointType1]?.companyIdOfAcceptedQaReport)
 
         assertEquals(AcceptedDataPointSource.Qa, datasetReview.dataPoints[datapointType2]?.acceptedSource)

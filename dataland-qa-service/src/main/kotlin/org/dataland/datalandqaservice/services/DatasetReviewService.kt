@@ -138,11 +138,11 @@ class DatasetReviewService
             val dataPointIndex = datasetReviewHelper.getIndexOfDataPointByDataPointType(datasetReview, dataPointType)
             val modifiedPatch = ReviewDetailsPatch()
 
-            modifiedPatch.companyIdOfAcceptedQaReport =
-                datasetReviewHelper.getCompanyIdOfAcceptedQaReportIfValid(
+            modifiedPatch.reporterUserIdOfAcceptedQaReport =
+                datasetReviewHelper.getReporterUserIdOfAcceptedQaReportIfValid(
                     patch.acceptedSource,
                     datasetReview.dataPoints[dataPointIndex].qaReports.toList(),
-                    patch.companyIdOfAcceptedQaReport,
+                    patch.reporterUserIdOfAcceptedQaReport,
                 )
 
             modifiedPatch.customDataPoint =
@@ -160,8 +160,13 @@ class DatasetReviewService
                 )
 
             datasetReview.dataPoints[dataPointIndex].acceptedSource = modifiedPatch.acceptedSource
+            datasetReview.dataPoints[dataPointIndex].reporterUserIdOfAcceptedQaReport =
+                modifiedPatch.reporterUserIdOfAcceptedQaReport?.let { convertToUUID(it) }
             datasetReview.dataPoints[dataPointIndex].companyIdOfAcceptedQaReport =
-                modifiedPatch.companyIdOfAcceptedQaReport?.let { convertToUUID(it) }
+                datasetReviewHelper.getCompanyIdOfAcceptedQaReport(
+                    modifiedPatch.reporterUserIdOfAcceptedQaReport,
+                    datasetReview,
+                )
             datasetReview.dataPoints[dataPointIndex].customValue = modifiedPatch.customDataPoint
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()

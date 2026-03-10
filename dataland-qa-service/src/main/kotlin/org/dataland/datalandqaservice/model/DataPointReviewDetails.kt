@@ -37,6 +37,11 @@ data class DataPointReviewDetails(
     )
     val acceptedSource: AcceptedDataPointSource?,
     @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_REPORTER_USER_ID_EXAMPLE,
+    )
+    val reporterUserIdOfAcceptedQaReport: UUID?,
+    @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION,
     )

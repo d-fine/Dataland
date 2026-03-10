@@ -221,6 +221,7 @@ class DatasetReviewCreationUtils
                         dataPointId = convertToUUID(dataPointId),
                         qaReports = mutableListOf(),
                         acceptedSource = null,
+                        reporterUserIdOfAcceptedQaReport = null,
                         companyIdOfAcceptedQaReport = null,
                         customValue = null,
                     )

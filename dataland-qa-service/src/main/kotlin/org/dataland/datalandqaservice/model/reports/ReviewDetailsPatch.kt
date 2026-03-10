@@ -15,10 +15,10 @@ data class ReviewDetailsPatch(
     )
     var acceptedSource: AcceptedDataPointSource? = null,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_REPORTER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_REPORTER_USER_ID_EXAMPLE,
     )
-    var companyIdOfAcceptedQaReport: String? = null,
+    var reporterUserIdOfAcceptedQaReport: String? = null,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_EXAMPLE,

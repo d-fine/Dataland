@@ -21,6 +21,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
@@ -96,7 +97,7 @@ class DatasetReviewServiceTest {
                 qaReportId = UUID.randomUUID(),
                 verdict = QaReportDataPointVerdict.QaAccepted,
                 correctedData = null,
-                reporterUserId = UUID.randomUUID(),
+                reporterUserId = dummyUserId,
                 reporterCompanyId = dummyReporterCompanyId,
             ),
         )
@@ -107,6 +108,7 @@ class DatasetReviewServiceTest {
             dataPointId = UUID.randomUUID(),
             qaReports = dummyQaReports,
             acceptedSource = null,
+            reporterUserIdOfAcceptedQaReport = null,
             companyIdOfAcceptedQaReport = null,
             customValue = null,
             datasetReview = null,
@@ -121,7 +123,16 @@ class DatasetReviewServiceTest {
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
             reviewerUserName = dummyUserName,
-            qaReporters = mutableListOf(),
+            qaReporters =
+                mutableListOf(
+                    QaReporter(
+                        reporterUserId = dummyUserId,
+                        reporterUserName = dummyUserName,
+                        reporterEmailAddress = dummyUserEmail,
+                        reportCompanyName = reporterCompanyName,
+                        reporterCompanyId = dummyReporterCompanyId,
+                    ),
+                ),
             dataPoints = mutableListOf(dummyDataPointReviewDetails),
         )
 
@@ -340,7 +351,7 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails with Original sets acceptedSource and clears companyIdOfAcceptedQaReport`() {
+    fun `patchReviewDetails with Original sets acceptedSource and clears AcceptedQaReport source`() {
         datasetReviewService.patchReviewDetails(
             UUID.randomUUID(),
             dummyDataPointType,
@@ -356,25 +367,31 @@ class DatasetReviewServiceTest {
         val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
         assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
         assertNull(saved.companyIdOfAcceptedQaReport)
+        assertNull(saved.reporterUserIdOfAcceptedQaReport)
     }
 
     @Test
-    fun `patchReviewDetails with Qa sets acceptedSource and companyIdOfAcceptedQaReport`() {
+    fun `patchReviewDetails with Qa sets acceptedSource and AcceptedQaReport source`() {
         datasetReviewService.patchReviewDetails(
             UUID.randomUUID(),
             dummyDataPointType,
-            ReviewDetailsPatch(AcceptedDataPointSource.Qa, dummyReporterCompanyId.toString(), null),
+            ReviewDetailsPatch(
+                AcceptedDataPointSource.Qa,
+                dummyUserId.toString(),
+                null,
+            ),
         )
 
         val captor = argumentCaptor<DatasetReviewEntity>()
         verify(mockDatasetReviewRepository).save(captor.capture())
         val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
+        assertEquals(dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
         assertEquals(dummyReporterCompanyId, saved.companyIdOfAcceptedQaReport)
     }
 
     @Test
-    fun `patchReviewDetails with Custom sets acceptedSource and clears companyIdOfAcceptedQaReport`() {
+    fun `patchReviewDetails with Custom sets acceptedSource and clears AcceptedQaReport source`() {
         datasetReviewService.patchReviewDetails(
             UUID.randomUUID(),
             dummyDataPointType,
@@ -390,6 +407,7 @@ class DatasetReviewServiceTest {
         val saved = captor.firstValue.dataPoints.first { it.dataPointType == dummyDataPointType }
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
         assertNull(saved.companyIdOfAcceptedQaReport)
+        assertNull(saved.reporterUserIdOfAcceptedQaReport)
     }
 
     @Test
@@ -423,7 +441,7 @@ class DatasetReviewServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails with Qa without companyIdOfAcceptedQaReport throws InvalidInputApiException`() {
+    fun `patchReviewDetails with Qa without reporterUserIdOfAcceptedQaReport throws InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
             datasetReviewService.patchReviewDetails(
                 UUID.randomUUID(),

@@ -71,50 +71,50 @@ class DatasetReviewHelper
         }
 
         /**
-         * Validates and returns the accepted QA report company ID for a data point.
+         * Validates and returns the accepted QA report user ID for a data point.
          *
-         * Ensures the company ID is correctly provided or omitted based on the accepted source and checks for the existence
-         * of a QA report from the specified company.
+         * Ensures the user ID is correctly provided or omitted based on the accepted source and checks for the existence
+         * of a QA report from the specified user.
          * Throws an exception if validation fails for presence, absence, or existence conditions.
-         * Returns the valid company ID or null if not applicable.
+         * Returns the valid user ID or null if not applicable.
          *
          * @param acceptedDataPoint The selected data point source.
          * @param qaReports The list of QA reports for the data point.
-         * @param companyIdOfAcceptedQaReport The company ID to validate as accepted QA report source.
-         * @return The validated company ID or null.
-         * @throws InvalidInputApiException If the company ID is missing, incorrectly provided, or does not correspond to a valid QA report.
+         * @param reporterUserIdOfAcceptedQaReport The user ID to validate as accepted QA report source.
+         * @return The validated user ID or null.
+         * @throws InvalidInputApiException If the user ID is missing, incorrectly provided, or does not correspond to a valid QA report.
          */
         @Transactional
-        fun getCompanyIdOfAcceptedQaReportIfValid(
+        fun getReporterUserIdOfAcceptedQaReportIfValid(
             acceptedDataPoint: AcceptedDataPointSource?,
             qaReports: List<QaReportDataPointWithReporterDetailsEntity>,
-            companyIdOfAcceptedQaReport: String?,
+            reporterUserIdOfAcceptedQaReport: String?,
         ): String? {
             var errorSummary: String? = null
             var errorMessage: String? = null
 
             if (acceptedDataPoint == AcceptedDataPointSource.Qa) {
                 when {
-                    companyIdOfAcceptedQaReport == null -> {
-                        errorSummary = "Missing companyIdOfAcceptedQaReport."
-                        errorMessage = "companyIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
+                    reporterUserIdOfAcceptedQaReport == null -> {
+                        errorSummary = "Missing reporterUserIdOfAcceptedQaReport."
+                        errorMessage = "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
                     }
-                    qaReports.none { it.reporterCompanyId == convertToUUID(companyIdOfAcceptedQaReport) } -> {
+                    qaReports.none { it.reporterUserId == convertToUUID(reporterUserIdOfAcceptedQaReport) } -> {
                         errorSummary = "QA report not found."
-                        errorMessage = "No QA report from company with id $companyIdOfAcceptedQaReport found for this data point."
+                        errorMessage = "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point."
                     }
                 }
             } else {
-                if (companyIdOfAcceptedQaReport != null) {
+                if (reporterUserIdOfAcceptedQaReport != null) {
                     errorSummary = "Invalid input."
-                    errorMessage = "companyIdOfAcceptedQaReport must be null when acceptedSource is not Qa."
+                    errorMessage = "reporterUserIdOfAcceptedQaReport must be null when acceptedSource is not Qa."
                 }
             }
             if (errorSummary != null && errorMessage != null) {
                 throw InvalidInputApiException(errorSummary, errorMessage)
             }
 
-            return companyIdOfAcceptedQaReport
+            return reporterUserIdOfAcceptedQaReport
         }
 
         /**
@@ -136,6 +136,29 @@ class DatasetReviewHelper
                 return oldAcceptedDataPointSource
             }
             return newAcceptedDataPointSource
+        }
+
+        /**
+         * Resolves the reporter company ID for the accepted QA report user, if available.
+         *
+         * Looks up the matching QA reporter in the given dataset review and returns its company ID.
+         * Returns null when the accepted reporter user ID is null or no matching reporter exists.
+         *
+         * @param reporterUserIdOfAcceptedQaReport The user ID of the accepted QA report (string form), or null.
+         * @param datasetReview The dataset review containing QA reporters to search.
+         * @return The company ID of the accepted QA report reporter, or null if not found.
+         */
+        @Transactional
+        fun getCompanyIdOfAcceptedQaReport(
+            reporterUserIdOfAcceptedQaReport: String?,
+            datasetReview: DatasetReviewEntity,
+        ): UUID? {
+            if (reporterUserIdOfAcceptedQaReport == null) {
+                return null
+            }
+            val reporterUserId = convertToUUID(reporterUserIdOfAcceptedQaReport)
+            val qaReport = datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
+            return qaReport?.reporterCompanyId
         }
 
         /**

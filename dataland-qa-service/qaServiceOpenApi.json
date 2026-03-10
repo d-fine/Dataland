@@ -3323,6 +3323,12 @@
           "acceptedSource": {
             "$ref": "#/components/schemas/AcceptedDataPointSource"
           },
+          "reporterUserIdOfAcceptedQaReport": {
+            "type": "string",
+            "description": "The unique identifier of the user whose QA report was accepted for this data point, if applicable.",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
           "companyIdOfAcceptedQaReport": {
             "type": "string",
             "description": "The unique identifier of the company that contributed a QA report to this dataset.",
@@ -7507,10 +7513,10 @@
           "acceptedSource": {
             "$ref": "#/components/schemas/AcceptedDataPointSource"
           },
-          "companyIdOfAcceptedQaReport": {
+          "reporterUserIdOfAcceptedQaReport": {
             "type": "string",
-            "description": "The unique identifier of the company that contributed a QA report to this dataset.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+            "description": "The unique identifier of the user whose QA report was accepted for this data point, if applicable.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "customDataPoint": {
             "type": "string",
