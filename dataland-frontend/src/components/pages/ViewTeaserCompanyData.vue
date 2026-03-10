@@ -69,9 +69,9 @@ export default defineComponent({
           const listOfMetaDataInfo = (await metaDataControllerApi.getListOfDataMetaInfo(this.companyId)).data;
           if (listOfMetaDataInfo.length > 0) {
             const dataMetaInfoForDisplay = listOfMetaDataInfo[0];
-            this.dataId = dataMetaInfoForDisplay!.dataId;
-            this.dataType = dataMetaInfoForDisplay!.dataType;
-            this.reportingPeriod = dataMetaInfoForDisplay!.reportingPeriod;
+            this.dataId = dataMetaInfoForDisplay.dataId;
+            this.dataType = dataMetaInfoForDisplay.dataType;
+            this.reportingPeriod = dataMetaInfoForDisplay.reportingPeriod;
             this.isMetaInfoFetched = true;
           } else {
             this.isAtLeastOneDatasetExistingForTeaserCompany = false;

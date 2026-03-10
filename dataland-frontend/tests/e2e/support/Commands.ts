@@ -194,7 +194,7 @@ function closeCookieBannerIfItExists(): void {
   cy.get('body').then(($body) => {
     const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     if (allowCookies.length == 1) {
-      allowCookies[0]!.click();
+      allowCookies[0].click();
     }
   });
 }
