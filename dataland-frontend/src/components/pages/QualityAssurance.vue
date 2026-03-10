@@ -86,9 +86,12 @@
                     :max-selected-labels="1"
                     selected-items-label="{0} frameworks selected"
                     @update:modelValue="
-                      (items) => {
-                        selectedFrameworks = items;
-                        filterModel.value = items && items.length ? items.map((item) => item.frameworkDataType) : null;
+                      (items: Array<FrameworkSelectableItem> | null) => {
+                        selectedFrameworks = items ?? [];
+                        filterModel.value =
+                          items && items.length
+                            ? items.map((item: FrameworkSelectableItem) => item.frameworkDataType)
+                            : null;
                         filterCallback();
                       }
                     "
@@ -128,6 +131,7 @@
               <template #filter="{ filterModel, filterCallback }">
                 <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
                   <DatePicker
+                    data-test="reporting-period-filter"
                     class="w-full"
                     input-class="w-full"
                     v-model="filterModel.value"
@@ -180,6 +184,7 @@
                     slotProps.data.priorityOfAssociatedDataSourcing !== null
                   "
                   class="dataland-tag"
+                  data-test="priority-tag"
                   :severity="dataSourcingPrioritySeverity(slotProps.data.priorityOfAssociatedDataSourcing!)"
                   :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />

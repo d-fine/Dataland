@@ -2183,71 +2183,6 @@
         ]
       }
     },
-    "/pending-datasets": {
-      "get": {
-        "tags": [
-          "qa-controller"
-        ],
-        "summary": "Get relevant meta info on QA-pending datasets.",
-        "description": "Gets chronologically ordered list of relevant meta info on QA-pending datasets.",
-        "operationId": "getInfoOnPendingDatasets",
-        "parameters": [
-          {
-            "name": "companyName",
-            "in": "query",
-            "description": "The official name of the company.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "example": "ABC Corporation"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved metadata sets.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QaReviewResponse"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/numberOfUnreviewedDatasets": {
       "get": {
         "tags": [
@@ -2440,6 +2375,71 @@
               "format": "int32",
               "default": 0
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved metadata sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/datasets/queue": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get relevant meta info on datasets with QA status pending.",
+        "description": "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filteringfor company name or ID is possible",
+        "operationId": "getInfoOnPendingDatasets",
+        "parameters": [
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "The official name of the company.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ABC Corporation"
           }
         ],
         "responses": {
@@ -7746,7 +7746,9 @@
           },
           "priorityOfAssociatedDataSourcing": {
             "type": "integer",
-            "format": "int32"
+            "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
+            "format": "int32",
+            "example": 1
           }
         }
       },

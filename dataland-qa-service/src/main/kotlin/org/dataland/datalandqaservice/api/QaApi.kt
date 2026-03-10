@@ -110,7 +110,7 @@ interface QaApi {
     fun getInfoOnPendingDatasets(
         @RequestParam
         @Parameter(
-            name = "companyNameOrId",
+            name = "companyName",
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
             required = false,
