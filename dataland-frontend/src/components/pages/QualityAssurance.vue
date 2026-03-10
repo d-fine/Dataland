@@ -108,7 +108,13 @@
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column header="PRIORITY">
+            <Column
+              field="priorityOfAssociatedDataSourcing"
+              header="PRIORITY"
+              sortable
+              filterMatchMode="between"
+              :showFilterMenu="false"
+            >
               <template #body="slotProps">
                 <DatalandTag
                   v-if="slotProps.data.priorityOfAssociatedDataSourcing !== undefined"
@@ -116,6 +122,14 @@
                   :severity="dataSourcingPrioritySeverity(slotProps.data.priorityOfAssociatedDataSourcing!)"
                   :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />
+              </template>
+              <template #filter="{ filterModel, filterCallback }">
+                <div class="flex flex-column gap-2 p-2" style="min-width: 12rem">
+                  <Slider v-model="filterModel.value" :min="0" :max="10" :step="1" range @slideend="filterCallback()" />
+                  <small>
+                    {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
+                  </small>
+                </div>
               </template>
             </Column>
             <Column header="NUMBER OF QA REPORTS">
@@ -213,11 +227,16 @@ import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import { type QaReviewResponse } from '@clients/qaservice';
 import { FilterMatchMode } from '@primevue/core/api';
+import Slider from 'primevue/slider';
 
 const filters = ref({
   reportingPeriod: {
     value: null,
     matchMode: FilterMatchMode.DATE_IS,
+  },
+  priorityOfAssociatedDataSourcing: {
+    value: null,
+    matchMode: FilterMatchMode.BETWEEN,
   },
 });
 
