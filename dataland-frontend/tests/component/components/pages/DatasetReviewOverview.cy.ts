@@ -52,9 +52,19 @@ describe('DatasetReviewOverview page details', () => {
     reviewState: DatasetReviewState.Pending,
     qaJudgeUserId: 'assigned-reviewer-id',
     qaJudgeUserName: 'Assigned Reviewer',
-    qaReporterCompanies: [
-      { reporterCompanyId: 'reporter-company-1', reportCompanyName: 'Reporter Company 1' },
-      { reporterCompanyId: 'reporter-company-2', reportCompanyName: 'Reporter Company 2' },
+    qaReporters: [
+      {
+        reporterUserId: 'reporter-user-id-1',
+        reporterUserName: 'reporter-user-1',
+        reporterEmailAddress: 'user1@gmail.com',
+        reporterCompanyId: 'reporter-company-id-1',
+      },
+      {
+        reporterUserId: 'reporter-user-id-2',
+        reporterUserName: 'reporter-user-2',
+        reporterEmailAddress: 'user2@gmail.com',
+        reporterCompanyId: 'reporter-company-id-2',
+      },
     ],
     dataPoints: {
       datapoint1: {
