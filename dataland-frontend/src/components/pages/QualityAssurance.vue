@@ -18,33 +18,6 @@
           </Message>
         </div>
 
-        <DatePicker
-          class="search-filter"
-          input-class="w-full"
-          data-test="reportingPeriod"
-          v-model="availableReportingPeriods"
-          :updateModelType="'date'"
-          placeholder="Reporting Period"
-          :showIcon="true"
-          :manualInput="false"
-          view="year"
-          dateFormat="yy"
-          selectionMode="multiple"
-        />
-
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworks"
-          class="search-filter"
-          input-class="w-full"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          data-test="framework-picker"
-          id="framework-filter"
-          filter-placeholder="Search by Frameworks"
-          :max-selected-labels="1"
-          selected-items-label="{0} frameworks selected"
-        />
-
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
         <Message
           class="info-message"
@@ -74,9 +47,12 @@
             paginator
             paginator-position="top"
             :rows="datasetsPerPage"
-            lazy
+            sortMode="multiple"
+            removableSort
             :total-records="totalRecords"
             @page="onPage($event)"
+            filterDisplay="row"
+            v-model:filters="filters"
           >
             <Column header="DATA ID">
               <template #body="slotProps">
@@ -88,14 +64,43 @@
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column header="FRAMEWORK">
+            <Column field="framework" header="FRAMEWORK" filterMatchMode="Equals" :showFilterMenu="false">
               <template #body="slotProps">
                 {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
+              <template #filter>
+                <FrameworkDataSearchDropdownFilter
+                  v-model="selectedFrameworks"
+                  class="search-filter"
+                  appendTo="self"
+                  input-class="w-full"
+                  :available-items="availableFrameworks"
+                  filter-name="Framework"
+                  data-test="framework-picker"
+                  id="framework-filter2"
+                  filter-placeholder="Search by Frameworks"
+                  :max-selected-labels="1"
+                  selected-items-label="{0} frameworks selected"
+                />
+              </template>
             </Column>
-            <Column header="REPORTING PERIOD">
+            <Column field="reportingPeriod" header="REPORTING PERIOD" filterMatchMode="DateIs" :showFilterMenu="false">
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
+              </template>
+              <template #filter>
+                <DatePicker
+                  class="w-full"
+                  input-class="w-full"
+                  v-model="availableReportingPeriods"
+                  :updateModelType="'date'"
+                  placeholder="Reporting Period"
+                  :showIcon="true"
+                  :manualInput="false"
+                  view="year"
+                  dateFormat="yy"
+                  selectionMode="multiple"
+                />
               </template>
             </Column>
             <Column header="SUBMISSION DATE">
@@ -103,7 +108,7 @@
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column header="PRIORITY" class="w-2">
+            <Column header="PRIORITY">
               <template #body="slotProps">
                 <DatalandTag
                   v-if="getPriorityForRow(slotProps.data) !== undefined"
@@ -209,6 +214,14 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import { FilterMatchMode } from '@primevue/core/api';
+
+const filters = ref({
+  reportingPeriod: {
+    value: null,
+    matchMode: FilterMatchMode.DATE_IS,
+  },
+});
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
