@@ -57,6 +57,19 @@ function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[
   return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
 }
 
+/**
+ * Fetches only the response status code for a LKSG dataset fetch call.
+ * @param token keycloak access token
+ * @param dataId id of the dataset to fetch
+ * @returns HTTP status code
+ */
+async function fetchReuploadedDatasetStatus(token: string, dataId: string): Promise<number> {
+  const axiosGetResponse = await new LksgDataControllerApi(
+    new Configuration({ accessToken: token })
+  ).getCompanyAssociatedLksgData(dataId);
+  return axiosGetResponse.status;
+}
+
 describeIf(
   'As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed ' +
     'correctly in the frontend',
@@ -147,19 +160,6 @@ describeIf(
         new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
       return axiosGetResponse.data.data;
-    }
-
-    /**
-     * Fetches only the response status code for a LKSG dataset fetch call.
-     * @param token keycloak access token
-     * @param dataId id of the dataset to fetch
-     * @returns HTTP status code
-     */
-    async function fetchReuploadedDatasetStatus(token: string, dataId: string): Promise<number> {
-      const axiosGetResponse = await new LksgDataControllerApi(
-        new Configuration({ accessToken: token })
-      ).getCompanyAssociatedLksgData(dataId);
-      return axiosGetResponse.status;
     }
 
     /**

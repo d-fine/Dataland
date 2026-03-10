@@ -65,6 +65,20 @@ function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string,
   });
 }
 
+/**
+ * Creates a company and assigns ownership to the dataland admin user.
+ * @param token keycloak access token
+ * @returns token and created company id
+ */
+function createOwnedCompany(token: string): Promise<{ token: string; companyId: string }> {
+  const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
+  return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
+    return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+      return { token, companyId: storedCompany.companyId };
+    });
+  });
+}
+
 describeIf(
   'As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company',
   {
@@ -76,20 +90,6 @@ describeIf(
     before(() => {
       Cypress.env('excludeBypassQaIntercept', true);
     });
-
-    /**
-     * Creates a company and assigns ownership to the dataland admin user.
-     * @param token keycloak access token
-     * @returns token and created company id
-     */
-    function createOwnedCompany(token: string): Promise<{ token: string; companyId: string }> {
-      const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
-      return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
-        return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-          return { token, companyId: storedCompany.companyId };
-        });
-      });
-    }
 
     /**
      * Submits an initial dataset with uploaded reports and validates the frontend and backend hash consistency.
