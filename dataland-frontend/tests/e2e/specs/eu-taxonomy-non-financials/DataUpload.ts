@@ -78,6 +78,107 @@ describeIf(
     });
 
     /**
+     * Creates a company and assigns ownership to the dataland admin user.
+     * @param token keycloak access token
+     * @returns token and created company id
+     */
+    function createOwnedCompany(token: string): Promise<{ token: string; companyId: string }> {
+      const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
+      return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
+        return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+          return { token, companyId: storedCompany.companyId };
+        });
+      });
+    }
+
+    /**
+     * Submits an initial dataset with uploaded reports and validates the frontend and backend hash consistency.
+     * @param token keycloak access token
+     * @param companyId id of the company to upload data for
+     */
+    function submitInitialDatasetAndValidateHash(token: string, companyId: string): void {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
+      uploadReports.selectFile(TEST_PDF_FILE_NAME);
+      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+      uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
+      fillRequiredEutaxonomyNonFinancialsFields();
+      const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
+
+      cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
+      cy.get(`${revenueSelectorPrefix} input[name="value"]`).type('250700');
+      selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="currency"]`), 1);
+      selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="dataQuality"]`), 1);
+      selectItemFromDropdownByValue(
+        cy.get(`${revenueSelectorPrefix} div[data-test="dataReport"]`).eq(0),
+        TEST_PDF_FILE_NAME
+      );
+
+      const capexSelectorPrefix = 'div[name="capex"] div[data-test="totalAmount"]';
+
+      cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
+      cy.get(`${capexSelectorPrefix} input[name="value"]`).type('450700');
+      selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="currency"]`), 10);
+      selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="dataQuality"]`), 1);
+      selectItemFromDropdownByValue(
+        cy.get(`${capexSelectorPrefix} div[data-test="dataReport"]`).eq(0),
+        `${TEST_PDF_FILE_NAME}2`
+      );
+
+      cy.intercept({ method: 'POST', url: `**/api/data/**`, times: 1 }, (request) => {
+        const submittedEutaxonomyNonFinancialsData = assertDefined(
+          request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
+        ).data;
+        const submittedReferencedReports = assertDefined(
+          submittedEutaxonomyNonFinancialsData.general?.referencedReports
+        );
+        expect(`${TEST_PDF_FILE_NAME}2` in submittedReferencedReports).to.equal(true);
+        if (TEST_PDF_FILE_NAME in submittedReferencedReports) {
+          frontendDocumentHash = submittedReferencedReports[TEST_PDF_FILE_NAME].fileReference;
+        }
+      }).as('submitData');
+      cy.get('button[data-test="submitButton"]').click();
+      cy.wait(`@submitData`, { timeout: Cypress.env('long_timeout_in_ms') as number }).then(() => {
+        validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
+      });
+      cy.url().should('eq', getBaseUrl() + '/datasets');
+      cy.get('[data-test="datasets-table"]').should('be.visible');
+    }
+
+    /**
+     * Submits the edited dataset and returns metadata of the reuploaded dataset.
+     * @param companyId id of the company to edit data for
+     * @returns metadata of the newly reuploaded dataset
+     */
+    function submitEditedDatasetAndGetMeta(companyId: string): Cypress.Chainable<DataMetaInformation> {
+      goToEditFormAndValidateExistenceOfReports(companyId, true);
+      uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
+      cy.intercept({ method: 'POST', url: `**/api/data/**`, times: 1 }, (request) => {
+        const submittedEutaxonomyNonFinancialsData = assertDefined(
+          request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
+        ).data;
+        const submittedReports = assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports);
+        expect(TEST_PDF_FILE_NAME in submittedReports).to.equal(false);
+        expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
+      }).as('submitEditData');
+      cy.get('button[data-test="submitButton"]').click();
+      return cy
+        .wait(`@submitEditData`, { timeout: Cypress.env('long_timeout_in_ms') as number })
+        .then((interception) => {
+          expect(interception.response?.statusCode).to.eq(200);
+          cy.url().should('eq', getBaseUrl() + '/datasets');
+          cy.get('[data-test="datasets-table"]').should('be.visible');
+
+          goToEditFormAndValidateExistenceOfReports(companyId, false);
+          return assertDefined(interception.response?.body) as DataMetaInformation;
+        });
+    }
+
+    /**
      * This method verifies that there are no files with the same content uploaded twice
      * @param companyId the ID of the company whose data is to be edited
      * @param templateDataId the ID of the dataset to edit
@@ -121,92 +222,19 @@ describeIf(
       'Check if the file upload info remove button works as expected, make sure the file content hashes ' +
         'generated by frontend and backend are the same and that the exact document does not get reuploaded a second time',
       () => {
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
-          return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
-            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              cy.ensureLoggedIn(admin_name, admin_pw);
-
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`
-              );
-              uploadReports.selectFile(TEST_PDF_FILE_NAME);
-              uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-              uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
-              fillRequiredEutaxonomyNonFinancialsFields();
-              const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
-
-              cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
-                cy.get('#dataPointIsAvailableSwitch').click();
-              });
-              cy.get(`${revenueSelectorPrefix} input[name="value"]`).type('250700');
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="currency"]`), 1);
-              selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="dataQuality"]`), 1);
-              selectItemFromDropdownByValue(
-                cy.get(`${revenueSelectorPrefix} div[data-test="dataReport"]`).eq(0),
-                TEST_PDF_FILE_NAME
-              );
-
-              const capexSelectorPrefix = 'div[name="capex"] div[data-test="totalAmount"]';
-
-              cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
-                cy.get('#dataPointIsAvailableSwitch').click();
-              });
-              cy.get(`${capexSelectorPrefix} input[name="value"]`).type('450700');
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="currency"]`), 10);
-              selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[data-test="dataQuality"]`), 1);
-              selectItemFromDropdownByValue(
-                cy.get(`${capexSelectorPrefix} div[data-test="dataReport"]`).eq(0),
-                `${TEST_PDF_FILE_NAME}2`
-              );
-
-              cy.intercept({ method: 'POST', url: `**/api/data/**`, times: 1 }, (request) => {
-                const submittedEutaxonomyNonFinancialsData = assertDefined(
-                  request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-                ).data;
-                const submittedReferencedReports = assertDefined(
-                  submittedEutaxonomyNonFinancialsData.general?.referencedReports
-                );
-                expect(`${TEST_PDF_FILE_NAME}2` in submittedReferencedReports).to.equal(true);
-                if (TEST_PDF_FILE_NAME in submittedReferencedReports) {
-                  frontendDocumentHash = submittedReferencedReports[TEST_PDF_FILE_NAME].fileReference;
-                }
-              }).as('submitData');
-              cy.get('button[data-test="submitButton"]').click();
-              cy.wait(`@submitData`, { timeout: Cypress.env('long_timeout_in_ms') as number }).then(() => {
-                validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
-              });
-              cy.url().should('eq', getBaseUrl() + '/datasets');
-              cy.get('[data-test="datasets-table"]').should('be.visible');
-
-              goToEditFormAndValidateExistenceOfReports(storedCompany.companyId, true);
-              uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
-              cy.intercept({ method: 'POST', url: `**/api/data/**`, times: 1 }, (request) => {
-                const submittedEutaxonomyNonFinancialsData = assertDefined(
-                  request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-                ).data;
-                const submittedReports = assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports);
-                expect(TEST_PDF_FILE_NAME in submittedReports).to.equal(false);
-                expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
-              }).as('submitEditData');
-              cy.get('button[data-test="submitButton"]').click();
-              cy.wait(`@submitEditData`, { timeout: Cypress.env('long_timeout_in_ms') as number }).then(
-                (interception) => {
-                  expect(interception.response?.statusCode).to.eq(200);
-                  cy.url().should('eq', getBaseUrl() + '/datasets');
-                  cy.get('[data-test="datasets-table"]').should('be.visible');
-
-                  goToEditFormAndValidateExistenceOfReports(storedCompany.companyId, false);
-                  const metaDataOfReuploadedDataset = assertDefined(interception.response?.body) as DataMetaInformation;
-                  checkThatFilesWithSameContentDontGetReuploaded(
-                    storedCompany.companyId,
-                    metaDataOfReuploadedDataset.dataId
-                  );
-                }
-              );
+        getKeycloakToken(admin_name, admin_pw)
+          .then((token: string) => {
+            return createOwnedCompany(token);
+          })
+          .then(({ token, companyId }) => {
+            submitInitialDatasetAndValidateHash(token, companyId);
+            return submitEditedDatasetAndGetMeta(companyId).then((metaDataOfReuploadedDataset) => {
+              return { companyId, metaDataOfReuploadedDataset };
             });
+          })
+          .then(({ companyId, metaDataOfReuploadedDataset }) => {
+            checkThatFilesWithSameContentDontGetReuploaded(companyId, metaDataOfReuploadedDataset.dataId);
           });
-        });
       }
     );
   }
