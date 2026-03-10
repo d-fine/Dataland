@@ -72,27 +72,46 @@
                 {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
               <template #filter="{ filterModel, filterCallback }">
-                <FrameworkDataSearchDropdownFilter
-                  :modelValue="selectedFrameworks"
-                  class="search-filter"
-                  appendTo="body"
-                  input-class="w-full"
-                  :available-items="availableFrameworks"
-                  filter-name="Framework"
-                  data-test="framework-picker"
-                  id="framework-filter2"
-                  filter-placeholder="Search by Frameworks"
-                  :max-selected-labels="1"
-                  selected-items-label="{0} frameworks selected"
-                  @update:modelValue="
-                    (items) => {
-                      selectedFrameworks = items;
-                      filterModel.value = items && items.length ? items.map((item) => item.frameworkDataType) : null;
-                      filterCallback();
-                    }
-                  "
-                />
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
+                  <FrameworkDataSearchDropdownFilter
+                    :modelValue="selectedFrameworks"
+                    class="search-filter"
+                    appendTo="body"
+                    input-class="w-full"
+                    :available-items="availableFrameworks"
+                    filter-name="Framework"
+                    data-test="framework-picker"
+                    id="framework-filter2"
+                    filter-placeholder="Search by Frameworks"
+                    :max-selected-labels="1"
+                    selected-items-label="{0} frameworks selected"
+                    @update:modelValue="
+                      (items) => {
+                        selectedFrameworks = items;
+                        filterModel.value = items && items.length ? items.map((item) => item.frameworkDataType) : null;
+                        filterCallback();
+                      }
+                    "
+                  />
+
+                  <PrimeButton
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    size="small"
+                    variant="text"
+                    class="p-datatable-filter-clear-button"
+                    @click="
+                      () => {
+                        selectedFrameworks = [];
+                        filterModel.value = null;
+                        filterCallback();
+                      }
+                    "
+                  />
+                </div>
               </template>
+              <template #filterclear></template>
+              <template #filterapply></template>
             </Column>
             <Column
               field="reportingPeriod"
@@ -107,20 +126,37 @@
                 {{ slotProps.data.reportingPeriod }}
               </template>
               <template #filter="{ filterModel, filterCallback }">
-                <DatePicker
-                  class="w-full"
-                  input-class="w-full"
-                  v-model="filterModel.value"
-                  :updateModelType="'string'"
-                  placeholder="Reporting Period"
-                  :showIcon="true"
-                  :manualInput="false"
-                  view="year"
-                  dateFormat="yy"
-                  selectionMode="multiple"
-                  @update:modelValue="filterCallback"
-                />
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
+                  <DatePicker
+                    class="w-full"
+                    input-class="w-full"
+                    v-model="filterModel.value"
+                    :updateModelType="'string'"
+                    placeholder="Reporting Period"
+                    :showIcon="true"
+                    :manualInput="false"
+                    view="year"
+                    dateFormat="yy"
+                    selectionMode="multiple"
+                    @update:modelValue="filterCallback"
+                  />
+                  <PrimeButton
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    size="small"
+                    variant="text"
+                    class="p-datatable-filter-clear-button"
+                    @click="
+                      () => {
+                        filterModel.value = null;
+                        filterCallback();
+                      }
+                    "
+                  />
+                </div>
               </template>
+              <template #filterclear></template>
+              <template #filterapply></template>
             </Column>
             <Column header="SUBMISSION DATE" field="timestamp" sortable>
               <template #body="slotProps">
@@ -144,18 +180,26 @@
                   :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />
               </template>
+
               <template #filter="{ filterModel, filterCallback }">
                 <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
                   <div style="position: relative; flex: 1">
-                    <Slider v-model="filterModel.value" :min="1" :max="10" :step="1" range class="m-2" />
-                    <span class="text-xs" style="position: absolute; top: -1.5rem; left: 0; pointer-events: none">
+                    <Slider
+                      v-model="filterModel.value"
+                      :min="1"
+                      :max="10"
+                      :step="1"
+                      range
+                      class="m-2"
+                      @update:modelValue="filterCallback"
+                    />
+                    <span class="text-xs" style="position: absolute; top: -0.9rem; left: 0; pointer-events: none">
                       {{ filterModel.value && filterModel.value[0] != null ? filterModel.value[0] : 1 }}
                     </span>
-                    <span class="text-xs" style="position: absolute; top: -1.5rem; right: 0; pointer-events: none">
+                    <span class="text-xs" style="position: absolute; top: -0.9rem; right: 0; pointer-events: none">
                       {{ filterModel.value && filterModel.value[1] != null ? filterModel.value[1] : 10 }}
                     </span>
                   </div>
-
                   <PrimeButton
                     type="button"
                     icon="pi pi-filter-slash"
@@ -171,11 +215,8 @@
                   />
                 </div>
               </template>
-            </Column>
-            <Column header="NUMBER OF QA REPORTS">
-              <template #body="slotProps">
-                {{ slotProps.data.numberQaReports }}
-              </template>
+              <template #filterclear> </template>
+              <template #filterapply> </template>
             </Column>
             <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
               <template #body="slotProps">
