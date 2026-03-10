@@ -47,7 +47,7 @@
             removableSort
             :total-records="totalRecords"
             @page="onPage($event)"
-            filterDisplay="row"
+            filterDisplay="menu"
             v-model:filters="filters"
           >
             <Column header="DATA ID">
@@ -60,7 +60,14 @@
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column field="framework" header="FRAMEWORK" :filterMatchMode="FilterMatchMode.IN" :showFilterMenu="false">
+            <Column
+              field="framework"
+              header="FRAMEWORK"
+              :filterMatchMode="FilterMatchMode.IN"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
+            >
               <template #body="slotProps">
                 {{ humanizeStringOrNumber(slotProps.data.framework) }}
               </template>
@@ -85,7 +92,10 @@
               field="reportingPeriod"
               header="REPORTING PERIOD"
               :filterMatchMode="FilterMatchMode.IN"
-              :showFilterMenu="false"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
+              sortable
             >
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
@@ -106,7 +116,7 @@
                 />
               </template>
             </Column>
-            <Column header="SUBMISSION DATE">
+            <Column header="SUBMISSION DATE" field="timestamp" sortable>
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
@@ -114,9 +124,11 @@
             <Column
               field="priorityOfAssociatedDataSourcing"
               header="PRIORITY"
-              sortable:true
+              sortable
               filterMatchMode="between"
-              :showFilterMenu="false"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
             >
               <template #body="slotProps">
                 <DatalandTag
@@ -127,16 +139,17 @@
                 />
               </template>
               <template #filter="{ filterModel, filterCallback }">
-                <div class="flex align-items-center gap-2 px-2" style="min-width: 10rem">
-                  <Slider
-                    v-model="filterModel.value"
-                    :min="0"
-                    :max="10"
-                    :step="1"
-                    range
-                    @slideend="filterCallback()"
-                    style="flex: 1"
-                  />
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
+                  <div style="position: relative; flex: 1">
+                    <Slider v-model="filterModel.value" :min="1" :max="10" :step="1" range class="m-2" />
+                    <span class="text-xs" style="position: absolute; top: -1.5rem; left: 0; pointer-events: none">
+                      {{ filterModel.value && filterModel.value[0] != null ? filterModel.value[0] : 1 }}
+                    </span>
+                    <span class="text-xs" style="position: absolute; top: -1.5rem; right: 0; pointer-events: none">
+                      {{ filterModel.value && filterModel.value[1] != null ? filterModel.value[1] : 10 }}
+                    </span>
+                  </div>
+
                   <PrimeButton
                     type="button"
                     icon="pi pi-filter-slash"
@@ -151,10 +164,6 @@
                     "
                   />
                 </div>
-
-                <small class="whitespace-nowrap">
-                  {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
-                </small>
               </template>
             </Column>
             <Column header="NUMBER OF QA REPORTS">
