@@ -10,7 +10,12 @@ import { VsmeGenerator } from '@e2e/fixtures/frameworks/vsme/VsmeGenerator';
  */
 export function generateVsmePreparedFixtures(): Array<FixtureData<VsmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureToIdentifyItAsNoNullFields(generateVsmeFixtures(1, 0)[0]!));
+  const generatedFixtures = generateVsmeFixtures(1, 0);
+  const firstGeneratedFixture = generatedFixtures[0];
+  if (!firstGeneratedFixture) {
+    throw new Error('Expected at least one generated vsme fixture.');
+  }
+  preparedFixtures.push(manipulateFixtureToIdentifyItAsNoNullFields(firstGeneratedFixture));
   return preparedFixtures;
 }
 

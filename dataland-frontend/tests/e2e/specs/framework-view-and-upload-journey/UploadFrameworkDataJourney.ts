@@ -153,9 +153,13 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.contains(identifierDoesExistMessage).should('not.exist');
         cy.get('button[name="addCompany"]').click();
         cy.get('li[id="createCompanyForm-incomplete"]').should('exist');
-        cy.get("input[name='permId']").type(
-          assertDefined(storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId])[0]!
-        );
+        const existingPermId = assertDefined(
+          storedCompanyForManyDatasetsCompany.companyInformation.identifiers[IdentifierType.PermId]
+        )[0];
+        if (!existingPermId) {
+          throw new Error('Expected stored company to have at least one PermId identifier.');
+        }
+        cy.get("input[name='permId']").type(existingPermId);
         cy.contains(identifierDoesExistMessage).should('exist');
         cy.get("input[name='permId']").type('thisshouldnotexist');
         cy.contains(identifierDoesExistMessage).should('not.exist');

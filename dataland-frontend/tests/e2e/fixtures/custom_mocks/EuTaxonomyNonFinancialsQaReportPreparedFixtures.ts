@@ -17,15 +17,16 @@ export function generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(): Array
   FixtureData<EuTaxonomyNonFinancialsQaReport>
 > {
   const preparedFixtures = [];
-
-  preparedFixtures.push(
-    manipulateFixtureForEuTaxonomyNonFinancialsDatasetWithOneCorrection(
-      generateFixtureDataset<EuTaxonomyNonFinancialsQaReport>(
-        generateEuTaxonomyNonFinancialsQaReportWithCorrectionForAlignedActivities,
-        1
-      )[0]!
-    )
+  const generatedFixtures = generateFixtureDataset<EuTaxonomyNonFinancialsQaReport>(
+    generateEuTaxonomyNonFinancialsQaReportWithCorrectionForAlignedActivities,
+    1
   );
+  const firstGeneratedFixture = generatedFixtures[0];
+  if (!firstGeneratedFixture) {
+    throw new Error('Expected at least one generated eu-taxonomy non-financials qa report fixture.');
+  }
+
+  preparedFixtures.push(manipulateFixtureForEuTaxonomyNonFinancialsDatasetWithOneCorrection(firstGeneratedFixture));
   return preparedFixtures;
 }
 

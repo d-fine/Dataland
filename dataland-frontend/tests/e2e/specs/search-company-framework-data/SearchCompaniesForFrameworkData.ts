@@ -162,6 +162,9 @@ describeIf(
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
             const testCompany = basicCompanyInformation[1];
+            if (!testCompany) {
+              throw new Error('Expected at least two companies in framework data search results.');
+            }
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
@@ -189,11 +192,11 @@ describeIf(
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
             cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
-            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany!.companyName}`);
-            assertSearchedCompanyNameIsUnique(testCompany!);
-            const testCompanyName = testCompany!.companyName;
+            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
+            assertSearchedCompanyNameIsUnique(testCompany);
+            const testCompanyName = testCompany.companyName;
             cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
-            validateCompanyCockpitPage(testCompanyName, testCompany!.companyId);
+            validateCompanyCockpitPage(testCompanyName, testCompany.companyId);
           }
         );
       });

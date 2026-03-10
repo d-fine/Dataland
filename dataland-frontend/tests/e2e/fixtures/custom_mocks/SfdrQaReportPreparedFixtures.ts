@@ -18,12 +18,16 @@ import { SfdrGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
  */
 export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQaReport>> {
   const preparedFixtures = [];
-
-  preparedFixtures.push(
-    manipulateFixtureForSfdrDatasetWithOneCorrection(
-      generateFixtureDataset<SfdrQaReport>(generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand, 1)[0]!
-    )
+  const generatedFixtures = generateFixtureDataset<SfdrQaReport>(
+    generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand,
+    1
   );
+  const firstGeneratedFixture = generatedFixtures[0];
+  if (!firstGeneratedFixture) {
+    throw new Error('Expected at least one generated sfdr qa report fixture.');
+  }
+
+  preparedFixtures.push(manipulateFixtureForSfdrDatasetWithOneCorrection(firstGeneratedFixture));
   return preparedFixtures;
 }
 

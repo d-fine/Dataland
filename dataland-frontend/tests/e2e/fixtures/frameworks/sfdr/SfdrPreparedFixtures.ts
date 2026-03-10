@@ -9,13 +9,17 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
+  const generatedFixturesWithManyNulls = generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1);
+  const firstFixtureWithManyNulls = generatedFixturesWithManyNulls[0];
+  if (!firstFixtureWithManyNulls) {
+    throw new Error('Expected at least one generated sfdr fixture with many nulls.');
+  }
+
   return [
     manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()),
     generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()),
     generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()),
-    manipulateFixtureForSfdrDatasetWithLotsOfNulls(
-      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]!
-    ),
+    manipulateFixtureForSfdrDatasetWithLotsOfNulls(firstFixtureWithManyNulls),
     manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()),
     manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()),
     manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()),

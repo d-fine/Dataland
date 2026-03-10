@@ -26,7 +26,13 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
-  const preparedFixtures = manipulatorFunctions.map((func, index) => func(preparedFixturesBeforeManipulation[index]!));
+  const preparedFixtures = manipulatorFunctions.map((func, index) => {
+    const fixture = preparedFixturesBeforeManipulation[index];
+    if (!fixture) {
+      throw new Error('Expected prepared fixture to exist for each manipulator function.');
+    }
+    return func(fixture);
+  });
 
   preparedFixtures.push(
     generateFixtureForDate('2023-04-18'),
