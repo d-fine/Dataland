@@ -2183,6 +2183,71 @@
         ]
       }
     },
+    "/pending-datasets": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get relevant meta info on QA-pending datasets.",
+        "description": "Gets chronologically ordered list of relevant meta info on QA-pending datasets.",
+        "operationId": "getInfoOnPendingDatasets",
+        "parameters": [
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "The official name of the company.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ABC Corporation"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved metadata sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReviewResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/numberOfUnreviewedDatasets": {
       "get": {
         "tags": [
@@ -2203,6 +2268,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
@@ -2305,6 +2371,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
@@ -3495,6 +3562,7 @@
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
+              "integrationTesting",
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
@@ -7675,6 +7743,10 @@
             "type": "string",
             "description": "The unique user ID of the user who uploaded the review.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "priorityOfAssociatedDataSourcing": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -7729,6 +7801,7 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "integrationTesting",
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",

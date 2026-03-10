@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
+import org.dataland.dataSourcingService.openApiClient.model.DataSourcingPriorityByDataDimensions
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -51,6 +53,7 @@ class QaReviewManagerTest {
     private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
     private val mockDatasetReviewService: DatasetReviewService = mock<DatasetReviewService>()
+    private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -60,6 +63,7 @@ class QaReviewManagerTest {
     private val uploaderId = "dummyUploaderId"
     private val dummyUserName = "dummyUserName"
     private val dummyUserId = "dummyUserId"
+    private val framework = "dummyFramework"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
     private val mockCompanyInformation = mock<CompanyInformation> { on { companyName } doReturn "dummyCompanyName" }
@@ -77,7 +81,7 @@ class QaReviewManagerTest {
             dataId = dataId,
             companyId = companyId,
             companyName = "dummyCompanyName",
-            framework = "dummyFramework",
+            framework = framework,
             reportingPeriod = reportingPeriod,
             timestamp = 0L,
             qaStatus = QaStatus.Pending,
@@ -115,6 +119,7 @@ class QaReviewManagerTest {
             mockExceptionForwarder,
             mockDataPointQaReportManager,
             mockDatasetReviewService,
+            mockDataSourcingService,
         )
         qaReviewManager =
             QaReviewManager(
@@ -126,6 +131,7 @@ class QaReviewManagerTest {
                 mockExceptionForwarder,
                 mockDataPointQaReportManager,
                 mockDatasetReviewService,
+                mockDataSourcingService,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
@@ -262,5 +268,63 @@ class QaReviewManagerTest {
         Assertions.assertEquals(2L, responses.first().numberQaReports)
         Assertions.assertEquals(dummyUserId, responses.first().reviewerUserId)
         Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
+    }
+
+    @Test
+    fun `check that getInfoOnPendingDatasets fetches correct data sourcing priority`() {
+        val dummyPriorityByDataDimension =
+            DataSourcingPriorityByDataDimensions(
+                dataType = framework,
+                reportingPeriod = reportingPeriod,
+                companyId = companyId,
+                priority = 4,
+            )
+
+        doReturn(listOf(dummyPriorityByDataDimension))
+            .whenever(mockDataSourcingService)
+            .getDataSourcingPriorities(any())
+
+        doReturn(listOf(qaReviewEntity))
+            .whenever(mockQaReviewRepository)
+            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+
+        val responses =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = uploaderId,
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewManager.getInfoOnPendingDatasets(
+                    companyName = null,
+                )
+            }
+
+        Assertions.assertEquals(1, responses.size)
+        Assertions.assertEquals(4, responses.first().priorityOfAssociatedDataSourcing)
+    }
+
+    @Test
+    fun `check that getInfoOnPendingDatasets fetches data sourcing priority of null if it is not specified`() {
+        doReturn(null)
+            .whenever(mockDataSourcingService)
+            .getDataSourcingPriorities(any())
+
+        doReturn(listOf(qaReviewEntity))
+            .whenever(mockQaReviewRepository)
+            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+
+        val responses =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = uploaderId,
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewManager.getInfoOnPendingDatasets(
+                    companyName = null,
+                )
+            }
+
+        Assertions.assertEquals(1, responses.size)
+        Assertions.assertNull(responses.first().priorityOfAssociatedDataSourcing)
     }
 }

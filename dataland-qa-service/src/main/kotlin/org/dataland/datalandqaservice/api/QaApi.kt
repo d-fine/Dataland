@@ -67,14 +67,6 @@ interface QaApi {
             required = false,
         )
         companyName: String?,
-        @RequestParam
-        @Parameter(
-            name = "Priority",
-            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
-            required = false,
-        )
-        priorities: Set<Int>?,
         @RequestParam(defaultValue = "Pending")
         @Parameter(
             name = "qaStatus",
@@ -94,6 +86,34 @@ interface QaApi {
             required = false,
         )
         chunkIndex: Int,
+    ): ResponseEntity<List<QaReviewResponse>>
+
+    /**
+     * Gets meta info objects for each dataset.
+     */
+    @Operation(
+        summary = "Get relevant meta info on QA-pending datasets.",
+        description = "Gets chronologically ordered list of relevant meta info on QA-pending datasets.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved metadata sets."),
+        ],
+    )
+    @GetMapping(
+        value = ["/pending-datasets"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    fun getInfoOnPendingDatasets(
+        @RequestParam
+        @Parameter(
+            name = "companyName",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            required = false,
+        )
+        companyName: String?,
     ): ResponseEntity<List<QaReviewResponse>>
 
     /**
