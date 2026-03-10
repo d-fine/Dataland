@@ -31,14 +31,16 @@
               </th>
               <!-- dynamic Qa columns depending on number of report companies -->
               <th
-                v-for="company in datasetReview.qaReporterCompanies"
-                :key="company.reporterCompanyId"
+                v-for="qaReporter in datasetReview.qaReporters"
+                :key="qaReporter.reporterUserId"
                 class="horizontal-headers-size"
               >
                 <div class="p-column-header-content">
                   <span class="p-column-title">
                     Corrected Datapoint
-                    <span class="block text-xs font-normal">{{ company.reportCompanyName }}</span>
+                    <span class="block text-xs font-normal">{{
+                      qaReporter.reporterUserName || qaReporter.reporterEmailAddress || qaReporter.reporterUserId
+                    }}</span>
                   </span>
                 </div>
               </th>
@@ -135,30 +137,30 @@
 
                   <!-- Corrected datapoint -->
                   <td
-                    v-for="company in datasetReview.qaReporterCompanies"
-                    :key="company.reporterCompanyId"
+                    v-for="qaReporter in datasetReview.qaReporters"
+                    :key="qaReporter.reporterUserId"
                     class="vertical-align-top border-right-1 surface-border"
                   >
                     <div class="cell-flex">
                       <span
                         v-if="
-                          getQaReportFor(row, company.reporterCompanyId)?.verdict ===
+                          getQaReportFor(row, qaReporter.reporterUserId)?.verdict ===
                           QaReportDataPointVerdict.QaAccepted
                         "
                       >
                         QA Accepted
                       </span>
-                      <span v-else-if="getQaReportFor(row, company.reporterCompanyId)" class="main-text-color">
-                        {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, company.reporterCompanyId)) ?? '—' }}
+                      <span v-else-if="getQaReportFor(row, qaReporter.reporterUserId)" class="main-text-color">
+                        {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, qaReporter.reporterUserId)) ?? '—' }}
                       </span>
                       <span v-else class="main-text-color"> &ndash; </span>
                       <span
-                        v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, company.reporterCompanyId)"
+                        v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
                         class="pi pi-check text-green-500 accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
-                        v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Qa, company.reporterCompanyId)"
+                        v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
                         class="pi pi-times text-red-500 rejected-check"
                         aria-label="Rejected source"
                       ></span>
@@ -367,20 +369,20 @@ function getReviewInfo(dataPointTypeId?: string): DataPointReviewDetails | undef
 }
 
 /**
- * Returns the QA report for the given table row and reporter company ID.
+ * Returns the QA report for the given table row and reporter user ID.
  *
  * Looks up the datasetReview entry for the row's data point type and
- * returns the QaReportDataPointWithReporterDetails for the given reporter company if present.
+ * returns the QaReportDataPointWithReporterDetails for the given reporter if present.
  *
  * @param {CellRow} row - The table cell row describing the data point.
- * @param {string} reporterCompanyId - The reporter company identifier to match.
+ * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
  * @returns {QaReportDataPointWithReporterDetails | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(row: CellRow, reporterCompanyId: string): QaReportDataPointWithReporterDetails | undefined {
+function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPointWithReporterDetails | undefined {
   if (!row.dataPointTypeId) return undefined;
   const dpEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
   if (!dpEntry) return undefined;
-  return dpEntry.qaReports.find((r) => r.reporterCompanyId === reporterCompanyId);
+  return dpEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
 }
 
 /**
@@ -407,22 +409,22 @@ function getCorrectedDisplayFromQaReport(qaReport: QaReportDataPointWithReporter
  * Determines whether the given source is the accepted source for the provided row.
  *
  * For QA sources the function additionally checks that the accepted QA report
- * originates from the provided reporter company id so the correct QA column can
+ * originates from the provided reporter user id so the correct QA column can
  * be marked as accepted.
  *
  * @param {CellRow} row - The cell row to check.
  * @param {AcceptedDataPointSource} source - The source type to compare against.
- * @param {string} [reporterCompanyId] - Optional reporter company id (required for QA checks).
+ * @param {string} [reporterUserId] - Optional reporter user id (required for QA checks).
  * @returns {boolean} True when the provided source matches the accepted source for the row.
  */
-function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
+function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporterUserId?: string): boolean {
   const reviewInfo = getReviewInfo(row.dataPointTypeId);
   if (reviewInfo?.acceptedSource !== source) return false;
   if (source !== AcceptedDataPointSource.Qa) return true;
   return (
-    reporterCompanyId != null &&
-    reviewInfo.companyIdOfAcceptedQaReport != null &&
-    reviewInfo.companyIdOfAcceptedQaReport === reporterCompanyId
+    reporterUserId != null &&
+    reviewInfo.reporterUserIdOfAcceptedQaReport != null &&
+    reviewInfo.reporterUserIdOfAcceptedQaReport === reporterUserId
   );
 }
 
@@ -431,14 +433,14 @@ function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporte
  *
  * - Original: checks the computed original display object for an empty or missing value.
  * - Custom: checks the reviewInfo.customValue.
- * - Qa: checks the corrected QA value for the provided reporter company.
+ * - Qa: checks the corrected QA value for the provided reporter user id.
  *
  * @param {CellRow} cellRow - The cell row to inspect.
  * @param {AcceptedDataPointSource} source - The source type to test for emptiness.
- * @param {string} [reporterCompanyId] - Optional reporter company id for QA lookups.
+ * @param {string} [reporterUserId] - Optional reporter user id for QA lookups.
  * @returns {boolean} True when the cell for the given source is empty or missing.
  */
-function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterCompanyId?: string): boolean {
+function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterUserId?: string): boolean {
   if (source === AcceptedDataPointSource.Original) {
     const original = cellRow.originalDisplay;
     return original == null || original.displayValue == null || original.displayValue === '';
@@ -448,7 +450,7 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
     return reviewInfo?.customValue == null || reviewInfo.customValue === '';
   }
   if (source === AcceptedDataPointSource.Qa) {
-    const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
+    const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
     const corrected = getCorrectedDisplayFromQaReport(report);
     return corrected == null || corrected === '';
   }
@@ -465,20 +467,16 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
  *
  * @param {CellRow} cellRow - The cell row to inspect.
  * @param {AcceptedDataPointSource} source - The source column being inspected.
- * @param {string} [reporterCompanyId] - Optional reporter company id for QA lookups.
+ * @param {string} [reporterUserId] - Optional reporter reporter id for QA lookups.
  * @returns {boolean} True when a rejected icon should be shown.
  */
-function shouldShowRejectedIcon(
-  cellRow: CellRow,
-  source: AcceptedDataPointSource,
-  reporterCompanyId?: string
-): boolean {
+function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSource, reporterUserId?: string): boolean {
   const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
   if (reviewInfo?.acceptedSource == null) return false;
-  if (isCellEmpty(cellRow, source, reporterCompanyId)) return false;
-  if (isAcceptedSource(cellRow, source, reporterCompanyId)) return false;
+  if (isCellEmpty(cellRow, source, reporterUserId)) return false;
+  if (isAcceptedSource(cellRow, source, reporterUserId)) return false;
   if (source === AcceptedDataPointSource.Qa) {
-    const report = reporterCompanyId == null ? undefined : getQaReportFor(cellRow, reporterCompanyId);
+    const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
     if (!report) return false;
   }
   return true;
@@ -495,8 +493,8 @@ function shouldShowRejectedIcon(
 function isRowEmpty(cellRow: CellRow): boolean {
   const isOriginalEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Original);
   const isCustomEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Custom);
-  const isQaEmptyForAllCompanies = props.datasetReview.qaReporterCompanies.every((company) =>
-    isCellEmpty(cellRow, AcceptedDataPointSource.Qa, company.reporterCompanyId)
+  const isQaEmptyForAllCompanies = props.datasetReview.qaReporters.every((qaReporter) =>
+    isCellEmpty(cellRow, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)
   );
 
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllCompanies;
