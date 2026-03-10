@@ -12,20 +12,20 @@ import java.util.UUID
 
 object MockDatasetReviewEntityForTest {
     val dummyUserId = UUID.randomUUID()
-    val dummyDataPointType = "dummy-datapoint-type"
+    const val DUMMY_DATA_POINT_TYPE = "dummy-datapoint-type"
     val dummyCompanyId = UUID.randomUUID()
     val dummyDatasetId = UUID.randomUUID()
     val dummyReporterCompanyId = UUID.randomUUID()
-    val dummyUserName = "Dummy User"
-    val dummyUserEmail = "dummyUser@dataland.com"
-    val dummyUserFirstName = "Dummy"
-    val dummyUserLastName = "User"
+    const val DUMMY_USER_NAME = "Dummy User"
+    const val DUMMY_USER_EMAIL = "dummyUser@dataland.com"
+    const val DUMMY_USER_FIRST_NAME = "Dummy"
+    const val DUMMY_USER_LAST_NAME = "User"
 
     val dummyDatapointId = UUID.randomUUID().toString()
     val reporterCompanyId = UUID.randomUUID().toString()
-    val reporterCompanyName = "Reporter Company"
+    const val REPORTER_COMPANY_NAME = "Reporter Company"
     val qaReportId = UUID.randomUUID().toString()
-    val customValue = """{"value": 42}"""
+    const val CUSTOM_VALUE = """{"value": 42}"""
 
     fun createDummyDatasetReviewEntity(): DatasetReviewEntity =
         DatasetReviewEntity(
@@ -35,21 +35,21 @@ object MockDatasetReviewEntityForTest {
             dataType = "sfdr",
             reportingPeriod = "2026",
             reviewerUserId = dummyUserId,
-            reviewerUserName = dummyUserName,
+            reviewerUserName = DUMMY_USER_NAME,
             qaReporters =
                 mutableListOf(
                     QaReporter(
                         reporterUserId = dummyUserId,
-                        reporterUserName = dummyUserName,
-                        reporterEmailAddress = dummyUserEmail,
-                        reportCompanyName = reporterCompanyName,
+                        reporterUserName = DUMMY_USER_NAME,
+                        reporterEmailAddress = DUMMY_USER_EMAIL,
+                        reportCompanyName = REPORTER_COMPANY_NAME,
                         reporterCompanyId = dummyReporterCompanyId,
                     ),
                 ),
             dataPoints =
                 mutableListOf(
                     DataPointReviewDetailsEntity(
-                        dataPointType = dummyDataPointType,
+                        dataPointType = DUMMY_DATA_POINT_TYPE,
                         dataPointId = UUID.randomUUID(),
                         qaReports =
                             mutableListOf(
