@@ -19,13 +19,6 @@
         </div>
 
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
-        <Message
-          class="info-message"
-          variant="simple"
-          severity="secondary"
-          data-test="showingNumberOfUnreviewedDatasets"
-          >{{ numberOfUnreviewedDatasets }}</Message
-        >
       </div>
 
       <div class="col-12 text-left p-3">
@@ -46,7 +39,10 @@
             @row-click="onRowClicked($event)"
             paginator
             paginator-position="top"
-            :rows="datasetsPerPage"
+            :rows="10"
+            :rowsPerPageOptions="[5, 10, 20, 50]"
+            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+            currentPageReportTemplate="{first} to {last} of {totalRecords}"
             sortMode="multiple"
             removableSort
             :total-records="totalRecords"
@@ -250,7 +246,7 @@ import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import PrimeDialog from 'primevue/dialog';
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
@@ -476,19 +472,6 @@ watch(searchBarInput, () => {
     }
     timerId = setTimeout(() => getQaDataForCurrentPage(), debounceInMs);
   }
-});
-
-const numberOfUnreviewedDatasets = computed((): string => {
-  if (!waitingForData.value) {
-    if (totalRecords.value === 0) {
-      return 'No results for this search.';
-    } else {
-      const startIndex = currentChunkIndex.value * datasetsPerPage + 1;
-      const endIndex = Math.min(startIndex + datasetsPerPage - 1, totalRecords.value);
-      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
-    }
-  }
-  return '';
 });
 
 onMounted(() => {

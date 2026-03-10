@@ -193,11 +193,8 @@ describe('Component tests for the Quality Assurance page', () => {
     validateNoSearchIfNotEnoughChars();
 
     const companySearchTerm = 'Alpha';
-    cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [
-      reviewQueueElementAlpha,
-    ]).as('companyNameFilteredFetch');
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=${companySearchTerm}`, '1').as(
-      'companyNameFilteredNumberFetch'
+    cy.intercept(`**/qa/datasets/queue?companyName=${companySearchTerm}`, [reviewQueueElementAlpha]).as(
+      'companyNameFilteredFetch'
     );
 
     cy.get(`input[data-test="companyNameSearchbar"]`).type(companySearchTerm);

@@ -89,11 +89,13 @@ interface QaApi {
     ): ResponseEntity<List<QaReviewResponse>>
 
     /**
-     * Gets meta info objects for each dataset.
+     * Gets meta info objects for each pending dataset.
      */
     @Operation(
-        summary = "Get relevant meta info on QA-pending datasets.",
-        description = "Gets chronologically ordered list of relevant meta info on QA-pending datasets.",
+        summary = "Get relevant meta info on datasets with QA status pending.",
+        description =
+            "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filtering" +
+                "for company name or ID is possible",
     )
     @ApiResponses(
         value = [
@@ -101,14 +103,14 @@ interface QaApi {
         ],
     )
     @GetMapping(
-        value = ["/pending-datasets"],
+        value = ["/datasets/queue"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getInfoOnPendingDatasets(
         @RequestParam
         @Parameter(
-            name = "companyName",
+            name = "companyNameOrId",
             description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
             required = false,
