@@ -23,4 +23,16 @@ describe('Component test for the footer', () => {
       cy.get(`footer a[href='${link.href}']`).should('contain.text', link.text);
     }
   });
+
+  it('Toggles accordion on small screens', () => {
+    cy.viewport(375, 667);
+    //@ts-ignore
+    cy.mountWithPlugins(TheFooter, {});
+
+    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '+');
+    cy.get('.footer__column--techhub').click();
+    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '-');
+    cy.get('.footer__column--techhub').click();
+    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '+');
+  });
 });
