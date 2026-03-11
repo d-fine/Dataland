@@ -265,7 +265,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via email address substring works as expected.
    */
   function validateEmailAddressFilter(): void {
-    const mockResponse = [mockRequests[0]!, mockRequests[3]!];
+    const mockResponse = [mockRequests[0], mockRequests[3]];
     setupFilterIntercepts(mockResponse, (body) => body.emailAddress === mailSearchTerm);
 
     cy.get('input[data-test="email-searchbar"]').type(mailSearchTerm);
@@ -280,7 +280,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateFrameworkFilter(): void {
     const frameworkToFilterFor = DataTypeEnum.Sfdr;
-    const mockResponse = [mockRequests[1]!];
+    const mockResponse = [mockRequests[1]];
     setupFilterIntercepts(
       mockResponse,
       (body) => Array.isArray(body.dataTypes) && body.dataTypes.includes(frameworkToFilterFor)
@@ -295,7 +295,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via status dropdown filter works as expected for RequestState (Open).
    */
   function validateStatusFilterForRequestState(): void {
-    const mockResponse = [mockRequests[0]!];
+    const mockResponse = [mockRequests[0]];
     setupFilterIntercepts(
       mockResponse,
       (body) => Array.isArray(body.requestStates) && body.requestStates.includes(RequestState.Open)
@@ -310,7 +310,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via status dropdown filter works as expected for DataSourcingState (Validated).
    */
   function validateStatusFilterForDataSourcingState(): void {
-    const mockResponse = [mockRequests[1]!];
+    const mockResponse = [mockRequests[1]];
     setupFilterIntercepts(
       mockResponse,
       (body) =>
@@ -326,7 +326,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via priority dropdown filter works as expected.
    */
   function validateRequestPriorityFilter(): void {
-    const mockResponse = [mockRequests[0]!, mockRequests[1]!];
+    const mockResponse = [mockRequests[0], mockRequests[1]];
     setupFilterIntercepts(
       mockResponse,
       (body) => Array.isArray(body.requestPriorities) && body.requestPriorities.includes(RequestPriority.Urgent)
@@ -343,7 +343,7 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateReportingPeriodFilter(): void {
     const reportingPeriodToFilterFor = '2023';
-    const mockResponse = [mockRequests[3]!];
+    const mockResponse = [mockRequests[3]];
     setupFilterIntercepts(
       mockResponse,
       (body) => Array.isArray(body.reportingPeriods) && body.reportingPeriods.includes(reportingPeriodToFilterFor)
@@ -358,7 +358,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via admin comment substring works as expected.
    */
   function validateAdminCommentFilter(): void {
-    const mockResponse = [mockRequests[1]!, mockRequests[3]!];
+    const mockResponse = [mockRequests[1], mockRequests[3]];
     setupFilterIntercepts(mockResponse, (body) => body.adminComment === commentSearchTerm);
 
     cy.get('input[data-test="comment-searchbar"]').type(commentSearchTerm);
@@ -372,7 +372,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via company search string works as expected.
    */
   function validateCompanySearchStringFilter(): void {
-    const mockResponse = [mockRequests[0]!, mockRequests[1]!];
+    const mockResponse = [mockRequests[0], mockRequests[1]];
     setupFilterIntercepts(mockResponse, (body) => body.companySearchString === companyNameSearchTerm);
 
     cy.get('input[data-test="company-search-string-searchbar"]').type(companyNameSearchTerm);
@@ -388,7 +388,7 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateCombinedFilter(): void {
     validateEmailAddressFilter();
     const frameworkToFilterFor = DataTypeEnum.Sfdr;
-    const mockResponse = [mockRequests[3]!];
+    const mockResponse = [mockRequests[3]];
     setupFilterIntercepts(
       mockResponse,
       (body) =>
