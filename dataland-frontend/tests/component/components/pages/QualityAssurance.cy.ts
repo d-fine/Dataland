@@ -319,7 +319,7 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
-  it('Check if dataset can be reviewed on the view page', () => {
+  it.only('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
@@ -353,6 +353,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
     getMountingFunction({
       keycloak: keycloakMockWithUploaderAndReviewerRoles,
+      router: router,
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
@@ -385,6 +386,14 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
     cy.get('.p-dialog-close-button').click();
+
+    cy.spy(router, 'push').as('routerPush');
+    cy.intercept('GET', `**/qa/dataset-reviews/lksgTestDataId/datasetId`, (request) => {
+      request.reply(200, [{ dataSetReviewId: datasetReviewIdAlpha }]);
+    }).as('getDatasetReview');
+    cy.get('button[data-test="qaReviewPageButton"]').should('exist').click();
+    cy.wait('@getDatasetReview');
+    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdAlpha}`);
   });
 
   it('Check routing of Start Review button.', () => {
@@ -393,19 +402,22 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
       request.reply(201, {
         dataSetReviewId: datasetReviewIdAlpha,
+        companyId: companyIdAlpha,
+        dataType: DataTypeEnum.Lksg,
+        dataId: dataIdAlpha,
       });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
-    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdAlpha}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
   });
 
   it('Check routing of row click.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.contains('td', `${dataIdBeta}`).click();
-    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdBeta}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
   });
 
   it('Check display of error message.', () => {

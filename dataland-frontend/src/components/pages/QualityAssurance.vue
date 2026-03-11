@@ -280,15 +280,17 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
       }
     );
   } else {
-    void goToQaViewPage(qaDataObject.datasetReviewId);
+    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
   }
 }
 
 /**
  * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
  */
-function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
-  const qaUri = `/qa/review/${datasetReviewId}`;
+function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
+  // In the future, this is supposed to navigate to: `/qa/review/${datasetReviewId}`.
+  // However, until the dataset review overview page is fully implemented, we navigate to the dataset view page.
+  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
   return router.push(qaUri);
 }
 
@@ -301,10 +303,9 @@ async function confirmStartReview(): Promise<void> {
 
   try {
     const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(selectedDataId.value);
-    const datasetReviewId = response.data.dataSetReviewId;
 
     confirmationModal.value.visible = false;
-    await goToQaViewPage(datasetReviewId);
+    await goToQaViewPage(response.data.companyId, response.data.dataType, selectedDataId.value);
   } catch (error) {
     if (error instanceof AxiosError) {
       confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
