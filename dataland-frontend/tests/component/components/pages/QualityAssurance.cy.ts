@@ -19,6 +19,7 @@ import router from '@/router';
 /**
  * Picks a reporting period to filter for in the column filter of the datatable.
  * @param reportingPeriod
+ * @param closeFilterMenu
  */
 function chooseReportingPeriodFilter(reportingPeriod: string, closeFilterMenu = false): void {
   cy.contains('#qa-data-result th', 'REPORTING PERIOD')
@@ -38,16 +39,15 @@ function chooseReportingPeriodFilter(reportingPeriod: string, closeFilterMenu = 
 /**
  * Picks a framework to filter for in the column filter of the datatable.
  * @param framework
+ * @param closeFilterMenu
  */
 function chooseFrameworkFilter(framework: DataTypeEnum, closeFilterMenu = false): void {
   const frameworkHumanReadableName = humanizeStringOrNumber(framework);
-
   cy.contains('#qa-data-result th', 'FRAMEWORK')
     .should('be.visible')
     .within(() => {
       cy.get('button.p-datatable-column-filter-button').click();
     });
-
   cy.get('div[data-test="framework-picker"]').click().click();
   cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
   if (closeFilterMenu) {
@@ -166,6 +166,7 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdAlpha = crypto.randomUUID();
   const companyNameAlpha = 'Alpha Company AG';
   const companyIdAlpha = crypto.randomUUID();
+  const timestampAlpha = 1700000000000;
   const reviewQueueElementAlpha = buildReviewQueueElement({
     dataId: dataIdAlpha,
     companyName: companyNameAlpha,
@@ -173,6 +174,7 @@ describe('Component tests for the Quality Assurance page', () => {
     framework: DataTypeEnum.Lksg,
     reportingPeriod: '2022',
     priorityOfAssociatedDataSourcing: 3,
+    timestamp: timestampAlpha,
   });
 
   const dataIdBeta = crypto.randomUUID();
@@ -181,6 +183,7 @@ describe('Component tests for the Quality Assurance page', () => {
   const datasetReviewId = crypto.randomUUID();
   const reviewerUserName = 'Reviewer user name';
   const reviewerUserId = 'Revieweruserid';
+  const timestampBeta = 1711110000000;
   const reviewQueueElementBeta = buildReviewQueueElement({
     dataId: dataIdBeta,
     companyName: companyNameBeta,
@@ -190,6 +193,7 @@ describe('Component tests for the Quality Assurance page', () => {
     datasetReviewId: datasetReviewId,
     reviewerUserName: reviewerUserName,
     reviewerUserId: reviewerUserId,
+    timestamp: timestampBeta,
   });
 
   /**
@@ -203,6 +207,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
   /**
    * Mounts the qa assurance page with two mock elements in the review queue and asserts that they are shown.
+   * @param createQueueWithThreeElements
    */
   function mountQaAssurancePageWithMocks(createQueueWithThreeElements = false): void {
     const mockReviewQueue: Array<QaReviewResponse> = [reviewQueueElementAlpha, reviewQueueElementBeta];
@@ -329,6 +334,27 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('@priorityHeader').click();
     cy.get('@priorityHeader').should('have.attr', 'aria-sort', 'descending');
     getFirstElementInColumn('PRIORITY').should('have.text', '');
+  });
+
+  it('Check QA-overview-page for sorting by submission date', () => {
+    mountQaAssurancePageWithMocks();
+    cy.get('#qa-data-result thead tr').first().contains('th', 'SUBMISSION DATE').as('submissionDateHeader');
+
+    cy.get('@submissionDateHeader').click();
+    cy.get('@submissionDateHeader').should('have.attr', 'aria-sort', 'ascending');
+    getFirstElementInColumn('SUBMISSION DATE')
+      .parent('tr')
+      .within(() => {
+        cy.contains('td', `${dataIdAlpha}`);
+      });
+
+    cy.get('@submissionDateHeader').click();
+    cy.get('@submissionDateHeader').should('have.attr', 'aria-sort', 'descending');
+    getFirstElementInColumn('SUBMISSION DATE')
+      .parent('tr')
+      .within(() => {
+        cy.contains('td', `${dataIdBeta}`);
+      });
   });
 
   it('Check QA-overview-page for filtering by priority', () => {
