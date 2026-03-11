@@ -89,11 +89,11 @@ function validateUploadedDataset(
 /**
  * Sets up a company and uploads EU Taxonomy Financials (2026/73) framework data for testing.
  * @param testCompanyName The name of the test company to create.
- * @returns A Promise resolving to an object containing the token, storedCompany and dataMetaInformation.
+ * @returns A Promise resolving to an object containing the token, storedCompany and dataId.
  */
 function setupCompanyAndFramework(
   testCompanyName: string
-): Cypress.Chainable<{ token: string; storedCompany: StoredCompany; dataMetaInformation: DataMetaInformation }> {
+): Cypress.Chainable<{ token: string; storedCompany: StoredCompany; dataId: string }> {
   let token: string;
   let storedCompany: StoredCompany;
   return getToken()
@@ -106,7 +106,7 @@ function setupCompanyAndFramework(
       return assignOwnership(token, storedCompany.companyId);
     })
     .then(() => uploadFrameworkData(token, storedCompany.companyId))
-    .then((dataMetaInformation) => ({ token, storedCompany, dataMetaInformation }));
+    .then(({ dataId }) => ({ token, storedCompany, dataId }));
 }
 
 describeIf(
@@ -129,7 +129,7 @@ describeIf(
 
         cy.wrap(null, { timeout: Cypress.env('long_timeout_in_ms') as number })
           .then(() => setupCompanyAndFramework(testCompanyName))
-          .then(({ token, storedCompany, dataMetaInformation }) => {
+          .then(({ token, storedCompany, dataId }) => {
             cy.ensureLoggedIn(admin_name, admin_pw);
             cy.intercept({
               url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials202673}/**`,
@@ -142,9 +142,7 @@ describeIf(
               timeout: Cypress.env('medium_timeout_in_ms') as number,
             });
             cy.get('h1').should('contain', testCompanyName);
-            cy.wrap(null).then(() =>
-              validateUploadedDataset(token, dataMetaInformation.dataId, eutaxonomyFinancials202673FixtureData.t)
-            );
+            cy.wrap(null).then(() => validateUploadedDataset(token, dataId, eutaxonomyFinancials202673FixtureData.t));
           });
       }
     );
