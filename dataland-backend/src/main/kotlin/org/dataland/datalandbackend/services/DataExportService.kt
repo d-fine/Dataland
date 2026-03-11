@@ -41,7 +41,7 @@ open class DataExportService<T>(
         private const val COMPANY_LEI_POSITION = -2
         private const val REPORTING_PERIOD_POSITION = -1
         private const val FIXED_COLUMN_WIDTH = 30
-        private const val BUFFER = 8
+        private const val BUFFER = 15
         private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
         private const val EXCEL_FONT_HEIGHT: Short = 11
     }
@@ -150,12 +150,15 @@ open class DataExportService<T>(
     /**
      * Transform the data to an Excel file with human-readable headers.
      * @param csvDataWithReadableHeaders the data to be transformed (each entry in the list represents a row in the Excel file)
+     * @param csvSchema the CSV schema defining the column structure
      * @param outputStream the output stream to write the data to
+     * @param includeAliases if true, column widths are calculated based on character length of the header
      */
     fun transformDataToExcelWithReadableHeaders(
         csvDataWithReadableHeaders: List<Map<String, String?>>,
         csvSchema: CsvSchema,
         outputStream: OutputStream,
+        includeAliases: Boolean = false,
     ) {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data")
@@ -170,13 +173,13 @@ open class DataExportService<T>(
         val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
 
         // Step 2: Write the header row
-        val columnMaxLengths = mutableMapOf<Int, Int>()
+        val columnHeaderLengths = mutableMapOf<Int, Int>()
         val headerRow = sheet.createRow(HEADER_ROW_INDEX)
         orderedColumns.forEachIndexed { colIndex, columnName ->
             headerRow.createCell(colIndex).apply {
                 setCellValue(columnName)
                 cellStyle = defaultStyle
-                columnMaxLengths[colIndex] = columnName.length
+                columnHeaderLengths[colIndex] = columnName.length
             }
         }
 
@@ -192,13 +195,21 @@ open class DataExportService<T>(
             }
         }
 
-        // Step 4: Set column widths based on max character length including a buffer, with a maximum width cap
-        orderedColumns.forEachIndexed { index, _ ->
-            columnMaxLengths[index] = minOf(columnMaxLengths[index] ?: FIXED_COLUMN_WIDTH, FIXED_COLUMN_WIDTH)
-            val maxLength = columnMaxLengths[index] ?: FIXED_COLUMN_WIDTH
-            val columnWidth = (maxLength + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
-            sheet.setColumnWidth(index, columnWidth)
+        // Step 4: Set column widths based on configuration
+        if (includeAliases) {
+            orderedColumns.forEachIndexed { index, _ ->
+                val headerLength = columnHeaderLengths[index] ?: FIXED_COLUMN_WIDTH
+                val columnWidth =
+                    (headerLength + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+                sheet.setColumnWidth(index, columnWidth)
+            }
+        } else {
+            val columnWidth = (FIXED_COLUMN_WIDTH + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+            orderedColumns.forEachIndexed { index, _ ->
+                sheet.setColumnWidth(index, columnWidth)
+            }
         }
+
         workbook.write(outputStream)
         workbook.close()
     }
@@ -283,6 +294,7 @@ open class DataExportService<T>(
      * @param portfolioExportRows passed JSON objects to be exported
      * @param dataType the datatype specifying the framework
      * @param keepValueFieldsOnly if true, non value fields are stripped
+     * @param includeAliases if true, human-readable names are used if available
      * @return InputStreamResource byteStream for export.
      * Note that swagger only supports InputStreamResources and not OutputStreams
      */
@@ -304,6 +316,7 @@ open class DataExportService<T>(
             csvData,
             csvSchema,
             outputStream,
+            includeAliases,
         )
 
         return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
