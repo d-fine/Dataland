@@ -68,7 +68,7 @@
     "markdown-it": "14.1.1",
     "mocha": "11.7.5",
     "npm-check-updates": "19.6.3",
-    "otplib": "13.2.1",
+    "otplib": "13.3.0",
     "prettier": "3.8.1",
     "sass": "1.97.3",
     "ts-node": "10.9.2",
