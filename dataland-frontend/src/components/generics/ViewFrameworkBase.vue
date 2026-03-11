@@ -508,7 +508,7 @@ async function visitReviewPage(): Promise<void> {
       const dataId = props.singleDataMetaInfoToDisplay.dataId;
       const response = await apiClientProvider.apiClients.datasetReviewController.getDatasetReviewsByDatasetId(dataId);
       const datasetReviewId = response.data[0]?.dataSetReviewId;
-      void router.push(`/qa/review/${datasetReviewId}`);
+      await router.push(`/qa/review/${datasetReviewId}`);
     }
   } catch (error) {
     console.error('Error navigating to review page:', error);
