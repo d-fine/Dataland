@@ -14,8 +14,8 @@ export class UploadReports extends UploadDocuments {
         .find(`[data-test="publicationDate"] button`)
         .should('have.class', 'p-datepicker-dropdown')
         .click();
-      cy.get('.p-datepicker-header').find('button[aria-label="Previous Month"]').click();
-      cy.get('.p-datepicker-day-view').find(`span:contains("12")`).click();
+      cy.get('.p-datepicker-header').find('button[aria-label="Previous Month"]').first().click();
+      cy.get('.p-datepicker-day-view').find(`span:contains("12")`).first().click();
     });
   }
 
