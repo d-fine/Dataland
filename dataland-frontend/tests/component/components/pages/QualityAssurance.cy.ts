@@ -319,7 +319,11 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
-  it.only('Check if dataset can be reviewed on the view page', () => {
+  /**
+   * Mounts the view page with mock data and returns the meta info used for assertions.
+   * @returns the mock meta info used in the view page
+   */
+  function mountViewPageWithMocks(): DataMetaInformation {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
@@ -363,6 +367,12 @@ describe('Component tests for the Quality Assurance page', () => {
         },
       },
     })(ViewFrameworkData);
+
+    return mockDataMetaInfo;
+  }
+
+  it('Check if dataset can be reviewed on the view page', () => {
+    const mockDataMetaInfo = mountViewPageWithMocks();
     cy.get('h1').contains(LksgFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
@@ -386,9 +396,12 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.wait('@rejectDataset');
     cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
     cy.get('.p-dialog-close-button').click();
+  });
 
+  it('Check routing of QA review page button.', () => {
+    const mockDataMetaInfo = mountViewPageWithMocks();
     cy.spy(router, 'push').as('routerPush');
-    cy.intercept('GET', `**/qa/dataset-reviews/lksgTestDataId/datasetId`, (request) => {
+    cy.intercept('GET', `**/qa/dataset-reviews/${mockDataMetaInfo.dataId}/datasetId`, (request) => {
       request.reply(200, [{ dataSetReviewId: datasetReviewIdAlpha }]);
     }).as('getDatasetReview');
     cy.get('button[data-test="qaReviewPageButton"]').should('exist').click();
