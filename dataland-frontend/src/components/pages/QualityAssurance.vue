@@ -202,6 +202,7 @@
                   </span>
                   <div class="flex align-items-center gap-3">
                     <Slider
+                      data-test="priority-slider"
                       v-model="filterModel.value"
                       :min="1"
                       :max="10"

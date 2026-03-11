@@ -17,16 +17,6 @@ import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation
 import router from '@/router';
 
 /**
- * Picks a reporting period to filter for in the date-picker.
- * @param reportingPeriod to click on in the date-picker
- */
-function clickOnReportingPeriod(reportingPeriod: string): void {
-  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-  cy.contains('span', reportingPeriod).should('exist').click();
-  cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-}
-
-/**
  * Picks a reporting period to filter for in the column filter of the datatable.
  * @param reportingPeriod
  */
@@ -37,9 +27,44 @@ function chooseReportingPeriodFilter(reportingPeriod: string): void {
       cy.get('button.p-datatable-column-filter-button').click();
     });
   cy.get('[data-test="reporting-period-filter"]').click();
-  cy.get('.p-yearpicker-year, .p-datepicker-year').contains(reportingPeriod).click();
+  cy.get('.p-datepicker-year').contains(reportingPeriod).click();
 }
 
+/**
+ * Gets the first element in a column based on the column name.
+ * This is used to check the order of the elements in the column after sorting.
+ * @param columnName
+ */
+function getFirstElementInColumn(columnName: string): Cypress.Chainable<JQuery> {
+  return cy
+    .get('#qa-data-result thead tr')
+    .first()
+    .contains('th', columnName)
+    .then(($th) => {
+      const colIndex = $th.index();
+      return cy.get('#qa-data-result tbody tr').first().find('td').eq(colIndex);
+    });
+}
+
+/**
+ * Moves the slider handle in the priority filter by a certain value.
+ * This is used to set the priority filter to a certain value, since there is no input field to type the value into.
+ * @param side
+ * @param value
+ */
+function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
+  if (side === 'left') {
+    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').first().as('leftHandle');
+    for (let i = 0; i < value - 1; i++) {
+      cy.get('@leftHandle').focus().type('{rightarrow}');
+    }
+  } else {
+    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').last().as('rightHandle');
+    for (let i = 0; i < value - 1; i++) {
+      cy.get('@rightHandle').focus().type('{leftarrow}');
+    }
+  }
+}
 type ReviewQueueElementOptions = {
   dataId: string;
   companyName: string;
@@ -145,7 +170,6 @@ describe('Component tests for the Quality Assurance page', () => {
    * are there.
    */
   function assertUnfilteredDatatableState(): void {
-    cy.wait('@nonFilteredFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`);
   }
@@ -153,15 +177,25 @@ describe('Component tests for the Quality Assurance page', () => {
   /**
    * Mounts the qa assurance page with two mock elements in the review queue and asserts that they are shown.
    */
-  function mountQaAssurancePageWithMocks(): void {
-    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
+  function mountQaAssurancePageWithMocks(createQueueWithThreeElements = false): void {
+    const mockReviewQueue: Array<QaReviewResponse> = [reviewQueueElementAlpha, reviewQueueElementBeta];
+    if (createQueueWithThreeElements) {
+      const reviewQueueElementGamma = buildReviewQueueElement({
+        dataId: crypto.randomUUID(),
+        companyName: 'Gamma Company GmbH',
+        companyId: crypto.randomUUID(),
+        framework: DataTypeEnum.Sfdr,
+        reportingPeriod: '2024',
+        priorityOfAssociatedDataSourcing: 10,
+      });
+      mockReviewQueue.push(reviewQueueElementGamma);
+    }
     cy.intercept(`**/qa/datasets/queue`, mockReviewQueue).as('nonFilteredFetch');
-    cy.intercept('POST', `**/data-sourcing/priorities`, []);
 
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
-    cy.get('[data-test="qa-review-section"]');
-    cy.get('tbody tr').should('have.length', 2);
+    cy.get('[data-test="qa-review-section"]').should('exist');
+    cy.get('#qa-data-result tbody tr').should('have.length', mockReviewQueue.length);
   }
 
   /**
@@ -227,22 +261,21 @@ describe('Component tests for the Quality Assurance page', () => {
 
     const frameworkToFilterFor = DataTypeEnum.Lksg;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.Lksg}&chunkSize=10&chunkIndex=0`, [
-      reviewQueueElementAlpha,
-    ]).as('frameworkFilteredFetch');
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.Lksg}`, '1').as(
-      'frameworkFilteredNumberFetch'
-    );
 
-    cy.get(`div[data-test="framework-picker"]`).click();
+    cy.contains('#qa-data-result th', 'FRAMEWORK')
+      .should('be.visible')
+      .within(() => {
+        cy.get('button.p-datatable-column-filter-button').click();
+      });
+
+    cy.wait(`div[data-test="framework-picker"]`);
+    //cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
 
-    cy.wait('@frameworkFilteredFetch');
-    cy.wait('@frameworkFilteredNumberFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    cy.get('[data-test="reset-filters-button"]').click();
+    cy.get('button.p-datatable-filter-clear-button').click();
 
     assertUnfilteredDatatableState();
   });
@@ -251,73 +284,96 @@ describe('Component tests for the Quality Assurance page', () => {
     mountQaAssurancePageWithMocks();
     chooseReportingPeriodFilter('2022');
     cy.contains('td', `${dataIdAlpha}`);
-    cy.contains('td', `${dataIdBeta}`).should('not.exist'); //reset buttons noch testen
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    cy.get('button.p-datatable-filter-clear-button').click();
+    assertUnfilteredDatatableState();
+  });
+
+  it('Check QA-overview-page for sorting by reporting period', () => {
+    mountQaAssurancePageWithMocks();
+    cy.get('#qa-data-result thead tr').first().contains('th', 'REPORTING PERIOD').as('reportingPeriodHeader');
+
+    cy.get('@reportingPeriodHeader').click();
+    cy.get('@reportingPeriodHeader').should('have.attr', 'aria-sort', 'ascending');
+    getFirstElementInColumn('REPORTING PERIOD').should('contain', '2022');
+
+    cy.get('@reportingPeriodHeader').click();
+    cy.get('@reportingPeriodHeader').should('have.attr', 'aria-sort', 'descending');
+    getFirstElementInColumn('REPORTING PERIOD').should('contain', '2023');
+  });
+
+  it('Check QA-overview-page for sorting by priority', () => {
+    mountQaAssurancePageWithMocks(true);
+    cy.get('#qa-data-result thead tr').first().contains('th', 'PRIORITY').as('priorityHeader');
+
+    cy.get('@priorityHeader').click();
+    cy.get('@priorityHeader').should('have.attr', 'aria-sort', 'ascending');
+    getFirstElementInColumn('PRIORITY').should('contain', '3');
+
+    cy.get('@priorityHeader').click();
+    cy.get('@priorityHeader').should('have.attr', 'aria-sort', 'descending');
+    getFirstElementInColumn('PRIORITY').should('have.text', '');
+  });
+
+  it('Check QA-overview-page for filtering by priority', () => {
+    mountQaAssurancePageWithMocks(true);
+    cy.contains('#qa-data-result th', 'PRIORITY')
+      .should('be.visible')
+      .within(() => {
+        cy.get('button.p-datatable-column-filter-button').click();
+      });
+    moveSliderHandleByValue('left', 4);
+    cy.contains('td', `Gamma Company GmbH`);
+    cy.contains('td', `Alpha Company AG`).should('not.exist');
+    cy.contains('td', `Beta Corporate Ltd.`).should('not.exist');
+    moveSliderHandleByValue('right', 2);
+    cy.contains('td', `Gamma Company GmbH`).should('not.exist');
+    cy.contains('td', `Alpha Company AG`).should('not.exist');
+    cy.contains('td', `Beta Corporate Ltd.`).should('not.exist');
+    cy.get('button.p-datatable-filter-clear-button').click();
+    cy.get('#qa-data-result tbody tr').should('have.length', 3);
   });
 
   it('Check QA-overview-page for combined filtering', () => {
     mountQaAssurancePageWithMocks();
 
     const reportingPeriodToFilterFor = '2022';
-    cy.intercept(`**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=10&chunkIndex=0`, [
-      reviewQueueElementAlpha,
-    ]).as('repPeriodFilteredFetch');
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}`, '1').as(
-      'repPeriodFilteredNumberFetch'
-    );
-
-    clickOnReportingPeriod(reportingPeriodToFilterFor);
+    chooseReportingPeriodFilter(reportingPeriodToFilterFor);
 
     const companyNameSearchStringAlpha = 'Alpha';
-    cy.intercept(
-      `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringAlpha}&chunkSize=10&chunkIndex=0`,
-      [reviewQueueElementAlpha]
-    ).as('combinedFilterFetchAlpha');
-    cy.intercept(
-      `**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringAlpha}`,
-      '1'
-    ).as('combinedFilterNumberFetchAlpha');
+    cy.intercept(`**/qa/datasets/queue?companyName=${companyNameSearchStringAlpha}`, [reviewQueueElementAlpha]).as(
+      'combinedFilterFetchAlpha'
+    );
 
     cy.get(`input[data-test="companyNameSearchbar"]`).type(companyNameSearchStringAlpha);
 
     cy.wait('@combinedFilterFetchAlpha');
-    cy.wait('@combinedFilterNumberFetchAlpha');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     const companyNameSearchStringBeta = 'Beta';
-    cy.intercept(
-      `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringBeta}&chunkSize=10&chunkIndex=0`,
-      []
-    ).as('combinedFilterFetchBeta');
-    cy.intercept(
-      `**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringBeta}`,
-      '0'
-    ).as('combinedFilterNumberFetchBeta');
+    cy.intercept(`**/qa/datasets/queue?companyName=${companyNameSearchStringBeta}`, []).as('combinedFilterFetchBeta');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear().type(companyNameSearchStringBeta);
 
     cy.wait('@combinedFilterFetchBeta');
-    cy.wait('@combinedFilterNumberFetchBeta');
     cy.contains('td', `${dataIdAlpha}`).should('not.exist');
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     cy.contains('p', 'There are no unreviewed datasets on Dataland matching your filters');
-    cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('No results for this search.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
-    clickOnReportingPeriod(reportingPeriodToFilterFor);
-
+    cy.get('button.p-datatable-filter-clear-button').click();
     assertUnfilteredDatatableState();
   });
 
   it('Check that priority tags are displayed as expected', () => {
-    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
-    cy.intercept(`**/qa/datasets/queue`, mockReviewQueue).as('nonFilteredFetch');
-
+    mountQaAssurancePageWithMocks();
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
 
