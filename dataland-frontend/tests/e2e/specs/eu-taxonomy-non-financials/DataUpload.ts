@@ -174,7 +174,8 @@ describeIf(
           cy.get('[data-test="datasets-table"]').should('be.visible');
 
           goToEditFormAndValidateExistenceOfReports(companyId, false);
-          return assertDefined(interception.response?.body) as DataMetaInformation;
+          const dataMetaInformation = assertDefined(interception.response?.body) as DataMetaInformation;
+          return cy.then(() => dataMetaInformation);
         });
     }
 
