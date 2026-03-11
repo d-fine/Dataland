@@ -9,17 +9,13 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
-  const generatedFixturesWithManyNulls = generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1);
-  const firstFixtureWithManyNulls = generatedFixturesWithManyNulls[0];
-  if (!firstFixtureWithManyNulls) {
-    throw new Error('Expected at least one generated sfdr fixture with many nulls.');
-  }
-
   return [
     manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()),
     generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()),
     generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()),
-    manipulateFixtureForSfdrDatasetWithLotsOfNulls(firstFixtureWithManyNulls),
+    manipulateFixtureForSfdrDatasetWithLotsOfNulls(
+      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
+    ),
     manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()),
     manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()),
     manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()),
@@ -40,7 +36,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @returns One SFDR fixture data set without null entries in the data
  */
 function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
-  return generateSfdrFixtures(1, 0)[0]!;
+  return generateSfdrFixtures(1, 0)[0];
 }
 
 /**
@@ -247,7 +243,7 @@ function generateFixtureOfTwoCompaniesWithSubsidiaryRelationship(
   input_parent: FixtureData<SfdrData>,
   input_child: FixtureData<SfdrData>
 ): Array<FixtureData<SfdrData>> {
-  input_child.companyInformation.parentCompanyLei = input_parent.companyInformation.identifiers[IdentifierType.Lei]![0];
+  input_child.companyInformation.parentCompanyLei = input_parent.companyInformation.identifiers[IdentifierType.Lei][0];
   input_child.companyInformation.companyName = 'test company with parent lei and existing parent';
   input_parent.companyInformation.companyName = 'test company with lei and existing child';
   return [input_parent, input_child];

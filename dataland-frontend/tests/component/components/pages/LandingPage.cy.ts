@@ -121,8 +121,8 @@ function validateStruggleSection(): void {
   ];
 
   cy.get('.struggle__cell').each((element, index) => {
-    checkImage(struggleCellContent[index]!.title, struggleCellContent[index]!.imageFilename);
-    cy.wrap(element).should('contain.text', struggleCellContent[index]!.title);
+    checkImage(struggleCellContent[index].title, struggleCellContent[index].imageFilename);
+    cy.wrap(element).should('contain.text', struggleCellContent[index].title);
   });
 }
 

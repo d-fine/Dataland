@@ -17,12 +17,7 @@ export function generatePcafPreparedFixtures(): Array<FixtureData<PcafData>> {
   const preparedFixturesBeforeManipulation = generatePcafFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
-    const manipulatorFunction = manipulatorFunctions[i];
-    const fixture = preparedFixturesBeforeManipulation[i];
-    if (!manipulatorFunction || !fixture) {
-      throw new Error('Expected manipulator function and fixture to exist for each index.');
-    }
-    preparedFixtures.push(manipulatorFunction(fixture));
+    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
 
   return preparedFixtures;
