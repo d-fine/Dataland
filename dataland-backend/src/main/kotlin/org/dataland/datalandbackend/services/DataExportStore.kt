@@ -99,7 +99,7 @@ class DataExportStore {
     @Scheduled(cron = "*/15 * * * * *")
     private fun frontendExportJobTimeoutAlert() {
         val frontendTimeout = Instant.now().minus(Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
-        val frontendTimeoutPluCronInterval =
+        val frontendTimeoutPlusCronInterval =
             Instant
                 .now()
                 .minus(Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).plusSeconds(FRONTEND_TIMEOUT_CHECKER_FREQUENCY_IN_SEC))
@@ -108,7 +108,7 @@ class DataExportStore {
         exportJobStorage.forEach { (userId, jobs) ->
             jobs
                 .filter { job ->
-                    job.creationTime in (frontendTimeoutPluCronInterval + 1)..<frontendTimeout &&
+                    job.creationTime in (frontendTimeoutPlusCronInterval)..<frontendTimeout &&
                         job.progressState == ExportJobProgressState.Pending
                 }.forEach { job ->
                     logger.warn("Export job {} for user {} has been running longer than 2 minutes", job.id, userId)
