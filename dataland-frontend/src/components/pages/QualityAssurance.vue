@@ -45,12 +45,11 @@
             paginator
             paginator-position="top"
             :rows="10"
-            :rowsPerPageOptions="[5, 10, 20, 50]"
+            :rowsPerPageOptions="[2, 5, 10, 20, 50]"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             :pageLinkSize="5"
             :total-records="totalRecords"
-            @page="onPage($event)"
             sortMode="multiple"
             removableSort
             filterDisplay="menu"
@@ -313,7 +312,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
 import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import DataTable, { type DataTableRowClickEvent } from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
@@ -344,7 +343,6 @@ const filters = ref({
   },
 });
 
-const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -354,7 +352,6 @@ type QaReviewRow = QaReviewResponse & {
 };
 const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
-const currentChunkIndex = ref(0);
 const firstRowIndex = ref(0);
 const totalRecords = ref(0);
 const searchBarInput = ref('');
@@ -481,7 +478,6 @@ function closeConfirmationModal(): void {
  * Resets selected frameworks and searchBarInput
  */
 function resetFilterAndSearchBar(): void {
-  currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
   availableReportingPeriods.value = [];
   searchBarInput.value = '';
@@ -489,19 +485,6 @@ function resetFilterAndSearchBar(): void {
   filters.value.framework.value = null;
   filters.value.reportingPeriod.value = null;
   filters.value.priorityOfAssociatedDataSourcing.value = null;
-}
-
-/**
- * Updates the current Page
- * @param event DataTablePageEvent
- */
-function onPage(event: DataTablePageEvent): void {
-  globalThis.scrollTo(0, 0);
-  if (event.page != currentChunkIndex.value) {
-    currentChunkIndex.value = event.page;
-    firstRowIndex.value = currentChunkIndex.value * datasetsPerPage;
-    void getQaDataForCurrentPage();
-  }
 }
 
 /**
@@ -559,8 +542,6 @@ async function getReviewStatus(
 watch(searchBarInput, () => {
   const isValid = validateSearchBarInput();
   if (isValid) {
-    currentChunkIndex.value = 0;
-    firstRowIndex.value = 0;
     if (timerId) {
       clearTimeout(timerId);
     }
