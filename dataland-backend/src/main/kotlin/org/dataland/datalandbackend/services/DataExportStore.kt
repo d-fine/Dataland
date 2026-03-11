@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -22,9 +23,12 @@ import kotlin.collections.firstOrNull
 class DataExportStore {
     companion object {
         private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 10L
+        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 2L
+        private const val FRONTEND_TIMEOUT_CHECKER_FREQUENCY_IN_SEC = 15L
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Instantiates and saves ExportJobInfo in memory.
@@ -80,6 +84,7 @@ class DataExportStore {
     @Scheduled(cron = "0 */10 * * * *")
     private fun regularExportJobCleanup() {
         val cutoff = Instant.now().minus(Duration.ofMinutes(MAX_AGE_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
+
         exportJobStorage.values.forEach { jobs ->
             jobs.removeAll { job ->
                 job.creationTime < cutoff
@@ -87,6 +92,27 @@ class DataExportStore {
         }
         exportJobStorage.entries.removeIf { (_, jobs) ->
             jobs.isEmpty()
+        }
+    }
+
+    @Suppress("UnusedPrivateMember")
+    @Scheduled(cron = "*/15 * * * * *")
+    private fun frontendExportJobTimeoutAlert() {
+        val frontendTimeout = Instant.now().minus(Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
+        val frontendTimeoutPluCronInterval =
+            Instant
+                .now()
+                .minus(Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).plusSeconds(FRONTEND_TIMEOUT_CHECKER_FREQUENCY_IN_SEC))
+                .toEpochMilli()
+
+        exportJobStorage.forEach { (userId, jobs) ->
+            jobs
+                .filter { job ->
+                    job.creationTime in (frontendTimeoutPluCronInterval + 1)..<frontendTimeout &&
+                        job.progressState == ExportJobProgressState.Pending
+                }.forEach { job ->
+                    logger.warn("Export job {} for user {} has been running longer than 2 minutes", job.id, userId)
+                }
         }
     }
 }
