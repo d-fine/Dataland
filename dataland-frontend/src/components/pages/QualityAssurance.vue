@@ -90,6 +90,7 @@
                     filter-placeholder="Search by Frameworks"
                     :max-selected-labels="1"
                     selected-items-label="{0} frameworks selected"
+                    @focusin.once="openFrameworkFilterDropdown"
                     @update:modelValue="
                       (items: Array<FrameworkSelectableItem> | null) => {
                         selectedFrameworks = items ?? [];
@@ -517,6 +518,17 @@ function validateSearchBarInput(): boolean {
 
   showNotEnoughCharactersWarning.value = false;
   return true;
+}
+
+/**
+ * Opens the framework filter dropdown immediately when the framework filter
+ * component is clicked.
+ * @param event the filter component focus event
+ */
+function openFrameworkFilterDropdown(event: FocusEvent): void {
+  const target = event.currentTarget as HTMLElement | null;
+  if (!target) return;
+  target.click();
 }
 
 /**
