@@ -40,7 +40,9 @@ open class DataExportService<T>(
         private const val COMPANY_NAME_POSITION = -3
         private const val COMPANY_LEI_POSITION = -2
         private const val REPORTING_PERIOD_POSITION = -1
-        private const val FIXED_COLUMN_WIDTH = 20 * 256
+        private const val FIXED_COLUMN_WIDTH = 30
+        private const val BUFFER = 8
+        private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
         private const val EXCEL_FONT_HEIGHT: Short = 11
     }
 
@@ -168,15 +170,17 @@ open class DataExportService<T>(
         val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
 
         // Step 2: Write the header row
+        val columnMaxLengths = mutableMapOf<Int, Int>()
         val headerRow = sheet.createRow(HEADER_ROW_INDEX)
         orderedColumns.forEachIndexed { colIndex, columnName ->
             headerRow.createCell(colIndex).apply {
                 setCellValue(columnName)
                 cellStyle = defaultStyle
+                columnMaxLengths[colIndex] = columnName.length
             }
         }
 
-        // Step 3: Write the data rows
+        // Step 3: Write the data rows and track max column widths
         csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
             val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
             orderedColumns.forEachIndexed { colIndex, columnName ->
@@ -187,8 +191,13 @@ open class DataExportService<T>(
                 }
             }
         }
+
+        // Step 4: Set column widths based on max character length including a buffer, with a maximum width cap
         orderedColumns.forEachIndexed { index, _ ->
-            sheet.setColumnWidth(index, FIXED_COLUMN_WIDTH)
+            columnMaxLengths[index] = minOf(columnMaxLengths[index] ?: FIXED_COLUMN_WIDTH, FIXED_COLUMN_WIDTH)
+            val maxLength = columnMaxLengths[index] ?: FIXED_COLUMN_WIDTH
+            val columnWidth = (maxLength + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+            sheet.setColumnWidth(index, columnWidth)
         }
         workbook.write(outputStream)
         workbook.close()
