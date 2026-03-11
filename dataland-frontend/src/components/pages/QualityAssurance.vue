@@ -129,7 +129,7 @@
               :showFilterMenu="true"
               :showFilterOperator="false"
               :showFilterMatchModes="false"
-              sortable
+              :sortable="true"
             >
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
@@ -168,7 +168,7 @@
               <template #filterclear></template>
               <template #filterapply></template>
             </Column>
-            <Column header="SUBMISSION DATE" field="timestamp" sortable>
+            <Column header="SUBMISSION DATE" field="timestamp" :sortable="true">
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
@@ -177,7 +177,7 @@
               field="priorityOfAssociatedDataSourcing"
               sortField="priorityWithNullHandling"
               header="PRIORITY"
-              sortable
+              :sortable="true"
               filterMatchMode="between"
               :showFilterMenu="true"
               :showFilterOperator="false"
@@ -230,6 +230,11 @@
               </template>
               <template #filterclear> </template>
               <template #filterapply> </template>
+            </Column>
+            <Column field="numberQaReports" header="NUMBER OF QA REPORTS" :sortable="true">
+              <template #body="slotProps">
+                {{ slotProps.data.numberQaReports }}
+              </template>
             </Column>
             <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
               <template #body="slotProps">
