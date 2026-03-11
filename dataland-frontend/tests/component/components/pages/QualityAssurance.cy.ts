@@ -268,8 +268,7 @@ describe('Component tests for the Quality Assurance page', () => {
         cy.get('button.p-datatable-column-filter-button').click();
       });
 
-    cy.wait(`div[data-test="framework-picker"]`);
-    //cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`div[data-test="framework-picker"]`).click().click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
 
     cy.contains('td', `${dataIdAlpha}`);
