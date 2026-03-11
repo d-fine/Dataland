@@ -93,10 +93,10 @@ function submitInEditModeAndFetchReuploadedDataset(
   return cy
     .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
     .then((postInterception) => {
+      const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
       cy.url().should('eq', getBaseUrl() + '/datasets');
       isDatasetAccepted();
-      const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-      return fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId);
+      return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
     });
 }
 

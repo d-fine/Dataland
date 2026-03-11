@@ -112,17 +112,17 @@ function submitInEditModeAndFetchReuploadedDataset(
       return cy
         .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
         .then((interceptionAfterPost) => {
+          const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
           cy.url().should('eq', getBaseUrl() + '/datasets');
           isDatasetAccepted();
-          const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
-          return fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId).then(
-            (reuploadedDatasetFromBackend) => {
+          return cy
+            .then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId))
+            .then((reuploadedDatasetFromBackend) => {
               return {
                 datasetFromPrefillRequest,
                 reuploadedDatasetFromBackend,
               };
-            }
-          );
+            });
         });
     });
 }

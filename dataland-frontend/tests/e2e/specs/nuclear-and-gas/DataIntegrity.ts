@@ -93,8 +93,9 @@ function openEditFormAndCapturePrefillDataset(
   return cy
     .wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number })
     .then((interception) => {
+      const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataNuclearAndGasData).data;
       cy.get('h1').should('contain', testCompanyName);
-      return (interception.response?.body as CompanyAssociatedDataNuclearAndGasData).data;
+      return cy.then(() => datasetFromPrefillRequest);
     });
 }
 
@@ -112,10 +113,10 @@ function submitAndFetchReuploadedDataset(token: string): Cypress.Chainable<Nucle
   return cy
     .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
     .then((interception) => {
+      const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
       cy.url().should('eq', getBaseUrl() + '/datasets');
       isDatasetAccepted();
-      const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-      return fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId);
+      return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
     });
 }
 

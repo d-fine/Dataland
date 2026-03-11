@@ -143,9 +143,10 @@ describeIf(
       return cy
         .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
         .then((postInterception) => {
+          const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
           cy.url().should('eq', getBaseUrl() + '/datasets');
           isDatasetAccepted();
-          return postInterception.response?.body as DataMetaInformation;
+          return cy.then(() => dataMetaInformation);
         });
     }
 
