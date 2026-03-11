@@ -10,8 +10,9 @@
         "fiscalYearEnd" : "extendedDateFiscalYearEnd",
         "areAllGroupEntitiesCovered" : "extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports",
         "numberOfEmployees" : "extendedDecimalNumberOfEmployees",
-        "isNfrdMandatory" : "extendedEnumYesNoIsNfrdMandatory",
-        "assurance" : "customEnumEuTaxonomyReportingAssurance"
+        "isEuTaxonomyDataReportedOnAMandatoryBasis" : "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis",
+        "assurance" : "customEnumEuTaxonomyReportingAssurance",
+        "reportsInAccordanceWithArticle79OfRegulationEu202673" : "extendedEnumYesNoReportsInAccordanceWithArticle79OfRegulationEu202673"
       }
     },
     "creditInstitution" : {
@@ -129,7 +130,7 @@
         "proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities" : "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities",
         "proportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities" : "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities",
         "totalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial" : "extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial",
-        "proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial" : "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial",
+        "proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial" : "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial",
         "totalOfAbsolutePremiums" : "extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiums"
       },
       "assetUnderManagement" : {

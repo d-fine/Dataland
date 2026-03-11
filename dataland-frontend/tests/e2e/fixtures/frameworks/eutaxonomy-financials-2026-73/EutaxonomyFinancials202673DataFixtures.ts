@@ -48,8 +48,11 @@ export function generateEutaxonomyFinancials202673Data(
         referencedReports: dataGenerator.reports,
         areAllGroupEntitiesCovered: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        isNfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        isEuTaxonomyDataReportedOnAMandatoryBasis: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
+        reportsInAccordanceWithArticle79OfRegulationEu202673: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomYesNo()
+        ),
       },
     },
     creditInstitution: {
@@ -269,7 +272,7 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomPercentageValue()
         ),
         totalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial: dataGenerator.randomCurrencyDataPoint(0),
-        proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial: dataGenerator.randomExtendedDataPoint(
+        proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         totalOfAbsolutePremiums: dataGenerator.randomCurrencyDataPoint(0),

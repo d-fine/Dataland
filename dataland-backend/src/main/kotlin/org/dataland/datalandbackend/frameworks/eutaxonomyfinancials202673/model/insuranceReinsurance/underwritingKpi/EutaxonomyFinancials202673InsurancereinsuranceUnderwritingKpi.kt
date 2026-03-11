@@ -182,7 +182,7 @@ data class EutaxonomyFinancials202673InsurancereinsuranceUnderwritingKpi(
     } """,
     )
     @field:Valid()
-    val proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial: ExtendedDataPoint<BigDecimal?>? = null,
+    val proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

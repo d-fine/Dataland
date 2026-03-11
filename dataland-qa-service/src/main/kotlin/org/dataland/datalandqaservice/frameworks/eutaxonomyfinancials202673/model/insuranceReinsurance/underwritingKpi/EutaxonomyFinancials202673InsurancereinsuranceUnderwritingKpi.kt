@@ -27,6 +27,6 @@ data class EutaxonomyFinancials202673InsurancereinsuranceUnderwritingKpi(
     val proportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     val totalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
-    val proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     val totalOfAbsolutePremiums: QaReportDataPoint<CurrencyDataPoint?>? = null,
 )

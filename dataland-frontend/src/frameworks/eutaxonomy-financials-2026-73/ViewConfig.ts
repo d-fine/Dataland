@@ -5,11 +5,11 @@ import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dat
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
+import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
-import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
@@ -95,14 +95,17 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Is NFRD mandatory?',
-            explanation: 'Is the NFRD mandatory for your company?',
+            label: 'Is EU Taxonomy data reported on a mandatory basis?',
+            explanation:
+              'Does Article 1(2) of Regulation (EU) 2020/852 apply to the undertaking and, therefore, is EU Taxonomy data reported on a mandatory basis?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.general?.general?.isNfrdMandatory?.value),
-                'Is NFRD mandatory?',
-                dataset.general?.general?.isNfrdMandatory
+                formatYesNoValueForDatatable(
+                  dataset.general?.general?.isEuTaxonomyDataReportedOnAMandatoryBasis?.value
+                ),
+                'Is EU Taxonomy data reported on a mandatory basis?',
+                dataset.general?.general?.isEuTaxonomyDataReportedOnAMandatoryBasis
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
@@ -127,6 +130,23 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
               formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
             uploadComponentName: 'AssuranceFormField',
             dataPointTypeId: 'assurance',
+          },
+          {
+            type: 'cell',
+            label: 'Reports in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            explanation:
+              'Does the financial undertaking report in accordance with Article 7(9) of Regulation (EU) 2026/73 by including in their management report the following statement: "No activities are claimed as being associated with economic activities that qualify as environmentally sustainable under Articles 3 and 9 of Regulation (EU) 2020/852 (Taxonomy Regulation)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.general?.general?.reportsInAccordanceWithArticle79OfRegulationEu202673?.value
+                ),
+                'Reports in accordance with Article 7(9) of Regulation (EU) 2026\/73',
+                dataset.general?.general?.reportsInAccordanceWithArticle79OfRegulationEu202673
+              ),
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
           },
         ],
       },
@@ -1847,7 +1867,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Proportion Of Absolute Premiums Of  Non-Assed Activities Considered Non-Material',
+            label: 'Proportion Of Absolute Premiums Of  Non-Assessed Activities Considered Non-Material',
             explanation:
               'Proportion of Non-life Insurance and Reinsurance Undertakings underwriting non-assessed activities considered non-material, reported as gross premiums written or, as applicable, revenue relating to non-life insurance or reinsurance activity',
             shouldDisplay: (): boolean => true,
@@ -1855,11 +1875,11 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.insuranceReinsurance?.underwritingKpi
-                    ?.proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial?.value
+                    ?.proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial?.value
                 ),
-                'Proportion Of Absolute Premiums Of  Non-Assed Activities Considered Non-Material',
+                'Proportion Of Absolute Premiums Of  Non-Assessed Activities Considered Non-Material',
                 dataset.insuranceReinsurance?.underwritingKpi
-                  ?.proportionOfAbsolutePremiumsOfNonAssedActivitiesConsideredNonMaterial
+                  ?.proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',

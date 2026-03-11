@@ -22,7 +22,7 @@ export function generateEutaxonomyFinancials202673PreparedFixtures(): Array<
   const preparedFixturesBeforeManipulation = generateEutaxonomyFinancials202673Fixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i]!(preparedFixturesBeforeManipulation[i]!));
+    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
 
   return preparedFixtures;

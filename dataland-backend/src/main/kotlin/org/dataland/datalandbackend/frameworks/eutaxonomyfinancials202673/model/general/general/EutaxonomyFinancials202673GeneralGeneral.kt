@@ -93,7 +93,7 @@ data class EutaxonomyFinancials202673GeneralGeneral(
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the NFRD mandatory for your company?""",
+        description = """Does Article 1(2) of Regulation (EU) 2020/852 apply to the undertaking and, therefore, is EU Taxonomy data reported on a mandatory basis?""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -107,7 +107,7 @@ data class EutaxonomyFinancials202673GeneralGeneral(
     } """,
     )
     @field:Valid()
-    val isNfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
+    val isEuTaxonomyDataReportedOnAMandatoryBasis: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -115,4 +115,21 @@ data class EutaxonomyFinancials202673GeneralGeneral(
         example = """ "LimitedAssurance"  """,
     )
     val assurance: AssuranceDataPoint? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Does the financial undertaking report in accordance with Article 7(9) of Regulation (EU) 2026/73 by including in their management report the following statement: "No activities are claimed as being associated with economic activities that qualify as environmentally sustainable under Articles 3 and 9 of Regulation (EU) 2020/852 (Taxonomy Regulation)""",
+        example = """{
+      "value" :  "Yes" , 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val reportsInAccordanceWithArticle79OfRegulationEu202673: ExtendedDataPoint<YesNo?>? = null,
 )
