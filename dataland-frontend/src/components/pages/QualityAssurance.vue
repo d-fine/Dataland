@@ -18,7 +18,12 @@
           </Message>
         </div>
 
-        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
+        <PrimeButton
+          variant="link"
+          @click="resetFilterAndSearchBar"
+          label="RESET FILTERS"
+          data-test="reset-filters-button"
+        />
       </div>
 
       <div class="col-12 text-left p-3">
@@ -43,10 +48,10 @@
             :rowsPerPageOptions="[5, 10, 20, 50]"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
             currentPageReportTemplate="{first} to {last} of {totalRecords}"
-            sortMode="multiple"
-            removableSort
             :total-records="totalRecords"
             @page="onPage($event)"
+            sortMode="multiple"
+            removableSort
             filterDisplay="menu"
             v-model:filters="filters"
           >
@@ -96,7 +101,6 @@
                       }
                     "
                   />
-
                   <PrimeButton
                     type="button"
                     icon="pi pi-filter-slash"
@@ -189,39 +193,36 @@
                   :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />
               </template>
-
               <template #filter="{ filterModel, filterCallback }">
-                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
-                  <div style="position: relative; flex: 1">
+                <div class="px-2" style="min-width: 12rem">
+                  <span style="color: var(--text-color-secondary); font-size: 1rem; font-weight: 300">
+                    Priorities:
+                    {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
+                  </span>
+                  <div class="flex align-items-center gap-3">
                     <Slider
                       v-model="filterModel.value"
                       :min="1"
                       :max="10"
                       :step="1"
                       range
-                      class="m-2"
+                      class="w-full"
                       @update:modelValue="filterCallback"
                     />
-                    <span class="text-xs" style="position: absolute; top: -0.9rem; left: 0; pointer-events: none">
-                      {{ filterModel.value && filterModel.value[0] != null ? filterModel.value[0] : 1 }}
-                    </span>
-                    <span class="text-xs" style="position: absolute; top: -0.9rem; right: 0; pointer-events: none">
-                      {{ filterModel.value && filterModel.value[1] != null ? filterModel.value[1] : 10 }}
-                    </span>
+                    <PrimeButton
+                      type="button"
+                      icon="pi pi-filter-slash"
+                      size="small"
+                      variant="text"
+                      class="p-datatable-filter-clear-button"
+                      @click="
+                        () => {
+                          filterModel.value = null;
+                          filterCallback();
+                        }
+                      "
+                    />
                   </div>
-                  <PrimeButton
-                    type="button"
-                    icon="pi pi-filter-slash"
-                    size="small"
-                    variant="text"
-                    class="p-datatable-filter-clear-button"
-                    @click="
-                      () => {
-                        filterModel.value = null;
-                        filterCallback();
-                      }
-                    "
-                  />
                 </div>
               </template>
               <template #filterclear> </template>
