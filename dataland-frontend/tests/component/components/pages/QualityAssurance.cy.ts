@@ -20,7 +20,7 @@ import router from '@/router';
  * Picks a reporting period to filter for in the column filter of the datatable.
  * @param reportingPeriod
  */
-function chooseReportingPeriodFilter(reportingPeriod: string): void {
+function chooseReportingPeriodFilter(reportingPeriod: string, closeFilterMenu = false): void {
   cy.contains('#qa-data-result th', 'REPORTING PERIOD')
     .should('be.visible')
     .within(() => {
@@ -28,6 +28,33 @@ function chooseReportingPeriodFilter(reportingPeriod: string): void {
     });
   cy.get('[data-test="reporting-period-filter"]').click();
   cy.get('.p-datepicker-year').contains(reportingPeriod).click();
+  if (closeFilterMenu) {
+    cy.contains('#qa-data-result th', 'REPORTING PERIOD').within(() => {
+      cy.get('button.p-datatable-column-filter-button').click();
+    });
+  }
+}
+
+/**
+ * Picks a framework to filter for in the column filter of the datatable.
+ * @param framework
+ */
+function chooseFrameworkFilter(framework: DataTypeEnum, closeFilterMenu = false): void {
+  const frameworkHumanReadableName = humanizeStringOrNumber(framework);
+
+  cy.contains('#qa-data-result th', 'FRAMEWORK')
+    .should('be.visible')
+    .within(() => {
+      cy.get('button.p-datatable-column-filter-button').click();
+    });
+
+  cy.get('div[data-test="framework-picker"]').click().click();
+  cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+  if (closeFilterMenu) {
+    cy.contains('#qa-data-result th', 'FRAMEWORK').within(() => {
+      cy.get('button.p-datatable-column-filter-button').click();
+    });
+  }
 }
 
 /**
@@ -258,18 +285,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check QA-overview-page for filtering on framework', () => {
     mountQaAssurancePageWithMocks();
-
-    const frameworkToFilterFor = DataTypeEnum.Lksg;
-    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-
-    cy.contains('#qa-data-result th', 'FRAMEWORK')
-      .should('be.visible')
-      .within(() => {
-        cy.get('button.p-datatable-column-filter-button').click();
-      });
-
-    cy.get(`div[data-test="framework-picker"]`).click().click();
-    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    chooseFrameworkFilter(DataTypeEnum.Lksg);
 
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
@@ -500,5 +516,31 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('[data-test="confirmation-modal-error-message"]')
       .should('be.visible')
       .and('contain', 'Access Denied: Access to this resource has been denied.');
+  });
+
+  it('Check QA-overview-page for RESET FILTERS button behaviour', () => {
+    mountQaAssurancePageWithMocks();
+    assertUnfilteredDatatableState();
+
+    chooseReportingPeriodFilter('2022', true);
+    chooseFrameworkFilter(DataTypeEnum.Lksg, true);
+    cy.contains('#qa-data-result th', 'PRIORITY')
+      .should('be.visible')
+      .within(() => {
+        cy.get('button.p-datatable-column-filter-button').click();
+      });
+    moveSliderHandleByValue('right', 2);
+    const companySearchTerm = 'Alpha';
+    cy.intercept(`**/qa/datasets/queue?companyName=${companySearchTerm}`, [reviewQueueElementAlpha]).as(
+      'companyNameFilteredFetch'
+    );
+    cy.get(`input[data-test="companyNameSearchbar"]`).type(companySearchTerm);
+    cy.wait('@companyNameFilteredFetch');
+
+    cy.get('[data-test="reset-filters-button"]').click();
+    cy.wait('@nonFilteredFetch');
+    cy.get(`input[data-test="companyNameSearchbar"]`).should('have.value', '');
+    validateSearchStringWarning(false);
+    assertUnfilteredDatatableState();
   });
 });
