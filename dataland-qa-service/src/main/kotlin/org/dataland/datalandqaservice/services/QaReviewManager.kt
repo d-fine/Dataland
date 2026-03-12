@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
@@ -19,9 +18,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -137,62 +136,28 @@ class QaReviewManager
         }
 
         /**
-         * This method adds the priority of associated data sourcing to the QaReviewResponse if it can be retrieved from the
-         * data sourcing service. If the data sourcing service returns a 404 error, it is assumed that there is no associated
-         * data sourcing and the priority is set to null. If any other error occurs when calling the data sourcing service,
-         * the exception is propagated.
+         * Adds data sourcing priorities to the given QA review responses if available.
          *
-         * The data sourcing service might not return priorities in the same order as the requested dimensions. Therefore,
-         * we create a map from dimensions -> priority and then look up the priority for each response using its dimensions.
+         * If the data sourcing service returns 404, priorities are assumed missing and set to null. Other errors are rethrown.
+         * Since the service may return priorities in a different order, a map from dimensions to priority is used.
          *
-         * @param qaReviewResponses the list of QaReviewResponses for which to add the priority of associated data sourcing
-         * @return the list of QaReviewResponses with the priority of associated data sourcing added
+         * @param qaReviewResponses list of QA review responses to enrich with priority
+         * @return list of QA review responses with priorities added or null if unavailable
          */
         private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
             val dsDimensions =
-                qaReviewResponses.map { qaReviewResponse ->
-                    DsBasicDataDimensions(
-                        companyId = qaReviewResponse.companyId,
-                        dataType = qaReviewResponse.framework,
-                        reportingPeriod = qaReviewResponse.reportingPeriod,
-                    )
+                qaReviewResponses.map {
+                    DsBasicDataDimensions(it.companyId, it.framework, it.reportingPeriod)
                 }
+
             val prioritiesOfAssociatedDataSourcing =
                 try {
                     dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
-                } catch (clientException: ClientException) {
-                    if ((clientException.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        null
-                    } else {
-                        throw clientException
-                    }
+                } catch (ex: ClientException) {
+                    if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) null else throw ex
                 }
 
-            if (prioritiesOfAssociatedDataSourcing.isNullOrEmpty()) {
-                return qaReviewResponses.map { it.copy(priorityOfAssociatedDataSourcing = null) }
-            }
-
-            val priorityMap: Map<BasicDataDimensions, Int?> =
-                prioritiesOfAssociatedDataSourcing.associate { item ->
-                    val key =
-                        BasicDataDimensions(
-                            companyId = item.companyId,
-                            dataType = item.dataType,
-                            reportingPeriod = item.reportingPeriod,
-                        )
-                    key to item.priority
-                }
-
-            return qaReviewResponses.map { response ->
-                val key =
-                    BasicDataDimensions(
-                        companyId = response.companyId,
-                        dataType = response.framework,
-                        reportingPeriod = response.reportingPeriod,
-                    )
-                val priority = priorityMap[key]
-                response.copy(priorityOfAssociatedDataSourcing = priority)
-            }
+            return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
         }
 
         /**
@@ -330,27 +295,7 @@ class QaReviewManager
                     qaReviewEntity.framework,
                     qaReviewEntity.reportingPeriod,
                 )
-            val isUpdate = pastActiveDataId != null
-            val currentlyActiveDataId =
-                if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
-                    qaReviewEntity.dataId
-                } else {
-                    pastActiveDataId
-                }
-
-            val qaStatusChangeMessage =
-                QaStatusChangeMessage(
-                    dataId = qaReviewEntity.dataId,
-                    updatedQaStatus = qaReviewEntity.qaStatus,
-                    currentlyActiveDataId = currentlyActiveDataId,
-                    basicDataDimensions =
-                        BasicDataDimensions(
-                            companyId = qaReviewEntity.companyId,
-                            dataType = qaReviewEntity.framework,
-                            reportingPeriod = qaReviewEntity.reportingPeriod,
-                        ),
-                    isUpdate = isUpdate,
-                )
+            val qaStatusChangeMessage = QaReviewUtils.buildQaStatusChangeMessage(qaReviewEntity, pastActiveDataId)
 
             logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
             val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
