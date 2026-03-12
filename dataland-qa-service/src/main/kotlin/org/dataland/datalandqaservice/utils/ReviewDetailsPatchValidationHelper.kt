@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +24,21 @@ class ReviewDetailsPatchValidationHelper
     constructor(
         private val datasetReviewSupportService: DatasetReviewSupportService,
     ) {
+        /**
+         * Ensures a patch provides at least one of customDataPoint or acceptedSource.
+         *
+         * @param patch The patch payload to validate.
+         * @throws InvalidInputApiException If both values are missing.
+         */
+        fun validatePatchContainsCustomDataPointOrAcceptedSource(patch: ReviewDetailsPatch) {
+            if (patch.customDataPoint == null && patch.acceptedSource == null) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Custom value or accepted source have to be specified.",
+                )
+            }
+        }
+
         /**
          * Determines the valid custom value for a data point type.
          *
@@ -133,7 +149,7 @@ class ReviewDetailsPatchValidationHelper
          * @param reviewerUserId Expected reviewer user id for the dataset review.
          * @throws InsufficientRightsApiException If the current user is not the reviewer.
          */
-        fun isUserReviewer(reviewerUserId: UUID) {
+        fun validateUserIsReviewer(reviewerUserId: UUID) {
             if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
                 throw InsufficientRightsApiException(
                     summary = "Only the reviewer is allowed to patch this dataset review object.",

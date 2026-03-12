@@ -104,7 +104,7 @@ class DatasetReviewService
             state: DatasetReviewState,
         ): DatasetReviewResponse {
             val datasetReview = datasetReviewSupportService.getDatasetReview(datasetReviewId)
-            reviewDetailsPatchValidationHelper.isUserReviewer(datasetReview.reviewerUserId)
+            reviewDetailsPatchValidationHelper.validateUserIsReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
         }
@@ -129,13 +129,8 @@ class DatasetReviewService
             patch: ReviewDetailsPatch,
         ): DatasetReviewResponse {
             val datasetReview = datasetReviewSupportService.getDatasetReview(datasetReviewId)
-            reviewDetailsPatchValidationHelper.isUserReviewer(datasetReview.reviewerUserId)
-            if (patch.customDataPoint == null && patch.acceptedSource == null) {
-                throw InvalidInputApiException(
-                    "Invalid input.",
-                    "Custom value or accepted source have to be specified.",
-                )
-            }
+            reviewDetailsPatchValidationHelper.validateUserIsReviewer(datasetReview.reviewerUserId)
+            reviewDetailsPatchValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
 
             val dataPoint =
                 datasetReview.dataPoints
