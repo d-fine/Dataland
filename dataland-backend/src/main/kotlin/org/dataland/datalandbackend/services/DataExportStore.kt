@@ -50,7 +50,7 @@ class DataExportStore {
                 creationTime = Instant.now().toEpochMilli(),
             )
         exportJobStorage
-            .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf(newExportJob) }
+            .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf() }
             .add(newExportJob)
         val timer = Timer(true)
         jobTimeoutTimers[exportJobId] = timer
