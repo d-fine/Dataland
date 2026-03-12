@@ -49,7 +49,7 @@ class DatasetReviewCreationService
         ): DatasetReviewEntity {
             val qaReports =
                 datasetReviewSupportService
-                    .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
+                    .findQaReports(datatypeToDatapointIds.values.toList())
 
             val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
 
@@ -133,21 +133,21 @@ class DatasetReviewCreationService
             reporterIdToCompanyId: Map<String, String>,
         ): List<QaReporter> {
             val companyIdToName = getCompanyNameByIdMap(reporterIdToCompanyId.values.distinct())
-            val qaReportersFinalList = reporterUserIds.map { reporterUserId ->
-                val companyId = reporterIdToCompanyId[reporterUserId]
-                val userInfo = keycloakUserService.getUser(reporterUserId)
-                QaReporter(
-                    reporterUserId = UUID.fromString(reporterUserId),
-                    reporterUserName =
-                        listOfNotNull(userInfo.firstName, userInfo.lastName)
-                            .joinToString(" ")
-                            .ifBlank { null },
-                    reporterEmailAddress = userInfo.email,
-                    reportCompanyName = companyId?.let { companyIdToName[it] },
-                    reporterCompanyId = companyId?.let { ValidationUtils.convertToUUID(it) },
-                )
-
-            }
+            val qaReportersFinalList =
+                reporterUserIds.map { reporterUserId ->
+                    val companyId = reporterIdToCompanyId[reporterUserId]
+                    val userInfo = keycloakUserService.getUser(reporterUserId)
+                    QaReporter(
+                        reporterUserId = UUID.fromString(reporterUserId),
+                        reporterUserName =
+                            listOfNotNull(userInfo.firstName, userInfo.lastName)
+                                .joinToString(" ")
+                                .ifBlank { null },
+                        reporterEmailAddress = userInfo.email,
+                        reportCompanyName = companyId?.let { companyIdToName[it] },
+                        reporterCompanyId = companyId?.let { ValidationUtils.convertToUUID(it) },
+                    )
+                }
 
             return qaReportersFinalList
         }
@@ -162,12 +162,15 @@ class DatasetReviewCreationService
          * @return Map of reporter user id to company id for all resolvable reporters.
          */
         private fun getCompanyIdsFromUserIds(reporterUserIds: Collection<String>): Map<String, String> {
-            val reporterIdToCompanyId = reporterUserIds.mapNotNull { reporterUserId ->
-                inheritedRolesControllerApi.getInheritedRoles(reporterUserId)
-                    .keys
-                    .firstOrNull()
-                    ?.let { companyId -> reporterUserId to companyId }
-            }.toMap()
+            val reporterIdToCompanyId =
+                reporterUserIds
+                    .mapNotNull { reporterUserId ->
+                        inheritedRolesControllerApi
+                            .getInheritedRoles(reporterUserId)
+                            .keys
+                            .firstOrNull()
+                            ?.let { companyId -> reporterUserId to companyId }
+                    }.toMap()
 
             return reporterIdToCompanyId
         }
