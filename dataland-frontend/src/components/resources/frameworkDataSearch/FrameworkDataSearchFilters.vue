@@ -35,7 +35,7 @@
         filter-placeholder="Search frameworks"
         selected-items-label="{0} frameworks"
         :max-selected-labels="1"
-        class="search-filter"
+        class="search-filter framework-filter"
       />
       <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
@@ -238,6 +238,10 @@ export default defineComponent({
     .search-filter {
       width: 11rem;
       text-align: left;
+    }
+
+    .framework-filter {
+      width: 16rem;
     }
 
     label {
