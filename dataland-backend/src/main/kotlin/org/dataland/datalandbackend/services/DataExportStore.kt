@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -24,8 +23,7 @@ import kotlin.collections.firstOrNull
 @Service
 class DataExportStore {
     companion object {
-        private const val MAX_AGE_OF_EXPORT_JOB_IN_MIN = 10L
-        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 2L
+        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 1L
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -62,6 +60,13 @@ class DataExportStore {
                             "export job {} exceeded {} minutes!",
                             exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
                         )
+                        // Mirror regular cleanup behavior by removing the timed-out job and pruning empty user entries.
+                        exportJobStorage.values.forEach { jobs ->
+                            jobs.removeAll { it.id == exportJobId }
+                        }
+                        exportJobStorage.entries.removeIf { (_, jobs) ->
+                            jobs.isEmpty()
+                        }
                     }
                     jobTimeoutTimers.remove(exportJobId)
                 }
@@ -97,21 +102,6 @@ class DataExportStore {
         exportJobStorage[userId]?.removeAll { it.id == exportJobId }
         if (exportJobStorage[userId]?.isEmpty() ?: false) {
             exportJobStorage.remove(userId)
-        }
-    }
-
-    @Suppress("UnusedPrivateMember")
-    @Scheduled(cron = "0 */10 * * * *")
-    private fun regularExportJobCleanup() {
-        val cutoff = Instant.now().minus(Duration.ofMinutes(MAX_AGE_OF_EXPORT_JOB_IN_MIN)).toEpochMilli()
-
-        exportJobStorage.values.forEach { jobs ->
-            jobs.removeAll { job ->
-                job.creationTime < cutoff
-            }
-        }
-        exportJobStorage.entries.removeIf { (_, jobs) ->
-            jobs.isEmpty()
         }
     }
 }
