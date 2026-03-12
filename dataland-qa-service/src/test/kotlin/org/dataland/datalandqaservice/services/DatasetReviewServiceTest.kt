@@ -21,7 +21,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.ReviewDetailsPatchValidationHelper
 import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -50,7 +50,7 @@ class DatasetReviewServiceTest {
     private val keycloakUserService = mock<KeycloakUserService>()
 
     private val creationUtils =
-        DatasetReviewCreationUtils(
+        DatasetReviewCreationService(
             inheritedRolesControllerApi,
             companyDataControllerApi,
             datasetReviewSupportService,

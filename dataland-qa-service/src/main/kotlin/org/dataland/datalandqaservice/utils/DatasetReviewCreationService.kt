@@ -23,7 +23,7 @@ import java.util.UUID
  * and data points in the dataset.
  */
 @Service
-class DatasetReviewCreationUtils
+class DatasetReviewCreationService
     @Autowired
     constructor(
         private val inheritedRolesControllerApi: InheritedRolesControllerApi,
@@ -47,14 +47,14 @@ class DatasetReviewCreationUtils
             datasetId: UUID,
             datatypeToDatapointIds: Map<String, String>,
         ): DatasetReviewEntity {
-            val activeQaReports =
+            val qaReports =
                 datasetReviewSupportService
                     .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
 
-            val mapDataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(activeQaReports)
+            val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
 
             val reporterUserIds =
-                mapDataPointTypeToQaReports
+                dataPointTypeToQaReports
                     .values
                     .flatten()
                     .map { it.reporterUserId }
@@ -77,7 +77,7 @@ class DatasetReviewCreationUtils
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     reviewerUserName = DatalandAuthentication.fromContext().name,
-                    qaReporters = qaReporters,
+                    qaReporters = qaReporters.toMutableList(),
                     dataPoints = mutableListOf(),
                 )
 
@@ -85,14 +85,14 @@ class DatasetReviewCreationUtils
                 setDataPointsForReview(
                     datasetReviewEntity,
                     datatypeToDatapointIds,
-                    mapDataPointTypeToQaReports,
+                    dataPointTypeToQaReports,
                     reporterIdToCompanyId,
                 )
             return datasetReviewEntityWithDataPoints
         }
 
         /**
-         * Helper Method to group QA reports by data point type and keeps only the latest upload per reporter.
+         * Helper Method to group QA reports by data point type and keep only the latest upload per reporter.
          *
          * For each data point type, the returned list contains at most one report per reporter user id,
          * selected by the greatest upload time.
@@ -101,8 +101,8 @@ class DatasetReviewCreationUtils
          * @return Map keyed by data point type with the latest reports per reporter.
          */
         private fun getLatestQaReportsByDataPointTypeAndReporter(
-            activeQaReports: List<DataPointQaReportEntity>,
-        ): Map<String, List<DataPointQaReportEntity>> {
+            activeQaReports: Collection<DataPointQaReportEntity>,
+        ): Map<String, Collection<DataPointQaReportEntity>> {
             val latestByType = mutableMapOf<String, MutableList<DataPointQaReportEntity>>()
             for (qaReport in activeQaReports) {
                 val reportsForType = latestByType.getOrPut(qaReport.dataPointType) { mutableListOf() }
@@ -129,17 +129,15 @@ class DatasetReviewCreationUtils
          * @return List of QA reporters with user and company information when available.
          */
         private fun getQaReporters(
-            reporterUserIds: List<String>,
+            reporterUserIds: Collection<String>,
             reporterIdToCompanyId: Map<String, String>,
-        ): MutableList<QaReporter> {
+        ): List<QaReporter> {
             val companyIdToName = getCompanyNameByIdMap(reporterIdToCompanyId.values.distinct())
-            val qaReportersFinalList = mutableListOf<QaReporter>()
-            for (reporterUserId in reporterUserIds) {
+            val qaReportersFinalList = reporterUserIds.map { reporterUserId ->
                 val companyId = reporterIdToCompanyId[reporterUserId]
                 val userInfo = keycloakUserService.getUser(reporterUserId)
-                qaReportersFinalList.add(
-                    QaReporter(
-                        reporterUserId = convertToUUID(reporterUserId),
+                QaReporter(
+                        reporterUserId = UUID.fromString(reporterUserId),
                         reporterUserName =
                             listOfNotNull(userInfo.firstName, userInfo.lastName)
                                 .joinToString(" ")
@@ -147,8 +145,8 @@ class DatasetReviewCreationUtils
                         reporterEmailAddress = userInfo.email,
                         reportCompanyName = companyId?.let { companyIdToName[it] },
                         reporterCompanyId = companyId?.let { convertToUUID(it) },
-                    ),
-                )
+                    )
+
             }
 
             return qaReportersFinalList
@@ -163,18 +161,14 @@ class DatasetReviewCreationUtils
          * @param reporterUserIds Reporter user ids to resolve.
          * @return Map of reporter user id to company id for all resolvable reporters.
          */
-        private fun getCompanyIdsFromUserIds(reporterUserIds: List<String>): Map<String, String> {
-            val reporterIdToCompanyId = mutableMapOf<String, String>()
-            for (reporterUserId in reporterUserIds) {
-                val companyId =
-                    inheritedRolesControllerApi
-                        .getInheritedRoles(reporterUserId)
-                        .keys
-                        .firstOrNull()
-                if (companyId != null) {
-                    reporterIdToCompanyId[reporterUserId] = companyId
-                }
-            }
+        private fun getCompanyIdsFromUserIds(reporterUserIds: Collection<String>): Map<String, String> {
+            val reporterIdToCompanyId = reporterUserIds.mapNotNull { reporterUserId ->
+                inheritedRolesControllerApi.getInheritedRoles(reporterUserId)
+                    .keys
+                    .firstOrNull()
+                    ?.let { companyId -> reporterUserId to companyId }
+            }.toMap()
+
             return reporterIdToCompanyId
         }
 
@@ -191,8 +185,7 @@ class DatasetReviewCreationUtils
                 companyDataControllerApi
                     .postCompanyValidation(uniqueCompanyIds)
                     .map { it.companyInformation?.companyName ?: it.identifier }
-
-            return uniqueCompanyIds.zip(reporterCompanyNames).toMap()
+            return uniqueCompanyIds.associateWith { reporterCompanyNames[uniqueCompanyIds.indexOf(it)] }
         }
 
         /**
@@ -211,7 +204,7 @@ class DatasetReviewCreationUtils
         private fun setDataPointsForReview(
             reviewEntity: DatasetReviewEntity,
             datatypeToDatapointIds: Map<String, String>,
-            latestQaReportsByDataPointTypeAndReporter: Map<String, List<DataPointQaReportEntity>>,
+            latestQaReportsByDataPointTypeAndReporter: Map<String, Collection<DataPointQaReportEntity>>,
             reporterIdToCompanyId: Map<String, String>,
         ): DatasetReviewEntity {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
@@ -227,8 +220,7 @@ class DatasetReviewCreationUtils
                     )
 
                 latestQaReportsByDataPointTypeAndReporter[dataPointType]
-                    .orEmpty()
-                    .forEach { qaReport ->
+                    ?.forEach { qaReport ->
                         currentDataPointReviewDetails
                             .addAssociatedQaReports(
                                 QaReportDataPointWithReporterDetailsEntity(
