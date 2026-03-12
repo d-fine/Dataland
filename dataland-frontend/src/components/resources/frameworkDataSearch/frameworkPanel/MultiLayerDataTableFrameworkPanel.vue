@@ -71,6 +71,7 @@ import {
   type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
+  type EutaxonomyFinancials202673Data,
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type NuclearAndGasData,
@@ -128,6 +129,14 @@ const sortedReports = computed(() => {
         .map(
           (singleDataAndMetaInfo) =>
             (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
+    case DataTypeEnum.EutaxonomyFinancials202673: {
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyFinancials202673Data).general?.general?.referencedReports
         )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
