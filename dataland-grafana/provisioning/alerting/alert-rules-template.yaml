@@ -279,7 +279,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 86400  # 24h in seconds (time to resolve alert)
+              from: 60
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -314,7 +314,7 @@ groups:
               expression: A
               intervalMs: 1000
               maxDataPoints: 43200
-              reducer: max
+              reducer: last
               refId: B
               type: reduce
           - refId: C
@@ -346,7 +346,7 @@ groups:
         panelId: 8
         noDataState: OK
         execErrState: Error
-        for: 1m
+        for: 0m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
           __panelId__: "8"

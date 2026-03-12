@@ -59,7 +59,7 @@ class DataExportStore {
                 override fun run() {
                     if (newExportJob.progressState == ExportJobProgressState.Pending) {
                         logger.error(
-                            "error: export job {} exceeded {} minutes!",
+                            "export job {} exceeded {} minutes!",
                             exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
                         )
                     }
