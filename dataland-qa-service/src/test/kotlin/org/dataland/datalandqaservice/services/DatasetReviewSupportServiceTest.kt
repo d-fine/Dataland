@@ -154,7 +154,7 @@ class DatasetReviewSupportServiceTest {
     }
 
     @Test
-    fun `findQaReportsWithDetails returns entities from repository including inactive`() {
+    fun `findQaReports returns entities from repository including inactive`() {
         val dataPointIds = listOf("dp1", "dp2")
 
         val entity1 =
@@ -190,7 +190,7 @@ class DatasetReviewSupportServiceTest {
             ),
         ).thenReturn(listOf(entity1, entity2))
 
-        val result = service.findQaReportsWithDetails(dataPointIds)
+        val result = service.findQaReports(dataPointIds)
 
         assertEquals(listOf(entity1, entity2), result)
 

@@ -75,7 +75,7 @@ class DatasetReviewSupportService
          * @param dataPointIds List of data point ids to search for.
          * @return List of QA report entities with meta information for the given data point ids.
          */
-        fun findQaReportsWithDetails(dataPointIds: List<String>): List<DataPointQaReportEntity> =
+        fun findQaReports(dataPointIds: List<String>): List<DataPointQaReportEntity> =
             dataPointQaReportRepository
                 .searchQaReportMetaInformation(
                     dataPointIds = dataPointIds,

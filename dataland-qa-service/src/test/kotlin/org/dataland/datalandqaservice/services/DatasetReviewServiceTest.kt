@@ -252,7 +252,7 @@ class DatasetReviewServiceTest {
 
         doReturn(listOf(qaReportEntity))
             .whenever(datasetReviewSupportService)
-            .findQaReportsWithDetails(any())
+            .findQaReports(any())
 
         doReturn(dummyMetaData)
             .whenever(datasetReviewSupportService)

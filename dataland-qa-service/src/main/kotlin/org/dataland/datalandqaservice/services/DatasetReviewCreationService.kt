@@ -49,7 +49,7 @@ class DatasetReviewCreationService
         ): DatasetReviewEntity {
             val qaReports =
                 datasetReviewSupportService
-                    .findQaReportsWithDetails(datatypeToDatapointIds.values.toList())
+                    .findQaReports(datatypeToDatapointIds.values.toList())
 
             val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
 
