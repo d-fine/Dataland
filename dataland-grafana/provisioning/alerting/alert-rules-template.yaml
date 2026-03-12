@@ -279,7 +279,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 60
+              from: 86400  # 24h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -353,7 +353,7 @@ groups:
           description: "Export job exceeded the frontend timeout of 2 minutes."
         labels:
           env: "$ENV"
-          detected_level: "exportJob timeout"
+          detected_level: "error"
         isPaused: false
         notification_settings:
           receiver: Slack Alert Bot

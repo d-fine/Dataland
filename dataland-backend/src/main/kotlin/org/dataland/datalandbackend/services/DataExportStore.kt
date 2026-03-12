@@ -16,6 +16,7 @@ import java.util.UUID
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.firstOrNull
+import kotlin.collections.removeAll
 
 /**
  * Storage of export jobs for async handling
@@ -55,25 +56,34 @@ class DataExportStore {
         timer.schedule(
             object : TimerTask() {
                 override fun run() {
-                    if (newExportJob.progressState == ExportJobProgressState.Pending) {
-                        logger.error(
-                            "export job {} exceeded {} minutes!",
-                            exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
-                        )
-                        // Mirror regular cleanup behavior by removing the timed-out job and pruning empty user entries.
-                        exportJobStorage.values.forEach { jobs ->
-                            jobs.removeAll { it.id == exportJobId }
-                        }
-                        exportJobStorage.entries.removeIf { (_, jobs) ->
-                            jobs.isEmpty()
-                        }
-                    }
-                    jobTimeoutTimers.remove(exportJobId)
+                    handleJobTimeout(exportJobId, newExportJob)
                 }
             },
             Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).toMillis(),
         )
         return newExportJob
+    }
+
+    /**
+     * Handles the timeout of an export job by removing it from storage if it is still pending.
+     */
+    internal fun handleJobTimeout(
+        exportJobId: UUID,
+        exportJob: ExportJob,
+    ) {
+        if (exportJob.progressState == ExportJobProgressState.Pending) {
+            logger.error(
+                "export job {} exceeded {} minutes!",
+                exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
+            )
+            exportJobStorage.values.forEach { jobs ->
+                jobs.removeAll { it.id == exportJobId }
+            }
+            exportJobStorage.entries.removeIf { (_, jobs) ->
+                jobs.isEmpty()
+            }
+        }
+        jobTimeoutTimers.remove(exportJobId)
     }
 
     /**
