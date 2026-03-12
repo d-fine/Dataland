@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReviewDetails
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReview
 import java.util.UUID
 
 /**
@@ -18,12 +18,12 @@ import java.util.UUID
 @Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review_entity_data_point_review_details")
-class DataPointReviewDetailsEntity(
+class DataPointReviewEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
     val dataPointId: UUID?,
     @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
-    val qaReports: MutableList<QaReportDataPointWithReporterDetailsEntity> = mutableListOf(),
+    val qaReports: MutableList<QaReportDataPointWithReporterEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
     var companyIdOfAcceptedQaReport: UUID?,
@@ -36,8 +36,8 @@ class DataPointReviewDetailsEntity(
     /**
      * Converts this entity to its API response DTO.
      */
-    fun toDataPointReviewDetails(): DataPointReviewDetails =
-        DataPointReviewDetails(
+    fun toDataPointReviewDetails(): DataPointReview =
+        DataPointReview(
             dataPointType = dataPointType,
             dataPointId = dataPointId,
             qaReports = qaReports.map { it.toQaReportDataPointWithReporterDetails() },
@@ -51,7 +51,7 @@ class DataPointReviewDetailsEntity(
      * Add an associated request to this data sourcing entity.
      * Make sure the data sourcing entity is also added to the request.
      */
-    fun addAssociatedQaReports(qaReport: QaReportDataPointWithReporterDetailsEntity) {
+    fun addAssociatedQaReports(qaReport: QaReportDataPointWithReporterEntity) {
         qaReports.add(qaReport)
         qaReport.dataPointReviewDetails = this
     }

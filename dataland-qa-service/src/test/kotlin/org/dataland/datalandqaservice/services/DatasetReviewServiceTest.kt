@@ -13,7 +13,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
@@ -108,7 +108,7 @@ class DatasetReviewServiceTest {
         reporterUserId: String? = null,
         customValue: String? = null,
         dataPointType: String = mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
-    ): DataPointReviewDetailsEntity {
+    ): DataPointReviewEntity {
         service.patchReviewDetails(
             UUID.randomUUID(),
             dataPointType,
@@ -176,8 +176,8 @@ class DatasetReviewServiceTest {
         service.setReviewer(UUID.randomUUID())
 
         val saved = captureSavedReview()
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.reviewerUserId)
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), saved.reviewerUserName)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.qaJudgeUserId)
+        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), saved.qaJudgeUserName)
     }
 
     @Test

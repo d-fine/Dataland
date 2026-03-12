@@ -58,5 +58,5 @@ data class DatasetReviewResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
     )
-    var dataPoints: Map<String, DataPointReviewDetails>,
+    var dataPoints: Map<String, DataPointReview>,
 )

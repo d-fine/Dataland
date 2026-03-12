@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -94,7 +94,7 @@ class ReviewDetailsPatchValidationHelper
          */
         fun validateReporterUserIdOfAcceptedQaReport(
             acceptedDataPoint: AcceptedDataPointSource?,
-            qaReports: List<QaReportDataPointWithReporterDetailsEntity>,
+            qaReports: List<QaReportDataPointWithReporterEntity>,
             reporterUserIdOfAcceptedQaReport: String?,
         ) {
             var errorSummary: String? = null

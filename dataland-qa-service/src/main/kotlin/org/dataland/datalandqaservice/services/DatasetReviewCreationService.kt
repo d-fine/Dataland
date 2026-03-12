@@ -6,9 +6,9 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -75,8 +75,8 @@ class DatasetReviewCreationService
                     companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    reviewerUserId = ValidationUtils.convertToUUID(DatalandAuthentication.Companion.fromContext().userId),
-                    reviewerUserName = DatalandAuthentication.Companion.fromContext().name,
+                    qaJudgeUserId = ValidationUtils.convertToUUID(DatalandAuthentication.Companion.fromContext().userId),
+                    qaJudgeUserName = DatalandAuthentication.Companion.fromContext().name,
                     qaReporters = qaReporters.toMutableList(),
                     dataPoints = mutableListOf(),
                 )
@@ -133,21 +133,21 @@ class DatasetReviewCreationService
             reporterIdToCompanyId: Map<String, String>,
         ): List<QaReporter> {
             val companyIdToName = getCompanyNameByIdMap(reporterIdToCompanyId.values.distinct())
-            val qaReportersFinalList = reporterUserIds.map { reporterUserId ->
-                val companyId = reporterIdToCompanyId[reporterUserId]
-                val userInfo = keycloakUserService.getUser(reporterUserId)
-                QaReporter(
-                    reporterUserId = UUID.fromString(reporterUserId),
-                    reporterUserName =
-                        listOfNotNull(userInfo.firstName, userInfo.lastName)
-                            .joinToString(" ")
-                            .ifBlank { null },
-                    reporterEmailAddress = userInfo.email,
-                    reportCompanyName = companyId?.let { companyIdToName[it] },
-                    reporterCompanyId = companyId?.let { ValidationUtils.convertToUUID(it) },
-                )
-
-            }
+            val qaReportersFinalList =
+                reporterUserIds.map { reporterUserId ->
+                    val companyId = reporterIdToCompanyId[reporterUserId]
+                    val userInfo = keycloakUserService.getUser(reporterUserId)
+                    QaReporter(
+                        reporterUserId = UUID.fromString(reporterUserId),
+                        reporterUserName =
+                            listOfNotNull(userInfo.firstName, userInfo.lastName)
+                                .joinToString(" ")
+                                .ifBlank { null },
+                        reporterEmailAddress = userInfo.email,
+                        reportCompanyName = companyId?.let { companyIdToName[it] },
+                        reporterCompanyId = companyId?.let { ValidationUtils.convertToUUID(it) },
+                    )
+                }
 
             return qaReportersFinalList
         }
@@ -162,12 +162,15 @@ class DatasetReviewCreationService
          * @return Map of reporter user id to company id for all resolvable reporters.
          */
         private fun getCompanyIdsFromUserIds(reporterUserIds: Collection<String>): Map<String, String> {
-            val reporterIdToCompanyId = reporterUserIds.mapNotNull { reporterUserId ->
-                inheritedRolesControllerApi.getInheritedRoles(reporterUserId)
-                    .keys
-                    .firstOrNull()
-                    ?.let { companyId -> reporterUserId to companyId }
-            }.toMap()
+            val reporterIdToCompanyId =
+                reporterUserIds
+                    .mapNotNull { reporterUserId ->
+                        inheritedRolesControllerApi
+                            .getInheritedRoles(reporterUserId)
+                            .keys
+                            .firstOrNull()
+                            ?.let { companyId -> reporterUserId to companyId }
+                    }.toMap()
 
             return reporterIdToCompanyId
         }
@@ -209,7 +212,7 @@ class DatasetReviewCreationService
         ): DatasetReviewEntity {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val currentDataPointReviewDetails =
-                    DataPointReviewDetailsEntity(
+                    DataPointReviewEntity(
                         dataPointType = dataPointType,
                         dataPointId = ValidationUtils.convertToUUID(dataPointId),
                         qaReports = mutableListOf(),
@@ -223,7 +226,7 @@ class DatasetReviewCreationService
                     ?.forEach { qaReport ->
                         currentDataPointReviewDetails
                             .addAssociatedQaReports(
-                                QaReportDataPointWithReporterDetailsEntity(
+                                QaReportDataPointWithReporterEntity(
                                     qaReportId = ValidationUtils.convertToUUID(qaReport.qaReportId),
                                     verdict = qaReport.verdict,
                                     correctedData = qaReport.correctedData,

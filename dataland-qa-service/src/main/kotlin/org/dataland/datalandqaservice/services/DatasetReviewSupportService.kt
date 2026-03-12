@@ -4,15 +4,11 @@ import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -26,7 +22,6 @@ class DatasetReviewSupportService
         private val metaDataControllerApi: MetaDataControllerApi,
         private val specificationControllerApi: SpecificationControllerApi,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
-        private val datasetReviewRepository: DatasetReviewRepository,
     ) {
         /**
          * Retrieves meta data of a dataset.
@@ -96,20 +91,4 @@ class DatasetReviewSupportService
          */
         fun findDataPointTypeUsingQaReportId(qaReportId: UUID): String =
             dataPointQaReportRepository.findDataPointTypeUsingId(qaReportId.toString())
-
-        /**
-         * Helper method to get a dataset review entity by id including exception handling.
-         *
-         * @param datasetReviewId Unique identifier of the dataset review.
-         * @return The dataset review entity for the given id.
-         * @throws ResourceNotFoundApiException If no dataset review with the given id exists.
-         */
-        @Transactional(readOnly = true)
-        fun getDatasetReview(datasetReviewId: UUID): DatasetReviewEntity =
-            datasetReviewRepository.findById(datasetReviewId).orElseThrow {
-                ResourceNotFoundApiException(
-                    "Dataset review object not found",
-                    "No Dataset review object with the id: $datasetReviewId could be found.",
-                )
-            }
     }
