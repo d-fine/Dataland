@@ -13,6 +13,7 @@
       data-test="multipleReportsBanner"
       v-if="
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials202673 ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
         frameworkIdentifier == DataTypeEnum.Sfdr ||
         frameworkIdentifier == DataTypeEnum.NuclearAndGas
