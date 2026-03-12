@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.frameworks.pcaf.model.general.PcafGeneral
  * The root data-model for the Pcaf Framework
  */
 @Suppress("MagicNumber", "MaxLineLength")
-@DataType("pcaf", 6)
+@DataType("pcaf", 7)
 data class PcafData(
     @field:Valid()
     val general: PcafGeneral? = null,
