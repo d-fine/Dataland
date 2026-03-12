@@ -241,7 +241,7 @@ export default defineComponent({
     }
 
     .framework-filter {
-      width: 16rem;
+      width: 20rem;
     }
 
     label {
