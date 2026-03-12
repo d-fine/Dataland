@@ -107,11 +107,15 @@ class DataExportStore {
 
         exportJobStorage.forEach { (userId, jobs) ->
             jobs
+                .toList()
                 .filter { job ->
                     job.creationTime in (frontendTimeoutPlusCronInterval)..<frontendTimeout &&
                         job.progressState == ExportJobProgressState.Pending
                 }.forEach { job ->
-                    logger.warn("Export job {} for user {} has been running longer than 2 minutes", job.id, userId)
+                    logger.warn(
+                        "error: Export job {} for user {} exceeded {} minutes!",
+                        job.id, userId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
+                    )
                 }
         }
     }
