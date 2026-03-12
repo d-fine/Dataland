@@ -19,10 +19,10 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewCreationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.ReviewDetailsPatchValidationHelper
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.ReviewDetailsPatchValidationHelper
 import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock

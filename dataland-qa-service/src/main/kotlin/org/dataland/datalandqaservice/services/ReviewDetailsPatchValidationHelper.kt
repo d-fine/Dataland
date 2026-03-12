@@ -1,19 +1,18 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
  * Service class to support operations on a dataset review object.
@@ -28,7 +27,7 @@ class ReviewDetailsPatchValidationHelper
          * Ensures a patch provides at least one of customDataPoint or acceptedSource.
          *
          * @param patch The patch payload to validate.
-         * @throws InvalidInputApiException If both values are missing.
+         * @throws org.dataland.datalandbackendutils.exceptions.InvalidInputApiException If both values are missing.
          */
         fun validatePatchContainsCustomDataPointOrAcceptedSource(patch: ReviewDetailsPatch) {
             if (patch.customDataPoint == null && patch.acceptedSource == null) {
@@ -51,7 +50,7 @@ class ReviewDetailsPatchValidationHelper
          * @param oldCustomDataPoint The existing custom value, if any.
          * @param acceptedSource The selected source for data point acceptance.
          * @return The valid custom value, or null.
-         * @throws ConflictApiException If a required custom value is missing.
+         * @throws org.dataland.datalandbackendutils.exceptions.ConflictApiException If a required custom value is missing.
          * @throws InvalidInputApiException If the custom value does not match the specification.
          */
         fun getCustomDataPoint(
@@ -71,7 +70,7 @@ class ReviewDetailsPatchValidationHelper
             }
             try {
                 datasetReviewSupportService.validateCustomDataPoint(newCustomDataPoint, dataPointType)
-            } catch (e: BackendClientException) {
+            } catch (e: ClientException) {
                 throw InvalidInputApiException(
                     "Custom datapoint not valid.",
                     "Custom datapoint given does not match the specification of $dataPointType.",
@@ -107,7 +106,7 @@ class ReviewDetailsPatchValidationHelper
                         errorSummary = "Missing reporterUserIdOfAcceptedQaReport."
                         errorMessage = "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
                     }
-                    qaReports.none { it.reporterUserId == convertToUUID(reporterUserIdOfAcceptedQaReport) } -> {
+                    qaReports.none { it.reporterUserId == ValidationUtils.convertToUUID(reporterUserIdOfAcceptedQaReport) } -> {
                         errorSummary = "QA report not found."
                         errorMessage = "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point."
                     }
@@ -138,7 +137,7 @@ class ReviewDetailsPatchValidationHelper
             datasetReview: DatasetReviewEntity,
         ) = reporterUserIdOfAcceptedQaReport
             ?.let {
-                convertToUUID(it)
+                ValidationUtils.convertToUUID(it)
             }?.let { reporterUserId ->
                 datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
             }?.reporterCompanyId
@@ -147,10 +146,10 @@ class ReviewDetailsPatchValidationHelper
          * Throws InsufficientRightsApiException if user is not reviewer.
          *
          * @param reviewerUserId Expected reviewer user id for the dataset review.
-         * @throws InsufficientRightsApiException If the current user is not the reviewer.
+         * @throws org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException If the current user is not the reviewer.
          */
         fun validateUserIsReviewer(reviewerUserId: UUID) {
-            if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
+            if (DatalandAuthentication.Companion.fromContext().userId != reviewerUserId.toString()) {
                 throw InsufficientRightsApiException(
                     summary = "Only the reviewer is allowed to patch this dataset review object.",
                     message = "Please patch yourself as the reviewer before patching this object.",

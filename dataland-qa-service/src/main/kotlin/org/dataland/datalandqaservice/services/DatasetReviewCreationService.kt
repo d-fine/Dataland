@@ -1,20 +1,20 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
+import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
+import kotlin.collections.iterator
 
 /**
  * Utility class to support the creation of dataset reviews.
@@ -72,11 +72,11 @@ class DatasetReviewCreationService
                 DatasetReviewEntity(
                     dataSetReviewId = UUID.randomUUID(),
                     datasetId = datasetId,
-                    companyId = convertToUUID(datasetMetaData.companyId),
+                    companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
-                    reviewerUserName = DatalandAuthentication.fromContext().name,
+                    reviewerUserId = ValidationUtils.convertToUUID(DatalandAuthentication.Companion.fromContext().userId),
+                    reviewerUserName = DatalandAuthentication.Companion.fromContext().name,
                     qaReporters = qaReporters.toMutableList(),
                     dataPoints = mutableListOf(),
                 )
@@ -137,15 +137,15 @@ class DatasetReviewCreationService
                 val companyId = reporterIdToCompanyId[reporterUserId]
                 val userInfo = keycloakUserService.getUser(reporterUserId)
                 QaReporter(
-                        reporterUserId = UUID.fromString(reporterUserId),
-                        reporterUserName =
-                            listOfNotNull(userInfo.firstName, userInfo.lastName)
-                                .joinToString(" ")
-                                .ifBlank { null },
-                        reporterEmailAddress = userInfo.email,
-                        reportCompanyName = companyId?.let { companyIdToName[it] },
-                        reporterCompanyId = companyId?.let { convertToUUID(it) },
-                    )
+                    reporterUserId = UUID.fromString(reporterUserId),
+                    reporterUserName =
+                        listOfNotNull(userInfo.firstName, userInfo.lastName)
+                            .joinToString(" ")
+                            .ifBlank { null },
+                    reporterEmailAddress = userInfo.email,
+                    reportCompanyName = companyId?.let { companyIdToName[it] },
+                    reporterCompanyId = companyId?.let { ValidationUtils.convertToUUID(it) },
+                )
 
             }
 
@@ -211,7 +211,7 @@ class DatasetReviewCreationService
                 val currentDataPointReviewDetails =
                     DataPointReviewDetailsEntity(
                         dataPointType = dataPointType,
-                        dataPointId = convertToUUID(dataPointId),
+                        dataPointId = ValidationUtils.convertToUUID(dataPointId),
                         qaReports = mutableListOf(),
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
@@ -224,13 +224,13 @@ class DatasetReviewCreationService
                         currentDataPointReviewDetails
                             .addAssociatedQaReports(
                                 QaReportDataPointWithReporterDetailsEntity(
-                                    qaReportId = convertToUUID(qaReport.qaReportId),
+                                    qaReportId = ValidationUtils.convertToUUID(qaReport.qaReportId),
                                     verdict = qaReport.verdict,
                                     correctedData = qaReport.correctedData,
-                                    reporterUserId = convertToUUID(qaReport.reporterUserId),
+                                    reporterUserId = ValidationUtils.convertToUUID(qaReport.reporterUserId),
                                     reporterCompanyId =
                                         reporterIdToCompanyId[qaReport.reporterUserId]
-                                            ?.let { convertToUUID(it) },
+                                            ?.let { ValidationUtils.convertToUUID(it) },
                                 ),
                             )
                     }
