@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.eutaxonomyfinancials202673
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
@@ -16,7 +16,7 @@ import java.io.File
  */
 @Component
 class EuTaxonomyFinancials202673Framework :
-    InDevelopmentPavedRoadFramework(
+    PavedRoadFramework(
         identifier = "eutaxonomy-financials-2026-73",
         label = "EU Taxonomy Financials (2026/73)",
         explanation = "EU Taxonomy Financials Framework as of Regulation (EU) 2026/73",

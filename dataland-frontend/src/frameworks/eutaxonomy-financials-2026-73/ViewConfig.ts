@@ -48,7 +48,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.fiscalYearDeviation
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
           {
             type: 'cell',
@@ -62,7 +62,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.fiscalYearEnd
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
           {
             type: 'cell',
@@ -76,7 +76,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.areAllGroupEntitiesCovered
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports',
           },
           {
             type: 'cell',
@@ -91,7 +91,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.numberOfEmployees
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedDecimalNumberOfEmployees',
           },
           {
             type: 'cell',
@@ -108,7 +108,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.isEuTaxonomyDataReportedOnAMandatoryBasis
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis',
           },
           {
             type: 'cell',
@@ -119,7 +119,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
             uploadComponentName: 'AssuranceFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
           },
           {
             type: 'cell',
@@ -146,7 +146,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.general?.general?.reportsInAccordanceWithArticle79OfRegulationEu202673
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedEnumYesNoReportsInAccordanceWithArticle79OfRegulationEu202673',
           },
         ],
       },
@@ -176,7 +176,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total (gross) Carrying Amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
           },
           {
             type: 'cell',
@@ -189,7 +190,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Amount of Non-Assessed Exposures'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -204,7 +206,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -220,7 +223,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
@@ -236,7 +240,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution',
           },
         ],
       },
@@ -258,7 +263,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Nuclear Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivities',
           },
           {
             type: 'cell',
@@ -273,7 +279,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Nuclear Activities (Taxonomy-eligible)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible',
           },
           {
             type: 'cell',
@@ -288,7 +295,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Nuclear Activities (Taxonomy-aligned)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned',
           },
           {
             type: 'cell',
@@ -302,7 +310,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Fossil Gas Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities',
           },
           {
             type: 'cell',
@@ -317,7 +326,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Fossil Gas Activities (Taxonomy-eligible)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible',
           },
           {
             type: 'cell',
@@ -332,7 +342,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Amount of Assets Exposed towards Fossil Gas Activities (Taxonomy-aligned)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionTurnoverBasedGreenAssetRatioSectorInformationTurnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned',
           },
         ],
       },
@@ -354,7 +365,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Nuclear Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsNuclearActivities',
           },
           {
             type: 'cell',
@@ -369,7 +381,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Nuclear Activities (Taxonomy-eligible)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible',
           },
           {
             type: 'cell',
@@ -384,7 +397,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Nuclear Activities (Taxonomy-aligned)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned',
           },
           {
             type: 'cell',
@@ -398,7 +412,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Fossil Gas Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities',
           },
           {
             type: 'cell',
@@ -413,7 +428,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Fossil Gas Activities (Taxonomy-eligible)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible',
           },
           {
             type: 'cell',
@@ -428,7 +444,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Amount of Assets Exposed towards Fossil Gas Activities (Taxonomy-aligned)'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned',
           },
         ],
       },
@@ -455,7 +472,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -474,7 +492,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -495,7 +514,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -514,7 +534,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -533,7 +554,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -554,7 +576,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -573,7 +596,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
           },
           {
             type: 'cell',
@@ -592,7 +616,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
           },
           {
             type: 'cell',
@@ -612,7 +637,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -631,7 +657,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -651,7 +678,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -667,7 +695,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.turnoverBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockTurnoverBasedNonAssessedExposures',
           },
         ],
       },
@@ -694,7 +723,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -713,7 +743,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -734,7 +765,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -753,7 +785,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -772,7 +805,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -793,7 +827,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
           {
             type: 'cell',
@@ -812,7 +847,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
           },
           {
             type: 'cell',
@@ -831,7 +867,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
           },
           {
             type: 'cell',
@@ -851,7 +888,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
           },
           {
             type: 'cell',
@@ -870,7 +908,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -890,7 +929,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -906,7 +946,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock?.capexBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockCapexBasedNonAssessedExposures',
           },
         ],
       },
@@ -935,7 +976,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Asset under Management - monetary amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyAssetManagementAssetUnderManagementTotalAssetUnderManagementMonetaryAmount',
           },
           {
             type: 'cell',
@@ -952,7 +994,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.assetManagement?.assetUnderManagement?.assetsCoveredByTheKpiInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedDecimalAssetManagementAssetUnderManagementAssetsCoveredByTheKpiInPercent',
           },
           {
             type: 'cell',
@@ -966,7 +1008,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Assets covered by the KPI - monetary amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedCurrencyAssetManagementAssetUnderManagementAssetsCoveredByTheKpiMonetaryAmount',
           },
         ],
       },
@@ -992,7 +1034,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentEligible',
           },
           {
             type: 'cell',
@@ -1010,7 +1053,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1028,7 +1072,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1046,7 +1091,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentAligned',
           },
           {
             type: 'cell',
@@ -1064,7 +1110,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1082,7 +1129,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1100,7 +1148,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -1118,7 +1167,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1135,7 +1185,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased?.turnoverBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -1156,7 +1207,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -1177,7 +1229,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -1198,7 +1251,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
         ],
       },
@@ -1226,7 +1280,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1246,7 +1301,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1267,7 +1323,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1288,7 +1345,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -1309,7 +1367,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -1330,7 +1389,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
         ],
       },
@@ -1356,7 +1416,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentEligible',
           },
           {
             type: 'cell',
@@ -1374,7 +1435,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1392,7 +1454,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -1409,7 +1472,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased?.shareOfCapexBasedKpiInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentAligned',
           },
           {
             type: 'cell',
@@ -1427,7 +1491,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1445,7 +1510,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1463,7 +1529,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -1481,7 +1548,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1498,7 +1566,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased?.capexBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -1519,7 +1588,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -1540,7 +1610,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -1561,7 +1632,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
         ],
       },
@@ -1589,7 +1661,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1609,7 +1682,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -1630,7 +1704,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -1650,7 +1725,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -1671,7 +1747,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -1692,7 +1769,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
         ],
       },
@@ -1722,7 +1800,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total of Absolute Premiums of Taxonomy-aligned Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyAlignedActivities',
           },
           {
             type: 'cell',
@@ -1740,7 +1818,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities',
           },
           {
             type: 'cell',
@@ -1759,7 +1838,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.proportionOfAbsolutePremiumsOfTaxonomyAlignedNuclearActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedNuclearActivities',
           },
           {
             type: 'cell',
@@ -1778,7 +1858,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.proportionOfAbsolutePremiumsOfTaxonomyAlignedFossilGasActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedFossilGasActivities',
           },
           {
             type: 'cell',
@@ -1792,7 +1873,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total of Absolute Premiums of Taxonomy-eligible Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
@@ -1810,7 +1891,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
@@ -1829,7 +1911,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities',
           },
           {
             type: 'cell',
@@ -1848,7 +1931,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities',
           },
           {
             type: 'cell',
@@ -1863,7 +1947,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Of Absolute Premiums Of Non-Assessed Activities Considered Non-Material'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial',
           },
           {
             type: 'cell',
@@ -1882,7 +1967,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial',
           },
           {
             type: 'cell',
@@ -1896,7 +1982,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total of Absolute Premiums'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiums',
           },
         ],
       },
@@ -1918,7 +2004,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Total Asset under Management - monetary amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceAssetUnderManagementTotalAssetUnderManagementMonetaryAmount',
           },
           {
             type: 'cell',
@@ -1935,7 +2022,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.insuranceReinsurance?.assetUnderManagement?.assetsCoveredByTheKpiInPercent
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedDecimalInsuranceReinsuranceAssetUnderManagementAssetsCoveredByTheKpiInPercent',
           },
           {
             type: 'cell',
@@ -1949,7 +2036,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Assets covered by the KPI - monetary amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInsuranceReinsuranceAssetUnderManagementAssetsCoveredByTheKpiMonetaryAmount',
           },
         ],
       },
@@ -1975,7 +2063,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentEligible',
           },
           {
             type: 'cell',
@@ -1993,7 +2082,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -2011,7 +2101,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -2029,7 +2120,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentAligned',
           },
           {
             type: 'cell',
@@ -2047,7 +2139,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2065,7 +2158,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2083,7 +2177,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -2101,7 +2196,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2119,7 +2215,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -2140,7 +2237,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -2161,7 +2259,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -2182,7 +2281,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
         ],
       },
@@ -2210,7 +2310,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2230,7 +2331,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2251,7 +2353,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2272,7 +2375,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -2293,7 +2397,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -2314,7 +2419,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
         ],
       },
@@ -2340,7 +2446,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentEligible',
           },
           {
             type: 'cell',
@@ -2358,7 +2465,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -2376,7 +2484,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible',
           },
           {
             type: 'cell',
@@ -2394,7 +2503,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentAligned',
           },
           {
             type: 'cell',
@@ -2412,7 +2522,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2430,7 +2541,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2448,7 +2560,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -2466,7 +2579,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiInPercentOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2483,7 +2597,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased?.capexBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -2504,7 +2619,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -2525,7 +2641,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -2546,7 +2663,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
         ],
       },
@@ -2574,7 +2692,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2594,7 +2713,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned',
           },
           {
             type: 'cell',
@@ -2615,7 +2735,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
           },
           {
             type: 'cell',
@@ -2635,7 +2756,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned',
           },
           {
             type: 'cell',
@@ -2656,7 +2778,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned',
           },
           {
             type: 'cell',
@@ -2677,7 +2800,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
           },
         ],
       },
@@ -2708,7 +2832,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -2724,7 +2849,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account of which covered by the Turnover"
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover',
           },
           {
             type: 'cell',
@@ -2744,7 +2870,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -2764,7 +2891,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -2785,7 +2913,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -2804,7 +2933,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -2825,7 +2955,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -2846,7 +2977,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -2867,7 +2999,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -2888,7 +3021,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -2909,7 +3043,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -2930,7 +3065,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -2948,7 +3084,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased?.turnoverBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -2969,7 +3106,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -2990,7 +3128,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
@@ -3011,7 +3150,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -3030,7 +3170,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3049,7 +3190,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3068,7 +3210,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned',
           },
           {
             type: 'cell',
@@ -3087,7 +3230,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned',
           },
         ],
       },
@@ -3110,7 +3254,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -3126,7 +3271,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account of which covered by the CapEx"
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex',
           },
           {
             type: 'cell',
@@ -3145,7 +3291,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -3164,7 +3311,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -3185,7 +3333,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -3204,7 +3353,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -3224,7 +3374,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -3245,7 +3396,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -3266,7 +3418,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -3287,7 +3440,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3308,7 +3462,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3329,7 +3484,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3346,7 +3502,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased?.capexBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -3367,7 +3524,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
@@ -3388,7 +3546,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
@@ -3409,7 +3568,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
           },
           {
             type: 'cell',
@@ -3428,7 +3588,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3447,7 +3608,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3466,7 +3628,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned',
           },
           {
             type: 'cell',
@@ -3485,7 +3648,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned',
           },
         ],
       },
@@ -3509,7 +3673,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -3525,7 +3690,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account of which covered by the Turnover'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover',
           },
           {
             type: 'cell',
@@ -3545,7 +3711,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -3565,7 +3732,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -3586,7 +3754,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -3605,7 +3774,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -3626,7 +3796,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -3647,7 +3818,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -3668,7 +3840,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -3689,7 +3862,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3710,7 +3884,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -3731,7 +3906,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -3748,7 +3924,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.investmentFirms?.otherServicesTurnoverBased?.turnoverBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -3768,7 +3945,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3788,7 +3966,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3808,7 +3987,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned',
           },
           {
             type: 'cell',
@@ -3828,7 +4008,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned',
           },
         ],
       },
@@ -3852,7 +4033,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount',
           },
           {
             type: 'cell',
@@ -3868,7 +4050,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account of which covered by the CapEx'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex',
           },
           {
             type: 'cell',
@@ -3888,7 +4071,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned',
           },
           {
             type: 'cell',
@@ -3908,7 +4092,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned',
           },
           {
             type: 'cell',
@@ -3929,7 +4114,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
           },
           {
             type: 'cell',
@@ -3948,7 +4134,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
           },
           {
             type: 'cell',
@@ -3969,7 +4156,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned',
           },
           {
             type: 'cell',
@@ -3990,7 +4178,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
           },
           {
             type: 'cell',
@@ -4011,7 +4200,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
           },
           {
             type: 'cell',
@@ -4032,7 +4222,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -4053,7 +4244,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
           },
           {
             type: 'cell',
@@ -4074,7 +4266,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -4091,7 +4284,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                 dataset.investmentFirms?.otherServicesCapexBased?.capexBasedNonAssessedExposures
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId: 'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedNonAssessedExposures',
           },
           {
             type: 'cell',
@@ -4110,7 +4303,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible',
           },
           {
             type: 'cell',
@@ -4130,7 +4324,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -4149,7 +4344,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned',
           },
           {
             type: 'cell',
@@ -4169,7 +4365,8 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
                   ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned',
           },
         ],
       },
