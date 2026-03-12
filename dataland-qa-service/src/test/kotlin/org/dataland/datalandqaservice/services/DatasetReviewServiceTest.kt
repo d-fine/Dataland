@@ -22,7 +22,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewCreationUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetReviewHelper
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.ReviewDetailsPatchValidationHelper
 import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -58,7 +58,7 @@ class DatasetReviewServiceTest {
         )
 
     private val helper =
-        DatasetReviewHelper(
+        ReviewDetailsPatchValidationHelper(
             datasetReviewRepository,
             datasetReviewSupportService,
         )

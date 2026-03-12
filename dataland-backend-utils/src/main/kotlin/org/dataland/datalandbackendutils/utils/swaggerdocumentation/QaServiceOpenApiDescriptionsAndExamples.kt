@@ -40,7 +40,7 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
     const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
 
-    const val REPORTER_USERNAME_EXAMPLE = "Bot 1 of Dataland"
+    const val REPORTER_USERNAME_EXAMPLE = "Bot_1_of_Dataland"
     const val REPORTER_USERNAME_DESCRIPTION = "The name of the user who uploaded the QA report."
 
     const val REPORTER_USER_EMAIL_EXAMPLE = "bot1@dataland.com"
@@ -98,9 +98,6 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val QA_REPORTS_DESCRIPTION =
         "List of QA reports associated with this data point, including details " +
             "about the reporter company."
-
-    const val ACCEPTED_DATA_POINT_SOURCE_DESCRIPTION = "The source of the accepted value for this data point, if applicable."
-    const val ACCEPTED_DATA_POINT_SOURCE_EXAMPLE = "Original"
 
     const val ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION =
         "The unique identifier of the company whose QA report was " +

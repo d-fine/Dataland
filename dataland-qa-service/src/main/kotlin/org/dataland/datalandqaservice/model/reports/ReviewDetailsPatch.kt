@@ -10,8 +10,8 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
  */
 data class ReviewDetailsPatch(
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_EXAMPLE,
     )
     var acceptedSource: AcceptedDataPointSource? = null,
     @field:Schema(
