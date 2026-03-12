@@ -105,16 +105,15 @@ class DataExportStore {
                 .minus(Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).plusSeconds(FRONTEND_TIMEOUT_CHECKER_FREQUENCY_IN_SEC))
                 .toEpochMilli()
 
-        exportJobStorage.forEach { (userId, mutableJobs) ->
-            val jobs: List<ExportJob> = mutableJobs.toList()
+        exportJobStorage.values.forEach { jobs ->
             jobs
                 .filter { job ->
                     job.creationTime in (frontendTimeoutPlusCronInterval)..<frontendTimeout &&
                         job.progressState == ExportJobProgressState.Pending
                 }.forEach { job ->
-                    logger.error(
-                        "error: Export job {} for user {} exceeded {} minutes!",
-                        job.id, userId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
+                    logger.info(
+                        "error: Export job {} exceeded {} minutes!",
+                        job.id, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
                     )
                 }
         }
