@@ -59,7 +59,6 @@ class DatasetReviewServiceTest {
 
     private val helper =
         ReviewDetailsPatchValidationHelper(
-            datasetReviewRepository,
             datasetReviewSupportService,
         )
 

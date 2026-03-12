@@ -80,7 +80,7 @@ class DatasetReviewService
          */
         @Transactional
         fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
-            val datasetReview = reviewDetailsPatchValidationHelper.getDatasetReview(datasetReviewId)
+            val datasetReview = datasetReviewSupportService.getDatasetReview(datasetReviewId)
             datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
             datasetReview.reviewerUserName = DatalandAuthentication.fromContext().name
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
@@ -103,7 +103,7 @@ class DatasetReviewService
             datasetReviewId: UUID,
             state: DatasetReviewState,
         ): DatasetReviewResponse {
-            val datasetReview = reviewDetailsPatchValidationHelper.getDatasetReview(datasetReviewId)
+            val datasetReview = datasetReviewSupportService.getDatasetReview(datasetReviewId)
             reviewDetailsPatchValidationHelper.isUserReviewer(datasetReview.reviewerUserId)
             datasetReview.reviewState = state
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
@@ -128,7 +128,7 @@ class DatasetReviewService
             dataPointType: String,
             patch: ReviewDetailsPatch,
         ): DatasetReviewResponse {
-            val datasetReview = reviewDetailsPatchValidationHelper.getDatasetReview(datasetReviewId)
+            val datasetReview = datasetReviewSupportService.getDatasetReview(datasetReviewId)
             reviewDetailsPatchValidationHelper.isUserReviewer(datasetReview.reviewerUserId)
             if (patch.customDataPoint == null && patch.acceptedSource == null) {
                 throw InvalidInputApiException(
@@ -192,7 +192,7 @@ class DatasetReviewService
          */
         @Transactional(readOnly = true)
         fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse =
-            reviewDetailsPatchValidationHelper.getDatasetReview(datasetReviewId).toDatasetReviewResponse()
+            datasetReviewSupportService.getDatasetReview(datasetReviewId).toDatasetReviewResponse()
 
         /**
          * Method to get dataset review objects by dataset id.

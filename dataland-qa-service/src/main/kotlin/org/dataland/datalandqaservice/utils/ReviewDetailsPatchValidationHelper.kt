@@ -3,17 +3,14 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
@@ -24,7 +21,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 class ReviewDetailsPatchValidationHelper
     @Autowired
     constructor(
-        private val datasetReviewRepository: DatasetReviewRepository,
         private val datasetReviewSupportService: DatasetReviewSupportService,
     ) {
         /**
@@ -124,28 +120,12 @@ class ReviewDetailsPatchValidationHelper
         fun getCompanyIdOfAcceptedQaReport(
             reporterUserIdOfAcceptedQaReport: String?,
             datasetReview: DatasetReviewEntity,
-        )  = reporterUserIdOfAcceptedQaReport?.let {
+        ) = reporterUserIdOfAcceptedQaReport
+            ?.let {
                 convertToUUID(it)
             }?.let { reporterUserId ->
                 datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
             }?.reporterCompanyId
-        }
-
-        /**
-         * Helper method to get a dataset review entity by id including exception handling.
-         *
-         * @param datasetReviewId Unique identifier of the dataset review.
-         * @return The dataset review entity for the given id.
-         * @throws ResourceNotFoundApiException If no dataset review with the given id exists.
-         */
-        @Transactional(readOnly = true)
-        fun getDatasetReview(datasetReviewId: UUID): DatasetReviewEntity =
-            datasetReviewRepository.findById(datasetReviewId).orElseThrow {
-                ResourceNotFoundApiException(
-                    "Dataset review object not found",
-                    "No Dataset review object with the id: $datasetReviewId could be found.",
-                )
-            }
 
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.
