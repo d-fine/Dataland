@@ -5,7 +5,7 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 
 describe('Unit test for the data type sorting in the Constants', () => {
   it('Check for the correct order of the frameworks', () => {
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER).to.have.length(9);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER).to.have.length(8);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0]).to.equal(DataTypeEnum.Sfdr);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1]).to.equal(DataTypeEnum.EutaxonomyFinancials);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2]).to.equal(DataTypeEnum.EutaxonomyFinancials202673);
