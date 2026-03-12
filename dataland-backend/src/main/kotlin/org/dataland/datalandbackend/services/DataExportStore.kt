@@ -104,6 +104,11 @@ class DataExportStore {
             ?: throw DownloadDataNotFoundApiException(JOB_NOT_FOUND_SUMMARY)
 
     /**
+     * Returns the total number of export jobs across all users. For testing purposes only.
+     */
+    internal fun totalStoredJobCount(): Int = exportJobStorage.values.sumOf { it.size }
+
+    /**
      * Delete an export job from exportJobStorage by its ID.
      */
     fun deleteExportJob(exportJobId: UUID) {
