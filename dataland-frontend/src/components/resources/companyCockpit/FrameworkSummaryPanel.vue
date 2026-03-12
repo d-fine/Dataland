@@ -87,25 +87,31 @@ const provideDataButtonHovered = ref(false);
 const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed(() => injectedUseMobileView?.value);
 
-const euTaxonomyFrameworks = new Set<DataTypeEnum>([
-  DataTypeEnum.EutaxonomyFinancials,
-  DataTypeEnum.EutaxonomyNonFinancials,
-  DataTypeEnum.NuclearAndGas,
-]);
-
 const title = computed(() => {
-  return euTaxonomyFrameworks.has(props.framework) ? 'EU Taxonomy' : humanizeStringOrNumber(props.framework as string);
+  switch (props.framework) {
+    case DataTypeEnum.EutaxonomyFinancials202673:
+    case DataTypeEnum.EutaxonomyFinancials:
+      return 'EU Taxonomy Financials';
+    case DataTypeEnum.EutaxonomyNonFinancials:
+      return 'EU Taxonomy Non-Financials';
+    case DataTypeEnum.NuclearAndGas:
+      return 'EU Taxonomy Nuclear and Gas';
+    default:
+      return humanizeStringOrNumber(props.framework as string);
+  }
 });
 
 const subtitle = computed(() => {
-  if (!euTaxonomyFrameworks.has(props.framework)) return '';
   switch (props.framework) {
+    case DataTypeEnum.EutaxonomyFinancials202673:
+      return '(2026/73)';
     case DataTypeEnum.EutaxonomyFinancials:
-      return 'for financial companies';
+    case DataTypeEnum.EutaxonomyNonFinancials:
+      return '(2020/852)';
     case DataTypeEnum.NuclearAndGas:
-      return 'for nuclear and gas';
+      return '(2022/1214)';
     default:
-      return 'for non-financial companies';
+      return '';
   }
 });
 
