@@ -18,10 +18,10 @@ import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
- * Utility class to support operations on a dataset review object.
+ * Service class to support operations on a dataset review object.
  */
 @Service
-class DatasetReviewHelper
+class ReviewDetailsPatchValidationHelper
     @Autowired
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
@@ -42,7 +42,6 @@ class DatasetReviewHelper
          * @throws ConflictApiException If a required custom value is missing.
          * @throws InvalidInputApiException If the custom value does not match the specification.
          */
-        @Transactional
         fun getCustomDataPoint(
             dataPointType: String,
             newCustomDataPoint: String?,
@@ -71,25 +70,22 @@ class DatasetReviewHelper
         }
 
         /**
-         * Validates and returns the accepted QA report user ID for a data point.
+         * Validates the accepted QA report user ID for a data point.
          *
          * Ensures the user ID is correctly provided or omitted based on the accepted source and checks for the existence
          * of a QA report from the specified user.
          * Throws an exception if validation fails for presence, absence, or existence conditions.
-         * Returns the valid user ID or null if not applicable.
          *
          * @param acceptedDataPoint The selected data point source.
          * @param qaReports The list of QA reports for the data point.
          * @param reporterUserIdOfAcceptedQaReport The user ID to validate as accepted QA report source.
-         * @return The validated user ID or null.
          * @throws InvalidInputApiException If the user ID is missing, incorrectly provided, or does not correspond to a valid QA report.
          */
-        @Transactional
-        fun getReporterUserIdOfAcceptedQaReportIfValid(
+        fun validateReporterUserIdOfAcceptedQaReport(
             acceptedDataPoint: AcceptedDataPointSource?,
             qaReports: List<QaReportDataPointWithReporterDetailsEntity>,
             reporterUserIdOfAcceptedQaReport: String?,
-        ): String? {
+        ) {
             var errorSummary: String? = null
             var errorMessage: String? = null
 
@@ -113,29 +109,6 @@ class DatasetReviewHelper
             if (errorSummary != null && errorMessage != null) {
                 throw InvalidInputApiException(errorSummary, errorMessage)
             }
-
-            return reporterUserIdOfAcceptedQaReport
-        }
-
-        /**
-         * Determines the accepted source for a data point based on provided values.
-         *
-         * Returns the new accepted data point source if specified; otherwise falls back to the previous source.
-         * Used to maintain or update the acceptance status of a data point during review processes.
-         *
-         * @param newAcceptedDataPointSource The proposed new accepted source for the data point.
-         * @param oldAcceptedDataPointSource The existing accepted source for the data point.
-         * @return The resolved accepted data point source, or null if neither is available.
-         */
-        @Transactional
-        fun getAcceptedSourceOfDataPoint(
-            newAcceptedDataPointSource: AcceptedDataPointSource?,
-            oldAcceptedDataPointSource: AcceptedDataPointSource?,
-        ): AcceptedDataPointSource? {
-            if (newAcceptedDataPointSource == null) {
-                return oldAcceptedDataPointSource
-            }
-            return newAcceptedDataPointSource
         }
 
         /**
@@ -148,17 +121,14 @@ class DatasetReviewHelper
          * @param datasetReview The dataset review containing QA reporters to search.
          * @return The company ID of the accepted QA report reporter, or null if not found.
          */
-        @Transactional
         fun getCompanyIdOfAcceptedQaReport(
             reporterUserIdOfAcceptedQaReport: String?,
             datasetReview: DatasetReviewEntity,
-        ): UUID? {
-            if (reporterUserIdOfAcceptedQaReport == null) {
-                return null
-            }
-            val reporterUserId = convertToUUID(reporterUserIdOfAcceptedQaReport)
-            val qaReport = datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
-            return qaReport?.reporterCompanyId
+        )  = reporterUserIdOfAcceptedQaReport?.let {
+                convertToUUID(it)
+            }?.let { reporterUserId ->
+                datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
+            }?.reporterCompanyId
         }
 
         /**
@@ -176,31 +146,6 @@ class DatasetReviewHelper
                     "No Dataset review object with the id: $datasetReviewId could be found.",
                 )
             }
-
-        /**
-         * Method to find a data point by its type, throws ResourceNotFoundApiException if not found.
-         *
-         * @param datasetReview The dataset review containing the data points.
-         * @param dataPointType Type of the data point to locate.
-         * @return Index of the matching data point in the review entity.
-         * @throws ResourceNotFoundApiException If the data point type is not found in the review.
-         */
-        fun getIndexOfDataPointByDataPointType(
-            datasetReview: DatasetReviewEntity,
-            dataPointType: String,
-        ): Int {
-            val index =
-                datasetReview.dataPoints.indexOfFirst {
-                    it.dataPointType == dataPointType
-                }
-            if (index == -1) {
-                throw ResourceNotFoundApiException(
-                    "Datapoint not found.",
-                    "No datapoint with type $dataPointType in dataset review.",
-                )
-            }
-            return index
-        }
 
         /**
          * Throws InsufficientRightsApiException if user is not reviewer.

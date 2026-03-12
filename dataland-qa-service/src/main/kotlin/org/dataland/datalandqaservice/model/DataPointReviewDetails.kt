@@ -32,8 +32,8 @@ data class DataPointReviewDetails(
     )
     val qaReports: List<QaReportDataPointWithReporterDetails>,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_DATA_POINT_SOURCE_EXAMPLE,
+        description = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_EXAMPLE,
     )
     val acceptedSource: AcceptedDataPointSource?,
     @field:Schema(
