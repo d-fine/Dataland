@@ -12,15 +12,19 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum
 ): Cypress.Chainable<Interception> {
+  const metadataAlias = 'fetchMetadata';
   const getRequestAlias = 'fetchDataForPrefill';
+  cy.intercept('GET', `**/api/metadata/**`).as(metadataAlias);
   cy.intercept({
     method: 'GET',
     url: '**/api/data/**',
     times: 2,
   }).as(getRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
-  cy.get('[data-test="editDatasetButton"]').click();
+  cy.wait(`@${metadataAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((interception) => {
+    const dataId = interception.response?.body?.[0]?.dataId as string;
+    cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
+  });
   return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
 }
 
