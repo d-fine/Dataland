@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporterDetails
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporter
 import java.util.UUID
 
 /**
@@ -16,11 +16,11 @@ import java.util.UUID
 @Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review_qa_report_datapoint")
-class QaReportDataPointWithReporterDetailsEntity(
+class QaReportDataPointWithReporterEntity(
     @Id val id: UUID = UUID.randomUUID(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_point_review_details_id")
-    var dataPointReviewDetails: DataPointReviewDetailsEntity? = null,
+    var dataPointReviewDetails: DataPointReviewEntity? = null,
     val qaReportId: UUID,
     val verdict: QaReportDataPointVerdict,
     val correctedData: String?,
@@ -30,8 +30,8 @@ class QaReportDataPointWithReporterDetailsEntity(
     /**
      * Converts this entity to its API response DTO.
      */
-    fun toQaReportDataPointWithReporterDetails(): QaReportDataPointWithReporterDetails =
-        QaReportDataPointWithReporterDetails(
+    fun toQaReportDataPointWithReporterDetails(): QaReportDataPointWithReporter =
+        QaReportDataPointWithReporter(
             qaReportId = qaReportId,
             verdict = verdict,
             correctedData = correctedData,

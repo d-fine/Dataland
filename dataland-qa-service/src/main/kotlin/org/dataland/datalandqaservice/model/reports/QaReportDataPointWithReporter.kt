@@ -7,13 +7,17 @@ import java.util.UUID
 
 /**
  * API response DTO for a QA report data point with reporter details.
+ *
+ * This class is used to return information about each QA report, including the verdict, any corrected data, and details
+ * about the reporter (user ID and company ID).
+ *
  * @property qaReportId the ID of the QA report this data point belongs to
  * @property verdict the QA verdict for the data point
  * @property correctedData corrected data for the data point if applicable
  * @property reporterUserId the ID of the user who reported this data point
  * @property reporterCompanyId the ID of the company of the user who reported this data point
  */
-data class QaReportDataPointWithReporterDetails(
+data class QaReportDataPointWithReporter(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,

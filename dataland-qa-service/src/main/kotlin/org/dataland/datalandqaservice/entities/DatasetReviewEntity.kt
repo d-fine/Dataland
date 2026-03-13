@@ -36,14 +36,14 @@ class DatasetReviewEntity(
     @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
     @Column(name = "reviewer_user_id")
-    var reviewerUserId: UUID,
+    var qaJudgeUserId: UUID,
     @Column(name = "reviewer_user_name")
-    var reviewerUserName: String,
+    var qaJudgeUserName: String,
     @ElementCollection
     @Column(name = "qa_reporters")
     var qaReporters: MutableList<QaReporter>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
-    val dataPoints: MutableList<DataPointReviewDetailsEntity>,
+    val dataPoints: MutableList<DataPointReviewEntity>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
@@ -56,8 +56,8 @@ class DatasetReviewEntity(
             dataType,
             reportingPeriod,
             reviewState,
-            reviewerUserId.toString(),
-            reviewerUserName,
+            qaJudgeUserId.toString(),
+            qaJudgeUserName,
             qaReporters.toList(),
             dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
         )
@@ -66,7 +66,7 @@ class DatasetReviewEntity(
      * Add an associated request to this data sourcing entity.
      * Make sure the data sourcing entity is also added to the request.
      */
-    fun addAssociatedDataPoints(dataPoint: DataPointReviewDetailsEntity) {
+    fun addAssociatedDataPoints(dataPoint: DataPointReviewEntity) {
         dataPoints.add(dataPoint)
         dataPoint.datasetReview = this
     }

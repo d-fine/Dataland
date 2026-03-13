@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterDetailsEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
 
@@ -34,8 +34,8 @@ object MockDatasetReviewEntityForTest {
             companyId = dummyCompanyId,
             dataType = "sfdr",
             reportingPeriod = "2026",
-            reviewerUserId = dummyUserId,
-            reviewerUserName = DUMMY_USER_NAME,
+            qaJudgeUserId = dummyUserId,
+            qaJudgeUserName = DUMMY_USER_NAME,
             qaReporters =
                 mutableListOf(
                     QaReporter(
@@ -48,12 +48,12 @@ object MockDatasetReviewEntityForTest {
                 ),
             dataPoints =
                 mutableListOf(
-                    DataPointReviewDetailsEntity(
+                    DataPointReviewEntity(
                         dataPointType = DUMMY_DATA_POINT_TYPE,
                         dataPointId = UUID.randomUUID(),
                         qaReports =
                             mutableListOf(
-                                QaReportDataPointWithReporterDetailsEntity(
+                                QaReportDataPointWithReporterEntity(
                                     qaReportId = UUID.randomUUID(),
                                     verdict = QaReportDataPointVerdict.QaAccepted,
                                     correctedData = null,
