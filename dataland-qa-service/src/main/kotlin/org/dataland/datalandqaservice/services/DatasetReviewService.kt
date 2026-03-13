@@ -79,10 +79,10 @@ class DatasetReviewService
                     companyId = convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId),
+                    ownerId = convertToUUID(DatalandAuthentication.fromContext().userId),
                     qaReports = qaReportIdWithUploaderCompanyIds.toSet(),
                 )
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -91,18 +91,18 @@ class DatasetReviewService
         @Transactional(readOnly = true)
         fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> {
             val entities = datasetReviewRepository.findAllByDatasetId(datasetId)
-            return entities.toDatasetReviewResponsesWithReviewerUserNames()
+            return entities.toDatasetReviewResponsesWithOwnerNames()
         }
 
         /**
-         * Method to set reviewer to current user.
+         * Method to set owner to current user.
          */
         @Transactional
-        fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
+        fun setOwner(datasetReviewId: UUID): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            datasetReview.reviewerUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
+            datasetReview.ownerId = convertToUUID(DatalandAuthentication.fromContext().userId)
 
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -114,10 +114,10 @@ class DatasetReviewService
             state: DatasetReviewState,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
+            isUserOwner(datasetReview.ownerId)
             datasetReview.reviewState = state
 
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -129,7 +129,7 @@ class DatasetReviewService
             dataPointId: UUID,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
+            isUserOwner(datasetReview.ownerId)
             val datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetReview.datasetId.toString())
             if (dataPointId.toString() !in datatypeToDatapointIds.values) {
                 throw ResourceNotFoundApiException(
@@ -141,7 +141,7 @@ class DatasetReviewService
             datasetReview.approvedDataPointIds[dataPointType] = dataPointId
             datasetReview.approvedQaReportIds.remove(dataPointType)
             datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -153,7 +153,7 @@ class DatasetReviewService
             qaReportId: UUID,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
+            isUserOwner(datasetReview.ownerId)
             datasetReview.qaReports.firstOrNull { it.qaReportId == qaReportId }
                 ?: throw ResourceNotFoundApiException(
                     "QA report not found.",
@@ -167,7 +167,7 @@ class DatasetReviewService
             datasetReview.approvedQaReportIds[dataPointType] = qaReportId
             datasetReview.approvedDataPointIds.remove(dataPointType)
             datasetReview.approvedCustomDataPointIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -181,7 +181,7 @@ class DatasetReviewService
             dataPointType: String,
         ): DatasetReviewResponse {
             val datasetReview = getDatasetReview(datasetReviewId)
-            isUserReviewer(datasetReview.reviewerUserId)
+            isUserOwner(datasetReview.ownerId)
             lateinit var frameworksOfDataPointType: List<String>
             try {
                 frameworksOfDataPointType =
@@ -211,7 +211,7 @@ class DatasetReviewService
             datasetReview.approvedCustomDataPointIds[dataPointType] = dataPoint
             datasetReview.approvedDataPointIds.remove(dataPointType)
             datasetReview.approvedQaReportIds.remove(dataPointType)
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithReviewerUserName()
+            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponseWithOwnerName()
         }
 
         /**
@@ -232,26 +232,26 @@ class DatasetReviewService
                 )
             }
 
-        private fun DatasetReviewEntity.toDatasetReviewResponseWithReviewerUserName(): DatasetReviewResponse {
+        private fun DatasetReviewEntity.toDatasetReviewResponseWithOwnerName(): DatasetReviewResponse {
             val response = this.toDatasetReviewResponse()
-            response.reviewerUserName = resolveReviewerUserName(this.reviewerUserId)
+            response.ownerName = resolveOwnerName(this.ownerId)
             return response
         }
 
-        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithReviewerUserNames(): List<DatasetReviewResponse> {
-            val reviewerUserIds = this.mapNotNull { it.reviewerUserId }.distinct()
-            val reviewerIdToName = reviewerUserIds.associateWith { resolveReviewerUserName(it) }
+        private fun List<DatasetReviewEntity>.toDatasetReviewResponsesWithOwnerNames(): List<DatasetReviewResponse> {
+            val ownerIds = this.mapNotNull { it.ownerId }.distinct()
+            val ownerIdToName = ownerIds.associateWith { resolveOwnerName(it) }
 
             return this.map {
                 val response = it.toDatasetReviewResponse()
-                response.reviewerUserName = it.reviewerUserId?.let { reviewerUserId -> reviewerIdToName[reviewerUserId] }
+                response.ownerName = it.ownerId?.let { ownerId -> ownerIdToName[ownerId] }
                 response
             }
         }
 
-        private fun resolveReviewerUserName(reviewerUserId: UUID?): String? {
-            val reviewerUserIdString = reviewerUserId?.toString() ?: return null
-            val userInfo = keycloakUserService.getUser(reviewerUserIdString)
+        private fun resolveOwnerName(ownerId: UUID?): String? {
+            val ownerIdString = ownerId?.toString() ?: return null
+            val userInfo = keycloakUserService.getUser(ownerIdString)
 
             val firstName = userInfo.firstName?.trim().orEmpty()
             val lastName = userInfo.lastName?.trim().orEmpty()
@@ -260,18 +260,18 @@ class DatasetReviewService
             return when {
                 fullName.isNotBlank() -> fullName
                 !userInfo.email.isNullOrBlank() -> userInfo.email
-                else -> reviewerUserIdString
+                else -> ownerIdString
             }
         }
 
         /**
-         * Throws InsufficientRightsApiException if user is not reviewer.
+         * Throws InsufficientRightsApiException if user is not the owner of the review.
          */
-        private fun isUserReviewer(reviewerUserId: UUID?) {
-            if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
+        private fun isUserOwner(ownerId: UUID?) {
+            if (DatalandAuthentication.fromContext().userId != ownerId.toString()) {
                 throw InsufficientRightsApiException(
-                    summary = "Only the reviewer is allowed to patch this dataset review object.",
-                    message = "Please patch yourself as the reviewer before patching this object.",
+                    summary = "Only the owner is allowed to patch this dataset review object.",
+                    message = "Please patch yourself as the owner before patching this object.",
                 ) as Throwable
             }
         }

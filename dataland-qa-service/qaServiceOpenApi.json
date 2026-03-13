@@ -26,7 +26,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id. Users can get the review information of their own datasets. Admins and reviewer can get the review information for all datasets.",
+        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins, judges and reviewer can get the review information for all datasets.",
         "operationId": "getQaReviewResponseByDataId",
         "parameters": [
           {
@@ -205,7 +205,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1119,7 +1119,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded data point for a given id.",
-        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins and reviewer can get the review information for all data points.",
+        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins, judges and reviewer can get the review information for all data points.",
         "operationId": "getDataPointQaReviewInformationByDataId",
         "parameters": [
           {
@@ -1527,7 +1527,7 @@
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1567,14 +1567,14 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/reviewer": {
+    "/dataset-reviews/{datasetReviewId}/owner": {
       "patch": {
         "tags": [
           "dataset-review-controller"
         ],
-        "summary": "Change the reviewer of a dataset review object.",
-        "description": "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
-        "operationId": "setReviewer",
+        "summary": "Change the owner of a dataset review object.",
+        "description": "Set yourself as the owner of the dataset review object. Other users cannot modify this object.",
+        "operationId": "setOwner",
         "parameters": [
           {
             "name": "datasetReviewId",
@@ -1589,7 +1589,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully set yourself as the reviewer.",
+            "description": "Successfully set yourself as the owner.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1599,7 +1599,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1681,7 +1681,7 @@
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1763,7 +1763,7 @@
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1866,7 +1866,7 @@
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the reviewer for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2666,7 +2666,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2741,7 +2741,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3793,12 +3793,12 @@
           "reviewState": {
             "$ref": "#/components/schemas/DatasetReviewState"
           },
-          "reviewerUserId": {
+          "ownerId": {
             "type": "string",
             "description": "The unique user ID of the user reviewing the dataset.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "reviewerUserName": {
+          "ownerName": {
             "type": "string",
             "description": "The name or email of the user reviewing the dataset.",
             "example": "Jane Doe"
@@ -8833,12 +8833,12 @@
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
-          "reviewerUserId": {
+          "ownerId": {
             "type": "string",
             "description": "The unique user ID of the user reviewing the dataset.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "reviewerUserName": {
+          "ownerName": {
             "type": "string",
             "description": "The name or email of the user reviewing the dataset.",
             "example": "Jane Doe"

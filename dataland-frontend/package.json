@@ -20,7 +20,7 @@
     "checkfakefixturecompilation": "tsc --noEmit -P tsconfig.commonjs.json",
     "prepopulate": "cypress run --spec tests/e2e/specs/prepopulation/index.ts",
     "updatepackages": "npm-check-updates -u",
-    "updatepackagelock": "npm update --save --include=dev && npm audit fix",
+    "fixvulnerabilites": "npm audit fix",
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
