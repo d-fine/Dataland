@@ -32,8 +32,8 @@ class DatasetReviewController(
     override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetReviewResponse>> =
         ResponseEntity.ok(datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))
 
-    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity.ok(datasetReviewService.setReviewer(convertToUUID(datasetReviewId)))
+    override fun setOwner(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
+        ResponseEntity.ok(datasetReviewService.setOwner(convertToUUID(datasetReviewId)))
 
     override fun setReviewState(
         datasetReviewId: String,

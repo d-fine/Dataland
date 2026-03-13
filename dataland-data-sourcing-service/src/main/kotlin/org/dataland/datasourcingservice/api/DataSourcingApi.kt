@@ -323,7 +323,7 @@ interface DataSourcingApi {
         ],
     )
     @PostMapping(value = ["/priorities"], consumes = ["application/json"], produces = ["application/json"])
-    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun getDataSourcingPriorities(
         @RequestBody dataDimensions: List<BasicDataDimensions>,
     ): ResponseEntity<List<DataSourcingPriorityByDataDimensions>>
