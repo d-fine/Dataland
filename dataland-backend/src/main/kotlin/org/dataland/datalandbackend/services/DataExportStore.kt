@@ -24,7 +24,8 @@ import kotlin.collections.removeAll
 @Service
 class DataExportStore {
     companion object {
-        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 3L
+        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 2L
+        private const val TIMEOUT_PENDING_EXPORT_JOB_REMOVED_IN_MIN = 4L
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -56,26 +57,30 @@ class DataExportStore {
         timer.schedule(
             object : TimerTask() {
                 override fun run() {
-                    handleJobTimeout(exportJobId, newExportJob)
+                    warnIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
                 }
             },
             Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).toMillis(),
+        )
+        timer.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    removeIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
+                }
+            },
+            Duration.ofMinutes(TIMEOUT_PENDING_EXPORT_JOB_REMOVED_IN_MIN).toMillis(),
         )
         return newExportJob
     }
 
     /**
-     * Handles the timeout of an export job by removing it from storage if it is still pending.
+     * Removes an export job from storage if it is still pending after the hard timeout,
      */
-    internal fun handleJobTimeout(
+    internal fun removeIfJobPendingAfterFrontendTimeout(
         exportJobId: UUID,
         exportJob: ExportJob,
     ) {
         if (exportJob.progressState == ExportJobProgressState.Pending) {
-            logger.error(
-                "export job {} exceeded {} minutes!",
-                exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
-            )
             exportJobStorage.values.forEach { jobs ->
                 jobs.removeAll { it.id == exportJobId }
             }
@@ -84,6 +89,22 @@ class DataExportStore {
             }
         }
         jobTimeoutTimers.remove(exportJobId)
+    }
+
+    /**
+     * Logs an error warning if the export job is still pending after the frontend timeout,
+     * indicating a potential frontend failure.
+     */
+    internal fun warnIfJobPendingAfterFrontendTimeout(
+        exportJobId: UUID,
+        exportJob: ExportJob,
+    ) {
+        if (exportJob.progressState == ExportJobProgressState.Pending) {
+            logger.error(
+                "export job {} exceeded {} minutes!",
+                exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
+            )
+        }
     }
 
     /**
