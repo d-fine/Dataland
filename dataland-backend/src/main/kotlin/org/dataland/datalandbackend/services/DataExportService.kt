@@ -44,6 +44,8 @@ open class DataExportService<T>(
         private const val BUFFER = 15
         private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
         private const val EXCEL_FONT_HEIGHT: Short = 11
+        private const val MAX_CHARACTER_LENGTH = 255
+        private const val MAX_EXCEL_CELL_LENGTH = 32767
     }
 
     private val objectMapper = defaultObjectMapper
@@ -152,13 +154,13 @@ open class DataExportService<T>(
      * @param csvDataWithReadableHeaders the data to be transformed (each entry in the list represents a row in the Excel file)
      * @param csvSchema the CSV schema defining the column structure
      * @param outputStream the output stream to write the data to
-     * @param includeAliases if true, column widths are calculated based on character length of the header
+     * @param shortHeaderNamesAndColumns if true, column widths are calculated based on character length of the header
      */
     fun transformDataToExcelWithReadableHeaders(
         csvDataWithReadableHeaders: List<Map<String, String?>>,
         csvSchema: CsvSchema,
         outputStream: OutputStream,
-        includeAliases: Boolean = false,
+        shortHeaderNamesAndColumns: Boolean = false,
     ) {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data")
@@ -187,7 +189,7 @@ open class DataExportService<T>(
         csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
             val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
             orderedColumns.forEachIndexed { colIndex, columnName ->
-                val cellValue = dataMap[columnName] ?: ""
+                val cellValue = (dataMap[columnName] ?: "").take(MAX_EXCEL_CELL_LENGTH)
                 row.createCell(colIndex).apply {
                     setCellValue(cellValue)
                     cellStyle = defaultStyle
@@ -196,11 +198,11 @@ open class DataExportService<T>(
         }
 
         // Step 4: Set column widths based on configuration
-        if (includeAliases) {
+        if (shortHeaderNamesAndColumns) {
             orderedColumns.forEachIndexed { index, _ ->
                 val headerLength = columnHeaderLengths[index] ?: FIXED_COLUMN_WIDTH
                 val columnWidth =
-                    (headerLength + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+                    minOf(headerLength + BUFFER, MAX_CHARACTER_LENGTH) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
                 sheet.setColumnWidth(index, columnWidth)
             }
         } else {

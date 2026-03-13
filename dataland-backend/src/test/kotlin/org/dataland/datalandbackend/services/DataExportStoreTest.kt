@@ -88,9 +88,9 @@ class DataExportStoreTest {
         dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, exportJob)
 
         verify(mockLogger).error(
-            "export job {} exceeded {} minutes!",
+            DataExportStore.EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
             exportJobId,
-            2L,
+            DataExportStore.EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
         )
     }
 

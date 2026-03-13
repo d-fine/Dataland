@@ -24,8 +24,16 @@ import kotlin.collections.removeAll
 @Service
 class DataExportStore {
     companion object {
-        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 2L
-        private const val TIMEOUT_PENDING_EXPORT_JOB_REMOVED_IN_MIN = 4L
+        internal const val EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS = 2L
+        private const val REMOVE_PENDING_EXPORT_JOB_AFTER_MINS = 4L
+
+        /**
+         * SLF4J log message used when an export job exceeds the frontend timeout.
+         * The derived Loki regex must be kept in sync with this message
+         * and is used in the alert rule in:
+         * dataland-grafana/provisioning/alerting/alert-rules-template.yaml (uid: export_job_timeout)
+         */
+        internal const val EXPORT_JOB_TIMEOUT_LOG_MESSAGE = "export job {} exceeded {} minutes!"
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -60,7 +68,7 @@ class DataExportStore {
                     warnIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
                 }
             },
-            Duration.ofMinutes(FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN).toMillis(),
+            Duration.ofMinutes(EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS).toMillis(),
         )
         timer.schedule(
             object : TimerTask() {
@@ -68,7 +76,7 @@ class DataExportStore {
                     removeIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
                 }
             },
-            Duration.ofMinutes(TIMEOUT_PENDING_EXPORT_JOB_REMOVED_IN_MIN).toMillis(),
+            Duration.ofMinutes(REMOVE_PENDING_EXPORT_JOB_AFTER_MINS).toMillis(),
         )
         return newExportJob
     }
@@ -101,8 +109,8 @@ class DataExportStore {
     ) {
         if (exportJob.progressState == ExportJobProgressState.Pending) {
             logger.error(
-                "export job {} exceeded {} minutes!",
-                exportJobId, FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN,
+                EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
+                exportJobId, EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
             )
         }
     }
