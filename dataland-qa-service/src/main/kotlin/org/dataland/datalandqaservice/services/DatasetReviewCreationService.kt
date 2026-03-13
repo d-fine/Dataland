@@ -102,21 +102,13 @@ class DatasetReviewCreationService
          */
         private fun getLatestQaReportsByDataPointTypeAndReporter(
             activeQaReports: Collection<DataPointQaReportEntity>,
-        ): Map<String, Collection<DataPointQaReportEntity>> {
-            val latestByType = mutableMapOf<String, MutableList<DataPointQaReportEntity>>()
-            for (qaReport in activeQaReports) {
-                val reportsForType = latestByType.getOrPut(qaReport.dataPointType) { mutableListOf() }
-                val existingIndex = reportsForType.indexOfFirst { it.reporterUserId == qaReport.reporterUserId }
-                if (existingIndex >= 0) {
-                    if (qaReport.uploadTime > reportsForType[existingIndex].uploadTime) {
-                        reportsForType[existingIndex] = qaReport
-                    }
-                } else {
-                    reportsForType.add(qaReport)
+        ): Map<String, Collection<DataPointQaReportEntity>> =
+            activeQaReports.groupBy { it.dataPointType }.mapValues { (_, reports) ->
+                reports.groupBy { it.reporterUserId }.map { (_, reportsByReporter) ->
+                    reportsByReporter.maxBy { it.uploadTime }
                 }
             }
-            return latestByType
-        }
+
 
         /**
          * Helper method to build a list of QA reporters for the provided reporter user ids.
@@ -183,13 +175,11 @@ class DatasetReviewCreationService
          * @param uniqueCompanyIds List of unique company ids to resolve.
          * @return Map of company id to company name for the provided ids.
          */
-        private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> {
-            val reporterCompanyNames =
-                companyDataControllerApi
-                    .postCompanyValidation(uniqueCompanyIds)
-                    .map { it.companyInformation?.companyName ?: it.identifier }
-            return uniqueCompanyIds.associateWith { reporterCompanyNames[uniqueCompanyIds.indexOf(it)] }
-        }
+        private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> =
+            companyDataControllerApi
+                .postCompanyValidation(uniqueCompanyIds).associate {
+                    it.identifier to (it.companyInformation?.companyName ?: it.identifier)
+                }
 
         /**
          * Helper method to populate the dataset review with data point review details.

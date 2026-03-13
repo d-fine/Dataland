@@ -3287,7 +3287,7 @@
       },
       "AcceptedDataPointSource": {
         "type": "string",
-        "description": "The source of the accepted value for this data point, if applicable.",
+        "description": "The source from which the value of the data point was accepted.",
         "example": "Original",
         "enum": [
           "Original",
@@ -3295,7 +3295,7 @@
           "Custom"
         ]
       },
-      "DataPointReviewDetails": {
+      "DataPointReview": {
         "required": [
           "dataPointType",
           "qaReports"
@@ -3317,7 +3317,7 @@
             "type": "array",
             "description": "List of QA reports associated with this data point, including details about the reporter company.",
             "items": {
-              "$ref": "#/components/schemas/QaReportDataPointWithReporterDetails"
+              "$ref": "#/components/schemas/QaReportDataPointWithReporter"
             }
           },
           "acceptedSource": {
@@ -3417,7 +3417,7 @@
           "dataPoints": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/DataPointReviewDetails"
+              "$ref": "#/components/schemas/DataPointReview"
             },
             "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
           }
@@ -3443,7 +3443,7 @@
           "QaNotAttempted"
         ]
       },
-      "QaReportDataPointWithReporterDetails": {
+      "QaReportDataPointWithReporter": {
         "required": [
           "qaReportId",
           "reporterUserId",
@@ -3495,7 +3495,7 @@
           "reporterUserName": {
             "type": "string",
             "description": "The name of the user who uploaded the QA report.",
-            "example": "Bot 1 of Dataland"
+            "example": "Bot_1_of_Dataland"
           },
           "reporterEmailAddress": {
             "type": "string",

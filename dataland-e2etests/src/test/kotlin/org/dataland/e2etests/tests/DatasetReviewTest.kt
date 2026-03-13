@@ -87,6 +87,28 @@ class DatasetReviewTest {
                 datasetReviewId,
                 datapointType1,
                 ReviewDetailsPatch(
+                    AcceptedDataPointSource.Qa,
+                    datasetReview.qaReporters.first().reporterUserId.toString(),
+                    null,
+                ),
+            )
+
+            QaService.datasetReviewControllerApi.patchReviewDetails(
+                datasetReviewId,
+                datapointType1,
+                ReviewDetailsPatch(
+                    AcceptedDataPointSource.Qa,
+                    datasetReview.qaReporters[1].reporterUserId.toString(),
+                    null,
+                ),
+            )
+
+
+
+            QaService.datasetReviewControllerApi.patchReviewDetails(
+                datasetReviewId,
+                datapointType1,
+                ReviewDetailsPatch(
                     AcceptedDataPointSource.Original,
                     null,
                     null,
