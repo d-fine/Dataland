@@ -1,6 +1,7 @@
-import { type DataTypeEnum } from '@clients/backend';
+import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 /**
  * Visits the edit page for a framework via UI navigation.
@@ -12,18 +13,23 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum
 ): Cypress.Chainable<Interception> {
-  const metadataAlias = 'fetchMetadata';
   const getRequestAlias = 'fetchDataForPrefill';
-  cy.intercept('GET', `**/api/metadata/**`).as(metadataAlias);
+  cy.intercept('GET', '**/api/metadata**').as('fetchMetadata');
   cy.intercept({
     method: 'GET',
     url: '**/api/data/**',
     times: 2,
   }).as(getRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  cy.wait(`@${metadataAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((interception) => {
-    const dataId = interception.response?.body?.[0]?.dataId as string;
-    cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
+  cy.wait('@fetchMetadata').then((interception) => {
+    const response = interception.response?.body as DataMetaInformation[];
+    const dataId = assertDefined(response[0]).dataId;
+    cy.wrap(dataId).as('dataId');
+  });
+  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.get<string>('@dataId').then((dataId) => {
+    const templateDataId = assertDefined(dataId);
+    cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${templateDataId}`);
   });
   return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
 }
