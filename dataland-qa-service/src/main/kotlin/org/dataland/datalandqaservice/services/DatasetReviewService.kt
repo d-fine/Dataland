@@ -129,7 +129,6 @@ class DatasetReviewService
             val datasetReview = datasetReviewSupportService.getDatasetReviewEntityById(datasetReviewId)
             ReviewDetailsPatchValidationHelper.validateUserIsReviewer(datasetReview.qaJudgeUserId)
             ReviewDetailsPatchValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
-
             val dataPoint =
                 datasetReview.dataPoints
                     .find { it.dataPointType == dataPointType }
@@ -137,46 +136,47 @@ class DatasetReviewService
                         "Invalid input.",
                         "Data point with type '$dataPointType' not found.",
                     )
+            val customDataPoint = patch.customDataPoint
+            if (customDataPoint != null) {
+                datasetReviewSupportService.validateCustomDataPoint(customDataPoint, dataPointType)
+                dataPoint.customValue = customDataPoint
+            }
 
-            ReviewDetailsPatchValidationHelper.validateReporterUserIdOfAcceptedQaReport(
-                patch.acceptedSource,
-                dataPoint.qaReports.toList(),
-                patch.reporterUserIdOfAcceptedQaReport,
-            )
-
-            dataPoint.apply {
-                this.acceptedSource = patch.acceptedSource ?: dataPoint.acceptedSource
-
-                this.reporterUserIdOfAcceptedQaReport =
-                    (patch.acceptedSource ?: dataPoint.acceptedSource)
-                        .let { acceptedSource ->
-                            if (acceptedSource == AcceptedDataPointSource.Qa) {
-                                patch.reporterUserIdOfAcceptedQaReport
-                            } else {
-                                null
-                            }
-                        }?.let { convertToUUID(it) }
-
-                this.companyIdOfAcceptedQaReport =
-                    ReviewDetailsPatchValidationHelper.getCompanyIdOfAcceptedQaReport(
-                        (patch.acceptedSource ?: dataPoint.acceptedSource)
-                            .let { acceptedSource ->
-                                if (acceptedSource == AcceptedDataPointSource.Qa) {
-                                    patch.reporterUserIdOfAcceptedQaReport
-                                } else {
-                                    null
-                                }
-                            },
-                        datasetReview,
+            when (patch.acceptedSource) {
+                AcceptedDataPointSource.Original -> {
+                    dataPoint.apply {
+                        this.acceptedSource = AcceptedDataPointSource.Original
+                        this.reporterUserIdOfAcceptedQaReport = null
+                        this.companyIdOfAcceptedQaReport = null
+                    }
+                }
+                AcceptedDataPointSource.Qa -> {
+                    ReviewDetailsPatchValidationHelper.validateReporterUserIdOfAcceptedQaReport(
+                        dataPoint.qaReports.toList(),
+                        patch.reporterUserIdOfAcceptedQaReport,
                     )
-
-                this.customValue =
-                    datasetReviewSupportService.getCustomDataPoint(
-                        dataPointType,
-                        patch.customDataPoint,
-                        dataPoint.customValue,
-                        patch.acceptedSource,
-                    )
+                    dataPoint.apply {
+                        this.acceptedSource = AcceptedDataPointSource.Qa
+                        this.reporterUserIdOfAcceptedQaReport =
+                            convertToUUID(patch.reporterUserIdOfAcceptedQaReport!!)
+                        this.companyIdOfAcceptedQaReport =
+                            ReviewDetailsPatchValidationHelper.getCompanyIdOfAcceptedQaReport(
+                                patch.reporterUserIdOfAcceptedQaReport,
+                                datasetReview,
+                            )
+                    }
+                }
+                AcceptedDataPointSource.Custom -> {
+                    ReviewDetailsPatchValidationHelper.validateCustomDataPointIsSet(dataPoint)
+                    dataPoint.apply {
+                        this.acceptedSource = AcceptedDataPointSource.Custom
+                        this.reporterUserIdOfAcceptedQaReport = null
+                        this.companyIdOfAcceptedQaReport = null
+                    }
+                }
+                null -> {
+                    return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+                }
             }
 
             return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()

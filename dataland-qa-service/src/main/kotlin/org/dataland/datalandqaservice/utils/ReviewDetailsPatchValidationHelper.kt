@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
@@ -30,44 +30,46 @@ object ReviewDetailsPatchValidationHelper {
     }
 
     /**
+     * Ensures a custom data point value is present on the given data point review entity.
+     *
+     * @param dataPoint The data point review entity to validate.
+     * @throws org.dataland.datalandbackendutils.exceptions.InvalidInputApiException If the custom value is missing.
+     */
+    fun validateCustomDataPointIsSet(dataPoint: DataPointReviewEntity) {
+        if (dataPoint.customValue == null) {
+            throw InvalidInputApiException(
+                "Missing custom data point.",
+                "Custom data point has to be provided when acceptedSource is Custom.",
+            )
+        }
+    }
+
+    /**
      * Validates the accepted QA report user ID for a data point.
      *
-     * Ensures the user ID is correctly provided or omitted based on the accepted source and checks for the existence
+     * Ensures the user ID is correctly provided or omitted and checks for the existence
      * of a QA report from the specified user.
-     * Throws an exception if validation fails for presence, absence, or existence conditions.
+     * Throws an exception if validation fails for absence, or existence conditions.
      *
-     * @param acceptedDataPoint The selected data point source.
      * @param qaReports The list of QA reports for the data point.
      * @param reporterUserIdOfAcceptedQaReport The user ID to validate as accepted QA report source.
-     * @throws InvalidInputApiException If the user ID is missing, incorrectly provided, or does not correspond to a valid QA report.
+     * @throws InvalidInputApiException If the user ID is missing or does not correspond to a valid QA report.
      */
     fun validateReporterUserIdOfAcceptedQaReport(
-        acceptedDataPoint: AcceptedDataPointSource?,
         qaReports: List<QaReportDataPointWithReporterEntity>,
         reporterUserIdOfAcceptedQaReport: String?,
     ) {
-        var errorSummary: String? = null
-        var errorMessage: String? = null
-
-        if (acceptedDataPoint == AcceptedDataPointSource.Qa) {
-            when {
-                reporterUserIdOfAcceptedQaReport == null -> {
-                    errorSummary = "Missing reporterUserIdOfAcceptedQaReport."
-                    errorMessage = "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa."
-                }
-                qaReports.none { it.reporterUserId == ValidationUtils.convertToUUID(reporterUserIdOfAcceptedQaReport) } -> {
-                    errorSummary = "QA report not found."
-                    errorMessage = "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point."
-                }
-            }
-        } else {
-            if (reporterUserIdOfAcceptedQaReport != null) {
-                errorSummary = "Invalid input."
-                errorMessage = "reporterUserIdOfAcceptedQaReport must be null when acceptedSource is not Qa."
-            }
+        if (reporterUserIdOfAcceptedQaReport == null) {
+            throw InvalidInputApiException(
+                "Missing reporterUserIdOfAcceptedQaReport.",
+                "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
+            )
         }
-        if (errorSummary != null && errorMessage != null) {
-            throw InvalidInputApiException(errorSummary, errorMessage)
+        if (qaReports.none { it.reporterUserId == ValidationUtils.convertToUUID(reporterUserIdOfAcceptedQaReport) }) {
+            throw InvalidInputApiException(
+                "QA report not found.",
+                "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point.",
+            )
         }
     }
 
