@@ -50,6 +50,16 @@ class QaController(
         )
     }
 
+    override fun getInfoOnPendingDatasets(companyName: String?): ResponseEntity<List<QaReviewResponse>> {
+        logger.info("Received request to respond with information about pending datasets")
+        return ResponseEntity.ok(
+            qaReviewManager
+                .getInfoOnPendingDatasets(
+                    companyName = companyName,
+                ),
+        )
+    }
+
     override fun getQaReviewResponseByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
         logger.info(
             "Received request to respond with the review information " +

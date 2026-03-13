@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataSourcingOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
@@ -75,4 +76,9 @@ data class QaReviewResponse(
         example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
     )
     val triggeringUserId: String?,
+    @field:Schema(
+        description = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_DESCRIPTION,
+        example = DataSourcingOpenApiDescriptionsAndExamples.PRIORITY_EXAMPLE,
+    )
+    val priorityOfAssociatedDataSourcing: Int?,
 )

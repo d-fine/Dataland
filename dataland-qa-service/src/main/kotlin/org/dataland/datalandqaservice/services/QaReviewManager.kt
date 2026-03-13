@@ -3,6 +3,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
@@ -10,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
@@ -18,9 +18,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
+import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
 
 /**
  * A service class for managing QA report meta-information
@@ -49,6 +50,7 @@ class QaReviewManager
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
         val datasetReviewService: DatasetReviewService,
+        val dataSourcingControllerApi: DataSourcingControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -110,6 +112,52 @@ class QaReviewManager
                     resultOffset = offset,
                     resultLimit = chunkSize,
                 ).map { it.toQaReviewResponse(userIsAdmin) }
+        }
+
+        /**
+         * The method returns a list of unreviewed datasets with corresponding information for the specified company name,
+         * which are still pending review (qaStatus = Pending).
+         */
+        @Transactional
+        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            val qaReviewResponses =
+                qaReviewRepository
+                    .getSortedAndFilteredQaReviewMetadataset(
+                        QaSearchFilter(
+                            dataTypes = null,
+                            reportingPeriods = null,
+                            companyIds = getCompanyIdsForCompanyName(companyName),
+                            companyName = companyName,
+                            qaStatuses = setOf(QaStatus.Pending),
+                        ),
+                    ).map { it.toQaReviewResponse(userIsAdmin) }
+            return addPrioritiesToResponse(qaReviewResponses)
+        }
+
+        /**
+         * Adds data sourcing priorities to the given QA review responses if available.
+         *
+         * If the data sourcing service returns 404, priorities are assumed missing and set to null. Other errors are rethrown.
+         * Since the service may return priorities in a different order, a map from dimensions to priority is used.
+         *
+         * @param qaReviewResponses list of QA review responses to enrich with priority
+         * @return list of QA review responses with priorities added or null if unavailable
+         */
+        private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
+            val dsDimensions =
+                qaReviewResponses.map {
+                    DsBasicDataDimensions(it.companyId, it.framework, it.reportingPeriod)
+                }
+
+            val prioritiesOfAssociatedDataSourcing =
+                try {
+                    dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
+                } catch (ex: ClientException) {
+                    if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) null else throw ex
+                }
+
+            return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
         }
 
         /**
@@ -247,27 +295,7 @@ class QaReviewManager
                     qaReviewEntity.framework,
                     qaReviewEntity.reportingPeriod,
                 )
-            val isUpdate = pastActiveDataId != null
-            val currentlyActiveDataId =
-                if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
-                    qaReviewEntity.dataId
-                } else {
-                    pastActiveDataId
-                }
-
-            val qaStatusChangeMessage =
-                QaStatusChangeMessage(
-                    dataId = qaReviewEntity.dataId,
-                    updatedQaStatus = qaReviewEntity.qaStatus,
-                    currentlyActiveDataId = currentlyActiveDataId,
-                    basicDataDimensions =
-                        BasicDataDimensions(
-                            companyId = qaReviewEntity.companyId,
-                            dataType = qaReviewEntity.framework,
-                            reportingPeriod = qaReviewEntity.reportingPeriod,
-                        ),
-                    isUpdate = isUpdate,
-                )
+            val qaStatusChangeMessage = QaReviewUtils.buildQaStatusChangeMessage(qaReviewEntity, pastActiveDataId)
 
             logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
             val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
@@ -385,6 +413,7 @@ class QaReviewManager
                 numberQaReports = numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
+                priorityOfAssociatedDataSourcing = null,
             )
         }
     }
