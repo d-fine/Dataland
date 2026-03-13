@@ -343,13 +343,13 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 8
+        panelId: 9
         noDataState: OK
         execErrState: Error
         for: 0m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "8"
+          __panelId__: "9"
           description: "Export job exceeded the frontend timeout of 2 minutes."
         labels:
           env: "$ENV"
