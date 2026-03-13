@@ -98,7 +98,8 @@ sonar {
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
-                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt",
+                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials-2026-73/ViewConfig.ts",
         )
         property(
             "sonar.sources",
@@ -117,6 +118,8 @@ sonar {
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
                 "EutaxonomyFinancialsDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials-2026-73/" +
+                "EutaxonomyFinancials202673DataFixtures.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasActivityNames.ts," +
                 // frontend configs
@@ -124,6 +127,7 @@ sonar {
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials-2026-73/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
