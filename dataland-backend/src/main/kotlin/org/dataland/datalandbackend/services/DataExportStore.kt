@@ -24,7 +24,7 @@ import kotlin.collections.removeAll
 @Service
 class DataExportStore {
     companion object {
-        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 1L
+        private const val FRONTEND_TIMEOUT_OF_EXPORT_JOB_IN_MIN = 3L
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
