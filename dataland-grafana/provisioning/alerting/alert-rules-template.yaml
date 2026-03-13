@@ -270,6 +270,94 @@ groups:
         notification_settings:
           receiver: Slack Alert Bot
       # -------------------------------------------------------------------------------------------
+      # EXPORT JOB TIMEOUT
+      # -------------------------------------------------------------------------------------------
+      - uid: export_job_timeout
+        title: Export Job Timeout
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 86400  # 24h in seconds (time to resolve alert)
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              datasource:
+                type: loki
+                uid: P8E80F9AEF21F6940
+              editorMode: code
+              expr: count_over_time({service_name=~".+", level!="info"} |~ "(?i)export job .+ exceeded .+ minutes" [1m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [ ]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 9
+        noDataState: OK
+        execErrState: Error
+        for: 0m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "9"
+          description: "Export job exceeded the frontend timeout of 2 minutes."
+        labels:
+          env: "$ENV"
+          detected_level: "error"
+        isPaused: false
+        notification_settings:
+          receiver: Slack Alert Bot
+      # -------------------------------------------------------------------------------------------
       # ERROR MESSAGES
       # -------------------------------------------------------------------------------------------
       - uid: error_message
