@@ -72,6 +72,7 @@ export default defineConfig({
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
+      '@testing': path.resolve(__dirname, '../testing'),
     },
   },
   build: {
