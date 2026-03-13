@@ -235,7 +235,7 @@
                 {{ slotProps.data.numberQaReports }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
+            <Column field="reviewStatus" header="REVIEW" class="qa-review-status-cell" :sortable="true">
               <template #body="slotProps">
                 <PrimeButton
                   v-if="
