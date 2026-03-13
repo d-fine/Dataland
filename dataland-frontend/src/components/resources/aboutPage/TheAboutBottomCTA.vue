@@ -9,7 +9,7 @@
           class="about-bottom-cta__cta"
           aria-label="Talk to our team"
           rounded
-          @click="() => { window.location.href = 'mailto:moritz.kiese@dataland.com?subject=Inquiry%20about%20Dataland' }"
+          @click="() => openEmailClient(aboutEmailCard)"
         />
         <Button
           :label="BOTTOM_CTA_COPY.secondaryCtaLabel"
@@ -28,6 +28,8 @@
 import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 import { BOTTOM_CTA_COPY } from '@/components/resources/aboutPage/aboutContent';
+import { openEmailClient, aboutEmailCard } from '@/utils/Email';
+
 const router = useRouter();
 
 const navigateToFrameworks = (): void => {
