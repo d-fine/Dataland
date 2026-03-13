@@ -48,6 +48,6 @@ class SecurityUtilsService(
             } catch (_: IllegalArgumentException) {
                 null
             }
-        return datasetReview.qaJudgeUserName.toString() == userId
+        return datasetReview.qaJudgeUserName == userId
     }
 }
