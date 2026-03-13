@@ -70,8 +70,8 @@
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue';
 import router from '@/router';
-import { DataTypeEnum } from '@clients/backend';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import type { DataTypeEnum } from '@clients/backend';
+import { getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
@@ -87,33 +87,9 @@ const provideDataButtonHovered = ref(false);
 const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed(() => injectedUseMobileView?.value);
 
-const title = computed(() => {
-  switch (props.framework) {
-    case DataTypeEnum.EutaxonomyFinancials202673:
-    case DataTypeEnum.EutaxonomyFinancials:
-      return 'EU Taxonomy Financials';
-    case DataTypeEnum.EutaxonomyNonFinancials:
-      return 'EU Taxonomy Non-Financials';
-    case DataTypeEnum.NuclearAndGas:
-      return 'EU Taxonomy Nuclear and Gas';
-    default:
-      return humanizeStringOrNumber(props.framework as string);
-  }
-});
+const title = computed(() => getFrameworkTitle(props.framework));
 
-const subtitle = computed(() => {
-  switch (props.framework) {
-    case DataTypeEnum.EutaxonomyFinancials202673:
-      return '(2026/73)';
-    case DataTypeEnum.EutaxonomyFinancials:
-    case DataTypeEnum.EutaxonomyNonFinancials:
-      return '(2020/852)';
-    case DataTypeEnum.NuclearAndGas:
-      return '(2022/1214)';
-    default:
-      return '';
-  }
-});
+const subtitle = computed(() => getFrameworkSubtitle(props.framework));
 
 const hasAccessibleViewPage = computed(
   () => FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) && !!props.numberOfProvidedReportingPeriods

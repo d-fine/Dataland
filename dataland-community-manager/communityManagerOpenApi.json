@@ -2081,7 +2081,7 @@
           "companyIdentifiers": {
             "uniqueItems": true,
             "type": "array",
-            "description": "A set of identifiers for companies on Dataland by. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
+            "description": "A set of identifiers for companies on Dataland. Use Dataland company IDs, Leis or Isins for the best results. Requests will be posted for all companies that can be identified.",
             "example": [
               "1e63a842-1e65-43ed-b78a-5e7cec155c28",
               "5493001KJX4BT0IHAG73",

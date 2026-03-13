@@ -89,24 +89,17 @@ object DataSourcingOpenApiDescriptionsAndExamples {
             "If set to false, the provided document IDs replace the existing ones instead."
 
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
-        "A set of identifiers for companies on Dataland. Use Dataland company IDs, " +
-            "Leis or Isins for the best results. Requests will be posted for all companies that can " +
-            "be identified."
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE =
-        "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
-            "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
-            "\"US0378331005\"]"
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE
 
     const val BULK_REQUEST_DATA_TYPES_DESCRIPTION =
-        "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework " +
-            "name that cannot be identified will result in an error, and no requests will be created."
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_DESCRIPTION
     const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
-        "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-financials-2026-73\"," +
-            "\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"pcaf\",\"vsme\"]"
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_EXAMPLE
 
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
-        "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."
-
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION
     const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
