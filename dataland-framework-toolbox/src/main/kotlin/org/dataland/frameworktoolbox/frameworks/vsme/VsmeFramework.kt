@@ -24,7 +24,7 @@ class VsmeFramework :
         label = "VSME",
         explanation = "Voluntary small and medium-sized enterprises questionnaire",
         File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
-        order = 7,
+        order = 8,
         isPrivateFramework = true,
         enabledFeatures =
             FrameworkGenerationFeatures.allExcept(

@@ -22,7 +22,7 @@ class PcafFramework :
         label = "PCAF",
         explanation = "Partnership for Carbon Accounting Financials",
         File("./dataland-framework-toolbox/inputs/pcaf/pcaf.xlsx"),
-        order = 6,
+        order = 7,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
