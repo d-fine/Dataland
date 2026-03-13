@@ -161,6 +161,9 @@ describeIf(
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
             const testCompany = basicCompanyInformation[1];
+            if (!testCompany) {
+              throw new Error('Expected at least two companies in framework data search results.');
+            }
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
