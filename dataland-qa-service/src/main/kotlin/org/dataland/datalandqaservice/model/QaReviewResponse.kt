@@ -71,8 +71,8 @@ data class QaReviewResponse(
     )
     val comment: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.JUDGE_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.JUDGE_ID_EXAMPLE,
     )
     val triggeringUserId: String?,
 )

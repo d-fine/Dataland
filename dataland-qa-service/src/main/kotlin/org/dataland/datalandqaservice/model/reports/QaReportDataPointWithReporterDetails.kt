@@ -30,8 +30,8 @@ data class QaReportDataPointWithReporterDetails(
     )
     val correctedData: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
     )
     val reporterUserId: UUID,
     @field:Schema(

@@ -11,18 +11,18 @@ import java.util.UUID
 @Embeddable
 data class QaReporter(
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
     )
     val reporterUserId: UUID,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USERNAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USERNAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USERNAME_EXAMPLE,
     )
     val reporterUserName: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_EMAIL_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_EMAIL_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_EMAIL_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_EMAIL_EXAMPLE,
     )
     val reporterEmailAddress: String?,
     @field:Schema(

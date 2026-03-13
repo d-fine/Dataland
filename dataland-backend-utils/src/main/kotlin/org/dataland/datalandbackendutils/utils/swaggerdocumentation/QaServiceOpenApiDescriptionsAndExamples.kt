@@ -36,18 +36,18 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val REVIEW_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was reviewed."
     const val REVIEW_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
-    const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
-    const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
-    const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
+    const val REVIEWER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
+    const val REVIEWER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val REVIEWER_USER_ID_LIST_EXAMPLE = "[\"$REVIEWER_USER_ID_EXAMPLE\"]"
 
-    const val REPORTER_USERNAME_EXAMPLE = "Bot_1_of_Dataland"
-    const val REPORTER_USERNAME_DESCRIPTION = "The name of the user who uploaded the QA report."
+    const val REVIEWER_USERNAME_EXAMPLE = "Bot_1_of_Dataland"
+    const val REVIEWER_USERNAME_DESCRIPTION = "The name of the user who uploaded the QA report."
 
-    const val REPORTER_USER_EMAIL_EXAMPLE = "bot1@dataland.com"
-    const val REPORTER_USER_EMAIL_DESCRIPTION = "The email of the user who uploaded the QA report."
+    const val REVIEWER_USER_EMAIL_EXAMPLE = "bot1@dataland.com"
+    const val REVIEWER_USER_EMAIL_DESCRIPTION = "The email of the user who uploaded the QA report."
 
-    const val REVIEWER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
-    const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val JUDGE_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
+    const val JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
     const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
     const val QA_REPORT_UPLOAD_TIME_DESCRIPTION =
