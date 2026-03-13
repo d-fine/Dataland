@@ -75,35 +75,38 @@ class DatasetReviewTest {
         val datapointId1 = dataPoints[datapointType1]!!
         val datapointId2 = dataPoints[datapointType2]!!
 
-        QaService.dataPointQaReportControllerApi.postQaReport(datapointId1, dummyQaReport1)
-        QaService.dataPointQaReportControllerApi.postQaReport(datapointId2, dummyQaReport2)
+        val reporterUserId1 =
+            QaService.dataPointQaReportControllerApi
+                .postQaReport(datapointId1, dummyQaReport1)
+                .reporterUserId
+        val reporterUserId2 =
+            QaService.dataPointQaReportControllerApi
+                .postQaReport(datapointId2, dummyQaReport2)
+                .reporterUserId
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetReview = QaService.datasetReviewControllerApi.postDatasetReview(datasetId)
             val datasetReviewId = datasetReview.dataSetReviewId
-            val reporterUserId = datasetReview.qaReporters.first().reporterUserId
 
             QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
                 datapointType1,
                 ReviewDetailsPatch(
                     AcceptedDataPointSource.Qa,
-                    datasetReview.qaReporters.first().reporterUserId.toString(),
+                    reporterUserId1.toString(),
                     null,
                 ),
             )
 
             QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
-                datapointType1,
+                datapointType2,
                 ReviewDetailsPatch(
                     AcceptedDataPointSource.Qa,
-                    datasetReview.qaReporters[1].reporterUserId.toString(),
+                    reporterUserId2.toString(),
                     null,
                 ),
             )
-
-
 
             QaService.datasetReviewControllerApi.patchReviewDetails(
                 datasetReviewId,
@@ -119,7 +122,7 @@ class DatasetReviewTest {
                 datapointType2,
                 ReviewDetailsPatch(
                     AcceptedDataPointSource.Qa,
-                    reporterUserId.toString(),
+                    reporterUserId2.toString(),
                     null,
                 ),
             )
