@@ -8,7 +8,7 @@
         class="about-hero__cta"
         aria-label="Get in touch with Dataland"
         rounded
-        @click="openModal"
+        @click="() => { window.location.href = 'mailto:moritz.kiese@dataland.com?subject=Inquiry%20about%20Dataland' }"
       />
     </div>
   </section>
@@ -17,9 +17,6 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
 import { HERO_COPY } from '@/components/resources/aboutPage/aboutContent';
-import { useContactModal } from '@/composables/useContactModal';
-
-const { openModal } = useContactModal();
 </script>
 
 <style scoped lang="scss">

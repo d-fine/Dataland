@@ -46,13 +46,6 @@
         rounded
         @click="register"
       />
-      <Button
-        label="Get in Touch"
-        data-test="hero-contact-button"
-        severity="secondary"
-        rounded
-        @click="openModal"
-      />
     </div>
   </section>
 </template>
@@ -65,7 +58,6 @@ import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/C
 import Button from 'primevue/button';
 import router from '@/router';
 import { useBreakpoint } from '@/composables/useBreakpoint';
-import { useContactModal } from '@/composables/useContactModal';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { registerAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 
@@ -76,7 +68,6 @@ const introSection = computed(() => {
 });
 
 const { isMobile } = useBreakpoint();
-const { openModal } = useContactModal();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 

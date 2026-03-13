@@ -1,6 +1,5 @@
 <template>
   <main id="main-content" role="main">
-    <ContactInquiryModal />
     <TheAboutHero />
     <TheAboutTrustPillars />
     <TheAboutTeam />
@@ -12,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import ContactInquiryModal from '@/components/general/ContactInquiryModal.vue';
 import TheAboutHero from '@/components/resources/aboutPage/TheAboutHero.vue';
 import TheAboutTrustPillars from '@/components/resources/aboutPage/TheAboutTrustPillars.vue';
 import TheAboutTeam from '@/components/resources/aboutPage/TheAboutTeam.vue';

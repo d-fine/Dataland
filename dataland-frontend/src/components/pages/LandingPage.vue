@@ -8,7 +8,6 @@
     <TheSocialProof :sections="landingPage?.sections" />
     <TheBrands :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
-    <ContactInquiryModal />
   </main>
 </template>
 
@@ -27,7 +26,6 @@ import TheFrameworks from '@/components/resources/landingPage/TheFrameworks.vue'
 import TheSocialProof from '@/components/resources/landingPage/TheSocialProof.vue';
 import TheBrands from '@/components/resources/landingPage/TheBrands.vue';
 import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue';
-import ContactInquiryModal from '@/components/general/ContactInquiryModal.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 

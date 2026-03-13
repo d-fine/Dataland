@@ -12,9 +12,9 @@
         <p class="getintouch__text-title">{{ getInTouchSection.cards[1]!.title }}</p>
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1]!.text }}</p>
         <Button
-          label="Get in Touch"
+          label="GET IN TOUCH"
           data-test="get-in-touch-button"
-          @click="openModal"
+          @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
           rounded
           :pt="{
             root: {
@@ -34,9 +34,7 @@
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import Button from 'primevue/button';
-import { useContactModal } from '@/composables/useContactModal';
-
-const { openModal } = useContactModal();
+import { openEmailClient } from '@/utils/Email';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
