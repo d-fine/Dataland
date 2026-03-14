@@ -1,5 +1,10 @@
 <template>
-  <section v-if="getInTouchSection && getInTouchSection.cards" class="getintouch" aria-labelledby="getintouch-heading">
+  <section
+    v-if="getInTouchSection && getInTouchSection.cards"
+    class="getintouch"
+    role="region"
+    aria-labelledby="getintouch-heading"
+  >
     <div class="getintouch__wrapper">
       <h2 id="getintouch-heading" class="getintouch__title">
         {{ getInTouchSection.text[0] }}
@@ -33,8 +38,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Section } from '@/types/ContentTypes';
-import { openEmailClient } from '@/utils/Email';
 import Button from 'primevue/button';
+import { openEmailClient } from '@/utils/Email';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -93,10 +98,10 @@ const getInTouchSection = computed(() => {
   &__text-text {
     grid-column: 8 / 14;
     text-align: left;
-    font-size: 22.123px;
+    font-size: 22px;
     font-style: normal;
     font-weight: 600;
-    line-height: 33.185px; /* 150% */
+    line-height: 1.5;
     letter-spacing: 0.346px;
     color: var(--default-neutral-white);
     display: flex;
@@ -113,7 +118,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: $bp-xl) {
   .getintouch {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -136,7 +141,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: $bp-lg) {
   .getintouch {
     padding: 80px 0;
 
@@ -150,7 +155,7 @@ const getInTouchSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;

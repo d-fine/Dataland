@@ -74,6 +74,13 @@ export default defineConfig({
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/assets/scss/breakpoints" as *;\n`,
+      },
+    },
+  },
   build: {
     sourcemap: true,
   },

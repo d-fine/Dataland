@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(find:*)",
+      "Bash(docker image:*)",
+      "Bash(ls:*)",
+      "Bash(docker ps:*)",
+      "mcp__figma__generate_figma_design",
+      "Bash(docker info:*)",
+      "Bash(docker compose:*)",
+      "Bash(tasklist 2>/dev/null | grep -i -E \"bash|gradle|docker-compose|manageLocal\" || echo \"No matching processes found\")",
+      "Bash(tasklist 2>/dev/null | grep -i -E \"java|gradle|node\" || echo \"No Java/Gradle/Node processes found\")",
+      "Bash(wmic process:*)",
+      "Bash(git -C /c/D-Fine/Dataland/repos/Dataland log --oneline -20 | head -20)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -20,13 +20,13 @@
         variant="text"
         severity="secondary"
       />
-      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" rounded />
+      <Button label="Create Free Account" data-test="signup-dataland-button" @click="register" rounded />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
       <Button label="Log in" data-test="login-dataland-button" @click="login" variant="outlined" />
-      <Button label="SIGN UP" data-test="signup-dataland-button" @click="register" />
+      <Button label="Create Free Account" data-test="signup-dataland-button" @click="register" />
     </div>
   </template>
 </template>

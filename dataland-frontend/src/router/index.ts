@@ -59,6 +59,16 @@ const routes = [
     },
   },
   {
+    path: '/success-stories/:slug',
+    name: 'success-story',
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    component: () => import('@/components/pages/SuccessStoryPage.vue'),
+    meta: {
+      layout: 'landing',
+      requiresAuthentication: false,
+    },
+  },
+  {
     path: '/companies/choose',
     name: 'Choose Company',
     component: ChooseCompanyForFrameworkDataUpload,

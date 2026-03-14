@@ -12,17 +12,12 @@ describe('Component test for the landing page', () => {
       }),
     }).then(() => {
       validateIntroSection();
-      validateBrandsSection();
       validateStruggleSection();
-      validateQuotesSection();
-      validateHowItWorksSection();
-
-      assertFrameworkPanelExists('VSME');
-      assertFrameworkPanelExists('LkSG');
-      assertFrameworkPanelExists('EU Taxonomy');
-      assertFrameworkPanelExists('SFDR');
-      cy.get('[data-test="join-campaign-button"]').should('exist');
-      cy.get('[data-test="get-in-touch-button"]').should('exist');
+      validateDataAccessSection();
+      validateFrameworksSection();
+      validateSocialProofSection();
+      validateBrandsSection();
+      validateGetInTouchSection();
     });
   });
 });
@@ -89,14 +84,6 @@ function getSingleImageNameInSection(sectionTitle: string): string {
 }
 
 /**
- * Asserts that there is a join campaing panel for the given framework
- * @param frameworkTitle the title of the framework to check for
- */
-function assertFrameworkPanelExists(frameworkTitle: string): void {
-  cy.get(`.joincampaign__cell:contains("${frameworkTitle}")`).should('exist');
-}
-
-/**
  * Validates the existence and general structure of the "Struggle" section
  */
 function validateStruggleSection(): void {
@@ -127,21 +114,49 @@ function validateStruggleSection(): void {
 }
 
 /**
- * Validates the existence and general structure of the "Quotes" section
+ * Validates the existence and general structure of the "Data Access" section (formerly "How it works")
  */
-function validateQuotesSection(): void {
-  cy.get('section.quotes').should('exist');
-  cy.get('.quotes__slide').should('exist');
+function validateDataAccessSection(): void {
+  cy.get('section.dataaccess').should('exist');
+  cy.get('.dataaccess__slide').should('have.length', 4);
+  cy.get('.dataaccess__slide').eq(0).should('contain.text', 'Search');
+  cy.get('.dataaccess__slide').eq(1).should('contain.text', 'Request company\u2019s inclusion');
+  cy.get('.dataaccess__slide').eq(2).should('contain.text', 'Request framework data');
+  cy.get('.dataaccess__slide').eq(3).should('contain.text', 'Download');
 }
 
 /**
- * Validates the existence and general structure of the "How it works" section
+ * Validates the existence and general structure of the "Frameworks" section
  */
-function validateHowItWorksSection(): void {
-  cy.get('section.howitworks').should('exist');
-  cy.get('.howitworks__slide').should('have.length', 4);
-  cy.get('.howitworks__slide').eq(0).should('contain.text', 'Search');
-  cy.get('.howitworks__slide').eq(1).should('contain.text', 'Request company’s inclusion');
-  cy.get('.howitworks__slide').eq(2).should('contain.text', 'Request framework data');
-  cy.get('.howitworks__slide').eq(3).should('contain.text', 'Download');
+function validateFrameworksSection(): void {
+  cy.get('section.frameworks').should('exist');
+  cy.get('.frameworks__card').should('have.length', 5);
+  assertFrameworkCardExists('EU Taxonomy');
+  assertFrameworkCardExists('SFDR');
+  assertFrameworkCardExists('PCAF');
+  assertFrameworkCardExists('LkSG');
+  assertFrameworkCardExists('VSME');
+}
+
+/**
+ * Asserts that there is a framework card for the given framework
+ * @param frameworkTitle the title of the framework to check for
+ */
+function assertFrameworkCardExists(frameworkTitle: string): void {
+  cy.get(`.frameworks__card:contains("${frameworkTitle}")`).should('exist');
+}
+
+/**
+ * Validates the existence and general structure of the "Social Proof" section
+ */
+function validateSocialProofSection(): void {
+  cy.get('[data-test="social-proof"]').should('exist');
+  cy.get('[data-test="social-proof-quote"]').should('exist');
+}
+
+/**
+ * Validates the existence of the "Get in Touch" section
+ */
+function validateGetInTouchSection(): void {
+  cy.get('[data-test="get-in-touch-button"]').should('exist');
 }
