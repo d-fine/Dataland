@@ -40,12 +40,7 @@
       }"
     />
     <div class="intro__cta-group" v-show="!inputFocused || !isMobile()">
-      <Button
-        label="Create Free Account"
-        data-test="hero-register-button"
-        rounded
-        @click="register"
-      />
+      <Button label="Create Free Account" data-test="hero-register-button" rounded @click="register" />
     </div>
   </section>
 </template>

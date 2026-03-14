@@ -22,7 +22,8 @@
           target="_blank"
           rel="noopener noreferrer"
           class="person-card__organisation-link"
-        >{{ (person as AdvisoryPerson).organisation }}</a>
+          >{{ (person as AdvisoryPerson).organisation }}</a
+        >
         <template v-else>{{ (person as AdvisoryPerson).organisation }}</template>
       </p>
     </figcaption>

@@ -1,5 +1,11 @@
 <template>
-  <section v-if="howItWorksSection" class="dataaccess" role="region" aria-labelledby="dataaccess-heading" data-test="dataaccess">
+  <section
+    v-if="howItWorksSection"
+    class="dataaccess"
+    role="region"
+    aria-labelledby="dataaccess-heading"
+    data-test="dataaccess"
+  >
     <div class="dataaccess__wrapper">
       <h2 id="dataaccess-heading" class="dataaccess__title">
         {{ sectionText }}

@@ -31,12 +31,7 @@
         }"
       />
       <div class="frameworks__grid" role="list" aria-label="Supported ESG frameworks">
-        <div
-          v-for="(card, index) in frameworksSection.cards"
-          :key="index"
-          class="frameworks__card"
-          role="listitem"
-        >
+        <div v-for="(card, index) in frameworksSection.cards" :key="index" class="frameworks__card" role="listitem">
           <div class="frameworks__card-title">
             <span>{{ card.title }}</span>
           </div>

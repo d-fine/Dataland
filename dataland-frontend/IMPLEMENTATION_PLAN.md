@@ -8,12 +8,12 @@
 
 ## Agent Roles
 
-| Role | Agent Type | Identity | Rule |
-|------|-----------|----------|------|
-| **Builder** | `frontend-developer` | Agent X | Implements all code. Never reviews its own output. |
-| **Code Reviewer** | `frontend-developer` | Agent Y | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
-| **Visual Reviewer** | `ux-designer` | — | Two-pass review: (1) source code audit, (2) screenshot-based visual QA from user-provided screenshots. |
-| **Copy Reviewer** | `copywriter` | — | Verifies every rendered string against the spec. |
+| Role                | Agent Type           | Identity | Rule                                                                                                   |
+| ------------------- | -------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| **Builder**         | `frontend-developer` | Agent X  | Implements all code. Never reviews its own output.                                                     |
+| **Code Reviewer**   | `frontend-developer` | Agent Y  | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build.                |
+| **Visual Reviewer** | `ux-designer`        | —        | Two-pass review: (1) source code audit, (2) screenshot-based visual QA from user-provided screenshots. |
+| **Copy Reviewer**   | `copywriter`         | —        | Verifies every rendered string against the spec.                                                       |
 
 **Critical rule:** Agent Y (code reviewer) must be a **separate invocation** from Agent X (builder). It starts fresh with no build context — genuinely independent eyes.
 
@@ -27,6 +27,7 @@
 ### Tasks
 
 1. **Create `src/assets/scss/breakpoints.scss`**
+
    ```scss
    $bp-sm: 640px;
    $bp-md: 768px;
@@ -35,6 +36,7 @@
    ```
 
 2. **Update `vite.config.ts`** — add SCSS `additionalData` so breakpoint variables are available globally:
+
    ```ts
    css: {
      preprocessorOptions: {
@@ -67,6 +69,7 @@
 7. **Create `src/components/resources/successStories/successStoryContent.ts`** — full success story data with `SuccessStory` interface (spec section 3.11).
 
 ### Completion check
+
 - All content files compile without TypeScript errors
 - No downstream components created yet — just data + infrastructure
 
@@ -82,39 +85,47 @@ Launch all 7 in a single message for maximum parallelism.
 ### Worktree A: `TheTrustBar.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.5 ("TheTrustBar"). Create the file `dataland-frontend/src/components/resources/landingPage/TheTrustBar.vue`. The component is self-contained — logo data is hardcoded in the component (not from content.json). Follow the template, styles, and data exactly as specified. Use BEM naming, scoped SCSS, semantic HTML with `aria-label="Trusted by"`. Use the SCSS breakpoint variables from `src/assets/scss/breakpoints.scss` (`$bp-md`). After creating the file, run `cd dataland-frontend && npx vue-tsc --noEmit` to verify TypeScript.
 
 ### Worktree B: `TheDataAccess.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.6 ("TheDataAccess"). Also read the existing `dataland-frontend/src/components/resources/landingPage/TheHowItWorks.vue` to understand the current SlideShow pattern and how content.json data flows in via the `sections` prop. Create `dataland-frontend/src/components/resources/landingPage/TheDataAccess.vue` as a replacement. Key additions: video integration with IntersectionObserver lazy-loading, autoplay muted loop, poster SVG fallback. The video area must gracefully handle a missing mp4 (show only the poster). Use `useBreakpoint` composable instead of manual resize listeners. Follow spec exactly for template structure, styles, and behavior. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### Worktree C: `TheFrameworks.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.7 ("TheFrameworks"). Also read the existing `dataland-frontend/src/components/resources/landingPage/TheJoinCampaign.vue` to understand the current pattern. Create `dataland-frontend/src/components/resources/landingPage/TheFrameworks.vue` as a replacement. Key changes from TheJoinCampaign: no "campaign" wording, headline updated, CTA changed from `openEmailClient` to Keycloak register, headline reduced from 100px to 64px at desktop. Follow spec exactly. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### Worktree D: `TheSocialProof.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.8 ("TheSocialProof"). Also read `dataland-frontend/src/components/resources/landingPage/socialProofContent.ts` for the data. Create `dataland-frontend/src/components/resources/landingPage/TheSocialProof.vue`. This replaces TheQuotes — NO YouTube embeds, NO cookie consent. Three sub-sections: (A) quote cards in 2x2 grid (mobile: SlideShow), (B) success story summary cards linking to `/success-stories/:slug`, (C) member process sketch image. Follow card designs exactly (border-radius, shadow, padding, typography). Use existing `SlideShow.vue` component for mobile quotes. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### Worktree E: `TheAboutPrinciples.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 4.6 ("TheAboutPrinciples"). Read `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts` for the `PRINCIPLES` data. Create `dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue`. 3x2 grid (desktop), 2x3 (tablet), 1x6 (mobile). Each card has a 3px solid orange left border (`#ff6813`), icon, bold title, single sentence description. Follow template and styles exactly from spec. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### Worktree F: `TheAboutEcosystem.vue`
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 4.8 ("TheAboutEcosystem"). Read `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts` for the `SPONSORS` and `PARTNERS` data. Also read the existing `TheAboutSponsors.vue` and `TheAboutPartners.vue` to understand the current `LogoChip` component usage. Create `dataland-frontend/src/components/resources/aboutPage/TheAboutEcosystem.vue` that merges both into one section with two labeled subsections. Follow template and styles exactly. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### Worktree G: `SuccessStoryPage.vue` + Route
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.11 ("Customer Success Stories Page"). Read `dataland-frontend/src/components/resources/successStories/successStoryContent.ts` for the data. Create `dataland-frontend/src/components/pages/SuccessStoryPage.vue` with all sections: hero, challenge, process (with process sketch image), result, pull quote, CTA ("Start Using Dataland" for registration + "Read More Stories" linking back to landing page). The page uses the same `LandingPageHeader` and footer as landing/about pages. Use `meta: { layout: 'landing' }` on the route. Also update `dataland-frontend/src/router/index.ts` to add the `/success-stories/:slug` route. Handle unknown slugs gracefully (redirect to landing page). Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
 
 ### After all worktrees complete
+
 Merge each worktree branch into `feature/rework-about-page` sequentially. Resolve any conflicts (unlikely since all create new files).
 
 ---
@@ -193,9 +204,11 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 ### 4a — `frontend-developer` (Agent Y) — Independent Code Review
 
 **Prompt:**
+
 > You are reviewing code that someone else wrote. You have never seen this code before. Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every file listed below. For each file, verify it matches the spec exactly. Produce a numbered issue list with file path, line number, what's wrong, and what the spec requires.
 >
 > **Files to review (created):**
+>
 > - `src/assets/scss/breakpoints.scss`
 > - `src/composables/useBreakpoint.ts`
 > - `src/components/resources/landingPage/TheTrustBar.vue`
@@ -209,6 +222,7 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 > - `src/components/resources/successStories/successStoryContent.ts`
 >
 > **Files to review (modified):**
+>
 > - `src/components/pages/LandingPage.vue`
 > - `src/components/pages/AboutPage.vue`
 > - `src/components/generics/LandingPageHeader.vue`
@@ -224,6 +238,7 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 > - `vite.config.ts`
 >
 > **Check for:**
+>
 > - Spec compliance (section order, content, layout, breakpoints, font sizes, spacing)
 > - Correct imports — no references to deleted files (TheQuotes, TheHowItWorks, TheJoinCampaign, TheAboutSponsors, TheAboutPartners)
 > - `useBreakpoint` used instead of manual resize listeners
@@ -241,6 +256,7 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 ### 4b — `copywriter` — Copy Accuracy Audit
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every file that contains rendered text:
 >
 > - `dataland-frontend/src/assets/content.json`
@@ -251,6 +267,7 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 > - `src/components/pages/SuccessStoryPage.vue`
 >
 > **Check for:**
+>
 > - Every headline, subheadline, CTA label, quote, attribution, and card description matches the spec character-for-character
 > - No "campaign" wording remains anywhere
 > - CTA labels use correct casing: "Get in Touch" (title case), "Create Free Account", "Talk to Our Team", "Learn More About Our Data"
@@ -267,9 +284,11 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 ### 4c — `ux-designer` — Source Code UX Audit (Pass 1)
 
 **Prompt:**
+
 > Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every new and modified Vue SFC and SCSS file (see the file lists in spec section 6.1 and 6.2). All files are under `dataland-frontend/src/`.
 >
 > **Check for:**
+>
 > - Responsive behavior at all 4 breakpoints ($bp-sm: 640px, $bp-md: 768px, $bp-lg: 1024px, $bp-xl: 1440px)
 > - Font sizes match spec at each breakpoint (e.g., hero headline: 100px xl, 64px lg, 48px md, 40px mobile)
 > - Section headline font sizes reduced from 100px to 64px at desktop (TheStruggle, TheFrameworks)
@@ -295,6 +314,7 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 **Dependencies:** All Phase 4 reviews complete.
 
 **Prompt:**
+
 > The following issues were found during independent code review, copy audit, and UX audit of the landing/about page rework. Fix each one. The spec is at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`.
 >
 > [Paste combined issue lists from Phase 4a + 4b + 4c here]
@@ -313,21 +333,23 @@ Launch all 3 review agents in a **single message** for parallel execution. **Non
 2. Open `https://local-dev.dataland.com/` in a browser
 3. Take screenshots at these viewports:
 
-| Viewport | Pages to Capture |
-|----------|-----------------|
-| Desktop (1440px+) | Landing page (full scroll), About page (full scroll), all 3 Success Story pages |
-| Tablet (768-1024px) | Landing page, About page |
-| Mobile (< 768px) | Landing page (hamburger closed), Landing page (hamburger open), About page |
-| Small mobile (< 640px) | Landing page hero (check CTA stacking), About page |
+| Viewport               | Pages to Capture                                                                |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| Desktop (1440px+)      | Landing page (full scroll), About page (full scroll), all 3 Success Story pages |
+| Tablet (768-1024px)    | Landing page, About page                                                        |
+| Mobile (< 768px)       | Landing page (hamburger closed), Landing page (hamburger open), About page      |
+| Small mobile (< 640px) | Landing page hero (check CTA stacking), About page                              |
 
 4. Save screenshots to a local folder or provide them directly in the conversation.
 
 ### Step 6.2 — `ux-designer` — Screenshot Visual QA (Pass 2)
 
 **Prompt:**
+
 > I am providing screenshots of the reworked Dataland landing page, about page, and success story pages at multiple viewports. The spec is at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`. The visual flow diagrams in the spec appendix show exactly what each page should look like.
 >
 > For each screenshot, compare against the spec and identify:
+>
 > - **Layout issues:** Elements not aligned, wrong grid columns, unexpected wrapping
 > - **Spacing issues:** Sections too close/far apart, padding inconsistent with spec
 > - **Typography issues:** Headlines too large/small, wrong font weight, line height off

@@ -1,12 +1,6 @@
 <template>
   <div class="logo-chip">
-    <img
-      v-if="!imageError"
-      :src="logo.imagePath"
-      :alt="logo.name"
-      class="logo-chip__img"
-      @error="imageError = true"
-    />
+    <img v-if="!imageError" :src="logo.imagePath" :alt="logo.name" class="logo-chip__img" @error="imageError = true" />
     <div v-else class="logo-chip__fallback">{{ logo.name }}</div>
   </div>
 </template>

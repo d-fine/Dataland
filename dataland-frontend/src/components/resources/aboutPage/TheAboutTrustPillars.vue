@@ -55,10 +55,14 @@ import TrustPillarCard from '@/components/resources/aboutPage/TrustPillarCard.vu
 }
 
 @media only screen and (min-width: $bp-md) {
-  .about-trust-pillars__grid { grid-template-columns: repeat(2, 1fr); }
+  .about-trust-pillars__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media only screen and (min-width: $bp-lg) {
-  .about-trust-pillars__grid { grid-template-columns: repeat(4, 1fr); }
+  .about-trust-pillars__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 </style>

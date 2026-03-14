@@ -10,15 +10,15 @@
 
 The following items use **placeholder content** for initial implementation. All are marked with `[PLACEHOLDER]` in the spec and in code comments. Replace with real content before production.
 
-| Item | Placeholder Type | Files |
-|------|-----------------|-------|
-| Platform demo video | No mp4 exists; SVG poster mockup used as fallback | `static/videos/platform-demo-thumb.svg` |
-| Team photos (3 people) | SVG avatars with initials (AH, SV, RS, SH) | `static/about/team-*.svg` |
-| Advisory board photos (2 people) | SVG avatars with initials | `static/about/team-rudi-siebel.svg`, `team-stephan-henkel.svg` |
-| Partner logos (4 companies) | SVG text placeholders | `static/about/logo-*.svg` |
-| Member process sketch | Generic SVG flow diagram | `static/images/member-process-sketch.svg` |
-| Customer success stories (3) | Fictional names, companies, quotes, figures | `successStoryContent.ts` |
-| Per-story process sketches (3) | Generic SVG flow diagrams | `static/images/process-sketch-*.svg` |
+| Item                             | Placeholder Type                                  | Files                                                          |
+| -------------------------------- | ------------------------------------------------- | -------------------------------------------------------------- |
+| Platform demo video              | No mp4 exists; SVG poster mockup used as fallback | `static/videos/platform-demo-thumb.svg`                        |
+| Team photos (3 people)           | SVG avatars with initials (AH, SV, RS, SH)        | `static/about/team-*.svg`                                      |
+| Advisory board photos (2 people) | SVG avatars with initials                         | `static/about/team-rudi-siebel.svg`, `team-stephan-henkel.svg` |
+| Partner logos (4 companies)      | SVG text placeholders                             | `static/about/logo-*.svg`                                      |
+| Member process sketch            | Generic SVG flow diagram                          | `static/images/member-process-sketch.svg`                      |
+| Customer success stories (3)     | Fictional names, companies, quotes, figures       | `successStoryContent.ts`                                       |
+| Per-story process sketches (3)   | Generic SVG flow diagrams                         | `static/images/process-sketch-*.svg`                           |
 
 ---
 
@@ -206,6 +206,7 @@ const { isMobile } = useBreakpoint();
 Currently the navigation links are `display: none` on mobile (< 768px). Replace with a hamburger menu.
 
 **Behavior:**
+
 - Below `$bp-md` (768px): Hide nav links. Show a hamburger icon button (PrimeVue `Button` with `icon="pi pi-bars"`).
 - Clicking hamburger opens a slide-down overlay containing: HOME, ABOUT, LOGIN, SIGN UP (or BACK TO PLATFORM if logged in).
 - Clicking any link or a close icon (pi-times) closes the overlay.
@@ -222,8 +223,8 @@ Currently the navigation links are `display: none` on mobile (< 768px). Replace 
     </router-link>
   </div>
   <nav class="header__navigation" :class="{ 'header__navigation--open': menuOpen }">
-    <Button ... label="HOME" ... />
-    <Button ... label="ABOUT" ... />
+    <button ... label="HOME" ... />
+    <button ... label="ABOUT" ... />
   </nav>
   <AuthSection :is-landing-page="true" class="header__auth" :class="{ 'header__auth--hidden': !menuOpen }" />
   <button
@@ -294,10 +295,10 @@ Add `id="main-content"` to the `<main>` element in both `LandingPage.vue` and `A
 
 Across the entire site, there are exactly two CTA patterns:
 
-| CTA | Label | Action | Style |
-|-----|-------|--------|-------|
-| Primary | `Create Free Account` | Keycloak register flow | PrimeVue `Button`, `rounded` |
-| Secondary | `Get in Touch` | Opens `ContactInquiryModal` | PrimeVue `Button`, `rounded`, `severity="secondary"` |
+| CTA       | Label                 | Action                      | Style                                                |
+| --------- | --------------------- | --------------------------- | ---------------------------------------------------- |
+| Primary   | `Create Free Account` | Keycloak register flow      | PrimeVue `Button`, `rounded`                         |
+| Secondary | `Get in Touch`        | Opens `ContactInquiryModal` | PrimeVue `Button`, `rounded`, `severity="secondary"` |
 
 The old labels "SIGN UP", "I AM INTERESTED", "START YOUR DATALAND JOURNEY" are all replaced.
 
@@ -425,8 +426,7 @@ Update imports accordingly. Remove `TheQuotes` and `TheJoinCampaign` imports. Ad
 <section class="trustbar" aria-label="Trusted by">
   <p class="trustbar__label">Trusted by leaders in European financial services</p>
   <div class="trustbar__logos">
-    <img v-for="logo in logos" :key="logo.alt" :src="logo.src" :alt="logo.alt"
-         class="trustbar__logo" />
+    <img v-for="logo in logos" :key="logo.alt" :src="logo.src" :alt="logo.alt" class="trustbar__logo" />
   </div>
 </section>
 ```
@@ -463,7 +463,9 @@ Update imports accordingly. Remove `TheQuotes` and `TheJoinCampaign` imports. Ad
     width: auto;
     filter: grayscale(100%);
     opacity: 0.6;
-    transition: filter 0.3s, opacity 0.3s;
+    transition:
+      filter 0.3s,
+      opacity 0.3s;
     &:hover {
       filter: grayscale(0%);
       opacity: 1;
@@ -474,9 +476,15 @@ Update imports accordingly. Remove `TheQuotes` and `TheJoinCampaign` imports. Ad
 @media only screen and (max-width: $bp-md) {
   .trustbar {
     padding: 32px 16px;
-    &__label { font-size: 14px; }
-    &__logos { gap: 24px 32px; }
-    &__logo { height: 32px; }
+    &__label {
+      font-size: 14px;
+    }
+    &__logos {
+      gap: 24px 32px;
+    }
+    &__logo {
+      height: 32px;
+    }
   }
 }
 ```
@@ -520,6 +528,7 @@ Note: Card 3 text is updated to remove "campaign" wording. The content.json must
 Below the step cards, embed a self-hosted video demonstrating the platform.
 
 **Video behavior (per Decision 3):**
+
 - Autoplay, muted, looping. The video is very short (a few seconds), has no narration or sound, and shows impressions of navigating the platform.
 - Lazy-load the video source using IntersectionObserver -- do not load until the section is near-viewport.
 - Video element: `<video>` with `autoplay`, `muted`, `loop`, `playsinline`, `preload="none"`.
@@ -619,20 +628,22 @@ The content.json section title changes from `"Join a campaign"` to `"Frameworks"
 - **Section headline:** `What Our Members Say`
 
 **Sub-section A: Member Quotes** (text-only cards, no YouTube videos):
-  1. > "Dataland is the only platform we know that is open to everyone and based on a non-profit business model."
-     -- **Sven Schubert**, CEO of Envoria
-  2. > "We hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall."
-     -- **Rudolf Siebel**, Managing Director at BVI German Fund Association
-  3. > "Dataland can provide the data ecosystem we all need to support our transition to stay within 1.5 degrees or within the planetary boundaries."
-     -- **Matthias Kopp**, Director of Sustainable Finance at WWF Germany
-  4. > "We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner."
-     -- **Ingo Speich**, Head of Sustainability & Corporate Governance at Deka Investment
+
+1. > "Dataland is the only platform we know that is open to everyone and based on a non-profit business model."
+   > -- **Sven Schubert**, CEO of Envoria
+2. > "We hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall."
+   > -- **Rudolf Siebel**, Managing Director at BVI German Fund Association
+3. > "Dataland can provide the data ecosystem we all need to support our transition to stay within 1.5 degrees or within the planetary boundaries."
+   > -- **Matthias Kopp**, Director of Sustainable Finance at WWF Germany
+4. > "We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner."
+   > -- **Ingo Speich**, Head of Sustainability & Corporate Governance at Deka Investment
 
 **Sub-section B: Customer Success Story Summaries**
 
 Display 2-3 short success story preview cards. Each card shows a brief summary of a full success story. The full story is on a dedicated page (see section 3.11 below).
 
 Each card contains:
+
 - A title (bold, 20px)
 - A 2-3 sentence summary excerpt
 - A process sketch/diagram thumbnail (if available)
@@ -641,16 +652,19 @@ Each card contains:
 **[PLACEHOLDER] Content below is fictional. Replace with real customer stories before production.**
 
 **Story 1:**
+
 - Title: `Closing SFDR Data Gaps for a Mid-Sized Asset Manager`
 - Summary: `A German asset manager with EUR 12 billion AuM needed PAI indicator data for over 400 portfolio companies to meet SFDR disclosure deadlines. Dataland provided structured, quality-assured data extracted from public sustainability reports, eliminating weeks of manual research.`
 - Link: `/success-stories/sfdr-data-gaps-asset-manager`
 
 **Story 2:**
+
 - Title: `EU Taxonomy Alignment Data for a Regional Bank`
 - Summary: `A German regional bank needed EU Taxonomy alignment data for its corporate loan portfolio to calculate its Green Asset Ratio. Dataland delivered structured Taxonomy KPIs extracted from borrowers' public disclosures, enabling the bank to meet EBA Pillar 3 reporting requirements on schedule.`
 - Link: `/success-stories/eu-taxonomy-alignment-regional-bank`
 
 **Story 3:**
+
 - Title: `LkSG Supply Chain Due Diligence for an Institutional Investor`
 - Summary: `A large German institutional investor used Dataland to assess LkSG compliance indicators across its equity portfolio holdings. The structured due diligence data enabled the investor to identify supply chain risk concentrations and engage proactively with portfolio companies.`
 - Link: `/success-stories/lksg-supply-chain-due-diligence-investor`
@@ -673,22 +687,26 @@ The old TheQuotes component embedded YouTube videos via the YouTube IFrame API, 
 #### Layout
 
 **Quote cards:**
+
 - Desktop: 2x2 grid, max-width 1000px centered.
 - Tablet: 2-column grid.
 - Mobile: Horizontal SlideShow (reuse existing `SlideShow.vue` component) with arrow navigation.
 
 **Success story cards:**
+
 - Desktop: 3 columns, gap 32px.
 - Tablet: 2 columns (third wraps).
 - Mobile: Single column, gap 16px.
 
 **Process sketch:**
+
 - Full width, max-width 900px centered.
 - Mobile: horizontally scrollable if wider than viewport, or stacked vertically.
 
 #### Card Design
 
 **Quote cards:**
+
 - White background, border-radius 16px, subtle shadow (`box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08)`).
 - Large opening quotation mark (decorative, `font-size: 48px; color: var(--p-primary-color); opacity: 0.3;`).
 - Quote text: `font-size: 20px; line-height: 28px; font-weight: 400;`.
@@ -696,6 +714,7 @@ The old TheQuotes component embedded YouTube videos via the YouTube IFrame API, 
 - Padding: 40px.
 
 **Success story cards:**
+
 - White background, border-radius 12px, border 1px solid `var(--grey-tones-200)`.
 - Title: `font-size: 20px; font-weight: 600;`.
 - Summary: `font-size: 16px; color: var(--grey-tones-600); line-height: 24px;`.
@@ -733,6 +752,7 @@ Add to `src/router/index.ts`:
 #### Page Structure
 
 Each success story page contains:
+
 1. **Header:** Same `LandingPageHeader` as landing/about pages.
 2. **Hero section:** Story title + company type (e.g., "Mid-Sized Asset Manager") + framework tag (e.g., "SFDR").
 3. **The Challenge:** What data problem the member faced.
@@ -777,7 +797,7 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     challenge:
       'With SFDR Level 2 requirements in full effect, the firm faced a critical data gap: PAI indicators were missing for nearly 60% of their portfolio holdings, particularly among small- and mid-cap European companies. Commercial ESG data providers covered the large caps, but the long tail of smaller holdings remained a blind spot. The compliance team estimated that sourcing this data manually from published sustainability reports would require over 800 person-hours per reporting cycle. The deadline for the annual PAI statement was approaching, and the team lacked both the capacity and the specialized knowledge to extract the required data points from diverse report formats.',
     process:
-      'The firm submitted a batch request through Dataland, uploading a list of 420 portfolio companies with missing SFDR PAI data. Dataland\'s AI extraction engine processed publicly available sustainability reports, annual reports, and non-financial disclosures for each company, mapping extracted data points to the 18 mandatory PAI indicators. A human quality assurance review was conducted on all AI-extracted data before publication. The structured datasets were made available on the platform within three weeks, and the firm downloaded the complete dataset via Dataland\'s API for direct integration into their PAI statement generation workflow.',
+      "The firm submitted a batch request through Dataland, uploading a list of 420 portfolio companies with missing SFDR PAI data. Dataland's AI extraction engine processed publicly available sustainability reports, annual reports, and non-financial disclosures for each company, mapping extracted data points to the 18 mandatory PAI indicators. A human quality assurance review was conducted on all AI-extracted data before publication. The structured datasets were made available on the platform within three weeks, and the firm downloaded the complete dataset via Dataland's API for direct integration into their PAI statement generation workflow.",
     result:
       'The firm achieved 94% PAI indicator coverage across its portfolio, up from 40% before using Dataland. The entire process -- from data request to API export -- took 22 days, compared to an estimated 10 weeks of manual effort. The compliance team reported that the structured format reduced downstream processing time by approximately 70%.',
     quote: {
@@ -791,15 +811,15 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     slug: 'eu-taxonomy-alignment-regional-bank',
     title: 'EU Taxonomy Alignment Data for a Regional Bank',
     summary:
-      'A German regional bank needed EU Taxonomy alignment data for its corporate loan portfolio to calculate its Green Asset Ratio. Dataland delivered structured Taxonomy KPIs extracted from borrowers\' public disclosures, enabling the bank to meet EBA Pillar 3 reporting requirements on schedule.',
+      "A German regional bank needed EU Taxonomy alignment data for its corporate loan portfolio to calculate its Green Asset Ratio. Dataland delivered structured Taxonomy KPIs extracted from borrowers' public disclosures, enabling the bank to meet EBA Pillar 3 reporting requirements on schedule.",
     companyType: 'Regional bank',
     framework: 'EU Taxonomy',
     challenge:
       'As a credit institution subject to CRR requirements, the bank needed to calculate and disclose its Green Asset Ratio (GAR) under the EU Taxonomy regulation. This required Taxonomy alignment data -- specifically revenue, CapEx, and OpEx KPIs -- for over 300 corporate borrowers in its loan book. Most of these borrowers were mid-market German companies that did not proactively share structured Taxonomy data with their lenders. The bank had attempted a manual outreach approach, sending questionnaires to borrowers, but response rates were below 15%. Without reliable alignment data, the bank faced the prospect of reporting near-zero GAR figures despite having a portfolio with significant exposure to climate-relevant economic activities.',
     process:
-      'The bank provided Dataland with a list of corporate borrowers and the specific Taxonomy KPIs needed for GAR calculation. Dataland\'s platform identified and retrieved publicly available annual reports, non-financial statements, and Taxonomy-specific disclosures for each company. The AI extraction engine parsed these documents to identify reported Taxonomy-eligible and Taxonomy-aligned revenue, CapEx, and OpEx figures, along with the underlying economic activities and environmental objectives. Each extracted dataset was reviewed by Dataland\'s QA team for accuracy and completeness. The verified data was delivered via API in a format directly compatible with the bank\'s regulatory reporting system.',
+      "The bank provided Dataland with a list of corporate borrowers and the specific Taxonomy KPIs needed for GAR calculation. Dataland's platform identified and retrieved publicly available annual reports, non-financial statements, and Taxonomy-specific disclosures for each company. The AI extraction engine parsed these documents to identify reported Taxonomy-eligible and Taxonomy-aligned revenue, CapEx, and OpEx figures, along with the underlying economic activities and environmental objectives. Each extracted dataset was reviewed by Dataland's QA team for accuracy and completeness. The verified data was delivered via API in a format directly compatible with the bank's regulatory reporting system.",
     result:
-      'The bank obtained Taxonomy alignment data for 78% of its corporate loan portfolio by value, transforming its GAR disclosure from a near-zero placeholder to a meaningful metric. The data was delivered six weeks ahead of the EBA reporting deadline, giving the bank\'s risk and compliance teams sufficient time for internal validation and board-level review.',
+      "The bank obtained Taxonomy alignment data for 78% of its corporate loan portfolio by value, transforming its GAR disclosure from a near-zero placeholder to a meaningful metric. The data was delivered six weeks ahead of the EBA reporting deadline, giving the bank's risk and compliance teams sufficient time for internal validation and board-level review.",
     quote: {
       text: 'Our borrower questionnaire approach was simply not working. Dataland allowed us to source Taxonomy data from public disclosures at scale -- something we could not have done internally without a dedicated team.',
       attribution: 'Placeholder Name',
@@ -815,11 +835,11 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     companyType: 'Institutional investor',
     framework: 'LkSG',
     challenge:
-      'Under the German Supply Chain Due Diligence Act (LkSG), the institutional investor -- a pension fund with EUR 45 billion in assets -- needed to understand the human rights and environmental due diligence practices of companies in its equity portfolio. While the investor was not directly subject to LkSG obligations, its board had committed to voluntary alignment with LkSG standards as part of its responsible investment policy. The portfolio included over 250 German and European companies, many of which had complex global supply chains. Assessing each company\'s grievance mechanisms, risk analysis processes, preventive measures, and remedial actions from published reports was a task far beyond the capacity of the three-person ESG integration team.',
+      "Under the German Supply Chain Due Diligence Act (LkSG), the institutional investor -- a pension fund with EUR 45 billion in assets -- needed to understand the human rights and environmental due diligence practices of companies in its equity portfolio. While the investor was not directly subject to LkSG obligations, its board had committed to voluntary alignment with LkSG standards as part of its responsible investment policy. The portfolio included over 250 German and European companies, many of which had complex global supply chains. Assessing each company's grievance mechanisms, risk analysis processes, preventive measures, and remedial actions from published reports was a task far beyond the capacity of the three-person ESG integration team.",
     process:
-      'The investor submitted its portfolio holdings to Dataland and requested LkSG-relevant due diligence data for each company. Dataland\'s AI engine analyzed published sustainability reports, human rights policy documents, supply chain disclosures, and BAFA-related public statements. The extraction focused on the core LkSG requirements: risk analysis methodology, preventive and remedial measures, grievance mechanisms, and documentation practices. All data points were mapped to a structured LkSG framework and reviewed by Dataland\'s quality assurance team. The final dataset was delivered through the platform\'s download function, with each company\'s data linked to the source document for full traceability.',
+      "The investor submitted its portfolio holdings to Dataland and requested LkSG-relevant due diligence data for each company. Dataland's AI engine analyzed published sustainability reports, human rights policy documents, supply chain disclosures, and BAFA-related public statements. The extraction focused on the core LkSG requirements: risk analysis methodology, preventive and remedial measures, grievance mechanisms, and documentation practices. All data points were mapped to a structured LkSG framework and reviewed by Dataland's quality assurance team. The final dataset was delivered through the platform's download function, with each company's data linked to the source document for full traceability.",
     result:
-      'The investor received structured LkSG due diligence assessments for 230 of its 250 portfolio companies within four weeks. The data revealed that 35% of assessed companies had incomplete or missing grievance mechanisms -- a finding that directly informed the investor\'s engagement priorities for the following year. The ESG integration team estimated that the Dataland-sourced data saved approximately 1,200 hours of analyst time.',
+      "The investor received structured LkSG due diligence assessments for 230 of its 250 portfolio companies within four weeks. The data revealed that 35% of assessed companies had incomplete or missing grievance mechanisms -- a finding that directly informed the investor's engagement priorities for the following year. The ESG integration team estimated that the Dataland-sourced data saved approximately 1,200 hours of analyst time.",
     quote: {
       text: 'LkSG compliance data was a black box for us before Dataland. Now we have a structured, source-linked dataset that our portfolio managers actually use in their engagement conversations.',
       attribution: 'Placeholder Name',
@@ -930,12 +950,12 @@ No content changes. Ensure `id="main-content"` is NOT on this section (it goes o
 
 Update the fourth pillar per copywriter spec:
 
-| # | Icon | Title | Description |
-|---|------|-------|-------------|
-| 1 | `pi pi-lock` | Cannot be sold | 100% owned by Werte-Stiftung, a Frankfurt charitable foundation. Non-commercial by structure, not just by policy. |
-| 2 | `pi pi-shield` | Institutionally backed | Backed by d-fine, PwC, and the leadership of BVI and VOEB -- established names in German financial services. |
-| 3 | `pi pi-chart-bar` | Narrow scope | Makes published sustainability data accessible. No ratings, no assessments, no commercial agenda. |
-| 4 | `pi pi-microchip` | Transparent Technology | Human-supervised AI extraction applied to public company disclosures -- always with expert review, always with full traceability. |
+| #   | Icon              | Title                  | Description                                                                                                                       |
+| --- | ----------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `pi pi-lock`      | Cannot be sold         | 100% owned by Werte-Stiftung, a Frankfurt charitable foundation. Non-commercial by structure, not just by policy.                 |
+| 2   | `pi pi-shield`    | Institutionally backed | Backed by d-fine, PwC, and the leadership of BVI and VOEB -- established names in German financial services.                      |
+| 3   | `pi pi-chart-bar` | Narrow scope           | Makes published sustainability data accessible. No ratings, no assessments, no commercial agenda.                                 |
+| 4   | `pi pi-microchip` | Transparent Technology | Human-supervised AI extraction applied to public company disclosures -- always with expert review, always with full traceability. |
 
 **CHANGE:** Pillar 4 title changes from `"AI at non-profit scale"` to `"Transparent Technology"`. Description updated to include human-in-the-loop messaging and remove "inspect the code".
 
@@ -960,14 +980,14 @@ No changes. Current implementation is correct. Data stays in `aboutContent.ts` a
 - **Section headline:** `Our Principles`
 - **Cards (6 total):**
 
-| # | Icon | Title | Description |
-|---|------|-------|-------------|
-| 1 | `pi pi-verified` | Integrity | We need comparable and reliable sustainability data to create value. |
-| 2 | `pi pi-eye` | Disclosure | We seek disclosure of sustainability data from our business relations. |
-| 3 | `pi pi-unlock` | Transparency | We respect and promote data sovereignty. |
-| 4 | `pi pi-check-circle` | Accountability | Data should be timely and easily accessible at fair cost. |
-| 5 | `pi pi-balance-scale` | Neutrality | Common data spaces should be neutral, transparent, non-competitive and not-for-profit. |
-| 6 | `pi pi-users` | Collaboration | We work together to achieve these principles and promote their acceptance. |
+| #   | Icon                  | Title          | Description                                                                            |
+| --- | --------------------- | -------------- | -------------------------------------------------------------------------------------- |
+| 1   | `pi pi-verified`      | Integrity      | We need comparable and reliable sustainability data to create value.                   |
+| 2   | `pi pi-eye`           | Disclosure     | We seek disclosure of sustainability data from our business relations.                 |
+| 3   | `pi pi-unlock`        | Transparency   | We respect and promote data sovereignty.                                               |
+| 4   | `pi pi-check-circle`  | Accountability | Data should be timely and easily accessible at fair cost.                              |
+| 5   | `pi pi-balance-scale` | Neutrality     | Common data spaces should be neutral, transparent, non-competitive and not-for-profit. |
+| 6   | `pi pi-users`         | Collaboration  | We work together to achieve these principles and promote their acceptance.             |
 
 Note: Typos from the original content.json are fixed ("soveignty" -> "sovereignty", "easliy" -> "easily").
 
@@ -980,6 +1000,7 @@ Note: Typos from the original content.json are fixed ("soveignty" -> "sovereignt
 #### Card Design
 
 Each card is visually distinct from TrustPillarCards:
+
 - Left border: 3px solid `#ff6813` (orange).
 - Background: `var(--p-surface-0, #ffffff)`.
 - Border: 1px solid `var(--p-surface-200, #dadada)` on top/right/bottom.
@@ -1017,12 +1038,32 @@ export interface Principle {
 }
 
 export const PRINCIPLES: Principle[] = [
-  { icon: 'pi pi-verified', title: 'Integrity', description: 'We need comparable and reliable sustainability data to create value.' },
-  { icon: 'pi pi-eye', title: 'Disclosure', description: 'We seek disclosure of sustainability data from our business relations.' },
+  {
+    icon: 'pi pi-verified',
+    title: 'Integrity',
+    description: 'We need comparable and reliable sustainability data to create value.',
+  },
+  {
+    icon: 'pi pi-eye',
+    title: 'Disclosure',
+    description: 'We seek disclosure of sustainability data from our business relations.',
+  },
   { icon: 'pi pi-unlock', title: 'Transparency', description: 'We respect and promote data sovereignty.' },
-  { icon: 'pi pi-check-circle', title: 'Accountability', description: 'Data should be timely and easily accessible at fair cost.' },
-  { icon: 'pi pi-balance-scale', title: 'Neutrality', description: 'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.' },
-  { icon: 'pi pi-users', title: 'Collaboration', description: 'We work together to achieve these principles and promote their acceptance.' },
+  {
+    icon: 'pi pi-check-circle',
+    title: 'Accountability',
+    description: 'Data should be timely and easily accessible at fair cost.',
+  },
+  {
+    icon: 'pi pi-balance-scale',
+    title: 'Neutrality',
+    description: 'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
+  },
+  {
+    icon: 'pi pi-users',
+    title: 'Collaboration',
+    description: 'We work together to achieve these principles and promote their acceptance.',
+  },
 ];
 ```
 
@@ -1200,8 +1241,8 @@ Add a second CTA button. The template becomes:
 
 ```html
 <div class="about-bottom-cta__actions">
-  <Button :label="BOTTOM_CTA_COPY.primaryCtaLabel" rounded @click="openModal" />
-  <Button :label="BOTTOM_CTA_COPY.secondaryCtaLabel" rounded severity="secondary" @click="navigateToFrameworks" />
+  <button :label="BOTTOM_CTA_COPY.primaryCtaLabel" rounded @click="openModal" />
+  <button :label="BOTTOM_CTA_COPY.secondaryCtaLabel" rounded severity="secondary" @click="navigateToFrameworks" />
 </div>
 ```
 
@@ -1236,6 +1277,7 @@ Changes to make:
 3. **"Quotes" section:** Replace entirely with social proof quotes (text-only):
    - Rename `"title"` from `"Quotes"` to `"Social Proof"`.
    - Replace cards with text-only quote cards (no YouTube video IDs):
+
    ```json
    {
      "title": "Social Proof",
@@ -1326,8 +1368,7 @@ export const TRUST_PILLARS: TrustPillar[] = [
   {
     icon: 'pi pi-chart-bar',
     title: 'Narrow scope',
-    description:
-      'Makes published sustainability data accessible. No ratings, no assessments, no commercial agenda.',
+    description: 'Makes published sustainability data accessible. No ratings, no assessments, no commercial agenda.',
   },
   {
     icon: 'pi pi-microchip',
@@ -1413,8 +1454,7 @@ export const PRINCIPLES: Principle[] = [
   {
     icon: 'pi pi-balance-scale',
     title: 'Neutrality',
-    description:
-      'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
+    description: 'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
   },
   {
     icon: 'pi pi-users',
@@ -1445,76 +1485,76 @@ export const BOTTOM_CTA_COPY = {
 
 ### 6.1 Files to CREATE
 
-| File | Description |
-|------|-------------|
-| `src/assets/scss/breakpoints.scss` | SCSS breakpoint variables ($bp-sm, $bp-md, $bp-lg, $bp-xl) |
-| `src/composables/useBreakpoint.ts` | Shared reactive breakpoint composable |
-| `src/components/resources/landingPage/TheTrustBar.vue` | NEW: Institutional trust bar with grayscale logos |
-| `src/components/resources/landingPage/TheDataAccess.vue` | NEW: Replaces TheHowItWorks with video integration |
-| `src/components/resources/landingPage/TheFrameworks.vue` | NEW: Replaces TheJoinCampaign, no "campaign" wording |
-| `src/components/resources/landingPage/TheSocialProof.vue` | NEW: Text-based testimonials replacing YouTube quotes |
-| `src/components/resources/landingPage/socialProofContent.ts` | NEW: Content data for TheSocialProof (quotes + success story summaries) |
-| `src/components/resources/aboutPage/TheAboutPrinciples.vue` | NEW: 6-card principles grid with orange left border |
-| `src/components/resources/aboutPage/TheAboutEcosystem.vue` | NEW: Merged sponsors + partners section |
-| `src/components/pages/SuccessStoryPage.vue` | NEW: Dedicated page for full customer success stories |
+| File                                                             | Description                                                                            |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `src/assets/scss/breakpoints.scss`                               | SCSS breakpoint variables ($bp-sm, $bp-md, $bp-lg, $bp-xl)                             |
+| `src/composables/useBreakpoint.ts`                               | Shared reactive breakpoint composable                                                  |
+| `src/components/resources/landingPage/TheTrustBar.vue`           | NEW: Institutional trust bar with grayscale logos                                      |
+| `src/components/resources/landingPage/TheDataAccess.vue`         | NEW: Replaces TheHowItWorks with video integration                                     |
+| `src/components/resources/landingPage/TheFrameworks.vue`         | NEW: Replaces TheJoinCampaign, no "campaign" wording                                   |
+| `src/components/resources/landingPage/TheSocialProof.vue`        | NEW: Text-based testimonials replacing YouTube quotes                                  |
+| `src/components/resources/landingPage/socialProofContent.ts`     | NEW: Content data for TheSocialProof (quotes + success story summaries)                |
+| `src/components/resources/aboutPage/TheAboutPrinciples.vue`      | NEW: 6-card principles grid with orange left border                                    |
+| `src/components/resources/aboutPage/TheAboutEcosystem.vue`       | NEW: Merged sponsors + partners section                                                |
+| `src/components/pages/SuccessStoryPage.vue`                      | NEW: Dedicated page for full customer success stories                                  |
 | `src/components/resources/successStories/successStoryContent.ts` | NEW: Content data for success stories (slug, title, challenge, process, result, quote) |
 
 ### 6.2 Files to MODIFY
 
-| File | Changes |
-|------|---------|
-| `src/components/pages/LandingPage.vue` | Update section order, imports. Add `id="main-content"` to `<main>`. |
-| `src/components/pages/AboutPage.vue` | Update section order, imports. Remove Sponsors/Partners, add Principles/Ecosystem. Add `id="main-content"`. |
-| `src/components/generics/LandingPageHeader.vue` | Add hamburger menu, skip-to-content link, mobile nav overlay. |
-| `src/components/resources/landingPage/TheIntro.vue` | Add search label, fix Back button to `<button>`, add CTA buttons, use `useBreakpoint`, remove DOM manipulation. |
-| `src/components/resources/landingPage/TheStruggle.vue` | Reduce headline from 100px to 64px at desktop. |
-| `src/components/resources/landingPage/TheGetInTouch.vue` | Update CTA label to title case "Get in Touch". |
-| `src/components/resources/landingPage/TheBrands.vue` | Use SCSS breakpoint variables (minor). |
-| `src/components/resources/aboutPage/aboutContent.ts` | Update trust pillar 4 title/description. Add Principle interface + PRINCIPLES array. Update BOTTOM_CTA_COPY with dual CTA labels. Add url field to AdvisoryPerson. |
-| `src/components/resources/aboutPage/TheAboutTrustPillars.vue` | No template changes; data change flows from aboutContent.ts. |
-| `src/components/resources/aboutPage/TheAboutAdvisoryBoard.vue` | No major changes; PersonCard handles url if added. |
-| `src/components/resources/aboutPage/TheAboutBottomCTA.vue` | Add second CTA button (primary = register, secondary = contact). Wire register to Keycloak. |
-| `src/components/resources/aboutPage/PersonCard.vue` | Add optional link rendering for advisory board organisation when url is present. |
-| `src/assets/content.json` | Rename sections, update copy, remove "Claim" section, fix typos. See Section 5.1. |
-| `src/router/index.ts` | Add `/success-stories/:slug` route pointing to SuccessStoryPage.vue. |
-| `src/types/ContentTypes.ts` | No changes needed (existing Card interface is flexible enough). |
+| File                                                           | Changes                                                                                                                                                            |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/components/pages/LandingPage.vue`                         | Update section order, imports. Add `id="main-content"` to `<main>`.                                                                                                |
+| `src/components/pages/AboutPage.vue`                           | Update section order, imports. Remove Sponsors/Partners, add Principles/Ecosystem. Add `id="main-content"`.                                                        |
+| `src/components/generics/LandingPageHeader.vue`                | Add hamburger menu, skip-to-content link, mobile nav overlay.                                                                                                      |
+| `src/components/resources/landingPage/TheIntro.vue`            | Add search label, fix Back button to `<button>`, add CTA buttons, use `useBreakpoint`, remove DOM manipulation.                                                    |
+| `src/components/resources/landingPage/TheStruggle.vue`         | Reduce headline from 100px to 64px at desktop.                                                                                                                     |
+| `src/components/resources/landingPage/TheGetInTouch.vue`       | Update CTA label to title case "Get in Touch".                                                                                                                     |
+| `src/components/resources/landingPage/TheBrands.vue`           | Use SCSS breakpoint variables (minor).                                                                                                                             |
+| `src/components/resources/aboutPage/aboutContent.ts`           | Update trust pillar 4 title/description. Add Principle interface + PRINCIPLES array. Update BOTTOM_CTA_COPY with dual CTA labels. Add url field to AdvisoryPerson. |
+| `src/components/resources/aboutPage/TheAboutTrustPillars.vue`  | No template changes; data change flows from aboutContent.ts.                                                                                                       |
+| `src/components/resources/aboutPage/TheAboutAdvisoryBoard.vue` | No major changes; PersonCard handles url if added.                                                                                                                 |
+| `src/components/resources/aboutPage/TheAboutBottomCTA.vue`     | Add second CTA button (primary = register, secondary = contact). Wire register to Keycloak.                                                                        |
+| `src/components/resources/aboutPage/PersonCard.vue`            | Add optional link rendering for advisory board organisation when url is present.                                                                                   |
+| `src/assets/content.json`                                      | Rename sections, update copy, remove "Claim" section, fix typos. See Section 5.1.                                                                                  |
+| `src/router/index.ts`                                          | Add `/success-stories/:slug` route pointing to SuccessStoryPage.vue.                                                                                               |
+| `src/types/ContentTypes.ts`                                    | No changes needed (existing Card interface is flexible enough).                                                                                                    |
 
 ### 6.3 Files to DELETE (after new components are in place)
 
-| File | Reason |
-|------|--------|
-| `src/components/resources/landingPage/TheQuotes.vue` | Replaced by TheSocialProof.vue |
-| `src/components/resources/landingPage/TheHowItWorks.vue` | Replaced by TheDataAccess.vue |
-| `src/components/resources/landingPage/TheJoinCampaign.vue` | Replaced by TheFrameworks.vue |
-| `src/components/resources/aboutPage/TheAboutSponsors.vue` | Merged into TheAboutEcosystem.vue |
-| `src/components/resources/aboutPage/TheAboutPartners.vue` | Merged into TheAboutEcosystem.vue |
+| File                                                       | Reason                            |
+| ---------------------------------------------------------- | --------------------------------- |
+| `src/components/resources/landingPage/TheQuotes.vue`       | Replaced by TheSocialProof.vue    |
+| `src/components/resources/landingPage/TheHowItWorks.vue`   | Replaced by TheDataAccess.vue     |
+| `src/components/resources/landingPage/TheJoinCampaign.vue` | Replaced by TheFrameworks.vue     |
+| `src/components/resources/aboutPage/TheAboutSponsors.vue`  | Merged into TheAboutEcosystem.vue |
+| `src/components/resources/aboutPage/TheAboutPartners.vue`  | Merged into TheAboutEcosystem.vue |
 
 ### 6.4 Assets Needed
 
-| Asset | Path | Notes |
-|-------|------|-------|
-| Platform demo video | `/static/videos/platform-demo.mp4` | **[PLACEHOLDER: NOT YET CREATED]** Self-hosted, short (few seconds), silent, looping. Implementation must gracefully show only poster SVG when mp4 is missing. Replace with real screen recording before production. |
-| Platform demo poster | `/static/videos/platform-demo-thumb.svg` | **[PLACEHOLDER: SVG provided]** Mockup of platform UI. Replace with real screenshot when video is produced. |
-| Member process sketch | `/static/images/member-process-sketch.svg` | **[PLACEHOLDER: SVG provided]** Generic member workflow flow diagram. Replace with professionally designed version. |
-| SFDR process sketch | `/static/images/process-sketch-sfdr.svg` | **[PLACEHOLDER: SVG provided]** SFDR-specific flow for success story. Replace with designed version. |
-| EU Taxonomy process sketch | `/static/images/process-sketch-eu-taxonomy.svg` | **[PLACEHOLDER: SVG provided]** EU Taxonomy-specific flow for success story. Replace with designed version. |
-| LkSG process sketch | `/static/images/process-sketch-lksg.svg` | **[PLACEHOLDER: SVG provided]** LkSG-specific flow for success story. Replace with designed version. |
-| Team photo: Andreas Hoecherl | `/static/about/team-andreas-hoecherl.svg` | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo. |
-| Team photo: Soeren Vorsmann | `/static/about/team-soeren-vorsmann.svg` | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo. |
-| Advisory photo: Rudi Siebel | `/static/about/team-rudi-siebel.svg` | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo. |
-| Advisory photo: Stephan Henkel | `/static/about/team-stephan-henkel.svg` | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo. |
-| Partner logo: Eskua AI | `/static/about/logo-eskua-ai.svg` | **[PLACEHOLDER: SVG text logo]** Replace with real company logo. |
-| Partner logo: Keynum | `/static/about/logo-keynum.svg` | **[PLACEHOLDER: SVG text logo]** Replace with real company logo. |
-| Partner logo: FACT First Cloud | `/static/about/logo-fact-first-cloud.svg` | **[PLACEHOLDER: SVG text logo]** Replace with real company logo. |
-| Partner logo: Sopra Steria | `/static/about/logo-sopra-steria.svg` | **[PLACEHOLDER: SVG text logo]** Replace with real company logo. |
+| Asset                          | Path                                            | Notes                                                                                                                                                                                                                |
+| ------------------------------ | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Platform demo video            | `/static/videos/platform-demo.mp4`              | **[PLACEHOLDER: NOT YET CREATED]** Self-hosted, short (few seconds), silent, looping. Implementation must gracefully show only poster SVG when mp4 is missing. Replace with real screen recording before production. |
+| Platform demo poster           | `/static/videos/platform-demo-thumb.svg`        | **[PLACEHOLDER: SVG provided]** Mockup of platform UI. Replace with real screenshot when video is produced.                                                                                                          |
+| Member process sketch          | `/static/images/member-process-sketch.svg`      | **[PLACEHOLDER: SVG provided]** Generic member workflow flow diagram. Replace with professionally designed version.                                                                                                  |
+| SFDR process sketch            | `/static/images/process-sketch-sfdr.svg`        | **[PLACEHOLDER: SVG provided]** SFDR-specific flow for success story. Replace with designed version.                                                                                                                 |
+| EU Taxonomy process sketch     | `/static/images/process-sketch-eu-taxonomy.svg` | **[PLACEHOLDER: SVG provided]** EU Taxonomy-specific flow for success story. Replace with designed version.                                                                                                          |
+| LkSG process sketch            | `/static/images/process-sketch-lksg.svg`        | **[PLACEHOLDER: SVG provided]** LkSG-specific flow for success story. Replace with designed version.                                                                                                                 |
+| Team photo: Andreas Hoecherl   | `/static/about/team-andreas-hoecherl.svg`       | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo.                                                                                                                                        |
+| Team photo: Soeren Vorsmann    | `/static/about/team-soeren-vorsmann.svg`        | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo.                                                                                                                                        |
+| Advisory photo: Rudi Siebel    | `/static/about/team-rudi-siebel.svg`            | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo.                                                                                                                                        |
+| Advisory photo: Stephan Henkel | `/static/about/team-stephan-henkel.svg`         | **[PLACEHOLDER: SVG avatar with initials]** Replace with real headshot photo.                                                                                                                                        |
+| Partner logo: Eskua AI         | `/static/about/logo-eskua-ai.svg`               | **[PLACEHOLDER: SVG text logo]** Replace with real company logo.                                                                                                                                                     |
+| Partner logo: Keynum           | `/static/about/logo-keynum.svg`                 | **[PLACEHOLDER: SVG text logo]** Replace with real company logo.                                                                                                                                                     |
+| Partner logo: FACT First Cloud | `/static/about/logo-fact-first-cloud.svg`       | **[PLACEHOLDER: SVG text logo]** Replace with real company logo.                                                                                                                                                     |
+| Partner logo: Sopra Steria     | `/static/about/logo-sopra-steria.svg`           | **[PLACEHOLDER: SVG text logo]** Replace with real company logo.                                                                                                                                                     |
 
 ### 6.5 Tests to Update
 
-| File | Changes |
-|------|---------|
-| `tests/component/components/pages/LandingPage.cy.ts` | Update to reflect new section order and removed/renamed components. |
-| Any E2E tests referencing `data-test="join-campaign-button"` | Update selectors to match TheFrameworks. |
-| Any E2E tests referencing YouTube/video embeds | Remove or update for new TheSocialProof section. |
+| File                                                         | Changes                                                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------------- |
+| `tests/component/components/pages/LandingPage.cy.ts`         | Update to reflect new section order and removed/renamed components. |
+| Any E2E tests referencing `data-test="join-campaign-button"` | Update selectors to match TheFrameworks.                            |
+| Any E2E tests referencing YouTube/video embeds               | Remove or update for new TheSocialProof section.                    |
 
 ### 6.6 Implementation Order (Recommended)
 

@@ -132,8 +132,7 @@ export const PRINCIPLES: Principle[] = [
   {
     icon: 'pi pi-balance-scale',
     title: 'Neutrality',
-    description:
-      'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
+    description: 'Common data spaces should be neutral, transparent, non-competitive and not-for-profit.',
   },
   {
     icon: 'pi pi-users',

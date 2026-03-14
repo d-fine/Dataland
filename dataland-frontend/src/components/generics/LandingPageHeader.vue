@@ -6,11 +6,7 @@
         <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland banner logo" />
       </router-link>
     </div>
-    <nav
-      id="mobile-menu"
-      class="header__navigation"
-      :class="{ 'header__navigation--open': menuOpen }"
-    >
+    <nav id="mobile-menu" class="header__navigation" :class="{ 'header__navigation--open': menuOpen }">
       <Button
         to="/"
         class="header__link"

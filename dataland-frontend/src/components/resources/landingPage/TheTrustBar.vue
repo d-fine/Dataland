@@ -2,13 +2,7 @@
   <section class="trustbar" role="region" aria-label="Trusted by">
     <p class="trustbar__label">Trusted by leaders in European financial services</p>
     <div class="trustbar__logos">
-      <img
-        v-for="logo in logos"
-        :key="logo.alt"
-        :src="logo.src"
-        :alt="logo.alt"
-        class="trustbar__logo"
-      />
+      <img v-for="logo in logos" :key="logo.alt" :src="logo.src" :alt="logo.alt" class="trustbar__logo" />
     </div>
   </section>
 </template>

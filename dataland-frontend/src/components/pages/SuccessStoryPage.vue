@@ -38,12 +38,7 @@
       </div>
     </section>
 
-    <section
-      v-if="story.quote"
-      class="story-quote"
-      role="region"
-      aria-labelledby="story-quote-heading"
-    >
+    <section v-if="story.quote" class="story-quote" role="region" aria-labelledby="story-quote-heading">
       <div class="story-quote__wrapper">
         <h2 id="story-quote-heading" class="visually-hidden">Quote</h2>
         <blockquote class="story-quote__blockquote">

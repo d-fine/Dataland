@@ -57,10 +57,14 @@ import PersonCard from '@/components/resources/aboutPage/PersonCard.vue';
 }
 
 @media only screen and (min-width: $bp-md) {
-  .about-advisory__grid { grid-template-columns: repeat(2, 1fr); }
+  .about-advisory__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media only screen and (min-width: $bp-lg) {
-  .about-advisory__grid { grid-template-columns: repeat(3, 1fr); }
+  .about-advisory__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 </style>

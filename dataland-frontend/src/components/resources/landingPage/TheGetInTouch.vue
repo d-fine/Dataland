@@ -1,5 +1,10 @@
 <template>
-  <section v-if="getInTouchSection && getInTouchSection.cards" class="getintouch" role="region" aria-labelledby="getintouch-heading">
+  <section
+    v-if="getInTouchSection && getInTouchSection.cards"
+    class="getintouch"
+    role="region"
+    aria-labelledby="getintouch-heading"
+  >
     <div class="getintouch__wrapper">
       <h2 id="getintouch-heading" class="getintouch__title">
         {{ getInTouchSection.text[0] }}
