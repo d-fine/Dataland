@@ -120,7 +120,7 @@ function validateDataAccessSection(): void {
   cy.get('section.dataaccess').should('exist');
   cy.get('.dataaccess__slide').should('have.length', 4);
   cy.get('.dataaccess__slide').eq(0).should('contain.text', 'Search');
-  cy.get('.dataaccess__slide').eq(1).should('contain.text', "Request company's inclusion");
+  cy.get('.dataaccess__slide').eq(1).should('contain.text', 'Request company\u2019s inclusion');
   cy.get('.dataaccess__slide').eq(2).should('contain.text', 'Request framework data');
   cy.get('.dataaccess__slide').eq(3).should('contain.text', 'Download');
 }
