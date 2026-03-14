@@ -37,14 +37,14 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review object."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @GetMapping(
         value = ["/{datasetReviewId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun getDatasetReview(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
@@ -64,7 +64,7 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully added dataset review object to Dataland."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
             ApiResponse(responseCode = "409", description = "A pending review already exists for this dataset."),
         ],
     )
@@ -72,7 +72,7 @@ interface DatasetReviewApi {
         value = ["/{datasetId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun postDatasetReview(
         @PathVariable @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
@@ -91,14 +91,14 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review objects."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @GetMapping(
         value = ["/{datasetId}/datasetId"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun getDatasetReviewsByDatasetId(
         @PathVariable @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
@@ -111,21 +111,21 @@ interface DatasetReviewApi {
      * @param datasetReviewId identifier used to uniquely specify the data review object
      */
     @Operation(
-        summary = "Change the reviewer of a dataset review object.",
-        description = "Set yourself as the reviewer of the dataset review object. Other users cannot modify this object.",
+        summary = "Change the owner of a dataset review object.",
+        description = "Set yourself as the owner of the dataset review object. Other users cannot modify this object.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully set yourself as the reviewer."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "200", description = "Successfully set yourself as the owner."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @PatchMapping(
-        value = ["/{datasetReviewId}/reviewer"],
+        value = ["/{datasetReviewId}/owner"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun setReviewer(
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
+    fun setOwner(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
@@ -153,7 +153,7 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the reviewer " +
+                    "Forbidden. You must first assign yourself as the owner " +
                         "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],
@@ -184,7 +184,8 @@ interface DatasetReviewApi {
         summary = "Put a datapoint to ApprovedDataPoints map.",
         description =
             "Adds a datapoint to the ApprovedDataPoints map. " +
-                "Removes the qa report and custom datapoint from approvedQaReports and approvedCustomDataPoints with same data point type.",
+                "Removes the qa report and custom datapoint from approvedQaReports " +
+                "and approvedCustomDataPoints with same data point type.",
     )
     @ApiResponses(
         value = [
@@ -192,7 +193,7 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the reviewer " +
+                    "Forbidden. You must first assign yourself as the owner " +
                         "for this object via the appropriate PATCH endpoint before editing it.",
             ),
 
@@ -235,7 +236,7 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the reviewer " +
+                    "Forbidden. You must first assign yourself as the owner " +
                         "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],
@@ -277,7 +278,7 @@ interface DatasetReviewApi {
             ApiResponse(
                 responseCode = "403",
                 description =
-                    "Forbidden. You must first assign yourself as the reviewer " +
+                    "Forbidden. You must first assign yourself as the owner " +
                         "for this object via the appropriate PATCH endpoint before editing it.",
             ),
         ],

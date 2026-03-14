@@ -37,7 +37,6 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
 const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/AdminAllRequestsOverview.vue');
 const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
-const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
@@ -66,14 +65,6 @@ const routes = [
     component: () => import('@/components/pages/SuccessStoryPage.vue'),
     meta: {
       layout: 'landing',
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/preview',
-    name: 'View Sample Data in Preview Mode',
-    component: ViewTeaserCompanyData,
-    meta: {
       requiresAuthentication: false,
     },
   },
