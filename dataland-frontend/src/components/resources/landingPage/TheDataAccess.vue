@@ -73,7 +73,7 @@ onMounted(() => {
   if (!videoContainer.value) return;
   observer = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting) {
+      if (entry?.isIntersecting) {
         videoSrc.value = '/static/videos/platform-demo.mp4';
         observer?.disconnect();
         observer = null;
