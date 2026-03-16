@@ -12,16 +12,28 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum
 ): Cypress.Chainable<Interception> {
+  const metaRequestAlias = 'fetchMetaInfoForPrefill';
   const getRequestAlias = 'fetchDataForPrefill';
   cy.intercept({
     method: 'GET',
-    url: '**/api/data/**',
-    times: 2,
-  }).as(getRequestAlias);
+    url: `**/api/metadata?companyId=${companyId}`,
+  }).as(metaRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
-  cy.get('[data-test="editDatasetButton"]').click();
-  return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  return cy
+    .wait(`@${metaRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number })
+    .then((interception) => {
+      const metaInformation = interception.response?.body as Array<{ dataId?: string; dataType?: string }> | undefined;
+      const dataId = metaInformation?.find((meta) => meta.dataType === dataType)?.dataId;
+      if (!dataId) {
+        throw new Error('No dataId found in metadata for edit navigation.');
+      }
+      cy.intercept({
+        method: 'GET',
+        url: `**/api/data/**/${dataId}`,
+      }).as(getRequestAlias);
+      cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
+      return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
+    });
 }
 
 /**
