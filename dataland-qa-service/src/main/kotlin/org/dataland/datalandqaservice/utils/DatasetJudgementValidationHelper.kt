@@ -19,7 +19,7 @@ object DatasetJudgementValidationHelper {
      * Ensures a patch provides at least one of customDataPoint or acceptedSource.
      *
      * @param patch The patch payload to validate.
-     * @throws org.dataland.datalandbackendutils.exceptions.InvalidInputApiException If both values are missing.
+     * @throws InvalidInputApiException If both values are missing.
      */
     fun validatePatchContainsCustomDataPointOrAcceptedSource(patch: ReviewDetailsPatch) {
         if (patch.customDataPoint == null && patch.acceptedSource == null) {
@@ -78,7 +78,7 @@ object DatasetJudgementValidationHelper {
      * Throws InsufficientRightsApiException if user is not reviewer.
      *
      * @param reviewerUserId Expected reviewer user id for the dataset review.
-     * @throws org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException If the current user is not the reviewer.
+     * @throws InsufficientRightsApiException If the current user is not the reviewer.
      */
     fun validateUserIsReviewer(reviewerUserId: UUID) {
         if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
