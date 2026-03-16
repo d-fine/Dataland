@@ -23,7 +23,7 @@ function instantiateVueApp(): void {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 60 * 5, // The standard stale time for queries is 5 minutes.
       },
     },
   });
