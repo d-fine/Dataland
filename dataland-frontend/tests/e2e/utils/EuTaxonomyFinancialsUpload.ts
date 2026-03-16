@@ -29,9 +29,9 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.C
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
-      const responseBody = assertDefined(interception).response?.body as
+      const responseBody:
         | DataAndMetaInformationEutaxonomyFinancialsData[]
-        | DataAndMetaInformationEutaxonomyFinancialsData;
+        | DataAndMetaInformationEutaxonomyFinancialsData = assertDefined(interception).response?.body;
       const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
       const referencedReports = firstEntry?.data?.general?.general?.referencedReports;
       assert(referencedReports);
