@@ -303,6 +303,19 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
+  it('Check QA-overview-page for sorting by framework', () => {
+    mountQaAssurancePageWithMocks();
+    cy.get('#qa-data-result thead tr').first().contains('th', 'FRAMEWORK').as('frameworkHeader');
+
+    cy.get('@frameworkHeader').click();
+    cy.get('@frameworkHeader').should('have.attr', 'aria-sort', 'ascending');
+    getFirstElementInColumn('FRAMEWORK').should('contain', 'LkSG');
+
+    cy.get('@frameworkHeader').click();
+    cy.get('@frameworkHeader').should('have.attr', 'aria-sort', 'descending');
+    getFirstElementInColumn('FRAMEWORK').should('contain', 'SFDR');
+  });
+
   it('Check QA-overview-page for filtering on reporting period', () => {
     mountQaAssurancePageWithMocks();
     chooseReportingPeriodFilter('2022');
