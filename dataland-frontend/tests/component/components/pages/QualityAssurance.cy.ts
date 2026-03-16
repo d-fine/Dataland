@@ -123,7 +123,7 @@ function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewRe
     reviewerUserName: options.reviewerUserName,
     reviewerUserId: options.reviewerUserId,
     numberQaReports: 0,
-    priorityOfAssociatedDataSourcing: options.priorityOfAssociatedDataSourcing ?? undefined,
+    priorityOfAssociatedDataSourcing: options.priorityOfAssociatedDataSourcing,
   };
 }
 
@@ -415,7 +415,6 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check that priority tags are displayed as expected', () => {
     mountQaAssurancePageWithMocks();
-    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
     assertUnfilteredDatatableState();
 
     cy.contains('td', `${dataIdAlpha}`)

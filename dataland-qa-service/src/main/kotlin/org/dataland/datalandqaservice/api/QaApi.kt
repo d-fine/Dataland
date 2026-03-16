@@ -94,7 +94,7 @@ interface QaApi {
     @Operation(
         summary = "Get relevant meta info on datasets with QA status pending.",
         description =
-            "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filtering" +
+            "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filtering " +
                 "for company name or ID is possible",
     )
     @ApiResponses(

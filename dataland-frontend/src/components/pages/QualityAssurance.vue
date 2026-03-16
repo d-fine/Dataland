@@ -66,6 +66,7 @@
             <Column
               field="framework"
               header="FRAMEWORK"
+              :sortable="true"
               :filterMatchMode="FilterMatchMode.IN"
               :showFilterMenu="true"
               :showFilterOperator="false"
@@ -357,7 +358,6 @@ const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
 const errorMessage = ref<string>('');
-const MAX_PRIORITY_VALUE = 10;
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -379,7 +379,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
         reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
         priorityWithNullHandling:
           row.priorityOfAssociatedDataSourcing === null || row.priorityOfAssociatedDataSourcing === undefined
-            ? MAX_PRIORITY_VALUE + 1
+            ? Number.MAX_SAFE_INTEGER
             : row.priorityOfAssociatedDataSourcing,
       }))
     );

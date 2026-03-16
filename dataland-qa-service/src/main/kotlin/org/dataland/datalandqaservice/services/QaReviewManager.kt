@@ -118,12 +118,12 @@ class QaReviewManager
          * The method returns a list of unreviewed datasets with corresponding information for the specified company name,
          * which are still pending review (qaStatus = Pending).
          */
-        @Transactional
+        @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             val qaReviewResponses =
                 qaReviewRepository
-                    .getSortedAndFilteredQaReviewMetadataset(
+                    .getPendingQaReviewMetadatasetsByCompany(
                         QaSearchFilter(
                             dataTypes = null,
                             reportingPeriods = null,
