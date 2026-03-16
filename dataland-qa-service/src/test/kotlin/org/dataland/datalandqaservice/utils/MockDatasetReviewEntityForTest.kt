@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
@@ -27,8 +27,8 @@ object MockDatasetReviewEntityForTest {
     val qaReportId = UUID.randomUUID().toString()
     const val CUSTOM_VALUE = """{"value": 42}"""
 
-    fun createDummyDatasetReviewEntity(): DatasetReviewEntity =
-        DatasetReviewEntity(
+    fun createDummyDatasetReviewEntity(): DatasetJudgementEntity =
+        DatasetJudgementEntity(
             dataSetReviewId = UUID.randomUUID(),
             datasetId = dummyDatasetId,
             companyId = dummyCompanyId,
@@ -48,7 +48,7 @@ object MockDatasetReviewEntityForTest {
                 ),
             dataPoints =
                 mutableListOf(
-                    DataPointReviewEntity(
+                    DataPointJudgementEntity(
                         dataPointType = DUMMY_DATA_POINT_TYPE,
                         dataPointId = UUID.randomUUID(),
                         qaReports =

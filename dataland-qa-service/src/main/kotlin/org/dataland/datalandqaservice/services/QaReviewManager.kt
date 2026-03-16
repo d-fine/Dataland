@@ -48,7 +48,7 @@ class QaReviewManager
         var objectMapper: ObjectMapper,
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
-        val datasetReviewService: DatasetReviewService,
+        val datasetJudgementService: DatasetJudgementService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -367,7 +367,7 @@ class QaReviewManager
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-            val datasetReviews = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
+            val datasetReviews = datasetJudgementService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
             val latestDatasetReview = datasetReviews.firstOrNull()
             return QaReviewResponse(
                 dataId = this.dataId,

@@ -20,7 +20,7 @@ class QaReportDataPointWithReporterEntity(
     @Id val id: UUID = UUID.randomUUID(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_point_review_details_id")
-    var dataPointReviewDetails: DataPointReviewEntity? = null,
+    var dataPointReviewDetails: DataPointJudgementEntity? = null,
     val qaReportId: UUID,
     val verdict: QaReportDataPointVerdict,
     val correctedData: String?,

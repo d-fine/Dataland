@@ -13,15 +13,15 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesCon
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewCreationService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -41,10 +41,10 @@ import java.util.Optional
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
-class DatasetReviewServiceTest {
+class DatasetJudgementServiceTest {
     private val datasetReviewRepository = mock<DatasetReviewRepository>()
     private val companyDataControllerApi = mock<CompanyDataControllerApi>()
-    private val datasetReviewSupportService = mock<DatasetReviewSupportService>()
+    private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
     private val inheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
     private val keycloakUserService = mock<KeycloakUserService>()
 
@@ -52,14 +52,14 @@ class DatasetReviewServiceTest {
         DatasetReviewCreationService(
             inheritedRolesControllerApi,
             companyDataControllerApi,
-            datasetReviewSupportService,
+            datasetJudgementSupportService,
             keycloakUserService,
         )
 
     private val service =
-        DatasetReviewService(
+        DatasetJudgementService(
             datasetReviewRepository,
-            datasetReviewSupportService,
+            datasetJudgementSupportService,
             creationServiceClass,
         )
 
@@ -71,7 +71,7 @@ class DatasetReviewServiceTest {
     fun setup() {
         reset(
             datasetReviewRepository,
-            datasetReviewSupportService,
+            datasetJudgementSupportService,
             inheritedRolesControllerApi,
             companyDataControllerApi,
         )
@@ -86,12 +86,12 @@ class DatasetReviewServiceTest {
             .whenever(datasetReviewRepository)
             .findById(any())
 
-        whenever(datasetReviewRepository.save(any<DatasetReviewEntity>()))
-            .thenAnswer { it.arguments[0] as DatasetReviewEntity }
+        whenever(datasetReviewRepository.save(any<DatasetJudgementEntity>()))
+            .thenAnswer { it.arguments[0] as DatasetJudgementEntity }
     }
 
-    private fun captureSavedReview(): DatasetReviewEntity {
-        val captor = argumentCaptor<DatasetReviewEntity>()
+    private fun captureSavedReview(): DatasetJudgementEntity {
+        val captor = argumentCaptor<DatasetJudgementEntity>()
         verify(datasetReviewRepository).save(captor.capture())
         return captor.firstValue
     }
@@ -101,7 +101,7 @@ class DatasetReviewServiceTest {
         reporterUserId: String? = null,
         customValue: String? = null,
         dataPointType: String = mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
-    ): DataPointReviewEntity {
+    ): DataPointJudgementEntity {
         service.patchReviewDetails(
             UUID.randomUUID(),
             dataPointType,
@@ -114,8 +114,8 @@ class DatasetReviewServiceTest {
     }
 
     private fun assertMatches(
-        entity: DatasetReviewEntity,
-        response: DatasetReviewResponse,
+        entity: DatasetJudgementEntity,
+        response: DatasetJudgementResponse,
     ) {
         assertEquals(entity.dataSetReviewId.toString(), response.dataSetReviewId)
         assertEquals(entity.datasetId.toString(), response.datasetId)
@@ -138,7 +138,7 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `getDatasetReviewsByDatasetId returns empty list when none exist`() {
-        doReturn(emptyList<DatasetReviewEntity>())
+        doReturn(emptyList<DatasetJudgementEntity>())
             .whenever(datasetReviewRepository)
             .findAllByDatasetId(any())
 
@@ -155,7 +155,7 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `getDatasetReviewById throws ResourceNotFoundApiException if review object does not exist`() {
-        doReturn(Optional.empty<DatasetReviewEntity>())
+        doReturn(Optional.empty<DatasetJudgementEntity>())
             .whenever(datasetReviewRepository)
             .findById(any())
 
@@ -175,7 +175,7 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `setReviewer throws ResourceNotFound when datasetReview does not exist`() {
-        doReturn(Optional.empty<DatasetReviewEntity>())
+        doReturn(Optional.empty<DatasetJudgementEntity>())
             .whenever(datasetReviewRepository)
             .findById(any())
 
@@ -227,7 +227,7 @@ class DatasetReviewServiceTest {
 
     private fun stubsForPostDatasetReview() {
         doReturn(mapOf(mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE to mockDatasetReviewEntityForTest.dummyDatapointId))
-            .whenever(datasetReviewSupportService)
+            .whenever(datasetJudgementSupportService)
             .getContainedDataPoints(any())
 
         val qaReportEntity =
@@ -244,11 +244,11 @@ class DatasetReviewServiceTest {
             )
 
         doReturn(listOf(qaReportEntity))
-            .whenever(datasetReviewSupportService)
+            .whenever(datasetJudgementSupportService)
             .findQaReports(any())
 
         doReturn(dummyMetaData)
-            .whenever(datasetReviewSupportService)
+            .whenever(datasetJudgementSupportService)
             .getDataMetaInfo(any())
 
         doReturn(mapOf(mockDatasetReviewEntityForTest.reporterCompanyId to listOf("Role")))
@@ -287,7 +287,7 @@ class DatasetReviewServiceTest {
         val dummyDatapointId = UUID.randomUUID().toString()
 
         doReturn(mapOf(mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE to dummyDatapointId))
-            .whenever(datasetReviewSupportService)
+            .whenever(datasetJudgementSupportService)
             .getContainedDataPoints(any())
 
         doReturn(listOf(datasetReviewEntity))
@@ -354,7 +354,7 @@ class DatasetReviewServiceTest {
             )
 
         assertEquals(mockDatasetReviewEntityForTest.CUSTOM_VALUE, saved.customValue)
-        verify(datasetReviewSupportService)
+        verify(datasetJudgementSupportService)
             .validateCustomDataPoint(mockDatasetReviewEntityForTest.CUSTOM_VALUE, mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE)
     }
 
@@ -399,7 +399,7 @@ class DatasetReviewServiceTest {
 
     @Test
     fun `patchReviewDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
-        whenever(datasetReviewSupportService.validateCustomDataPoint(any(), any()))
+        whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
             .thenThrow(BackendClientException())
 
         assertThrows<InvalidInputApiException> {

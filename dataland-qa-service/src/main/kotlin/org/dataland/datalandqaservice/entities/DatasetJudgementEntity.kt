@@ -9,7 +9,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
@@ -20,7 +20,7 @@ import java.util.UUID
 @Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review")
-class DatasetReviewEntity(
+class DatasetJudgementEntity(
     @Id
     @Column(name = "dataset_review_id")
     val dataSetReviewId: UUID,
@@ -43,13 +43,13 @@ class DatasetReviewEntity(
     @Column(name = "qa_reporters")
     var qaReporters: MutableList<QaReporter>,
     @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
-    val dataPoints: MutableList<DataPointReviewEntity>,
+    val dataPoints: MutableList<DataPointJudgementEntity>,
 ) {
     /**
      * Convert to DatasetReview objects for API use.
      */
-    fun toDatasetReviewResponse(): DatasetReviewResponse =
-        DatasetReviewResponse(
+    fun toDatasetJudgementResponse(): DatasetJudgementResponse =
+        DatasetJudgementResponse(
             dataSetReviewId.toString(),
             datasetId.toString(),
             companyId.toString(),
@@ -66,7 +66,7 @@ class DatasetReviewEntity(
      * Add an associated request to this data sourcing entity.
      * Make sure the data sourcing entity is also added to the request.
      */
-    fun addAssociatedDataPoints(dataPoint: DataPointReviewEntity) {
+    fun addAssociatedDataPoints(dataPoint: DataPointJudgementEntity) {
         dataPoints.add(dataPoint)
         dataPoint.datasetReview = this
     }

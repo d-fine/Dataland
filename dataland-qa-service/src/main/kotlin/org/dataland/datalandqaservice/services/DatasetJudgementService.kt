@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
@@ -22,11 +22,11 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
  * Service class for dataset review objects.
  */
 @Service
-class DatasetReviewService
+class DatasetJudgementService
     @Autowired
     constructor(
         private val datasetReviewRepository: DatasetReviewRepository,
-        private val datasetReviewSupportService: DatasetReviewSupportService,
+        private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetReviewCreationService: DatasetReviewCreationService,
     ) {
         /**
@@ -42,10 +42,10 @@ class DatasetReviewService
          * @throws ConflictApiException If a pending review exists.
          */
         @Transactional
-        fun postDatasetReview(datasetId: UUID): DatasetReviewResponse {
+        fun postDatasetReview(datasetId: UUID): DatasetJudgementResponse {
             lateinit var datatypeToDatapointIds: Map<String, String>
             try {
-                datatypeToDatapointIds = datasetReviewSupportService.getContainedDataPoints(datasetId.toString())
+                datatypeToDatapointIds = datasetJudgementSupportService.getContainedDataPoints(datasetId.toString())
             } catch (_: BackendClientException) {
                 throw ResourceNotFoundApiException(
                     "Dataset not found",
@@ -61,12 +61,12 @@ class DatasetReviewService
 
             val datasetReviewEntity =
                 datasetReviewCreationService.createDatasetReviewEntity(
-                    datasetReviewSupportService.getDataMetaInfo(datasetId.toString()),
+                    datasetJudgementSupportService.getDataMetaInfo(datasetId.toString()),
                     datasetId,
                     datatypeToDatapointIds,
                 )
 
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetReviewResponse()
+            return datasetReviewRepository.save(datasetReviewEntity).toDatasetJudgementResponse()
         }
 
         /**
@@ -77,11 +77,11 @@ class DatasetReviewService
          * @throws ResourceNotFoundApiException If the dataset review does not exist.
          */
         @Transactional
-        fun setReviewer(datasetReviewId: UUID): DatasetReviewResponse {
-            val datasetReview = datasetReviewSupportService.getDatasetReviewEntityById(datasetReviewId)
+        fun setReviewer(datasetReviewId: UUID): DatasetJudgementResponse {
+            val datasetReview = datasetJudgementSupportService.getDatasetReviewEntityById(datasetReviewId)
             datasetReview.qaJudgeUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
             datasetReview.qaJudgeUserName = DatalandAuthentication.fromContext().name
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
         }
 
         /**
@@ -100,11 +100,11 @@ class DatasetReviewService
         fun setReviewState(
             datasetReviewId: UUID,
             state: DatasetReviewState,
-        ): DatasetReviewResponse {
-            val datasetReview = datasetReviewSupportService.getDatasetReviewEntityById(datasetReviewId)
+        ): DatasetJudgementResponse {
+            val datasetReview = datasetJudgementSupportService.getDatasetReviewEntityById(datasetReviewId)
             ReviewDetailsPatchValidationHelper.validateUserIsReviewer(datasetReview.qaJudgeUserId)
             datasetReview.reviewState = state
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
         }
 
         /**
@@ -125,8 +125,8 @@ class DatasetReviewService
             datasetReviewId: UUID,
             dataPointType: String,
             patch: ReviewDetailsPatch,
-        ): DatasetReviewResponse {
-            val datasetReview = datasetReviewSupportService.getDatasetReviewEntityById(datasetReviewId)
+        ): DatasetJudgementResponse {
+            val datasetReview = datasetJudgementSupportService.getDatasetReviewEntityById(datasetReviewId)
             ReviewDetailsPatchValidationHelper.validateUserIsReviewer(datasetReview.qaJudgeUserId)
             ReviewDetailsPatchValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
             val dataPoint =
@@ -138,7 +138,7 @@ class DatasetReviewService
                     )
             val customDataPoint = patch.customDataPoint
             if (customDataPoint != null) {
-                datasetReviewSupportService.validateCustomDataPoint(customDataPoint, dataPointType)
+                datasetJudgementSupportService.validateCustomDataPoint(customDataPoint, dataPointType)
                 dataPoint.customValue = customDataPoint
             }
 
@@ -175,11 +175,11 @@ class DatasetReviewService
                     }
                 }
                 null -> {
-                    return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+                    return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
                 }
             }
 
-            return datasetReviewRepository.save(datasetReview).toDatasetReviewResponse()
+            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
         }
 
         /**
@@ -190,7 +190,7 @@ class DatasetReviewService
          * @throws ResourceNotFoundApiException If the dataset review does not exist.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewById(datasetReviewId: UUID): DatasetReviewResponse =
+        fun getDatasetReviewById(datasetReviewId: UUID): DatasetJudgementResponse =
             datasetReviewRepository
                 .findById(datasetReviewId)
                 .orElseThrow {
@@ -198,7 +198,7 @@ class DatasetReviewService
                         "Dataset review object not found",
                         "No Dataset review object with the id: $datasetReviewId could be found.",
                     )
-                }.toDatasetReviewResponse()
+                }.toDatasetJudgementResponse()
 
         /**
          * Method to get dataset review objects by dataset id.
@@ -207,8 +207,8 @@ class DatasetReviewService
          * @return List of DatasetReviewResponse for the given dataset.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetReviewResponse> =
+        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetJudgementResponse> =
             datasetReviewRepository.findAllByDatasetId(datasetId).map {
-                it.toDatasetReviewResponse()
+                it.toDatasetJudgementResponse()
             }
     }

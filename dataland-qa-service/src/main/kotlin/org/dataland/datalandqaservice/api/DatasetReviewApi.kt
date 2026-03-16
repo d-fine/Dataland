@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.springframework.http.ResponseEntity
@@ -53,7 +53,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
         )
         datasetReviewId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetJudgementResponse>
 
     /**
      * A method to store a new dataset review object
@@ -81,7 +81,7 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetJudgementResponse>
 
     /**
      * @param datasetId identifier used to uniquely specify the dataset
@@ -107,7 +107,7 @@ interface DatasetReviewApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetId: String,
-    ): ResponseEntity<List<DatasetReviewResponse>>
+    ): ResponseEntity<List<DatasetJudgementResponse>>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -133,7 +133,7 @@ interface DatasetReviewApi {
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
         )
         datasetReviewId: String,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetJudgementResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -176,7 +176,7 @@ interface DatasetReviewApi {
             required = true,
         )
         state: DatasetReviewState,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetJudgementResponse>
 
     /**
      * @param datasetReviewId identifier used to uniquely specify the data review object
@@ -219,5 +219,5 @@ interface DatasetReviewApi {
         dataPointType: String,
         @RequestBody
         patch: ReviewDetailsPatch,
-    ): ResponseEntity<DatasetReviewResponse>
+    ): ResponseEntity<DatasetJudgementResponse>
 }

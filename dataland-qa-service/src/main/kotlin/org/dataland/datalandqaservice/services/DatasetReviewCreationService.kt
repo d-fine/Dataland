@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -28,7 +28,7 @@ class DatasetReviewCreationService
     constructor(
         private val inheritedRolesControllerApi: InheritedRolesControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
-        private val datasetReviewSupportService: DatasetReviewSupportService,
+        private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val keycloakUserService: KeycloakUserService,
     ) {
         /**
@@ -46,9 +46,9 @@ class DatasetReviewCreationService
             datasetMetaData: DataMetaInformation,
             datasetId: UUID,
             datatypeToDatapointIds: Map<String, String>,
-        ): DatasetReviewEntity {
+        ): DatasetJudgementEntity {
             val qaReports =
-                datasetReviewSupportService
+                datasetJudgementSupportService
                     .findQaReports(datatypeToDatapointIds.values.toList())
 
             val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
@@ -69,7 +69,7 @@ class DatasetReviewCreationService
                 )
 
             val datasetReviewEntity =
-                DatasetReviewEntity(
+                DatasetJudgementEntity(
                     dataSetReviewId = UUID.randomUUID(),
                     datasetId = datasetId,
                     companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
@@ -108,7 +108,6 @@ class DatasetReviewCreationService
                     reportsByReporter.maxBy { it.uploadTime }
                 }
             }
-
 
         /**
          * Helper method to build a list of QA reporters for the provided reporter user ids.
@@ -177,7 +176,8 @@ class DatasetReviewCreationService
          */
         private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> =
             companyDataControllerApi
-                .postCompanyValidation(uniqueCompanyIds).associate {
+                .postCompanyValidation(uniqueCompanyIds)
+                .associate {
                     it.identifier to (it.companyInformation?.companyName ?: it.identifier)
                 }
 
@@ -195,14 +195,14 @@ class DatasetReviewCreationService
          * @return The same DatasetReviewEntity instance with populated data points.
          */
         private fun setDataPointsForReview(
-            reviewEntity: DatasetReviewEntity,
+            reviewEntity: DatasetJudgementEntity,
             datatypeToDatapointIds: Map<String, String>,
             latestQaReportsByDataPointTypeAndReporter: Map<String, Collection<DataPointQaReportEntity>>,
             reporterIdToCompanyId: Map<String, String>,
-        ): DatasetReviewEntity {
+        ): DatasetJudgementEntity {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val currentDataPointReviewDetails =
-                    DataPointReviewEntity(
+                    DataPointJudgementEntity(
                         dataPointType = dataPointType,
                         dataPointId = ValidationUtils.convertToUUID(dataPointId),
                         qaReports = mutableListOf(),

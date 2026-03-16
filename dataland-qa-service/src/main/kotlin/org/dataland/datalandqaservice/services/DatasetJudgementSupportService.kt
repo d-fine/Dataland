@@ -10,7 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
@@ -22,7 +22,7 @@ import java.util.UUID
  * Service to support data point review operations.
  */
 @Service
-class DatasetReviewSupportService
+class DatasetJudgementSupportService
     @Autowired
     constructor(
         private val dataPointControllerApi: DataPointControllerApi,
@@ -107,7 +107,7 @@ class DatasetReviewSupportService
          * @return The dataset review entity for the given id.
          * @throws ResourceNotFoundApiException If no dataset review exists for the given id.
          */
-        fun getDatasetReviewEntityById(datasetReviewId: UUID): DatasetReviewEntity =
+        fun getDatasetReviewEntityById(datasetReviewId: UUID): DatasetJudgementEntity =
             datasetReviewRepository.findById(datasetReviewId).orElseThrow {
                 ResourceNotFoundApiException(
                     "Dataset review object not found",

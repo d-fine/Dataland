@@ -2,10 +2,10 @@ package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetReviewController
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor
@@ -17,11 +17,11 @@ import org.springframework.http.HttpStatus
 import java.util.UUID
 
 class DatasetReviewControllerTest {
-    private val datasetReviewService: DatasetReviewService = mock()
-    private val controller = DatasetReviewController(datasetReviewService)
+    private val datasetJudgementService: DatasetJudgementService = mock()
+    private val controller = DatasetReviewController(datasetJudgementService)
 
-    private fun dummyResponse(dataSetReviewId: UUID = UUID.randomUUID()): DatasetReviewResponse =
-        DatasetReviewResponse(
+    private fun dummyResponse(dataSetReviewId: UUID = UUID.randomUUID()): DatasetJudgementResponse =
+        DatasetJudgementResponse(
             dataSetReviewId = dataSetReviewId.toString(),
             datasetId = UUID.randomUUID().toString(),
             companyId = UUID.randomUUID().toString(),
@@ -39,14 +39,14 @@ class DatasetReviewControllerTest {
         val datasetReviewId = UUID.randomUUID()
         val response = dummyResponse(datasetReviewId)
 
-        whenever(datasetReviewService.getDatasetReviewById(datasetReviewId))
+        whenever(datasetJudgementService.getDatasetReviewById(datasetReviewId))
             .thenReturn(response)
 
         val result = controller.getDatasetReview(datasetReviewId.toString())
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(response, result.body)
-        verify(datasetReviewService).getDatasetReviewById(datasetReviewId)
+        verify(datasetJudgementService).getDatasetReviewById(datasetReviewId)
     }
 
     @Test
@@ -54,7 +54,7 @@ class DatasetReviewControllerTest {
         val datasetId = UUID.randomUUID()
         val response = dummyResponse()
 
-        whenever(datasetReviewService.getDatasetReviewsByDatasetId(datasetId))
+        whenever(datasetJudgementService.getDatasetReviewsByDatasetId(datasetId))
             .thenReturn(listOf(response))
 
         val result = controller.getDatasetReviewsByDatasetId(datasetId.toString())
@@ -63,7 +63,7 @@ class DatasetReviewControllerTest {
         assertEquals(listOf(response), result.body)
 
         val uuidCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).getDatasetReviewsByDatasetId(uuidCaptor.capture())
+        verify(datasetJudgementService).getDatasetReviewsByDatasetId(uuidCaptor.capture())
         assertEquals(datasetId, uuidCaptor.firstValue)
     }
 
@@ -72,22 +72,22 @@ class DatasetReviewControllerTest {
         val datasetId = UUID.randomUUID()
         val expectedResponse = dummyResponse()
 
-        whenever(datasetReviewService.postDatasetReview(datasetId))
+        whenever(datasetJudgementService.postDatasetReview(datasetId))
             .thenReturn(expectedResponse)
 
         val result = controller.postDatasetReview(datasetId.toString())
 
         assertEquals(HttpStatus.CREATED, result.statusCode)
         assertEquals(expectedResponse, result.body)
-        verify(datasetReviewService).postDatasetReview(datasetId)
+        verify(datasetJudgementService).postDatasetReview(datasetId)
     }
 
     @Test
     fun `setReviewer delegates to service`() {
         val id = UUID.randomUUID()
-        val serviceResponse = mock<DatasetReviewResponse>()
+        val serviceResponse = mock<DatasetJudgementResponse>()
 
-        whenever(datasetReviewService.setReviewer(id))
+        whenever(datasetJudgementService.setReviewer(id))
             .thenReturn(serviceResponse)
 
         val result = controller.setReviewer(id.toString())
@@ -96,7 +96,7 @@ class DatasetReviewControllerTest {
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).setReviewer(idCaptor.capture())
+        verify(datasetJudgementService).setReviewer(idCaptor.capture())
         assertEquals(id, idCaptor.firstValue)
     }
 
@@ -104,9 +104,9 @@ class DatasetReviewControllerTest {
     fun `setReviewState delegates to service`() {
         val id = UUID.randomUUID()
         val state = DatasetReviewState.Finished
-        val serviceResponse = mock<DatasetReviewResponse>()
+        val serviceResponse = mock<DatasetJudgementResponse>()
 
-        whenever(datasetReviewService.setReviewState(id, state))
+        whenever(datasetJudgementService.setReviewState(id, state))
             .thenReturn(serviceResponse)
 
         val result = controller.setReviewState(id.toString(), state)
@@ -115,7 +115,7 @@ class DatasetReviewControllerTest {
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).setReviewState(idCaptor.capture(), eq(state))
+        verify(datasetJudgementService).setReviewState(idCaptor.capture(), eq(state))
         assertEquals(id, idCaptor.firstValue)
     }
 
@@ -124,10 +124,10 @@ class DatasetReviewControllerTest {
         val reviewId = UUID.randomUUID()
         val dataPointType = "dummyType"
         val patch = ReviewDetailsPatch(AcceptedDataPointSource.Qa, UUID.randomUUID().toString(), null)
-        val serviceResponse = mock<DatasetReviewResponse>()
+        val serviceResponse = mock<DatasetJudgementResponse>()
 
         whenever(
-            datasetReviewService.patchReviewDetails(reviewId, dataPointType, patch),
+            datasetJudgementService.patchReviewDetails(reviewId, dataPointType, patch),
         ).thenReturn(serviceResponse)
 
         val result = controller.patchReviewDetails(reviewId.toString(), dataPointType, patch)
@@ -136,7 +136,7 @@ class DatasetReviewControllerTest {
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).patchReviewDetails(
+        verify(datasetJudgementService).patchReviewDetails(
             idCaptor.capture(),
             eq(dataPointType),
             eq(patch),

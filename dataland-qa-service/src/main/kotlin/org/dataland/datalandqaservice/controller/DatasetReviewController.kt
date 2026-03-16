@@ -2,10 +2,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetReviewApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,33 +16,33 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class DatasetReviewController(
-    @Autowired private val datasetReviewService: DatasetReviewService,
+    @Autowired private val datasetJudgementService: DatasetJudgementService,
 ) : DatasetReviewApi {
-    override fun getDatasetReview(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
+    override fun getDatasetReview(datasetReviewId: String): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService
+                datasetJudgementService
                     .getDatasetReviewById(convertToUUID(datasetReviewId)),
             )
 
-    override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetReviewResponse> =
+    override fun postDatasetReview(datasetId: String): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(datasetReviewService.postDatasetReview(convertToUUID(datasetId)))
+            .body(datasetJudgementService.postDatasetReview(convertToUUID(datasetId)))
 
-    override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetReviewResponse>> =
-        ResponseEntity.ok(datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))
+    override fun getDatasetReviewsByDatasetId(datasetId: String): ResponseEntity<List<DatasetJudgementResponse>> =
+        ResponseEntity.ok(datasetJudgementService.getDatasetReviewsByDatasetId(convertToUUID(datasetId)))
 
-    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetReviewResponse> =
-        ResponseEntity.ok(datasetReviewService.setReviewer(convertToUUID(datasetReviewId)))
+    override fun setReviewer(datasetReviewId: String): ResponseEntity<DatasetJudgementResponse> =
+        ResponseEntity.ok(datasetJudgementService.setReviewer(convertToUUID(datasetReviewId)))
 
     override fun setReviewState(
         datasetReviewId: String,
         state: DatasetReviewState,
-    ): ResponseEntity<DatasetReviewResponse> =
+    ): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService.setReviewState(
+                datasetJudgementService.setReviewState(
                     convertToUUID(datasetReviewId),
                     state,
                 ),
@@ -52,10 +52,10 @@ class DatasetReviewController(
         datasetReviewId: String,
         dataPointType: String,
         patch: ReviewDetailsPatch,
-    ): ResponseEntity<DatasetReviewResponse> =
+    ): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity
             .ok(
-                datasetReviewService.patchReviewDetails(
+                datasetJudgementService.patchReviewDetails(
                     convertToUUID(datasetReviewId),
                     dataPointType,
                     patch,

@@ -21,7 +21,7 @@ import java.util.UUID
  * @property companyIdOfAcceptedQaReport the company whose QA report was accepted, if applicable
  * @property customValue the custom value accepted for this data point, if applicable
  */
-data class DataPointReview(
+data class DataPointJudgement(
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_TYPE_EXAMPLE,

@@ -11,7 +11,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
@@ -23,7 +23,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class DatasetReviewSupportServiceTest {
+class DatasetJudgementSupportServiceTest {
     private val dataPointControllerApi: DataPointControllerApi = mock()
     private val metaDataControllerApi: MetaDataControllerApi = mock()
     private val specificationControllerApi: SpecificationControllerApi = mock()
@@ -33,7 +33,7 @@ class DatasetReviewSupportServiceTest {
     private val dummyDatapoint = """{"foo":"bar"}"""
 
     private val service =
-        DatasetReviewSupportService(
+        DatasetJudgementSupportService(
             dataPointControllerApi,
             metaDataControllerApi,
             specificationControllerApi,

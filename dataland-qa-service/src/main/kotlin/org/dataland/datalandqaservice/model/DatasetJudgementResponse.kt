@@ -10,7 +10,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 /**
  * API model for the dataset review objects returned.
  */
-data class DatasetReviewResponse(
+data class DatasetJudgementResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
@@ -58,5 +58,5 @@ data class DatasetReviewResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
     )
-    var dataPoints: Map<String, DataPointReview>,
+    var dataPoints: Map<String, DataPointJudgement>,
 )

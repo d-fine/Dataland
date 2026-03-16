@@ -3,8 +3,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -35,7 +35,7 @@ object ReviewDetailsPatchValidationHelper {
      * @param dataPoint The data point review entity to validate.
      * @throws org.dataland.datalandbackendutils.exceptions.InvalidInputApiException If the custom value is missing.
      */
-    fun validateCustomDataPointIsSet(dataPoint: DataPointReviewEntity) {
+    fun validateCustomDataPointIsSet(dataPoint: DataPointJudgementEntity) {
         if (dataPoint.customValue == null) {
             throw InvalidInputApiException(
                 "Missing custom data point.",
@@ -85,7 +85,7 @@ object ReviewDetailsPatchValidationHelper {
      */
     fun getCompanyIdOfAcceptedQaReport(
         reporterUserIdOfAcceptedQaReport: String?,
-        datasetReview: DatasetReviewEntity,
+        datasetReview: DatasetJudgementEntity,
     ) = reporterUserIdOfAcceptedQaReport
         ?.let {
             ValidationUtils.convertToUUID(it)

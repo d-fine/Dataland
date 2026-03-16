@@ -16,7 +16,7 @@ import java.util.UUID
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired val datasetReviewSupportService: DatasetReviewSupportService,
+    @Autowired val datasetJudgementSupportService: DatasetJudgementSupportService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -41,7 +41,7 @@ class SecurityUtilsService(
      * @return True if the user can patch the dataset review, false otherwise.
      */
     fun canUserPatchDatasetReview(datasetReviewId: String): Boolean {
-        val datasetReview = datasetReviewSupportService.getDatasetReviewEntityById(convertToUUID(datasetReviewId))
+        val datasetReview = datasetJudgementSupportService.getDatasetReviewEntityById(convertToUUID(datasetReviewId))
         val userId =
             try {
                 DatalandAuthentication.fromContext().userId

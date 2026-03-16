@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointReview
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointJudgement
 import java.util.UUID
 
 /**
@@ -18,7 +18,7 @@ import java.util.UUID
 @Suppress("LongParameterList")
 @Entity
 @Table(name = "dataset_review_entity_data_point_review_details")
-class DataPointReviewEntity(
+class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
     val dataPointId: UUID?,
@@ -31,13 +31,13 @@ class DataPointReviewEntity(
     var customValue: String?,
     @JoinColumn(name = "dataset_review_id")
     @ManyToOne
-    var datasetReview: DatasetReviewEntity? = null,
+    var datasetReview: DatasetJudgementEntity? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
      */
-    fun toDataPointReviewDetails(): DataPointReview =
-        DataPointReview(
+    fun toDataPointReviewDetails(): DataPointJudgement =
+        DataPointJudgement(
             dataPointType = dataPointType,
             dataPointId = dataPointId,
             qaReports = qaReports.map { it.toQaReportDataPointWithReporterDetails() },
