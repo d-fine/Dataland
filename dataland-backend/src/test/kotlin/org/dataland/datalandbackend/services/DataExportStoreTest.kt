@@ -32,13 +32,16 @@ class DataExportStoreTest {
         val loggerField: Field = DataExportStore::class.java.getDeclaredField("logger")
         loggerField.isAccessible = true
         loggerField.set(dataExportStore, mockLogger)
+        AuthenticationMock.mockSecurityContext(
+            USER_NAME,
+            USER_ID,
+            emptySet<DatalandRealmRole>(),
+        )
     }
 
     @Test
     fun `test createAndSaveExportJob counts total jobs created`() {
-        AuthenticationMock.withAuthenticationMock(USER_NAME, USER_ID, emptySet<DatalandRealmRole>()) {
-            dataExportStore.createAndSaveExportJob(UUID.randomUUID(), FILE_TYPE, DATA_TYPE)
-        }
+        dataExportStore.createAndSaveExportJob(UUID.randomUUID(), FILE_TYPE, DATA_TYPE)
 
         val totalJobs = dataExportStore.totalStoredJobCount()
         assertTrue(totalJobs == 1, "Expected only 1 job to be created, but found $totalJobs")
@@ -48,10 +51,7 @@ class DataExportStoreTest {
     fun `test job removed after timeout`() {
         val exportJobId = UUID.randomUUID()
 
-        val exportJob =
-            AuthenticationMock.withAuthenticationMock(USER_NAME, USER_ID, emptySet<DatalandRealmRole>()) {
-                dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
-            }
+        val exportJob = dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
 
         dataExportStore.removeIfJobPendingAfterFrontendTimeout(exportJobId, exportJob)
 
@@ -63,10 +63,7 @@ class DataExportStoreTest {
     fun `test job not removed after timeout when not pending`() {
         val exportJobId = UUID.randomUUID()
 
-        val exportJob =
-            AuthenticationMock.withAuthenticationMock(USER_NAME, USER_ID, emptySet<DatalandRealmRole>()) {
-                dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
-            }
+        val exportJob = dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
 
         exportJob.progressState = ExportJobProgressState.Success
 
@@ -80,16 +77,15 @@ class DataExportStoreTest {
     fun `test warning is logged when job is still pending after frontend timeout`() {
         val exportJobId = UUID.randomUUID()
 
-        val exportJob =
-            AuthenticationMock.withAuthenticationMock(USER_NAME, USER_ID, emptySet<DatalandRealmRole>()) {
-                dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
-            }
+        val exportJob = dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
 
         dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, exportJob)
 
         verify(mockLogger).error(
             DataExportStore.EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
             exportJobId,
+            FILE_TYPE,
+            USER_ID,
             DataExportStore.EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
         )
     }
@@ -98,10 +94,7 @@ class DataExportStoreTest {
     fun `test no warning is logged when job is not pending after frontend timeout`() {
         val exportJobId = UUID.randomUUID()
 
-        val exportJob =
-            AuthenticationMock.withAuthenticationMock(USER_NAME, USER_ID, emptySet<DatalandRealmRole>()) {
-                dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
-            }
+        val exportJob = dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
 
         exportJob.progressState = ExportJobProgressState.Success
 

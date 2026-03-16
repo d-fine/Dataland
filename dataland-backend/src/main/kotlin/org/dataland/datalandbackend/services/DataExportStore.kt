@@ -33,7 +33,7 @@ class DataExportStore {
          * and is used in the alert rule in:
          * dataland-grafana/provisioning/alerting/alert-rules-template.yaml (uid: export_job_timeout)
          */
-        internal const val EXPORT_JOB_TIMEOUT_LOG_MESSAGE = "export job {} exceeded {} minutes!"
+        internal const val EXPORT_JOB_TIMEOUT_LOG_MESSAGE = "Export job {} of type {} by user {} exceeded {} minutes!"
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -110,7 +110,10 @@ class DataExportStore {
         if (exportJob.progressState == ExportJobProgressState.Pending) {
             logger.error(
                 EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
-                exportJobId, EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
+                exportJobId,
+                exportJob.fileType,
+                DatalandAuthentication.fromContext().userId,
+                EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
             )
         }
     }
