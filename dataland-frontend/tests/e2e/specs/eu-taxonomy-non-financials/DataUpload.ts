@@ -41,7 +41,7 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
 function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
     (interceptionOfGetDataRequestForEditMode) => {
-      const responseBody = interceptionOfGetDataRequestForEditMode.response?.body as
+      const responseBody = assertDefined(interceptionOfGetDataRequestForEditMode).response?.body as
         | DataAndMetaInformationEutaxonomyNonFinancialsData[]
         | DataAndMetaInformationEutaxonomyNonFinancialsData;
       const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
