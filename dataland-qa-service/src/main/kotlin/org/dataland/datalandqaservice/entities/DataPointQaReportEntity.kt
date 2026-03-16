@@ -5,12 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.QaReportDataPointVerdictConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporter
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
@@ -34,10 +38,15 @@ data class DataPointQaReportEntity(
     var dataPointType: String,
     @Column(name = "reporter_user_id", nullable = false)
     var reporterUserId: String,
+    @Column(name = "reporter_company_id", nullable = false)
+    var reporterCompanyId: String?,
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
     @Column(name = "active", nullable = false)
     var active: Boolean,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "data_point_judgement_id")
+    var dataPointJudgementEntity: DataPointJudgementEntity? = null,
 ) {
     /**
      * Method to convert the QA report entity to a model containing only the meta information of the report
@@ -63,5 +72,17 @@ data class DataPointQaReportEntity(
             comment = comment,
             verdict = verdict,
             correctedData = objectMapper.readTree(correctedData),
+        )
+
+    /**
+     * Converts this entity to its API response DTO.
+     */
+    fun toQaReportDataPointWithReporterDetails(): QaReportDataPointWithReporter =
+        QaReportDataPointWithReporter(
+            qaReportId = qaReportId,
+            verdict = verdict,
+            correctedData = correctedData,
+            reporterUserId = reporterUserId,
+            reporterCompanyId = reporterCompanyId,
         )
 }

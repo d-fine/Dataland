@@ -22,8 +22,8 @@ class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
     val dataPointId: UUID?,
-    @OneToMany(mappedBy = "dataPointReviewDetails", cascade = [CascadeType.ALL])
-    val qaReports: MutableList<QaReportDataPointWithReporterEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "dataPointJudgementEntity", cascade = [CascadeType.ALL])
+    val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
     var companyIdOfAcceptedQaReport: UUID?,
@@ -51,8 +51,8 @@ class DataPointJudgementEntity(
      * Add an associated request to this data sourcing entity.
      * Make sure the data sourcing entity is also added to the request.
      */
-    fun addAssociatedQaReports(qaReport: QaReportDataPointWithReporterEntity) {
+    fun addAssociatedQaReports(qaReport: DataPointQaReportEntity) {
         qaReports.add(qaReport)
-        qaReport.dataPointReviewDetails = this
+        qaReport.dataPointJudgementEntity = this
     }
 }

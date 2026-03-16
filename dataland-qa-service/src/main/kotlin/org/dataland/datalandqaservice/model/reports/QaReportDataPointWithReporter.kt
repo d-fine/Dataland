@@ -3,7 +3,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repo
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import java.util.UUID
 
 /**
  * API response DTO for a QA report data point with reporter details.
@@ -22,7 +21,7 @@ data class QaReportDataPointWithReporter(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_ID_EXAMPLE,
     )
-    val qaReportId: UUID,
+    val qaReportId: String,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_VERDICT_EXAMPLE,
@@ -37,10 +36,10 @@ data class QaReportDataPointWithReporter(
         description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
     )
-    val reporterUserId: UUID,
+    val reporterUserId: String,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
     )
-    val reporterCompanyId: UUID?,
+    val reporterCompanyId: String?,
 )
