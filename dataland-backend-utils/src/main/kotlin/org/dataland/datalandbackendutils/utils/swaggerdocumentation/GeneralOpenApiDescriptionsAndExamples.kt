@@ -83,4 +83,23 @@ object GeneralOpenApiDescriptionsAndExamples {
     const val PROXY_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the company whose data is used as the proxy."
     const val PROXIED_FRAMEWORKS_DESCRIPTION = "Framework for which proxying is permitted. Null means all frameworks."
     const val PROXIED_REPORTING_PERIODS_DESCRIPTION = "Reporting period for which proxying is permitted. Null means all reporting periods."
+
+    const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
+        "A set of identifiers for companies on Dataland. Use Dataland company IDs, " +
+            "Leis or Isins for the best results. Requests will be posted for all companies that can " +
+            "be identified."
+    const val BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE =
+        "[\"$GENERAL_UUID_EXAMPLE\"," +
+            "\"$GENERAL_LEI_EXAMPLE\"," +
+            "\"US0378331005\"]"
+
+    const val BULK_REQUEST_DATA_TYPES_DESCRIPTION =
+        "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework " +
+            "name that cannot be identified will result in an error, and no requests will be created."
+    const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
+        "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-financials-2026-73\"," +
+            "\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"pcaf\",\"vsme\"]"
+
+    const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
+        "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."
 }

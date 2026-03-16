@@ -43,7 +43,7 @@ describe('As a user, I expect the search functionality on the /companies page to
 
   const frameworkOne = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0];
   const frameworkTwo = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1];
-  const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2];
+  const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[3];
 
   it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
@@ -58,15 +58,16 @@ describe('As a user, I expect the search functionality on the /companies page to
     verifySearchResultTableExists();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}`);
 
-    cy.get('.p-multiselect-list-container').scrollTo('bottom');
-
     cy.get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     verifySearchResultTableExists();
 
     cy.get('div.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkThree)})`)
+      .contains(
+        '.p-multiselect-option',
+        new RegExp(`^${escapeParenthesisInRegExp(humanizeStringOrNumber(frameworkThree))}$`)
+      )
       .click();
     verifySearchResultTableExists();
     cy.url()
@@ -79,7 +80,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           `&framework=${frameworkThree}`
       )
       .get('.p-multiselect-list-container')
-      .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .contains('.p-multiselect-option', new RegExp(`^${humanizeStringOrNumber(frameworkTwo)}$`))
       .click();
     cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}` + `&framework=${frameworkThree}`);
   });
@@ -254,6 +255,9 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get('#framework-filter').should('be.visible').click();
           cy.get('div.p-multiselect-overlay')
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .scrollIntoView();
+          cy.get('div.p-multiselect-overlay')
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
           cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
@@ -273,6 +277,9 @@ describe('As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies?input=${companyName}`);
           cy.get('#framework-filter').click();
+          cy.get('div.p-multiselect-overlay')
+            .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .scrollIntoView();
           cy.get('div.p-multiselect-overlay')
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();

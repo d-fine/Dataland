@@ -3,6 +3,6 @@
   "name" : "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account",
   "businessDefinition" : "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
   "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "min:0" ]
 }
