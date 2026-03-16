@@ -14,12 +14,12 @@ export function fetchTestCompanies(): Cypress.Chainable<[CompanyIdAndName, Compa
     })
     .then((basicCompanyInfos) => {
       const alphaCompanyIdAndName: CompanyIdAndName = {
-        companyId: basicCompanyInfos[0]!.companyId,
-        companyName: basicCompanyInfos[0]!.companyName,
+        companyId: basicCompanyInfos[0].companyId,
+        companyName: basicCompanyInfos[0].companyName,
       };
       const betaCompanyIdAndName: CompanyIdAndName = {
-        companyId: basicCompanyInfos[1]!.companyId,
-        companyName: basicCompanyInfos[1]!.companyName,
+        companyId: basicCompanyInfos[1].companyId,
+        companyName: basicCompanyInfos[1].companyName,
       };
       return [alphaCompanyIdAndName, betaCompanyIdAndName] as [CompanyIdAndName, CompanyIdAndName];
     });

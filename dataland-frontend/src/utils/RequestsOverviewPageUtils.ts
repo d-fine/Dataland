@@ -85,7 +85,7 @@ export function customCompareForState(
   b: DataSourcingState | RequestState,
   sortOrder: number
 ): number {
-  if (sortOrderRequestState[a]! <= sortOrderRequestState[b]!) return -1 * sortOrder;
+  if (sortOrderRequestState[a] <= sortOrderRequestState[b]) return -1 * sortOrder;
   return sortOrder;
 }
 

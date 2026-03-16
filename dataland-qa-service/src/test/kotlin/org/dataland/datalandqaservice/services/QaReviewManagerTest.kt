@@ -97,8 +97,8 @@ class QaReviewManagerTest {
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
             reviewState = DatasetReviewState.Pending,
-            reviewerUserId = dummyUserId,
-            reviewerUserName = dummyUserName,
+            ownerId = dummyUserId,
+            ownerName = dummyUserName,
             preapprovedDataPointIds = emptySet(),
             qaReports = emptySet(),
             approvedDataPointIds = emptyMap(),
@@ -266,8 +266,8 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId, responses.first().reviewerUserId)
-        Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
+        Assertions.assertEquals(dummyUserId, responses.first().ownerId)
+        Assertions.assertEquals(dummyUserName, responses.first().ownerName)
     }
 
     @Test
