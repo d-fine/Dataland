@@ -2,12 +2,7 @@
   <div class="card p-0 overflow-hidden">
     <ShowMultipleReportsBanner
       data-test="multipleReportsBanner"
-      v-if="
-        framework == DataTypeEnum.EutaxonomyFinancials ||
-        framework == DataTypeEnum.EutaxonomyNonFinancials ||
-        framework == DataTypeEnum.Sfdr ||
-        framework == DataTypeEnum.NuclearAndGas
-      "
+      v-if="showMultipleReportsBanner"
       :reporting-periods="sortedReportingPeriods"
       :reports="sortedReports"
     />
@@ -223,6 +218,7 @@ import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
+import { toTitleCase } from '@/utils/StringFormatter.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -245,6 +241,16 @@ const vTooltip = Tooltip;
 
 const frameworkRef = computed(() => props.framework);
 const dataIdRef = computed(() => props.dataId);
+
+const showMultipleReportsBanner = computed(() => {
+  const applicableFrameworks: DataTypeEnum[] = [
+    DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.EutaxonomyFinancials,
+    DataTypeEnum.Sfdr,
+    DataTypeEnum.NuclearAndGas,
+  ];
+  return applicableFrameworks.includes(props.framework);
+});
 
 const {
   data: originalDataAndMeta,
@@ -379,9 +385,9 @@ function getReviewInfo(dataPointTypeId?: string): DataPointReviewDetails | undef
  */
 function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPointWithReporterDetails | undefined {
   if (!row.dataPointTypeId) return undefined;
-  const dpEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
-  if (!dpEntry) return undefined;
-  return dpEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
+  const datapointEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
+  if (!datapointEntry) return undefined;
+  return datapointEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
 }
 
 /**
@@ -440,29 +446,34 @@ function isAcceptedSource(row: CellRow, source: AcceptedDataPointSource, reporte
  * @returns {boolean} True when the cell for the given source is empty or missing.
  */
 function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporterUserId?: string): boolean {
-  if (source === AcceptedDataPointSource.Original) {
-    const original = cellRow.originalDisplay;
-    return original == null || original.displayValue == null || original.displayValue === '';
+  switch (source) {
+    case AcceptedDataPointSource.Original: {
+      const original = cellRow.originalDisplay;
+      return original == null || original.displayValue == null || original.displayValue === '';
+    }
+
+    case AcceptedDataPointSource.Custom: {
+      const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
+      return reviewInfo?.customValue == null || reviewInfo.customValue === '';
+    }
+
+    case AcceptedDataPointSource.Qa: {
+      const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
+      const corrected = getCorrectedDisplayFromQaReport(report);
+      return corrected == null || corrected === '';
+    }
+
+    default:
+      return true;
   }
-  if (source === AcceptedDataPointSource.Custom) {
-    const reviewInfo = getReviewInfo(cellRow.dataPointTypeId);
-    return reviewInfo?.customValue == null || reviewInfo.customValue === '';
-  }
-  if (source === AcceptedDataPointSource.Qa) {
-    const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
-    const corrected = getCorrectedDisplayFromQaReport(report);
-    return corrected == null || corrected === '';
-  }
-  return true;
 }
 
 /**
  * Decide whether the UI should render a rejected icon for a specific cell and source.
  *
- * The function returns false when there is no accepted source set, when the
- * cell is empty for the inspected source, or when the inspected source is the
- * accepted source. For QA sources the verdict on the QA report is also taken
- * into account (only non-accepted QA reports show as rejected).
+ * The function returns false when there is no accepted source set, when the cell is empty for the inspected source,
+ * or when the inspected source is the accepted source.
+ * For QA sources the verdict on the QA report is also taken into account (only non-accepted QA reports show as rejected).
  *
  * @param {CellRow} cellRow - The cell row to inspect.
  * @param {AcceptedDataPointSource} source - The source column being inspected.
@@ -483,8 +494,7 @@ function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSourc
 
 /**
  * Returns true when a row has no visible values in any of the available columns
- * (original, all QA reporters, or custom). Used to honor the "hideEmptyFields"
- * prop when building the visible rows.
+ * (original, all QA reporters, or custom). Used to honor the "hideEmptyFields" prop when building the visible rows.
  *
  * @param {CellRow} cellRow - The row to test for emptiness.
  * @returns {boolean} True when the row is empty across all sources.
@@ -492,11 +502,11 @@ function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSourc
 function isRowEmpty(cellRow: CellRow): boolean {
   const isOriginalEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Original);
   const isCustomEmpty = isCellEmpty(cellRow, AcceptedDataPointSource.Custom);
-  const isQaEmptyForAllCompanies = props.datasetReview.qaReporters.every((qaReporter) =>
+  const isQaEmptyForAllColumns = props.datasetReview.qaReporters.every((qaReporter) =>
     isCellEmpty(cellRow, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)
   );
 
-  return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllCompanies;
+  return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllColumns;
 }
 
 /**
@@ -508,20 +518,6 @@ function openJudgeModal(row: KpiRow): void {
   if (row.type === 'section') return;
   console.log('open judge modal for', row.dataPointTypeId, row.label);
 }
-
-/**
- * Convert a string to Title Case (first letter capitalized for each word).
- *
- * @param {string} str - Input string to convert.
- * @returns {string} Title-cased string.
- */
-const toTitleCase = (str: string): string => {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
 </script>
 
 <style scoped>

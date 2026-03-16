@@ -109,7 +109,6 @@ class DatasetReviewCreationService
                 }
             }
 
-
         /**
          * Helper method to build a list of QA reporters for the provided reporter user ids.
          *
@@ -177,7 +176,8 @@ class DatasetReviewCreationService
          */
         private fun getCompanyNameByIdMap(uniqueCompanyIds: List<String>): Map<String, String> =
             companyDataControllerApi
-                .postCompanyValidation(uniqueCompanyIds).associate {
+                .postCompanyValidation(uniqueCompanyIds)
+                .associate {
                     it.identifier to (it.companyInformation?.companyName ?: it.identifier)
                 }
 

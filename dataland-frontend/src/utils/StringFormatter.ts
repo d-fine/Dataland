@@ -9,6 +9,20 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
+ * Convert a string to Title Case (first letter capitalized for each word).
+ *
+ * @param {string} str - Input string to convert.
+ * @returns {string} Title-cased string.
+ */
+export function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/**
  * Convert kebab case string to camelCase
  * @param rawText is the string to be converted
  * @returns the converted string in camel case
