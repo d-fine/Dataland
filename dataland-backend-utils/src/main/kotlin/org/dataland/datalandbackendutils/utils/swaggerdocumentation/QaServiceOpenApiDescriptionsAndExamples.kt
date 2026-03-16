@@ -63,11 +63,11 @@ object QaServiceOpenApiDescriptionsAndExamples {
 
     const val DATA_REVIEW_STATE_DESCRIPTION = "The state of the dataset review."
 
-    const val DATA_REVIEW_REVIEWER_ID_DESCRIPTION = "The unique user ID of the user reviewing the dataset."
-    const val DATA_REVIEW_REVIEWER_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val DATA_REVIEW_OWNER_ID_DESCRIPTION = "The unique user ID of the user reviewing the dataset."
+    const val DATA_REVIEW_OWNER_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
-    const val DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION = "The name or email of the user reviewing the dataset."
-    const val DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE = "Jane Doe"
+    const val DATA_REVIEW_OWNER_USERNAME_DESCRIPTION = "The name or email of the user reviewing the dataset."
+    const val DATA_REVIEW_OWNER_USERNAME_EXAMPLE = "Jane Doe"
 
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"

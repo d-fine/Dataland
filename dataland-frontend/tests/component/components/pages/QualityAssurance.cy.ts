@@ -11,7 +11,7 @@ import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import router from '@/router';
@@ -91,8 +91,11 @@ describe('Component tests for the Quality Assurance page', () => {
     });
   });
 
-  const keycloakMockWithUploaderAndReviewerRoles = minimalKeycloakMock({
-    roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
+  const keycloakMockWithReviewerRole = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_REVIEWER],
+  });
+  const keycloakMockWithJudgeRole = minimalKeycloakMock({
+    roles: [KEYCLOAK_ROLE_JUDGE],
   });
 
   const dataIdAlpha = crypto.randomUUID();
@@ -142,8 +145,9 @@ describe('Component tests for the Quality Assurance page', () => {
     const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
     cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
     cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
+    cy.intercept('POST', `**/data-sourcing/priorities`, []);
 
-    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
     assertUnfilteredDatatableState();
     cy.get('[data-test="showingNumberOfUnreviewedDatasets"]').contains('Showing results 1-2 of 2.');
   }
@@ -319,6 +323,38 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
+  it('Check that priority tags are displayed when priorities are returned', () => {
+    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
+    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
+    cy.intercept('POST', `**/data-sourcing/priorities`, [
+      { companyId: companyIdAlpha, dataType: DataTypeEnum.Lksg, reportingPeriod: '2022', priority: 3 },
+      { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 7 },
+    ]);
+
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    assertUnfilteredDatatableState();
+
+    cy.get('.p-tag').filter(':contains("3")').should('exist');
+    cy.get('.p-tag').filter(':contains("7")').should('exist');
+  });
+
+  it('Check that medium and slate priority tags are displayed when priorities are returned', () => {
+    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
+    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
+    cy.intercept('POST', `**/data-sourcing/priorities`, [
+      { companyId: companyIdAlpha, dataType: DataTypeEnum.Lksg, reportingPeriod: '2022', priority: 5 },
+      { companyId: companyIdBeta, dataType: DataTypeEnum.Sfdr, reportingPeriod: '2023', priority: 10 },
+    ]);
+
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    assertUnfilteredDatatableState();
+
+    cy.get('.p-tag').filter(':contains("5")').should('exist');
+    cy.get('.p-tag').filter(':contains("10")').should('exist');
+  });
+
   /**
    * Mounts the view page with mock data and returns the meta info used for assertions.
    * @returns the mock meta info used in the view page
@@ -356,7 +392,7 @@ describe('Component tests for the Quality Assurance page', () => {
     ]);
 
     getMountingFunction({
-      keycloak: keycloakMockWithUploaderAndReviewerRoles,
+      keycloak: keycloakMockWithReviewerRole,
       router: router,
       dialogOptions: {
         mountWithDialog: true,

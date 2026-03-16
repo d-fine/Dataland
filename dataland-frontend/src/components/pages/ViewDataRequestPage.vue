@@ -83,6 +83,22 @@
           </div>
           <div class="side-header">Reporting year</div>
           <div class="data" data-test="request-details-year">{{ storedRequest.reportingPeriod }}</div>
+          <div v-if="dataSourcingDetails != null && dataSourcingDetails.dateOfNextDocumentSourcingAttempt">
+            <div class="side-header">Date of next sourcing attempt</div>
+            <div class="data" data-test="date-next-sourcing-attempt">
+              {{ dateStringFormatter(dataSourcingDetails.dateOfNextDocumentSourcingAttempt) }}
+            </div>
+          </div>
+          <div v-if="isUserKeycloakAdmin">
+            <div class="side-header">Document Collector</div>
+            <div class="data" data-test="data-sourcing-collector">
+              {{ documentCollectorName || '—' }}
+            </div>
+            <div class="side-header">Data Extractor</div>
+            <div class="data" data-test="data-sourcing-extractor">
+              {{ dataExtractorName || '—' }}
+            </div>
+          </div>
           <PrimeButton
             v-if="answeringDatasetUrl"
             data-test="view-dataset-button"
@@ -98,17 +114,26 @@
             <span style="display: flex; align-items: center">
               <span class="title">Request is:</span>
               <DatalandTag
-                :severity="storedRequest.state || ''"
-                :value="storedRequest.state"
+                :severity="requestHistory[requestHistory.length - 1]?.displayedState || ''"
+                :value="
+                  requestHistory.length > 0
+                    ? getDisplayedStateWithSpaces(requestHistory[requestHistory.length - 1]!.displayedState)
+                    : ''
+                "
                 class="dataland-inline-tag"
               />
               <span class="dataland-info-text normal">
-                since {{ convertUnixTimeInMsToDateString(storedRequest.lastModifiedDate) }}
+                since
+                {{
+                  requestHistory.length > 0
+                    ? convertUnixTimeInMsToDateString(requestHistory[requestHistory.length - 1]!.modificationDate)
+                    : '-'
+                }}
               </span>
             </span>
             <Divider />
-            <p class="title">Request State History</p>
-            <RequestStateHistory :stateHistory="requestHistory" />
+            <p class="title">State History</p>
+            <RequestStateHistory :stateHistory="requestHistory" :isAdmin="isUserKeycloakAdmin" />
           </div>
           <div class="card" v-show="isRequestResubmittable()" data-test="card-resubmit">
             <div class="title">Resubmit Request</div>
@@ -155,7 +180,6 @@ import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import router from '@/router';
 import { type NavigationFailure } from 'vue-router';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -164,7 +188,8 @@ import {
   type ExtendedStoredRequest,
   RequestState,
   type SingleRequest,
-  type StoredRequest,
+  type StoredDataSourcing,
+  type RequestHistoryEntryData,
 } from '@clients/datasourcingservice';
 import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -173,6 +198,8 @@ import PrimeDialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Divider from 'primevue/divider';
 import Message from 'primevue/message';
+import { getDisplayedStateWithSpaces } from '@/utils/RequestsOverviewPageUtils.ts';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 
 const props = defineProps<{ requestId: string }>();
 const requestId = ref<string>(props.requestId);
@@ -180,6 +207,7 @@ const requestId = ref<string>(props.requestId);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const requestControllerApi = apiClientProvider.apiClients.requestController;
+const dataSourcingControllerApi = apiClientProvider.apiClients.dataSourcingController;
 const companyControllerApi = apiClientProvider.backendClients.companyDataController;
 const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
 
@@ -192,7 +220,10 @@ const isUserKeycloakAdmin = ref(false);
 const storedRequest = reactive({} as ExtendedStoredRequest);
 const resubmitMessageError = ref(false);
 const answeringDatasetUrl = ref(undefined as string | undefined);
-const requestHistory = ref<StoredRequest[]>([]);
+const requestHistory = ref<RequestHistoryEntryData[]>([]);
+const dataSourcingDetails = ref<StoredDataSourcing | null>(null);
+const documentCollectorName = ref<string | null>(null);
+const dataExtractorName = ref<string | null>(null);
 
 /**
  * Perform all steps required to set up the component.
@@ -201,12 +232,12 @@ async function initializeComponent(): Promise<void> {
   await getRequest()
     .catch((error) => console.error(error))
     .then(async () => {
+      await setUserAccessFields();
       if (getKeycloakPromise) {
         await getAndStoreRequestHistory().catch((error) => console.error(error));
+        await getAndStoreDataSourcingDetails().catch((error) => console.error(error));
         await checkForAvailableData().catch((error) => console.error(error));
       }
-      requestHistory.value.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-      await setUserAccessFields();
     })
     .catch((error) => console.error(error));
 }
@@ -216,7 +247,34 @@ async function initializeComponent(): Promise<void> {
  */
 async function getAndStoreRequestHistory(): Promise<void> {
   try {
-    requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
+    if (isUserKeycloakAdmin.value) {
+      requestHistory.value = (await requestControllerApi.getExtendedRequestHistoryById(requestId.value)).data;
+    } else {
+      requestHistory.value = (await requestControllerApi.getRequestHistoryById(requestId.value)).data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Retrieve the data sourcing details and resolve collector/extractor names.
+ */
+async function getAndStoreDataSourcingDetails(): Promise<void> {
+  try {
+    if (storedRequest.dataSourcingEntityId) {
+      dataSourcingDetails.value = (
+        await dataSourcingControllerApi.getDataSourcingById(storedRequest.dataSourcingEntityId)
+      ).data;
+      if (dataSourcingDetails.value?.documentCollector) {
+        const companyInfo = await companyControllerApi.getCompanyInfo(dataSourcingDetails.value.documentCollector);
+        documentCollectorName.value = companyInfo.data.companyName;
+      }
+      if (dataSourcingDetails.value?.dataExtractor) {
+        const companyInfo = await companyControllerApi.getCompanyInfo(dataSourcingDetails.value.dataExtractor);
+        dataExtractorName.value = companyInfo.data.companyName;
+      }
+    }
   } catch (error) {
     console.error(error);
   }

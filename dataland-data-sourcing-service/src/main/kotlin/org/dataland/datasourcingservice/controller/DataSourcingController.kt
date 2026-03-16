@@ -1,7 +1,10 @@
 package org.dataland.datasourcingservice.controller
 
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datasourcingservice.api.DataSourcingApi
+import org.dataland.datasourcingservice.model.datasourcing.AdminDataSourcingPatch
+import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPriorityByDataDimensions
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingWithoutReferences
 import org.dataland.datasourcingservice.model.datasourcing.ReducedDataSourcing
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
@@ -44,7 +47,10 @@ class DataSourcingController
                     ),
             )
 
-        override fun getDataSourcingHistoryById(dataSourcingId: String): ResponseEntity<List<DataSourcingWithoutReferences>> =
+        override fun getDataSourcingHistoryById(
+            dataSourcingId: String,
+            stateChangesOnly: Boolean,
+        ): ResponseEntity<List<DataSourcingWithoutReferences>> =
             ResponseEntity
                 .ok(
                     dataSourcingManager
@@ -52,6 +58,7 @@ class DataSourcingController
                             ValidationUtils.convertToUUID(
                                 dataSourcingId,
                             ),
+                            stateChangesOnly,
                         ),
                 )
 
@@ -70,18 +77,14 @@ class DataSourcingController
                         ),
                 )
 
-        override fun patchProviderAndAdminComment(
+        override fun patchDataSourcing(
             dataSourcingId: String,
-            documentCollector: String?,
-            dataExtractor: String?,
-            adminComment: String?,
+            patch: AdminDataSourcingPatch,
         ): ResponseEntity<StoredDataSourcing> =
             ResponseEntity.ok(
-                dataSourcingManager.patchProviderAndAdminComment(
+                dataSourcingManager.patchDataSourcing(
                     ValidationUtils.convertToUUID(dataSourcingId),
-                    documentCollector?.let { ValidationUtils.convertToUUID(it) },
-                    dataExtractor?.let { ValidationUtils.convertToUUID(it) },
-                    adminComment,
+                    patch,
                 ),
             )
 
@@ -110,6 +113,11 @@ class DataSourcingController
                             dateOfNextDocumentSourcingAttempt,
                         ),
                 )
+
+        override fun getDataSourcingPriorities(
+            dataDimensions: List<BasicDataDimensions>,
+        ): ResponseEntity<List<DataSourcingPriorityByDataDimensions>> =
+            ResponseEntity.ok(dataSourcingManager.getPrioritiesByDataDimensions(dataDimensions))
 
         override fun searchDataSourcings(
             companyId: String?,

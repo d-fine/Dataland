@@ -39,14 +39,14 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review object."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @GetMapping(
         value = ["/{datasetReviewId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun getDatasetReview(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
@@ -66,7 +66,7 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Successfully added dataset review object to Dataland."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
             ApiResponse(responseCode = "409", description = "A pending review already exists for this dataset."),
         ],
     )
@@ -74,7 +74,7 @@ interface DatasetReviewApi {
         value = ["/{datasetId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun postDatasetReview(
         @PathVariable @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
@@ -93,14 +93,14 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset review objects."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @GetMapping(
         value = ["/{datasetId}/datasetId"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun getDatasetReviewsByDatasetId(
         @PathVariable @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
@@ -119,14 +119,14 @@ interface DatasetReviewApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully set yourself as the reviewer."),
-            ApiResponse(responseCode = "403", description = "Only Dataland admins can access dataset review objects."),
+            ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset review objects."),
         ],
     )
     @PatchMapping(
         value = ["/{datasetReviewId}/reviewer"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun setReviewer(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,

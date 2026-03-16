@@ -6,6 +6,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_STATE_DESCRIPTION = "The current state of the data sourcing object."
     const val DATA_SOURCING_STATE_EXAMPLE = "DataVerification"
+    const val DATA_SOURCING_STATE_LIST_EXAMPLE = "[\"Initialized\",\"DataVerification\"]"
 
     const val DOCUMENT_IDS_DESCRIPTION = "The IDs of documents from which the data for this data sourcing object are extracted."
     const val DOCUMENT_IDS_PATCH_DESCRIPTION = "The IDs of documents to append to or overwrite the existing document IDs."
@@ -76,6 +77,13 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
+    const val DISPLAYED_STATE_DESCRIPTION = "The current displayed state of the request."
+    const val DISPLAYED_STATE_EXAMPLE = "Validated"
+
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the data sourcing object was last modified."
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
             "If set to false, the provided document IDs replace the existing ones instead."
@@ -112,4 +120,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_DETAILS_DESCRIPTION =
         "The data sourcing details associated with this request."
+
+    const val PRIORITY_DESCRIPTION =
+        "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. " +
+            "Null if the requesting user is not an admin or data provider."
+    const val PRIORITY_EXAMPLE = "1"
 }
