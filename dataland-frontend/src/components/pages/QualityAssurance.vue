@@ -1,6 +1,6 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_JUDGE">
       <div class="container">
         <div class="company-search" data-test="companySearchBarWithMessage">
           <IconField id="company-search-bar">
@@ -156,7 +156,7 @@
           <div style="text-align: center; padding: 8px 0">
             <div class="confirmation-modal-message">
               <div>Are you sure you want to start a review for this dataset?</div>
-              <div>Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.</div>
+              <div>Once started, the review cannot be deleted and will be visible for other judges on Dataland.</div>
             </div>
           </div>
           <div v-if="errorMessage" data-test="confirmation-modal-error-message">
@@ -189,7 +189,7 @@ import router from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataTypeEnum } from '@clients/backend';
@@ -272,7 +272,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
     displayDataOfPage.value = await Promise.all(
       response.data.map(async (row) => ({
         ...row,
-        reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+        reviewStatus: await getReviewStatus(row.ownerId, row.ownerName),
       }))
     );
     totalRecords.value = (
@@ -446,18 +446,15 @@ function validateSearchBarInput(): boolean {
 
 /**
  * Determines the label of the review button in the table depending.
- * @param reviewerUserId the user id of the reviewer of the dataset
- * @param reviewerUserName the user name of the reviewer of the dataset
+ * @param ownerId the user id of the owner of the dataset review
+ * @param ownerName the user name of the owner of the dataset review
  * @returns the label of the review button
  */
-async function getReviewStatus(
-  reviewerUserId: string | undefined,
-  reviewerUserName: string | undefined
-): Promise<string> {
+async function getReviewStatus(ownerId: string | undefined, ownerName: string | undefined): Promise<string> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
-  if (reviewerUserId && reviewerUserName) {
-    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
+  if (ownerId && ownerName) {
+    return keycloakUserId === ownerId ? 'Continue Review' : ownerName;
   }
   return 'Start Review';
 }

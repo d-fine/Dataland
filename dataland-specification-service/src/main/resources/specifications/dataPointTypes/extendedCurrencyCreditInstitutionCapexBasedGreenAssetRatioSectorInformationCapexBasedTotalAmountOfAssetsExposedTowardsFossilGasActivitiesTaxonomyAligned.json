@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyCreditInstitutionCapexBasedGreenAssetRatioSectorInformationCapexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned",
+  "name" : "CapEx-based Total Amount of Assets Exposed towards Fossil Gas Activities (Taxonomy-aligned)",
+  "businessDefinition" : "CapEx-based total amount of assets exposed towards Fossil Gas Activities which are Taxonomy-aligned",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "min:0" ]
+}

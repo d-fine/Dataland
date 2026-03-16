@@ -48,6 +48,6 @@ class SecurityUtilsService(
             } catch (_: IllegalArgumentException) {
                 null
             }
-        return datasetReview.reviewerUserId.toString() == userId
+        return datasetReview.ownerId.toString() == userId
     }
 }

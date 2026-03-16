@@ -40,15 +40,15 @@ data class DatasetReviewResponse(
     )
     var reviewState: DatasetReviewState,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_EXAMPLE,
     )
-    var reviewerUserId: String?,
+    var ownerId: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_USERNAME_EXAMPLE,
     )
-    var reviewerUserName: String?,
+    var ownerName: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_PREAPPROVED_DATA_POINTS_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_PREAPPROVED_DATA_POINTS_EXAMPLE,
