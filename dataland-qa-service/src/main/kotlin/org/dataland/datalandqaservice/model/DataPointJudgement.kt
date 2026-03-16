@@ -18,7 +18,6 @@ import java.util.UUID
  * @property dataPointId the ID of the original data point instance
  * @property qaReports the QA report data points submitted for this data point type
  * @property acceptedSource which source was accepted for this data point
- * @property companyIdOfAcceptedQaReport the company whose QA report was accepted, if applicable
  * @property customValue the custom value accepted for this data point, if applicable
  */
 data class DataPointJudgement(

@@ -81,7 +81,7 @@ object DatasetJudgementValidationHelper {
      * @throws org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException If the current user is not the reviewer.
      */
     fun validateUserIsReviewer(reviewerUserId: UUID) {
-        if (DatalandAuthentication.Companion.fromContext().userId != reviewerUserId.toString()) {
+        if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
             throw InsufficientRightsApiException(
                 summary = "Only the reviewer is allowed to patch this dataset review object.",
                 message = "Please patch yourself as the reviewer before patching this object.",

@@ -55,8 +55,8 @@ class DatasetReviewCreationService
                     companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    qaJudgeUserId = ValidationUtils.convertToUUID(DatalandAuthentication.Companion.fromContext().userId),
-                    qaJudgeUserName = DatalandAuthentication.Companion.fromContext().name,
+                    qaJudgeUserId = ValidationUtils.convertToUUID(DatalandAuthentication.fromContext().userId),
+                    qaJudgeUserName = DatalandAuthentication.fromContext().name,
                     qaReporters = getQaReporters(dataPointTypeToQaReports).toMutableList(),
                     dataPoints = mutableListOf(),
                 )
