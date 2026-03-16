@@ -257,7 +257,7 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId, responses.first().reviewerUserId)
-        Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
+        Assertions.assertEquals(dummyUserId, responses.first().qaJudgeUserId)
+        Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
     }
 }

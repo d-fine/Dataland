@@ -26,7 +26,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id. Users can get the review information of their own datasets. Admins and reviewer can get the review information for all datasets.",
+        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins, judges and reviewer can get the review information for all datasets.",
         "operationId": "getQaReviewResponseByDataId",
         "parameters": [
           {
@@ -205,7 +205,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -976,7 +976,7 @@
           "qa-controller"
         ],
         "summary": "Get the QA review information of an uploaded data point for a given id.",
-        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins and reviewer can get the review information for all data points.",
+        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins, judges and reviewer can get the review information for all data points.",
         "operationId": "getDataPointQaReviewInformationByDataId",
         "parameters": [
           {
@@ -1456,7 +1456,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2277,7 +2277,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2352,7 +2352,7 @@
             }
           },
           "403": {
-            "description": "Only Dataland admins can access dataset review objects.",
+            "description": "Only admins and judges can access dataset review objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3393,12 +3393,12 @@
           },
           "qaJudgeUserId": {
             "type": "string",
-            "description": "The unique user ID of the user reviewing the dataset.",
+            "description": "The unique user ID of the user judging the dataset review.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "qaJudgeUserName": {
             "type": "string",
-            "description": "The name or email of the user reviewing the dataset.",
+            "description": "The name or email of the user judging the dataset review.",
             "example": "Jane Doe"
           },
           "qaReporters": {
@@ -7584,14 +7584,14 @@
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
-          "reviewerUserId": {
+          "qaJudgeUserId": {
             "type": "string",
-            "description": "The unique user ID of the user reviewing the dataset.",
+            "description": "The unique user ID of the user judging the dataset review.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "reviewerUserName": {
+          "qaJudgeUserName": {
             "type": "string",
-            "description": "The name or email of the user reviewing the dataset.",
+            "description": "The name or email of the user judging the dataset review.",
             "example": "Jane Doe"
           },
           "datasetReviewId": {
