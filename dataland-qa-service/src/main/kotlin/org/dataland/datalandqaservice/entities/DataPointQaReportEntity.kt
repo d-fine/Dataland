@@ -38,8 +38,6 @@ data class DataPointQaReportEntity(
     var dataPointType: String,
     @Column(name = "reporter_user_id", nullable = false)
     var reporterUserId: String,
-    @Column(name = "reporter_company_id", nullable = false)
-    var reporterCompanyId: String?,
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
     @Column(name = "active", nullable = false)
@@ -83,6 +81,5 @@ data class DataPointQaReportEntity(
             verdict = verdict,
             correctedData = correctedData,
             reporterUserId = reporterUserId,
-            reporterCompanyId = reporterCompanyId,
         )
 }

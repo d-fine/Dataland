@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
 
@@ -15,15 +15,12 @@ object MockDatasetReviewEntityForTest {
     const val DUMMY_DATA_POINT_TYPE = "dummy-datapoint-type"
     val dummyCompanyId = UUID.randomUUID()
     val dummyDatasetId = UUID.randomUUID()
-    val dummyReporterCompanyId = UUID.randomUUID()
     const val DUMMY_USER_NAME = "Dummy User"
     const val DUMMY_USER_EMAIL = "dummyUser@dataland.com"
     const val DUMMY_USER_FIRST_NAME = "Dummy"
     const val DUMMY_USER_LAST_NAME = "User"
 
     val dummyDatapointId = UUID.randomUUID().toString()
-    val reporterCompanyId = UUID.randomUUID().toString()
-    const val REPORTER_COMPANY_NAME = "Reporter Company"
     val qaReportId = UUID.randomUUID().toString()
     const val CUSTOM_VALUE = """{"value": 42}"""
 
@@ -42,8 +39,6 @@ object MockDatasetReviewEntityForTest {
                         reporterUserId = dummyUserId,
                         reporterUserName = DUMMY_USER_NAME,
                         reporterEmailAddress = DUMMY_USER_EMAIL,
-                        reportCompanyName = REPORTER_COMPANY_NAME,
-                        reporterCompanyId = dummyReporterCompanyId,
                     ),
                 ),
             dataPoints =
@@ -53,17 +48,20 @@ object MockDatasetReviewEntityForTest {
                         dataPointId = UUID.randomUUID(),
                         qaReports =
                             mutableListOf(
-                                QaReportDataPointWithReporterEntity(
-                                    qaReportId = UUID.randomUUID(),
+                                DataPointQaReportEntity(
+                                    qaReportId = UUID.randomUUID().toString(),
                                     verdict = QaReportDataPointVerdict.QaAccepted,
                                     correctedData = null,
-                                    reporterUserId = dummyUserId,
-                                    reporterCompanyId = dummyReporterCompanyId,
+                                    reporterUserId = dummyUserId.toString(),
+                                    comment = "dummy comment",
+                                    dataPointId = UUID.randomUUID().toString(),
+                                    dataPointType = DUMMY_DATA_POINT_TYPE,
+                                    uploadTime = 1000,
+                                    active = true,
                                 ),
                             ),
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
-                        companyIdOfAcceptedQaReport = null,
                         customValue = null,
                         datasetJudgement = null,
                     ),

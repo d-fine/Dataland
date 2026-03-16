@@ -25,14 +25,4 @@ data class QaReporter(
         example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_EMAIL_EXAMPLE,
     )
     val reporterEmailAddress: String?,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_NAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_NAME_EXAMPLE,
-    )
-    val reportCompanyName: String?,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
-    )
-    val reporterCompanyId: UUID?,
 )

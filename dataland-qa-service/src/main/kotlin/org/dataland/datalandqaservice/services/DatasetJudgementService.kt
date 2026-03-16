@@ -138,7 +138,7 @@ class DatasetJudgementService
                     )
 
             applyCustomDataPoint(dataPointType, patch.customDataPoint, dataPoint)
-            applyAcceptedSource(datasetReview, dataPoint, patch)
+            applyAcceptedSource(dataPoint, patch)
 
             return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
         }
@@ -173,12 +173,10 @@ class DatasetJudgementService
         /**
          * Applies the accepted source and related fields based on the patch.
          *
-         * @param datasetReview The dataset review entity containing QA reporter details.
          * @param dataPoint The data point entity to update.
          * @param patch The patch containing the accepted source and related data.
          */
         private fun applyAcceptedSource(
-            datasetReview: DatasetJudgementEntity,
             dataPoint: DataPointJudgementEntity,
             patch: ReviewDetailsPatch,
         ) {
@@ -187,7 +185,6 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Original
                         this.reporterUserIdOfAcceptedQaReport = null
-                        this.companyIdOfAcceptedQaReport = null
                     }
                 }
                 AcceptedDataPointSource.Qa -> {
@@ -199,11 +196,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport =
                             convertToUUID(patch.reporterUserIdOfAcceptedQaReport!!)
-                        this.companyIdOfAcceptedQaReport =
-                            DatasetJudgementValidationHelper.getCompanyIdOfAcceptedQaReport(
-                                patch.reporterUserIdOfAcceptedQaReport,
-                                datasetReview,
-                            )
                     }
                 }
                 AcceptedDataPointSource.Custom -> {
@@ -211,7 +203,6 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Custom
                         this.reporterUserIdOfAcceptedQaReport = null
-                        this.companyIdOfAcceptedQaReport = null
                     }
                 }
                 null -> return

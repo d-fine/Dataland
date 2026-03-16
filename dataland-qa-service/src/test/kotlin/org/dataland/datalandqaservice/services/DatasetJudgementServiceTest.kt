@@ -1,15 +1,11 @@
 package org.dataland.datalandqaservice.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -42,15 +38,11 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 
 class DatasetJudgementServiceTest {
     private val datasetReviewRepository = mock<DatasetReviewRepository>()
-    private val companyDataControllerApi = mock<CompanyDataControllerApi>()
     private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
-    private val inheritedRolesControllerApi = mock<InheritedRolesControllerApi>()
     private val keycloakUserService = mock<KeycloakUserService>()
 
     private val creationServiceClass =
         DatasetReviewCreationService(
-            inheritedRolesControllerApi,
-            companyDataControllerApi,
             datasetJudgementSupportService,
             keycloakUserService,
         )
@@ -71,8 +63,6 @@ class DatasetJudgementServiceTest {
         reset(
             datasetReviewRepository,
             datasetJudgementSupportService,
-            inheritedRolesControllerApi,
-            companyDataControllerApi,
         )
 
         AuthenticationMock.mockSecurityContext(
@@ -213,7 +203,6 @@ class DatasetJudgementServiceTest {
 
         assertEquals(mockDatasetReviewEntityForTest.dummyCompanyId.toString(), result.companyId)
         assertEquals(1, result.qaReporters.size)
-        assertEquals(mockDatasetReviewEntityForTest.REPORTER_COMPANY_NAME, result.qaReporters[0].reportCompanyName)
         assertEquals(mockDatasetReviewEntityForTest.DUMMY_USER_NAME, result.qaReporters[0].reporterUserName)
         assertEquals(1, result.dataPoints.size)
         assertEquals(
@@ -250,26 +239,6 @@ class DatasetJudgementServiceTest {
             .whenever(datasetJudgementSupportService)
             .getDataMetaInfo(any())
 
-        doReturn(mapOf(mockDatasetReviewEntityForTest.reporterCompanyId to listOf("Role")))
-            .whenever(inheritedRolesControllerApi)
-            .getInheritedRoles(any())
-
-        whenever(companyDataControllerApi.postCompanyValidation(any()))
-            .thenReturn(
-                listOf(
-                    CompanyIdentifierValidationResult(
-                        identifier = mockDatasetReviewEntityForTest.reporterCompanyId,
-                        companyInformation =
-                            BasicCompanyInformation(
-                                companyId = mockDatasetReviewEntityForTest.reporterCompanyId,
-                                companyName = mockDatasetReviewEntityForTest.REPORTER_COMPANY_NAME,
-                                headquarters = "Berlin",
-                                countryCode = "DE",
-                            ),
-                    ),
-                ),
-            )
-
         doReturn(
             KeycloakUserInfo(
                 mockDatasetReviewEntityForTest.DUMMY_USER_EMAIL,
@@ -303,7 +272,6 @@ class DatasetJudgementServiceTest {
         val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
 
         assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
-        assertNull(saved.companyIdOfAcceptedQaReport)
         assertNull(saved.reporterUserIdOfAcceptedQaReport)
     }
 
@@ -317,7 +285,6 @@ class DatasetJudgementServiceTest {
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
         assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
-        assertEquals(mockDatasetReviewEntityForTest.dummyReporterCompanyId, saved.companyIdOfAcceptedQaReport)
     }
 
     @Test
@@ -329,7 +296,6 @@ class DatasetJudgementServiceTest {
             )
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertNull(saved.companyIdOfAcceptedQaReport)
         assertNull(saved.reporterUserIdOfAcceptedQaReport)
     }
 

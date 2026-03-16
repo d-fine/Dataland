@@ -47,11 +47,6 @@ data class DataPointJudgement(
     )
     val reporterUserIdOfAcceptedQaReport: UUID?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION,
-    )
-    val companyIdOfAcceptedQaReport: UUID?,
-    @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE,
     )

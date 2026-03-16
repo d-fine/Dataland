@@ -14,7 +14,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
  * @property verdict the QA verdict for the data point
  * @property correctedData corrected data for the data point if applicable
  * @property reporterUserId the ID of the user who reported this data point
- * @property reporterCompanyId the ID of the company of the user who reported this data point
  */
 data class QaReportDataPointWithReporter(
     @field:Schema(
@@ -37,9 +36,4 @@ data class QaReportDataPointWithReporter(
         example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
     )
     val reporterUserId: String,
-    @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_COMPANY_ID_EXAMPLE,
-    )
-    val reporterCompanyId: String?,
 )

@@ -26,7 +26,6 @@ class DataPointJudgementEntity(
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
-    var companyIdOfAcceptedQaReport: UUID?,
     @Column(columnDefinition = "TEXT", nullable = true)
     var customValue: String?,
     @JoinColumn(name = "dataset_judgement_id")
@@ -43,7 +42,6 @@ class DataPointJudgementEntity(
             qaReports = qaReports.map { it.toQaReportDataPointWithReporterDetails() },
             acceptedSource = acceptedSource,
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
-            companyIdOfAcceptedQaReport = companyIdOfAcceptedQaReport,
             customValue = customValue,
         )
 

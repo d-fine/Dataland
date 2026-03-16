@@ -4,10 +4,9 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportDataPointWithReporterEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
@@ -58,7 +57,7 @@ object DatasetJudgementValidationHelper {
      * @throws InvalidInputApiException If the user ID is missing or does not correspond to a valid QA report.
      */
     fun validateReporterUserIdOfAcceptedQaReport(
-        qaReports: List<QaReportDataPointWithReporterEntity>,
+        qaReports: List<DataPointQaReportEntity>,
         reporterUserIdOfAcceptedQaReport: String?,
     ) {
         if (reporterUserIdOfAcceptedQaReport == null) {
@@ -67,33 +66,13 @@ object DatasetJudgementValidationHelper {
                 "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
             )
         }
-        if (qaReports.none { it.reporterUserId == ValidationUtils.convertToUUID(reporterUserIdOfAcceptedQaReport) }) {
+        if (qaReports.none { it.reporterUserId == reporterUserIdOfAcceptedQaReport }) {
             throw InvalidInputApiException(
                 "QA report not found.",
                 "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point.",
             )
         }
     }
-
-    /**
-     * Resolves the reporter company ID for the accepted QA report user, if available.
-     *
-     * Looks up the matching QA reporter in the given dataset review and returns its company ID.
-     * Returns null when the accepted reporter user ID is null or no matching reporter exists.
-     *
-     * @param reporterUserIdOfAcceptedQaReport The user ID of the accepted QA report (string form), or null.
-     * @param datasetReview The dataset review containing QA reporters to search.
-     * @return The company ID of the accepted QA report reporter, or null if not found.
-     */
-    fun getCompanyIdOfAcceptedQaReport(
-        reporterUserIdOfAcceptedQaReport: String?,
-        datasetReview: DatasetJudgementEntity,
-    ) = reporterUserIdOfAcceptedQaReport
-        ?.let {
-            ValidationUtils.convertToUUID(it)
-        }?.let { reporterUserId ->
-            datasetReview.qaReporters.firstOrNull { it.reporterUserId == reporterUserId }
-        }?.reporterCompanyId
 
     /**
      * Throws InsufficientRightsApiException if user is not reviewer.
@@ -119,15 +98,13 @@ object DatasetJudgementValidationHelper {
      */
     fun validateIfDatasetExists(
         datasetReviewId: UUID,
-        datasetJudgementEntity: DatasetJudgementEntity?
-    ){
-        if(datasetJudgementEntity == null){
+        datasetJudgementEntity: DatasetJudgementEntity?,
+    ) {
+        if (datasetJudgementEntity == null) {
             throw ResourceNotFoundApiException(
-                    "Dataset review object not found",
-                    "No Dataset review object with the id: $datasetReviewId could be found.",
-                )
-            }
+                "Dataset review object not found",
+                "No Dataset review object with the id: $datasetReviewId could be found.",
+            )
+        }
     }
-
-
 }
