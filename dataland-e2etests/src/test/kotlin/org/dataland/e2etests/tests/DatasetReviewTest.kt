@@ -67,6 +67,31 @@ class DatasetReviewTest {
         return dataMetaInformationResponse
     }
 
+    private fun postQaReport(
+        datapointId: String,
+        qaReport: QaReportDataPointString,
+    ) = QaService.dataPointQaReportControllerApi
+        .postQaReport(datapointId, qaReport)
+        .reporterUserId
+
+    private fun patchReviewDetails(
+        datasetReviewId: String,
+        dataPointType: String,
+        acceptedSource: AcceptedDataPointSource,
+        reporterUserIdOfAcceptedQaReport: String?,
+        customDataPoint: String?,
+    ) {
+        QaService.datasetReviewControllerApi.patchReviewDetails(
+            datasetReviewId,
+            dataPointType,
+            ReviewDetailsPatch(
+                acceptedSource,
+                reporterUserIdOfAcceptedQaReport,
+                customDataPoint,
+            ),
+        )
+    }
+
     @Test
     fun `ensure dataset review entities behave correctly`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
@@ -75,65 +100,51 @@ class DatasetReviewTest {
         val datapointId1 = dataPoints[datapointType1]!!
         val datapointId2 = dataPoints[datapointType2]!!
 
-        val reporterUserId1 =
-            QaService.dataPointQaReportControllerApi
-                .postQaReport(datapointId1, dummyQaReport1)
-                .reporterUserId
-        val reporterUserId2 =
-            QaService.dataPointQaReportControllerApi
-                .postQaReport(datapointId2, dummyQaReport2)
-                .reporterUserId
+        val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
+        val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val datasetReview = QaService.datasetReviewControllerApi.postDatasetReview(datasetId)
-            val datasetReviewId = datasetReview.dataSetReviewId
+            val datasetReviewId =
+                QaService.datasetReviewControllerApi
+                    .postDatasetReview(datasetId)
+                    .dataSetReviewId
 
-            QaService.datasetReviewControllerApi.patchReviewDetails(
+            patchReviewDetails(
                 datasetReviewId,
                 datapointType1,
-                ReviewDetailsPatch(
-                    AcceptedDataPointSource.Qa,
-                    reporterUserId1.toString(),
-                    null,
-                ),
+                AcceptedDataPointSource.Qa,
+                reporterUserId1.toString(),
+                null,
             )
 
-            QaService.datasetReviewControllerApi.patchReviewDetails(
+            patchReviewDetails(
                 datasetReviewId,
                 datapointType2,
-                ReviewDetailsPatch(
-                    AcceptedDataPointSource.Qa,
-                    reporterUserId2.toString(),
-                    null,
-                ),
+                AcceptedDataPointSource.Qa,
+                reporterUserId2.toString(),
+                null,
             )
 
-            QaService.datasetReviewControllerApi.patchReviewDetails(
+            patchReviewDetails(
                 datasetReviewId,
                 datapointType1,
-                ReviewDetailsPatch(
-                    AcceptedDataPointSource.Original,
-                    null,
-                    null,
-                ),
+                AcceptedDataPointSource.Original,
+                null,
+                null,
             )
-            QaService.datasetReviewControllerApi.patchReviewDetails(
+            patchReviewDetails(
                 datasetReviewId,
                 datapointType2,
-                ReviewDetailsPatch(
-                    AcceptedDataPointSource.Qa,
-                    reporterUserId2.toString(),
-                    null,
-                ),
+                AcceptedDataPointSource.Qa,
+                reporterUserId2.toString(),
+                null,
             )
-            QaService.datasetReviewControllerApi.patchReviewDetails(
+            patchReviewDetails(
                 datasetReviewId,
                 datapointType3,
-                ReviewDetailsPatch(
-                    AcceptedDataPointSource.Custom,
-                    null,
-                    customDataPoint,
-                ),
+                AcceptedDataPointSource.Custom,
+                null,
+                customDataPoint,
             )
         }
 
