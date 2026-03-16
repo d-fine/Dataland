@@ -2640,7 +2640,7 @@
           "qa-controller"
         ],
         "summary": "Get relevant meta info on datasets with QA status pending.",
-        "description": "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filteringfor company name or ID is possible",
+        "description": "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filtering for company name or ID is possible",
         "operationId": "getInfoOnPendingDatasets",
         "parameters": [
           {
