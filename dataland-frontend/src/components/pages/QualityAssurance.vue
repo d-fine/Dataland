@@ -39,7 +39,6 @@
             class="table-cursor"
             id="qa-data-result"
             :rowHover="true"
-            :first="firstRowIndex"
             data-test="qa-review-section"
             @row-click="onRowClicked($event)"
             paginator
@@ -49,7 +48,6 @@
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             :pageLinkSize="5"
-            :total-records="totalRecords"
             sortMode="multiple"
             removableSort
             filterDisplay="menu"
@@ -86,7 +84,7 @@
                     :available-items="availableFrameworks"
                     filter-name="Framework"
                     data-test="framework-picker"
-                    id="framework-filter2"
+                    id="framework-filter"
                     filter-placeholder="Search by Frameworks"
                     :max-selected-labels="1"
                     selected-items-label="{0} frameworks selected"
@@ -352,12 +350,9 @@ type QaReviewRow = QaReviewResponse & {
 };
 const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
-const firstRowIndex = ref(0);
-const totalRecords = ref(0);
 const searchBarInput = ref('');
 const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const availableReportingPeriods = ref<Array<Date>>([]);
 const showNotEnoughCharactersWarning = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
@@ -388,7 +383,6 @@ async function getQaDataForCurrentPage(): Promise<void> {
             : row.priorityOfAssociatedDataSourcing,
       }))
     );
-    totalRecords.value = displayDataOfPage.value.length;
     waitingForData.value = false;
   } catch (error) {
     console.error(error);
@@ -479,7 +473,6 @@ function closeConfirmationModal(): void {
  */
 function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
-  availableReportingPeriods.value = [];
   searchBarInput.value = '';
 
   filters.value.framework.value = null;
@@ -573,11 +566,6 @@ onMounted(() => {
   .search-filter {
     width: 15%;
     text-align: left;
-  }
-
-  .info-message:last-child {
-    margin-left: auto;
-    margin-top: var(--spacing-xs);
   }
 }
 
