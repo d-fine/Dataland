@@ -109,43 +109,31 @@ class DatasetReviewTest {
                     .postDatasetReview(datasetId)
                     .dataSetReviewId
 
-            patchReviewDetails(
-                datasetReviewId,
-                datapointType1,
-                AcceptedDataPointSource.Qa,
-                reporterUserId1.toString(),
-                null,
+            data class PatchOperation(
+                val dataPointType: String,
+                val acceptedSource: AcceptedDataPointSource,
+                val reporterUserIdOfAcceptedQaReport: String? = null,
+                val customDataPoint: String? = null,
             )
 
-            patchReviewDetails(
-                datasetReviewId,
-                datapointType2,
-                AcceptedDataPointSource.Qa,
-                reporterUserId2.toString(),
-                null,
-            )
+            val patchOperations =
+                listOf(
+                    PatchOperation(datapointType1, AcceptedDataPointSource.Qa, reporterUserId1.toString()),
+                    PatchOperation(datapointType2, AcceptedDataPointSource.Qa, reporterUserId2.toString()),
+                    PatchOperation(datapointType1, AcceptedDataPointSource.Original),
+                    PatchOperation(datapointType2, AcceptedDataPointSource.Qa, reporterUserId2.toString()),
+                    PatchOperation(datapointType3, AcceptedDataPointSource.Custom, null, customDataPoint),
+                )
 
-            patchReviewDetails(
-                datasetReviewId,
-                datapointType1,
-                AcceptedDataPointSource.Original,
-                null,
-                null,
-            )
-            patchReviewDetails(
-                datasetReviewId,
-                datapointType2,
-                AcceptedDataPointSource.Qa,
-                reporterUserId2.toString(),
-                null,
-            )
-            patchReviewDetails(
-                datasetReviewId,
-                datapointType3,
-                AcceptedDataPointSource.Custom,
-                null,
-                customDataPoint,
-            )
+            patchOperations.forEach {
+                patchReviewDetails(
+                    datasetReviewId,
+                    it.dataPointType,
+                    it.acceptedSource,
+                    it.reporterUserIdOfAcceptedQaReport,
+                    it.customDataPoint,
+                )
+            }
         }
 
         val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
