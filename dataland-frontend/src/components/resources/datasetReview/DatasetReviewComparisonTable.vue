@@ -72,8 +72,8 @@
                     colspan="5"
                     class="text-left p-3 border-bottom-1 surface-border"
                     :class="{
-                      'section-root': row.level === 0,
-                      'section-sub': row.level > 0,
+                      'uppercase text-base font-medium': row.level === 0,
+                      'text-base font-normal': row.level > 0,
                     }"
                   >
                     {{ row.level === 0 ? row.label : toTitleCase(row.label) }}
@@ -97,7 +97,7 @@
                       </span>
                       <em
                         v-if="row.explanation"
-                        class="material-icons info-icon ml-2"
+                        class="material-icons inline-flex align-items-center ml-2 cursor-help"
                         aria-hidden="true"
                         v-tooltip.top="{ value: row.explanation }"
                       >
@@ -108,7 +108,7 @@
 
                   <!-- Original datapoint -->
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <div class="cell-flex">
+                    <div class="flex align-items-start gap-2">
                       <MultiLayerDataTableCell
                         :content="row.originalDisplay"
                         :meta-info="dataMetaInformation as DataMetaInformation"
@@ -119,12 +119,12 @@
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-check text-green-500 accepted-check"
+                        class="pi pi-check text-green-500 ml-auto"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-times text-red-500 rejected-check"
+                        class="pi pi-times text-red-500 ml-auto"
                         aria-label="Rejected source"
                       ></span>
                     </div>
@@ -136,7 +136,7 @@
                     :key="qaReporter.reporterUserId"
                     class="vertical-align-top border-right-1 surface-border"
                   >
-                    <div class="cell-flex">
+                    <div class="flex align-items-start gap-2">
                       <span
                         v-if="
                           getQaReportFor(row, qaReporter.reporterUserId)?.verdict ===
@@ -163,7 +163,7 @@
                   </td>
 
                   <td class="vertical-align-top border-right-1 surface-border">
-                    <div class="cell-flex">
+                    <div class="flex align-items-start gap-2">
                       <span
                         v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === AcceptedDataPointSource.Custom"
                       >
@@ -521,39 +521,6 @@ function openJudgeModal(row: KpiRow): void {
 </script>
 
 <style scoped>
-.info-icon {
-  display: inline-flex;
-  align-items: center;
-  cursor: help;
-}
-
-.cell-flex {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.accepted-check {
-  margin-left: auto;
-}
-
-.rejected-check {
-  margin-left: auto;
-}
-
-.section-root {
-  /* top-level section headers (e.g. ENVIRONMENTAL, SOCIAL) */
-  text-transform: uppercase;
-  font-size: var(--font-size-base); /* slightly larger than cell text */
-  font-weight: var(--font-weight-medium); /* not full bold */
-}
-
-.section-sub {
-  /* nested sections (e.g. Greenhouse Gas Emissions) */
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-normal);
-}
-
 .p-datatable-wrapper {
   overflow-x: auto;
   overflow-y: visible;
