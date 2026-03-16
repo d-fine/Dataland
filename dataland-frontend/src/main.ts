@@ -20,13 +20,7 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
  */
 function instantiateVueApp(): void {
   const app = createApp(App);
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 1000 * 60 * 5, // The standard stale time for queries is 5 minutes.
-      },
-    },
-  });
+  const queryClient = new QueryClient(); // Standard query client (stale time: 5 minutes)
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({
