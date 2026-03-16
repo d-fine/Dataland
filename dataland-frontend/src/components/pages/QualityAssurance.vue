@@ -53,12 +53,12 @@
             filterDisplay="menu"
             v-model:filters="filters"
           >
-            <Column header="DATA ID">
+            <Column field="dataId" header="DATA ID" :sortable="true">
               <template #body="slotProps">
                 {{ slotProps.data.dataId }}
               </template>
             </Column>
-            <Column header="COMPANY NAME">
+            <Column field="companyName" header="COMPANY NAME" :sortable="true">
               <template #body="slotProps">
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
