@@ -286,7 +286,7 @@ class QaReviewManagerTest {
 
         doReturn(listOf(qaReviewEntity))
             .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+            .getPendingQaReviewMetadatasetsByCompany(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(
@@ -311,7 +311,7 @@ class QaReviewManagerTest {
 
         doReturn(listOf(qaReviewEntity))
             .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+            .getPendingQaReviewMetadatasetsByCompany(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(
