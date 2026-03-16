@@ -3,6 +3,6 @@
   "name" : "Substantial Contribution to Transition to a Circular Economy in Percent - Aligned",
   "businessDefinition" : "Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Circular Economy",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

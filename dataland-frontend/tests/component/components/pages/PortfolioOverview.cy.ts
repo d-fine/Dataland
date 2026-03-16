@@ -34,7 +34,7 @@ describe('Check the portfolio overview view', () => {
 
     expect(basePortfolioNames).to.have.length.greaterThan(0);
     cy.get('[data-test="add-portfolio"]').should('contain', 'ADD NEW PORTFOLIO');
-    cy.get('[data-test="portfolios"] [data-p-active="true"]').should('contain', basePortfolioNames[0]!.portfolioName);
+    cy.get('[data-test="portfolios"] [data-p-active="true"]').should('contain', basePortfolioNames[0].portfolioName);
   });
 
   it('Should handle empty portfolio list', () => {

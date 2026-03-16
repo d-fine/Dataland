@@ -49,7 +49,7 @@ data class DataPointMetaInformationEntity(
      * The viewingUser can view information about the data point or the data point itself if
      * (a) the data point has successfully passed QA
      * (b) the user has uploaded the data point
-     * (c) the user is an admin or a reviewer
+     * (c) the user is an admin or a judge or reviewer
      * This function checks these conditions.
      */
     fun isDataPointViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
@@ -58,7 +58,9 @@ data class DataPointMetaInformationEntity(
             isDataPointViewableByUserViaRole(viewingUser?.roles ?: emptySet())
 
     private fun isDataPointViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
-        roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
+        roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
+            roles.contains(DatalandRealmRole.ROLE_JUDGE) ||
+            roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
     override fun toApiModel(): DataPointMetaInformation =
         DataPointMetaInformation(

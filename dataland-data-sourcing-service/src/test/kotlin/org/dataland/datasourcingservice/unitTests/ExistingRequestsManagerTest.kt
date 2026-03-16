@@ -18,6 +18,7 @@ import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
 import org.dataland.datasourcingservice.services.RequestQueryManager
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -59,7 +60,6 @@ class ExistingRequestsManagerTest {
         ExistingRequestsManager(
             mockRequestRepository,
             mockRequestDataSourcingAssigner,
-            mockDataRevisionRepository,
             mockDataSourcingServiceMessageSender,
             mockRequestQueryManager,
         )
@@ -71,6 +71,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingValidator,
             existingRequestsManager,
             mockCloudEventMessageHandler,
+            mock<DerivedRightsUtilsComponent>(),
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()
 

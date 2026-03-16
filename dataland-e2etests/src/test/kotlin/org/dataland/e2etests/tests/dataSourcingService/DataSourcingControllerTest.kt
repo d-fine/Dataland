@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.dataSourcingService
 
 import org.dataland.dataSourcingService.openApiClient.infrastructure.ClientException
+import org.dataland.dataSourcingService.openApiClient.model.AdminDataSourcingPatch
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingState
 import org.dataland.dataSourcingService.openApiClient.model.RequestState
 import org.dataland.dataSourcingService.openApiClient.model.StoredDataSourcing
@@ -114,9 +115,9 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 storedDataSourcing.dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
+            apiAccessor.dataSourcingControllerApi.patchDataSourcing(
                 storedDataSourcing.dataSourcingId,
-                companyIdCollector,
+                AdminDataSourcingPatch(documentCollector = companyIdCollector),
             )
         }
         var updatedDataSourcingObject = apiAccessor.dataSourcingControllerApi.getDataSourcingById(storedDataSourcing.dataSourcingId)
@@ -128,10 +129,9 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 DataSourcingState.DataExtraction,
             )
             updatedDataSourcingObject =
-                apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
+                apiAccessor.dataSourcingControllerApi.patchDataSourcing(
                     storedDataSourcing.dataSourcingId,
-                    null,
-                    companyIdExtractor,
+                    AdminDataSourcingPatch(dataExtractor = companyIdExtractor),
                 )
         }
         assertEquals(companyIdCollector, updatedDataSourcingObject.documentCollector)
@@ -182,18 +182,17 @@ class DataSourcingControllerTest : DataSourcingTest() {
                 storedDataSourcings[0].dataSourcingId,
                 DataSourcingState.DocumentSourcing,
             )
-            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
+            apiAccessor.dataSourcingControllerApi.patchDataSourcing(
                 storedDataSourcings[0].dataSourcingId,
-                companyIdDocumentCollectorOrDataExtractor,
+                AdminDataSourcingPatch(documentCollector = companyIdDocumentCollectorOrDataExtractor),
             )
             apiAccessor.dataSourcingControllerApi.patchDataSourcingState(
                 storedDataSourcings[1].dataSourcingId,
                 DataSourcingState.DataExtraction,
             )
-            apiAccessor.dataSourcingControllerApi.patchProviderAndAdminComment(
+            apiAccessor.dataSourcingControllerApi.patchDataSourcing(
                 storedDataSourcings[1].dataSourcingId,
-                null,
-                companyIdDocumentCollectorOrDataExtractor,
+                AdminDataSourcingPatch(dataExtractor = companyIdDocumentCollectorOrDataExtractor),
             )
         }
 

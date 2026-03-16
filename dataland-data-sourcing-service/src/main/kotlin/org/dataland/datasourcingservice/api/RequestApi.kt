@@ -15,7 +15,9 @@ import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.model.request.ExtendedRequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
+import org.dataland.datasourcingservice.model.request.RequestHistoryEntryData
 import org.dataland.datasourcingservice.model.request.SingleRequest
 import org.dataland.datasourcingservice.model.request.SingleRequestResponse
 import org.dataland.datasourcingservice.model.request.StoredRequest
@@ -256,18 +258,47 @@ interface RequestApi {
     ): ResponseEntity<StoredRequest>
 
     /**
-     * Retrieve the history of a Request object by its ID.
+     * Retrieve the extended request history of a Request object by its ID.
      */
     @Operation(
-        summary = "Get full history of requests by ID",
-        description = "Retrieve the history of a Request object by its unique identifier.",
+        summary = "Get extended request history of requests by ID",
+        description = "Retrieve the extended request history of a Request object by its unique identifier.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved request history."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved state history."),
             ApiResponse(
                 responseCode = "403",
-                description = "Only Dataland admins have the right to query request history.",
+                description = "Only Dataland admins have the right to query state history.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified request ID does not exist.",
+                content = [Content(array = ArraySchema())],
+            ),
+        ],
+    )
+    @GetMapping(value = ["/{dataRequestId}/extended-history"], produces = ["application/json"])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getExtendedRequestHistoryById(
+        @DataRequestIdParameterRequired
+        @PathVariable dataRequestId: String,
+    ): ResponseEntity<List<ExtendedRequestHistoryEntryData>>
+
+    /**
+     * Retrieve the request history of a Request object by its ID.
+     */
+    @Operation(
+        summary = "Get basic request history of requests by ID",
+        description = "Retrieve the basic request history of a Request object by its unique identifier.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved state history."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins have the right to query state history.",
                 content = [Content(array = ArraySchema())],
             ),
             ApiResponse(
@@ -282,5 +313,5 @@ interface RequestApi {
     fun getRequestHistoryById(
         @DataRequestIdParameterRequired
         @PathVariable dataRequestId: String,
-    ): ResponseEntity<List<StoredRequest>>
+    ): ResponseEntity<List<RequestHistoryEntryData>>
 }

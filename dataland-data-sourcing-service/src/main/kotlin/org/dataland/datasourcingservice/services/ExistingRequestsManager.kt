@@ -1,12 +1,10 @@
 package org.dataland.datasourcingservice.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datasourcingservice.exceptions.RequestNotFoundApiException
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.ExtendedStoredRequest
 import org.dataland.datasourcingservice.model.request.StoredRequest
-import org.dataland.datasourcingservice.repositories.DataRevisionRepository
 import org.dataland.datasourcingservice.repositories.RequestRepository
 import org.dataland.datasourcingservice.utils.RequestLogger
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
-import kotlin.collections.ifEmpty
 
 /**
  * Service responsible for managing existing (data) requests in the sense of the data sourcing service.
@@ -25,7 +22,6 @@ class ExistingRequestsManager
     constructor(
         private val requestRepository: RequestRepository,
         private val requestDataSourcingAssigner: RequestDataSourcingAssigner,
-        private val dataRevisionRepository: DataRevisionRepository,
         private val dataSourcingServiceMessageSender: DataSourcingServiceMessageSender,
         private val requestQueryManager: RequestQueryManager,
     ) {
@@ -86,7 +82,12 @@ class ExistingRequestsManager
                 )
             } else {
                 val dataSourcingEntity = requestEntity.dataSourcingEntity
-                if (isWithdrawalOfProcessedOrProcessingRequest(newRequestState, oldRequestState) && dataSourcingEntity != null) {
+                if (isWithdrawalOfProcessedOrProcessingRequest(
+                        newRequestState,
+                        oldRequestState,
+                    ) &&
+                    dataSourcingEntity != null
+                ) {
                     dataSourcingServiceMessageSender.sendMessageToAccountingServiceOnRequestWithdrawn(
                         dataSourcingEntity = dataSourcingEntity,
                         requestEntity = requestEntity,
@@ -138,19 +139,4 @@ class ExistingRequestsManager
 
             return requestEntity.toStoredDataRequest()
         }
-
-        /**
-         * Retrieves the history of revisions for a specific data request identified by its ID.
-         * @param requestId The UUID string of the data request whose history is to be retrieved.
-         * @return A list of StoredRequest objects representing the revision history of the specified data request.
-         * @throws InvalidInputApiException If the provided ID is not a valid UUID format.
-         */
-        @Transactional(readOnly = true)
-        fun retrieveRequestHistory(requestId: UUID): List<StoredRequest> =
-            dataRevisionRepository
-                .listDataRequestRevisionsById(requestId)
-                .map { it.toStoredDataRequest() }
-                .ifEmpty {
-                    throw RequestNotFoundApiException(requestId)
-                }
     }

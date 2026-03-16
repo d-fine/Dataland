@@ -9,6 +9,20 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
+ * Convert a string to Title Case (first letter capitalized for each word).
+ *
+ * @param {string} str - Input string to convert.
+ * @returns {string} Title-cased string.
+ */
+export function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/**
  * Convert kebab case string to camelCase
  * @param rawText is the string to be converted
  * @returns the converted string in camel case
@@ -75,8 +89,10 @@ function humanizeViaMapping(rawText: string): string {
     yes: HumanizedYesNoNa.Yes,
     no: HumanizedYesNoNa.No,
     na: HumanizedYesNoNa.NA,
-    'eutaxonomy-financials': 'EU Taxonomy for financial companies',
-    'eutaxonomy-non-financials': 'EU Taxonomy for non-financial companies',
+    'eutaxonomy-financials': 'EU Taxonomy Financials',
+    'eutaxonomy-financials-2026-73': 'EU Taxonomy Financials (2026/73)',
+    'eutaxonomy-non-financials': 'EU Taxonomy Non-Financials',
+    'nuclear-and-gas': 'EU Taxonomy Nuclear and Gas',
     lksg: 'LkSG',
     sfdr: 'SFDR',
     sme: 'SME',
@@ -125,10 +141,13 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
  */
 export function getFrameworkTitle(framework: string): string {
   switch (framework) {
+    case DataTypeEnum.EutaxonomyFinancials202673:
     case DataTypeEnum.EutaxonomyFinancials:
-      return 'EU Taxonomy';
+      return 'EU Taxonomy Financials';
     case DataTypeEnum.EutaxonomyNonFinancials:
-      return 'EU Taxonomy';
+      return 'EU Taxonomy Non-Financials';
+    case DataTypeEnum.NuclearAndGas:
+      return 'EU Taxonomy Nuclear and Gas';
     default:
       return humanizeStringOrNumber(framework);
   }
@@ -139,7 +158,12 @@ export function getFrameworkTitle(framework: string): string {
  * @returns boolean if framework has subtitle
  */
 export function frameworkHasSubTitle(framework: string): boolean {
-  return framework == DataTypeEnum.EutaxonomyFinancials || framework == DataTypeEnum.EutaxonomyNonFinancials;
+  return (
+    framework == DataTypeEnum.EutaxonomyFinancials202673 ||
+    framework == DataTypeEnum.EutaxonomyFinancials ||
+    framework == DataTypeEnum.EutaxonomyNonFinancials ||
+    framework == DataTypeEnum.NuclearAndGas
+  );
 }
 /**
  * Return the subtitle of a framework
@@ -148,10 +172,13 @@ export function frameworkHasSubTitle(framework: string): boolean {
  */
 export function getFrameworkSubtitle(framework: string): string {
   switch (framework) {
+    case DataTypeEnum.EutaxonomyFinancials202673:
+      return '(2026/73)';
     case DataTypeEnum.EutaxonomyFinancials:
-      return 'for financial companies';
     case DataTypeEnum.EutaxonomyNonFinancials:
-      return 'for non-financial companies';
+      return '(2020/852)';
+    case DataTypeEnum.NuclearAndGas:
+      return '(2022/1214)';
     default:
       return '';
   }

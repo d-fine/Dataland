@@ -6,6 +6,7 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_STATE_DESCRIPTION = "The current state of the data sourcing object."
     const val DATA_SOURCING_STATE_EXAMPLE = "DataVerification"
+    const val DATA_SOURCING_STATE_LIST_EXAMPLE = "[\"Initialized\",\"DataVerification\"]"
 
     const val DOCUMENT_IDS_DESCRIPTION = "The IDs of documents from which the data for this data sourcing object are extracted."
     const val DOCUMENT_IDS_PATCH_DESCRIPTION = "The IDs of documents to append to or overwrite the existing document IDs."
@@ -76,28 +77,29 @@ object DataSourcingOpenApiDescriptionsAndExamples {
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the request was last modified."
     const val REQUEST_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
+    const val DISPLAYED_STATE_DESCRIPTION = "The current displayed state of the request."
+    const val DISPLAYED_STATE_EXAMPLE = "Validated"
+
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the data sourcing object was last modified."
+    const val DATA_SOURCING_LAST_MODIFIED_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
+
     const val APPEND_DOCUMENTS_DESCRIPTION =
         "Whether to append the provided document IDs to the existing ones. " +
             "If set to false, the provided document IDs replace the existing ones instead."
 
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
-        "A set of identifiers for companies on Dataland. Use Dataland company IDs, " +
-            "Leis or Isins for the best results. Requests will be posted for all companies that can " +
-            "be identified."
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE =
-        "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
-            "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
-            "\"US0378331005\"]"
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE
 
     const val BULK_REQUEST_DATA_TYPES_DESCRIPTION =
-        "A set of framework names. Use kebab-case names such as \"eutaxonomy-financials\". Using a framework " +
-            "name that cannot be identified will result in an error, and no requests will be created."
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_DESCRIPTION
     const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
-        "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"vsme\"]"
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_EXAMPLE
 
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
-        "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."
-
+        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION
     const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
 
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
@@ -112,4 +114,9 @@ object DataSourcingOpenApiDescriptionsAndExamples {
 
     const val DATA_SOURCING_DETAILS_DESCRIPTION =
         "The data sourcing details associated with this request."
+
+    const val PRIORITY_DESCRIPTION =
+        "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. " +
+            "Null if the requesting user is not an admin or data provider."
+    const val PRIORITY_EXAMPLE = "1"
 }

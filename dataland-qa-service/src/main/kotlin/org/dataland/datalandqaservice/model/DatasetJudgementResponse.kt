@@ -41,13 +41,13 @@ data class DatasetJudgementResponse(
     )
     var reviewState: DatasetReviewState,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_EXAMPLE,
     )
     var qaJudgeUserId: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_REVIEWER_USERNAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_USERNAME_EXAMPLE,
     )
     var qaJudgeUserName: String?,
     @field:Schema(

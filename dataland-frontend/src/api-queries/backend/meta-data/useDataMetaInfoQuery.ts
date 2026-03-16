@@ -1,4 +1,3 @@
-// src/api-queries/backend/meta-data/useDataMetaInfoQuery.ts
 import { computed, type Ref } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient';

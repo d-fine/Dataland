@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceAssetUnderManagementAssetsCoveredByTheKpiInPercent",
+  "name" : "Assets covered by the KPI - in Percent",
+  "businessDefinition" : "The value of all direct and indirect investments and exposures, covered under Article 7(6) of Regulation (EU) 2026/73, including investments in collective investment undertakings and participations, loans and mortgages relative to total investments of insurance or reinsurance undertakings (total AuM) - in Percent.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ]
+}

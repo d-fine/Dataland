@@ -35,7 +35,7 @@ abstract class InDevelopmentPavedRoadFramework(
         try {
             lambda()
         } catch (e: Exception) {
-            logger.warn("Ignoring error during $compilationStep Compilation: ${e.message}")
+            logger.warn("Ignoring error during $compilationStep Compilation: ${e.message}", e)
         }
     }
 

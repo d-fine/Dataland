@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
@@ -94,7 +93,6 @@ class DatasetJudgementService
          * @param datasetReviewId The UUID of the dataset review to update.
          * @param state The new review state to apply.
          * @return DatasetReviewResponse The API response with updated review details.
-         * @throws InsufficientRightsApiException If the current user is not authorized to update the review.
          */
         @Transactional
         fun setReviewState(
