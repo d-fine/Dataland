@@ -26,7 +26,7 @@ object MockDatasetReviewEntityForTest {
 
     fun createDummyDatasetReviewEntity(): DatasetJudgementEntity =
         DatasetJudgementEntity(
-            dataSetReviewId = UUID.randomUUID(),
+            dataSetJudgementId = UUID.randomUUID(),
             datasetId = dummyDatasetId,
             companyId = dummyCompanyId,
             dataType = "sfdr",

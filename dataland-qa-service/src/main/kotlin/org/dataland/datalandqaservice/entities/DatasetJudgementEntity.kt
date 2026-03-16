@@ -23,7 +23,7 @@ import java.util.UUID
 class DatasetJudgementEntity(
     @Id
     @Column(name = "dataset_judgement_id")
-    val dataSetReviewId: UUID,
+    val dataSetJudgementId: UUID,
     @Column(name = "dataset_id")
     val datasetId: UUID,
     @Column(name = "company_id")
@@ -50,7 +50,7 @@ class DatasetJudgementEntity(
      */
     fun toDatasetJudgementResponse(): DatasetJudgementResponse =
         DatasetJudgementResponse(
-            dataSetReviewId.toString(),
+            dataSetJudgementId.toString(),
             datasetId.toString(),
             companyId.toString(),
             dataType,

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
@@ -42,9 +39,6 @@ data class DataPointQaReportEntity(
     var uploadTime: Long,
     @Column(name = "active", nullable = false)
     var active: Boolean,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "data_point_judgement_id")
-    var dataPointJudgementEntity: DataPointJudgementEntity? = null,
 ) {
     /**
      * Method to convert the QA report entity to a model containing only the meta information of the report

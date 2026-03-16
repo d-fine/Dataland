@@ -50,7 +50,7 @@ class DatasetReviewCreationService
 
             val datasetReviewEntity =
                 DatasetJudgementEntity(
-                    dataSetReviewId = UUID.randomUUID(),
+                    dataSetJudgementId = UUID.randomUUID(),
                     datasetId = datasetId,
                     companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
@@ -88,6 +88,15 @@ class DatasetReviewCreationService
                 }
             }
 
+        /**
+         * Builds QA reporter entries from the latest QA reports grouped by data point type.
+         *
+         * Extracts distinct reporter user ids, fetches user details from Keycloak, and returns
+         * a list of QA reporters containing user id, display name, and email.
+         *
+         * @param dataPointTypeToQaReports QA reports grouped by data point type.
+         * @return List of QA reporters with resolved user details.
+         */
         private fun getQaReporters(dataPointTypeToQaReports: Map<String, Collection<DataPointQaReportEntity>>): List<QaReporter> {
             val reporterUserIds =
                 dataPointTypeToQaReports
@@ -115,13 +124,13 @@ class DatasetReviewCreationService
          * For each data point type in the dataset, this method creates a review-details entry and attaches
          * the latest QA reports for that data point type.
          *
-         * @param reviewEntity The dataset review entity to enrich with data point review details.
+         * @param datasetJudgementEntity The dataset review entity to enrich with data point review details.
          * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
          * @param latestQaReportsByDataPointTypeAndReporter Latest QA reports grouped by data point type.
          * @return The same DatasetReviewEntity instance with populated data points.
          */
         private fun setDataPointsForReview(
-            reviewEntity: DatasetJudgementEntity,
+            datasetJudgementEntity: DatasetJudgementEntity,
             datatypeToDatapointIds: Map<String, String>,
             latestQaReportsByDataPointTypeAndReporter: Map<String, Collection<DataPointQaReportEntity>>,
         ): DatasetJudgementEntity {
@@ -130,17 +139,14 @@ class DatasetReviewCreationService
                     DataPointJudgementEntity(
                         dataPointType = dataPointType,
                         dataPointId = ValidationUtils.convertToUUID(dataPointId),
-                        qaReports = mutableListOf(),
+                        qaReports = latestQaReportsByDataPointTypeAndReporter[dataPointType]?.toMutableList() ?: mutableListOf(),
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
                         customValue = null,
                     )
 
-                latestQaReportsByDataPointTypeAndReporter[dataPointType]
-                    ?.forEach { currentDataPointReviewDetails.addAssociatedQaReports(it) }
-
-                reviewEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
+                datasetJudgementEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
             }
-            return reviewEntity
+            return datasetJudgementEntity
         }
     }

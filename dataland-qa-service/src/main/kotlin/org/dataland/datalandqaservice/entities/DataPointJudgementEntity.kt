@@ -5,8 +5,9 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointJudgement
@@ -22,7 +23,12 @@ class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
     val dataPointId: UUID?,
-    @OneToMany(mappedBy = "dataPointJudgementEntity", cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinTable(
+        name = "data_point_judgement_qa_reports",
+        joinColumns = [JoinColumn(name = "data_point_judgement_id")],
+        inverseJoinColumns = [JoinColumn(name = "qa_report_id")],
+    )
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
@@ -44,13 +50,4 @@ class DataPointJudgementEntity(
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
             customValue = customValue,
         )
-
-    /**
-     * Add an associated request to this data sourcing entity.
-     * Make sure the data sourcing entity is also added to the request.
-     */
-    fun addAssociatedQaReports(qaReport: DataPointQaReportEntity) {
-        qaReports.add(qaReport)
-        qaReport.dataPointJudgementEntity = this
-    }
 }

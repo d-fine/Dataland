@@ -106,7 +106,7 @@ class DatasetJudgementServiceTest {
         entity: DatasetJudgementEntity,
         response: DatasetJudgementResponse,
     ) {
-        assertEquals(entity.dataSetReviewId.toString(), response.dataSetReviewId)
+        assertEquals(entity.dataSetJudgementId.toString(), response.dataSetReviewId)
         assertEquals(entity.datasetId.toString(), response.datasetId)
         assertEquals(entity.companyId.toString(), response.companyId)
         assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), response.qaJudgeUserId)
