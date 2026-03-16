@@ -166,6 +166,8 @@ jobs:
           KEYCLOAK_UPLOADER_SALT: ${{ secrets.KEYCLOAK_UPLOADER_SALT }}
           KEYCLOAK_REVIEWER_VALUE: ${{ secrets.KEYCLOAK_REVIEWER_VALUE }}
           KEYCLOAK_REVIEWER_SALT: ${{ secrets.KEYCLOAK_REVIEWER_SALT }}
+          KEYCLOAK_JUDGE_VALUE: ${{ secrets.KEYCLOAK_JUDGE_VALUE }}
+          KEYCLOAK_JUDGE_SALT: ${{ secrets.KEYCLOAK_JUDGE_SALT }}
           KEYCLOAK_PREMIUM_USER_VALUE: ${{ secrets.KEYCLOAK_PREMIUM_USER_VALUE }}
           KEYCLOAK_PREMIUM_USER_SALT: ${{ secrets.KEYCLOAK_PREMIUM_USER_SALT }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
@@ -242,7 +244,7 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -272,6 +274,7 @@ jobs:
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           KEYCLOAK_REVIEWER_PASSWORD: ${{ secrets.KEYCLOAK_REVIEWER_PASSWORD }}
+          KEYCLOAK_JUDGE_PASSWORD: ${{ secrets.KEYCLOAK_JUDGE_PASSWORD }}
           KEYCLOAK_PREMIUM_USER_PASSWORD: ${{ secrets.KEYCLOAK_PREMIUM_USER_PASSWORD }}
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_PASSWORD }}
           KC_BOOTSTRAP_ADMIN_USERNAME: ${{ vars.KC_BOOTSTRAP_ADMIN_USERNAME }}

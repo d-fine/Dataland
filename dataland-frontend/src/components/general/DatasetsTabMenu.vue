@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
@@ -124,12 +124,12 @@ function setVisibilityForSharedPortfoliosTab(): void {
 
 /**
  * Sets the visibility of the tab for Quality Assurance.
- * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
+ * If the user does have the Keycloak-role "Judge", it is shown. Else it stays invisible.
  */
 function setVisibilityForTabWithQualityAssurance(): void {
-  checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise)
-    .then((hasUserReviewerRights) => {
-      getTabById('qa').isVisible = hasUserReviewerRights;
+  checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise)
+    .then((hasUserJudgeRights) => {
+      getTabById('qa').isVisible = hasUserJudgeRights;
     })
     .catch((error) => console.log(error));
 }

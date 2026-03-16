@@ -117,6 +117,8 @@ sonar {
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
                 "EutaxonomyFinancialsDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials-2026-73/" +
+                "EutaxonomyFinancials202673DataFixtures.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasActivityNames.ts," +
                 // frontend configs
@@ -124,6 +126,7 @@ sonar {
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials-2026-73/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +

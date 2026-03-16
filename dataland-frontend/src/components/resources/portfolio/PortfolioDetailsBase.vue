@@ -110,7 +110,7 @@
         </Column>
 
         <Column
-          v-for="framework in MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER"
+          v-for="framework in PORTFOLIO_OVERVIEW_FRAMEWORKS"
           :key="framework"
           :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
           :sortable="true"
@@ -164,7 +164,7 @@
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
+import { PORTFOLIO_OVERVIEW_FRAMEWORKS, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -214,7 +214,7 @@ class PortfolioEntryPrepared {
     this.companyCockpitRef = portfolioEntry.companyCockpitRef;
     this.frameworkHyphenatedNamesToDataRef = new Map<string, string | undefined>();
 
-    for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
+    for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
       this.frameworkHyphenatedNamesToDataRef.set(
         framework,
         portfolioEntry.frameworkHyphenatedNamesToDataRef[framework] ||
@@ -297,7 +297,7 @@ watch(enrichedPortfolio, () => {
     new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
   ).sort();
 
-  for (const framework of MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER) {
+  for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
     reportingPeriodOptions.value.set(
       framework,
       Array.from(
