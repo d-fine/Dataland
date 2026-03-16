@@ -209,6 +209,30 @@ describe('Component tests for the Quality Assurance page', () => {
   }
 
   /**
+   * Checks the sorting of a column by clicking on the column header and checking the value of the first
+   * element in the column after each click.
+   * @param columnName
+   * @param firstExpectedValueAfterAscendingSort
+   * @param firstExpectedValueAfterDescendingSort
+   */
+  function checkSortingOfColumn(
+    columnName: string,
+    firstExpectedValueAfterAscendingSort: string,
+    firstExpectedValueAfterDescendingSort: string
+  ): void {
+    mountQaAssurancePageWithMocks();
+    cy.get('#qa-data-result thead tr').first().contains('th', columnName).as('columnHeader');
+
+    cy.get('@columnHeader').click();
+    cy.get('@columnHeader').should('have.attr', 'aria-sort', 'ascending');
+    getFirstElementInColumn(columnName).should('contain', firstExpectedValueAfterAscendingSort);
+
+    cy.get('@columnHeader').click();
+    cy.get('@columnHeader').should('have.attr', 'aria-sort', 'descending');
+    getFirstElementInColumn(columnName).should('contain', firstExpectedValueAfterDescendingSort);
+  }
+
+  /**
    * Mounts the qa assurance page with two mock elements in the review queue and asserts that they are shown.
    * @param createQueueWithThreeElements
    */
@@ -304,16 +328,7 @@ describe('Component tests for the Quality Assurance page', () => {
   });
 
   it('Check QA-overview-page for sorting by framework', () => {
-    mountQaAssurancePageWithMocks();
-    cy.get('#qa-data-result thead tr').first().contains('th', 'FRAMEWORK').as('frameworkHeader');
-
-    cy.get('@frameworkHeader').click();
-    cy.get('@frameworkHeader').should('have.attr', 'aria-sort', 'ascending');
-    getFirstElementInColumn('FRAMEWORK').should('contain', 'LkSG');
-
-    cy.get('@frameworkHeader').click();
-    cy.get('@frameworkHeader').should('have.attr', 'aria-sort', 'descending');
-    getFirstElementInColumn('FRAMEWORK').should('contain', 'SFDR');
+    checkSortingOfColumn('FRAMEWORK', 'LkSG', 'SFDR');
   });
 
   it('Check QA-overview-page for filtering on reporting period', () => {
@@ -327,29 +342,11 @@ describe('Component tests for the Quality Assurance page', () => {
   });
 
   it('Check QA-overview-page for sorting by reporting period', () => {
-    mountQaAssurancePageWithMocks();
-    cy.get('#qa-data-result thead tr').first().contains('th', 'REPORTING PERIOD').as('reportingPeriodHeader');
-
-    cy.get('@reportingPeriodHeader').click();
-    cy.get('@reportingPeriodHeader').should('have.attr', 'aria-sort', 'ascending');
-    getFirstElementInColumn('REPORTING PERIOD').should('contain', '2022');
-
-    cy.get('@reportingPeriodHeader').click();
-    cy.get('@reportingPeriodHeader').should('have.attr', 'aria-sort', 'descending');
-    getFirstElementInColumn('REPORTING PERIOD').should('contain', '2023');
+    checkSortingOfColumn('REPORTING PERIOD', '2022', '2023');
   });
 
   it('Check QA-overview-page for sorting by priority', () => {
-    mountQaAssurancePageWithMocks(true);
-    cy.get('#qa-data-result thead tr').first().contains('th', 'PRIORITY').as('priorityHeader');
-
-    cy.get('@priorityHeader').click();
-    cy.get('@priorityHeader').should('have.attr', 'aria-sort', 'ascending');
-    getFirstElementInColumn('PRIORITY').should('contain', '3');
-
-    cy.get('@priorityHeader').click();
-    cy.get('@priorityHeader').should('have.attr', 'aria-sort', 'descending');
-    getFirstElementInColumn('PRIORITY').should('have.text', '');
+    checkSortingOfColumn('PRIORITY', '3', '');
   });
 
   it('Check QA-overview-page for sorting by submission date', () => {
