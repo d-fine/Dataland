@@ -18,6 +18,18 @@ export function uploadAllDocuments(token: string): void {
 }
 
 /**
+ * Calculates the SHA-256 hash of a given array of bytes and returns it as a hex string.
+ * @param bytes The input data as a Uint8Array for which the SHA-256 hash should be calculated.
+ * @returns A promise that resolves to the SHA-256 hash of the input data, represented as a hexadecimal string.
+ */
+async function sha256Hex(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
  * Uploads all documents from a folder
  * @param token the keycloak token for authentication
  * @param documentDirectory the directory where the documents are stored
@@ -55,7 +67,8 @@ export async function uploadDocumentViaApi(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').update(arr).digest('hex');
+  const documentHash = await sha256Hex(arr);
+
   return await documentControllerApi
     .postDocument(file, documentMetaInfo)
     .then((response) => {
