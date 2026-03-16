@@ -29,9 +29,9 @@ class DataPointJudgementEntity(
     var companyIdOfAcceptedQaReport: UUID?,
     @Column(columnDefinition = "TEXT", nullable = true)
     var customValue: String?,
-    @JoinColumn(name = "dataset_review_id")
+    @JoinColumn(name = "dataset_judgement_id")
     @ManyToOne
-    var datasetReview: DatasetJudgementEntity? = null,
+    var datasetJudgement: DatasetJudgementEntity? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.

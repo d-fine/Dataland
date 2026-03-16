@@ -12,16 +12,16 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewCreationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewCreationService
 import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -37,7 +37,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.util.Optional
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
@@ -82,9 +81,9 @@ class DatasetJudgementServiceTest {
             setOf(DatalandRealmRole.ROLE_ADMIN),
         )
 
-        doReturn(Optional.of(datasetReviewEntity))
-            .whenever(datasetReviewRepository)
-            .findById(any())
+        doReturn(datasetReviewEntity)
+            .whenever(datasetJudgementSupportService)
+            .getDatasetReviewEntityById(any())
 
         whenever(datasetReviewRepository.save(any<DatasetJudgementEntity>()))
             .thenAnswer { it.arguments[0] as DatasetJudgementEntity }
@@ -155,9 +154,9 @@ class DatasetJudgementServiceTest {
 
     @Test
     fun `getDatasetReviewById throws ResourceNotFoundApiException if review object does not exist`() {
-        doReturn(Optional.empty<DatasetJudgementEntity>())
-            .whenever(datasetReviewRepository)
-            .findById(any())
+        doReturn(null)
+            .whenever(datasetJudgementSupportService)
+            .getDatasetReviewEntityById(any())
 
         assertThrows<ResourceNotFoundApiException> {
             service.getDatasetReviewById(mockDatasetReviewEntityForTest.dummyDatasetId)
@@ -175,9 +174,9 @@ class DatasetJudgementServiceTest {
 
     @Test
     fun `setReviewer throws ResourceNotFound when datasetReview does not exist`() {
-        doReturn(Optional.empty<DatasetJudgementEntity>())
-            .whenever(datasetReviewRepository)
-            .findById(any())
+        doReturn(null)
+            .whenever(datasetJudgementSupportService)
+            .getDatasetReviewEntityById(any())
 
         assertThrows<ResourceNotFoundApiException> {
             service.setReviewer(UUID.randomUUID())
@@ -370,8 +369,8 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails throws ResourceNotFound when dataPointType not in review`() {
-        assertThrows<ResourceNotFoundApiException> {
+    fun `patchReviewDetails throws InvalidInputApiException when dataPointType not in review`() {
+        assertThrows<InvalidInputApiException> {
             service.patchReviewDetails(
                 UUID.randomUUID(),
                 "unknown-type",

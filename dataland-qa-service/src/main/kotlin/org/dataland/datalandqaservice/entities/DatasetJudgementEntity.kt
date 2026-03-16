@@ -19,10 +19,10 @@ import java.util.UUID
  */
 @Suppress("LongParameterList")
 @Entity
-@Table(name = "dataset_review")
+@Table(name = "dataset_judgement")
 class DatasetJudgementEntity(
     @Id
-    @Column(name = "dataset_review_id")
+    @Column(name = "dataset_judgement_id")
     val dataSetReviewId: UUID,
     @Column(name = "dataset_id")
     val datasetId: UUID,
@@ -35,14 +35,14 @@ class DatasetJudgementEntity(
     @Column(name = "review_state")
     @Convert(converter = DatasetReviewStateConverter::class)
     var reviewState: DatasetReviewState = DatasetReviewState.Pending,
-    @Column(name = "reviewer_user_id")
+    @Column(name = "judge_user_id")
     var qaJudgeUserId: UUID,
-    @Column(name = "reviewer_user_name")
+    @Column(name = "judge_user_name")
     var qaJudgeUserName: String,
     @ElementCollection
     @Column(name = "qa_reporters")
     var qaReporters: MutableList<QaReporter>,
-    @OneToMany(mappedBy = "datasetReview", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "datasetJudgement", cascade = [CascadeType.ALL])
     val dataPoints: MutableList<DataPointJudgementEntity>,
 ) {
     /**
@@ -68,6 +68,6 @@ class DatasetJudgementEntity(
      */
     fun addAssociatedDataPoints(dataPoint: DataPointJudgementEntity) {
         dataPoints.add(dataPoint)
-        dataPoint.datasetReview = this
+        dataPoint.datasetJudgement = this
     }
 }

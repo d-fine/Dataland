@@ -1,7 +1,9 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -13,7 +15,7 @@ import java.util.UUID
 /**
  * Utility class to support operations on a dataset review object.
  */
-object ReviewDetailsPatchValidationHelper {
+object DatasetJudgementValidationHelper {
     /**
      * Ensures a patch provides at least one of customDataPoint or acceptedSource.
      *
@@ -33,11 +35,11 @@ object ReviewDetailsPatchValidationHelper {
      * Ensures a custom data point value is present on the given data point review entity.
      *
      * @param dataPoint The data point review entity to validate.
-     * @throws org.dataland.datalandbackendutils.exceptions.InvalidInputApiException If the custom value is missing.
+     * @throws ConflictApiException If the custom value is missing.
      */
     fun validateCustomDataPointIsSet(dataPoint: DataPointJudgementEntity) {
         if (dataPoint.customValue == null) {
-            throw InvalidInputApiException(
+            throw ConflictApiException(
                 "Missing custom data point.",
                 "Custom data point has to be provided when acceptedSource is Custom.",
             )
@@ -107,4 +109,25 @@ object ReviewDetailsPatchValidationHelper {
             ) as Throwable
         }
     }
+
+    /**
+     * Validates that a dataset review exists for the given id.
+     *
+     * @param datasetReviewId The id used to locate the dataset review entity.
+     * @param datasetJudgementEntity The dataset review entity to check, or null if not found.
+     * @throws ResourceNotFoundApiException If the dataset review entity is null.
+     */
+    fun validateIfDatasetExists(
+        datasetReviewId: UUID,
+        datasetJudgementEntity: DatasetJudgementEntity?
+    ){
+        if(datasetJudgementEntity == null){
+            throw ResourceNotFoundApiException(
+                    "Dataset review object not found",
+                    "No Dataset review object with the id: $datasetReviewId could be found.",
+                )
+            }
+    }
+
+
 }

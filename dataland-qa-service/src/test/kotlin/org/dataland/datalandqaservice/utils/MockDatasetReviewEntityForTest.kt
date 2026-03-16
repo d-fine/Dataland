@@ -65,7 +65,7 @@ object MockDatasetReviewEntityForTest {
                         reporterUserIdOfAcceptedQaReport = null,
                         companyIdOfAcceptedQaReport = null,
                         customValue = null,
-                        datasetReview = null,
+                        datasetJudgement = null,
                     ),
                 ),
         )
