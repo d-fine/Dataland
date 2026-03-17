@@ -65,7 +65,7 @@ class DataExportStore {
         timer.schedule(
             object : TimerTask() {
                 override fun run() {
-                    warnIfJobPendingAfterFrontendTimeout(newExportJob)
+                    warnIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
                 }
             },
             Duration.ofMinutes(EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS).toMillis(),
@@ -103,11 +103,14 @@ class DataExportStore {
      * Logs an error warning if the export job is still pending after the frontend timeout,
      * indicating a potential frontend failure.
      */
-    internal fun warnIfJobPendingAfterFrontendTimeout(exportJob: ExportJob) {
+    internal fun warnIfJobPendingAfterFrontendTimeout(
+        exportJobId: UUID,
+        exportJob: ExportJob,
+    ) {
         if (exportJob.progressState == ExportJobProgressState.Pending) {
             logger.error(
                 EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
-                DatalandAuthentication.fromContext().userId,
+                exportJobId,
                 EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
             )
         }

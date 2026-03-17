@@ -84,8 +84,6 @@ class DataExportStoreTest {
         verify(mockLogger).error(
             DataExportStore.EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
             exportJobId,
-            FILE_TYPE,
-            USER_ID,
             DataExportStore.EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
         )
     }
