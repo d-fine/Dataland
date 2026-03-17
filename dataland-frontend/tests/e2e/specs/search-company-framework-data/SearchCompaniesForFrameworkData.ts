@@ -160,10 +160,10 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
-            const testCompany = basicCompanyInformation[1];
-            if (!testCompany) {
+            if (basicCompanyInformation.length < 2) {
               throw new Error('Expected at least two companies in framework data search results.');
             }
+            const testCompany = basicCompanyInformation[1];
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();

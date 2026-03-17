@@ -20,6 +20,7 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 
 /**
  * Defines intercepts and submits data on the lksg upload for the lksg blanket test
+ *
  * @param storedCompany stored company information
  * @param dataMetaInformation meta data information
  * @param testCompanyName name of the company
@@ -48,8 +49,8 @@ function interceptsAndSubmitsDataset(
 }
 
 /**
- * Sorts the riskPositions Array by converting the
- * elements into strings and explicitly defining a compare function
+ * Sorts the riskPositions Array
+ *
  * @param riskPositions an array of risk positions
  * @returns sorted riskPositions
  */
@@ -59,6 +60,7 @@ function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[
 
 /**
  * Fetches only the response status code for a LKSG dataset fetch call.
+ *
  * @param token keycloak access token
  * @param dataId id of the dataset to fetch
  * @returns HTTP status code
@@ -97,6 +99,7 @@ describeIf(
 
     /**
      * Creates a company, optionally assigns ownership and uploads the initial LKSG dataset.
+     *
      * @param token keycloak access token
      * @param testCompanyName name used for the generated dummy company
      * @param fixture prepared fixture used for upload data
@@ -129,6 +132,7 @@ describeIf(
 
     /**
      * Submits the LKSG edit form and returns metadata of the reuploaded dataset.
+     *
      * @param storedCompany stored company information
      * @param dataMetaInformation metadata of the dataset used for edit prefill
      * @param testCompanyName expected company name displayed in the header
@@ -152,6 +156,7 @@ describeIf(
 
     /**
      * Fetches a reuploaded LKSG dataset from backend.
+     *
      * @param token keycloak access token
      * @param dataId id of the dataset to fetch
      * @returns LKSG dataset payload
@@ -165,6 +170,7 @@ describeIf(
 
     /**
      * Submits the LKSG edit form and fetches the reuploaded dataset from backend.
+     *
      * @param token keycloak access token
      * @param storedCompany stored company information
      * @param dataMetaInformation metadata of the dataset used for edit prefill
@@ -186,6 +192,7 @@ describeIf(
 
     /**
      * Normalizes order-dependent LKSG fields before deep comparison.
+     *
      * @param dataset dataset to normalize
      * @returns normalized dataset
      */
@@ -234,6 +241,7 @@ describeIf(
 
     /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
+     *
      * @param dataset frontend dataset to modify
      * @returns sorted frontend object
      */

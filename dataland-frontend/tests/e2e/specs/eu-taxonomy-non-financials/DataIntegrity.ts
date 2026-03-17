@@ -33,6 +33,7 @@ type DatasetsComparisonContext = {
 
 /**
  * Creates a company, assigns ownership to the admin and uploads the initial non-financials dataset.
+ *
  * @param token keycloak access token
  * @param testCompanyName name used for the generated dummy company
  * @returns token, company id, dataset id and dataset type
@@ -48,7 +49,7 @@ async function createCompanyAndUploadDataset(token: string, testCompanyName: str
     euTaxonomyForNonFinancialsFixtureForTest.t
   );
   return {
-    token,
+    token: token,
     companyId: storedCompany.companyId,
     dataId: dataMetaInformation.dataId,
     dataType: dataMetaInformation.dataType,
@@ -57,6 +58,7 @@ async function createCompanyAndUploadDataset(token: string, testCompanyName: str
 
 /**
  * Fetches a previously uploaded/reuploaded Eu Taxonomy Non-Financials dataset from backend.
+ *
  * @param token keycloak access token
  * @param dataId id of the dataset to fetch
  * @returns backend dataset payload
@@ -70,6 +72,7 @@ async function fetchReuploadedDataset(token: string, dataId: string): Promise<Eu
 
 /**
  * Opens the upload form in edit mode, submits it and returns both compared datasets.
+ *
  * @param token keycloak access token
  * @param companyId id of the company
  * @param dataType data type used in the prefill request endpoint

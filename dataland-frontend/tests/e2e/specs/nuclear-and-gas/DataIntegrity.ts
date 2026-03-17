@@ -33,6 +33,7 @@ type DatasetsComparisonContext = {
 
 /**
  * Creates a company, assigns ownership to the admin and uploads the initial Nuclear and Gas dataset.
+ *
  * @param token keycloak access token
  * @param testCompanyName name used for the generated dummy company
  * @returns token, company id, dataset id and dataset type
@@ -57,6 +58,7 @@ async function createCompanyAndUploadDataset(token: string, testCompanyName: str
 
 /**
  * Fetches a previously uploaded/reuploaded Nuclear and Gas dataset from backend.
+ *
  * @param token keycloak access token
  * @param dataId id of the dataset to fetch
  * @returns backend dataset payload
@@ -70,6 +72,7 @@ async function fetchReuploadedDataset(token: string, dataId: string): Promise<Nu
 
 /**
  * Opens the upload form in edit mode and captures the prefilled dataset from the API response.
+ *
  * @param companyId id of the company
  * @param dataType data type used in the prefill request endpoint
  * @param dataId id of the dataset used for template prefill
@@ -101,6 +104,7 @@ function openEditFormAndCapturePrefillDataset(
 
 /**
  * Submits the edit form and fetches the resulting reuploaded dataset from backend.
+ *
  * @param token keycloak access token
  * @returns reuploaded dataset payload
  */

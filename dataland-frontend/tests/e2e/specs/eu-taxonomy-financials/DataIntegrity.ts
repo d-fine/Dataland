@@ -26,6 +26,7 @@ type UploadedDatasetContext = {
 
 /**
  * Creates a company, assigns ownership to the admin and uploads the initial framework dataset.
+ *
  * @param token keycloak access token
  * @param testCompanyName name used for the generated dummy company
  * @param reportingPeriod reporting period for the uploaded dataset
@@ -46,7 +47,7 @@ async function createCompanyAndUploadDataset(
     euTaxonomyFinancialsFixtureForTest.t
   );
   return {
-    token,
+    token: token,
     companyId: storedCompany.companyId,
     dataId: dataMetaInformation.dataId,
   };
@@ -54,6 +55,7 @@ async function createCompanyAndUploadDataset(
 
 /**
  * Fetches a previously uploaded/reuploaded Eu Taxonomy Financials dataset from the backend API.
+ *
  * @param token keycloak access token
  * @param dataId id of the dataset to fetch
  * @returns backend dataset payload
@@ -67,6 +69,7 @@ async function fetchReuploadedDataset(token: string, dataId: string): Promise<Eu
 
 /**
  * Opens the upload form in edit mode, submits it and fetches the resulting reuploaded dataset.
+ *
  * @param token keycloak access token
  * @param companyId id of the company
  * @param dataId id of the dataset used for form prefill

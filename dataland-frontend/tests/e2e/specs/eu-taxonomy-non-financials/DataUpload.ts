@@ -33,8 +33,11 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
 }
 
 /**
+ * Validates the existence of the reports.
+ *
  * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation and then checks
  * if already uploaded reports do exist in the form.
+ *
  * @param companyId the id of the company for which to edit a dataset
  * @param isPdfTestFileExpected specifies if the test file is expected to be in the server response
  */
@@ -54,6 +57,7 @@ function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestF
 
 /**
  * Checks that the computed hash in the frontend is the same as the one returned by the document upload endpoint
+ *
  * @param keycloakToken token given by keycloak after logging in
  * @param frontendDocumentHash calculated hash of the document
  */
@@ -67,6 +71,7 @@ function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string,
 
 /**
  * Creates a company and assigns ownership to the dataland admin user.
+ *
  * @param token keycloak access token
  * @returns token and created company id
  */
@@ -74,7 +79,7 @@ function createOwnedCompany(token: string): Promise<{ token: string; companyId: 
   const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
   return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
     return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-      return { token, companyId: storedCompany.companyId };
+      return { token: token, companyId: storedCompany.companyId };
     });
   });
 }
@@ -93,6 +98,7 @@ describeIf(
 
     /**
      * Submits an initial dataset with uploaded reports and validates the frontend and backend hash consistency.
+     *
      * @param token keycloak access token
      * @param companyId id of the company to upload data for
      */
@@ -151,6 +157,7 @@ describeIf(
 
     /**
      * Submits the edited dataset and returns metadata of the reuploaded dataset.
+     *
      * @param companyId id of the company to edit data for
      * @returns metadata of the newly reuploaded dataset
      */
