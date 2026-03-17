@@ -44,10 +44,13 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
 function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
     (interceptionOfGetDataRequestForEditMode) => {
-      const dataAndMetaInformation: DataAndMetaInformationEutaxonomyNonFinancialsData[] = assertDefined(
-        interceptionOfGetDataRequestForEditMode
-      ).response?.body;
-      const referencedReportsInDataset = dataAndMetaInformation[0]?.data?.general?.referencedReports;
+      const responseBody:
+        | DataAndMetaInformationEutaxonomyNonFinancialsData[]
+        | DataAndMetaInformationEutaxonomyNonFinancialsData = assertDefined(
+        assertDefined(interceptionOfGetDataRequestForEditMode).response
+      ).body;
+      const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
+      const referencedReportsInDataset = firstEntry?.data?.general?.referencedReports;
       assert(referencedReportsInDataset);
       expect(TEST_PDF_FILE_NAME in referencedReportsInDataset!).to.equal(isPdfTestFileExpected);
       expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset!).to.equal(true);
