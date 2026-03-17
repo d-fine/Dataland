@@ -127,6 +127,8 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
  */
 export function getFrameworkTitle(framework: string): string {
   switch (framework) {
+    case DataTypeEnum.EutaxonomyNonFinancials202673:
+      return 'EU Taxonomy Non-Financials';
     case DataTypeEnum.EutaxonomyFinancials202673:
     case DataTypeEnum.EutaxonomyFinancials:
       return 'EU Taxonomy Financials';
@@ -146,6 +148,7 @@ export function getFrameworkTitle(framework: string): string {
 export function frameworkHasSubTitle(framework: string): boolean {
   return (
     framework == DataTypeEnum.EutaxonomyFinancials202673 ||
+    framework == DataTypeEnum.EutaxonomyNonFinancials202673 ||
     framework == DataTypeEnum.EutaxonomyFinancials ||
     framework == DataTypeEnum.EutaxonomyNonFinancials ||
     framework == DataTypeEnum.NuclearAndGas
@@ -159,6 +162,8 @@ export function frameworkHasSubTitle(framework: string): boolean {
 export function getFrameworkSubtitle(framework: string): string {
   switch (framework) {
     case DataTypeEnum.EutaxonomyFinancials202673:
+      return '(2026/73)';
+    case DataTypeEnum.EutaxonomyNonFinancials202673:
       return '(2026/73)';
     case DataTypeEnum.EutaxonomyFinancials:
     case DataTypeEnum.EutaxonomyNonFinancials:
