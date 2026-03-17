@@ -100,7 +100,7 @@ export async function patchDocumentMetaInfo(
       accessToken: token,
     })
   );
-  const documentHash = await sha256Hex(arr);
+  const documentHash = await sha256Hex(new Uint8Array(0));
   return await documentControllerApi
     .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
