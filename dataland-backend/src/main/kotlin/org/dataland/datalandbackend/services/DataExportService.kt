@@ -40,6 +40,12 @@ open class DataExportService<T>(
         private const val COMPANY_NAME_POSITION = -3
         private const val COMPANY_LEI_POSITION = -2
         private const val REPORTING_PERIOD_POSITION = -1
+        private const val FIXED_COLUMN_WIDTH = 30
+        private const val BUFFER = 15
+        private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
+        private const val EXCEL_FONT_HEIGHT: Short = 11
+        private const val MAX_CHARACTER_LENGTH = 255
+        private const val MAX_EXCEL_CELL_LENGTH = 32767
     }
 
     private val objectMapper = defaultObjectMapper
@@ -146,36 +152,66 @@ open class DataExportService<T>(
     /**
      * Transform the data to an Excel file with human-readable headers.
      * @param csvDataWithReadableHeaders the data to be transformed (each entry in the list represents a row in the Excel file)
+     * @param csvSchema the CSV schema defining the column structure
      * @param outputStream the output stream to write the data to
+     * @param shortHeaderNamesAndColumns if true, column widths are calculated based on character length of the header
      */
     fun transformDataToExcelWithReadableHeaders(
         csvDataWithReadableHeaders: List<Map<String, String?>>,
         csvSchema: CsvSchema,
         outputStream: OutputStream,
+        shortHeaderNamesAndColumns: Boolean = false,
     ) {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data")
+
+        val defaultStyle = workbook.createCellStyle()
+        val font = workbook.createFont()
+        font.fontName = "Arial"
+        font.fontHeightInPoints = EXCEL_FONT_HEIGHT
+        defaultStyle.setFont(font)
 
         // Step 1: Get the ordered columns from csvSchema
         val orderedColumns = csvSchema.columnNames // Assume `columnNames` provides the ordered list of columns
 
         // Step 2: Write the header row
+        val columnHeaderLengths = mutableMapOf<Int, Int>()
         val headerRow = sheet.createRow(HEADER_ROW_INDEX)
         orderedColumns.forEachIndexed { colIndex, columnName ->
-            headerRow.createCell(colIndex).setCellValue(columnName)
+            headerRow.createCell(colIndex).apply {
+                setCellValue(columnName)
+                cellStyle = defaultStyle
+                columnHeaderLengths[colIndex] = columnName.length
+            }
         }
 
-        // Step 3: Write the data rows
+        // Step 3: Write the data rows and track max column widths
         csvDataWithReadableHeaders.forEachIndexed { rowIndex, dataMap ->
             val row = sheet.createRow(rowIndex + 1) // Start writing from the second row (index 1)
             orderedColumns.forEachIndexed { colIndex, columnName ->
-                val cellValue = dataMap[columnName] ?: ""
-                row.createCell(colIndex).setCellValue(cellValue)
+                val cellValue = (dataMap[columnName] ?: "").take(MAX_EXCEL_CELL_LENGTH)
+                row.createCell(colIndex).apply {
+                    setCellValue(cellValue)
+                    cellStyle = defaultStyle
+                }
             }
         }
-        orderedColumns.forEachIndexed { index, _ ->
-            sheet.autoSizeColumn(index)
+
+        // Step 4: Set column widths based on configuration
+        if (shortHeaderNamesAndColumns) {
+            orderedColumns.forEachIndexed { index, _ ->
+                val headerLength = columnHeaderLengths[index] ?: FIXED_COLUMN_WIDTH
+                val columnWidth =
+                    minOf(headerLength + BUFFER, MAX_CHARACTER_LENGTH) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+                sheet.setColumnWidth(index, columnWidth)
+            }
+        } else {
+            val columnWidth = (FIXED_COLUMN_WIDTH + BUFFER) * CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS
+            orderedColumns.forEachIndexed { index, _ ->
+                sheet.setColumnWidth(index, columnWidth)
+            }
         }
+
         workbook.write(outputStream)
         workbook.close()
     }
@@ -260,6 +296,7 @@ open class DataExportService<T>(
      * @param portfolioExportRows passed JSON objects to be exported
      * @param dataType the datatype specifying the framework
      * @param keepValueFieldsOnly if true, non value fields are stripped
+     * @param includeAliases if true, human-readable names are used if available
      * @return InputStreamResource byteStream for export.
      * Note that swagger only supports InputStreamResources and not OutputStreams
      */
@@ -281,6 +318,7 @@ open class DataExportService<T>(
             csvData,
             csvSchema,
             outputStream,
+            includeAliases,
         )
 
         return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
