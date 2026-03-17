@@ -379,7 +379,7 @@ class QaReviewManager
                 qaStatus = this.qaStatus,
                 qaJudgeUserId = latestDatasetReview?.qaJudgeUserId,
                 qaJudgeUserName = latestDatasetReview?.qaJudgeUserName,
-                datasetReviewId = latestDatasetReview?.dataSetReviewId,
+                datasetReviewId = latestDatasetReview?.dataSetJudgementId,
                 numberQaReports = numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,

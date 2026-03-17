@@ -27,15 +27,15 @@ class DatasetJudgementCreationService
         private val keycloakUserService: KeycloakUserService,
     ) {
         /**
-         * Helper method to create a dataset review entity from the given QA reports, dataset metadata, and data points.
+         * Helper method to create a dataset judgement entity from the given QA reports, dataset metadata, and data points.
          *
-         * The resulting entity includes the latest QA report per company and data point type, the list of QA reporter
-         * companies, and one review-details entry per data point in the dataset.
+         * The resulting entity includes the latest QA report per reporter and data point type, the list of QA reporter
+         * companies, and one judgement-details entry per data point in the dataset.
          *
          * @param datasetMetaData Metadata of the dataset used to populate company, data type, and reporting period.
-         * @param datasetId Unique identifier of the dataset for which the review is created.
+         * @param datasetId Unique identifier of the dataset for which the judgement is created.
          * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
-         * @return A fully initialized DatasetReviewEntity ready for persistence.
+         * @return A fully initialized DatasetJudgementEntity ready for persistence.
          */
         fun createDatasetJudgementEntity(
             datasetMetaData: DataMetaInformation,
@@ -48,7 +48,7 @@ class DatasetJudgementCreationService
 
             val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
 
-            val datasetReviewEntity =
+            val datasetJudgementEntity =
                 DatasetJudgementEntity(
                     dataSetJudgementId = UUID.randomUUID(),
                     datasetId = datasetId,
@@ -61,13 +61,13 @@ class DatasetJudgementCreationService
                     dataPoints = mutableListOf(),
                 )
 
-            val datasetReviewEntityWithDataPoints =
-                setDataPointsForReview(
-                    datasetReviewEntity,
+            val datasetJudgementEntityWithDataPoints =
+                setDataPointsForJudgement(
+                    datasetJudgementEntity,
                     datatypeToDatapointIds,
                     dataPointTypeToQaReports,
                 )
-            return datasetReviewEntityWithDataPoints
+            return datasetJudgementEntityWithDataPoints
         }
 
         /**
@@ -119,23 +119,23 @@ class DatasetJudgementCreationService
         }
 
         /**
-         * Helper method to populate the dataset review with data point review details.
+         * Helper method to populate the dataset judgement with data point judgement details.
          *
-         * For each data point type in the dataset, this method creates a review-details entry and attaches
+         * For each data point type in the dataset, this method creates a judgement-details entry and attaches
          * the latest QA reports for that data point type.
          *
-         * @param datasetJudgementEntity The dataset review entity to enrich with data point review details.
+         * @param datasetJudgementEntity The dataset judgement entity to enrich with data point judgement details.
          * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
          * @param latestQaReportsByDataPointTypeAndReporter Latest QA reports grouped by data point type.
-         * @return The same DatasetReviewEntity instance with populated data points.
+         * @return The same DatasetJudgementEntity instance with populated data points.
          */
-        private fun setDataPointsForReview(
+        private fun setDataPointsForJudgement(
             datasetJudgementEntity: DatasetJudgementEntity,
             datatypeToDatapointIds: Map<String, String>,
             latestQaReportsByDataPointTypeAndReporter: Map<String, Collection<DataPointQaReportEntity>>,
         ): DatasetJudgementEntity {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
-                val currentDataPointReviewDetails =
+                val currentDataPointJudgementDetails =
                     DataPointJudgementEntity(
                         dataPointType = dataPointType,
                         dataPointId = ValidationUtils.convertToUUID(dataPointId),
@@ -145,7 +145,7 @@ class DatasetJudgementCreationService
                         customValue = null,
                     )
 
-                datasetJudgementEntity.addAssociatedDataPoints(currentDataPointReviewDetails)
+                datasetJudgementEntity.addAssociatedDataPoints(currentDataPointJudgementDetails)
             }
             return datasetJudgementEntity
         }

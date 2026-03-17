@@ -8,14 +8,14 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpe
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 
 /**
- * API model for the dataset review objects returned.
+ * API model for the dataset judgement objects returned.
  */
 data class DatasetJudgementResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
     )
-    val dataSetReviewId: String,
+    val dataSetJudgementId: String,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
@@ -39,15 +39,15 @@ data class DatasetJudgementResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_STATE_DESCRIPTION,
     )
-    var reviewState: DatasetJudgementState,
+    var judgementState: DatasetJudgementState,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_EXAMPLE,
     )
     var qaJudgeUserId: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_USERNAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_USERNAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE,
     )
     var qaJudgeUserName: String?,
     @field:Schema(

@@ -87,12 +87,12 @@ class QaReviewManagerTest {
 
     private val datasetReviewResponse =
         DatasetJudgementResponse(
-            dataSetReviewId = UUID.randomUUID().toString(),
+            dataSetJudgementId = UUID.randomUUID().toString(),
             datasetId = dataId,
             companyId = companyId,
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
-            reviewState = DatasetJudgementState.Pending,
+            judgementState = DatasetJudgementState.Pending,
             qaJudgeUserId = dummyUserId,
             qaJudgeUserName = dummyUserName,
             qaReporters = emptyList(),

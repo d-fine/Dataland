@@ -63,11 +63,11 @@ object QaServiceOpenApiDescriptionsAndExamples {
 
     const val DATA_JUDGEMENT_STATE_DESCRIPTION = "The state of the dataset judgement."
 
-    const val DATA_REVIEW_JUDGE_ID_DESCRIPTION = "The unique user ID of the user judging the dataset review."
-    const val DATA_REVIEW_JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val DATA_JUDGEMENT_JUDGE_ID_DESCRIPTION = "The unique user ID of the user judging the dataset review."
+    const val DATA_JUDGEMENT_JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
-    const val DATA_REVIEW_JUDGE_USERNAME_DESCRIPTION = "The name or email of the user judging the dataset review."
-    const val DATA_REVIEW_JUDGE_USERNAME_EXAMPLE = "Jane Doe"
+    const val DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION = "The name or email of the user judging the dataset review."
+    const val DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE = "Jane Doe"
 
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
     const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"

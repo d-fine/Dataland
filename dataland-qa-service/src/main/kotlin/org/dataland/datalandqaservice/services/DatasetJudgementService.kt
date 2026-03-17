@@ -103,7 +103,7 @@ class DatasetJudgementService
         ): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
-            datasetJudgement.reviewState = state
+            datasetJudgement.judgementState = state
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 

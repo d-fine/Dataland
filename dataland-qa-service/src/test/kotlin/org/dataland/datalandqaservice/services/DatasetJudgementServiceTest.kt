@@ -18,7 +18,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
-import org.dataland.datalandqaservice.utils.MockDatasetReviewEntityForTest
+import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -54,9 +54,9 @@ class DatasetJudgementServiceTest {
             creationServiceClass,
         )
 
-    private val mockDatasetReviewEntityForTest = MockDatasetReviewEntityForTest
-    private val datasetReviewEntity = mockDatasetReviewEntityForTest.createDummyDatasetReviewEntity()
-    private val dummyMetaData = mockDatasetReviewEntityForTest.createDummyMetaData()
+    private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
+    private val datasetJudgementEntity = mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+    private val dummyMetaData = mockDatasetJudgementEntityForTest.createDummyMetaData()
 
     @BeforeEach
     fun setup() {
@@ -67,11 +67,11 @@ class DatasetJudgementServiceTest {
 
         AuthenticationMock.mockSecurityContext(
             "data.admin@example.com",
-            mockDatasetReviewEntityForTest.dummyUserId.toString(),
+            mockDatasetJudgementEntityForTest.dummyUserId.toString(),
             setOf(DatalandRealmRole.ROLE_ADMIN),
         )
 
-        doReturn(datasetReviewEntity)
+        doReturn(datasetJudgementEntity)
             .whenever(datasetJudgementSupportService)
             .getDatasetJudgementEntityById(any())
 
@@ -79,7 +79,7 @@ class DatasetJudgementServiceTest {
             .thenAnswer { it.arguments[0] as DatasetJudgementEntity }
     }
 
-    private fun captureSavedReview(): DatasetJudgementEntity {
+    private fun captureSavedJudgement(): DatasetJudgementEntity {
         val captor = argumentCaptor<DatasetJudgementEntity>()
         verify(datasetJudgementRepository).save(captor.capture())
         return captor.firstValue
@@ -89,7 +89,7 @@ class DatasetJudgementServiceTest {
         source: AcceptedDataPointSource?,
         reporterUserId: String? = null,
         customValue: String? = null,
-        dataPointType: String = mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
+        dataPointType: String = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
     ): DataPointJudgementEntity {
         service.patchJudgementDetails(
             UUID.randomUUID(),
@@ -97,7 +97,7 @@ class DatasetJudgementServiceTest {
             JudgementDetailsPatch(source, reporterUserId, customValue),
         )
 
-        return captureSavedReview()
+        return captureSavedJudgement()
             .dataPoints
             .first { it.dataPointType == dataPointType }
     }
@@ -106,27 +106,27 @@ class DatasetJudgementServiceTest {
         entity: DatasetJudgementEntity,
         response: DatasetJudgementResponse,
     ) {
-        assertEquals(entity.dataSetJudgementId.toString(), response.dataSetReviewId)
+        assertEquals(entity.dataSetJudgementId.toString(), response.dataSetJudgementId)
         assertEquals(entity.datasetId.toString(), response.datasetId)
         assertEquals(entity.companyId.toString(), response.companyId)
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), response.qaJudgeUserId)
-        assertEquals(mockDatasetReviewEntityForTest.DUMMY_USER_NAME, response.qaJudgeUserName)
+        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId.toString(), response.qaJudgeUserId)
+        assertEquals(mockDatasetJudgementEntityForTest.DUMMY_USER_NAME, response.qaJudgeUserName)
     }
 
     @Test
-    fun `getDatasetReviewsByDatasetId returns expected responses`() {
-        doReturn(listOf(datasetReviewEntity))
+    fun `getDatasetJudgementsByDatasetId returns expected responses`() {
+        doReturn(listOf(datasetJudgementEntity))
             .whenever(datasetJudgementRepository)
             .findAllByDatasetId(any())
 
-        val result = service.getDatasetJudgementsByDatasetId(mockDatasetReviewEntityForTest.dummyDatasetId)
+        val result = service.getDatasetJudgementsByDatasetId(mockDatasetJudgementEntityForTest.dummyDatasetId)
 
         assertEquals(1, result.size)
-        assertMatches(datasetReviewEntity, result.first())
+        assertMatches(datasetJudgementEntity, result.first())
     }
 
     @Test
-    fun `getDatasetReviewsByDatasetId returns empty list when none exist`() {
+    fun `getDatasetJudgementsByDatasetId returns empty list when none exist`() {
         doReturn(emptyList<DatasetJudgementEntity>())
             .whenever(datasetJudgementRepository)
             .findAllByDatasetId(any())
@@ -137,33 +137,33 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `getDatasetReviewById returns expected response`() {
-        val result = service.getDatasetJudgementById(mockDatasetReviewEntityForTest.dummyDatasetId)
-        assertMatches(datasetReviewEntity, result)
+    fun `getDatasetJudgementById returns expected response`() {
+        val result = service.getDatasetJudgementById(mockDatasetJudgementEntityForTest.dummyDatasetId)
+        assertMatches(datasetJudgementEntity, result)
     }
 
     @Test
-    fun `getDatasetReviewById throws ResourceNotFoundApiException if review object does not exist`() {
+    fun `getDatasetJudgementById throws ResourceNotFoundApiException if judgement object does not exist`() {
         doReturn(null)
             .whenever(datasetJudgementSupportService)
             .getDatasetJudgementEntityById(any())
 
         assertThrows<ResourceNotFoundApiException> {
-            service.getDatasetJudgementById(mockDatasetReviewEntityForTest.dummyDatasetId)
+            service.getDatasetJudgementById(mockDatasetJudgementEntityForTest.dummyDatasetId)
         }
     }
 
     @Test
-    fun `setReviewer sets reviewer user id and name`() {
+    fun `setJudge sets judge user id and name`() {
         service.setJudge(UUID.randomUUID())
 
-        val saved = captureSavedReview()
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.qaJudgeUserId)
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId.toString(), saved.qaJudgeUserName)
+        val saved = captureSavedJudgement()
+        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId, saved.qaJudgeUserId)
+        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId.toString(), saved.qaJudgeUserName)
     }
 
     @Test
-    fun `setReviewer throws ResourceNotFound when datasetReview does not exist`() {
+    fun `setJudge throws ResourceNotFound when datasetJudgement does not exist`() {
         doReturn(null)
             .whenever(datasetJudgementSupportService)
             .getDatasetJudgementEntityById(any())
@@ -174,17 +174,17 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `setReviewState updates status when user is reviewer`() {
+    fun `setJudgementState updates status when user is judge`() {
         val newState = DatasetJudgementState.Aborted
 
         service.setJudgementState(UUID.randomUUID(), newState)
 
-        val saved = captureSavedReview()
-        assertEquals(newState, saved.reviewState)
+        val saved = captureSavedJudgement()
+        assertEquals(newState, saved.judgementState)
     }
 
     @Test
-    fun `setReviewState throws InsufficientRights when current user is not reviewer`() {
+    fun `setJudgementState throws InsufficientRights when current user is not judge`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
@@ -197,36 +197,36 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `postDatasetReview builds entity with dataPoints and qaReporterCompanies correctly`() {
-        stubsForPostDatasetReview()
+    fun `postDatasetJudgement builds entity with dataPoints and qaReporterCompanies correctly`() {
+        stubsForPostDatasetJudgement()
         val result = service.postDatasetJudgement(UUID.randomUUID())
 
-        assertEquals(mockDatasetReviewEntityForTest.dummyCompanyId.toString(), result.companyId)
+        assertEquals(mockDatasetJudgementEntityForTest.dummyCompanyId.toString(), result.companyId)
         assertEquals(1, result.qaReporters.size)
-        assertEquals(mockDatasetReviewEntityForTest.DUMMY_USER_NAME, result.qaReporters[0].reporterUserName)
+        assertEquals(mockDatasetJudgementEntityForTest.DUMMY_USER_NAME, result.qaReporters[0].reporterUserName)
         assertEquals(1, result.dataPoints.size)
         assertEquals(
-            mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
-            result.dataPoints[mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE]
+            mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+            result.dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
                 ?.dataPointType,
         )
-        assertEquals(1, result.dataPoints[mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE]?.qaReports?.size)
+        assertEquals(1, result.dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]?.qaReports?.size)
     }
 
-    private fun stubsForPostDatasetReview() {
-        doReturn(mapOf(mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE to mockDatasetReviewEntityForTest.dummyDatapointId))
+    private fun stubsForPostDatasetJudgement() {
+        doReturn(mapOf(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE to mockDatasetJudgementEntityForTest.dummyDatapointId))
             .whenever(datasetJudgementSupportService)
             .getContainedDataPoints(any())
 
         val qaReportEntity =
             DataPointQaReportEntity(
-                qaReportId = mockDatasetReviewEntityForTest.qaReportId,
-                dataPointId = mockDatasetReviewEntityForTest.dummyDatapointId,
+                qaReportId = mockDatasetJudgementEntityForTest.qaReportId,
+                dataPointId = mockDatasetJudgementEntityForTest.dummyDatapointId,
                 comment = "",
                 verdict = QaReportDataPointVerdict.QaAccepted,
                 correctedData = null,
-                dataPointType = mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
-                reporterUserId = mockDatasetReviewEntityForTest.dummyUserId.toString(),
+                dataPointType = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
                 uploadTime = 1000L,
                 active = true,
             )
@@ -241,24 +241,24 @@ class DatasetJudgementServiceTest {
 
         doReturn(
             KeycloakUserInfo(
-                mockDatasetReviewEntityForTest.DUMMY_USER_EMAIL,
-                mockDatasetReviewEntityForTest.dummyUserId.toString(),
-                mockDatasetReviewEntityForTest.DUMMY_USER_FIRST_NAME,
-                mockDatasetReviewEntityForTest.DUMMY_USER_LAST_NAME,
+                mockDatasetJudgementEntityForTest.DUMMY_USER_EMAIL,
+                mockDatasetJudgementEntityForTest.dummyUserId.toString(),
+                mockDatasetJudgementEntityForTest.DUMMY_USER_FIRST_NAME,
+                mockDatasetJudgementEntityForTest.DUMMY_USER_LAST_NAME,
             ),
         ).whenever(keycloakUserService)
             .getUser(any())
     }
 
     @Test
-    fun `postDatasetReview throws ConflictApiException when dataset review status is pending`() {
+    fun `postDatasetJudgement throws ConflictApiException when dataset judgement status is pending`() {
         val dummyDatapointId = UUID.randomUUID().toString()
 
-        doReturn(mapOf(mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE to dummyDatapointId))
+        doReturn(mapOf(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE to dummyDatapointId))
             .whenever(datasetJudgementSupportService)
             .getContainedDataPoints(any())
 
-        doReturn(listOf(datasetReviewEntity))
+        doReturn(listOf(datasetJudgementEntity))
             .whenever(datasetJudgementRepository)
             .findAllByDatasetIdAndJudgementState(any(), any())
 
@@ -268,7 +268,7 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails with Original sets acceptedSource and clears AcceptedQaReport source`() {
+    fun `patchJudgementDetails with Original sets acceptedSource and clears AcceptedQaReport source`() {
         val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
 
         assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
@@ -276,23 +276,23 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails with Qa sets acceptedSource and AcceptedQaReport source`() {
+    fun `patchJudgementDetails with Qa sets acceptedSource and AcceptedQaReport source`() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetReviewEntityForTest.dummyUserId.toString(),
+                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
             )
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertEquals(mockDatasetReviewEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
+        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
     }
 
     @Test
-    fun `patchReviewDetails with Custom sets acceptedSource and clears AcceptedQaReport source`() {
+    fun `patchJudgementDetails with Custom sets acceptedSource and clears AcceptedQaReport source`() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Custom,
-                customValue = mockDatasetReviewEntityForTest.CUSTOM_VALUE,
+                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
             )
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
@@ -300,42 +300,49 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails throws ConflictApiException when acceptedSource is custom and no customValue is provided`() {
+    fun `patchJudgementDetails throws ConflictApiException when acceptedSource is custom and no customValue is provided`() {
         assertThrows<ConflictApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
+                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
                 JudgementDetailsPatch(AcceptedDataPointSource.Custom, null, null),
             )
         }
     }
 
     @Test
-    fun `patchReviewDetails with only customValue validates and sets customValue`() {
+    fun `patchJudgementDetails with only customValue validates and sets customValue`() {
         val saved =
             patchAndGetDataPoint(
                 source = null,
-                customValue = mockDatasetReviewEntityForTest.CUSTOM_VALUE,
+                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
             )
 
-        assertEquals(mockDatasetReviewEntityForTest.CUSTOM_VALUE, saved.customValue)
+        assertEquals(mockDatasetJudgementEntityForTest.CUSTOM_VALUE, saved.customValue)
         verify(datasetJudgementSupportService)
-            .validateCustomDataPoint(mockDatasetReviewEntityForTest.CUSTOM_VALUE, mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE)
+            .validateCustomDataPoint(
+                mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
+                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+            )
     }
 
     @Test
-    fun `patchReviewDetails with Qa without reporterUserIdOfAcceptedQaReport throws InvalidInputApiException`() {
+    fun `patchJudgementDetails with Qa without reporterUserIdOfAcceptedQaReport throws InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(AcceptedDataPointSource.Qa, null, null),
+                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+                JudgementDetailsPatch(
+                    AcceptedDataPointSource.Qa,
+                    null,
+                    null,
+                ),
             )
         }
     }
 
     @Test
-    fun `patchReviewDetails throws InvalidInputApiException when dataPointType not in review`() {
+    fun `patchJudgementDetails throws InvalidInputApiException when dataPointType not in judgement`() {
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
@@ -346,7 +353,7 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `patchReviewDetails throws InsufficientRights when user is not reviewer`() {
+    fun `patchJudgementDetails throws InsufficientRights when user is not judge`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
@@ -356,21 +363,21 @@ class DatasetJudgementServiceTest {
         assertThrows<InsufficientRightsApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
+                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
                 JudgementDetailsPatch(AcceptedDataPointSource.Original, null, null),
             )
         }
     }
 
     @Test
-    fun `patchReviewDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
+    fun `patchJudgementDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
         whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
             .thenThrow(BackendClientException())
 
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
-                mockDatasetReviewEntityForTest.DUMMY_DATA_POINT_TYPE,
+                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
                 JudgementDetailsPatch(null, null, """{"value": 1}"""),
             )
         }

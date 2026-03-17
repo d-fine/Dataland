@@ -10,7 +10,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
 
-object MockDatasetReviewEntityForTest {
+object MockDatasetJudgementEntityForTest {
     val dummyUserId = UUID.randomUUID()
     const val DUMMY_DATA_POINT_TYPE = "dummy-datapoint-type"
     val dummyCompanyId = UUID.randomUUID()
@@ -24,7 +24,7 @@ object MockDatasetReviewEntityForTest {
     val qaReportId = UUID.randomUUID().toString()
     const val CUSTOM_VALUE = """{"value": 42}"""
 
-    fun createDummyDatasetReviewEntity(): DatasetJudgementEntity =
+    fun createDummyDatasetJudgementEntity(): DatasetJudgementEntity =
         DatasetJudgementEntity(
             dataSetJudgementId = UUID.randomUUID(),
             datasetId = dummyDatasetId,

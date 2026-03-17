@@ -13,11 +13,11 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import java.util.UUID
 
 /**
- * JPA entity storing per-data-point review information within a dataset review.
+ * JPA entity storing per-data-point information within a dataset judgement.
  */
 @Suppress("LongParameterList")
 @Entity
-@Table(name = "dataset_judgement_entity_data_point_review_details")
+@Table(name = "dataset_judgement_entity_data_point_judgement_details")
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
@@ -37,7 +37,7 @@ class DataPointJudgementEntity(
     /**
      * Converts this entity to its API response DTO.
      */
-    fun toDataPointReviewDetails(): DataPointJudgement =
+    fun toDataPointJudgementDetails(): DataPointJudgement =
         DataPointJudgement(
             dataPointType = dataPointType,
             dataPointId = dataPointId,

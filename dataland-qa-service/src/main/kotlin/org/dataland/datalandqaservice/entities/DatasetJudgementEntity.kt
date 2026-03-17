@@ -8,7 +8,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetJudgementStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
@@ -32,9 +32,9 @@ class DatasetJudgementEntity(
     val dataType: String,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
-    @Column(name = "review_state")
-    @Convert(converter = DatasetReviewStateConverter::class)
-    var reviewState: DatasetJudgementState = DatasetJudgementState.Pending,
+    @Column(name = "judgement_state")
+    @Convert(converter = DatasetJudgementStateConverter::class)
+    var judgementState: DatasetJudgementState = DatasetJudgementState.Pending,
     @Column(name = "judge_user_id")
     var qaJudgeUserId: UUID,
     @Column(name = "judge_user_name")
@@ -46,7 +46,7 @@ class DatasetJudgementEntity(
     val dataPoints: MutableList<DataPointJudgementEntity>,
 ) {
     /**
-     * Convert to DatasetReview objects for API use.
+     * Convert to DatasetJudgement objects for API use.
      */
     fun toDatasetJudgementResponse(): DatasetJudgementResponse =
         DatasetJudgementResponse(
@@ -55,11 +55,11 @@ class DatasetJudgementEntity(
             companyId.toString(),
             dataType,
             reportingPeriod,
-            reviewState,
+            judgementState,
             qaJudgeUserId.toString(),
             qaJudgeUserName,
             qaReporters.toList(),
-            dataPoints.associateBy({ it.dataPointType }, { it.toDataPointReviewDetails() }),
+            dataPoints.associateBy({ it.dataPointType }, { it.toDataPointJudgementDetails() }),
         )
 
     /**

@@ -8,7 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
  * Converts DataType entries in Entities to database values and vice versa
  */
 @Converter
-class DatasetReviewStateConverter : AttributeConverter<DatasetJudgementState, String> {
+class DatasetJudgementStateConverter : AttributeConverter<DatasetJudgementState, String> {
     override fun convertToDatabaseColumn(datasetJudgementState: DatasetJudgementState?): String = datasetJudgementState.toString()
 
     override fun convertToEntityAttribute(datasetReviewStateAsString: String): DatasetJudgementState =
