@@ -22,7 +22,7 @@ export function uploadAllDocuments(token: string): void {
  * @param bytes The input data as a Uint8Array for which the SHA-256 hash should be calculated.
  * @returns A promise that resolves to the SHA-256 hash of the input data, represented as a hexadecimal string.
  */
-async function sha256Hex(bytes: Uint8Array): Promise<string> {
+async function sha256Hex(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', bytes);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
