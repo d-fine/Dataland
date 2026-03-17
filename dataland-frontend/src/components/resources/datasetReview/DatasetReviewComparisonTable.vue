@@ -207,8 +207,8 @@ import type {
 import { DataTypeEnum } from '@clients/backend';
 import {
   type DatasetReviewResponse,
-  type DataPointReviewDetails,
-  type QaReportDataPointWithReporterDetails,
+  type DataPointReview,
+  type QaReportDataPointWithReporter,
   AcceptedDataPointSource,
   QaReportDataPointVerdict,
 } from '@clients/qaservice';
@@ -366,9 +366,9 @@ const filteredRows = computed<KpiRow[]>(() => {
  * provided `datasetReview` prop.
  *
  * @param {string | undefined} dataPointTypeId - The data point type identifier to look up.
- * @returns {DataPointReviewDetails | undefined} The review info entry for the data point, or undefined when not found.
+ * @returns {DataPointReview | undefined} The review info entry for the data point, or undefined when not found.
  */
-function getReviewInfo(dataPointTypeId?: string): DataPointReviewDetails | undefined {
+function getReviewInfo(dataPointTypeId?: string): DataPointReview | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
 }
@@ -377,13 +377,13 @@ function getReviewInfo(dataPointTypeId?: string): DataPointReviewDetails | undef
  * Returns the QA report for the given table row and reporter user ID.
  *
  * Looks up the datasetReview entry for the row's data point type and
- * returns the QaReportDataPointWithReporterDetails for the given reporter if present.
+ * returns the QaReportDataPointWithReporter for the given reporter if present.
  *
  * @param {CellRow} row - The table cell row describing the data point.
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
- * @returns {QaReportDataPointWithReporterDetails | undefined} The matching QA report summary or undefined when not found.
+ * @returns {QaReportDataPointWithReporter | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPointWithReporterDetails | undefined {
+function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPointWithReporter | undefined {
   if (!row.dataPointTypeId) return undefined;
   const datapointEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
   if (!datapointEntry) return undefined;
@@ -397,10 +397,10 @@ function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPoint
  * that string and returns the inner `value` property, or null when the
  * corrected value is not available or parsing fails.
  *
- * @param {QaReportDataPointWithReporterDetails | undefined} qaReport - QA report to extract value from.
+ * @param {QaReportDataPointWithReporter | undefined} qaReport - QA report to extract value from.
  * @returns {string | null} The corrected display value or null when unavailable.
  */
-function getCorrectedDisplayFromQaReport(qaReport: QaReportDataPointWithReporterDetails | undefined): string | null {
+function getCorrectedDisplayFromQaReport(qaReport: QaReportDataPointWithReporter | undefined): string | null {
   if (!qaReport?.correctedData) return null;
   try {
     const parsed = JSON.parse(qaReport.correctedData);
