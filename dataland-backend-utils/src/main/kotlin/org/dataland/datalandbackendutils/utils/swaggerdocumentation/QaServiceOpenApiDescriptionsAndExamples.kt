@@ -58,10 +58,10 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION =
         "Boolean flag. If true, the QA status of the data points are overwritten."
 
-    const val DATA_REVIEW_ID_DESCRIPTION = "The unique identifier of the data review."
-    const val DATA_REVIEW_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
+    const val DATA_JUDGEMENT_ID_DESCRIPTION = "The unique identifier of the data judgment."
+    const val DATA_JUDGEMENT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val DATA_REVIEW_STATE_DESCRIPTION = "The state of the dataset review."
+    const val DATA_JUDGEMENT_STATE_DESCRIPTION = "The state of the dataset judgement."
 
     const val DATA_REVIEW_JUDGE_ID_DESCRIPTION = "The unique user ID of the user judging the dataset review."
     const val DATA_REVIEW_JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE

@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetReviewStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReporter
 import java.util.UUID
 
@@ -34,7 +34,7 @@ class DatasetJudgementEntity(
     val reportingPeriod: String,
     @Column(name = "review_state")
     @Convert(converter = DatasetReviewStateConverter::class)
-    var reviewState: DatasetReviewState = DatasetReviewState.Pending,
+    var reviewState: DatasetJudgementState = DatasetJudgementState.Pending,
     @Column(name = "judge_user_id")
     var qaJudgeUserId: UUID,
     @Column(name = "judge_user_name")

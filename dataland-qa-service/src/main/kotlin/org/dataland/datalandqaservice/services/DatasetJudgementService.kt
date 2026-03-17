@@ -8,9 +8,9 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,30 +20,30 @@ import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
- * Service class for dataset review objects.
+ * Service class for dataset judgement objects.
  */
 @Service
 class DatasetJudgementService
     @Autowired
     constructor(
-        private val datasetReviewRepository: DatasetReviewRepository,
+        private val datasetJudgementRepository: DatasetJudgementRepository,
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
-        private val datasetReviewCreationService: DatasetReviewCreationService,
+        private val datasetJudgementCreationService: DatasetJudgementCreationService,
     ) {
         /**
-         * Creates and stores a new dataset review for the given dataset ID.
+         * Creates and stores a new dataset judgement for the given dataset ID.
          *
-         * Retrieves associated metadata and data points and checks for existing pending reviews.
-         * Throws an exception if the dataset does not exist or a pending review is already present.
-         * Returns the persisted review entity as API response.
+         * Retrieves associated metadata and data points and checks for existing pending judgements.
+         * Throws an exception if the dataset does not exist or a pending judgement is already present.
+         * Returns the persisted judgement entity as API response.
          *
-         * @param datasetId The UUID of the dataset to review.
-         * @return DatasetReviewResponse API response with created review details.
+         * @param datasetId The UUID of the dataset to judge.
+         * @return DatasetJudgementResponse API response with created judgement details.
          * @throws ResourceNotFoundApiException If the dataset is not found.
-         * @throws ConflictApiException If a pending review exists.
+         * @throws ConflictApiException If a pending judgement exists.
          */
         @Transactional
-        fun postDatasetReview(datasetId: UUID): DatasetJudgementResponse {
+        fun postDatasetJudgement(datasetId: UUID): DatasetJudgementResponse {
             lateinit var datatypeToDatapointIds: Map<String, String>
             try {
                 datatypeToDatapointIds = datasetJudgementSupportService.getContainedDataPoints(datasetId.toString())
@@ -53,84 +53,84 @@ class DatasetJudgementService
                     "Dataset with the id: $datasetId could not be found.",
                 )
             }
-            if (datasetReviewRepository.findAllByDatasetIdAndReviewState(datasetId, DatasetReviewState.Pending).isNotEmpty()) {
+            if (datasetJudgementRepository.findAllByDatasetIdAndJudgementState(datasetId, DatasetJudgementState.Pending).isNotEmpty()) {
                 throw ConflictApiException(
-                    summary = "Pending dataset review entity already exists.",
-                    message = "There is already a dataset review entity for this dataset which is pending.",
+                    summary = "Pending dataset judgement entity already exists.",
+                    message = "There is already a dataset judgement entity for this dataset which is pending.",
                 )
             }
 
-            val datasetReviewEntity =
-                datasetReviewCreationService.createDatasetReviewEntity(
+            val datasetJudgementEntity =
+                datasetJudgementCreationService.createDatasetJudgementEntity(
                     datasetJudgementSupportService.getDataMetaInfo(datasetId.toString()),
                     datasetId,
                     datatypeToDatapointIds,
                 )
 
-            return datasetReviewRepository.save(datasetReviewEntity).toDatasetJudgementResponse()
+            return datasetJudgementRepository.save(datasetJudgementEntity).toDatasetJudgementResponse()
         }
 
         /**
-         * Method to set reviewer to current user.
+         * Method to set judge to current user.
          *
-         * @param datasetReviewId The UUID of the dataset review to update.
-         * @return DatasetReviewResponse The API response with updated review details.
-         * @throws ResourceNotFoundApiException If the dataset review does not exist.
+         * @param datasetJudgementId The UUID of the dataset judgement to update.
+         * @return DatasetJudgementResponse The API response with updated judgement details.
+         * @throws ResourceNotFoundApiException If the dataset judgement does not exist.
          */
         @Transactional
-        fun setReviewer(datasetReviewId: UUID): DatasetJudgementResponse {
-            val datasetReview = getDatasetReviewOrThrow(datasetReviewId)
-            datasetReview.qaJudgeUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
-            datasetReview.qaJudgeUserName = DatalandAuthentication.fromContext().name
-            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
+        fun setJudge(datasetJudgementId: UUID): DatasetJudgementResponse {
+            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            datasetJudgement.qaJudgeUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
+            datasetJudgement.qaJudgeUserName = DatalandAuthentication.fromContext().name
+            return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 
         /**
-         * Sets the review state for a dataset review entity.
+         * Sets the judgement state for a dataset judgement entity.
          *
-         * Validates reviewer permissions and updates the review state to the specified value.
-         * Persists the change and returns the updated dataset review as an API response.
-         * Throws an exception if the current user is not the reviewer.
+         * Validates judges permissions and updates the judgement state to the specified value.
+         * Persists the change and returns the updated dataset judgement as an API response.
+         * Throws an exception if the current user is not the judge.
          *
-         * @param datasetReviewId The UUID of the dataset review to update.
-         * @param state The new review state to apply.
-         * @return DatasetReviewResponse The API response with updated review details.
+         * @param datasetJudgementId The UUID of the dataset judgement to update.
+         * @param state The new judgement state to apply.
+         * @return DatasetJudgementResponse The API response with updated review details.
          */
         @Transactional
-        fun setReviewState(
-            datasetReviewId: UUID,
-            state: DatasetReviewState,
+        fun setJudgementState(
+            datasetJudgementId: UUID,
+            state: DatasetJudgementState,
         ): DatasetJudgementResponse {
-            val datasetReview = getDatasetReviewOrThrow(datasetReviewId)
-            DatasetJudgementValidationHelper.validateUserIsReviewer(datasetReview.qaJudgeUserId)
-            datasetReview.reviewState = state
-            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
+            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
+            datasetJudgement.reviewState = state
+            return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 
         /**
-         * Updates review details for a specific data point in a dataset review.
+         * Updates judgement details for a specific data point in a dataset judgement.
          *
          * Validates and applies patch values for accepted source, custom value, and QA report company ID to the specified data point.
-         * Throws exceptions for invalid input or missing required values, and persists the updated review entity.
-         * Returns the modified dataset review as API response.
+         * Throws exceptions for invalid input or missing required values, and persists the updated judgement entity.
+         * Returns the modified dataset judgement as API response.
          *
-         * @param datasetReviewId The UUID of the dataset review to update.
+         * @param datasetJudgementId The UUID of the dataset judgement to update.
          * @param dataPointType The type identifier for the data point to patch.
-         * @param patch The patch object containing updates for review details.
-         * @return DatasetReviewResponse API response with updated review details.
+         * @param patch The patch object containing updates for judgement details.
+         * @return DatasetJudgementResponse API response with updated judgement details.
          * @throws InvalidInputApiException If input values are invalid or required values are missing.
          */
         @Transactional
-        fun patchReviewDetails(
-            datasetReviewId: UUID,
+        fun patchJudgementDetails(
+            datasetJudgementId: UUID,
             dataPointType: String,
-            patch: ReviewDetailsPatch,
+            patch: JudgementDetailsPatch,
         ): DatasetJudgementResponse {
-            val datasetReview = getDatasetReviewOrThrow(datasetReviewId)
-            DatasetJudgementValidationHelper.validateUserIsReviewer(datasetReview.qaJudgeUserId)
+            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
             val dataPoint =
-                datasetReview.dataPoints
+                datasetJudgement.dataPoints
                     .find { it.dataPointType == dataPointType }
                     ?: throw InvalidInputApiException(
                         "Invalid input.",
@@ -140,7 +140,7 @@ class DatasetJudgementService
             applyCustomDataPoint(dataPointType, patch.customDataPoint, dataPoint)
             applyAcceptedSource(dataPoint, patch)
 
-            return datasetReviewRepository.save(datasetReview).toDatasetJudgementResponse()
+            return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 
         /**
@@ -178,7 +178,7 @@ class DatasetJudgementService
          */
         private fun applyAcceptedSource(
             dataPoint: DataPointJudgementEntity,
-            patch: ReviewDetailsPatch,
+            patch: JudgementDetailsPatch,
         ) {
             when (patch.acceptedSource) {
                 AcceptedDataPointSource.Original -> {
@@ -210,43 +210,43 @@ class DatasetJudgementService
         }
 
         /**
-         * Method to get a dataset review entity by id and convert to response.
+         * Method to get a dataset judgement entity by id and convert to response.
          *
-         * @param datasetReviewId The UUID of the dataset review to fetch.
-         * @return DatasetReviewResponse API response for the requested review.
-         * @throws ResourceNotFoundApiException If the dataset review does not exist.
+         * @param datasetJudgementId The UUID of the dataset judgement to fetch.
+         * @return DatasetJudgementResponse API response for the requested judgement.
+         * @throws ResourceNotFoundApiException If the dataset judgement does not exist.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewById(datasetReviewId: UUID): DatasetJudgementResponse {
-            val datasetReview = getDatasetReviewOrThrow(datasetReviewId)
-            return datasetReview.toDatasetJudgementResponse()
+        fun getDatasetJudgementById(datasetJudgementId: UUID): DatasetJudgementResponse {
+            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            return datasetJudgement.toDatasetJudgementResponse()
         }
 
         /**
-         * Method to get dataset review objects by dataset id.
+         * Method to get dataset judgement objects by dataset id.
          *
-         * @param datasetId The UUID of the dataset whose reviews should be fetched.
-         * @return List of DatasetReviewResponse for the given dataset.
+         * @param datasetId The UUID of the dataset whose judgements should be fetched.
+         * @return List of DatasetJudgementResponse for the given dataset.
          */
         @Transactional(readOnly = true)
-        fun getDatasetReviewsByDatasetId(datasetId: UUID): List<DatasetJudgementResponse> =
-            datasetReviewRepository.findAllByDatasetId(datasetId).map {
+        fun getDatasetJudgementsByDatasetId(datasetId: UUID): List<DatasetJudgementResponse> =
+            datasetJudgementRepository.findAllByDatasetId(datasetId).map {
                 it.toDatasetJudgementResponse()
             }
 
         /**
-         * Loads the dataset review entity or throws if it does not exist.
+         * Loads the dataset judgement entity or throws if it does not exist.
          *
-         * @param datasetReviewId The UUID of the dataset review to load.
-         * @return The dataset review entity for the given id.
-         * @throws ResourceNotFoundApiException If no dataset review exists for the given id.
+         * @param datasetJudgementId The UUID of the dataset judgement to load.
+         * @return The dataset judgement entity for the given id.
+         * @throws ResourceNotFoundApiException If no dataset judgement exists for the given id.
          */
-        private fun getDatasetReviewOrThrow(datasetReviewId: UUID): DatasetJudgementEntity {
-            val datasetReview = datasetJudgementSupportService.getDatasetReviewEntityById(datasetReviewId)
-            DatasetJudgementValidationHelper.validateIfDatasetExists(
-                datasetReviewId,
-                datasetReview,
+        private fun getDatasetJudgementOrThrow(datasetJudgementId: UUID): DatasetJudgementEntity {
+            val datasetJudgement = datasetJudgementSupportService.getDatasetJudgementEntityById(datasetJudgementId)
+            DatasetJudgementValidationHelper.validateIfJudgementEntityExists(
+                datasetJudgementId,
+                datasetJudgement,
             )
-            return datasetReview
+            return datasetJudgement
         }
     }

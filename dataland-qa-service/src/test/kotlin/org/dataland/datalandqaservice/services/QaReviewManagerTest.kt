@@ -12,7 +12,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -92,7 +92,7 @@ class QaReviewManagerTest {
             companyId = companyId,
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
-            reviewState = DatasetReviewState.Pending,
+            reviewState = DatasetJudgementState.Pending,
             qaJudgeUserId = dummyUserId,
             qaJudgeUserName = dummyUserName,
             qaReporters = emptyList(),
@@ -237,7 +237,7 @@ class QaReviewManagerTest {
             .countQaReportsForDataPointIds(any())
         doReturn(listOf(datasetReviewResponse))
             .whenever(mockDatasetJudgementService)
-            .getDatasetReviewsByDatasetId(any())
+            .getDatasetJudgementsByDatasetId(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(

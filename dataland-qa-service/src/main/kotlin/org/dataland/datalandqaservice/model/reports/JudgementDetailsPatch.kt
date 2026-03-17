@@ -8,7 +8,7 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 /**
  * Request body for patching the custom value of a data point in a dataset review.
  */
-data class ReviewDetailsPatch(
+data class JudgementDetailsPatch(
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_EXAMPLE,

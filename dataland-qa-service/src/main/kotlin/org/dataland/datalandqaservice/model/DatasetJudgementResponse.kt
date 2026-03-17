@@ -12,8 +12,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
  */
 data class DatasetJudgementResponse(
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
     )
     val dataSetReviewId: String,
     @field:Schema(
@@ -37,9 +37,9 @@ data class DatasetJudgementResponse(
     )
     val reportingPeriod: String,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_STATE_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_STATE_DESCRIPTION,
     )
-    var reviewState: DatasetReviewState,
+    var reviewState: DatasetJudgementState,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_JUDGE_ID_EXAMPLE,

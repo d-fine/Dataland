@@ -8,14 +8,14 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * Service to support data point review operations.
+ * Service to support data point judgement operations.
  */
 @Service
 class DatasetJudgementSupportService
@@ -25,7 +25,7 @@ class DatasetJudgementSupportService
         private val metaDataControllerApi: MetaDataControllerApi,
         private val specificationControllerApi: SpecificationControllerApi,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
-        private val datasetReviewRepository: DatasetReviewRepository,
+        private val datasetJudgementRepository: DatasetJudgementRepository,
     ) {
         /**
          * Retrieves meta data of a dataset.
@@ -97,12 +97,12 @@ class DatasetJudgementSupportService
             dataPointQaReportRepository.findDataPointTypeUsingId(qaReportId.toString())
 
         /**
-         * Retrieves a dataset review entity by its identifier.
+         * Retrieves a dataset judgement entity by its identifier.
          *
-         * @param datasetReviewId The unique identifier of the dataset review to load.
-         * @return The dataset review entity for the given id.
-         * @throws ResourceNotFoundApiException If no dataset review exists for the given id.
+         * @param datasetJudgementId The unique identifier of the dataset judgement to load.
+         * @return The dataset judgement entity for the given id.
+         * @throws ResourceNotFoundApiException If no dataset judgement exists for the given id.
          */
-        fun getDatasetReviewEntityById(datasetReviewId: UUID): DatasetJudgementEntity =
-            datasetReviewRepository.findById(datasetReviewId).orElse(null)
+        fun getDatasetJudgementEntityById(datasetJudgementId: UUID): DatasetJudgementEntity =
+            datasetJudgementRepository.findById(datasetJudgementId).orElse(null)
     }

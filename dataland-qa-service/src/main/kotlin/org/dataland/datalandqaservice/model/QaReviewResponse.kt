@@ -56,8 +56,8 @@ data class QaReviewResponse(
     )
     val qaJudgeUserName: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
     )
     val datasetReviewId: String?,
     @field:Schema(

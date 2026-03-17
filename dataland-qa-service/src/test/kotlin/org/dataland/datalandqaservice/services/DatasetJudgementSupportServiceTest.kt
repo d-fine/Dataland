@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.model.DataPointTypeSpecification
@@ -28,7 +28,7 @@ class DatasetJudgementSupportServiceTest {
     private val metaDataControllerApi: MetaDataControllerApi = mock()
     private val specificationControllerApi: SpecificationControllerApi = mock()
     private val dataPointQaReportRepository: DataPointQaReportRepository = mock()
-    private val datasetReviewRepository: DatasetReviewRepository = mock()
+    private val datasetJudgementRepository: DatasetJudgementRepository = mock()
 
     private val dummyDatapoint = """{"foo":"bar"}"""
 
@@ -38,7 +38,7 @@ class DatasetJudgementSupportServiceTest {
             metaDataControllerApi,
             specificationControllerApi,
             dataPointQaReportRepository,
-            datasetReviewRepository,
+            datasetJudgementRepository,
         )
 
     @Test

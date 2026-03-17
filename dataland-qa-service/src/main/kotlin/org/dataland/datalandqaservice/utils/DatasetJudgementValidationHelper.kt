@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.ReviewDetailsPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
 
@@ -21,7 +21,7 @@ object DatasetJudgementValidationHelper {
      * @param patch The patch payload to validate.
      * @throws InvalidInputApiException If both values are missing.
      */
-    fun validatePatchContainsCustomDataPointOrAcceptedSource(patch: ReviewDetailsPatch) {
+    fun validatePatchContainsCustomDataPointOrAcceptedSource(patch: JudgementDetailsPatch) {
         if (patch.customDataPoint == null && patch.acceptedSource == null) {
             throw InvalidInputApiException(
                 "Invalid input.",
@@ -80,7 +80,7 @@ object DatasetJudgementValidationHelper {
      * @param reviewerUserId Expected reviewer user id for the dataset review.
      * @throws InsufficientRightsApiException If the current user is not the reviewer.
      */
-    fun validateUserIsReviewer(reviewerUserId: UUID) {
+    fun validateUserIsJudge(reviewerUserId: UUID) {
         if (DatalandAuthentication.fromContext().userId != reviewerUserId.toString()) {
             throw InsufficientRightsApiException(
                 summary = "Only the reviewer is allowed to patch this dataset review object.",
@@ -96,7 +96,7 @@ object DatasetJudgementValidationHelper {
      * @param datasetJudgementEntity The dataset review entity to check, or null if not found.
      * @throws ResourceNotFoundApiException If the dataset review entity is null.
      */
-    fun validateIfDatasetExists(
+    fun validateIfJudgementEntityExists(
         datasetReviewId: UUID,
         datasetJudgementEntity: DatasetJudgementEntity?,
     ) {

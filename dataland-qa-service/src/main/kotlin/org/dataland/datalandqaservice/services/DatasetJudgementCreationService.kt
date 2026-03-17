@@ -14,13 +14,13 @@ import java.util.UUID
 import kotlin.collections.iterator
 
 /**
- * Utility class to support the creation of dataset reviews.
+ * Utility class to support the creation of dataset judgements.
  *
- * Contains helper methods to create a dataset review entity from the given qa reports, dataset metadata
+ * Contains helper methods to create a dataset judgement entity from the given qa reports, dataset metadata
  * and data points in the dataset.
  */
 @Service
-class DatasetReviewCreationService
+class DatasetJudgementCreationService
     @Autowired
     constructor(
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
@@ -37,7 +37,7 @@ class DatasetReviewCreationService
          * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
          * @return A fully initialized DatasetReviewEntity ready for persistence.
          */
-        fun createDatasetReviewEntity(
+        fun createDatasetJudgementEntity(
             datasetMetaData: DataMetaInformation,
             datasetId: UUID,
             datatypeToDatapointIds: Map<String, String>,

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class DatasetReviewState {
+enum class DatasetJudgementState {
     Pending,
     Finished,
     Aborted,

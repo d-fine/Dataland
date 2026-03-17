@@ -367,7 +367,7 @@ class QaReviewManager
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-            val datasetReviews = datasetJudgementService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
+            val datasetReviews = datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId))
             val latestDatasetReview = datasetReviews.firstOrNull()
             return QaReviewResponse(
                 dataId = this.dataId,
