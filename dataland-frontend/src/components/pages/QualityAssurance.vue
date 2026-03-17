@@ -252,7 +252,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
     displayDataOfPage.value = await Promise.all(
       response.data.map(async (row) => ({
         ...row,
-        reviewStatus: await getReviewStatus(row.reviewerUserId, row.reviewerUserName),
+        reviewStatus: await getReviewStatus(row.qaJudgeUserId, row.qaJudgeUserName),
       }))
     );
     totalRecords.value = (

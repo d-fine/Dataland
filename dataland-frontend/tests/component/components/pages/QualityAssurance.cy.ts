@@ -53,8 +53,8 @@ function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewRe
     reportingPeriod: options.reportingPeriod,
     qaStatus: QaStatus.Pending,
     datasetReviewId: options.datasetReviewId,
-    reviewerUserName: options.reviewerUserName,
-    reviewerUserId: options.reviewerUserId,
+    qaJudgeUserName: options.reviewerUserName,
+    qaJudgeUserId: options.reviewerUserId,
     numberQaReports: 0,
   };
 }
