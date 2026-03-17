@@ -109,7 +109,7 @@ interface QaApi {
         value = ["/datasets/queue"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    @PreAuthorize("hasRole('ROLE_REVIEWER') or hasRole('ROLE_JUDGE')")
     fun getInfoOnPendingDatasets(
         @RequestParam
         @Parameter(

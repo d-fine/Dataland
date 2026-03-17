@@ -71,9 +71,10 @@
               :showFilterMenu="true"
               :showFilterOperator="false"
               :showFilterMatchModes="false"
+              sortField="frameworkHumanized"
             >
               <template #body="slotProps">
-                {{ humanizeStringOrNumber(slotProps.data.framework) }}
+                {{ slotProps.data.frameworkHumanized }}
               </template>
               <template #filter="{ filterModel, filterCallback }">
                 <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
@@ -348,6 +349,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 type QaReviewRow = QaReviewResponse & {
   reviewStatus: string;
   priorityWithNullHandling: number;
+  frameworkHumanized: string;
 };
 const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
@@ -381,6 +383,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
           row.priorityOfAssociatedDataSourcing === null || row.priorityOfAssociatedDataSourcing === undefined
             ? Number.MAX_SAFE_INTEGER
             : row.priorityOfAssociatedDataSourcing,
+        frameworkHumanized: humanizeStringOrNumber(row.framework),
       }))
     );
     waitingForData.value = false;
