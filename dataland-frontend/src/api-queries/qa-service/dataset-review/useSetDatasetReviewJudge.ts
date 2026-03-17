@@ -2,35 +2,35 @@ import { useMutation, useQueryClient, type UseMutationReturnType } from '@tansta
 import type { Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
-import { type DatasetReviewResponse } from '@clients/qaservice';
+import { type DatasetJudgementResponse } from '@clients/qaservice';
 import { type AxiosResponse } from 'axios';
 
 /**
- * Set the judge for a dataset review.
+ * Set the judge for a dataset judgement.
  *
- * @param {Ref<string | undefined>} datasetReviewId - Reactive ref with the dataset review id.
- * @returns {UseMutationReturnType<AxiosResponse<DatasetReviewResponse>, Error, void, unknown>} Mutation result; on success it
- * invalidates the corresponding dataset review detail query.
+ * @param {Ref<string | undefined>} datasetJudgementId - Reactive ref with the dataset judgement id.
+ * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success it
+ * invalidates the corresponding dataset judgement detail query.
  */
 export function useSetDatasetReviewJudge(
-  datasetReviewId: Ref<string | undefined>
-): UseMutationReturnType<AxiosResponse<DatasetReviewResponse>, Error, void, unknown> {
+  datasetJudgementId: Ref<string | undefined>
+): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
   const queryClient = useQueryClient();
   const apiClientProvider = useApiClient();
 
   return useMutation({
     mutationFn: async () => {
-      const id = datasetReviewId.value;
+      const id = datasetJudgementId.value;
       if (!id) {
-        throw new Error('datasetReviewId is undefined');
+        throw new Error('datasetJudgementId is undefined');
       }
-      return apiClientProvider.apiClients.datasetReviewController.setReviewer(id);
+      return apiClientProvider.apiClients.datasetJudgementController.setJudge(id);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetReviewId.value) });
+      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetJudgementId.value) });
     },
     onError: (error) => {
-      console.error('Error setting dataset review judge:', error);
+      console.error('Error setting dataset judge:', error);
     },
   });
 }

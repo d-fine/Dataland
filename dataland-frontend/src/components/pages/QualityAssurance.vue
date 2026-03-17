@@ -357,7 +357,9 @@ async function confirmStartReview(): Promise<void> {
   isCreatingReview.value = true;
 
   try {
-    const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(selectedDataId.value);
+    const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetReview(
+      selectedDataId.value
+    );
 
     confirmationModal.value.visible = false;
     await goToQaViewPage(response.data.companyId, response.data.dataType, selectedDataId.value);

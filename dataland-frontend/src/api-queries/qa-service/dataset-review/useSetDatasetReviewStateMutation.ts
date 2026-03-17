@@ -1,38 +1,38 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import { type Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { type DatasetReviewResponse, type DatasetReviewState } from '@clients/qaservice';
+import { type DatasetJudgementResponse, type DatasetJudgementState } from '@clients/qaservice';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
 import { type AxiosResponse } from 'axios';
 
 /**
- * Set a dataset review's state.
+ * Set a dataset judgement's state.
  *
- * @param {Ref<string | undefined>} datasetReviewId - Reactive id of the dataset review; mutation throws if undefined.
- * @param {DatasetReviewState} targetState - State to set on the review.
- * @returns {UseMutationReturnType<AxiosResponse<DatasetReviewResponse>, Error, void, unknown>} Mutation result; on success invalidates the review detail query.
+ * @param {Ref<string | undefined>} datasetJudgementId - Reactive id of the dataset judgement; mutation throws if undefined.
+ * @param {DatasetJudgementState} targetState - State to set on the judgement.
+ * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success invalidates the review detail query.
  */
 export function useSetDatasetReviewStateMutation(
-  datasetReviewId: Ref<string | undefined>,
-  targetState: DatasetReviewState
-): UseMutationReturnType<AxiosResponse<DatasetReviewResponse>, Error, void, unknown> {
+  datasetJudgementId: Ref<string | undefined>,
+  targetState: DatasetJudgementState
+): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
   const apiClient = useApiClient();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      const id = datasetReviewId.value;
+      const id = datasetJudgementId.value;
 
       if (id === undefined || id === null) {
-        throw new Error('datasetReviewId is undefined');
+        throw new Error('datasetJudgementId is undefined');
       }
-      return await apiClient.apiClients.datasetReviewController.setReviewState(id, targetState);
+      return await apiClient.apiClients.datasetJudgementController.setJudgementState(id, targetState);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetReviewId.value) });
+      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetJudgementId.value) });
     },
     onError: (error) => {
-      console.error('Error setting dataset review state:', error);
+      console.error('Error setting dataset judgement state:', error);
     },
   });
 }

@@ -506,7 +506,8 @@ async function visitReviewPage(): Promise<void> {
     if (props.singleDataMetaInfoToDisplay) {
       const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
       const dataId = props.singleDataMetaInfoToDisplay.dataId;
-      const response = await apiClientProvider.apiClients.datasetReviewController.getDatasetReviewsByDatasetId(dataId);
+      const response =
+        await apiClientProvider.apiClients.datasetJudgementController.getDatasetReviewsByDatasetId(dataId);
       const datasetReviewId = response.data[0]?.dataSetReviewId;
       await router.push(`/qa/review/${datasetReviewId}`);
     }
