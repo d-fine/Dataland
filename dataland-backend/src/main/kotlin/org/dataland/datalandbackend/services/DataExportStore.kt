@@ -33,7 +33,7 @@ class DataExportStore {
          * and is used in the alert rule in:
          * dataland-grafana/provisioning/alerting/alert-rules-template.yaml (uid: export_job_timeout)
          */
-        internal const val EXPORT_JOB_TIMEOUT_LOG_MESSAGE = "Export job {} exceeded {} minutes!"
+        internal const val EXPORT_JOB_TIMEOUT_LOG_MESSAGE = "Export job {} of type {} for user {} exceeded {} minutes!"
     }
 
     private val exportJobStorage = mutableMapOf<String, MutableList<ExportJob>>()
@@ -57,15 +57,16 @@ class DataExportStore {
                 dataType,
                 creationTime = Instant.now().toEpochMilli(),
             )
+        val userId = DatalandAuthentication.fromContext().userId
         exportJobStorage
-            .getOrPut(DatalandAuthentication.fromContext().userId) { mutableListOf() }
+            .getOrPut(userId) { mutableListOf() }
             .add(newExportJob)
         val timer = Timer(true)
         jobTimeoutTimers[exportJobId] = timer
         timer.schedule(
             object : TimerTask() {
                 override fun run() {
-                    warnIfJobPendingAfterFrontendTimeout(exportJobId, newExportJob)
+                    warnIfJobPendingAfterFrontendTimeout(exportJobId, userId, newExportJob)
                 }
             },
             Duration.ofMinutes(EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS).toMillis(),
@@ -105,12 +106,15 @@ class DataExportStore {
      */
     internal fun warnIfJobPendingAfterFrontendTimeout(
         exportJobId: UUID,
+        userId: String,
         exportJob: ExportJob,
     ) {
         if (exportJob.progressState == ExportJobProgressState.Pending) {
             logger.error(
                 EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
                 exportJobId,
+                exportJob.fileType,
+                userId,
                 EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
             )
         }

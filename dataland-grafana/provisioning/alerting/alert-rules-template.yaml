@@ -287,7 +287,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name=~".+", level!="info"} |~ "(?i)Export job .* exceeded .* minutes" [1m])
+              expr: count_over_time({service_name=~".+", level!="info"} |~ "(?i)Export job .* of type .* for user .* exceeded .* minutes" [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range

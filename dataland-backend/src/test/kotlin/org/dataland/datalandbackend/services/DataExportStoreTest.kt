@@ -79,11 +79,13 @@ class DataExportStoreTest {
 
         val exportJob = dataExportStore.createAndSaveExportJob(exportJobId, FILE_TYPE, DATA_TYPE)
 
-        dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, exportJob)
+        dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, USER_ID, exportJob)
 
         verify(mockLogger).error(
             DataExportStore.EXPORT_JOB_TIMEOUT_LOG_MESSAGE,
             exportJobId,
+            FILE_TYPE,
+            USER_ID,
             DataExportStore.EXPORT_JOB_TIMEOUT_WARNING_AFTER_MINS,
         )
     }
@@ -96,7 +98,7 @@ class DataExportStoreTest {
 
         exportJob.progressState = ExportJobProgressState.Success
 
-        dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, exportJob)
+        dataExportStore.warnIfJobPendingAfterFrontendTimeout(exportJobId, USER_ID, exportJob)
 
         verifyNoInteractions(mockLogger)
     }
