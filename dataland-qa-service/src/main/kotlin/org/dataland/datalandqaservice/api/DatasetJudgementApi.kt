@@ -65,7 +65,7 @@ interface DatasetJudgementApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "201", description = "Successfully added dataset judgment object to Dataland."),
+            ApiResponse(responseCode = "201", description = "Successfully added dataset judgement object to Dataland."),
             ApiResponse(responseCode = "403", description = "Only admins and judges can access dataset judgement objects."),
             ApiResponse(responseCode = "409", description = "A pending judgement already exists for this dataset."),
         ],

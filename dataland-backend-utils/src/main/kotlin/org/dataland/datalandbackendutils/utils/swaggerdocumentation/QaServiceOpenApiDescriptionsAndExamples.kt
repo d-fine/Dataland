@@ -69,8 +69,8 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION = "The name or email of the user judging the dataset review."
     const val DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE = "Jane Doe"
 
-    const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
-    const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
+    const val DATA_JUDGEMENT_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as json string to be uploaded."
+    const val DATA_JUDGEMENT_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
 
     const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
     const val NUMBER_QA_REPORTS_EXAMPLE = "5"

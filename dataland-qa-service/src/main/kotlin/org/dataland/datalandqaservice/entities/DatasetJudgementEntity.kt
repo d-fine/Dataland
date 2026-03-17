@@ -15,7 +15,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import java.util.UUID
 
 /**
- * The database entity for storing dataset reviews
+ * The database entity for storing dataset judgements
  */
 @Suppress("LongParameterList")
 @Entity

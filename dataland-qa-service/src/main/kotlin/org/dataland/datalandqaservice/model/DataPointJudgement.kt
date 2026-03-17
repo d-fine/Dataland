@@ -8,7 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import java.util.UUID
 
 /**
- * API response DTO for per-data-point review information.
+ * API response DTO for per-data-point judgement information.
  *
  * This class is used to return detailed information about the QA reports submitted for a specific data point, including
  * which source was accepted (original data point, corrected data from a QA report, or a custom value), and
@@ -46,8 +46,8 @@ data class DataPointJudgement(
     )
     val reporterUserIdOfAcceptedQaReport: UUID?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_CUSTOM_DATAPOINTS_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_CUSTOM_DATAPOINTS_EXAMPLE,
     )
     val customValue: String?,
 )

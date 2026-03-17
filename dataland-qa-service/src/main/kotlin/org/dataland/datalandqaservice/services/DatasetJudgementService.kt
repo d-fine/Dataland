@@ -79,7 +79,7 @@ class DatasetJudgementService
          */
         @Transactional
         fun setJudge(datasetJudgementId: UUID): DatasetJudgementResponse {
-            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             datasetJudgement.qaJudgeUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
             datasetJudgement.qaJudgeUserName = DatalandAuthentication.fromContext().name
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
@@ -101,7 +101,7 @@ class DatasetJudgementService
             datasetJudgementId: UUID,
             state: DatasetJudgementState,
         ): DatasetJudgementResponse {
-            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             datasetJudgement.judgementState = state
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
@@ -126,7 +126,7 @@ class DatasetJudgementService
             dataPointType: String,
             patch: JudgementDetailsPatch,
         ): DatasetJudgementResponse {
-            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
             val dataPoint =
@@ -218,7 +218,7 @@ class DatasetJudgementService
          */
         @Transactional(readOnly = true)
         fun getDatasetJudgementById(datasetJudgementId: UUID): DatasetJudgementResponse {
-            val datasetJudgement = getDatasetJudgementOrThrow(datasetJudgementId)
+            val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             return datasetJudgement.toDatasetJudgementResponse()
         }
 
@@ -241,7 +241,7 @@ class DatasetJudgementService
          * @return The dataset judgement entity for the given id.
          * @throws ResourceNotFoundApiException If no dataset judgement exists for the given id.
          */
-        private fun getDatasetJudgementOrThrow(datasetJudgementId: UUID): DatasetJudgementEntity {
+        private fun getDatasetJudgement(datasetJudgementId: UUID): DatasetJudgementEntity {
             val datasetJudgement = datasetJudgementSupportService.getDatasetJudgementEntityById(datasetJudgementId)
             DatasetJudgementValidationHelper.validateIfJudgementEntityExists(
                 datasetJudgementId,
