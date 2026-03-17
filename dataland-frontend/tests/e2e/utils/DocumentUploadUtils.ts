@@ -5,7 +5,6 @@ import {
   type DocumentMetaInfoPatch,
   type DocumentMetaInfoResponse,
 } from '@clients/documentmanager';
-import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
 /**
@@ -101,7 +100,7 @@ export async function patchDocumentMetaInfo(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').digest('hex');
+  const documentHash = await sha256Hex(arr);
   return await documentControllerApi
     .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
