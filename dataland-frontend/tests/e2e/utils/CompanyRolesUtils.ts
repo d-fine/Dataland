@@ -37,7 +37,7 @@ export async function assignCompanyRole(
  */
 export async function removeAllCompanyRoles(token: string, companyId: string, userId: string): Promise<void> {
   const api = new CompanyRolesControllerApi(new Configuration({ accessToken: token }));
-  const roles = Object.values(CompanyRole) as CompanyRole[];
+  const roles = Object.values(CompanyRole);
 
   for (const role of roles) {
     try {
