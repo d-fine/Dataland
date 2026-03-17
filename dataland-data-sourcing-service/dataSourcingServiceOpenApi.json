@@ -1731,9 +1731,11 @@
             "example": [
               "sfdr",
               "eutaxonomy-financials",
+              "eutaxonomy-financials-2026-73",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
+              "pcaf",
               "vsme"
             ],
             "items": {

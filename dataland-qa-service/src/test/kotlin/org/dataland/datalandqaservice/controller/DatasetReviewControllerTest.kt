@@ -26,7 +26,7 @@ class DatasetReviewControllerTest {
                 dataSetReviewId = datasetReviewId.toString(),
                 datasetId = UUID.randomUUID().toString(),
                 companyId = UUID.randomUUID().toString(),
-                reviewerUserId = UUID.randomUUID().toString(),
+                ownerId = UUID.randomUUID().toString(),
                 qaReports = emptySet(),
                 dataType = "sfdr",
                 reportingPeriod = "2025",
@@ -35,7 +35,7 @@ class DatasetReviewControllerTest {
                 approvedQaReportIds = mapOf(),
                 approvedDataPointIds = mapOf(),
                 approvedCustomDataPointIds = mapOf(),
-                reviewerUserName = null,
+                ownerName = null,
             )
 
         whenever(datasetReviewService.getDatasetReviewById(datasetReviewId))
@@ -57,8 +57,8 @@ class DatasetReviewControllerTest {
                 dataSetReviewId = UUID.randomUUID().toString(),
                 datasetId = datasetId.toString(),
                 companyId = UUID.randomUUID().toString(),
-                reviewerUserId = UUID.randomUUID().toString(),
-                reviewerUserName = "Dummy User",
+                ownerId = UUID.randomUUID().toString(),
+                ownerName = "Dummy User",
                 qaReports = emptySet(),
                 dataType = "sfdr",
                 reportingPeriod = "2025",
@@ -93,8 +93,8 @@ class DatasetReviewControllerTest {
                 dataSetReviewId = UUID.randomUUID().toString(),
                 datasetId = datasetId.toString(),
                 companyId = UUID.randomUUID().toString(),
-                reviewerUserId = UUID.randomUUID().toString(),
-                reviewerUserName = "Dummy User",
+                ownerId = UUID.randomUUID().toString(),
+                ownerName = "Dummy User",
                 qaReports = emptySet(),
                 dataType = dataType,
                 reportingPeriod = reportingPeriod,
@@ -116,20 +116,20 @@ class DatasetReviewControllerTest {
     }
 
     @Test
-    fun `setReviewer delegates to service`() {
+    fun `setOwner delegates to service`() {
         val id = UUID.randomUUID()
         val serviceResponse = mock<DatasetReviewResponse>()
 
-        whenever(datasetReviewService.setReviewer(id))
+        whenever(datasetReviewService.setOwner(id))
             .thenReturn(serviceResponse)
 
-        val result = controller.setReviewer(id.toString())
+        val result = controller.setOwner(id.toString())
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetReviewService).setReviewer(idCaptor.capture())
+        verify(datasetReviewService).setOwner(idCaptor.capture())
         assertEquals(id, idCaptor.firstValue)
     }
 
