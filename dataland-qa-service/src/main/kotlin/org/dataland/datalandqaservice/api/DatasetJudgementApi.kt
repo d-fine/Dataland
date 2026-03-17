@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * Defines the restful dataland dataset review API
+ * Defines the restful dataland dataset judgement API
  */
 @RequestMapping("/dataset-judgements")
 @SecurityRequirement(name = "default-bearer-auth")
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam
 interface DatasetJudgementApi {
     /**
      * A method to retrieve a dataset judgement object
-     * @param datasetJudgementId id of the dataset review entity
+     * @param datasetJudgementId id of the dataset judgement entity
      */
     @Operation(
         summary = "Get a dataset judgement object by its id.",

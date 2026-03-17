@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfd
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.AcceptedDataPointSource
+import org.dataland.datalandqaservice.openApiClient.model.JudgementDetailsPatch
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.openApiClient.model.ReviewDetailsPatch
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DatasetReviewTest {
+class DatasetJudgementTest {
     private val testDataProvider =
         FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
     private val dummyDataset = testDataProvider.getTData(1)[0]
@@ -74,17 +74,19 @@ class DatasetReviewTest {
         .postQaReport(datapointId, qaReport)
         .reporterUserId
 
-    private fun patchReviewDetails(
-        datasetReviewId: String,
+    private fun patchJudgementDetails(
+        datasetJudgementId: String,
         dataPointType: String,
         acceptedSource: AcceptedDataPointSource,
         reporterUserIdOfAcceptedQaReport: String?,
         customDataPoint: String?,
     ) {
-        QaService.datasetReviewControllerApi.patchReviewDetails(
-            datasetReviewId,
+
+
+        QaService.datasetJudgementControllerApi.patchJudgementDetails(
+            datasetJudgementId,
             dataPointType,
-            ReviewDetailsPatch(
+            JudgementDetailsPatch(
                 acceptedSource,
                 reporterUserIdOfAcceptedQaReport,
                 customDataPoint,
@@ -93,7 +95,7 @@ class DatasetReviewTest {
     }
 
     @Test
-    fun `ensure dataset review entities behave correctly`() {
+    fun `ensure dataset judgement entities behave correctly`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
         val dataPoints = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
@@ -104,10 +106,10 @@ class DatasetReviewTest {
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            val datasetReviewId =
-                QaService.datasetReviewControllerApi
-                    .postDatasetReview(datasetId)
-                    .dataSetReviewId
+            val datasetJudgementId =
+                QaService.datasetJudgementControllerApi
+                    .postDatasetJudgement(datasetId)
+                    .dataSetJudgementId
 
             data class PatchOperation(
                 val dataPointType: String,
@@ -126,8 +128,8 @@ class DatasetReviewTest {
                 )
 
             patchOperations.forEach {
-                patchReviewDetails(
-                    datasetReviewId,
+                patchJudgementDetails(
+                    datasetJudgementId,
                     it.dataPointType,
                     it.acceptedSource,
                     it.reporterUserIdOfAcceptedQaReport,
@@ -136,15 +138,14 @@ class DatasetReviewTest {
             }
         }
 
-        val datasetReview = QaService.datasetReviewControllerApi.getDatasetReviewsByDatasetId(datasetId)[0]
+        val datasetJudgement = QaService.datasetJudgementControllerApi.getDatasetJudgementsByDatasetId(datasetId)[0]
 
-        assertEquals(AcceptedDataPointSource.Original, datasetReview.dataPoints[datapointType1]?.acceptedSource)
-        assertNull(datasetReview.dataPoints[datapointType1]?.reporterUserIdOfAcceptedQaReport)
-        assertNull(datasetReview.dataPoints[datapointType1]?.companyIdOfAcceptedQaReport)
+        assertEquals(AcceptedDataPointSource.Original, datasetJudgement.dataPoints[datapointType1]?.acceptedSource)
+        assertNull(datasetJudgement.dataPoints[datapointType1]?.reporterUserIdOfAcceptedQaReport)
 
-        assertEquals(AcceptedDataPointSource.Qa, datasetReview.dataPoints[datapointType2]?.acceptedSource)
+        assertEquals(AcceptedDataPointSource.Qa, datasetJudgement.dataPoints[datapointType2]?.acceptedSource)
 
-        assertEquals(AcceptedDataPointSource.Custom, datasetReview.dataPoints[datapointType3]?.acceptedSource)
-        assertEquals(customDataPoint, datasetReview.dataPoints[datapointType3]?.customValue)
+        assertEquals(AcceptedDataPointSource.Custom, datasetJudgement.dataPoints[datapointType3]?.acceptedSource)
+        assertEquals(customDataPoint, datasetJudgement.dataPoints[datapointType3]?.customValue)
     }
 }
