@@ -30,7 +30,7 @@ data class DataPointJudgement(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
     )
-    val dataPointId: UUID?,
+    val dataPointId: UUID,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTS_DESCRIPTION,
     )

@@ -5,9 +5,8 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointJudgement
@@ -18,17 +17,14 @@ import java.util.UUID
  */
 @Suppress("LongParameterList")
 @Entity
-@Table(name = "dataset_review_entity_data_point_review_details")
+@Table(name = "dataset_judgement_entity_data_point_review_details")
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
-    val dataPointId: UUID?,
-    @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinTable(
-        name = "data_point_judgement_qa_reports",
-        joinColumns = [JoinColumn(name = "data_point_judgement_id")],
-        inverseJoinColumns = [JoinColumn(name = "qa_report_id")],
-    )
+    @Column(name = "data_point_id")
+    val dataPointId: UUID,
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "data_point_id", referencedColumnName = "data_point_id")
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
