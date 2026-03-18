@@ -262,7 +262,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients", "getTestData")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }
 
@@ -295,6 +295,6 @@ tasks.register<Copy>("getTestData") {
     into(layout.buildDirectory.dir("resources/test"))
 }
 
-tasks.getByName("processTestResources") {
+tasks.named("processTestResources") {
     dependsOn("getTestData")
 }
