@@ -186,11 +186,11 @@ const routes = [
     },
   },
   {
-    path: `/qa/review/:datasetReviewId`,
+    path: `/qa/review/:datasetJudgementId`,
     name: 'DatasetReviewOverview',
     component: DatasetReviewOverview,
-    props: (route: RouteLocationNormalized): { datasetReviewId: string } => ({
-      datasetJudgementId: route.params.datasetReviewId as string,
+    props: (route: RouteLocationNormalized): { datasetJudgementId: string } => ({
+      datasetJudgementId: route.params.datasetJudgementId as string,
     }),
     meta: {
       requiresAuthentication: true,
