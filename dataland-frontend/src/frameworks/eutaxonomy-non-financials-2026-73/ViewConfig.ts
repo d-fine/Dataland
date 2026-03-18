@@ -198,7 +198,6 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         dataPointTypeId: 'Framework specification not compiled by the Framework Toolbox',
       },
     ],
-    labelBadgeColor: 'orange',
   },
   {
     type: 'section',
@@ -432,7 +431,6 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
-    labelBadgeColor: 'green',
   },
   {
     type: 'section',
@@ -665,7 +663,6 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
-    labelBadgeColor: 'yellow',
   },
   {
     type: 'section',
@@ -898,6 +895,5 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
-    labelBadgeColor: 'blue',
   },
 ];

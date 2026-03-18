@@ -16,7 +16,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Capex section
  */
-@Suppress("LargeClass", "MaxLineLength")
+@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673Capex(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

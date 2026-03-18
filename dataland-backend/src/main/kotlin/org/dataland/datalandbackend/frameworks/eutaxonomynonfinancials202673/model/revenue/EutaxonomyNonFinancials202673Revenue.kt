@@ -16,7 +16,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the Revenue section
  */
-@Suppress("LargeClass", "MaxLineLength")
+@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673Revenue(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
