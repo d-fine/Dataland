@@ -440,12 +440,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept('GET', `**/qa/dataset-judgements/${mockDataMetaInfo.dataId}/datasetId`, (request) => {
       request.reply(200, [
         {
-          dataSetJudgementId: datasetReviewIdAlpha, // Use a real UUID or variable
-          datasetId: mockDataMetaInfo.dataId,
-          companyId: 'c9710c7b-9cd6-446b-85b0-3773d2aceb48',
-          judgementState: 'Pending',
-          // ... add other mandatory fields from your schema here
-          dataPoints: {},
+          dataSetJudgementId: datasetReviewIdAlpha,
         },
       ]);
     }).as('getDatasetJudgement');
@@ -457,9 +452,9 @@ describe('Component tests for the Quality Assurance page', () => {
   it('Check routing of Start Review button.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
-    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+    cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, (request) => {
       request.reply(201, {
-        dataSetReviewId: datasetReviewIdAlpha,
+        dataSetJudgementId: datasetReviewIdAlpha,
         companyId: companyIdAlpha,
         dataType: DataTypeEnum.Lksg,
         dataId: dataIdAlpha,
@@ -480,7 +475,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check display of error message.', () => {
     mountQaAssurancePageWithMocks();
-    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+    cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, (request) => {
       request.reply(403, {
         errors: [
           {
