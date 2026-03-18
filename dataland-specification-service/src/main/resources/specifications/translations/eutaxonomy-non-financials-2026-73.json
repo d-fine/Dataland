@@ -34,6 +34,9 @@
       "transitionalShareInPercent" : "REV_TRANSITIONAL_PCT",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "REV_NON_ASSESSED_PCT"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "REV_ELIGIBLE_ALIGNED_ACTIVITIES"
       }
     },
     "capex" : {
@@ -55,6 +58,9 @@
       "transitionalShareInPercent" : "CAPEX_TRANSITIONAL_PCT",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "CAPEX_NON_ASSESSED_PCT"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "CAPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
       }
     },
     "opex" : {
@@ -76,6 +82,9 @@
       "transitionalShareInPercent" : "OPEX_TRANSITIONAL_PCT",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "OPEX_NON_ASSESSED_PCT"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "OPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
       }
     }
   }

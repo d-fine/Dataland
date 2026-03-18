@@ -16864,6 +16864,76 @@
           }
         }
       },
+      "EuTaxonomyEligibleOrAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "relativeEligibleShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "enablingActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "transitionalActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
       "EutaxonomyNonFinancials202673Capex": {
         "type": "object",
         "properties": {
@@ -16962,6 +17032,14 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexNonAssessedShare"
               }
             ]
+          },
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
+              }
+            ]
           }
         }
       },
@@ -16981,6 +17059,19 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17261,6 +17352,14 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexNonAssessedShare"
               }
             ]
+          },
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
+              }
+            ]
           }
         }
       },
@@ -17280,6 +17379,19 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17409,6 +17521,14 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueNonAssessedShare"
               }
             ]
+          },
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
+              }
+            ]
           }
         }
       },
@@ -17428,6 +17548,19 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17493,6 +17626,98 @@
         },
         "description": "Does the fiscal year deviate from the calendar year?",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyEligibleOrAlignedActivity"
+            }
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Share of the OpEx per activity that is taxonomy-eligible as well as absolute value and share of the OpEx per activity that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
+        "example": [
+          {
+            "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+            "naceCodes": [
+              "E.38.11"
+            ],
+            "share": {
+              "relativeShareInPercent": 25,
+              "absoluteShare": {
+                "amount": 100.5,
+                "currency": "EUR"
+              }
+            },
+            "substantialContributionToClimateChangeMitigationInPercent": 10,
+            "substantialContributionToClimateChangeAdaptationInPercent": 5,
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+            "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+            "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+            "dnshToClimateChangeMitigation": "Yes",
+            "dnshToClimateChangeAdaptation": "Yes",
+            "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+            "dnshToTransitionToACircularEconomy": "Yes",
+            "dnshToPollutionPreventionAndControl": "Yes",
+            "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+            "minimumSafeguards": "Yes",
+            "enablingActivity": "No",
+            "transitionalActivity": "Yes"
+          },
+          {
+            "activityName": "InfrastructureForRailTransport",
+            "naceCodes": [
+              "C27.9",
+              "C30.20"
+            ],
+            "share": {
+              "relativeShareInPercent": 25,
+              "absoluteShare": {
+                "amount": 100.5,
+                "currency": "EUR"
+              }
+            },
+            "substantialContributionToClimateChangeMitigationInPercent": 7,
+            "substantialContributionToClimateChangeAdaptationInPercent": 5,
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35,
+            "substantialContributionToTransitionToACircularEconomyInPercent": 70,
+            "substantialContributionToPollutionPreventionAndControlInPercent": 2,
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 1,
+            "dnshToClimateChangeMitigation": "Yes",
+            "dnshToClimateChangeAdaptation": "Yes",
+            "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+            "dnshToTransitionToACircularEconomy": "Yes",
+            "dnshToPollutionPreventionAndControl": "Yes",
+            "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
+            "minimumSafeguards": "Yes",
+            "enablingActivity": "No",
+            "transitionalActivity": "Yes"
+          }
+        ]
       },
       "CompanyAssociatedDataEutaxonomyFinancialsData": {
         "required": [

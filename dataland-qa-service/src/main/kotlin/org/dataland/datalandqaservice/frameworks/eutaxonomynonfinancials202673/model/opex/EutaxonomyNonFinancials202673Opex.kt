@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.opex.alignedShare
     .EutaxonomyNonFinancials202673OpexAlignedShare
+import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.opex.eligibleOrAlignedActivities
+    .EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.opex.eligibleShare
     .EutaxonomyNonFinancials202673OpexEligibleShare
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.opex.nonAssessedShare
@@ -42,4 +44,6 @@ data class EutaxonomyNonFinancials202673Opex(
     val transitionalShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val nonAssessedShare: EutaxonomyNonFinancials202673OpexNonAssessedShare? = null,
+    @field:Valid()
+    val eligibleOrAlignedActivities: EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities? = null,
 )

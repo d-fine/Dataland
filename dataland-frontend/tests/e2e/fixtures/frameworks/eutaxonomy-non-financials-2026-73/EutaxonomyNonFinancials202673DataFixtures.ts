@@ -87,6 +87,11 @@ export function generateEutaxonomyNonFinancials202673Data(
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
+      eligibleOrAlignedActivities: {
+        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+        ),
+      },
     },
     capex: {
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
@@ -118,6 +123,11 @@ export function generateEutaxonomyNonFinancials202673Data(
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
+      eligibleOrAlignedActivities: {
+        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+        ),
+      },
     },
     opex: {
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
@@ -148,6 +158,11 @@ export function generateEutaxonomyNonFinancials202673Data(
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
+      eligibleOrAlignedActivities: {
+        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+        ),
       },
     },
   };

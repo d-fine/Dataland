@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.model.revenue.alignedShare
     .EutaxonomyNonFinancials202673RevenueAlignedShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.model.revenue.eligibleOrAlignedActivities
+    .EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.model.revenue.eligibleShare
     .EutaxonomyNonFinancials202673RevenueEligibleShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.model.revenue.nonAssessedShare
@@ -178,4 +180,6 @@ data class EutaxonomyNonFinancials202673Revenue(
     val transitionalShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val nonAssessedShare: EutaxonomyNonFinancials202673RevenueNonAssessedShare? = null,
+    @field:Valid()
+    val eligibleOrAlignedActivities: EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities? = null,
 )

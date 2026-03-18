@@ -36,6 +36,9 @@
       "transitionalShareInPercent" : "extendedDecimalRevenueTransitionalShareInPercent",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalRevenueNonAssessedShareRelativeShareInPercent"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentRevenueEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
       }
     },
     "capex" : {
@@ -57,6 +60,9 @@
       "transitionalShareInPercent" : "extendedDecimalCapexTransitionalShareInPercent",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalCapexNonAssessedShareRelativeShareInPercent"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentCapexEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
       }
     },
     "opex" : {
@@ -78,6 +84,9 @@
       "transitionalShareInPercent" : "extendedDecimalOpexTransitionalShareInPercent",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalOpexNonAssessedShareRelativeShareInPercent"
+      },
+      "eligibleOrAlignedActivities" : {
+        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentOpexEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
       }
     }
   }

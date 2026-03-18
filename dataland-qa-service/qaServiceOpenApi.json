@@ -7197,6 +7197,214 @@
           }
         }
       },
+      "EuTaxonomyEligibleOrAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "type": "string",
+            "enum": [
+              "AcquisitionAndOwnershipOfBuildings",
+              "Afforestation",
+              "AirTransportGroundHandlingOperations",
+              "AirportInfrastructure",
+              "AnaerobicDigestionOfBioWaste",
+              "AnaerobicDigestionOfSewageSludge",
+              "CloseToMarketResearchDevelopmentAndInnovation",
+              "CogenerationOfHeatCoolAndPowerFromBioenergy",
+              "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+              "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+              "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+              "CollectionAndTransportOfHazardousWaste",
+              "CollectionAndTransportOfNonHazardousAndHazardousWaste",
+              "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+              "CompostingOfBioWaste",
+              "ComputerProgrammingConsultancyAndRelatedActivities",
+              "ConservationForestry",
+              "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
+              "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+              "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+              "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+              "ConstructionOfNewBuildings",
+              "ConsultancyForPhysicalClimateRiskManagementAndAdaptation",
+              "CreativeArtsAndEntertainmentActivities",
+              "DataDrivenSolutionsForGhgEmissionsReductions",
+              "DataProcessingHostingAndRelatedActivities",
+              "DemolitionAndWreckingOfBuildingsAndOtherStructures",
+              "DepollutionAndDismantlingOfEndOfLifeProducts",
+              "Desalination",
+              "DistrictHeatingCoolingDistribution",
+              "Education",
+              "ElectricityGenerationFromBioenergy",
+              "ElectricityGenerationFromFossilGaseousFuels",
+              "ElectricityGenerationFromGeothermalEnergy",
+              "ElectricityGenerationFromHydropower",
+              "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+              "ElectricityGenerationFromOceanEnergyTechnologies",
+              "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ElectricityGenerationFromWindPower",
+              "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+              "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+              "EmergencyServices",
+              "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+              "FloodRiskPreventionAndProtectionInfrastructure",
+              "ForestManagement",
+              "FreightRailTransport",
+              "FreightTransportServicesByRoad",
+              "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+              "HotelsHolidayCampingGroundsAndSimilarAccommodation",
+              "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+              "InfrastructureEnablingLowCarbonWaterTransport",
+              "InfrastructureEnablingRoadTransportAndPublicTransport",
+              "InfrastructureForPersonalMobilityCycleLogistics",
+              "InfrastructureForRailTransport",
+              "InfrastructureForWaterTransport",
+              "InlandFreightWaterTransport",
+              "InlandPassengerWaterTransport",
+              "InstallationAndOperationOfElectricHeatPumps",
+              "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+              "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+              "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+              "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+              "LandfillGasCaptureAndUtilisation",
+              "LeasingOfAircraft",
+              "LibrariesArchivesMuseumsAndCulturalActivities",
+              "LowCarbonAirportInfrastructure",
+              "MaintenanceOfRoadsAndMotorways",
+              "ManufactureInstallationAndAssociatedServicesForLeakageControlTechnologiesEnablingLeakageReductionAndPreventionInWaterSupplySystems",
+              "ManufactureInstallationAndServicingOfHighMediumAndLowVoltageElectricalEquipmentForElectricalTransmissionAndDistributionThatResultInOrEnableASubstantialContributionToClimateChangeMitigation",
+              "ManufactureOfActivePharmaceuticalIngredientsApiOrActiveSubstances",
+              "ManufactureOfAluminium",
+              "ManufactureOfAnhydrousAmmonia",
+              "ManufactureOfAutomotiveAndMobilityComponents",
+              "ManufactureOfBatteries",
+              "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+              "ManufactureOfCarbonBlack",
+              "ManufactureOfCement",
+              "ManufactureOfChlorine",
+              "ManufactureOfElectricalAndElectronicEquipment",
+              "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+              "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+              "ManufactureOfHydrogen",
+              "ManufactureOfIronAndSteel",
+              "ManufactureOfLowCarbonTechnologiesForTransport",
+              "ManufactureOfMedicinalProducts",
+              "ManufactureOfNitricAcid",
+              "ManufactureOfOrganicBasicChemicals",
+              "ManufactureOfOtherLowCarbonTechnologies",
+              "ManufactureOfPlasticPackagingGoods",
+              "ManufactureOfPlasticsInPrimaryForm",
+              "ManufactureOfRailRollingStockConstituents",
+              "ManufactureOfRenewableEnergyTechnologies",
+              "ManufactureOfSodaAsh",
+              "ManufacturingOfAircraft",
+              "MarketplaceForTheTradeOfSecondHandGoodsForReuse",
+              "MaterialRecoveryFromNonHazardousWaste",
+              "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
+              "NatureBasedSolutionsForFloodAndDroughtRiskPreventionAndProtection",
+              "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+              "OperationOfPersonalMobilityDevicesCycleLogistics",
+              "PassengerAndFreightAirTransport",
+              "PassengerInterurbanRailTransport",
+              "PhosphorusRecoveryFromWasteWater",
+              "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+              "PreparationForReUseOfEndOfLifeProductsAndProductComponents",
+              "ProductAsAServiceAndOtherCircularUseAndResultOrientedServiceModels",
+              "ProductionOfAlternativeWaterResourcesForPurposesOtherThanHumanConsumption",
+              "ProductionOfHeatCoolFromBioenergy",
+              "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+              "ProductionOfHeatCoolFromGeothermalEnergy",
+              "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ProductionOfHeatCoolFromSolarThermalHeating",
+              "ProductionOfHeatCoolUsingWasteHeat",
+              "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+              "ProgrammingAndBroadcastingActivities",
+              "ProvisionOfItOtDataDrivenSolutions",
+              "ProvisionOfItOtDataDrivenSolutionsForLeakageReduction",
+              "RecoveryOfBioWasteByAnaerobicDigestionOrComposting",
+              "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+              "Reinsurance",
+              "RemediationOfContaminatedSitesAndAreas",
+              "RemediationOfLegallyNonConformingLandfillsAndAbandonedOrIllegalWasteDumps",
+              "RenewalOfWasteWaterCollectionAndTreatment",
+              "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+              "RenovationOfExistingBuildings",
+              "RepairRefurbishmentAndRemanufacturing",
+              "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+              "ResidentialCareActivities",
+              "RestorationOfWetlands",
+              "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+              "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+              "SaleOfSecondHandGoods",
+              "SaleOfSpareParts",
+              "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+              "SeaAndCoastalPassengerWaterTransport",
+              "SoftwareEnablingPhysicalClimateRiskManagementAndAdaptation",
+              "SortingAndMaterialRecoveryOfNonHazardousWaste",
+              "StorageOfElectricity",
+              "StorageOfHydrogen",
+              "StorageOfThermalEnergy",
+              "SustainableUrbanDrainageSystemsSuds",
+              "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+              "TransmissionAndDistributionOfElectricity",
+              "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+              "TransportOfCo2",
+              "TreatmentOfHazardousWaste",
+              "UndergroundPermanentGeologicalStorageOfCo2",
+              "UrbanAndSuburbanTransportRoadPassengerTransport",
+              "UrbanWasteWaterTreatment",
+              "UseOfConcreteInCivilEngineering",
+              "WaterSupply"
+            ]
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "relativeEligibleShareInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number"
+          },
+          "enablingActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "transitionalActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          }
+        }
+      },
       "EutaxonomyNonFinancials202673Capex": {
         "type": "object",
         "properties": {
@@ -7235,6 +7443,9 @@
           },
           "nonAssessedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
           }
         }
       },
@@ -7246,6 +7457,14 @@
           },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
@@ -7358,6 +7577,9 @@
           },
           "nonAssessedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
           }
         }
       },
@@ -7369,6 +7591,14 @@
           },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
@@ -7426,6 +7656,9 @@
           },
           "nonAssessedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
           }
         }
       },
@@ -7437,6 +7670,14 @@
           },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
@@ -7497,6 +7738,46 @@
           }
         }
       },
+      "ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyEligibleOrAlignedActivity"
+            }
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
       "QaReportDataPointExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
@@ -7514,6 +7795,26 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },

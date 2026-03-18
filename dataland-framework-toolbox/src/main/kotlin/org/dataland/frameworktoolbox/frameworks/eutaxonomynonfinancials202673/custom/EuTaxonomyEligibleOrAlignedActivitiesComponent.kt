@@ -103,6 +103,8 @@ class EuTaxonomyEligibleOrAlignedActivitiesComponent(
         )
     }
 
+    override fun getUploadComponentName(): String = "EligibleOrAlignedActivitiesFormField"
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         return // is built by hand
     }

@@ -77,6 +77,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.revenue?.enablingShareInPercent?.dataSource?.fileReference,
             dataset.revenue?.transitionalShareInPercent?.dataSource?.fileReference,
             dataset.revenue?.nonAssessedShare?.relativeShareInPercent?.dataSource?.fileReference,
+            dataset.revenue?.eligibleOrAlignedActivities?.eligibleOrAlignedActivities?.dataSource?.fileReference,
             dataset.capex?.totalAmount?.dataSource?.fileReference,
             dataset.capex?.eligibleShare?.relativeShareInPercent?.dataSource?.fileReference,
             dataset.capex?.alignedShare?.relativeShareInPercent?.dataSource?.fileReference,
@@ -90,6 +91,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.capex?.enablingShareInPercent?.dataSource?.fileReference,
             dataset.capex?.transitionalShareInPercent?.dataSource?.fileReference,
             dataset.capex?.nonAssessedShare?.relativeShareInPercent?.dataSource?.fileReference,
+            dataset.capex?.eligibleOrAlignedActivities?.eligibleOrAlignedActivities?.dataSource?.fileReference,
             dataset.opex?.totalAmount?.dataSource?.fileReference,
             dataset.opex?.eligibleShare?.relativeShareInPercent?.dataSource?.fileReference,
             dataset.opex?.alignedShare?.relativeShareInPercent?.dataSource?.fileReference,
@@ -103,6 +105,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.opex?.enablingShareInPercent?.dataSource?.fileReference,
             dataset.opex?.transitionalShareInPercent?.dataSource?.fileReference,
             dataset.opex?.nonAssessedShare?.relativeShareInPercent?.dataSource?.fileReference,
+            dataset.opex?.eligibleOrAlignedActivities?.eligibleOrAlignedActivities?.dataSource?.fileReference,
         )
     }
 }
