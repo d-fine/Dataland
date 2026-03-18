@@ -189,7 +189,7 @@ class DatasetJudgementService
                 }
                 AcceptedDataPointSource.Qa -> {
                     DatasetJudgementValidationHelper.validateReporterUserIdOfAcceptedQaReport(
-                        dataPoint.qaReports.toList(),
+                        dataPoint.qaReports,
                         patch.reporterUserIdOfAcceptedQaReport,
                     )
                     dataPoint.apply {

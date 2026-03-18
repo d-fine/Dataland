@@ -81,7 +81,7 @@ class DatasetJudgementCreationService
          */
         private fun getLatestQaReportsByDataPointTypeAndReporter(
             activeQaReports: Collection<DataPointQaReportEntity>,
-        ): Map<String, Collection<DataPointQaReportEntity>> =
+        ): Map<String, List<DataPointQaReportEntity>> =
             activeQaReports.groupBy { it.dataPointType }.mapValues { (_, reports) ->
                 reports.groupBy { it.reporterUserId }.map { (_, reportsByReporter) ->
                     reportsByReporter.maxBy { it.uploadTime }
@@ -97,7 +97,12 @@ class DatasetJudgementCreationService
          * @param dataPointTypeToQaReports QA reports grouped by data point type.
          * @return List of QA reporters with resolved user details.
          */
-        private fun getQaReporters(dataPointTypeToQaReports: Map<String, Collection<DataPointQaReportEntity>>): List<QaReporter> {
+        private fun getQaReporters(
+            dataPointTypeToQaReports: Map<
+                String,
+                Collection<DataPointQaReportEntity>,
+            >,
+        ): List<QaReporter> {
             val reporterUserIds =
                 dataPointTypeToQaReports
                     .values

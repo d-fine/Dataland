@@ -41,7 +41,7 @@ class DataPointJudgementEntity(
         DataPointJudgement(
             dataPointType = dataPointType,
             dataPointId = dataPointId,
-            qaReports = qaReports.map { it.toQaReportDataPointWithReporterDetails() },
+            qaReports = qaReports.map { it.toApiModel() },
             acceptedSource = acceptedSource,
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
             customValue = customValue,

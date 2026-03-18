@@ -52,12 +52,12 @@ object DatasetJudgementValidationHelper {
      * of a QA report from the specified user.
      * Throws an exception if validation fails for absence, or existence conditions.
      *
-     * @param qaReports The list of QA reports for the data point.
+     * @param qaReports Collection of QA reports for the data point.
      * @param reporterUserIdOfAcceptedQaReport The user ID to validate as accepted QA report source.
      * @throws InvalidInputApiException If the user ID is missing or does not correspond to a valid QA report.
      */
     fun validateReporterUserIdOfAcceptedQaReport(
-        qaReports: List<DataPointQaReportEntity>,
+        qaReports: Collection<DataPointQaReportEntity>,
         reporterUserIdOfAcceptedQaReport: String?,
     ) {
         if (reporterUserIdOfAcceptedQaReport == null) {

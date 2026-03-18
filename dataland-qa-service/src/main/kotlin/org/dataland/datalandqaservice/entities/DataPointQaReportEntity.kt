@@ -11,7 +11,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.QaReportDataPointVerdictConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporter
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
@@ -64,16 +63,5 @@ data class DataPointQaReportEntity(
             comment = comment,
             verdict = verdict,
             correctedData = objectMapper.readTree(correctedData),
-        )
-
-    /**
-     * Converts this entity to its API response DTO.
-     */
-    fun toQaReportDataPointWithReporterDetails(): QaReportDataPointWithReporter =
-        QaReportDataPointWithReporter(
-            qaReportId = qaReportId,
-            verdict = verdict,
-            correctedData = correctedData,
-            reporterUserId = reporterUserId,
         )
 }

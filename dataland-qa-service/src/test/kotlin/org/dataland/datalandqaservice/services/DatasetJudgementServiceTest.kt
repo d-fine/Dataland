@@ -357,7 +357,7 @@ class DatasetJudgementServiceTest {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
-            setOf(DatalandRealmRole.ROLE_ADMIN),
+            setOf(DatalandRealmRole.ROLE_UPLOADER),
         )
 
         assertThrows<InsufficientRightsApiException> {

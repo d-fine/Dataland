@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportDataPointWithReporter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import java.util.UUID
 
 /**
@@ -34,7 +34,7 @@ data class DataPointJudgement(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTS_DESCRIPTION,
     )
-    val qaReports: List<QaReportDataPointWithReporter>,
+    val qaReports: List<DataPointQaReport>,
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.ACCEPTED_SOURCE_EXAMPLE,
