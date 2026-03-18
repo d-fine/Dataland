@@ -206,8 +206,8 @@ import type {
 } from '@clients/backend';
 import { DataTypeEnum } from '@clients/backend';
 import {
-  type DatasetReviewResponse,
-  type DataPointReview,
+  type DatasetJudgementResponse,
+  type DataPointJudgement,
   type QaReportDataPointWithReporter,
   AcceptedDataPointSource,
   QaReportDataPointVerdict,
@@ -226,7 +226,7 @@ const props = defineProps<{
   framework: DataTypeEnum;
   dataId: string;
   searchQuery: string;
-  datasetReview: DatasetReviewResponse;
+  datasetReview: DatasetJudgementResponse;
   dataMetaInformation: DataMetaInformation;
   hideEmptyFields: boolean;
 }>();
@@ -366,9 +366,9 @@ const filteredRows = computed<KpiRow[]>(() => {
  * provided `datasetReview` prop.
  *
  * @param {string | undefined} dataPointTypeId - The data point type identifier to look up.
- * @returns {DataPointReview | undefined} The review info entry for the data point, or undefined when not found.
+ * @returns {DataPointJudgement | undefined} The review info entry for the data point, or undefined when not found.
  */
-function getReviewInfo(dataPointTypeId?: string): DataPointReview | undefined {
+function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
 }

@@ -195,7 +195,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Successfully added dataset judgment object to Dataland.",
+            "description": "Successfully added dataset judgement object to Dataland.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3612,7 +3612,7 @@
           },
           "customValue": {
             "type": "string",
-            "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
+            "description": "Custom datapoints as json string to be uploaded.",
             "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
           }
         },

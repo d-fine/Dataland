@@ -357,7 +357,7 @@ async function confirmStartReview(): Promise<void> {
   isCreatingReview.value = true;
 
   try {
-    const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetReview(
+    const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetJudgement(
       selectedDataId.value
     );
 
