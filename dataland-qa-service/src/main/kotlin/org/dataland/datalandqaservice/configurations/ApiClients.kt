@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -19,6 +20,7 @@ class ApiClients(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
     @Value("\${dataland.specification-service.base-url}") private val specificationServiceBaseUrl: String,
     @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
+    @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -57,4 +59,12 @@ class ApiClients(
     fun getInheritedRolesControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the DataSourcingControllerApi of the data sourcing service
+     */
+    @Bean
+    fun getDataSourcingControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): DataSourcingControllerApi = DataSourcingControllerApi(dataSourcingServiceBaseUrl, authenticatedOkHttpClient)
 }

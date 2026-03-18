@@ -91,4 +91,28 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     fun getNumberOfFilteredQaReviews(
         @Param("searchFilter") searchFilter: QaSearchFilter,
     ): Int
+
+    /**
+     * This query returns datasets with pending QA status and filters only for company names.
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            "WITH RankedByDataId AS (" +
+                " SELECT *, ROW_NUMBER() OVER (PARTITION BY data_id ORDER BY timestamp DESC) AS num_row" +
+                " FROM qa_review" +
+                " )" +
+                " SELECT entry.* FROM RankedByDataId entry" +
+                " WHERE" +
+                " entry.num_row = 1 AND" +
+                " ((:#{#searchFilter.shouldFilterByCompanyName } = false AND" +
+                " :#{#searchFilter.shouldFilterByCompanyId} = false)" +
+                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) AND" +
+                " (:#{#searchFilter.shouldFilterByQaStatus} = false" +
+                " OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses})" +
+                " ORDER BY entry.timestamp DESC",
+    )
+    fun getPendingQaReviewMetadatasetsByCompany(
+        @Param("searchFilter") searchFilter: QaSearchFilter,
+    ): List<QaReviewEntity>
 }
