@@ -81,8 +81,6 @@ class DatasetJudgementTest {
         reporterUserIdOfAcceptedQaReport: String?,
         customDataPoint: String?,
     ) {
-
-
         QaService.datasetJudgementControllerApi.patchJudgementDetails(
             datasetJudgementId,
             dataPointType,
