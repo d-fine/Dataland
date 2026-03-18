@@ -8,6 +8,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.DatasetJudgementStateConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
@@ -29,7 +30,7 @@ class DatasetJudgementEntity(
     @Column(name = "company_id")
     val companyId: UUID,
     @Column(name = "data_type")
-    val dataType: String,
+    val dataType: DataTypeEnum,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "judgement_state")
@@ -53,7 +54,7 @@ class DatasetJudgementEntity(
             dataSetJudgementId.toString(),
             datasetId.toString(),
             companyId.toString(),
-            dataType,
+            dataType.toString(),
             reportingPeriod,
             judgementState,
             qaJudgeUserId.toString(),

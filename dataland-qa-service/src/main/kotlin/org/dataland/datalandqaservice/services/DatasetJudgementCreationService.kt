@@ -52,7 +52,7 @@ class DatasetJudgementCreationService
                     dataSetJudgementId = UUID.randomUUID(),
                     datasetId = datasetId,
                     companyId = UUID.fromString(datasetMetaData.companyId),
-                    dataType = datasetMetaData.dataType.toString(),
+                    dataType = datasetMetaData.dataType,
                     reportingPeriod = datasetMetaData.reportingPeriod,
                     qaJudgeUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
                     qaJudgeUserName = DatalandAuthentication.fromContext().name,
