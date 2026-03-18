@@ -3598,7 +3598,7 @@
             "type": "array",
             "description": "List of QA reports associated with this data point, including details about the reporter company.",
             "items": {
-              "$ref": "#/components/schemas/QaReportDataPointWithReporter"
+              "$ref": "#/components/schemas/DataPointQaReport"
             }
           },
           "acceptedSource": {
@@ -3617,6 +3617,64 @@
           }
         },
         "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
+      },
+      "DataPointQaReport": {
+        "required": [
+          "active",
+          "comment",
+          "dataPointId",
+          "dataPointType",
+          "qaReportId",
+          "uploadTime",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointId": {
+            "type": "string",
+            "description": "The unique identifier of the datapoint.",
+            "example": "The unique identifier of the datapoint."
+          },
+          "dataPointType": {
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoIsNfrdMandatory"
+          },
+          "qaReportId": {
+            "type": "string",
+            "description": "The unique identifier of the QA report",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reporterUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the QA report was uploaded.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Boolean flag. True if and only if the QA report is marked as active."
+          },
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "string",
+            "description": "Contains suggested data corrections for the rejected data point.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+          }
+        },
+        "description": "List of QA reports associated with this data point, including details about the reporter company."
       },
       "DatasetJudgementResponse": {
         "required": [
@@ -3712,42 +3770,12 @@
       "QaReportDataPointVerdict": {
         "type": "string",
         "description": "The verdict of a QA report regarding a data point.",
-        "example": "QaAccepted",
         "enum": [
           "QaAccepted",
           "QaRejected",
           "QaInconclusive",
           "QaNotAttempted"
         ]
-      },
-      "QaReportDataPointWithReporter": {
-        "required": [
-          "qaReportId",
-          "reporterUserId",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "qaReportId": {
-            "type": "string",
-            "description": "The unique identifier of the QA report",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "type": "string",
-            "description": "Contains suggested data corrections for the rejected data point.",
-            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
-          },
-          "reporterUserId": {
-            "type": "string",
-            "description": "The unique user ID of the user who uploaded the QA report.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        },
-        "description": "List of QA reports associated with this data point, including details about the reporter company."
       },
       "QaReporter": {
         "required": [
@@ -8597,63 +8625,6 @@
         ],
         "type": "object",
         "properties": {
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "type": "string",
-            "description": "Contains suggested data corrections for the rejected data point.",
-            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
-          }
-        }
-      },
-      "DataPointQaReport": {
-        "required": [
-          "active",
-          "comment",
-          "dataPointId",
-          "dataPointType",
-          "qaReportId",
-          "uploadTime",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "dataPointId": {
-            "type": "string",
-            "description": "The unique identifier of the datapoint.",
-            "example": "The unique identifier of the datapoint."
-          },
-          "dataPointType": {
-            "type": "string",
-            "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoIsNfrdMandatory"
-          },
-          "qaReportId": {
-            "type": "string",
-            "description": "The unique identifier of the QA report",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "reporterUserId": {
-            "type": "string",
-            "description": "The unique user ID of the user who uploaded the QA report.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "description": "The timestamp (epoch milliseconds) at which the QA report was uploaded.",
-            "format": "int64",
-            "example": 1751291891271
-          },
-          "active": {
-            "type": "boolean",
-            "description": "Boolean flag. True if and only if the QA report is marked as active."
-          },
           "comment": {
             "type": "string",
             "description": "A comment explaining the verdict.",
