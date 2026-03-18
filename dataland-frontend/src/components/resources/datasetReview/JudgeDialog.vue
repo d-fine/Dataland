@@ -331,7 +331,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 // TanStack Query composables (names assumed from your description)
-import { useDatasetReviewQuery, datasetReviewKeys } from '@/composables/useDatasetReviewQuery.ts';
+// import { useDatasetReviewQuery, datasetReviewKeys } from '@/composables/useDatasetReviewQuery.ts';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import {ReviewDetailsPatch} from "@clients/qaservice";
 
@@ -360,11 +360,92 @@ const dataPointControllerApi = apiClientProvider.apiClients.dataPointController;
 
 // ===== Dataset review via shared query composable =====
 
-const {
-  data: datasetReview,
-  isLoading: isDatasetReviewLoading,
-  error: datasetReviewError,
-} = useDatasetReviewQuery(() => props.datasetReviewId);
+// const {
+//   data: datasetReview,
+//   isLoading: isDatasetReviewLoading,
+//   error: datasetReviewError,
+// } = useDatasetReviewQuery(() => props.datasetReviewId);
+
+const mockDataPointsById: Record<string, DataPointDetail> = {
+  'mock-dp-1': {
+    value: 12345,
+    quality: 'High',
+    comment: 'Mock original datapoint for QA comparison.',
+    dataSource: {
+      fileName: 'Sustainability_Report_2023.pdf',
+      page: 12,
+    },
+  },
+  'mock-dp-2': {
+    value: 987,
+    quality: 'Medium',
+    comment: 'Mock original datapoint for custom acceptance.',
+    dataSource: {
+      fileReference: 'MockSource-REF-77',
+      pageRange: '4-6',
+    },
+  },
+};
+
+const mockDatasetReview = {
+  dataPoints: {
+    'kpi.energyConsumption': {
+      dataPointId: 'mock-dp-1',
+      acceptedSource: null,
+      qaReports: [
+        {
+          qaReportId: 'mock-qa-1',
+          verdict: 'QaPending',
+          correctedData: JSON.stringify({
+            value: 12000,
+            quality: 'High',
+            comment: 'Corrected based on updated table.',
+            dataSource: {
+              fileName: 'Sustainability_Report_2023.pdf',
+              page: 13,
+            },
+          }),
+          reporterUserId: 'mock-user-1',
+        },
+        {
+          qaReportId: 'mock-qa-2',
+          verdict: 'QaPending',
+          correctedData: JSON.stringify({
+            value: 11890,
+            quality: 'High',
+            comment: 'Adjusted for unit conversion.',
+            dataSource: {
+              fileName: 'Sustainability_Report_2023.pdf',
+              pageRange: '14-15',
+            },
+          }),
+          reporterUserId: 'mock-user-2',
+        },
+      ],
+    },
+    'kpi.co2Emissions': {
+      dataPointId: 'mock-dp-2',
+      acceptedSource: null,
+      qaReports: [],
+    },
+  },
+  qaReporters: [
+    {
+      reporterUserId: 'mock-user-1',
+      reporterUserName: 'Jane QA',
+      reporterEmailAddress: 'jane.qa@example.com',
+    },
+    {
+      reporterUserId: 'mock-user-2',
+      reporterUserName: 'Alex QA',
+      reporterEmailAddress: 'alex.qa@example.com',
+    },
+  ],
+} as any;
+
+const datasetReview = ref(mockDatasetReview);
+const isDatasetReviewLoading = ref(false);
+const datasetReviewError = ref(null);
 
 const queryClient = useQueryClient();
 
@@ -378,7 +459,7 @@ const patchMutation = useMutation({
   },
   onSuccess: () => {
     // Invalidate dataset review detail query
-    queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(props.datasetReviewId) });
+    // queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(props.datasetReviewId) });
   },
 });
 

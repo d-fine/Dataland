@@ -1,6 +1,7 @@
 <template>
   <TheContent class="min-h-screen relative">
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_JUDGE">
+      <JudgeDialog dataset-review-id="mock" data-point-type-id="mock-dp-1" v-model:visible="true" />
       <div class="container">
         <div class="company-search" data-test="companySearchBarWithMessage">
           <IconField id="company-search-bar">
@@ -209,6 +210,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import JudgeDialog from "@/components/resources/datasetReview/JudgeDialog.vue";
 
 const datasetsPerPage = 10;
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
