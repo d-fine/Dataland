@@ -441,9 +441,9 @@ async function visitReviewPage(): Promise<void> {
       const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
       const dataId = props.singleDataMetaInfoToDisplay.dataId;
       const response =
-        await apiClientProvider.apiClients.datasetJudgementController.getDatasetReviewsByDatasetId(dataId);
-      const datasetReviewId = response.data[0]?.dataSetReviewId;
-      await router.push(`/qa/review/${datasetReviewId}`);
+        await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(dataId);
+      const datasetJudgementId = response.data[0]?.dataSetJudgementId;
+      await router.push(`/qa/review/${datasetJudgementId}`);
     }
   } catch (error) {
     console.error('Error navigating to review page:', error);

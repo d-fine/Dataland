@@ -121,7 +121,7 @@ import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 
 const props = defineProps<{
-  datasetReviewId: string;
+  datasetJudgementId: string;
 }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
@@ -129,14 +129,14 @@ const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 
 const dataIdRef = computed(() => datasetReview.value?.datasetId);
-const datasetReviewIdRef = computed(() => props.datasetReviewId);
+const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
 
 const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
 } = useDatasetReviewQuery({
-  datasetJudgementId: datasetReviewIdRef,
+  datasetJudgementId: datasetJudgementIdRef,
 });
 
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
@@ -165,15 +165,15 @@ const isAssignedToCurrentUser = computed(() => {
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetReviewIdRef);
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
-  datasetReviewIdRef,
+  datasetJudgementIdRef,
   DatasetJudgementState.Aborted
 );
 
 const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
-  datasetReviewIdRef,
+  datasetJudgementIdRef,
   DatasetJudgementState.Finished
 );
 
@@ -265,7 +265,7 @@ async function setCurrentUserId(): Promise<void> {
 }
 
 onMounted(async () => {
-  console.log('Loaded Review Page for Dataset Review ID:', props.datasetReviewId);
+  console.log('Loaded Review Page for Dataset Review ID:', props.datasetJudgementId);
   await setCurrentUserId();
 });
 </script>
