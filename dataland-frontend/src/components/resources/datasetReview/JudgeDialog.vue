@@ -4,7 +4,7 @@
       :dismissable-mask="true"
       :modal="true"
       class="col-8"
-      style="min-width: 40rem; max-width: 80rem"
+      style="min-width: 60rem; max-width: 90rem"
       v-model:visible="isOpen"
       @hide="handleClose"
       data-test="judge-modal"
@@ -13,15 +13,8 @@
     <template #header>
       <div class="judge-modal__header">
         <span class="p-dialog-title">
-          Judge KPI:
           <span class="judge-modal__kpi-name">{{ currentDataPointTypeId }}</span>
         </span>
-        <PrimeButton
-            icon="pi pi-times"
-            variant="text"
-            @click.stop="handleClose"
-            data-test="judge-modal-close"
-        />
       </div>
     </template>
 
@@ -36,9 +29,8 @@
     </div>
 
     <div v-else class="judge-modal__content">
-      <!-- Left column: Original / Corrected / Custom -->
-      <div class="judge-modal__left-column">
-        <!-- Original datapoint -->
+      <!-- Top-left: Original datapoint -->
+      <div class="judge-modal__grid-cell judge-modal__grid-top-left">
         <section class="judge-modal__section" data-test="original-datapoint-section">
           <h3 class="judge-modal__section-title">Original datapoint</h3>
 
@@ -89,14 +81,6 @@
               </tr>
               </tbody>
             </table>
-
-            <!-- Raw JSON (for large/complex values) -->
-            <div class="judge-modal__json-view">
-              <div class="judge-modal__json-label">Raw JSON</div>
-              <pre class="judge-modal__json-pre">
-{{ originalJsonPretty }}
-              </pre>
-            </div>
           </div>
           <div v-else>
             <span>No original datapoint data available.</span>
@@ -111,22 +95,20 @@
             />
           </div>
         </section>
+      </div>
 
-        <!-- Corrected datapoint (QA reports) -->
+      <!-- Top-right: Corrected datapoint (QA reports) -->
+      <div class="judge-modal__grid-cell judge-modal__grid-top-right">
         <section class="judge-modal__section" data-test="corrected-datapoint-section">
-          <h3 class="judge-modal__section-title">
-            Corrected datapoint
-            <span v-if="filteredQaReports.length > 0" class="judge-modal__qa-counter">
-              ({{ currentQaReportIndex + 1 }} / {{ filteredQaReports.length }})
-            </span>
-          </h3>
+          <div class="judge-modal__section-header-with-nav">
+            <h3 class="judge-modal__section-title">
+              Corrected datapoint
+              <span v-if="filteredQaReports.length > 0" class="judge-modal__qa-counter">
+                ({{ currentQaReportIndex + 1 }} / {{ filteredQaReports.length }})
+              </span>
+            </h3>
 
-          <div v-if="filteredQaReports.length === 0" class="judge-modal__no-qa">
-            No QA reports available.
-          </div>
-
-          <div v-else>
-            <div class="judge-modal__qa-header">
+            <div v-if="filteredQaReports.length > 0" class="judge-modal__qa-nav">
               <PrimeButton
                   icon="pi pi-chevron-left"
                   variant="text"
@@ -145,6 +127,13 @@
                   data-test="qa-next-button"
               />
             </div>
+          </div>
+
+          <div v-if="filteredQaReports.length === 0" class="judge-modal__no-qa">
+            No QA reports available.
+          </div>
+
+          <div v-else>
 
             <div v-if="currentQaCorrectedData">
               <table class="judge-modal__datatable" aria-label="Corrected datapoint">
@@ -189,14 +178,6 @@
                 </tr>
                 </tbody>
               </table>
-
-              <!-- Raw JSON -->
-              <div class="judge-modal__json-view">
-                <div class="judge-modal__json-label">Raw JSON</div>
-                <pre class="judge-modal__json-pre">
-{{ currentQaCorrectedJsonPretty }}
-                </pre>
-              </div>
             </div>
           </div>
 
@@ -209,13 +190,13 @@
             />
           </div>
         </section>
+      </div>
 
-        <!-- Custom datapoint -->
+      <!-- Bottom-left: Custom datapoint -->
+      <div class="judge-modal__grid-cell judge-modal__grid-bottom-left">
         <section class="judge-modal__section" data-test="custom-datapoint-section">
           <div class="judge-modal__section-header-row">
             <h3 class="judge-modal__section-title">Custom datapoint</h3>
-            <!-- Placeholder for Toggle edit mode (explicitly not implemented) -->
-            <span class="judge-modal__placeholder-label">Toggle edit mode (not implemented)</span>
           </div>
 
           <div class="judge-modal__custom-actions">
@@ -262,23 +243,23 @@
         </section>
       </div>
 
-      <!-- Right column: Next datapoint selection & patch error -->
-      <div class="judge-modal__right-column">
+      <!-- Bottom-right: Next datapoint selection & patch error -->
+      <div class="judge-modal__grid-cell judge-modal__grid-bottom-right">
         <section class="judge-modal__section" data-test="next-datapoint-section">
           <h3 class="judge-modal__section-title">Next datapoint</h3>
 
           <div class="judge-modal__next-toggle">
-            <label for="only-unreviewed-toggle" class="judge-modal__toggle-label">
-              Only show unreviewed
-            </label>
             <InputSwitch
                 id="only-unreviewed-toggle"
                 v-model="onlyShowUnreviewed"
                 data-test="only-unreviewed-toggle"
             />
+            <label for="only-unreviewed-toggle" class="judge-modal__toggle-label">
+              Only show unreviewed
+            </label>
           </div>
 
-          <div class="judge-modal__next-select">
+          <div class="judge-modal__next-select-container">
             <Select
                 v-model="selectedNextDataPointTypeId"
                 :options="nextDataPointOptions"
@@ -299,12 +280,12 @@
                 </div>
               </template>
             </Select>
-          </div>
-
-          <div class="judge-modal__next-hint">
-            - Selecting a datapoint from the dropdown will switch the modal to that KPI without saving.
-            <br />
-            - After accepting a datapoint, if a next datapoint is selected, the modal will automatically move there.
+            <PrimeButton
+                label="GO TO"
+                @click="goToSelectedDataPoint"
+                :disabled="!selectedNextDataPointTypeId"
+                data-test="go-to-datapoint-button"
+            />
           </div>
         </section>
 
@@ -387,63 +368,66 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   },
 };
 
-const mockDatasetReview = {
-  dataPoints: {
-    'kpi.energyConsumption': {
-      dataPointId: 'mock-dp-1',
-      acceptedSource: null,
-      qaReports: [
-        {
-          qaReportId: 'mock-qa-1',
-          verdict: 'QaPending',
-          correctedData: JSON.stringify({
-            value: 12000,
-            quality: 'High',
-            comment: 'Corrected based on updated table.',
-            dataSource: {
-              fileName: 'Sustainability_Report_2023.pdf',
-              page: 13,
-            },
-          }),
-          reporterUserId: 'mock-user-1',
-        },
-        {
-          qaReportId: 'mock-qa-2',
-          verdict: 'QaPending',
-          correctedData: JSON.stringify({
-            value: 11890,
-            quality: 'High',
-            comment: 'Adjusted for unit conversion.',
-            dataSource: {
-              fileName: 'Sustainability_Report_2023.pdf',
-              pageRange: '14-15',
-            },
-          }),
-          reporterUserId: 'mock-user-2',
-        },
-      ],
+// Create mock dataset review with entries that will be populated
+function createMockDatasetReview() {
+  return {
+    dataPoints: {
+      'kpi.energyConsumption': {
+        dataPointId: 'mock-dp-1',
+        acceptedSource: null,
+        qaReports: [
+          {
+            qaReportId: 'mock-qa-1',
+            verdict: 'QaPending',
+            correctedData: JSON.stringify({
+              value: 12000,
+              quality: 'High',
+              comment: 'Corrected based on updated table.',
+              dataSource: {
+                fileName: 'Sustainability_Report_2023.pdf',
+                page: 13,
+              },
+            }),
+            reporterUserId: 'mock-user-1',
+          },
+          {
+            qaReportId: 'mock-qa-2',
+            verdict: 'QaPending',
+            correctedData: JSON.stringify({
+              value: 11890,
+              quality: 'High',
+              comment: 'Adjusted for unit conversion.',
+              dataSource: {
+                fileName: 'Sustainability_Report_2023.pdf',
+                pageRange: '14-15',
+              },
+            }),
+            reporterUserId: 'mock-user-2',
+          },
+        ],
+      },
+      'kpi.co2Emissions': {
+        dataPointId: 'mock-dp-2',
+        acceptedSource: null,
+        qaReports: [],
+      },
     },
-    'kpi.co2Emissions': {
-      dataPointId: 'mock-dp-2',
-      acceptedSource: null,
-      qaReports: [],
-    },
-  },
-  qaReporters: [
-    {
-      reporterUserId: 'mock-user-1',
-      reporterUserName: 'Jane QA',
-      reporterEmailAddress: 'jane.qa@example.com',
-    },
-    {
-      reporterUserId: 'mock-user-2',
-      reporterUserName: 'Alex QA',
-      reporterEmailAddress: 'alex.qa@example.com',
-    },
-  ],
-} as any;
+    qaReporters: [
+      {
+        reporterUserId: 'mock-user-1',
+        reporterUserName: 'Jane QA',
+        reporterEmailAddress: 'jane.qa@example.com',
+      },
+      {
+        reporterUserId: 'mock-user-2',
+        reporterUserName: 'Alex QA',
+        reporterEmailAddress: 'alex.qa@example.com',
+      },
+    ],
+  } as any;
+}
 
-const datasetReview = ref(mockDatasetReview);
+const datasetReview = ref(createMockDatasetReview());
 const isDatasetReviewLoading = ref(false);
 const datasetReviewError = ref(null);
 
@@ -691,15 +675,24 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
   return options;
 });
 
-// Selecting another datapoint switches immediately without saving
-watch(
-    () => selectedNextDataPointTypeId.value,
-    (newVal) => {
-      if (!newVal) return;
-      currentDataPointTypeId.value = newVal;
-      resetStateForCurrentDataPoint();
-    }
-);
+
+// Jump to selected datapoint via button click
+function goToSelectedDataPoint(): void {
+  if (!selectedNextDataPointTypeId.value) return;
+  const currentSelection = selectedNextDataPointTypeId.value;
+  currentDataPointTypeId.value = currentSelection;
+  const options = nextDataPointOptions.value;
+  const currentIndex = options.findIndex(opt => opt.value === currentSelection);
+  if (currentIndex !== -1 && currentIndex + 1 < options.length) {
+    selectedNextDataPointTypeId.value = options[currentIndex + 1].value;
+  } else if (options.length > 0) {
+    selectedNextDataPointTypeId.value = options[0].value;
+  } else {
+    selectedNextDataPointTypeId.value = null;
+  }
+
+  resetStateForCurrentDataPoint();
+}
 
 // ===== Accept actions (PATCH) =====
 
@@ -793,47 +786,115 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+
 .judge-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.judge-modal__header :deep(.p-dialog-title) {
+  margin: 0;
+  padding: 0;
 }
 
 .judge-modal__kpi-name {
   font-weight: var(--font-weight-semibold);
+  margin: 0;
+  padding: 0;
 }
 
 .judge-modal__content {
-  display: flex;
-  gap: var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
 }
 
-.judge-modal__left-column {
-  flex: 2;
+.judge-modal__grid-cell {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  height: 100%;
 }
 
-.judge-modal__right-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+.judge-modal__grid-top-left {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.judge-modal__grid-top-right {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.judge-modal__grid-bottom-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.judge-modal__grid-bottom-right {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .judge-modal__section {
   border: 1px solid #e3e2df;
   border-radius: 4px;
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .judge-modal__section-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
+  margin-top: 0;
   margin-bottom: var(--spacing-sm);
+}
+
+.judge-modal__section-header-with-nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.judge-modal__section-header-with-nav .judge-modal__section-title {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.judge-modal__qa-nav {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.judge-modal__qa-nav :deep(.p-button) {
+  padding: 0 !important;
+  height: auto !important;
+  min-height: auto !important;
+  line-height: 1 !important;
+}
+
+.judge-modal__qa-nav :deep(.p-button-icon) {
+  font-size: 0.875rem;
+}
+
+.judge-modal__qa-nav :deep(.p-button:hover),
+.judge-modal__qa-nav :deep(.p-button:focus) {
+  background-color: transparent !important;
+}
+
+.judge-modal__qa-reporter {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
 }
 
 .judge-modal__qa-counter {
@@ -853,12 +914,13 @@ onMounted(() => {
     th {
       width: 8rem;
       padding-right: var(--spacing-md);
-      vertical-align: top;
+      vertical-align: middle;
       text-align: left;
     }
 
     td {
-      padding: var(--spacing-xs) 0;
+      padding: 0.25rem 0;
+      vertical-align: middle;
     }
 
     &:last-child {
@@ -889,10 +951,17 @@ onMounted(() => {
 }
 
 .judge-modal__section-actions {
-  margin-top: var(--spacing-md);
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+}
+
+.judge-modal__section-actions :deep(.p-button) {
+  padding: 0.4rem 0.8rem !important;
+  font-size: var(--font-size-sm) !important;
+  height: auto !important;
+  min-height: auto !important;
 }
 
 .judge-modal__multiline {
@@ -930,9 +999,14 @@ onMounted(() => {
 
 .judge-modal__custom-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.judge-modal__custom-actions :deep(.p-button) {
+  font-size: var(--font-size-xs);
+  padding: 0.4rem 0.6rem !important;
+  white-space: nowrap;
 }
 
 .judge-modal__json-editor {
@@ -960,7 +1034,7 @@ onMounted(() => {
 .judge-modal__next-toggle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--spacing-xs);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -970,6 +1044,16 @@ onMounted(() => {
 
 .judge-modal__next-select {
   margin-bottom: var(--spacing-sm);
+}
+
+.judge-modal__next-select-container {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.judge-modal__next-select-container :deep(.p-select) {
+  flex: 1;
 }
 
 .judge-modal__next-option {
