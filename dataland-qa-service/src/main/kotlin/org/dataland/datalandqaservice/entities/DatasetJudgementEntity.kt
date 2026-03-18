@@ -41,7 +41,7 @@ class DatasetJudgementEntity(
     var qaJudgeUserName: String,
     @ElementCollection
     @Column(name = "qa_reporters")
-    var qaReporters: MutableList<QaReporter>,
+    val qaReporters: MutableList<QaReporter>,
     @OneToMany(mappedBy = "datasetJudgement", cascade = [CascadeType.ALL])
     val dataPoints: MutableList<DataPointJudgementEntity>,
 ) {
