@@ -80,7 +80,6 @@
                 <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
                   <FrameworkDataSearchDropdownFilter
                     :modelValue="selectedFrameworks"
-                    class="search-filter"
                     appendTo="body"
                     input-class="w-full"
                     :available-items="availableFrameworks"
@@ -561,11 +560,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     width: 30%;
-  }
-
-  .search-filter {
-    width: 15%;
-    text-align: left;
   }
 }
 
