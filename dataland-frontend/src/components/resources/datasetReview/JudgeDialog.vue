@@ -105,7 +105,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT ORIGINAL"
-                @click="onAcceptOriginal"
+                @click=""
                 :disabled="isMutating"
                 data-test="accept-original-button"
             />
@@ -203,7 +203,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT REPORT"
-                @click="onAcceptReport"
+                @click=""
                 :disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
                 data-test="accept-report-button"
             />
@@ -251,7 +251,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT CUSTOM"
-                @click="onAcceptCustom"
+                @click=""
                 :disabled="isMutating || !isCustomJsonValid"
                 data-test="accept-custom-button"
             />
@@ -332,8 +332,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 // TanStack Query composables (names assumed from your description)
 // import { useDatasetReviewQuery, datasetReviewKeys } from '@/composables/useDatasetReviewQuery.ts';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import {ReviewDetailsPatch} from "@clients/qaservice";
+// import { useMutation, useQueryClient } from '@tanstack/vue-query';
+// import {ReviewDetailsPatch} from "@clients/qaservice";
 
 // ===== Props & emits =====
 
@@ -447,23 +447,24 @@ const datasetReview = ref(mockDatasetReview);
 const isDatasetReviewLoading = ref(false);
 const datasetReviewError = ref(null);
 
-const queryClient = useQueryClient();
+// const queryClient = useQueryClient();
+//
+// const patchMutation = useMutation({
+//   mutationFn: async (variables: { dataPointType: string; payload: ReviewDetailsPatch }) => {
+//     return datasetReviewControllerApi.patchReviewDetails(
+//         props.datasetReviewId,
+//         variables.dataPointType,
+//         variables.payload
+//     );
+//   },
+//   onSuccess: () => {
+//     // Invalidate dataset review detail query
+//     // queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(props.datasetReviewId) });
+//   },
+// });
 
-const patchMutation = useMutation({
-  mutationFn: async (variables: { dataPointType: string; payload: ReviewDetailsPatch }) => {
-    return datasetReviewControllerApi.patchReviewDetails(
-        props.datasetReviewId,
-        variables.dataPointType,
-        variables.payload
-    );
-  },
-  onSuccess: () => {
-    // Invalidate dataset review detail query
-    // queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(props.datasetReviewId) });
-  },
-});
-
-const isMutating = computed(() => patchMutation.isPending.value);
+// const isMutating = computed(() => patchMutation.isPending.value);
+const isMutating = ref(true);
 const patchError = ref<string | null>(null);
 
 // ===== Current datapoint selection (local state) =====
@@ -519,9 +520,10 @@ async function loadOriginalDataPoint(): Promise<void> {
   isOriginalLoading.value = true;
   try {
     // Adjust to actual client method & response type
-    const response = await dataPointControllerApi.getDataPoint(meta.dataPointId);
-    const jsonString = response.data.dataPoint;
-    originalData.value = JSON.parse(jsonString) as DataPointDetail;
+    // const response = await dataPointControllerApi.getDataPoint(meta.dataPointId);
+    // const jsonString = response.data.dataPoint;
+    // originalData.value = JSON.parse(jsonString) as DataPointDetail;
+    originalData.value = mockDataPointsById['mock-dp-1'];
   } catch (error) {
     console.error('Failed to load original datapoint', error);
     originalError.value = error;
@@ -701,58 +703,58 @@ watch(
 
 // ===== Accept actions (PATCH) =====
 
-async function onAcceptOriginal(): Promise<void> {
-  if (!currentDataPointMeta.value) return;
-  patchError.value = null;
-  try {
-    await patchMutation.mutateAsync({
-      dataPointType: currentDataPointTypeId.value,
-      payload: {
-        acceptedSource: 'Original',
-      },
-    });
-    handleAfterSuccessfulPatch();
-  } catch (error: any) {
-    console.error('Failed to accept original datapoint', error);
-    patchError.value = error?.message ?? 'Failed to save decision.';
-  }
-}
-
-async function onAcceptReport(): Promise<void> {
-  if (!currentDataPointMeta.value || !currentQaReport.value) return;
-  patchError.value = null;
-  try {
-    await patchMutation.mutateAsync({
-      dataPointType: currentDataPointTypeId.value,
-      payload: {
-        acceptedSource: 'Qa',
-        reporterUserIdOfAcceptedQaReport: currentQaReport.value.reporterUserId,
-      },
-    });
-    handleAfterSuccessfulPatch();
-  } catch (error: any) {
-    console.error('Failed to accept QA report', error);
-    patchError.value = error?.message ?? 'Failed to save decision.';
-  }
-}
-
-async function onAcceptCustom(): Promise<void> {
-  if (!currentDataPointMeta.value || !isCustomJsonValid.value) return;
-  patchError.value = null;
-  try {
-    await patchMutation.mutateAsync({
-      dataPointType: currentDataPointTypeId.value,
-      payload: {
-        acceptedSource: 'Custom',
-        customDataPoint: customJson.value,
-      },
-    });
-    handleAfterSuccessfulPatch();
-  } catch (error: any) {
-    console.error('Failed to accept custom datapoint', error);
-    patchError.value = error?.message ?? 'Failed to save decision.';
-  }
-}
+// async function onAcceptOriginal(): Promise<void> {
+//   if (!currentDataPointMeta.value) return;
+//   patchError.value = null;
+//   try {
+//     await patchMutation.mutateAsync({
+//       dataPointType: currentDataPointTypeId.value,
+//       payload: {
+//         acceptedSource: 'Original',
+//       },
+//     });
+//     handleAfterSuccessfulPatch();
+//   } catch (error: any) {
+//     console.error('Failed to accept original datapoint', error);
+//     patchError.value = error?.message ?? 'Failed to save decision.';
+//   }
+// }
+//
+// async function onAcceptReport(): Promise<void> {
+//   if (!currentDataPointMeta.value || !currentQaReport.value) return;
+//   patchError.value = null;
+//   try {
+//     await patchMutation.mutateAsync({
+//       dataPointType: currentDataPointTypeId.value,
+//       payload: {
+//         acceptedSource: 'Qa',
+//         reporterUserIdOfAcceptedQaReport: currentQaReport.value.reporterUserId,
+//       },
+//     });
+//     handleAfterSuccessfulPatch();
+//   } catch (error: any) {
+//     console.error('Failed to accept QA report', error);
+//     patchError.value = error?.message ?? 'Failed to save decision.';
+//   }
+// }
+//
+// async function onAcceptCustom(): Promise<void> {
+//   if (!currentDataPointMeta.value || !isCustomJsonValid.value) return;
+//   patchError.value = null;
+//   try {
+//     await patchMutation.mutateAsync({
+//       dataPointType: currentDataPointTypeId.value,
+//       payload: {
+//         acceptedSource: 'Custom',
+//         customDataPoint: customJson.value,
+//       },
+//     });
+//     handleAfterSuccessfulPatch();
+//   } catch (error: any) {
+//     console.error('Failed to accept custom datapoint', error);
+//     patchError.value = error?.message ?? 'Failed to save decision.';
+//   }
+// }
 
 function handleAfterSuccessfulPatch(): void {
   // After mutation success, datasetReview query is invalidated by onSuccess.
