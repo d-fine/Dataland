@@ -4,7 +4,7 @@ import { type DataMetaInformation, QaStatus, type StoredCompany } from '@clients
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
-import { type DatasetReviewResponse, DatasetReviewState } from '@clients/qaservice';
+import { type DatasetJudgementResponse, DatasetJudgementState } from '@clients/qaservice';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
@@ -43,13 +43,13 @@ describe('DatasetReviewOverview page details', () => {
     dataRegisteredByDataland: [],
   };
 
-  const baseDatasetReview: DatasetReviewResponse = {
-    dataSetReviewId: datasetReviewId,
+  const baseDatasetReview: DatasetJudgementResponse = {
+    dataSetJudgementId: datasetReviewId,
     datasetId: dataId,
     companyId: companyId,
     reportingPeriod: reportingPeriod,
     dataType: framework,
-    reviewState: DatasetReviewState.Pending,
+    judgementState: DatasetJudgementState.Pending,
     qaJudgeUserId: 'assigned-reviewer-id',
     qaJudgeUserName: 'Assigned Reviewer',
     qaReporters: [
@@ -57,13 +57,11 @@ describe('DatasetReviewOverview page details', () => {
         reporterUserId: 'reporter-user-id-1',
         reporterUserName: 'reporter-user-1',
         reporterEmailAddress: 'user1@gmail.com',
-        reporterCompanyId: 'reporter-company-id-1',
       },
       {
         reporterUserId: 'reporter-user-id-2',
         reporterUserName: 'reporter-user-2',
         reporterEmailAddress: 'user2@gmail.com',
-        reporterCompanyId: 'reporter-company-id-2',
       },
     ],
     dataPoints: {
@@ -82,7 +80,7 @@ describe('DatasetReviewOverview page details', () => {
         qaReports: [],
         acceptedSource: null,
       },
-    } as unknown as DatasetReviewResponse['dataPoints'],
+    } as unknown as DatasetJudgementResponse['dataPoints'],
   };
 
   /**
@@ -91,7 +89,7 @@ describe('DatasetReviewOverview page details', () => {
    *   (network stubs and mounting) necessary for the tests.
    */
   function mountPage(options?: {
-    datasetReviewResponse?: DatasetReviewResponse | null;
+    datasetReviewResponse?: DatasetJudgementResponse | null;
     datasetReviewStatusCode?: number;
     datasetReviewNetworkError?: boolean;
     forceDatasetReviewError?: boolean;
@@ -295,7 +293,7 @@ describe('DatasetReviewOverview page details', () => {
       triggerButtonText: 'ASSIGN YOURSELF',
       modalTitle: 'Assign Yourself',
       modalBody: 'Are you sure you want to assign this dataset review to yourself?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/reviewer`,
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/reviewer`,
     });
   });
 
@@ -307,7 +305,7 @@ describe('DatasetReviewOverview page details', () => {
       triggerButtonText: 'REJECT DATASET',
       modalTitle: 'Reject Dataset',
       modalBody: 'Are you sure you want to reject this dataset review?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`,
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/state`,
       expectedStateParam: 'datasetReviewState=Aborted',
     });
   });
@@ -320,7 +318,7 @@ describe('DatasetReviewOverview page details', () => {
       triggerButtonText: 'FINISH REVIEW',
       modalTitle: 'Finish Review',
       modalBody: 'Are you sure you want to mark this dataset review as finished?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetReviewId}/state`,
+      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/state`,
       expectedStateParam: 'datasetReviewState=Finished',
     });
   });

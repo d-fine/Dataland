@@ -4,9 +4,9 @@ import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { type CompanyReport, type DataMetaInformation, DataTypeEnum, QaStatus, type SfdrData } from '@clients/backend';
 import {
   AcceptedDataPointSource,
-  DatasetReviewState,
+  DatasetJudgementState,
   QaReportDataPointVerdict,
-  type DatasetReviewResponse,
+  type DatasetJudgementResponse,
 } from '@clients/qaservice';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import type Keycloak from 'keycloak-js';
@@ -58,57 +58,54 @@ describe('DatasetReviewComparisonTable component tests', () => {
     reporterCompanyId: 'reporter-company-id-2',
   };
 
-  const qaReporterUsers: DatasetReviewResponse['qaReporters'] = [
+  const qaReporterUsers: DatasetJudgementResponse['qaReporters'] = [
     {
       reporterUserId: qaReporter1.reporterUserId,
       reporterUserName: qaReporter1.reporterUserName,
       reporterEmailAddress: qaReporter1.reporterEmailAddress,
-      reporterCompanyId: qaReporter1.reporterCompanyId,
     },
     {
       reporterUserId: qaReporter2.reporterUserId,
       reporterUserName: qaReporter2.reporterUserName,
       reporterEmailAddress: qaReporter2.reporterEmailAddress,
-      reporterCompanyId: qaReporter2.reporterCompanyId,
     },
   ];
 
-  const baseDatasetReview: DatasetReviewResponse = {
-    dataSetReviewId: 'review-id',
+  const baseDatasetReview: DatasetJudgementResponse = {
+    dataSetJudgementId: 'review-id',
     datasetId: dataId,
     companyId: companyId,
-    dataType: framework as DatasetReviewResponse['dataType'],
+    dataType: framework as DatasetJudgementResponse['dataType'],
     reportingPeriod: reportingPeriod,
-    reviewState: DatasetReviewState.Pending,
+    judgementState: DatasetJudgementState.Pending,
     qaReporters: qaReporterUsers,
     dataPoints: {
       plainDateSfdrDataDate: {
         dataPointType: 'plainDateSfdrDataDate',
+        dataPointId: 'data-point-id-1',
         qaReports: [
           {
             qaReportId: 'qa-report-0',
             verdict: QaReportDataPointVerdict.QaAccepted,
             reporterUserId: qaReporter1.reporterUserId,
-            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Original,
       },
       extendedEnumFiscalYearDeviation: {
         dataPointType: 'extendedEnumFiscalYearDeviation',
+        dataPointId: 'data-point-id-2',
         qaReports: [
           {
             qaReportId: 'qa-report-1',
             verdict: QaReportDataPointVerdict.QaAccepted,
             reporterUserId: qaReporter1.reporterUserId,
-            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
           {
             qaReportId: 'qa-report-2',
             verdict: QaReportDataPointVerdict.QaRejected,
             correctedData: JSON.stringify({ value: 'No Deviation' }),
             reporterUserId: qaReporter2.reporterUserId,
-            reporterCompanyId: qaReporter2.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Qa,
@@ -116,19 +113,18 @@ describe('DatasetReviewComparisonTable component tests', () => {
       },
       extendedDateFiscalYearEnd: {
         dataPointType: 'extendedDateFiscalYearEnd',
+        dataPointId: 'data-point-id-3',
         qaReports: [
           {
             qaReportId: 'qa-report-3',
             verdict: QaReportDataPointVerdict.QaAccepted,
             reporterUserId: qaReporter1.reporterUserId,
-            reporterCompanyId: qaReporter1.reporterCompanyId,
           },
           {
             qaReportId: 'qa-report-4',
             verdict: QaReportDataPointVerdict.QaRejected,
             correctedData: JSON.stringify({ value: '2023-11-30' }),
             reporterUserId: qaReporter2.reporterUserId,
-            reporterCompanyId: qaReporter2.reporterCompanyId,
           },
         ],
         acceptedSource: AcceptedDataPointSource.Custom,
@@ -141,7 +137,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
    * Helper function to mount the component with default or overridden options.
    */
   function mountComponent(options?: {
-    datasetReview?: DatasetReviewResponse;
+    datasetReview?: DatasetJudgementResponse;
     searchQuery?: string;
     hideEmptyFields?: boolean;
     data?: SfdrData;
