@@ -36,7 +36,9 @@ class QaController(
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>> {
-        logger.info("Received request to respond with information about pending datasets")
+        logger.info(
+            "Received request to respond with information about datasets, with filters applied.",
+        )
         return ResponseEntity.ok(
             qaReviewManager
                 .getInfoOnDatasets(
@@ -46,6 +48,16 @@ class QaController(
                     qaStatus = qaStatus,
                     chunkSize = chunkSize,
                     chunkIndex = chunkIndex,
+                ),
+        )
+    }
+
+    override fun getInfoOnPendingDatasets(companyName: String?): ResponseEntity<List<QaReviewResponse>> {
+        logger.info("Received request to respond with information about pending datasets.")
+        return ResponseEntity.ok(
+            qaReviewManager
+                .getInfoOnPendingDatasets(
+                    companyName = companyName,
                 ),
         )
     }
