@@ -15,6 +15,7 @@ import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRol
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import router from '@/router';
+import Keycloak from 'keycloak-js';
 
 /**
  * Picks a reporting period to filter for in the column filter of the datatable.
@@ -448,7 +449,7 @@ describe('Component tests for the Quality Assurance page', () => {
    * Mounts the view page with mock data and returns the meta info used for assertions.
    * @returns the mock meta info used in the view page
    */
-  function mountViewPageWithMocks(): DataMetaInformation {
+  function mountViewPageWithMocks(keycloakRole: Keycloak): DataMetaInformation {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
@@ -481,7 +482,7 @@ describe('Component tests for the Quality Assurance page', () => {
     ]);
 
     getMountingFunction({
-      keycloak: keycloakMockWithReviewerRole,
+      keycloak: keycloakRole,
       router: router,
       dialogOptions: {
         mountWithDialog: true,
@@ -497,7 +498,7 @@ describe('Component tests for the Quality Assurance page', () => {
   }
 
   it('Check if dataset can be reviewed on the view page', () => {
-    const mockDataMetaInfo = mountViewPageWithMocks();
+    const mockDataMetaInfo = mountViewPageWithMocks(keycloakMockWithReviewerRole);
     cy.get('h1').contains(LksgFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
@@ -524,7 +525,7 @@ describe('Component tests for the Quality Assurance page', () => {
   });
 
   it('Check routing of QA review page button.', () => {
-    const mockDataMetaInfo = mountViewPageWithMocks();
+    const mockDataMetaInfo = mountViewPageWithMocks(keycloakMockWithJudgeRole);
     cy.spy(router, 'push').as('routerPush');
     cy.intercept('GET', `**/qa/dataset-judgements/${mockDataMetaInfo.dataId}/datasetId`, (request) => {
       request.reply(200, [

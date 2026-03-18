@@ -295,18 +295,16 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import PrimeDialog from 'primevue/dialog';
+import { inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import { type QaReviewResponse } from '@clients/qaservice';
+import { GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import { FilterMatchMode } from '@primevue/core/api';
 import Slider from 'primevue/slider';
 import { type DataTypeEnum } from '@clients/backend';
-
 
 const filters = ref({
   framework: {
