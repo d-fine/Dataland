@@ -1,5 +1,5 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { type DataMetaInformation, QaStatus, type StoredCompany } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
@@ -10,13 +10,13 @@ import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
 
 describe('DatasetReviewOverview page details', () => {
-  const keycloakMockWithReviewer = minimalKeycloakMock({
-    userId: 'current-reviewer-id',
-    roles: [KEYCLOAK_ROLE_ADMIN],
+  const keycloakMockWithJudge = minimalKeycloakMock({
+    userId: 'current-judge-id',
+    roles: [KEYCLOAK_ROLE_JUDGE],
   });
 
   const dataId = 'test-data-id';
-  const datasetReviewId = 'test-review-id';
+  const datasetJudgementId = 'test-judgement-id';
   const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
   const reportingPeriod = '2021';
   const framework = 'sfdr';
@@ -43,15 +43,15 @@ describe('DatasetReviewOverview page details', () => {
     dataRegisteredByDataland: [],
   };
 
-  const baseDatasetReview: DatasetJudgementResponse = {
-    dataSetJudgementId: datasetReviewId,
+  const baseDatasetJudgement: DatasetJudgementResponse = {
+    dataSetJudgementId: datasetJudgementId,
     datasetId: dataId,
     companyId: companyId,
     reportingPeriod: reportingPeriod,
     dataType: framework,
     judgementState: DatasetJudgementState.Pending,
-    qaJudgeUserId: 'assigned-reviewer-id',
-    qaJudgeUserName: 'Assigned Reviewer',
+    qaJudgeUserId: 'assigned-judge-id',
+    qaJudgeUserName: 'Assigned Judge',
     qaReporters: [
       {
         reporterUserId: 'reporter-user-id-1',
@@ -89,50 +89,50 @@ describe('DatasetReviewOverview page details', () => {
    *   (network stubs and mounting) necessary for the tests.
    */
   function mountPage(options?: {
-    datasetReviewResponse?: DatasetJudgementResponse | null;
-    datasetReviewStatusCode?: number;
-    datasetReviewNetworkError?: boolean;
-    forceDatasetReviewError?: boolean;
+    datasetJudgementResponse?: DatasetJudgementResponse | null;
+    datasetJudgementStatusCode?: number;
+    datasetJudgementNetworkError?: boolean;
+    forceDatasetJudgementError?: boolean;
   }): void {
-    const datasetReviewResponse =
-      options?.datasetReviewResponse === undefined ? baseDatasetReview : options.datasetReviewResponse;
+    const datasetJudgementResponse =
+      options?.datasetJudgementResponse === undefined ? baseDatasetJudgement : options.datasetJudgementResponse;
 
     cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
 
-    const detailReviewUrl = `**/qa/dataset-reviews/${datasetReviewId}`;
-    const listReviewUrlMatcher = /\/qa\/dataset-reviews\?.*/;
+    const detailJudgementUrl = `**/qa/dataset-judgements/${datasetJudgementId}`;
+    const listJudgeUrlMatcher = /\/qa\/dataset-judgements\?.*/;
 
-    cy.intercept('GET', detailReviewUrl, (req) => {
-      if (options?.datasetReviewNetworkError) {
+    cy.intercept('GET', detailJudgementUrl, (req) => {
+      if (options?.datasetJudgementNetworkError) {
         req.reply({ forceNetworkError: true });
         return;
       }
-      if (options?.datasetReviewStatusCode != null) {
-        req.reply({ statusCode: options.datasetReviewStatusCode });
+      if (options?.datasetJudgementStatusCode != null) {
+        req.reply({ statusCode: options.datasetJudgementStatusCode });
         return;
       }
-      if (datasetReviewResponse === null) {
+      if (datasetJudgementResponse === null) {
         req.reply({ statusCode: 200, body: null as unknown as object });
         return;
       }
-      req.reply({ statusCode: 200, body: datasetReviewResponse });
-    }).as('getDatasetReview');
+      req.reply({ statusCode: 200, body: datasetJudgementResponse });
+    }).as('getDatasetJudgement');
 
-    cy.intercept('GET', listReviewUrlMatcher, (req) => {
-      if (options?.datasetReviewNetworkError) {
+    cy.intercept('GET', listJudgeUrlMatcher, (req) => {
+      if (options?.datasetJudgementNetworkError) {
         req.reply({ forceNetworkError: true });
         return;
       }
-      if (options?.datasetReviewStatusCode != null) {
-        req.reply({ statusCode: options.datasetReviewStatusCode });
+      if (options?.datasetJudgementStatusCode != null) {
+        req.reply({ statusCode: options.datasetJudgementStatusCode });
         return;
       }
-      if (datasetReviewResponse === null) {
+      if (datasetJudgementResponse === null) {
         req.reply({ statusCode: 200, body: [] });
         return;
       }
-      req.reply({ statusCode: 200, body: [datasetReviewResponse] });
+      req.reply({ statusCode: 200, body: [datasetJudgementResponse] });
     });
 
     cy.intercept('GET', '**/api/data/**', { statusCode: 200, body: { data: {}, meta: {} } });
@@ -148,12 +148,12 @@ describe('DatasetReviewOverview page details', () => {
     });
 
     const mount = getMountingFunction();
-    const keycloakPromise = Promise.resolve(keycloakMockWithReviewer as unknown as Keycloak);
+    const keycloakPromise = Promise.resolve(keycloakMockWithJudge as unknown as Keycloak);
     const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
     mount(DatasetReviewOverview, {
       props: {
-        datasetReviewId,
+        datasetJudgementId: datasetJudgementId,
       },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
@@ -168,7 +168,7 @@ describe('DatasetReviewOverview page details', () => {
 
   it('displays the correct information', () => {
     mountPage();
-    cy.wait('@getDatasetReview');
+    cy.wait('@getDatasetJudgement');
 
     cy.contains('SFDR').should('be.visible');
     cy.contains('2 / 3 data points to review').should('be.visible');
@@ -179,24 +179,24 @@ describe('DatasetReviewOverview page details', () => {
 
   it('shows assignment button when not assigned to the current user', () => {
     mountPage();
-    cy.wait('@getDatasetReview');
+    cy.wait('@getDatasetJudgement');
 
     cy.contains('ASSIGN YOURSELF').should('be.visible');
     cy.contains('Currently assigned to:').should('be.visible');
-    cy.contains('Assigned Reviewer').should('be.visible');
+    cy.contains('Assigned Judge').should('be.visible');
     cy.contains('REJECT DATASET').should('not.exist');
     cy.contains('FINISH REVIEW').should('not.exist');
   });
 
-  it('shows reviewer action buttons when assigned to the current user', () => {
+  it('shows judge action buttons when assigned to the current user', () => {
     mountPage({
-      datasetReviewResponse: {
-        ...baseDatasetReview,
-        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
-        qaJudgeUserName: 'Current Reviewer',
+      datasetJudgementResponse: {
+        ...baseDatasetJudgement,
+        qaJudgeUserId: keycloakMockWithJudge.idTokenParsed?.sub ?? 'current-judge-id',
+        qaJudgeUserName: 'Current Judge',
       },
     });
-    cy.wait('@getDatasetReview');
+    cy.wait('@getDatasetJudgement');
 
     cy.contains('Assigned to you').should('be.visible');
     cy.contains('REJECT DATASET').should('be.visible');
@@ -206,7 +206,7 @@ describe('DatasetReviewOverview page details', () => {
 
   it('defaults the hide empty fields toggle to on and allows toggling', () => {
     mountPage();
-    cy.wait('@getDatasetReview');
+    cy.wait('@getDatasetJudgement');
 
     cy.get('#hideEmptyDataToggleButton').should('be.checked');
     cy.contains('Hide empty fields').should('be.visible');
@@ -214,33 +214,33 @@ describe('DatasetReviewOverview page details', () => {
     cy.get('#hideEmptyDataToggleButton').should('not.be.checked');
   });
 
-  it('shows an error message when loading the dataset review fails', () => {
-    mountPage({ datasetReviewNetworkError: true });
-    cy.wait('@getDatasetReview');
+  it('shows an error message when loading the dataset judgement fails', () => {
+    mountPage({ datasetJudgementNetworkError: true });
+    cy.wait('@getDatasetJudgement');
 
-    cy.contains('Loading Review Information...').should('not.exist');
+    cy.contains('Loading Judgement Information...').should('not.exist');
     cy.contains('Failed to load dataset review or company information').should('be.visible');
     cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
   });
 
-  it('shows a fallback message when no dataset review is found', () => {
-    mountPage({ datasetReviewResponse: null });
-    cy.wait('@getDatasetReview');
+  it('shows a fallback message when no dataset judgement is found', () => {
+    mountPage({ datasetJudgementResponse: null });
+    cy.wait('@getDatasetJudgement');
 
     cy.contains('No dataset review found for this dataset.').should('be.visible');
     cy.get('[data-test="datasetReviewComparisonTable"]').should('not.exist');
   });
 
   /**
-   * Mounts the DatasetReviewOverview page with the dataset review assigned to the current user.
+   * Mounts the DatasetReviewOverview page with the dataset judgement assigned to the current user.
    * @returns {void} No return value;
    */
   function mountPageAssignedToCurrentUser(): void {
     mountPage({
-      datasetReviewResponse: {
-        ...baseDatasetReview,
-        qaJudgeUserId: keycloakMockWithReviewer.idTokenParsed?.sub ?? 'current-reviewer-id',
-        qaJudgeUserName: 'Current Reviewer',
+      datasetJudgementResponse: {
+        ...baseDatasetJudgement,
+        qaJudgeUserId: keycloakMockWithJudge.idTokenParsed?.sub ?? 'current-judgement-id',
+        qaJudgeUserName: 'Current Judge',
       },
     });
   }
@@ -266,7 +266,7 @@ describe('DatasetReviewOverview page details', () => {
     } else {
       mountPage();
     }
-    cy.wait('@getDatasetReview');
+    cy.wait('@getDatasetJudgement');
     cy.intercept({ method: 'PATCH', url: config.interceptUrl }, { statusCode: 200, body: {} }).as(
       config.interceptAlias
     );
@@ -288,38 +288,38 @@ describe('DatasetReviewOverview page details', () => {
   it('opens and confirms the assign-to-me modal', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: false,
-      interceptUrl: '**/qa/dataset-reviews/**/reviewer',
-      interceptAlias: 'setReviewer',
+      interceptUrl: '**/qa/dataset-judgements/**/judge',
+      interceptAlias: 'setJudge',
       triggerButtonText: 'ASSIGN YOURSELF',
       modalTitle: 'Assign Yourself',
       modalBody: 'Are you sure you want to assign this dataset review to yourself?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/reviewer`,
+      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/judge`,
     });
   });
 
   it('opens the reject dataset modal when assigned and performs correct API call', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: true,
-      interceptUrl: '**/qa/dataset-reviews/**/state**',
+      interceptUrl: '**/qa/dataset-judgements/**/state**',
       interceptAlias: 'rejectReview',
       triggerButtonText: 'REJECT DATASET',
       modalTitle: 'Reject Dataset',
       modalBody: 'Are you sure you want to reject this dataset review?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/state`,
-      expectedStateParam: 'datasetReviewState=Aborted',
+      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
+      expectedStateParam: 'datasetJudgementState=Aborted',
     });
   });
 
   it('opens the finish review modal when assigned and performs correct API call', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: true,
-      interceptUrl: '**/qa/dataset-reviews/**/state**',
+      interceptUrl: '**/qa/dataset-judgements/**/state**',
       interceptAlias: 'finishReview',
       triggerButtonText: 'FINISH REVIEW',
       modalTitle: 'Finish Review',
       modalBody: 'Are you sure you want to mark this dataset review as finished?',
-      expectedUrlSuffix: `/qa/dataset-reviews/${baseDatasetReview.dataSetJudgementId}/state`,
-      expectedStateParam: 'datasetReviewState=Finished',
+      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
+      expectedStateParam: 'datasetJudgementState=Finished',
     });
   });
 });

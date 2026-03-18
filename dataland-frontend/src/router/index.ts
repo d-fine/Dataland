@@ -190,7 +190,7 @@ const routes = [
     name: 'DatasetReviewOverview',
     component: DatasetReviewOverview,
     props: (route: RouteLocationNormalized): { datasetReviewId: string } => ({
-      datasetReviewId: route.params.datasetReviewId as string,
+      datasetJudgementId: route.params.datasetReviewId as string,
     }),
     meta: {
       requiresAuthentication: true,
