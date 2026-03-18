@@ -4,9 +4,9 @@
       :dismissable-mask="true"
       :modal="true"
       class="col-8"
-      style="min-width: 60rem; max-width: 90rem"
+      style="min-width: 60rem; max-width: 60rem"
       v-model:visible="isOpen"
-      @hide="handleClose"
+      @hide="emit('close')"
       data-test="judge-modal"
   >
     <!-- Header -->
@@ -32,7 +32,9 @@
       <!-- Top-left: Original datapoint -->
       <div class="judge-modal__grid-cell judge-modal__grid-top-left">
         <section class="judge-modal__section" data-test="original-datapoint-section">
-          <h3 class="judge-modal__section-title">Original datapoint</h3>
+          <div class="judge-modal__section-header-with-nav">
+            <h3 class="judge-modal__section-title">Original datapoint</h3>
+          </div>
 
           <div v-if="isOriginalLoading" class="judge-modal__subloading">
             Loading original datapoint...
@@ -47,22 +49,22 @@
               <tbody>
               <tr>
                 <th>Value</th>
-                <td>{{ originalData.value ?? '—' }}</td>
+                <td><span>{{ originalData.value ?? '—' }}</span></td>
               </tr>
               <tr>
                 <th>Quality</th>
-                <td>{{ originalData.quality ?? '—' }}</td>
+                <td><span>{{ originalData.quality ?? '—' }}</span></td>
               </tr>
               <tr>
                 <th>Document</th>
                 <td>
-                    <span class="nowrap">
+                    <span>
                       {{ originalData.dataSource?.fileName ?? originalData.dataSource?.fileReference ?? '—' }}
                     </span>
                 </td>
               </tr>
               <tr>
-                <th>Page / Range</th>
+                <th>Page(s)</th>
                 <td>
                     <span v-if="originalData.dataSource?.pageRange">
                       {{ originalData.dataSource.pageRange }}
@@ -75,8 +77,8 @@
               </tr>
               <tr>
                 <th>Comment</th>
-                <td class="judge-modal__multiline">
-                  {{ originalData.comment ?? '—' }}
+                <td>
+                  <span class="judge-modal__multiline">{{ originalData.comment ?? '—' }}</span>
                 </td>
               </tr>
               </tbody>
@@ -89,7 +91,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT ORIGINAL"
-                @click=""
+                @click="onAcceptOriginalClick"
                 :disabled="isMutating"
                 data-test="accept-original-button"
             />
@@ -108,7 +110,7 @@
               </span>
             </h3>
 
-            <div v-if="filteredQaReports.length > 0" class="judge-modal__qa-nav">
+            <div class="judge-modal__qa-nav" :style="{ visibility: filteredQaReports.length > 0 ? 'visible' : 'hidden' }">
               <PrimeButton
                   icon="pi pi-chevron-left"
                   variant="text"
@@ -140,16 +142,16 @@
                 <tbody>
                 <tr>
                   <th>Value</th>
-                  <td>{{ currentQaCorrectedData.value ?? '—' }}</td>
+                  <td><span>{{ currentQaCorrectedData.value ?? '—' }}</span></td>
                 </tr>
                 <tr>
                   <th>Quality</th>
-                  <td>{{ currentQaCorrectedData.quality ?? '—' }}</td>
+                  <td><span>{{ currentQaCorrectedData.quality ?? '—' }}</span></td>
                 </tr>
                 <tr>
                   <th>Document</th>
                   <td>
-                      <span class="nowrap">
+                      <span>
                         {{
                           currentQaCorrectedData.dataSource?.fileName ??
                           currentQaCorrectedData.dataSource?.fileReference ??
@@ -159,7 +161,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <th>Page / Range</th>
+                  <th>Page(s)</th>
                   <td>
                       <span v-if="currentQaCorrectedData.dataSource?.pageRange">
                         {{ currentQaCorrectedData.dataSource.pageRange }}
@@ -172,8 +174,8 @@
                 </tr>
                 <tr>
                   <th>Comment</th>
-                  <td class="judge-modal__multiline">
-                    {{ currentQaCorrectedData.comment ?? '—' }}
+                  <td>
+                    <span class="judge-modal__multiline">{{ currentQaCorrectedData.comment ?? '—' }}</span>
                   </td>
                 </tr>
                 </tbody>
@@ -184,7 +186,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT REPORT"
-                @click=""
+                @click="onAcceptQaClick"
                 :disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
                 data-test="accept-report-button"
             />
@@ -192,31 +194,107 @@
         </section>
       </div>
 
+      <!-- Separator line -->
+      <div class="judge-modal__separator"></div>
+
       <!-- Bottom-left: Custom datapoint -->
       <div class="judge-modal__grid-cell judge-modal__grid-bottom-left">
         <section class="judge-modal__section" data-test="custom-datapoint-section">
           <div class="judge-modal__section-header-row">
             <h3 class="judge-modal__section-title">Custom datapoint</h3>
+            <div class="judge-modal__edit-mode-toggle">
+              <label for="edit-mode-toggle" class="judge-modal__toggle-label">
+                Form
+              </label>
+              <InputSwitch
+                  id="edit-mode-toggle"
+                  v-model="editModeEnabled"
+                  data-test="edit-mode-toggle"
+              />
+              <label for="edit-mode-toggle" class="judge-modal__toggle-label">
+                JSON
+              </label>
+            </div>
           </div>
 
           <div class="judge-modal__custom-actions">
             <PrimeButton
                 label="Copy original datapoint"
-                variant="outlined"
+                variant="text"
                 @click="copyOriginalToCustom"
                 :disabled="!originalData"
                 data-test="copy-original-to-custom"
             />
             <PrimeButton
                 label="Copy corrected datapoint"
-                variant="outlined"
+                variant="text"
                 @click="copyCorrectedToCustom"
                 :disabled="!currentQaCorrectedData"
                 data-test="copy-corrected-to-custom"
             />
           </div>
 
-          <div class="judge-modal__json-editor">
+          <!-- View mode: Display as editable form -->
+          <div v-if="!editModeEnabled" class="judge-modal__form-table">
+            <div class="judge-modal__form-row">
+              <label for="custom-value-field" class="judge-modal__form-label">Value</label>
+              <InputText
+                  id="custom-value-field"
+                  v-model="customFormData.value"
+                  class="judge-modal__form-input"
+                  placeholder="Select Value"
+                  data-test="custom-value-field"
+              />
+            </div>
+
+            <div class="judge-modal__form-row">
+              <label for="custom-quality-field" class="judge-modal__form-label">Quality</label>
+              <InputText
+                  id="custom-quality-field"
+                  v-model="customFormData.quality"
+                  class="judge-modal__form-input"
+                  placeholder="Select Quality"
+                  data-test="custom-quality-field"
+              />
+            </div>
+
+            <div class="judge-modal__form-row">
+              <label for="custom-document-field" class="judge-modal__form-label">Document</label>
+              <InputText
+                  id="custom-document-field"
+                  v-model="customFormData.document"
+                  class="judge-modal__form-input"
+                  placeholder="Select Document"
+                  data-test="custom-document-field"
+              />
+            </div>
+
+            <div class="judge-modal__form-row">
+              <label for="custom-pages-field" class="judge-modal__form-label">Page(s)</label>
+              <InputText
+                  id="custom-pages-field"
+                  v-model="customFormData.pages"
+                  class="judge-modal__form-input"
+                  placeholder="Select Page(s)"
+                  data-test="custom-pages-field"
+              />
+            </div>
+
+            <div class="judge-modal__form-row">
+              <label for="custom-comment-field" class="judge-modal__form-label">Comment</label>
+              <Textarea
+                  id="custom-comment-field"
+                  v-model="customFormData.comment"
+                  class="judge-modal__form-textarea"
+                  placeholder="Write a comment"
+                  rows="2"
+                  data-test="custom-comment-field"
+              />
+            </div>
+          </div>
+
+          <!-- Edit mode: Display as JSON editor -->
+          <div v-else class="judge-modal__json-editor">
             <label class="judge-modal__json-label" for="custom-json-textarea">
               Custom datapoint JSON
             </label>
@@ -232,7 +310,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT CUSTOM"
-                @click=""
+                @click="onAcceptCustomClick"
                 :disabled="isMutating || !isCustomJsonValid"
                 data-test="accept-custom-button"
             />
@@ -245,7 +323,7 @@
 
       <!-- Bottom-right: Next datapoint selection & patch error -->
       <div class="judge-modal__grid-cell judge-modal__grid-bottom-right">
-        <section class="judge-modal__section" data-test="next-datapoint-section">
+        <section class="judge-modal__section judge-modal__section--centered" data-test="next-datapoint-section">
           <h3 class="judge-modal__section-title">Next datapoint</h3>
 
           <div class="judge-modal__next-toggle">
@@ -270,13 +348,13 @@
                 data-test="next-datapoint-select"
             >
               <template #option="slotProps">
-                <div class="judge-modal__next-option">
-                  <span>{{ slotProps.option.label }}</span>
+                <div class="judge-modal__next-option" :class="{ 'judge-modal__next-option--reviewed': slotProps.option.reviewed }">
                   <i
                       v-if="slotProps.option.reviewed"
-                      class="pi pi-check judge-modal__next-option-icon"
+                      class="pi pi-check judge-modal__next-option-icon judge-modal__next-option-icon--reviewed"
                       aria-hidden="true"
                   ></i>
+                  <span>{{ slotProps.option.label }}</span>
                 </div>
               </template>
             </Select>
@@ -300,13 +378,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import type Keycloak from 'keycloak-js';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
 import Message from 'primevue/message';
 import InputSwitch from 'primevue/inputswitch';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -366,6 +446,15 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
       pageRange: '4-6',
     },
   },
+  'mock-dp-3': {
+    value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED',
+    quality: 'Estimated_PreliminaryAudit_PendingFinalVerificationByExternalAuditorGmbH',
+    comment: 'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
+    dataSource: {
+      fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+      pageRange: '47-53',
+    },
+  },
 };
 
 // Create mock dataset review with entries that will be populated
@@ -411,6 +500,40 @@ function createMockDatasetReview() {
         acceptedSource: null,
         qaReports: [],
       },
+      'kpi.energyProduction': {
+        dataPointId: 'mock-dp-3',
+        acceptedSource: null,
+        qaReports: [
+          {
+            qaReportId: 'mock-qa-3',
+            verdict: 'QaPending',
+            correctedData: JSON.stringify({
+              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
+              quality: 'Verified_FinalAudit_ConfirmedByExternalAuditorGmbH_SignedOff',
+              comment: 'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
+              dataSource: {
+                fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                pageRange: '47-53',
+              },
+            }),
+            reporterUserId: 'mock-user-1',
+          },
+          {
+            qaReportId: 'mock-qa-4',
+            verdict: 'QaPending',
+            correctedData: JSON.stringify({
+              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
+              quality: 'Estimated_SecondReview_PendingGeothermalReclassification',
+              comment: 'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
+              dataSource: {
+                fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                pageRange: '51-52',
+              },
+            }),
+            reporterUserId: 'mock-user-2',
+          },
+        ],
+      },
     },
     qaReporters: [
       {
@@ -448,7 +571,7 @@ const datasetReviewError = ref(null);
 // });
 
 // const isMutating = computed(() => patchMutation.isPending.value);
-const isMutating = ref(true);
+const isMutating = ref(false);
 const patchError = ref<string | null>(null);
 
 // ===== Current datapoint selection (local state) =====
@@ -503,11 +626,7 @@ async function loadOriginalDataPoint(): Promise<void> {
 
   isOriginalLoading.value = true;
   try {
-    // Adjust to actual client method & response type
-    // const response = await dataPointControllerApi.getDataPoint(meta.dataPointId);
-    // const jsonString = response.data.dataPoint;
-    // originalData.value = JSON.parse(jsonString) as DataPointDetail;
-    originalData.value = mockDataPointsById['mock-dp-1'];
+    originalData.value = mockDataPointsById[meta.dataPointId] ?? null;
   } catch (error) {
     console.error('Failed to load original datapoint', error);
     originalError.value = error;
@@ -516,14 +635,6 @@ async function loadOriginalDataPoint(): Promise<void> {
   }
 }
 
-const originalJsonPretty = computed(() => {
-  if (!originalData.value) return '';
-  try {
-    return JSON.stringify(originalData.value, null, 2);
-  } catch {
-    return '';
-  }
-});
 
 // Reload original datapoint whenever currentDataPointTypeId changes
 watch(
@@ -552,7 +663,6 @@ interface QaReporter {
 const filteredQaReports = computed<QaReport[]>(() => {
   const meta = currentDataPointMeta.value;
   if (!meta?.qaReports) return [];
-  // Hide reports where verdict === 'QaAccepted'
   return (meta.qaReports as QaReport[]).filter((r) => r.verdict !== 'QaAccepted');
 });
 
@@ -599,14 +709,6 @@ const currentQaCorrectedData = computed<DataPointDetail | null>(() => {
   }
 });
 
-const currentQaCorrectedJsonPretty = computed(() => {
-  if (!currentQaCorrectedData.value) return '';
-  try {
-    return JSON.stringify(currentQaCorrectedData.value, null, 2);
-  } catch {
-    return '';
-  }
-});
 
 function goToPreviousReport(): void {
   if (currentQaReportIndex.value > 0) {
@@ -622,26 +724,118 @@ function goToNextReport(): void {
 
 // ===== Custom datapoint JSON editor =====
 
+const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>('');
 
+interface CustomFormData {
+  value: string;
+  quality: string;
+  document: string;
+  pages: string;
+  comment: string;
+}
+
+const customFormData = ref<CustomFormData>({
+  value: '',
+  quality: '',
+  document: '',
+  pages: '',
+  comment: '',
+});
+
 const isCustomJsonValid = computed<boolean>(() => {
+  if (!editModeEnabled.value) {
+    const f = customFormData.value;
+    return [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  }
   if (!customJson.value.trim()) return false;
   try {
-    JSON.parse(customJson.value); // must be valid JSON
+    JSON.parse(customJson.value);
     return true;
   } catch {
     return false;
   }
 });
 
+
+// Sync form data to JSON when exiting form mode
+watch(editModeEnabled, (newVal) => {
+  if (newVal) {
+    const dataSource: DataPointSourceInfo = {};
+
+    if (customFormData.value.document) {
+      dataSource.fileName = customFormData.value.document;
+    }
+
+    if (customFormData.value.pages) {
+      if (customFormData.value.pages.includes('-')) {
+        dataSource.pageRange = customFormData.value.pages;
+      } else {
+        dataSource.page = customFormData.value.pages;
+      }
+    }
+
+    const data: DataPointDetail = {
+      ...(customFormData.value.value ? { value: customFormData.value.value } : {}),
+      ...(customFormData.value.quality ? { quality: customFormData.value.quality } : {}),
+      ...(customFormData.value.comment ? { comment: customFormData.value.comment } : {}),
+      ...(Object.keys(dataSource).length > 0 ? { dataSource } : {}),
+    };
+
+    const defaultJson = JSON.stringify(
+      { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
+      null,
+      2
+    );
+    customJson.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : defaultJson;
+  } else {
+    try {
+      const parsed = JSON.parse(customJson.value) as DataPointDetail;
+      const toStr = (v: unknown): string => (v === null || v === undefined ? '' : String(v));
+      customFormData.value = {
+        value: toStr(parsed.value),
+        quality: toStr(parsed.quality),
+        document: toStr(parsed.dataSource?.fileName ?? parsed.dataSource?.fileReference),
+        pages: toStr(parsed.dataSource?.pageRange ?? parsed.dataSource?.page),
+        comment: toStr(parsed.comment),
+      };
+    } catch {
+      // invalid JSON, leave form as-is
+    }
+    customJson.value = '';
+  }
+});
+
 function copyOriginalToCustom(): void {
   if (!originalData.value) return;
-  customJson.value = JSON.stringify(originalData.value, null, 2);
+
+  if (editModeEnabled.value) {
+    customJson.value = JSON.stringify(originalData.value, null, 2);
+  } else {
+    customFormData.value = {
+      value: String(originalData.value.value ?? ''),
+      quality: String(originalData.value.quality ?? ''),
+      document: String(originalData.value.dataSource?.fileName ?? originalData.value.dataSource?.fileReference ?? ''),
+      pages: String(originalData.value.dataSource?.pageRange ?? originalData.value.dataSource?.page ?? ''),
+      comment: String(originalData.value.comment ?? ''),
+    };
+  }
 }
 
 function copyCorrectedToCustom(): void {
   if (!currentQaCorrectedData.value) return;
-  customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
+
+  if (editModeEnabled.value) {
+    customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
+  } else {
+    customFormData.value = {
+      value: String(currentQaCorrectedData.value.value ?? ''),
+      quality: String(currentQaCorrectedData.value.quality ?? ''),
+      document: String(currentQaCorrectedData.value.dataSource?.fileName ?? currentQaCorrectedData.value.dataSource?.fileReference ?? ''),
+      pages: String(currentQaCorrectedData.value.dataSource?.pageRange ?? currentQaCorrectedData.value.dataSource?.page ?? ''),
+      comment: String(currentQaCorrectedData.value.comment ?? ''),
+    };
+  }
 }
 
 // ===== Next datapoint dropdown =====
@@ -659,7 +853,6 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
   if (!datasetReview.value?.dataPoints) return [];
   const options: NextDatapointOption[] = [];
 
-  // Keep order from keys of datasetReview.dataPoints
   const entries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
 
   for (const [dataPointType, meta] of entries) {
@@ -676,22 +869,70 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
 });
 
 
+// Returns the next unreviewed datapoint after the given id in the full list
+function findNextUnreviewedAfter(afterId: string): string | null {
+  if (!datasetReview.value?.dataPoints) return null;
+  const allEntries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
+  const startIndex = allEntries.findIndex(([key]) => key === afterId);
+  for (let offset = 1; offset <= allEntries.length; offset++) {
+    const [key, meta] = allEntries[(startIndex + offset) % allEntries.length];
+    if (meta.acceptedSource === null) return key;
+  }
+  return null;
+}
+
 // Jump to selected datapoint via button click
 function goToSelectedDataPoint(): void {
   if (!selectedNextDataPointTypeId.value) return;
   const currentSelection = selectedNextDataPointTypeId.value;
   currentDataPointTypeId.value = currentSelection;
-  const options = nextDataPointOptions.value;
-  const currentIndex = options.findIndex(opt => opt.value === currentSelection);
-  if (currentIndex !== -1 && currentIndex + 1 < options.length) {
-    selectedNextDataPointTypeId.value = options[currentIndex + 1].value;
-  } else if (options.length > 0) {
-    selectedNextDataPointTypeId.value = options[0].value;
-  } else {
-    selectedNextDataPointTypeId.value = null;
-  }
-
+  selectedNextDataPointTypeId.value = findNextUnreviewedAfter(currentSelection);
   resetStateForCurrentDataPoint();
+}
+
+function markCurrentAsReviewed(source: string): void {
+  if (datasetReview.value?.dataPoints?.[currentDataPointTypeId.value]) {
+    datasetReview.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
+  }
+}
+
+function onAcceptOriginalClick(): void {
+  isMutating.value = true;
+  patchError.value = null;
+  console.log('acceptOriginal called');
+  setTimeout(() => {
+    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
+    markCurrentAsReviewed('Original');
+    isMutating.value = false;
+    selectedNextDataPointTypeId.value = next;
+    if (next) goToSelectedDataPoint();
+  }, 1000);
+}
+
+function onAcceptQaClick(): void {
+  isMutating.value = true;
+  patchError.value = null;
+  console.log('acceptQa called', currentQaReport.value?.qaReportId);
+  setTimeout(() => {
+    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
+    markCurrentAsReviewed('Qa');
+    isMutating.value = false;
+    selectedNextDataPointTypeId.value = next;
+    if (next) goToSelectedDataPoint();
+  }, 1000);
+}
+
+function onAcceptCustomClick(): void {
+  isMutating.value = true;
+  patchError.value = null;
+  console.log('acceptCustom called', customJson.value);
+  setTimeout(() => {
+    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
+    markCurrentAsReviewed('Custom');
+    isMutating.value = false;
+    selectedNextDataPointTypeId.value = next;
+    if (next) goToSelectedDataPoint();
+  }, 1000);
 }
 
 // ===== Accept actions (PATCH) =====
@@ -749,40 +990,18 @@ function goToSelectedDataPoint(): void {
 //   }
 // }
 
-function handleAfterSuccessfulPatch(): void {
-  // After mutation success, datasetReview query is invalidated by onSuccess.
-  // Behavior: if next datapoint selected -> jump there, else close.
-  if (selectedNextDataPointTypeId.value) {
-    currentDataPointTypeId.value = selectedNextDataPointTypeId.value;
-    resetStateForCurrentDataPoint();
-  } else {
-    handleClose();
-  }
-}
-
-// ===== Helpers / lifecycle =====
-
 function resetStateForCurrentDataPoint(): void {
   patchError.value = null;
   currentQaReportIndex.value = 0;
   customJson.value = '';
-  loadOriginalDataPoint().catch((error) => console.error(error));
+  customFormData.value = {
+    value: '',
+    quality: '',
+    document: '',
+    pages: '',
+    comment: '',
+  };
 }
-
-function handleClose(): void {
-  selectedNextDataPointTypeId.value = null;
-  onlyShowUnreviewed.value = true;
-  patchError.value = null;
-
-  isOpen.value = false;
-  emit('close');
-}
-
-onMounted(() => {
-  if (currentDataPointMeta.value) {
-    loadOriginalDataPoint().catch((error) => console.error(error));
-  }
-});
 </script>
 
 <style scoped lang="scss">
@@ -810,13 +1029,8 @@ onMounted(() => {
 .judge-modal__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-sm);
-}
-
-.judge-modal__grid-cell {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  gap: 0;
+  grid-template-rows: auto auto 20rem;
 }
 
 .judge-modal__grid-top-left {
@@ -829,20 +1043,26 @@ onMounted(() => {
   grid-row: 1;
 }
 
+.judge-modal__separator {
+  grid-column: 1 / -1;
+  height: 2px;
+  background-color: #e3e2df;
+  margin: 0;
+}
+
 .judge-modal__grid-bottom-left {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .judge-modal__grid-bottom-right {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .judge-modal__section {
-  border: 1px solid #e3e2df;
   border-radius: 4px;
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs);
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -850,10 +1070,35 @@ onMounted(() => {
 }
 
 .judge-modal__section-title {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   margin-top: 0;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.judge-modal__section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.judge-modal__section-header-row .judge-modal__section-title {
+  margin-bottom: 0;
+}
+
+.judge-modal__edit-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.judge-modal__edit-mode-toggle :deep(.p-toggleswitch-slider) {
+  background: #ff6813 !important;
+}
+
+.judge-modal__edit-mode-toggle :deep(.p-toggleswitch:not(.p-disabled):hover .p-toggleswitch-slider) {
+  background: #aa5924 !important;
 }
 
 .judge-modal__section-header-with-nav {
@@ -907,26 +1152,41 @@ onMounted(() => {
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
+  table-layout: fixed;
 
   tr {
-    border-bottom: 1px solid #e3e2df;
 
     th {
       width: 8rem;
       padding-right: var(--spacing-md);
       vertical-align: middle;
       text-align: left;
+      font-weight: normal;
+      flex-shrink: 0;
     }
 
     td {
-      padding: 0.25rem 0;
+      padding: 0.4rem 0;
       vertical-align: middle;
-    }
+      font-size: var(--font-size-sm);
+      max-width: 0;
 
-    &:last-child {
-      border-bottom: none;
+      span:not(.judge-modal__multiline) {
+        display: block;
+        white-space: normal;
+        word-break: break-all;
+      }
     }
   }
+}
+
+.judge-modal__multiline {
+  white-space: pre-wrap;
+  display: block;
+  max-height: 2.8em;
+  overflow-y: auto;
+  vertical-align: top;
+  line-height: 1.4;
 }
 
 .judge-modal__json-view {
@@ -952,78 +1212,117 @@ onMounted(() => {
 
 .judge-modal__section-actions {
   margin-top: auto;
+  padding-top: 0.5rem;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
-.judge-modal__section-actions :deep(.p-button) {
-  padding: 0.4rem 0.8rem !important;
-  font-size: var(--font-size-sm) !important;
-  height: auto !important;
-  min-height: auto !important;
-}
-
-.judge-modal__multiline {
-  white-space: pre-wrap;
-}
-
-.judge-modal__qa-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-sm);
-}
-
-.judge-modal__qa-reporter {
-  flex: 1;
-  text-align: center;
-  font-weight: var(--font-weight-medium);
-}
-
-.judge-modal__no-qa {
-  font-style: italic;
-  color: #666;
-}
-
-.judge-modal__section-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.judge-modal__placeholder-label {
-  font-size: var(--font-size-xs);
-  color: #999;
+.judge-modal__grid-bottom-left .judge-modal__section-actions {
+  margin-top: auto;
 }
 
 .judge-modal__custom-actions {
   display: flex;
-  gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-xs);
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.judge-modal__custom-actions :deep(.p-button:last-child) {
+  margin-left: auto;
 }
 
 .judge-modal__custom-actions :deep(.p-button) {
   font-size: var(--font-size-xs);
   padding: 0.4rem 0.6rem !important;
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 .judge-modal__json-editor {
   margin-top: var(--spacing-xs);
+  flex: 1;
+  min-height: 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
 }
 
 .judge-modal__json-textarea {
   width: 100%;
-  min-height: 10rem;
-  max-height: 20rem;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
   padding: var(--spacing-xs);
   font-family: monospace;
   font-size: var(--font-size-xs);
   border-radius: 4px;
   border: 1px solid #ccc;
-  resize: vertical;
+  resize: none;
   overflow: auto;
+}
+
+.judge-modal__form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.judge-modal__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+}
+
+.judge-modal__form-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  min-height: 12rem;
+  margin-top: var(--spacing-xs);
+}
+
+.judge-modal__form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0.1rem 0;
+  flex-shrink: 0;
+}
+
+.judge-modal__form-row:last-child {
+  align-items: flex-start;
+}
+
+.judge-modal__form-label {
+  width: 8rem;
+  padding-right: var(--spacing-md);
+  text-align: left;
+  font-weight: normal;
+  font-size: inherit;
+  line-height: 2;
+  flex-shrink: 0;
+}
+
+.judge-modal__form-row:last-child .judge-modal__form-label {
+  line-height: 1;
+  padding-top: 0.4rem;
+}
+
+.judge-modal__form-input {
+  flex: 1;
+  padding: 0.3rem 0.5rem !important;
+  font-size: var(--font-size-sm) !important;
+  height: 1.75rem !important;
+}
+
+.judge-modal__form-textarea {
+  flex: 1;
+  padding: 0.3rem 0.5rem !important;
+  font-size: var(--font-size-sm) !important;
+  resize: none;
 }
 
 .judge-modal__validation-hint {
@@ -1059,12 +1358,17 @@ onMounted(() => {
 .judge-modal__next-option {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--spacing-xs);
 }
 
-.judge-modal__next-option-icon {
-  color: var(--primary-color);
+.judge-modal__next-option--reviewed {
+  opacity: 0.45;
 }
+
+.judge-modal__next-option-icon--reviewed {
+  color: #27ae60;
+}
+
 
 .judge-modal__next-hint {
   font-size: var(--font-size-xs);
@@ -1078,7 +1382,15 @@ onMounted(() => {
   font-size: var(--font-size-sm);
 }
 
-.nowrap {
-  white-space: nowrap;
+.judge-modal__section--centered {
+  justify-content: center;
+}
+
+.judge-modal__section--centered .judge-modal__next-toggle {
+  justify-content: flex-start;
+}
+
+.judge-modal__section--centered .judge-modal__next-select-container {
+  justify-content: flex-start;
 }
 </style>
