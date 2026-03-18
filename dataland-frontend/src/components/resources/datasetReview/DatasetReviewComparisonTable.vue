@@ -119,12 +119,12 @@
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-check text-green-500 ml-auto"
+                        class="pi pi-check text-green-500 ml-auto accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-times text-red-500 ml-auto"
+                        class="pi pi-times text-red-500 ml-auto rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
