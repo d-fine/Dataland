@@ -44,7 +44,7 @@
             paginator
             paginator-position="top"
             :rows="10"
-            :rowsPerPageOptions="[2, 5, 10, 20, 50]"
+            :rowsPerPageOptions="[5, 10, 20, 50]"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             :pageLinkSize="5"

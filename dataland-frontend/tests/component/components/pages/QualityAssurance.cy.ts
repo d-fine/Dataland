@@ -225,11 +225,11 @@ describe('Component tests for the Quality Assurance page', () => {
 
     cy.get('@columnHeader').click();
     cy.get('@columnHeader').should('have.attr', 'aria-sort', 'ascending');
-    getFirstElementInColumn(columnName).should('contain', firstExpectedValueAfterAscendingSort);
+    getFirstElementInColumn(columnName).should('have.text', firstExpectedValueAfterAscendingSort);
 
     cy.get('@columnHeader').click();
     cy.get('@columnHeader').should('have.attr', 'aria-sort', 'descending');
-    getFirstElementInColumn(columnName).should('contain', firstExpectedValueAfterDescendingSort);
+    getFirstElementInColumn(columnName).should('have.text', firstExpectedValueAfterDescendingSort);
   }
 
   /**
