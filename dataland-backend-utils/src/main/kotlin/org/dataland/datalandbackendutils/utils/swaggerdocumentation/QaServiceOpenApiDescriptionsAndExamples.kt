@@ -75,18 +75,11 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
     const val NUMBER_QA_REPORTS_EXAMPLE = "5"
 
-    const val QA_REPORTER_COMPANIES_DESCRIPTION = "List of companies that contributed a QA report to this dataset."
-    const val QA_REPORTER_COMPANIES_EXAMPLE =
-        "[{ \"companyId\": \"c9710c7b-9cd6-446b-85b0-3773d2aceb48\", " +
-            "\"companyName\": \"ABC Corporation\" }]"
-
-    const val QA_REPORT_COMPANY_NAME_DESCRIPTION = "The name of the company that contributed a QA report to this dataset."
-    const val QA_REPORT_COMPANY_NAME_EXAMPLE = "ABC Corporation"
-
-    const val QA_REPORT_COMPANY_ID_DESCRIPTION =
-        "The unique identifier of the company that contributed a QA report " +
-            "to this dataset."
-    const val QA_REPORT_COMPANY_ID_EXAMPLE = "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+    const val QA_REPORTER_DESCRIPTION = "List of reporters that contributed a QA report to this dataset."
+    const val QA_REPORTER_EXAMPLE =
+        "[{ \"reporterUserId\": \"c9710c7b-9cd6-446b-85b0-3773d2aceb48\", " +
+            "\"reporterUserName\": \"Data Reviewer\", " +
+            "\"reporterEmailAddress\": \"data.reviewer@dataland.com\" }]"
 
     const val DATA_POINTS_MAP_DESCRIPTION =
         "Map with details for all datapoints in the dataset. " +

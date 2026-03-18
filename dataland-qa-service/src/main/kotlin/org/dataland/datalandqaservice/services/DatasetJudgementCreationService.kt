@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
@@ -47,6 +48,8 @@ class DatasetJudgementCreationService
 
             val dataPointTypeToQaReports = getLatestQaReportsByDataPointTypeAndReporter(qaReports)
 
+            val judgeUserId = DatalandAuthentication.fromContext().userId
+
             val datasetJudgementEntity =
                 DatasetJudgementEntity(
                     dataSetJudgementId = UUID.randomUUID(),
@@ -54,8 +57,8 @@ class DatasetJudgementCreationService
                     companyId = UUID.fromString(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType,
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    qaJudgeUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
-                    qaJudgeUserName = DatalandAuthentication.fromContext().name,
+                    qaJudgeUserId = UUID.fromString(judgeUserId),
+                    qaJudgeUserName = getUserName(keycloakUserService.getUser(judgeUserId)) ?: judgeUserId,
                     qaReporters = getQaReporters(dataPointTypeToQaReports).toMutableList(),
                     dataPoints = mutableListOf(),
                 )
@@ -68,6 +71,19 @@ class DatasetJudgementCreationService
                 )
             return datasetJudgementEntityWithDataPoints
         }
+
+        /**
+         * Resolve a human-readable display name for the given userInfo.
+         *
+         * Returns "First Last" when available; otherwise returns null.
+         *
+         * @param userInfo The user info containing the name
+         * @return The display name or null if no name parts are set.
+         */
+        private fun getUserName(userInfo: KeycloakUserInfo): String? =
+            listOfNotNull(userInfo.firstName, userInfo.lastName)
+                .joinToString(" ")
+                .ifBlank { null }
 
         /**
          * Helper Method to group QA reports by data point type and keep only the latest upload per reporter.
@@ -113,10 +129,7 @@ class DatasetJudgementCreationService
                 val userInfo = keycloakUserService.getUser(reporterUserId)
                 QaReporter(
                     reporterUserId = UUID.fromString(reporterUserId),
-                    reporterUserName =
-                        listOfNotNull(userInfo.firstName, userInfo.lastName)
-                            .joinToString(" ")
-                            .ifBlank { null },
+                    reporterUserName = getUserName(userInfo),
                     reporterEmailAddress = userInfo.email,
                 )
             }

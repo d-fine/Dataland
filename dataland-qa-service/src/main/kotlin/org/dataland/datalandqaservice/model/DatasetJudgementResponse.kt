@@ -51,8 +51,8 @@ data class DatasetJudgementResponse(
     )
     val qaJudgeUserName: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_EXAMPLE,
     )
     val qaReporters: List<QaReporter>,
     @field:Schema(
