@@ -39,24 +39,24 @@ data class DatasetJudgementResponse(
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_STATE_DESCRIPTION,
     )
-    var judgementState: DatasetJudgementState,
+    val judgementState: DatasetJudgementState,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_EXAMPLE,
     )
-    var qaJudgeUserId: String?,
+    val qaJudgeUserId: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE,
     )
-    var qaJudgeUserName: String?,
+    val qaJudgeUserName: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTER_COMPANIES_EXAMPLE,
     )
-    var qaReporters: List<QaReporter>,
+    val qaReporters: List<QaReporter>,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINTS_MAP_DESCRIPTION,
     )
-    var dataPoints: Map<String, DataPointJudgement>,
+    val dataPoints: Map<String, DataPointJudgement>,
 )

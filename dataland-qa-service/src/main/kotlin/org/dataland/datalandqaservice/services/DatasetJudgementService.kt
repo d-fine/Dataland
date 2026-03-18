@@ -3,7 +3,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -80,7 +79,7 @@ class DatasetJudgementService
         @Transactional
         fun setJudge(datasetJudgementId: UUID): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
-            datasetJudgement.qaJudgeUserId = convertToUUID(DatalandAuthentication.fromContext().userId)
+            datasetJudgement.qaJudgeUserId = UUID.fromString(DatalandAuthentication.fromContext().userId)
             datasetJudgement.qaJudgeUserName = DatalandAuthentication.fromContext().name
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
@@ -195,7 +194,7 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport =
-                            convertToUUID(patch.reporterUserIdOfAcceptedQaReport!!)
+                            UUID.fromString(patch.reporterUserIdOfAcceptedQaReport!!)
                     }
                 }
                 AcceptedDataPointSource.Custom -> {

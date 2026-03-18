@@ -52,8 +52,9 @@ class DatasetJudgementController(
         datasetJudgementId: String,
         dataPointType: String,
         patch: JudgementDetailsPatch,
-    ): ResponseEntity<DatasetJudgementResponse> =
-        ResponseEntity
+    ): ResponseEntity<DatasetJudgementResponse> {
+        patch.reporterUserIdOfAcceptedQaReport?.let { convertToUUID(it) }
+        return ResponseEntity
             .ok(
                 datasetJudgementService.patchJudgementDetails(
                     convertToUUID(datasetJudgementId),
@@ -61,4 +62,5 @@ class DatasetJudgementController(
                     patch,
                 ),
             )
+    }
 }

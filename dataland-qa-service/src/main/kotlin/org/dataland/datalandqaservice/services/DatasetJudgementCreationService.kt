@@ -2,7 +2,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -52,10 +51,10 @@ class DatasetJudgementCreationService
                 DatasetJudgementEntity(
                     dataSetJudgementId = UUID.randomUUID(),
                     datasetId = datasetId,
-                    companyId = ValidationUtils.convertToUUID(datasetMetaData.companyId),
+                    companyId = UUID.fromString(datasetMetaData.companyId),
                     dataType = datasetMetaData.dataType.toString(),
                     reportingPeriod = datasetMetaData.reportingPeriod,
-                    qaJudgeUserId = ValidationUtils.convertToUUID(DatalandAuthentication.fromContext().userId),
+                    qaJudgeUserId = UUID.fromString(DatalandAuthentication.fromContext().userId),
                     qaJudgeUserName = DatalandAuthentication.fromContext().name,
                     qaReporters = getQaReporters(dataPointTypeToQaReports).toMutableList(),
                     dataPoints = mutableListOf(),
@@ -143,7 +142,7 @@ class DatasetJudgementCreationService
                 val currentDataPointJudgementDetails =
                     DataPointJudgementEntity(
                         dataPointType = dataPointType,
-                        dataPointId = ValidationUtils.convertToUUID(dataPointId),
+                        dataPointId = UUID.fromString(dataPointId),
                         qaReports = latestQaReportsByDataPointTypeAndReporter[dataPointType]?.toMutableList() ?: mutableListOf(),
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
