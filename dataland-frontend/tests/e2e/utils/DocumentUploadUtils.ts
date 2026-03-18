@@ -5,7 +5,6 @@ import {
   type DocumentMetaInfoPatch,
   type DocumentMetaInfoResponse,
 } from '@clients/documentmanager';
-import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
 /**
@@ -15,6 +14,18 @@ import { type AxiosError } from 'axios';
 export function uploadAllDocuments(token: string): void {
   uploadAllDocumentsFromFolder(token, '../testing/data/documents/');
   uploadAllDocumentsFromFolder(token, '../testing/data/documents/fake-fixtures/');
+}
+
+/**
+ * Calculates the SHA-256 hash of a given array of bytes and returns it as a hex string.
+ * @param bytes The input data as a Uint8Array for which the SHA-256 hash should be calculated.
+ * @returns A promise that resolves to the SHA-256 hash of the input data, represented as a hexadecimal string.
+ */
+async function sha256Hex(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 /**
@@ -55,7 +66,8 @@ export async function uploadDocumentViaApi(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').update(arr).digest('hex');
+  const documentHash = await sha256Hex(arr);
+
   return await documentControllerApi
     .postDocument(file, documentMetaInfo)
     .then((response) => {
@@ -88,7 +100,7 @@ export async function patchDocumentMetaInfo(
       accessToken: token,
     })
   );
-  const documentHash = createHash('sha256').digest('hex');
+  const documentHash = await sha256Hex(new Uint8Array(0));
   return await documentControllerApi
     .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
