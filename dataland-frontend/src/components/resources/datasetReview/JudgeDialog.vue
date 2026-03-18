@@ -91,7 +91,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT ORIGINAL"
-                @click="onAcceptOriginalClick"
+                @click="onAcceptClick('Original')"
                 :disabled="isMutating"
                 data-test="accept-original-button"
             />
@@ -186,7 +186,7 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT REPORT"
-                @click="onAcceptQaClick"
+                @click="onAcceptClick('Qa')"
                 :disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
                 data-test="accept-report-button"
             />
@@ -310,11 +310,11 @@
           <div class="judge-modal__section-actions">
             <PrimeButton
                 label="ACCEPT CUSTOM"
-                @click="onAcceptCustomClick"
+                @click="onAcceptClick('Custom')"
                 :disabled="isMutating || !isCustomJsonValid"
                 data-test="accept-custom-button"
             />
-            <span v-if="!isCustomJsonValid && customJson.trim().length > 0" class="judge-modal__validation-hint">
+            <span v-if="editModeEnabled && !isCustomJsonValid && customJson.trim().length > 0" class="judge-modal__validation-hint">
               Custom JSON must be valid JSON.
             </span>
           </div>
@@ -397,6 +397,19 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 // import {ReviewDetailsPatch} from "@clients/qaservice";
 
 // ===== Props & emits =====
+const DEFAULT_CUSTOM_JSON = JSON.stringify(
+    { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
+    null,
+    2
+);
+
+const DEFAULT_CUSTOM_FORM_DATA = {
+  value: '',
+  quality: '',
+  document: '',
+  pages: '',
+  comment: '',
+};
 
 const props = defineProps<{
   datasetReviewId: string;
@@ -735,13 +748,7 @@ interface CustomFormData {
   comment: string;
 }
 
-const customFormData = ref<CustomFormData>({
-  value: '',
-  quality: '',
-  document: '',
-  pages: '',
-  comment: '',
-});
+const customFormData = ref<CustomFormData>(DEFAULT_CUSTOM_FORM_DATA);
 
 const isCustomJsonValid = computed<boolean>(() => {
   if (!editModeEnabled.value) {
@@ -782,12 +789,7 @@ watch(editModeEnabled, (newVal) => {
       ...(Object.keys(dataSource).length > 0 ? { dataSource } : {}),
     };
 
-    const defaultJson = JSON.stringify(
-      { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
-      null,
-      2
-    );
-    customJson.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : defaultJson;
+    customJson.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
   } else {
     try {
       const parsed = JSON.parse(customJson.value) as DataPointDetail;
@@ -802,7 +804,7 @@ watch(editModeEnabled, (newVal) => {
     } catch {
       // invalid JSON, leave form as-is
     }
-    customJson.value = '';
+    customJson.value = DEFAULT_CUSTOM_JSON;
   }
 });
 
@@ -881,7 +883,7 @@ function findNextUnreviewedAfter(afterId: string): string | null {
   return null;
 }
 
-// Jump to selected datapoint via button click
+// Jump to selected datapoint and reset local state
 function goToSelectedDataPoint(): void {
   if (!selectedNextDataPointTypeId.value) return;
   const currentSelection = selectedNextDataPointTypeId.value;
@@ -889,46 +891,21 @@ function goToSelectedDataPoint(): void {
   selectedNextDataPointTypeId.value = findNextUnreviewedAfter(currentSelection);
   resetStateForCurrentDataPoint();
 }
-
+// Mark current datapoint as reviewed with the given source
+// (without backend call, just local state update for immediate UI feedback)
 function markCurrentAsReviewed(source: string): void {
   if (datasetReview.value?.dataPoints?.[currentDataPointTypeId.value]) {
     datasetReview.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
   }
 }
 
-function onAcceptOriginalClick(): void {
+// Handler for accept buttons: mark current as reviewed, then go to next unreviewed
+function onAcceptClick(source: 'Original' | 'Qa' | 'Custom'): void {
   isMutating.value = true;
   patchError.value = null;
-  console.log('acceptOriginal called');
   setTimeout(() => {
     const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
-    markCurrentAsReviewed('Original');
-    isMutating.value = false;
-    selectedNextDataPointTypeId.value = next;
-    if (next) goToSelectedDataPoint();
-  }, 1000);
-}
-
-function onAcceptQaClick(): void {
-  isMutating.value = true;
-  patchError.value = null;
-  console.log('acceptQa called', currentQaReport.value?.qaReportId);
-  setTimeout(() => {
-    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
-    markCurrentAsReviewed('Qa');
-    isMutating.value = false;
-    selectedNextDataPointTypeId.value = next;
-    if (next) goToSelectedDataPoint();
-  }, 1000);
-}
-
-function onAcceptCustomClick(): void {
-  isMutating.value = true;
-  patchError.value = null;
-  console.log('acceptCustom called', customJson.value);
-  setTimeout(() => {
-    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
-    markCurrentAsReviewed('Custom');
+    markCurrentAsReviewed(source);
     isMutating.value = false;
     selectedNextDataPointTypeId.value = next;
     if (next) goToSelectedDataPoint();
@@ -990,17 +967,12 @@ function onAcceptCustomClick(): void {
 //   }
 // }
 
+// Reset local state related to current datapoint when switching to a different datapoint
 function resetStateForCurrentDataPoint(): void {
   patchError.value = null;
   currentQaReportIndex.value = 0;
-  customJson.value = '';
-  customFormData.value = {
-    value: '',
-    quality: '',
-    document: '',
-    pages: '',
-    comment: '',
-  };
+  customJson.value = DEFAULT_CUSTOM_JSON;
+  customFormData.value = DEFAULT_CUSTOM_FORM_DATA
 }
 </script>
 
