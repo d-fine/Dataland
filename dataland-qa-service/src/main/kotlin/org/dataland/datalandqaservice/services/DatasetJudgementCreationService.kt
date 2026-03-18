@@ -143,7 +143,7 @@ class DatasetJudgementCreationService
                 val currentDataPointJudgementDetails =
                     DataPointJudgementEntity(
                         dataPointType = dataPointType,
-                        dataPointId = ValidationUtils.convertToUUID(dataPointId),
+                        dataPointId = dataPointId,
                         qaReports = latestQaReportsByDataPointTypeAndReporter[dataPointType]?.toMutableList() ?: mutableListOf(),
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,

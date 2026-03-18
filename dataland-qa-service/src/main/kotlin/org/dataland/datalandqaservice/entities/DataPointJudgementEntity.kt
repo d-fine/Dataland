@@ -22,7 +22,7 @@ class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
     @Column(name = "data_point_id")
-    val dataPointId: UUID,
+    val dataPointId: String,
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "data_point_id", referencedColumnName = "data_point_id")
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),

@@ -45,7 +45,7 @@ object MockDatasetJudgementEntityForTest {
                 mutableListOf(
                     DataPointJudgementEntity(
                         dataPointType = DUMMY_DATA_POINT_TYPE,
-                        dataPointId = UUID.randomUUID(),
+                        dataPointId = UUID.randomUUID().toString(),
                         qaReports =
                             mutableListOf(
                                 DataPointQaReportEntity(
