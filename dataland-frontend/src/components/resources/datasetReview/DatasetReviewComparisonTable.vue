@@ -208,7 +208,7 @@ import { DataTypeEnum } from '@clients/backend';
 import {
   type DatasetJudgementResponse,
   type DataPointJudgement,
-  type QaReportDataPointWithReporter,
+  type DataPointQaReport,
   AcceptedDataPointSource,
   QaReportDataPointVerdict,
 } from '@clients/qaservice';
@@ -383,7 +383,7 @@ function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
  * @returns {QaReportDataPointWithReporter | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPointWithReporter | undefined {
+function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport | undefined {
   if (!row.dataPointTypeId) return undefined;
   const datapointEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
   if (!datapointEntry) return undefined;
@@ -400,7 +400,7 @@ function getQaReportFor(row: CellRow, reporterUserId: string): QaReportDataPoint
  * @param {QaReportDataPointWithReporter | undefined} qaReport - QA report to extract value from.
  * @returns {string | null} The corrected display value or null when unavailable.
  */
-function getCorrectedDisplayFromQaReport(qaReport: QaReportDataPointWithReporter | undefined): string | null {
+function getCorrectedDisplayFromQaReport(qaReport: DataPointQaReport | undefined): string | null {
   if (!qaReport?.correctedData) return null;
   try {
     const parsed = JSON.parse(qaReport.correctedData);
