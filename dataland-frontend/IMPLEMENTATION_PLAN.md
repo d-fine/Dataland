@@ -1,395 +1,366 @@
-# Landing Page & About Page Rework — Implementation Plan
+# Homepage Rework V2 — Implementation Plan
 
-**Date:** 2026-03-08
-**Spec:** `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`
+**Date:** 2026-03-18
+**Spec:** `dataland-frontend/HOMEPAGE_REWORK_SPEC.md`
 **Branch:** `feature/rework-about-page`
+
+---
+
+## Lessons Learned from Previous Implementation
+
+The previous plan had **7 phases, 7 parallel worktrees, and 3 review agents**. Problems:
+
+- **CI failures** — isolated worktree builds compiled individually but broke when merged
+- **Over-fragmentation** — too many small agents missing shared dependencies
+- **Branch proliferation** — worktrees created their own branches, making merges error-prone
+
+This plan uses **4 phases, no worktrees, all work on one branch** (`feature/rework-about-page`). CI verification happens once at the end.
+
+---
+
+## CI Verification Reference
+
+CI is checked **once** — in Phase 4 after all building and review fixes are done.
+
+### Local CI Gate (mirrors GitHub Actions)
+
+```bash
+cd dataland-frontend
+npm run typecheck          # vue-tsc --noEmit
+npm run lintci             # ESLint — fails on ANY warning (stricter than `npm run lint`)
+npm run formatci           # Prettier formatting check
+npm run checkdependencies  # Unused/missing deps
+npm run testcomponent      # Cypress component tests
+```
+
+### Checking Remote CI After Push
+
+```bash
+gh run list --branch feature/rework-about-page --limit 3
+gh run view <run-id> --log-failed   # View failed job logs
+```
+
+**Key CI jobs that must pass:**
+
+| Job | What it checks |
+|-----|---------------|
+| `gradle-based-tests` | ESLint (`lintci`), Prettier (`formatci`), TypeScript (`typecheck`), Cypress compilation, dependency check |
+| `frontend-component-tests` | `npm run testcomponent` (30-min timeout) |
+| `e2e-tests` (groups 1-4) | Full Cypress E2E in Docker stack |
+
+### What Breaks CI Most Often
+
+1. **ESLint warnings** — `lintci` fails on ANY warning (stricter than `lint`)
+2. **Unused imports/variables** — ESLint catches these as errors
+3. **Component test failures** — tests reference old component names/selectors after refactoring
+4. **TypeScript errors** — missing imports, wrong types after component renames
 
 ---
 
 ## Agent Roles
 
-| Role                | Agent Type           | Identity | Rule                                                                                                   |
-| ------------------- | -------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| **Builder**         | `frontend-developer` | Agent X  | Implements all code. Never reviews its own output.                                                     |
-| **Code Reviewer**   | `frontend-developer` | Agent Y  | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build.                |
-| **Visual Reviewer** | `ux-designer`        | —        | Two-pass review: (1) source code audit, (2) screenshot-based visual QA from user-provided screenshots. |
-| **Copy Reviewer**   | `copywriter`         | —        | Verifies every rendered string against the spec.                                                       |
+| Role | Agent Type | Identity | Rule |
+|------|-----------|----------|------|
+| **Builder** | `frontend-developer` | Agent X | Implements all code. |
+| **Code Reviewer** | `frontend-developer` | Agent Y | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
+| **Copy Reviewer** | `copywriter` | — | Verifies every rendered string against the spec. |
 
-**Critical rule:** Agent Y (code reviewer) must be a **separate invocation** from Agent X (builder). It starts fresh with no build context — genuinely independent eyes.
+**Critical rules:**
+- All agents work on the **same branch** (`feature/rework-about-page`). No worktrees, no feature branches.
+- Agent Y (code reviewer) must be a **separate invocation** from Agent X (builder).
+- Review agents (Phase 3) are **read-only** — they read code and produce issue lists but do not edit files.
 
 ---
 
-## Phase 1: Infrastructure
+## Phase 1: Infrastructure + Content + Shared Components
 
 **Agent:** 1 `frontend-developer` (Agent X), serial
-**Dependencies:** None — this is the foundation everything else imports.
 
 ### Tasks
 
-1. **Create `src/assets/scss/breakpoints.scss`**
+1. **SCSS breakpoints** — Create `src/assets/scss/breakpoints.scss` with `$bp-sm: 640px`, `$bp-md: 768px`, `$bp-lg: 1024px`, `$bp-xl: 1440px`. Update `vite.config.ts` to inject via `additionalData`.
 
-   ```scss
-   $bp-sm: 640px;
-   $bp-md: 768px;
-   $bp-lg: 1024px;
-   $bp-xl: 1440px;
-   ```
+2. **useBreakpoint composable** — Create `src/composables/useBreakpoint.ts` per spec section 2.2.
 
-2. **Update `vite.config.ts`** — add SCSS `additionalData` so breakpoint variables are available globally:
+3. **Reduced motion support** — Add global `@media (prefers-reduced-motion: reduce)` rule per spec section 2.6.
 
-   ```ts
-   css: {
-     preprocessorOptions: {
-       scss: {
-         additionalData: `@use "@/assets/scss/breakpoints" as *;\n`,
-       },
-     },
-   },
-   ```
+4. **Content data files:**
+   - Create `src/components/resources/landingPage/landingContent.ts` — testimonials (12 quotes), news items (9 entries with LinkedIn URLs), customer story summaries (3 cards), sector tiles (11 entries)
+   - Create `src/components/resources/productPage/productContent.ts` — use cases (7), feature cards (6), pricing data, documentation links (9 URLs), detailed customer stories (MEAG, NORD/LB, ÖVB)
+   - Modify `src/components/resources/aboutPage/aboutContent.ts` — update team members (3), update partners (FACT, ISS), update company text
 
-3. **Create `src/composables/useBreakpoint.ts`** — shared reactive breakpoint composable (spec section 2.2).
+5. **Shared generic components:**
+   - Create `src/components/generics/ProblemSolutionBlock.vue` — reusable 3-column problem→arrow→solution layout used by TheWhyUs, ProductHowItWorks, ProductGettingData
+   - Create `src/components/generics/AccessibleCarousel.vue` — reusable carousel with auto-scroll, pause button, keyboard nav, `aria-live`, `prefers-reduced-motion` support
+   - Create `src/components/generics/NewsCard.vue` — reusable news card (image, title, date, link)
 
-4. **Update `src/assets/content.json`** — all changes from spec section 5.1:
-   - Rename "Join a campaign" → "Frameworks", update headline text array
-   - Update "How it works" card 3 text (remove "campaign")
-   - Replace "Quotes" section with text-only "Social Proof" quotes
-   - Fix typos in "Our principles" ("soveignty" → "sovereignty", "easliy" → "easily")
-   - Remove "Claim" section entirely
-
-5. **Update `src/components/resources/aboutPage/aboutContent.ts`** — full replacement per spec section 5.2:
-   - Update trust pillar 4: title → "Transparent Technology", new description
-   - Add `Principle` interface + `PRINCIPLES` array
-   - Add `url?: string` to `AdvisoryPerson` interface
-   - Update `ADVISORY_BOARD` with URLs
-   - Update `BOTTOM_CTA_COPY` with dual CTA labels
-   - Add `SPONSORS` and `PARTNERS` logo arrays
-
-6. **Create `src/components/resources/landingPage/socialProofContent.ts`** — quote data + success story summary data (spec section 3.8).
-
-7. **Create `src/components/resources/successStories/successStoryContent.ts`** — full success story data with `SuccessStory` interface (spec section 3.11).
-
-### Completion check
-
-- All content files compile without TypeScript errors
-- No downstream components created yet — just data + infrastructure
+6. **Route registration** — Update `src/router/index.ts` to add routes for `/product`, `/newsletter`, `/contact`, `/testimonials`. Create empty page shells for now (just `<main id="main-content"><p>TODO</p></main>`).
 
 ---
 
-## Phase 2: Build New Components
-
-**Agent:** 7 `frontend-developer` agents (all Agent X), **parallel worktrees** (`isolation: "worktree"`)
-**Dependencies:** Phase 1 must be complete (content files + breakpoints exist).
-
-Launch all 7 in a single message for maximum parallelism.
-
-### Worktree A: `TheTrustBar.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.5 ("TheTrustBar"). Create the file `dataland-frontend/src/components/resources/landingPage/TheTrustBar.vue`. The component is self-contained — logo data is hardcoded in the component (not from content.json). Follow the template, styles, and data exactly as specified. Use BEM naming, scoped SCSS, semantic HTML with `aria-label="Trusted by"`. Use the SCSS breakpoint variables from `src/assets/scss/breakpoints.scss` (`$bp-md`). After creating the file, run `cd dataland-frontend && npx vue-tsc --noEmit` to verify TypeScript.
-
-### Worktree B: `TheDataAccess.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.6 ("TheDataAccess"). Also read the existing `dataland-frontend/src/components/resources/landingPage/TheHowItWorks.vue` to understand the current SlideShow pattern and how content.json data flows in via the `sections` prop. Create `dataland-frontend/src/components/resources/landingPage/TheDataAccess.vue` as a replacement. Key additions: video integration with IntersectionObserver lazy-loading, autoplay muted loop, poster SVG fallback. The video area must gracefully handle a missing mp4 (show only the poster). Use `useBreakpoint` composable instead of manual resize listeners. Follow spec exactly for template structure, styles, and behavior. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### Worktree C: `TheFrameworks.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.7 ("TheFrameworks"). Also read the existing `dataland-frontend/src/components/resources/landingPage/TheJoinCampaign.vue` to understand the current pattern. Create `dataland-frontend/src/components/resources/landingPage/TheFrameworks.vue` as a replacement. Key changes from TheJoinCampaign: no "campaign" wording, headline updated, CTA changed from `openEmailClient` to Keycloak register, headline reduced from 100px to 64px at desktop. Follow spec exactly. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### Worktree D: `TheSocialProof.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.8 ("TheSocialProof"). Also read `dataland-frontend/src/components/resources/landingPage/socialProofContent.ts` for the data. Create `dataland-frontend/src/components/resources/landingPage/TheSocialProof.vue`. This replaces TheQuotes — NO YouTube embeds, NO cookie consent. Three sub-sections: (A) quote cards in 2x2 grid (mobile: SlideShow), (B) success story summary cards linking to `/success-stories/:slug`, (C) member process sketch image. Follow card designs exactly (border-radius, shadow, padding, typography). Use existing `SlideShow.vue` component for mobile quotes. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### Worktree E: `TheAboutPrinciples.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 4.6 ("TheAboutPrinciples"). Read `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts` for the `PRINCIPLES` data. Create `dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue`. 3x2 grid (desktop), 2x3 (tablet), 1x6 (mobile). Each card has a 3px solid orange left border (`#ff6813`), icon, bold title, single sentence description. Follow template and styles exactly from spec. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### Worktree F: `TheAboutEcosystem.vue`
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 4.8 ("TheAboutEcosystem"). Read `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts` for the `SPONSORS` and `PARTNERS` data. Also read the existing `TheAboutSponsors.vue` and `TheAboutPartners.vue` to understand the current `LogoChip` component usage. Create `dataland-frontend/src/components/resources/aboutPage/TheAboutEcosystem.vue` that merges both into one section with two labeled subsections. Follow template and styles exactly. Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### Worktree G: `SuccessStoryPage.vue` + Route
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`, section 3.11 ("Customer Success Stories Page"). Read `dataland-frontend/src/components/resources/successStories/successStoryContent.ts` for the data. Create `dataland-frontend/src/components/pages/SuccessStoryPage.vue` with all sections: hero, challenge, process (with process sketch image), result, pull quote, CTA ("Start Using Dataland" for registration + "Read More Stories" linking back to landing page). The page uses the same `LandingPageHeader` and footer as landing/about pages. Use `meta: { layout: 'landing' }` on the route. Also update `dataland-frontend/src/router/index.ts` to add the `/success-stories/:slug` route. Handle unknown slugs gracefully (redirect to landing page). Run `cd dataland-frontend && npx vue-tsc --noEmit` to verify.
-
-### After all worktrees complete
-
-Merge each worktree branch into `feature/rework-about-page` sequentially. Resolve any conflicts (unlikely since all create new files).
-
----
-
-## Phase 3: Modify Existing Components & Wire Up
+## Phase 2: Build All Pages + Navigation + Footer + Cleanup + Tests
 
 **Agent:** 1 `frontend-developer` (Agent X), serial
-**Dependencies:** Phases 1 and 2 complete, all new components merged.
+**Dependencies:** Phase 1 complete.
 
-### Tasks (execute in this order)
+This is the main build phase. One agent builds everything sequentially on the same branch, in this order:
 
-1. **Modify `TheIntro.vue`** (spec section 3.3):
-   - Add visible `<label>` above search bar
-   - Fix Back button: `<div>` → `<button type="button">`
-   - Add two CTA buttons below search (Create Free Account + Get in Touch)
-   - Replace manual resize listener with `useBreakpoint`
-   - Remove direct DOM manipulation of `.header` in focus/blur handlers
+### 2.1 Landing Page (spec sections 3.1–3.11)
 
-2. **Modify `TheStruggle.vue`** (spec section 3.4):
-   - Reduce headline font-size from 100px to 64px at desktop
-   - Scale: 64px (xl) → 48px (lg) → 40px (md) → 32px (sm)
+**Create section components** in `src/components/resources/landingPage/`:
 
-3. **Modify `TheGetInTouch.vue`** (spec section 3.10):
-   - CTA label: `"GET IN TOUCH"` → `"Get in Touch"` (title case)
+1. `TheIntro.vue` — MODIFY existing. Two-column hero (60/40 grid), headline + subtext + 2 CTAs left, illustration right. Remove old search bar from hero (it moves to TheFindLei). Responsive stacking below `$bp-md`.
+2. `TheFindLei.vue` — CREATE. Company search section reusing `CompaniesOnlySearchBar`. Centered, max-width 520px.
+3. `TheWhyUs.vue` — CREATE. 4 problem-solution pairs using `ProblemSolutionBlock`. 3 CTA buttons. Replaces TheStruggle.
+4. `TheTrustedBy.vue` — CREATE. Logo carousel using `AccessibleCarousel`. 14+ logos with pause control.
+5. `TheCustomerStories.vue` — CREATE. 3 story cards (MEAG, NORD/LB, ÖVB) in 3-column grid.
+6. `TheTestimonials.vue` — CREATE. Quote carousel using `AccessibleCarousel`. 12 cards. CTA → `/testimonials`.
+7. `TheFrameworks.vue` — CREATE (replaces old). 6 framework cards in 3x2 grid with orange corner accent.
+8. `TheCustomerProfiles.vue` — CREATE. 11 sector tiles in CSS Grid mosaic.
+9. `TheNewsInsights.vue` — CREATE. News slider using `AccessibleCarousel` + `NewsCard`. 9 items.
 
-4. **Modify `TheBrands.vue`** (spec section 3.9):
-   - Replace magic number breakpoints with SCSS `$bp-*` variables
+**Update `LandingPage.vue`** — new section order per spec 3.2, update imports, add `id="main-content"`.
 
-5. **Modify `PersonCard.vue`** (spec section 4.7):
-   - Render organisation as `<a>` link when `url` prop is provided
+### 2.2 Product Page (spec sections 4.1–4.11)
 
-6. **Modify `TheAboutBottomCTA.vue`** (spec section 4.9):
-   - Add second CTA button
-   - Primary: "Talk to Our Team" → opens ContactInquiryModal
-   - Secondary: "Learn More About Our Data" → navigates to `{ path: '/', hash: '#frameworks' }`
+**Create section components** in `src/components/resources/productPage/`:
 
-7. **Modify `LandingPageHeader.vue`** (spec section 2.3 + 2.4):
-   - Add skip-to-content link (first child of `<header>`)
-   - Add hamburger menu for mobile (< 768px)
-   - Slide-down overlay with nav links + auth section
-   - Accessibility: `aria-expanded`, `aria-controls`, `aria-label`
+1. `ProductIntro.vue` — Centered headline, 32px bold, max-width 900px.
+2. `ProductHowItWorks.vue` — 3 problem-solution blocks using `ProblemSolutionBlock`. Anchor: `#how-it-works`.
+3. `ProductGettingData.vue` — 2 problem-solution blocks. Anchor: `#getting-data`.
+4. `ProductFeatures.vue` — 6 feature cards in 3x2 grid. Anchor: `#features`.
+5. `ProductUseCases.vue` — 7 use case blocks, alternating layout. Anchor: `#use-cases`.
+6. `ProductCustomerStories.vue` — 3 detailed stories (MEAG, NORD/LB, ÖVB). Anchor: `#customer-stories`.
+7. `ProductMembershipPricing.vue` — Value props + pricing card + credits visual. Anchor: `#membership-pricing`.
+8. `ProductDocumentation.vue` — 9 doc links + 2 CTAs. Anchor: `#documentation`.
 
-8. **Update `LandingPage.vue`** (spec section 3.2):
-   - Add `id="main-content"` to `<main>`
-   - New section order: TheIntro → TheStruggle → TheTrustBar → TheDataAccess → TheFrameworks → TheSocialProof → TheBrands → TheGetInTouch → ContactInquiryModal
-   - Update imports: remove TheQuotes/TheHowItWorks/TheJoinCampaign, add new components
+**Replace empty shell `ProductPage.vue`** with full template per spec 4.3, all imports, `ContactInquiryModal`.
 
-9. **Update `AboutPage.vue`** (spec section 4.2):
-   - Add `id="main-content"` to `<main>`
-   - New section order: ContactInquiryModal → TheAboutHero → TheAboutTrustPillars → TheAboutTeam → TheAboutPrinciples → TheAboutAdvisoryBoard → TheAboutEcosystem → TheAboutBottomCTA
-   - Update imports: remove TheAboutSponsors/TheAboutPartners, add TheAboutPrinciples/TheAboutEcosystem
+### 2.3 About Page + Additional Pages (spec sections 5.1–5.8, section 6)
 
-10. **Delete old components:**
-    - `src/components/resources/landingPage/TheQuotes.vue`
-    - `src/components/resources/landingPage/TheHowItWorks.vue`
-    - `src/components/resources/landingPage/TheJoinCampaign.vue`
-    - `src/components/resources/aboutPage/TheAboutSponsors.vue`
-    - `src/components/resources/aboutPage/TheAboutPartners.vue`
+**About Page — create/modify** in `src/components/resources/aboutPage/`:
 
-11. **Run validation:**
-    ```bash
-    cd dataland-frontend
-    npm run typecheck
-    npm run lint
-    ```
-    Fix any errors before proceeding.
+1. `TheAboutCompany.vue` — CREATE (replaces TheAboutHero). Two-column: logos left (40%), text right (60%). Anchor: `#company`.
+2. `TheAboutTeam.vue` — MODIFY. 3 team members with email/LinkedIn. Dark blue background. Anchor: `#team`.
+3. `TheAboutPartners.vue` — MODIFY. 2 partners (FACT, ISS) with logos and links. Anchor: `#partners`.
+4. `TheAboutUpdates.vue` — CREATE. 3x3 static grid of `NewsCard` components. Anchor: `#updates`.
+5. `TheAboutContact.vue` — CREATE. Dark background. Two-column: contact info + static demo form. Anchor: `#contact`.
+
+**Update `AboutPage.vue`** — new section order per spec 5.3, add `ContactInquiryModal`, `id="main-content"`.
+
+**Additional Pages** in `src/components/pages/`:
+
+1. `NewsletterPage.vue` — Dark background, two-column, static form. Route: `/newsletter`.
+2. `ContactPage.vue` — Reuses `TheAboutContact`. Route: `/contact`.
+3. `TestimonialsPage.vue` — 3x4 grid of 12 testimonial cards with video placeholder. Route: `/testimonials`.
+
+### 2.4 Navigation + Footer (spec sections 2.3–2.5)
+
+**Header** (`LandingPageHeader.vue` — MODIFY):
+- Skip-to-content link as first child of `<header>`
+- Product/About click-triggered dropdown menus with `role="menu"`, keyboard nav, `aria-expanded`
+- Mobile (< $bp-lg): hamburger → slide-down overlay with nav + auth
+- CTA labels: "Login" text link + "Try it free" primary button
+
+**Footer** (`LandingPageFooter.vue` — MODIFY or CREATE):
+- 4-column top: Dataland (desc + logos), Product (7 links), Company (5 links), Resources (3 links)
+- Bottom bar: Legal, Imprint, Data Privacy, Cookie Settings, copyright, LinkedIn
+- Responsive: 4-col → 2x2 → 1-col
+
+### 2.5 Cleanup + Test Fixes
+
+**Delete old components** (verify no imports remain before deleting):
+- Landing: `TheQuotes.vue`, `TheHowItWorks.vue`, `TheJoinCampaign.vue`, `TheStruggle.vue`
+- About: `TheAboutSponsors.vue`, `TheAboutHero.vue`, `TheAboutTrustPillars.vue`, `TheAboutPrinciples.vue`, `TheAboutEcosystem.vue`, `TheAboutBottomCTA.vue`
+
+**Fix component tests:**
+- Update `tests/component/components/pages/LandingPage.cy.ts` for new section structure
+- Update `tests/component/components/resources/aboutPage/PersonCard.cy.ts` if PersonCard changed
+- Run `npm run testcomponent` and fix all failures
 
 ---
 
-## Phase 4: Independent Reviews (3 agents in parallel)
+## Phase 3: Independent Reviews (2 agents in parallel)
 
-**Dependencies:** Phase 3 complete, code compiles and lints clean.
+**Dependencies:** Phase 2 complete.
+**Both agents are read-only** — they read code and produce issue lists. No file edits, no branch interference.
 
-Launch all 3 review agents in a **single message** for parallel execution. **None of these are Agent X.**
+Launch both in a **single message**.
 
-### 4a — `frontend-developer` (Agent Y) — Independent Code Review
+### 3a — `frontend-developer` (Agent Y) — Code Review
 
 **Prompt:**
 
-> You are reviewing code that someone else wrote. You have never seen this code before. Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every file listed below. For each file, verify it matches the spec exactly. Produce a numbered issue list with file path, line number, what's wrong, and what the spec requires.
+> You are reviewing code that someone else wrote. You have never seen this code before. Read the full spec at `dataland-frontend/HOMEPAGE_REWORK_SPEC.md`. Then read every file listed below and verify it matches the spec.
 >
-> **Files to review (created):**
+> **New files to review:**
 >
-> - `src/assets/scss/breakpoints.scss`
-> - `src/composables/useBreakpoint.ts`
-> - `src/components/resources/landingPage/TheTrustBar.vue`
-> - `src/components/resources/landingPage/TheDataAccess.vue`
-> - `src/components/resources/landingPage/TheFrameworks.vue`
-> - `src/components/resources/landingPage/TheSocialProof.vue`
-> - `src/components/resources/landingPage/socialProofContent.ts`
-> - `src/components/resources/aboutPage/TheAboutPrinciples.vue`
-> - `src/components/resources/aboutPage/TheAboutEcosystem.vue`
-> - `src/components/pages/SuccessStoryPage.vue`
-> - `src/components/resources/successStories/successStoryContent.ts`
+> - All files in `src/components/resources/landingPage/` (10 section components + `landingContent.ts`)
+> - All files in `src/components/resources/productPage/` (8 section components + `productContent.ts`)
+> - `src/components/resources/aboutPage/TheAboutCompany.vue`, `TheAboutUpdates.vue`, `TheAboutContact.vue`
+> - `src/components/pages/ProductPage.vue`, `NewsletterPage.vue`, `ContactPage.vue`, `TestimonialsPage.vue`
+> - `src/components/generics/ProblemSolutionBlock.vue`, `AccessibleCarousel.vue`, `NewsCard.vue`
+> - `src/assets/scss/breakpoints.scss`, `src/composables/useBreakpoint.ts`
 >
-> **Files to review (modified):**
+> **Modified files to review:**
 >
-> - `src/components/pages/LandingPage.vue`
-> - `src/components/pages/AboutPage.vue`
-> - `src/components/generics/LandingPageHeader.vue`
+> - `src/components/pages/LandingPage.vue`, `AboutPage.vue`
+> - `src/components/generics/LandingPageHeader.vue`, `LandingPageFooter.vue`
 > - `src/components/resources/landingPage/TheIntro.vue`
-> - `src/components/resources/landingPage/TheStruggle.vue`
-> - `src/components/resources/landingPage/TheGetInTouch.vue`
-> - `src/components/resources/landingPage/TheBrands.vue`
-> - `src/components/resources/aboutPage/aboutContent.ts`
-> - `src/components/resources/aboutPage/TheAboutBottomCTA.vue`
-> - `src/components/resources/aboutPage/PersonCard.vue`
-> - `src/assets/content.json`
-> - `src/router/index.ts`
-> - `vite.config.ts`
+> - `src/components/resources/aboutPage/TheAboutTeam.vue`, `TheAboutPartners.vue`, `aboutContent.ts`
+> - `src/router/index.ts`, `vite.config.ts`
 >
 > **Check for:**
 >
-> - Spec compliance (section order, content, layout, breakpoints, font sizes, spacing)
-> - Correct imports — no references to deleted files (TheQuotes, TheHowItWorks, TheJoinCampaign, TheAboutSponsors, TheAboutPartners)
+> - Spec compliance (section order, content, layout, breakpoints)
+> - No references to deleted files (TheQuotes, TheHowItWorks, TheJoinCampaign, TheStruggle, TheAboutSponsors, TheAboutHero, TheAboutTrustPillars, TheAboutPrinciples, TheAboutEcosystem, TheAboutBottomCTA)
 > - `useBreakpoint` used instead of manual resize listeners
-> - BEM naming convention followed
-> - SCSS uses `$bp-*` variables, not magic numbers
-> - ARIA attributes present on all sections (`role="region"`, `aria-labelledby`)
+> - BEM naming, scoped SCSS, `$bp-*` variables (no magic numbers)
+> - ARIA attributes on sections (`role="region"`, `aria-labelledby`)
 > - Semantic HTML (`<section>`, `<button>` not `<div>` for clickable elements)
 > - No `any` types, no Options API, no PrimeFlex, no `:deep()`, no FormKit
-> - `[PLACEHOLDER]` comments present on all placeholder content
+> - Carousel accessibility (pause control, keyboard nav, `aria-live`, `prefers-reduced-motion`)
+> - Dropdown menu accessibility (keyboard nav, `aria-expanded`, `role="menu"`)
 >
-> Also run: `cd dataland-frontend && npm run typecheck && npm run lint`
->
-> Output a single numbered issue list. If everything passes, say "No issues found."
+> Output a single numbered issue list with file path, line number, what's wrong, and what the spec requires. If everything passes, say "No issues found."
 
-### 4b — `copywriter` — Copy Accuracy Audit
+### 3b — `copywriter` — Copy Accuracy Audit
 
 **Prompt:**
 
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every file that contains rendered text:
+> Read the full spec at `dataland-frontend/HOMEPAGE_REWORK_SPEC.md`. Then read every file containing user-facing text:
 >
-> - `dataland-frontend/src/assets/content.json`
+> - `dataland-frontend/src/components/resources/landingPage/landingContent.ts`
+> - `dataland-frontend/src/components/resources/productPage/productContent.ts`
 > - `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts`
-> - `dataland-frontend/src/components/resources/landingPage/socialProofContent.ts`
-> - `dataland-frontend/src/components/resources/successStories/successStoryContent.ts`
-> - All Vue templates in `src/components/resources/landingPage/` and `src/components/resources/aboutPage/` that contain hardcoded text (headlines, labels, button text)
-> - `src/components/pages/SuccessStoryPage.vue`
+> - All Vue templates in `src/components/resources/landingPage/`, `src/components/resources/productPage/`, `src/components/resources/aboutPage/` that contain hardcoded text
+> - `src/components/pages/ProductPage.vue`, `NewsletterPage.vue`, `ContactPage.vue`, `TestimonialsPage.vue`
+> - `src/components/generics/LandingPageHeader.vue`, `LandingPageFooter.vue`
 >
 > **Check for:**
 >
-> - Every headline, subheadline, CTA label, quote, attribution, and card description matches the spec character-for-character
+> - Every headline, subheadline, CTA label, quote, attribution, card text matches the spec character-for-character
 > - No "campaign" wording remains anywhere
-> - CTA labels use correct casing: "Get in Touch" (title case), "Create Free Account", "Talk to Our Team", "Learn More About Our Data"
+> - CTA labels match: "Try it free", "Get in touch", "Watch member testimonials", "Discover platform features", "Explore use cases", etc.
 > - Old labels are gone: "SIGN UP", "I AM INTERESTED", "START YOUR DATALAND JOURNEY", "GET IN TOUCH" (all caps)
 > - Typos fixed: "sovereignty" not "soveignty", "easily" not "easliy"
-> - Trust pillar 4 title is "Transparent Technology" (not "AI at non-profit scale")
-> - "Quotes" section renamed to "Social Proof" in content.json
-> - "Join a campaign" renamed to "Frameworks" in content.json
-> - "Claim" section removed from content.json
-> - Tone is professional-institutional, no startup jargon, no emojis, no exclamation marks
+> - Copy review changes from Decision 13 are applied (hero subtext, Why Us headline, etc.)
+> - All 12 testimonial quotes match spec exactly
+> - All 7 use case titles and descriptions match spec
+> - All 3 customer stories (MEAG, NORD/LB, ÖVB) match spec in full
+> - Pricing card content matches spec exactly
+> - Footer link labels and structure match spec
+> - Tone: professional-institutional, no startup jargon, no emojis, no exclamation marks
 >
 > Output a single numbered issue list. If everything passes, say "No issues found."
 
-### 4c — `ux-designer` — Source Code UX Audit (Pass 1)
-
-**Prompt:**
-
-> Read the spec at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md` in full. Then read every new and modified Vue SFC and SCSS file (see the file lists in spec section 6.1 and 6.2). All files are under `dataland-frontend/src/`.
->
-> **Check for:**
->
-> - Responsive behavior at all 4 breakpoints ($bp-sm: 640px, $bp-md: 768px, $bp-lg: 1024px, $bp-xl: 1440px)
-> - Font sizes match spec at each breakpoint (e.g., hero headline: 100px xl, 64px lg, 48px md, 40px mobile)
-> - Section headline font sizes reduced from 100px to 64px at desktop (TheStruggle, TheFrameworks)
-> - Card designs match spec exactly (border-radius, box-shadow, padding, typography per card type)
-> - TrustBar: grayscale filter + hover-to-color transition on logos
-> - TheSocialProof: quote cards have decorative opening quotation mark (48px, orange, 0.3 opacity)
-> - TheAboutPrinciples: 3px solid orange left border on cards
-> - Hamburger menu: appears below 768px, hides nav links, slide-down overlay, close on link click
-> - Skip-to-content link: visually hidden, visible on focus, positioned correctly
-> - Video: IntersectionObserver lazy-load, autoplay muted loop, poster fallback for missing mp4
-> - Mobile: CTA buttons stack vertically below 640px
-> - Section backgrounds match spec (orange for DataAccess, dark for GetInTouch, grey for Struggle, white for others)
-> - Spacing: section padding matches spec values
-> - Accessibility: `role="region"`, `aria-labelledby`, `aria-label` on interactive elements, `<button>` for clickable elements
->
-> Output a single numbered issue list with file path, what's wrong, and what the spec requires. If everything passes, say "No issues found."
-
 ---
 
-## Phase 5: Fix Review Issues
+## Phase 4: Fix Review Issues + CI Verification
 
 **Agent:** 1 `frontend-developer` (Agent X), serial
-**Dependencies:** All Phase 4 reviews complete.
+**Dependencies:** Both Phase 3 reviews complete.
 
-**Prompt:**
+### Tasks
 
-> The following issues were found during independent code review, copy audit, and UX audit of the landing/about page rework. Fix each one. The spec is at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`.
->
-> [Paste combined issue lists from Phase 4a + 4b + 4c here]
->
-> After fixing all issues, run `cd dataland-frontend && npm run typecheck && npm run lint` to verify.
+1. **Fix all issues** from Phase 3a (code review) and Phase 3b (copy audit).
 
----
+2. **Run all locally-runnable CI checks and fix failures iteratively:**
+   ```bash
+   cd dataland-frontend
+   npm run typecheck
+   npm run lintci
+   npm run formatci
+   npm run checkdependencies
+   npm run checkcypresscompilation
+   npm run testcomponent
+   ```
+   These checks mirror what `gradle-based-tests` and `frontend-component-tests` run in CI. Fix every failure locally before pushing — do not rely on remote CI to discover issues that can be caught here.
 
-## Phase 6: Screenshot-Based Visual QA
+3. **Commit and push** to `feature/rework-about-page`.
 
-**Dependencies:** Phase 5 complete. Code compiles and lints clean.
+4. **Monitor remote CI** for checks that cannot run locally (E2E tests require Docker stack):
+   ```bash
+   gh run list --branch feature/rework-about-page --limit 1 --json status,conclusion,name
+   ```
+   If any job fails:
+   - Run `gh run view <run-id> --log-failed`
+   - Fix locally, push, repeat until green
 
-### Step 6.1 — You (human) provide screenshots
+### Exit Criteria
 
-1. Start the dev server: `cd dataland-frontend && npm run dev`
-2. Open `https://local-dev.dataland.com/` in a browser
-3. Take screenshots at these viewports:
-
-| Viewport               | Pages to Capture                                                                |
-| ---------------------- | ------------------------------------------------------------------------------- |
-| Desktop (1440px+)      | Landing page (full scroll), About page (full scroll), all 3 Success Story pages |
-| Tablet (768-1024px)    | Landing page, About page                                                        |
-| Mobile (< 768px)       | Landing page (hamburger closed), Landing page (hamburger open), About page      |
-| Small mobile (< 640px) | Landing page hero (check CTA stacking), About page                              |
-
-4. Save screenshots to a local folder or provide them directly in the conversation.
-
-### Step 6.2 — `ux-designer` — Screenshot Visual QA (Pass 2)
-
-**Prompt:**
-
-> I am providing screenshots of the reworked Dataland landing page, about page, and success story pages at multiple viewports. The spec is at `dataland-frontend/LANDING_ABOUT_REWORK_SPEC.md`. The visual flow diagrams in the spec appendix show exactly what each page should look like.
->
-> For each screenshot, compare against the spec and identify:
->
-> - **Layout issues:** Elements not aligned, wrong grid columns, unexpected wrapping
-> - **Spacing issues:** Sections too close/far apart, padding inconsistent with spec
-> - **Typography issues:** Headlines too large/small, wrong font weight, line height off
-> - **Color issues:** Wrong background color, wrong text color, missing grayscale filter
-> - **Missing elements:** Components not rendering, icons not showing, images broken
-> - **Responsive issues:** Content overflowing, hamburger not showing/hiding correctly, elements not stacking as expected
-> - **Interaction hints:** Buttons that look unclickable, hover states missing, CTA hierarchy unclear
-> - **Visual polish:** Inconsistent border-radius, shadows not matching spec, rough edges
->
-> For each issue, provide: description, which screenshot, and the specific file + CSS property to fix.
->
-> [Attach screenshots here]
+Remote CI must show **all green** on:
+- `gradle-based-tests` (lint, format, typecheck, deps — should already pass from local checks)
+- `frontend-component-tests` (should already pass from local `testcomponent`)
+- `e2e-tests` (all 4 groups — these are the only checks that require the Docker stack and cannot be fully validated locally)
 
 ---
 
-## Phase 7: Final Fixes
+## Phase 5: Screenshot-Based Visual QA
 
-**Agent:** 1 `frontend-developer` (Agent X), serial
-**Dependencies:** Phase 6 complete.
+**Dependencies:** Phase 4 complete. Remote CI is green.
 
-Fix all issues from the screenshot review. If changes are significant (layout restructuring, major responsive fixes), take fresh screenshots and do a quick re-check with the `ux-designer`.
+### Step 5.1 — Human provides screenshots
+
+1. Start the dev stack or dev server
+2. Take screenshots at these viewports:
+
+| Viewport | Pages to Capture |
+|----------|-----------------|
+| Desktop (1440px+) | Landing page (full scroll), Product page (full scroll), About page (full scroll) |
+| Tablet (768-1024px) | Landing page, Product page, About page |
+| Mobile (< 768px) | Landing page (hamburger closed + open), Product page, About page |
+| Small mobile (< 640px) | Landing hero (CTA stacking), Product pricing section |
+
+### Step 5.2 — `ux-designer` — Screenshot Visual QA
+
+**Prompt:**
+
+> I am providing screenshots of the reworked Dataland pages at multiple viewports. The spec is at `dataland-frontend/HOMEPAGE_REWORK_SPEC.md`. Compare each screenshot against the spec and identify layout, spacing, typography, color, responsive, and accessibility issues. For each issue, provide: description, which screenshot, and the specific file + CSS property to fix.
+
+### Step 5.3 — Fix visual issues
+
+1 `frontend-developer` (Agent X) fixes all issues from the visual review, then:
+
+1. Re-run local CI checks (`typecheck`, `lintci`, `formatci`, `checkdependencies`, `testcomponent`) — fix any regressions.
+2. Push and monitor remote CI. If E2E tests fail, inspect logs with `gh run view <run-id> --log-failed`, fix locally, and push again until green.
 
 ---
 
 ## Phase Summary
 
 ```
-Phase 1  [Infrastructure]           ████           1 frontend-developer (Agent X), serial
-Phase 2  [New Components]           ████████████   7 frontend-developer (Agent X), parallel worktrees
-Phase 3  [Modify + Wire Up]         ██████████     1 frontend-developer (Agent X), serial
-Phase 4  [Independent Reviews]      ████████       3 agents in parallel (Agent Y + copywriter + ux-designer)
-Phase 5  [Fix Review Issues]        ██████         1 frontend-developer (Agent X), serial
-Phase 6  [Screenshot QA]            ████████       Human screenshots → ux-designer reviews images
-Phase 7  [Final Fixes]              ████           1 frontend-developer (Agent X), serial
+Phase 1  [Infrastructure + Content]    ████           1 agent, serial
+Phase 2  [Build All Pages + Nav/Footer ████████████   1 agent, serial
+          + Cleanup + Tests]
+Phase 3  [Independent Reviews]         ██████         2 agents, parallel (read-only)
+Phase 4  [Fixes + CI Verification]     ██████         1 agent, serial → CI must be GREEN
+Phase 5  [Screenshot QA]               ████████       Human + ux-designer + fixes
 ```
+
+**Total agents:** 5 (+ ux-designer for screenshots)
+**Parallel worktrees:** 0
+**Branches:** 1 (`feature/rework-about-page`)
+**CI verification:** Phase 4 only
+
+---
 
 ## Key Principles
 
-1. **Builder never reviews its own work.** Agent X builds. Agent Y reviews code. The ux-designer reviews visuals. The copywriter reviews copy.
-2. **Two-pass UX review.** Pass 1 (Phase 4c) catches structural issues from source code. Pass 2 (Phase 6) catches rendering issues from screenshots.
-3. **Parallel where possible.** Phase 2 (7 worktrees) and Phase 4 (3 reviewers) run concurrently.
-4. **Human-in-the-loop for screenshots.** The user provides screenshots at defined viewports. The ux-designer agent analyzes them against the spec.
-5. **Spec is the single source of truth.** Every agent references `LANDING_ABOUT_REWORK_SPEC.md`. No verbal instructions.
+1. **One branch, no worktrees.** All agents work on `feature/rework-about-page`. No isolation branches.
+2. **Sequential builds.** Phases 1 and 2 run serially to avoid interference on the shared branch.
+3. **Parallel reviews are safe.** Phase 3 agents are read-only — they produce issue lists but never edit files.
+4. **CI at the end.** Phase 4 is the single CI checkpoint. Implementation isn't done until remote CI is green.
+5. **Builder never reviews its own work.** Agent X builds. Agent Y reviews code. The copywriter reviews text.
+6. **Spec is the single source of truth.** Every agent references `HOMEPAGE_REWORK_SPEC.md`.
+
+---
+
+## Image Assets Note
+
+Many image assets referenced in the spec (`intro_art.svg`, `arrow_big.svg`, news images, sector icons, customer logos, etc.) may not exist yet. During implementation:
+
+- Use placeholder `[PLACEHOLDER]` comments in templates where images are referenced but not yet available
+- For logos that already exist in the codebase (e.g., existing brand logos in TheBrands), reuse those paths
+- Create a checklist of missing assets that need to be provided by the design team
+- Missing images should NOT block CI — use fallback `alt` text and ensure the layout works with broken image references
