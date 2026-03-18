@@ -1,0 +1,84 @@
+{
+  "id" : "eutaxonomy-non-financials-2026-73",
+  "name" : "EU Taxonomy Non-Financials (2026/73)",
+  "businessDefinition" : "The EU-Taxonomy framework for non-financial companies as of Regulation (EU) 2026/73",
+  "referencedReportJsonPath" : "general.referencedReports",
+  "schema" : {
+    "general" : {
+      "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
+      "fiscalYearEnd" : "extendedDateFiscalYearEnd",
+      "scopeOfEntities" : "extendedEnumYesNoNaScopeOfEntities",
+      "isEuTaxonomyDataReportedOnAMandatoryBasis" : "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis",
+      "euTaxonomyActivityLevelReporting" : "extendedEnumYesNoEuTaxonomyActivityLevelReporting",
+      "assurance" : "customEnumEuTaxonomyReportingAssurance",
+      "numberOfEmployees" : "extendedDecimalNumberOfEmployees",
+      "unGlobalCompactPrinciplesCompliancePolicy" : "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
+      "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy" : "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy",
+      "iloCoreLabourStandards" : "extendedEnumYesNoIloCoreLabourStandards",
+      "humanRightsDueDiligence" : "extendedEnumYesNoHumanRightsDueDiligence"
+    },
+    "revenue" : {
+      "totalAmount" : "extendedCurrencyTotalAmount",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "extendedDecimalRevenueEligibleShareRelativeShareInPercent"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "extendedDecimalRevenueAlignedShareRelativeShareInPercent",
+        "absoluteShare" : "extendedCurrencyRevenueAlignedShareAbsoluteShare"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentAligned",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentAligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentAligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentAligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+      "enablingShareInPercent" : "extendedDecimalRevenueEnablingShareInPercent",
+      "transitionalShareInPercent" : "extendedDecimalRevenueTransitionalShareInPercent",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "extendedDecimalRevenueNonAssessedShareRelativeShareInPercent"
+      }
+    },
+    "capex" : {
+      "totalAmount" : "extendedCurrencyCapexTotalAmount",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "extendedDecimalCapexEligibleShareRelativeShareInPercent"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "extendedDecimalCapexAlignedShareRelativeShareInPercent",
+        "absoluteShare" : "extendedCurrencyCapexAlignedShareAbsoluteShare"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentAligned",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentAligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentAligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentAligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+      "enablingShareInPercent" : "extendedDecimalCapexEnablingShareInPercent",
+      "transitionalShareInPercent" : "extendedDecimalCapexTransitionalShareInPercent",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "extendedDecimalCapexNonAssessedShareRelativeShareInPercent"
+      }
+    },
+    "opex" : {
+      "totalAmount" : "extendedCurrencyOpexTotalAmount",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "extendedDecimalOpexEligibleShareRelativeShareInPercent"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "extendedDecimalOpexAlignedShareRelativeShareInPercent",
+        "absoluteShare" : "extendedCurrencyOpexAlignedShareAbsoluteShare"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalOpexSubstantialContributionToClimateChangeMitigationInPercentAligned",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalOpexSubstantialContributionToClimateChangeAdaptationInPercentAligned",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "extendedDecimalOpexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "extendedDecimalOpexSubstantialContributionToTransitionToACircularEconomyInPercentAligned",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "extendedDecimalOpexSubstantialContributionToPollutionPreventionAndControlInPercentAligned",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "extendedDecimalOpexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+      "enablingShareInPercent" : "extendedDecimalOpexEnablingShareInPercent",
+      "transitionalShareInPercent" : "extendedDecimalOpexTransitionalShareInPercent",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "extendedDecimalOpexNonAssessedShareRelativeShareInPercent"
+      }
+    }
+  }
+}

@@ -3,6 +3,6 @@
   "name" : "Substantial Contribution to Transition to a Circular Economy In Percent - Aligned",
   "businessDefinition" : "Taxonomy-aligned proportion of OpEx substantially contributing to circular economy",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

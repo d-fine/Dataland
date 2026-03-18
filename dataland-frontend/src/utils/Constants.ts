@@ -15,11 +15,12 @@ const MAIN_FRAMEWORKS = new Set([
   'eutaxonomy-financials',
   'eutaxonomy-financials-2026-73',
   'eutaxonomy-non-financials',
+  'eutaxonomy-non-financials-2026-73',
   'nuclear-and-gas',
   'sfdr',
 ]);
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework !== 'eutaxonomy-financials-2026-73'
+  (framework) => framework !== 'eutaxonomy-financials-2026-73' && framework !== 'eutaxonomy-non-financials-2026-73'
 ) as DataTypeEnum[];
 export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
   MAIN_FRAMEWORKS.has(framework)
@@ -32,9 +33,13 @@ ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(
   ...ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) => !MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.includes(framework))
 );
 export const EU_TAXONOMY_FRAMEWORKS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eutaxonomy-financials', 'eutaxonomy-financials-2026-73', 'eutaxonomy-non-financials', 'nuclear-and-gas'].includes(
-    framework
-  )
+  [
+    'eutaxonomy-financials',
+    'eutaxonomy-financials-2026-73',
+    'eutaxonomy-non-financials',
+    'eutaxonomy-non-financials-2026-73',
+    'nuclear-and-gas',
+  ].includes(framework)
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
@@ -42,7 +47,7 @@ export const EU_TAXONOMY_FRAMEWORKS_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENU
 );
 
 export const EU_TAXONOMY_FRAMEWORKS_NON_FINANCIALS: string[] = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
-  ['eutaxonomy-non-financials', 'nuclear-and-gas'].includes(framework)
+  ['eutaxonomy-non-financials', 'eutaxonomy-non-financials-2026-73', 'nuclear-and-gas'].includes(framework)
 );
 
 export const DOWNLOADABLE_DATA_REPORTING_PERIODS = ['2025', '2024', '2023', '2022', '2021', '2020'];

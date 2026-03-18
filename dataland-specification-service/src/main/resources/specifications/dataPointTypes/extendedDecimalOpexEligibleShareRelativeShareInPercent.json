@@ -3,6 +3,6 @@
   "name" : "Relative Share in Percent",
   "businessDefinition" : "Relative share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

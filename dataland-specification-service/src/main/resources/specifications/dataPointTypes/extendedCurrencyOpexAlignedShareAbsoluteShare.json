@@ -3,6 +3,6 @@
   "name" : "Absolute Share",
   "businessDefinition" : "Absolute value of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
   "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : null
 }

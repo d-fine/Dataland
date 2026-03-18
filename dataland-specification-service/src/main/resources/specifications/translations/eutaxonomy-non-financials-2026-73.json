@@ -1,0 +1,82 @@
+{
+  "id" : "eutaxonomy-non-financials-2026-73",
+  "schema" : {
+    "general" : {
+      "fiscalYearDeviation" : "FISCAL_YEAR_DEVIATION",
+      "fiscalYearEnd" : "FISCAL_YEAR_END",
+      "scopeOfEntities" : "SCOPE_OF_ENTITIES",
+      "isEuTaxonomyDataReportedOnAMandatoryBasis" : "EU_TAXONOMY_MANDATORY",
+      "euTaxonomyActivityLevelReporting" : "ACTIVITY_LEVEL_REPORTING",
+      "assurance" : "ASSURANCE",
+      "numberOfEmployees" : "NO_OF_EMPLOYEES",
+      "unGlobalCompactPrinciplesCompliancePolicy" : "UNGC_PRINCIPLES_COMPLIANCE_POLICY",
+      "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy" : "OECD_GUIDELINES_COMPLIANCE_POLICY",
+      "iloCoreLabourStandards" : "ILO_CORE_LABOUR_STANDARDS",
+      "humanRightsDueDiligence" : "HUMAN_RIGHTS_DUE_DILIGENCE",
+      "referencedReports" : "REFERENCED_REPORTS"
+    },
+    "revenue" : {
+      "totalAmount" : "REV_TOTAL_AMOUNT",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "REV_ELIGIBLE_PCT"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "REV_ALIGNED_PCT",
+        "absoluteShare" : "REV_ALIGNED_ABS"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "REV_SC_TO_CCM_PCT_ALIGNED",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "REV_SC_TO_CCA_PCT_ALIGNED",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "REV_SC_TO_WTR_PCT_ALIGNED",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "REV_SC_TO_CE_PCT_ALIGNED",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "REV_SC_TO_PPC_PCT_ALIGNED",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "REV_SC_TO_BIO_PCT_ALIGNED",
+      "enablingShareInPercent" : "REV_ENABLING_PCT",
+      "transitionalShareInPercent" : "REV_TRANSITIONAL_PCT",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "REV_NON_ASSESSED_PCT"
+      }
+    },
+    "capex" : {
+      "totalAmount" : "CAPEX_TOTAL_AMOUNT",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "CAPEX_ELIGIBLE_PCT"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "CAPEX_ALIGNED_PCT",
+        "absoluteShare" : "CAPEX_ALIGNED_ABS"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "CAPEX_SC_TO_CCM_PCT_ALIGNED",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "CAPEX_SC_TO_CCA_PCT_ALIGNED",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "CAPEX_SC_TO_WTR_PCT_ALIGNED",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "CAPEX_SC_TO_CE_PCT_ALIGNED",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "CAPEX_SC_TO_PPC_PCT_ALIGNED",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "CAPEX_SC_TO_BIO_PCT_ALIGNED",
+      "enablingShareInPercent" : "CAPEX_ENABLING_PCT",
+      "transitionalShareInPercent" : "CAPEX_TRANSITIONAL_PCT",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "CAPEX_NON_ASSESSED_PCT"
+      }
+    },
+    "opex" : {
+      "totalAmount" : "OPEX_TOTAL_AMOUNT",
+      "eligibleShare" : {
+        "relativeShareInPercent" : "OPEX_ELIGIBLE_PCT"
+      },
+      "alignedShare" : {
+        "relativeShareInPercent" : "OPEX_ALIGNED_PCT",
+        "absoluteShare" : "OPEX_ALIGNED_ABS"
+      },
+      "substantialContributionToClimateChangeMitigationInPercentAligned" : "OPEX_SC_TO_CCM_PCT_ALIGNED",
+      "substantialContributionToClimateChangeAdaptationInPercentAligned" : "OPEX_SC_TO_CCA_PCT_ALIGNED",
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "OPEX_SC_TO_WTR_PCT_ALIGNED",
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "OPEX_SC_TO_CE_PCT_ALIGNED",
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "OPEX_SC_TO_PPC_PCT_ALIGNED",
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "OPEX_SC_TO_BIO_PCT_ALIGNED",
+      "enablingShareInPercent" : "OPEX_ENABLING_PCT",
+      "transitionalShareInPercent" : "OPEX_TRANSITIONAL_PCT",
+      "nonAssessedShare" : {
+        "relativeShareInPercent" : "OPEX_NON_ASSESSED_PCT"
+      }
+    }
+  }
+}
