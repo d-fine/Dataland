@@ -153,7 +153,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
           },
         ],
         acceptedSource: AcceptedDataPointSource.Custom,
-        customValue: '2023-12-15',
+        customValue: JSON.stringify({ value: '2023-12-15' }),
       },
     },
   };
@@ -285,5 +285,16 @@ describe('DatasetReviewComparisonTable component tests', () => {
 
     cy.get('[data-test="multipleReportsBanner"]').should('be.visible');
     cy.get(`[data-test="report-link-${reportName}"]`).should('be.visible');
+  });
+
+  it('renders the custom datapoint value from JSON', () => {
+    mountComponent();
+
+    cy.contains('span', 'Fiscal Year End')
+      .closest('tr')
+      .within(() => {
+        cy.get('td').eq(4).should('contain.text', '2023-12-15');
+        cy.get('td').eq(4).find('.accepted-check').should('exist');
+      });
   });
 });

@@ -164,10 +164,8 @@
 
                   <td class="vertical-align-top border-right-1 surface-border">
                     <div class="flex align-items-start gap-2">
-                      <span
-                        v-if="getReviewInfo(row.dataPointTypeId)?.acceptedSource === AcceptedDataPointSource.Custom"
-                      >
-                        {{ getReviewInfo(row.dataPointTypeId)?.customValue ?? '-' }}
+                      <span v-if="getCustomDisplayValue(row.dataPointTypeId) != null">
+                        {{ getCustomDisplayValue(row.dataPointTypeId) }}
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
@@ -381,7 +379,7 @@ function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined
  *
  * @param {CellRow} row - The table cell row describing the data point.
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
- * @returns {QaReportDataPointWithReporter | undefined} The matching QA report summary or undefined when not found.
+ * @returns {DataPointQaReport | undefined} The matching QA report summary or undefined when not found.
  */
 function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport | undefined {
   if (!row.dataPointTypeId) return undefined;
@@ -397,7 +395,7 @@ function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport
  * that string and returns the inner `value` property, or null when the
  * corrected value is not available or parsing fails.
  *
- * @param {QaReportDataPointWithReporter | undefined} qaReport - QA report to extract value from.
+ * @param {DataPointQaReport | undefined} qaReport - QA report to extract value from.
  * @returns {string | null} The corrected display value or null when unavailable.
  */
 function getCorrectedDisplayFromQaReport(qaReport: DataPointQaReport | undefined): string | null {
@@ -408,6 +406,31 @@ function getCorrectedDisplayFromQaReport(qaReport: DataPointQaReport | undefined
   } catch {
     return null;
   }
+}
+
+/**
+ * Extracts the custom display value from the review info's JSON payload.
+ *
+ * The custom value stores data as a JSON string with a `value` property.
+ * This helper parses the string and returns the inner `value` field.
+ *
+ * @param {string | undefined} dataPointTypeId - The data point type identifier to look up.
+ * @returns {string | null} The custom display value or null when unavailable.
+ */
+function getCustomDisplayValue(dataPointTypeId?: string): string | null {
+  const reviewInfo = getReviewInfo(dataPointTypeId);
+  const customValue = reviewInfo?.customValue;
+  if (customValue == null) return null;
+  const trimmed = customValue.trim();
+  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      return parsed?.value == null ? null : String(parsed.value);
+    } catch {
+      return null;
+    }
+  }
+  return customValue;
 }
 
 /**
