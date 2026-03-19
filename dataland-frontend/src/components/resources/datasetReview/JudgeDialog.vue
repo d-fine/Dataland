@@ -30,7 +30,7 @@
 
     <div v-else class="judge-modal__content">
       <!-- Top-left: Original datapoint -->
-      <div class="judge-modal__grid-cell judge-modal__grid-top-left">
+      <div style="grid-column: 1; grid-row: 1">
         <section class="judge-modal__section" data-test="original-datapoint-section">
           <div class="judge-modal__section-header-with-nav">
             <h3 class="judge-modal__section-title">Original datapoint</h3>
@@ -140,7 +140,7 @@
       </div>
 
       <!-- Top-right: Corrected datapoint (QA reports) -->
-      <div class="judge-modal__grid-cell judge-modal__grid-top-right">
+      <div style="grid-column: 2; grid-row: 1">
         <section class="judge-modal__section" data-test="corrected-datapoint-section">
           <div class="judge-modal__section-header-with-nav">
             <h3 class="judge-modal__section-title">
@@ -171,7 +171,7 @@
             </div>
           </div>
 
-          <div v-if="filteredQaReports.length === 0" class="judge-modal__no-qa">
+          <div v-if="filteredQaReports.length === 0">
             No QA reports available.
           </div>
 
@@ -278,15 +278,12 @@
       <div class="judge-modal__separator"></div>
 
       <!-- Bottom-left: Custom datapoint -->
-      <div class="judge-modal__grid-cell judge-modal__grid-bottom-left">
+      <div style="grid-column: 1; grid-row: 3">
         <section class="judge-modal__section" data-test="custom-datapoint-section">
           <div class="judge-modal__section-header-row">
             <h3 class="judge-modal__section-title">Custom datapoint</h3>
-            <div class="judge-modal__edit-mode-toggle">
-              <label for="edit-mode-toggle" class="judge-modal__toggle-label">
-                Form
-              </label>
-              <InputSwitch
+            <div class="judge-modal__toggle">
+              <ToggleSwitch
                   id="edit-mode-toggle"
                   v-model="editModeEnabled"
                   data-test="edit-mode-toggle"
@@ -328,12 +325,18 @@
             </div>
 
             <div class="judge-modal__form-row">
-              <label for="custom-quality-field" class="judge-modal__form-label">Quality</label>
-              <InputText
-                  id="custom-quality-field"
+              <label class="judge-modal__form-label">Quality</label>
+              <Select
                   v-model="customFormData.quality"
-                  class="judge-modal__form-input"
+                  :options="qualityOptions"
+                  option-label="label"
+                  option-value="value"
                   placeholder="Select Quality"
+                  class="judge-modal__form-select"
+                  :pt="{
+                    root: { style: { height: '1.75rem', display: 'flex', alignItems: 'center' } },
+                    label: { style: { fontSize: 'var(--font-size-sm)', fontFamily: 'inherit', padding: '0 0.5rem', lineHeight: '1' } },
+                  }"
                   data-test="custom-quality-field"
               />
             </div>
@@ -402,12 +405,12 @@
       </div>
 
       <!-- Bottom-right: Next datapoint selection & patch error -->
-      <div class="judge-modal__grid-cell judge-modal__grid-bottom-right">
+      <div style="grid-column: 2; grid-row: 3">
         <section class="judge-modal__section judge-modal__section--centered" data-test="next-datapoint-section">
           <h3 class="judge-modal__section-title">Next datapoint</h3>
 
-          <div class="judge-modal__next-toggle">
-            <InputSwitch
+          <div class="judge-modal__toggle">
+            <ToggleSwitch
                 id="only-unreviewed-toggle"
                 v-model="onlyShowUnreviewed"
                 data-test="only-unreviewed-toggle"
@@ -473,13 +476,15 @@ import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
 import Message from 'primevue/message';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Popover from 'primevue/popover';
 
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import {QualityOptions} from "@clients/backend";
+import {humanizeStringOrNumber} from "@/utils/StringFormatter.ts";
 
 
 // ===== Props & emits =====
@@ -496,6 +501,11 @@ const DEFAULT_CUSTOM_FORM_DATA = {
   pages: '',
   comment: '',
 };
+
+const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
+  label: humanizeStringOrNumber(qualityOption),
+  value: qualityOption,
+}))
 
 const props = defineProps<{
   datasetReviewId: string;
@@ -1123,16 +1133,6 @@ function hidePopover(): void {
   grid-template-rows: auto auto 20rem;
 }
 
-.judge-modal__grid-top-left {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.judge-modal__grid-top-right {
-  grid-column: 2;
-  grid-row: 1;
-}
-
 .judge-modal__separator {
   grid-column: 1 / -1;
   height: 2px;
@@ -1140,15 +1140,6 @@ function hidePopover(): void {
   margin: 0;
 }
 
-.judge-modal__grid-bottom-left {
-  grid-column: 1;
-  grid-row: 3;
-}
-
-.judge-modal__grid-bottom-right {
-  grid-column: 2;
-  grid-row: 3;
-}
 
 .judge-modal__section {
   border-radius: 4px;
@@ -1171,24 +1162,10 @@ function hidePopover(): void {
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--spacing-xs);
-}
 
-.judge-modal__section-header-row .judge-modal__section-title {
-  margin-bottom: 0;
-}
-
-.judge-modal__edit-mode-toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.judge-modal__edit-mode-toggle :deep(.p-toggleswitch-slider) {
-  background: #ff6813 !important;
-}
-
-.judge-modal__edit-mode-toggle :deep(.p-toggleswitch:not(.p-disabled):hover .p-toggleswitch-slider) {
-  background: #aa5924 !important;
+  > .judge-modal__section-title {
+    margin-bottom: 0;
+  }
 }
 
 .judge-modal__section-header-with-nav {
@@ -1319,27 +1296,6 @@ function hidePopover(): void {
 }
 
 
-.judge-modal__json-view {
-  margin-top: var(--spacing-sm);
-}
-
-.judge-modal__json-label {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--spacing-xxs);
-  display: block;
-}
-
-.judge-modal__json-pre {
-  max-height: 10rem;
-  overflow: auto;
-  background-color: #f6f6f6;
-  padding: var(--spacing-xs);
-  border-radius: 4px;
-  font-size: var(--font-size-xs);
-  white-space: pre;
-}
-
 .judge-modal__section-actions {
   margin-top: auto;
   padding-top: 0.5rem;
@@ -1348,9 +1304,6 @@ function hidePopover(): void {
   gap: var(--spacing-sm);
 }
 
-.judge-modal__grid-bottom-left .judge-modal__section-actions {
-  margin-top: auto;
-}
 
 .judge-modal__custom-actions {
   display: flex;
@@ -1390,19 +1343,6 @@ function hidePopover(): void {
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;
-}
-
-.judge-modal__form-fields {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-xs);
-}
-
-.judge-modal__form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xxs);
 }
 
 .judge-modal__form-table {
@@ -1448,6 +1388,11 @@ function hidePopover(): void {
   height: 1.75rem !important;
 }
 
+.judge-modal__form-select {
+  flex: 1;
+}
+
+
 .judge-modal__form-textarea {
   flex: 1;
   padding: 0.3rem 0.5rem !important;
@@ -1460,25 +1405,21 @@ function hidePopover(): void {
   color: #c0392b;
 }
 
-.judge-modal__next-toggle {
+.judge-modal__toggle {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-sm);
 }
 
 .judge-modal__toggle-label {
   font-size: var(--font-size-sm);
 }
 
-.judge-modal__next-select {
-  margin-bottom: var(--spacing-sm);
-}
 
 .judge-modal__next-select-container {
   display: flex;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
 }
 
 .judge-modal__next-select-container :deep(.p-select) {
@@ -1514,13 +1455,5 @@ function hidePopover(): void {
 
 .judge-modal__section--centered {
   justify-content: center;
-}
-
-.judge-modal__section--centered .judge-modal__next-toggle {
-  justify-content: flex-start;
-}
-
-.judge-modal__section--centered .judge-modal__next-select-container {
-  justify-content: flex-start;
 }
 </style>
