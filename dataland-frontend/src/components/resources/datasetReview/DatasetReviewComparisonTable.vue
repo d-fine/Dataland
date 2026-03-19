@@ -528,16 +528,6 @@ function isRowEmpty(cellRow: CellRow): boolean {
 
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllColumns;
 }
-
-/**
- * Opens judge modal
- *
- * @param {KpiRow} row - Input row of data point to open judge modal for.
- */
-function openJudgeModal(row: KpiRow): void {
-  if (row.type === 'section') return;
-  console.log('open judge modal for', row.dataPointTypeId, row.label);
-}
 </script>
 
 <style scoped>
