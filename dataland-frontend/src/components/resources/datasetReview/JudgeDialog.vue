@@ -444,7 +444,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   'mock-dp-1': {
     value: 12345,
     quality: 'High',
-    comment: 'Mock original datapoint for QA comparison.',
+    comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
     dataSource: {
       fileName: 'Sustainability_Report_2023.pdf',
       page: 12,
@@ -765,46 +765,47 @@ const isCustomJsonValid = computed<boolean>(() => {
 });
 
 
-// Sync form data to JSON when exiting form mode
+function formDataToJson(): void {
+  const { value, quality, comment, document, pages } = customFormData.value;
+
+  const dataSource: DataPointSourceInfo = {
+    ...(document ? { fileName: document } : {}),
+    ...(pages ? (pages.includes('-') ? { pageRange: pages } : { page: pages }) : {}),
+  };
+
+  const data: DataPointDetail = {
+    ...(value && { value }),
+    ...(quality && { quality }),
+    ...(comment && { comment }),
+    ...(Object.keys(dataSource).length > 0 && { dataSource }),
+  };
+
+  customJson.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
+}
+
+function jsonToFormData(): void {
+  try {
+    const parsed = JSON.parse(customJson.value) as DataPointDetail;
+    const toStr = (v: unknown): string => (v === null || v === undefined ? '' : String(v));
+    customFormData.value = {
+      value: toStr(parsed.value),
+      quality: toStr(parsed.quality),
+      document: toStr(parsed.dataSource?.fileName ?? parsed.dataSource?.fileReference),
+      pages: toStr(parsed.dataSource?.pageRange ?? parsed.dataSource?.page),
+      comment: toStr(parsed.comment),
+    };
+  } catch {
+    // invalid JSON, leave form as-is
+  }
+  customJson.value = DEFAULT_CUSTOM_JSON;
+}
+
+// Sync between form and JSON when toggling edit mode
 watch(editModeEnabled, (newVal) => {
   if (newVal) {
-    const dataSource: DataPointSourceInfo = {};
-
-    if (customFormData.value.document) {
-      dataSource.fileName = customFormData.value.document;
-    }
-
-    if (customFormData.value.pages) {
-      if (customFormData.value.pages.includes('-')) {
-        dataSource.pageRange = customFormData.value.pages;
-      } else {
-        dataSource.page = customFormData.value.pages;
-      }
-    }
-
-    const data: DataPointDetail = {
-      ...(customFormData.value.value ? { value: customFormData.value.value } : {}),
-      ...(customFormData.value.quality ? { quality: customFormData.value.quality } : {}),
-      ...(customFormData.value.comment ? { comment: customFormData.value.comment } : {}),
-      ...(Object.keys(dataSource).length > 0 ? { dataSource } : {}),
-    };
-
-    customJson.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
+    formDataToJson();
   } else {
-    try {
-      const parsed = JSON.parse(customJson.value) as DataPointDetail;
-      const toStr = (v: unknown): string => (v === null || v === undefined ? '' : String(v));
-      customFormData.value = {
-        value: toStr(parsed.value),
-        quality: toStr(parsed.quality),
-        document: toStr(parsed.dataSource?.fileName ?? parsed.dataSource?.fileReference),
-        pages: toStr(parsed.dataSource?.pageRange ?? parsed.dataSource?.page),
-        comment: toStr(parsed.comment),
-      };
-    } catch {
-      // invalid JSON, leave form as-is
-    }
-    customJson.value = DEFAULT_CUSTOM_JSON;
+    jsonToFormData();
   }
 });
 
@@ -876,11 +877,9 @@ function findNextUnreviewedAfter(afterId: string): string | null {
   if (!datasetReview.value?.dataPoints) return null;
   const allEntries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
   const startIndex = allEntries.findIndex(([key]) => key === afterId);
-  for (let offset = 1; offset <= allEntries.length; offset++) {
-    const [key, meta] = allEntries[(startIndex + offset) % allEntries.length];
-    if (meta.acceptedSource === null) return key;
-  }
-  return null;
+  const rotated = [...allEntries.slice(startIndex + 1), ...allEntries.slice(0, startIndex)];
+  const [key] = rotated.find(([, meta]) => meta.acceptedSource === null) ?? [];
+  return key ?? null;
 }
 
 // Jump to selected datapoint and reset local state
