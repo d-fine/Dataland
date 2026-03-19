@@ -17,7 +17,7 @@ import java.util.UUID
  */
 @Suppress("LongParameterList")
 @Entity
-@Table(name = "dataset_judgement_entity_data_point_judgement_details")
+@Table(name = "dataset_judgement_entity_data_point")
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,

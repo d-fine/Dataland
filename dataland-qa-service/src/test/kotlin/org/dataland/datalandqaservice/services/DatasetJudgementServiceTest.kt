@@ -23,6 +23,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -188,7 +189,7 @@ class DatasetJudgementServiceTest {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
-            setOf(DatalandRealmRole.ROLE_ADMIN),
+            setOf(DatalandRealmRole.ROLE_UPLOADER),
         )
 
         assertThrows<InsufficientRightsApiException> {
@@ -380,6 +381,8 @@ class DatasetJudgementServiceTest {
                 mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
                 JudgementDetailsPatch(null, null, """{"value": 1}"""),
             )
+        }.also { exception ->
+            assertTrue(exception.cause is BackendClientException)
         }
     }
 }

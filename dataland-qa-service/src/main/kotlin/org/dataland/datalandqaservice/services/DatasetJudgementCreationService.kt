@@ -63,13 +63,13 @@ class DatasetJudgementCreationService
                     dataPoints = mutableListOf(),
                 )
 
-            val datasetJudgementEntityWithDataPoints =
-                setDataPointsForJudgement(
-                    datasetJudgementEntity,
-                    datatypeToDatapointIds,
-                    dataPointTypeToQaReports,
-                )
-            return datasetJudgementEntityWithDataPoints
+            setDataPointsForJudgement(
+                datasetJudgementEntity,
+                datatypeToDatapointIds,
+                dataPointTypeToQaReports,
+            )
+
+            return datasetJudgementEntity
         }
 
         /**
@@ -144,13 +144,12 @@ class DatasetJudgementCreationService
          * @param datasetJudgementEntity The dataset judgement entity to enrich with data point judgement details.
          * @param datatypeToDatapointIds Mapping of data point type to data point id contained in the dataset.
          * @param latestQaReportsByDataPointTypeAndReporter Latest QA reports grouped by data point type.
-         * @return The same DatasetJudgementEntity instance with populated data points.
          */
         private fun setDataPointsForJudgement(
             datasetJudgementEntity: DatasetJudgementEntity,
             datatypeToDatapointIds: Map<String, String>,
             latestQaReportsByDataPointTypeAndReporter: Map<String, Collection<DataPointQaReportEntity>>,
-        ): DatasetJudgementEntity {
+        ) {
             for ((dataPointType, dataPointId) in datatypeToDatapointIds) {
                 val currentDataPointJudgementDetails =
                     DataPointJudgementEntity(
@@ -164,6 +163,5 @@ class DatasetJudgementCreationService
 
                 datasetJudgementEntity.addAssociatedDataPoints(currentDataPointJudgementDetails)
             }
-            return datasetJudgementEntity
         }
     }
