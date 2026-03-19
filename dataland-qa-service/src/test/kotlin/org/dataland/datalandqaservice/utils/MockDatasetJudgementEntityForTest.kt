@@ -29,7 +29,7 @@ object MockDatasetJudgementEntityForTest {
             dataSetJudgementId = UUID.randomUUID(),
             datasetId = dummyDatasetId,
             companyId = dummyCompanyId,
-            dataType = "sfdr",
+            dataType = DataTypeEnum.sfdr,
             reportingPeriod = "2026",
             qaJudgeUserId = dummyUserId,
             qaJudgeUserName = DUMMY_USER_NAME,

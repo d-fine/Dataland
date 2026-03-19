@@ -301,10 +301,10 @@ import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import { GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import { FilterMatchMode } from '@primevue/core/api';
 import Slider from 'primevue/slider';
 import { type DataTypeEnum } from '@clients/backend';
+import { type QaReviewResponse } from '@clients/qaservice';
 
 const filters = ref({
   framework: {
@@ -337,24 +337,12 @@ const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const showNotEnoughCharactersWarning = ref(false);
 const selectedDataId = ref<string>('');
 const isCreatingReview = ref(false);
-const errorMessage = ref<string>('');
-const priorityByDimensions = ref<Record<string, number>>({});
 
 const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
 const { confirmationModal, openConfirmationModal } = useConfirmationModal();
-
-/**
- * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
- * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
- * @param input is a value with type DataTypeEnum
- * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
- */
-function manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
-  return input as GetInfoOnDatasetsDataTypesEnum;
-}
 
 /**
  * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
