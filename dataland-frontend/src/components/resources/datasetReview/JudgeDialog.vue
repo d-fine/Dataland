@@ -49,18 +49,49 @@
               <tbody>
               <tr>
                 <th>Value</th>
-                <td><span>{{ originalData.value ?? '—' }}</span></td>
+                <td>
+                  <div class="judge-modal__cell-overflow">
+                    <span class="judge-modal__cell-text">{{ originalData.value ?? '—' }}</span>
+                    <button
+                        v-if="isOverflowing(String(originalData.value ?? ''))"
+                        class="judge-modal__overflow-btn"
+                        @mouseenter="(e) => showPopover(e, String(originalData?.value ?? ''))"
+                        @mouseleave="hidePopover"
+                        aria-label="Show full value"
+                    >+</button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th>Quality</th>
-                <td><span>{{ originalData.quality ?? '—' }}</span></td>
+                <td>
+                  <div class="judge-modal__cell-overflow">
+                    <span class="judge-modal__cell-text">{{ originalData.quality ?? '—' }}</span>
+                    <button
+                        v-if="isOverflowing(String(originalData.quality ?? ''))"
+                        class="judge-modal__overflow-btn"
+                        @mouseenter="(e) => showPopover(e, String(originalData?.quality ?? ''))"
+                        @mouseleave="hidePopover"
+                        aria-label="Show full quality"
+                    >+</button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th>Document</th>
                 <td>
-                    <span>
+                  <div class="judge-modal__cell-overflow">
+                    <span class="judge-modal__cell-text">
                       {{ originalData.dataSource?.fileName ?? originalData.dataSource?.fileReference ?? '—' }}
                     </span>
+                    <button
+                        v-if="isOverflowing(String(originalData.dataSource?.fileName ?? originalData.dataSource?.fileReference ?? ''))"
+                        class="judge-modal__overflow-btn"
+                        @mouseenter="(e) => showPopover(e, String(originalData?.dataSource?.fileName ?? originalData?.dataSource?.fileReference ?? ''))"
+                        @mouseleave="hidePopover"
+                        aria-label="Show full document"
+                    >+</button>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -78,7 +109,16 @@
               <tr>
                 <th>Comment</th>
                 <td>
-                  <span class="judge-modal__multiline">{{ originalData.comment ?? '—' }}</span>
+                  <div class="judge-modal__cell-overflow">
+                    <span class="judge-modal__cell-text judge-modal__cell-text--comment">{{ originalData.comment ?? '—' }}</span>
+                    <button
+                        v-if="isOverflowing(String(originalData.comment ?? ''))"
+                        class="judge-modal__overflow-btn"
+                        @mouseenter="(e) => showPopover(e, String(originalData?.comment ?? ''))"
+                        @mouseleave="hidePopover"
+                        aria-label="Show full comment"
+                    >+</button>
+                  </div>
                 </td>
               </tr>
               </tbody>
@@ -142,22 +182,53 @@
                 <tbody>
                 <tr>
                   <th>Value</th>
-                  <td><span>{{ currentQaCorrectedData.value ?? '—' }}</span></td>
+                  <td>
+                    <div class="judge-modal__cell-overflow">
+                      <span class="judge-modal__cell-text">{{ currentQaCorrectedData.value ?? '—' }}</span>
+                      <button
+                          v-if="isOverflowing(String(currentQaCorrectedData.value ?? ''))"
+                          class="judge-modal__overflow-btn"
+                          @mouseenter="(e) => showPopover(e, String(currentQaCorrectedData?.value ?? ''))"
+                          @mouseleave="hidePopover"
+                          aria-label="Show full value"
+                      >+</button>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <th>Quality</th>
-                  <td><span>{{ currentQaCorrectedData.quality ?? '—' }}</span></td>
+                  <td>
+                    <div class="judge-modal__cell-overflow">
+                      <span class="judge-modal__cell-text">{{ currentQaCorrectedData.quality ?? '—' }}</span>
+                      <button
+                          v-if="isOverflowing(String(currentQaCorrectedData.quality ?? ''))"
+                          class="judge-modal__overflow-btn"
+                          @mouseenter="(e) => showPopover(e, String(currentQaCorrectedData?.quality ?? ''))"
+                          @mouseleave="hidePopover"
+                          aria-label="Show full quality"
+                      >+</button>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <th>Document</th>
                   <td>
-                      <span>
+                    <div class="judge-modal__cell-overflow">
+                      <span class="judge-modal__cell-text">
                         {{
                           currentQaCorrectedData.dataSource?.fileName ??
                           currentQaCorrectedData.dataSource?.fileReference ??
                           '—'
                         }}
                       </span>
+                      <button
+                          v-if="isOverflowing(String(currentQaCorrectedData.dataSource?.fileName ?? currentQaCorrectedData.dataSource?.fileReference ?? ''))"
+                          class="judge-modal__overflow-btn"
+                          @mouseenter="(e) => showPopover(e, String(currentQaCorrectedData?.dataSource?.fileName ?? currentQaCorrectedData?.dataSource?.fileReference ?? ''))"
+                          @mouseleave="hidePopover"
+                          aria-label="Show full document"
+                      >+</button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -175,7 +246,16 @@
                 <tr>
                   <th>Comment</th>
                   <td>
-                    <span class="judge-modal__multiline">{{ currentQaCorrectedData.comment ?? '—' }}</span>
+                    <div class="judge-modal__cell-overflow">
+                      <span class="judge-modal__cell-text judge-modal__cell-text--comment">{{ currentQaCorrectedData.comment ?? '—' }}</span>
+                      <button
+                          v-if="isOverflowing(String(currentQaCorrectedData.comment ?? ''))"
+                          class="judge-modal__overflow-btn"
+                          @mouseenter="(e) => showPopover(e, String(currentQaCorrectedData?.comment ?? ''))"
+                          @mouseleave="hidePopover"
+                          aria-label="Show full comment"
+                      >+</button>
+                    </div>
                   </td>
                 </tr>
                 </tbody>
@@ -374,6 +454,15 @@
         </section>
       </div>
     </div>
+
+    <Popover
+        ref="overflowPopover"
+        placement="top"
+        class="judge-modal__overflow-popover"
+        :pt="{ root: { style: { width: popoverWidth, padding: '0.2rem 0.2rem'} } }"
+    >
+      <div class="judge-modal__overflow-popover-content">{{ popoverText }}</div>
+    </Popover>
   </PrimeDialog>
 </template>
 
@@ -387,14 +476,11 @@ import Message from 'primevue/message';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
+import Popover from 'primevue/popover';
 
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
-// TanStack Query composables (names assumed from your description)
-// import { useDatasetReviewQuery, datasetReviewKeys } from '@/composables/useDatasetReviewQuery.ts';
-// import { useMutation, useQueryClient } from '@tanstack/vue-query';
-// import {ReviewDetailsPatch} from "@clients/qaservice";
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -973,6 +1059,39 @@ function resetStateForCurrentDataPoint(): void {
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = DEFAULT_CUSTOM_FORM_DATA
 }
+
+// ===== Overflow popover =====
+
+const OVERFLOW_THRESHOLD = 40;
+
+const overflowPopover = ref<InstanceType<typeof Popover> | null>(null);
+const popoverText = ref<string>('');
+const popoverWidth = ref<string>('auto');
+
+function isOverflowing(text: string): boolean {
+  return text.length > OVERFLOW_THRESHOLD;
+}
+
+function showPopover(event: MouseEvent, text: string): void {
+  const btn = event.currentTarget as HTMLElement;
+  const td = btn.closest('td') as HTMLElement | null;
+  const anchor = td ?? btn;
+
+  // Match the width of the form inputs in the bottom-left container
+  const dialog = btn.closest('.p-dialog') ?? btn.closest('#judgeModal') ?? document;
+  const formInput = (dialog as Element).querySelector('.judge-modal__form-input') as HTMLElement | null;
+  const width = formInput
+    ? formInput.getBoundingClientRect().width
+    : anchor.getBoundingClientRect().width;
+  popoverWidth.value = `${width}px`;
+
+  popoverText.value = text;
+  overflowPopover.value?.show(event, anchor);
+}
+
+function hidePopover(): void {
+  overflowPopover.value?.hide();
+}
 </script>
 
 <style scoped lang="scss">
@@ -1141,24 +1260,64 @@ function resetStateForCurrentDataPoint(): void {
       vertical-align: middle;
       font-size: var(--font-size-sm);
       max-width: 0;
-
-      span:not(.judge-modal__multiline) {
-        display: block;
-        white-space: normal;
-        word-break: break-all;
-      }
     }
   }
 }
 
-.judge-modal__multiline {
-  white-space: pre-wrap;
-  display: block;
-  max-height: 2.8em;
-  overflow-y: auto;
-  vertical-align: top;
-  line-height: 1.4;
+.judge-modal__cell-overflow {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
 }
+
+.judge-modal__cell-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.judge-modal__cell-text--comment {
+  white-space: nowrap;
+}
+
+.judge-modal__overflow-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  color: #fff;
+  background-color: #888;
+  border: none;
+  border-radius: 50%;
+  cursor: default;
+  user-select: none;
+
+  &:hover {
+    background-color: #555;
+  }
+}
+
+.judge-modal__overflow-popover {
+  // width is controlled via :pt="{ root: { style: { width: popoverWidth } } }"
+}
+
+.judge-modal__overflow-popover-content {
+  font-size: var(--font-size-sm);
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
 
 .judge-modal__json-view {
   margin-top: var(--spacing-sm);
