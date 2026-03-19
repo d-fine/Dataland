@@ -151,12 +151,12 @@
                       <span v-else class="main-text-color"> &ndash; </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
-                        class="pi pi-check text-green-500 accepted-check"
+                        class="pi pi-check text-green-500 ml-auto accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
-                        class="pi pi-times text-red-500 rejected-check"
+                        class="pi pi-times text-red-500 ml-auto rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
@@ -171,12 +171,12 @@
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
-                        class="pi pi-check text-green-500 accepted-check"
+                        class="pi pi-check text-green-500 ml-auto accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Custom)"
-                        class="pi pi-times text-red-500 rejected-check"
+                        class="pi pi-times text-red-500 ml-auto rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
