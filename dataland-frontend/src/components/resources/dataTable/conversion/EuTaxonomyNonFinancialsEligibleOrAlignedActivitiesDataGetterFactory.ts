@@ -2,7 +2,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
+import EligibleOrAlignedActivitiesDataTable from '@/components/general/EligibleOrAlignedActivitiesDataTable.vue';
 import { euTaxonomyNonFinancialsModalColumnHeaders } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
 import { createModalDisplayObject } from '@/utils/CreateModalDisplayObject.ts';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
@@ -23,16 +23,6 @@ type EligibleOrAlignedActivity = {
   substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number | null;
   enablingActivity?: string | null;
   transitionalActivity?: string | null;
-};
-
-type AlignedActivitiesTableRow = EligibleOrAlignedActivity & {
-  dnshToClimateChangeMitigation?: string | null;
-  dnshToClimateChangeAdaptation?: string | null;
-  dnshToSustainableUseAndProtectionOfWaterAndMarineResources?: string | null;
-  dnshToTransitionToACircularEconomy?: string | null;
-  dnshToPollutionPreventionAndControl?: string | null;
-  dnshToProtectionAndRestorationOfBiodiversityAndEcosystems?: string | null;
-  minimumSafeguards?: string | null;
 };
 
 /**
@@ -74,7 +64,7 @@ export function formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForT
     [tableKey]: adjustedHeaders,
   };
 
-  const mappedActivities: ExtendedDataPoint<AlignedActivitiesTableRow[]> = {
+  const mappedActivities: ExtendedDataPoint<EligibleOrAlignedActivity[]> = {
     ...eligibleOrAlignedActivities,
     value:
       eligibleOrAlignedActivities.value?.map((activity) => ({
@@ -83,13 +73,6 @@ export function formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForT
           ...activity.share,
           relativeShareInPercent: activity.relativeEligibleShareInPercent ?? activity.share?.relativeShareInPercent,
         },
-        dnshToClimateChangeMitigation: undefined,
-        dnshToClimateChangeAdaptation: undefined,
-        dnshToSustainableUseAndProtectionOfWaterAndMarineResources: undefined,
-        dnshToTransitionToACircularEconomy: undefined,
-        dnshToPollutionPreventionAndControl: undefined,
-        dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: undefined,
-        minimumSafeguards: undefined,
       })) ?? [],
   };
 
@@ -99,6 +82,6 @@ export function formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForT
     kpiType,
     tableKey,
     columnHeaders: customColumnHeaders,
-    modalComponent: AlignedActivitiesDataTable,
+    modalComponent: EligibleOrAlignedActivitiesDataTable,
   });
 }

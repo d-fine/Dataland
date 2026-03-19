@@ -148,6 +148,7 @@ export function frameworkHasSubTitle(framework: string): boolean {
   return (
     framework == DataTypeEnum.EutaxonomyFinancials202673 ||
     framework == DataTypeEnum.EutaxonomyFinancials ||
+    framework == DataTypeEnum.EutaxonomyNonFinancials202673 ||
     framework == DataTypeEnum.EutaxonomyNonFinancials ||
     framework == DataTypeEnum.NuclearAndGas
   );

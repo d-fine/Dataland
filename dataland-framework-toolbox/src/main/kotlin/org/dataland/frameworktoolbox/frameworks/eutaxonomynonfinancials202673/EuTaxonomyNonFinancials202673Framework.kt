@@ -6,8 +6,11 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -28,6 +31,38 @@ class EuTaxonomyNonFinancials202673Framework :
         addSupressAnnotationToPackageBuilder(dataModel.rootPackageBuilder, "\"MaxLineLength\"", null)
     }
 
+    override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
+        val tooLargeClasses =
+            listOf(
+                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.EutaxonomyNonFinancialsCapex",
+                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.EutaxonomyNonFinancialsRevenue",
+            )
+        addSupressAnnotationToPackageBuilder(dataModel.rootPackageBuilder, "\"LargeClass\"", tooLargeClasses)
+    }
+
+    private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
+        root.edit<ComponentGroup>("general") {
+            viewPageExpandOnPageLoad = true
+            uploadPageLabelBadgeColor = LabelBadgeColor.Orange
+            viewPageLabelBadgeColor = LabelBadgeColor.Orange
+        }
+
+        root.edit<ComponentGroup>("revenue") {
+            uploadPageLabelBadgeColor = LabelBadgeColor.Green
+            viewPageLabelBadgeColor = LabelBadgeColor.Green
+        }
+
+        root.edit<ComponentGroup>("capex") {
+            uploadPageLabelBadgeColor = LabelBadgeColor.Yellow
+            viewPageLabelBadgeColor = LabelBadgeColor.Yellow
+        }
+
+        root.edit<ComponentGroup>("opex") {
+            uploadPageLabelBadgeColor = LabelBadgeColor.Blue
+            viewPageLabelBadgeColor = LabelBadgeColor.Blue
+        }
+    }
+
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
             edit<ReportPreuploadComponent>("referencedReports") {
@@ -43,5 +78,6 @@ class EuTaxonomyNonFinancials202673Framework :
                 }
             }
         }
+        configureComponentGroupColorsAndExpansion(framework.root)
     }
 }
