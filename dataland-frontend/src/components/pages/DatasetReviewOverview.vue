@@ -187,7 +187,7 @@ const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 const assignToMe = (): void => {
   openConfirmationModal(
     'Assign Yourself',
-    'Are you sure you want to assign this dataset review to yourself? This can only be undone by a dataland admin!',
+    'Are you sure you want to assign this dataset review to yourself? If there is already a user assigned, they will be unassigned and the dataset review will be assigned to you.',
     () => {
       assignToMeMutation(undefined, {
         onSuccess: () => {
@@ -203,32 +203,28 @@ const assignToMe = (): void => {
 };
 
 const rejectDataset = (): void => {
-  openConfirmationModal(
-    'Reject Dataset',
-    'Are you sure you want to reject this dataset review? This can only be undone by a dataland admin!',
-    () => {
-      rejectReviewMutation(undefined, {
-        onSuccess: () => {
-          isActionSuccess.value = true;
-          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-          setTimeout(() => {
-            confirmationModal.value.visible = false;
-            isActionSuccess.value = false;
-            void goToQaPage();
-          }, 3200);
-        },
-        onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
-        },
-      });
-    }
-  );
+  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
+    rejectReviewMutation(undefined, {
+      onSuccess: () => {
+        isActionSuccess.value = true;
+        confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+        setTimeout(() => {
+          confirmationModal.value.visible = false;
+          isActionSuccess.value = false;
+          void goToQaPage();
+        }, 3200);
+      },
+      onError: (error) => {
+        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
+      },
+    });
+  });
 };
 
 const finishReview = (): void => {
   openConfirmationModal(
     'Finish Review',
-    'Are you sure you want to mark this dataset review as finished? This can only be undone by a dataland admin!',
+    'Are you sure you want to mark this dataset review as finished?',
     () => {
       finishReviewMutation(undefined, {
         onSuccess: () => {
