@@ -199,6 +199,7 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         dataPointTypeId: 'extendedEnumYesNoHumanRightsDueDiligence',
       },
     ],
+    labelBadgeColor: 'orange',
   },
   {
     type: 'section',
@@ -458,6 +459,7 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
+    labelBadgeColor: 'green',
   },
   {
     type: 'section',
@@ -716,6 +718,7 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
+    labelBadgeColor: 'yellow',
   },
   {
     type: 'section',
@@ -974,5 +977,6 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         ],
       },
     ],
+    labelBadgeColor: 'blue',
   },
 ];
