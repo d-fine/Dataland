@@ -208,9 +208,9 @@ class QaReviewManager
                     triggeringUserId = triggeringUserId,
                     comment = comment,
                 )
-            this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
 
             qaReviewRepository.save(qaReviewEntity)
+            this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
         }
 
         /**
