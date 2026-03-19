@@ -73,7 +73,7 @@
                     class="text-left p-3 border-bottom-1 surface-border"
                     :class="{
                       'uppercase text-base font-medium': row.level === 0,
-                      'text-base font-normal': row.level > 0,
+                      'text-base font-medium': row.level > 0,
                     }"
                   >
                     {{ row.level === 0 ? row.label : toTitleCase(row.label) }}
@@ -89,10 +89,7 @@
                     data-row-header="true"
                   >
                     <div class="flex justify-content-between align-items-center">
-                      <span
-                        class="table-left-label text-primary cursor-pointer font-medium"
-                        @click="openJudgeModal(row)"
-                      >
+                      <span class="table-left-label font-normal">
                         {{ row.label }}
                       </span>
                       <em
@@ -375,7 +372,7 @@ function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined
  * Returns the QA report for the given table row and reporter user ID.
  *
  * Looks up the datasetReview entry for the row's data point type and
- * returns the QaReportDataPointWithReporter for the given reporter if present.
+ * returns the DataPointQaReport for the given reporter if present.
  *
  * @param {CellRow} row - The table cell row describing the data point.
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
