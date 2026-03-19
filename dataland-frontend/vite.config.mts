@@ -77,7 +77,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/scss/breakpoints" as *;\n`,
+        additionalData: `$bp-sm: 640px;\n$bp-md: 768px;\n$bp-lg: 1024px;\n$bp-xl: 1440px;\n`,
       },
     },
   },

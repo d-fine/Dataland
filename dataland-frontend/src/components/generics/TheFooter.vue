@@ -1,489 +1,186 @@
 <template>
   <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo" data-test="dataland footer">
-    <div class="footer__row footer__row--top">
-      <div class="footer__section footer__section--owned-by">
-        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland Logo" class="footer__logo" />
-        <p class="footer--title footer--small-title">A Werte-Stiftung Company</p>
-        <img src="/static/logos/footer_wertestiftung.png" alt="Owned by Logo" class="footer__section--logo" />
-        <a href="https://www.wertestiftung.org" target="_blank" rel="noopener noreferrer" class="footer--link"
-          >WERTESTIFTUNG.ORG</a
-        >
+    <div class="footer__top">
+      <div class="footer__col">
+        <h3 class="footer__col-title">Dataland</h3>
+        <p class="footer__description">
+          Non-profit sustainability data platform. Source-based. Human-verified. Open source.
+        </p>
+        <div class="footer__logos">
+          <img src="/static/logos/logo_wertestiftung.png" alt="Werte-Stiftung logo" class="footer__sponsor-logo" />
+          <img src="/static/logos/logo_dfine.svg" alt="d-fine logo" class="footer__sponsor-logo" />
+          <img src="/static/logos/logo_pwc.svg" alt="PwC logo" class="footer__sponsor-logo" />
+        </div>
       </div>
-
-      <div class="footer__section footer__section--columns" aria-labelledby="footer-navigation">
-        <div class="footer__column footer__column--techhub" @click="isSmallScreen && toggleAccordion('techhub')">
-          <h3 class="footer--title">
-            <span>Tech Hub</span>
-            <span v-if="isSmallScreen" class="footer__toggle-icon"> {{ isAccordionOpen('techhub') ? '-' : '+' }} </span>
-          </h3>
-          <ul
-            class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('techhub') ? '30rem' : '0' }"
-          >
-            <li><a href="/api/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">DATASETS</a></li>
-            <li>
-              <a href="/documents/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">DOCUMENTS</a>
-            </li>
-            <li>
-              <a href="/community/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">COMMUNITY</a>
-            </li>
-            <li>
-              <a href="/qa/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">QUALITY ASSURANCE</a>
-            </li>
-            <li><a href="/users/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">USERS</a></li>
-            <li>
-              <a href="/data-sourcing/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
-                >DATA SOURCING</a
-              >
-            </li>
-            <li>
-              <a href="/accounting/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer">ACCOUNTING</a>
-            </li>
-            <li>
-              <a href="/specifications/swagger-ui/index.html" class="footer--link" rel="noopener noreferrer"
-                >SPECIFICATIONS</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="footer__column" @click="isSmallScreen && toggleAccordion('esgframeworks')">
-          <h3 class="footer--title">
-            <span> ESG Frameworks</span>
-            <span v-if="isSmallScreen" class="footer__toggle-icon">
-              {{ isAccordionOpen('esgframeworks') ? '-' : '+' }}
-            </span>
-          </h3>
-          <ul
-            class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('esgframeworks') ? '30rem' : '0' }"
-          >
-            <li>
-              <a
-                href="https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
-                class="footer--link"
-                rel="noopener noreferrer"
-                >OVERVIEW</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="footer__column footer__column--follow" @click="isSmallScreen && toggleAccordion('follow')">
-          <h3 class="footer--title">
-            Follow Dataland
-            <span v-if="isSmallScreen" class="footer__toggle-icon"> {{ isAccordionOpen('follow') ? '-' : '+' }} </span>
-          </h3>
-          <ul
-            class="footer__column--list"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('follow') ? '30rem' : '0' }"
-          >
-            <li>
-              <a
-                href="https://www.linkedin.com/company/dataland-gmbh/"
-                class="footer--link linkedin"
-                rel="noopener noreferrer"
-                >LINKEDIN
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="footer__column footer__column--integration"
-          @click="isSmallScreen && toggleAccordion('integration')"
-        >
-          <h3 class="footer--title">
-            Integration of GLEIF and EuroDaT
-            <span v-if="isSmallScreen" class="footer__toggle-icon">
-              {{ isAccordionOpen('integration') ? '-' : '+' }}
-            </span>
-          </h3>
-          <ul
-            class="footer__column--list inline-flex gap-5"
-            :style="{ maxHeight: !isSmallScreen || isAccordionOpen('integration') ? '30rem' : '0' }"
-          >
-            <li>
-              <img
-                src="/static/logos/footer_gleif.svg"
-                alt="GLEIF Logo"
-                class="footer__section--logo"
-                style="height: 2.5rem"
-              />
-            </li>
-            <li>
-              <img
-                src="/static/logos/footer_eurodat.svg"
-                alt="EuroDaT Logo"
-                class="footer__section--logo"
-                style="height: 2.5rem"
-              />
-            </li>
-          </ul>
-        </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">Product</h3>
+        <router-link to="/product#how-it-works" class="footer__link">How it works</router-link>
+        <router-link to="/product#features" class="footer__link">Features</router-link>
+        <router-link to="/product#frameworks" class="footer__link">Frameworks</router-link>
+        <router-link to="/product#use-cases" class="footer__link">Use Cases</router-link>
+        <router-link to="/product#customer-stories" class="footer__link">Customer Stories</router-link>
+        <router-link to="/testimonials" class="footer__link">Testimonials</router-link>
+        <router-link to="/product#membership-pricing" class="footer__link">Membership & Pricing</router-link>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">Company</h3>
+        <router-link to="/#why-us" class="footer__link">Why Dataland</router-link>
+        <router-link to="/about#company" class="footer__link">About us</router-link>
+        <router-link to="/about#updates" class="footer__link">Updates and Insights</router-link>
+        <router-link to="/about#partners" class="footer__link">Partners</router-link>
+        <router-link to="/about#contact" class="footer__link">Contact</router-link>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">Resources</h3>
+        <router-link to="/product#documentation" class="footer__link">Tutorials</router-link>
+        <router-link to="/product#documentation" class="footer__link">Platform documentation</router-link>
+        <router-link to="/product#documentation" class="footer__link">Technical Hub</router-link>
       </div>
     </div>
-    <div class="footer__row footer__row--bottom">
-      <div class="footer__section footer__section--legal">
-        <ul>
-          <li><router-link to="/terms">LEGAL</router-link></li>
-          <li><router-link to="/imprint">IMPRINT</router-link></li>
-          <li><router-link to="/dataprivacy">DATA PRIVACY</router-link></li>
-        </ul>
-      </div>
-      <div class="footer__copyright">
-        {{ `Copyright © ${new Date().getFullYear()} Dataland` }}
-      </div>
+    <div class="footer__bottom">
+      <router-link to="/legal" class="footer__bottom-link">Legal</router-link>
+      <router-link to="/imprint" class="footer__bottom-link">Imprint</router-link>
+      <router-link to="/dataprivacy" class="footer__bottom-link">Data Privacy</router-link>
+      <router-link to="/cookies" class="footer__bottom-link">Cookie Settings</router-link>
+      <span class="footer__copyright">&copy; {{ currentYear }} Dataland</span>
+      <a
+        href="https://www.linkedin.com/company/dataland-gmbh"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer__bottom-link footer__linkedin"
+        aria-label="Follow Dataland on LinkedIn"
+      >
+        <i class="pi pi-linkedin" aria-hidden="true" />
+      </a>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, type Ref } from 'vue';
+import { computed } from 'vue';
 
-const { isLightVersion } = defineProps({
-  isLightVersion: {
-    type: Boolean,
-    required: false,
-    default: true,
-  },
-});
+defineProps<{
+  isLightVersion?: boolean;
+}>();
 
-const openAccordions = ref<Record<string, boolean>>({});
-
-/**
- * Reads from the 'openAccordions' record if the accordion with the title passed as input is open or not
- * @param title
- */
-const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
-
-/**
- * Toggles the open state of an accordion section. If the accordion section
- * corresponding to the provided title is currently closed, it will be opened,
- * and vice versa.
- * @param {string} title - The title of the accordion section to toggle.
- */
-function toggleAccordion(title: string): void {
-  openAccordions.value[title] = !openAccordions.value[title];
-}
-
-const isSmallScreen: Ref<boolean> = ref(globalThis.innerWidth < 768);
-
-const updateScreenSize = (): void => {
-  isSmallScreen.value = globalThis.innerWidth < 768;
-};
-
-onMounted(() => {
-  globalThis.addEventListener('resize', updateScreenSize);
-  updateScreenSize();
-});
-
-onUnmounted(() => {
-  globalThis.removeEventListener('resize', updateScreenSize);
-});
+const currentYear = computed(() => new Date().getFullYear());
 </script>
 
 <style scoped lang="scss">
-* {
-  margin: 0;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
 .footer {
-  background-color: var(--p-gray-950);
-  color: var(--default-neutral-white);
-  padding: 6rem 4rem 3rem;
+  background: var(--p-surface-0, #f7f7f5);
+  border-top: 1px solid var(--p-surface-200, #e6e6e6);
+  padding: 64px 64px 32px;
 
-  &--title {
-    color: var(--grey-tones-300);
-    font-size: 0.875rem;
+  &__top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  &--link {
-    color: var(--default-neutral-white);
-    font-weight: 600;
-    line-height: 1.5rem;
-    letter-spacing: 0.05rem;
-    text-transform: uppercase;
-    text-decoration: none;
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__col-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: var(--p-text-color, #1b1b1b);
+  }
+
+  &__description {
+    font-size: 0.875rem;
+    color: var(--p-text-muted-color, #737373);
+    line-height: 1.5;
+    margin: 0 0 16px;
+  }
+
+  &__logos {
+    display: flex;
+    gap: 16px;
     align-items: center;
-    display: inline-flex;
-    gap: 0.25rem;
-    white-space: nowrap;
+    flex-wrap: wrap;
+  }
+
+  &__sponsor-logo {
+    height: 24px;
+    object-fit: contain;
+  }
+
+  &__link {
+    font-size: 0.875rem;
+    color: var(--p-text-color, #1b1b1b);
+    text-decoration: none;
+    display: block;
+    padding: 4px 0;
 
     &:hover {
-      text-decoration: underline;
-      text-underline-offset: 0.25rem;
-      text-decoration-thickness: 0.125rem;
+      color: var(--p-primary-color);
     }
+  }
 
-    &::after {
-      content: '';
-      display: inline-block;
-      top: 0.1875rem;
-      width: 1rem;
-      height: 1rem;
-      background-image: url(/static/icons/Arrow--up-right.svg);
-      background-size: cover;
-      position: static;
-      filter: invert(1);
+  &__bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--p-surface-200, #e6e6e6);
+    font-size: 0.875rem;
+    color: var(--p-text-muted-color, #737373);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__bottom-link {
+    font-size: 0.875rem;
+    color: var(--p-text-muted-color, #737373);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--p-primary-color);
     }
   }
 
   &__copyright {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: right;
-    flex: 1;
+    font-size: 0.875rem;
+    color: var(--p-text-muted-color, #737373);
   }
 
-  &__row--top {
-    padding-bottom: 2.5rem;
-    display: grid;
-    grid-template-columns: 30% 70%;
+  &__linkedin {
+    font-size: 1.125rem;
   }
 
-  &__row--bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2.5rem 0;
-    border-top: 0.125rem solid var(--grey-tones-900);
-  }
-
-  &__section {
-    &--owned-by {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      text-align: left;
-      gap: 1rem;
-    }
-
-    &--columns {
-      display: grid;
-      grid-template-columns: 4fr 2fr 1fr;
-      grid-template-rows: repeat(2, 1fr);
-      justify-content: space-between;
-      justify-items: start;
-      text-align: start;
-      gap: 1rem 1rem;
-    }
-
-    &--logo {
-      filter: invert(1);
-    }
-
-    &--legal {
-      ul {
-        display: flex;
-        list-style: none;
-        padding-left: 0;
-        gap: 3rem;
-      }
-
-      a {
-        color: var(--default-neutral-white);
-        font-weight: 600;
-        line-height: 1.5rem;
-        letter-spacing: 0.05rem;
-        text-transform: uppercase;
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-          text-underline-offset: 0.25rem;
-          text-decoration-thickness: 0.125rem;
-        }
-      }
-    }
-  }
-
-  &__column {
-    &--list {
-      list-style: none;
-      padding-left: 0;
-      margin: 1.75rem 0 0 0;
-      max-height: 30rem;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-
-    li {
-      margin-bottom: 1rem;
-    }
-
-    &--techhub {
-      grid-row: span 2;
-      .footer__column--list {
-        column-count: 2;
-        column-gap: 1rem;
-
-        li {
-          break-inside: avoid;
-        }
-      }
-    }
-
-    &--integration {
-      grid-column: span 2;
-    }
-
-    &--follow {
-      & .linkedin {
-        position: relative;
-        top: -0.1875rem;
-
-        &::before {
-          content: '';
-          display: inline-block;
-          top: 0.1875rem;
-          width: 1.5rem;
-          height: 1.3125rem;
-          background-image: url(/static/icons/Logo--linkedin.svg);
-          background-size: cover;
-          position: relative;
-          margin-right: 0.375rem;
-        }
-
-        &::after {
-          content: none;
-        }
-      }
-    }
-
-    .footer__toggle-icon {
-      transition: transform 0.4s ease;
-    }
-  }
-
-  // Modifier class for light version
   &--light {
-    background-color: var(--p-surface-100);
-    color: #0b191f;
-
-    .footer {
-      &__section--logo {
-        filter: invert(0);
-      }
-
-      &--title,
-      &--link {
-        color: #0b191f;
-
-        &::after {
-          filter: invert(0);
-        }
-
-        &::before {
-          filter: invert(1);
-        }
-      }
-
-      &__section--legal a {
-        color: #0b191f;
-      }
-    }
+    background: var(--p-surface-100, #f0f0f0);
   }
 }
 
-@media only screen and (max-width: 1024px) {
-  .footer {
-    &__row--top {
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-    }
-
-    &__section--columns {
-      justify-items: start;
-    }
+@media only screen and (max-width: $bp-lg) {
+  .footer__top {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $bp-md) {
   .footer {
-    padding: 4rem 1.5rem 2.5rem;
+    padding: 32px 16px 24px;
+  }
 
-    &--title {
-      font-size: 1rem;
-      color: var(--default-neutral-white);
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  .footer__top {
+    grid-template-columns: 1fr;
+  }
 
-    &--small-title {
-      font-size: 0.875rem;
-      color: var(--grey-tones-300);
-    }
-
-    &--logo {
-      justify-content: left;
-      margin-bottom: 1.5em;
-
-      .footer__owned-by {
-        gap: 0.5em;
-      }
-    }
-
-    &__row--top,
-    &__row--bottom {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      gap: 1rem;
-      border: 0;
-      padding-bottom: 0;
-    }
-
-    &__section {
-      &--owned-by,
-      &--columns {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        width: 100%;
-        gap: 0;
-      }
-
-      &--owned-by {
-        gap: 0.5rem;
-      }
-
-      &--legal ul {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2em;
-      }
-    }
-
-    &__column {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
-      border-bottom: 1px solid var(--grey-tones-900);
-
-      .footer--title {
-        padding: 1.75rem 0;
-      }
-
-      &--list {
-        width: 100%;
-        justify-content: start;
-        justify-items: start;
-      }
-
-      .footer__toggle-icon {
-        transition: transform 0.4s ease;
-      }
-    }
-    &__copyright {
-      margin-top: 2rem;
-    }
+  .footer__bottom {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 </style>

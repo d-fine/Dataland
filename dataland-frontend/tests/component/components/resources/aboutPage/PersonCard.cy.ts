@@ -7,6 +7,8 @@ const leadershipPerson: Person = {
   role: 'Chief Executive Officer',
   bio: 'Jane is a seasoned executive with over 20 years of experience.',
   imagePath: '/static/about/team-jane-doe.webp',
+  email: 'mailto:jane.doe@example.com',
+  linkedIn: 'https://www.linkedin.com/in/jane-doe/',
 };
 
 const advisoryPerson: AdvisoryPerson = {

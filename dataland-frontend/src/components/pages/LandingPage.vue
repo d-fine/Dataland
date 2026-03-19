@@ -1,13 +1,15 @@
 <template>
   <main id="main-content" role="main">
-    <TheIntro :sections="landingPage?.sections" />
-    <TheStruggle :sections="landingPage?.sections" />
-    <TheTrustBar />
-    <TheDataAccess :sections="landingPage?.sections" />
-    <TheFrameworks :sections="landingPage?.sections" />
-    <TheSocialProof :sections="landingPage?.sections" />
-    <TheBrands :sections="landingPage?.sections" />
-    <TheGetInTouch :sections="landingPage?.sections" />
+    <TheIntro />
+    <TheFindLei />
+    <TheWhyUs />
+    <TheTrustedBy />
+    <TheCustomerStories />
+    <TheTestimonials />
+    <TheFrameworks />
+    <TheCustomerProfiles />
+    <TheNewsInsights />
+    <ContactInquiryModal />
   </main>
 </template>
 
@@ -19,18 +21,15 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { SessionDialogMode } from '@/utils/SessionTimeoutUtils';
 
 import TheIntro from '@/components/resources/landingPage/TheIntro.vue';
-import TheStruggle from '@/components/resources/landingPage/TheStruggle.vue';
-import TheTrustBar from '@/components/resources/landingPage/TheTrustBar.vue';
-import TheDataAccess from '@/components/resources/landingPage/TheDataAccess.vue';
+import TheFindLei from '@/components/resources/landingPage/TheFindLei.vue';
+import TheWhyUs from '@/components/resources/landingPage/TheWhyUs.vue';
+import TheTrustedBy from '@/components/resources/landingPage/TheTrustedBy.vue';
+import TheCustomerStories from '@/components/resources/landingPage/TheCustomerStories.vue';
+import TheTestimonials from '@/components/resources/landingPage/TheTestimonials.vue';
 import TheFrameworks from '@/components/resources/landingPage/TheFrameworks.vue';
-import TheSocialProof from '@/components/resources/landingPage/TheSocialProof.vue';
-import TheBrands from '@/components/resources/landingPage/TheBrands.vue';
-import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-
-const content: Content = contentData;
-const landingPage: Page | undefined = content.pages.find((page) => page.url === '/');
+import TheCustomerProfiles from '@/components/resources/landingPage/TheCustomerProfiles.vue';
+import TheNewsInsights from '@/components/resources/landingPage/TheNewsInsights.vue';
+import ContactInquiryModal from '@/components/generics/ContactInquiryModal.vue';
 
 const dialog = useDialog();
 const route = useRoute();

@@ -1,23 +1,21 @@
 <template>
   <main id="main-content" role="main">
-    <TheAboutHero />
-    <TheAboutTrustPillars />
+    <TheAboutCompany />
     <TheAboutTeam />
-    <TheAboutPrinciples />
-    <TheAboutAdvisoryBoard />
-    <TheAboutEcosystem />
-    <TheAboutBottomCTA />
+    <TheAboutPartners />
+    <TheAboutUpdates />
+    <TheAboutContact />
+    <ContactInquiryModal />
   </main>
 </template>
 
 <script setup lang="ts">
-import TheAboutHero from '@/components/resources/aboutPage/TheAboutHero.vue';
-import TheAboutTrustPillars from '@/components/resources/aboutPage/TheAboutTrustPillars.vue';
+import TheAboutCompany from '@/components/resources/aboutPage/TheAboutCompany.vue';
 import TheAboutTeam from '@/components/resources/aboutPage/TheAboutTeam.vue';
-import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
-import TheAboutAdvisoryBoard from '@/components/resources/aboutPage/TheAboutAdvisoryBoard.vue';
-import TheAboutEcosystem from '@/components/resources/aboutPage/TheAboutEcosystem.vue';
-import TheAboutBottomCTA from '@/components/resources/aboutPage/TheAboutBottomCTA.vue';
+import TheAboutPartners from '@/components/resources/aboutPage/TheAboutPartners.vue';
+import TheAboutUpdates from '@/components/resources/aboutPage/TheAboutUpdates.vue';
+import TheAboutContact from '@/components/resources/aboutPage/TheAboutContact.vue';
+import ContactInquiryModal from '@/components/generics/ContactInquiryModal.vue';
 </script>
 
 <style lang="scss" scoped>

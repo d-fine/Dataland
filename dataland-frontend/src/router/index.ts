@@ -59,6 +59,38 @@ const routes = [
     },
   },
   {
+    path: '/product',
+    name: 'Product Page',
+    component: (): Promise<RouteComponent> => import('@/components/pages/ProductPage.vue'),
+    meta: {
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/newsletter',
+    name: 'Newsletter Page',
+    component: (): Promise<RouteComponent> => import('@/components/pages/NewsletterPage.vue'),
+    meta: {
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/contact',
+    name: 'Contact Page',
+    component: (): Promise<RouteComponent> => import('@/components/pages/ContactPage.vue'),
+    meta: {
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/testimonials',
+    name: 'Testimonials Page',
+    component: (): Promise<RouteComponent> => import('@/components/pages/TestimonialsPage.vue'),
+    meta: {
+      requiresAuthentication: false,
+    },
+  },
+  {
     path: '/success-stories/:slug',
     name: 'success-story',
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -360,8 +392,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
-    globalThis.scrollTo(0, 0);
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' };
+    }
+    return { top: 0 };
   },
 });
 
