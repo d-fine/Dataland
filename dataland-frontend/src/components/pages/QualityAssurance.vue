@@ -415,7 +415,7 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
  * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
  */
 function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
-  // In the future, this is supposed to navigate to: `/qa/review/${datasetReviewId}`.
+  // In the future, this is supposed to navigate to: `/qualityassurance/review/${datasetReviewId}`.
   // However, until the dataset review overview page is fully implemented, we navigate to the dataset view page.
   const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
   return router.push(qaUri);
