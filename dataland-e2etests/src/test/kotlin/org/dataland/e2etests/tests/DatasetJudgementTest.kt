@@ -109,6 +109,8 @@ class DatasetJudgementTest {
                     .postDatasetJudgement(datasetId)
                     .dataSetJudgementId
 
+            QaService.datasetJudgementControllerApi.setJudge(datasetJudgementId)
+
             data class PatchOperation(
                 val dataPointType: String,
                 val acceptedSource: AcceptedDataPointSource,
