@@ -15,7 +15,7 @@ import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRol
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import router from '@/router';
-import Keycloak from 'keycloak-js';
+import type Keycloak from 'keycloak-js';
 
 /**
  * Picks a reporting period to filter for in the column filter of the datatable.
@@ -536,7 +536,7 @@ describe('Component tests for the Quality Assurance page', () => {
     }).as('getDatasetJudgement');
     cy.get('button[data-test="qaReviewPageButton"]').should('exist').click();
     cy.wait('@getDatasetJudgement');
-    cy.get('@routerPush').should('have.been.calledWith', `/qa/review/${datasetReviewIdAlpha}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdAlpha}`);
   });
 
   it('Check routing of Start Review button.', () => {

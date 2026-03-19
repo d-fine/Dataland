@@ -3802,11 +3802,12 @@
           },
           "qaReporters": {
             "type": "array",
-            "description": "List of companies that contributed a QA report to this dataset.",
+            "description": "List of reporters that contributed a QA report to this dataset.",
             "example": [
               {
-                "companyId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
-                "companyName": "ABC Corporation"
+                "reporterUserId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+                "reporterUserName": "Data Reviewer",
+                "reporterEmailAddress": "data.reviewer@dataland.com"
               }
             ],
             "items": {
@@ -3864,11 +3865,12 @@
             "example": "bot1@dataland.com"
           }
         },
-        "description": "List of companies that contributed a QA report to this dataset.",
+        "description": "List of reporters that contributed a QA report to this dataset.",
         "example": [
           {
-            "companyId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
-            "companyName": "ABC Corporation"
+            "reporterUserId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+            "reporterUserName": "Data Reviewer",
+            "reporterEmailAddress": "data.reviewer@dataland.com"
           }
         ]
       },

@@ -454,7 +454,7 @@ async function visitReviewPage(): Promise<void> {
       const response =
         await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(dataId);
       const datasetJudgementId = response.data[0]?.dataSetJudgementId;
-      await router.push(`/qa/review/${datasetJudgementId}`);
+      await router.push(`/qualityassurance/review/${datasetJudgementId}`);
     }
   } catch (error) {
     console.error('Error navigating to review page:', error);
