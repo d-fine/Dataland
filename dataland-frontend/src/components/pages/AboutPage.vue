@@ -1,24 +1,27 @@
 <template>
-  <main role="main">
-    <TheAboutIntro :sections="aboutPage?.sections" />
-    <TheAboutPrinciples :sections="aboutPage?.sections" />
+  <main id="main-content" role="main">
+    <TheAboutCompany />
+    <TheAboutTeam />
+    <TheAboutPartners />
+    <TheAboutUpdates />
+    <TheAboutContact />
+    <ContactInquiryModal />
   </main>
 </template>
 
 <script setup lang="ts">
-import TheAboutIntro from '@/components/resources/aboutPage/TheAboutIntro.vue';
-import TheAboutPrinciples from '@/components/resources/aboutPage/TheAboutPrinciples.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-
-const content: Content = contentData;
-const aboutPage: Page | undefined = content.pages.find((page) => page.url === '/about');
+import TheAboutCompany from '@/components/resources/aboutPage/TheAboutCompany.vue';
+import TheAboutTeam from '@/components/resources/aboutPage/TheAboutTeam.vue';
+import TheAboutPartners from '@/components/resources/aboutPage/TheAboutPartners.vue';
+import TheAboutUpdates from '@/components/resources/aboutPage/TheAboutUpdates.vue';
+import TheAboutContact from '@/components/resources/aboutPage/TheAboutContact.vue';
+import ContactInquiryModal from '@/components/generics/ContactInquiryModal.vue';
 </script>
 
 <style lang="scss" scoped>
 main {
   margin-top: 132px;
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: $bp-md) {
     margin-top: 80px;
   }
 }

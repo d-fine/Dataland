@@ -20,80 +20,28 @@
           ]
         },
         {
-          "title": "Quotes",
-          "text": ["START YOUR DATALAND JOURNEY"],
+          "title": "Social Proof",
+          "text": ["What Our Community Says"],
           "cards": [
             {
-              "icon": "BzUkAtdcKvg",
               "title": "Sven Schubert",
-              "text": " CEO of Envoria",
+              "text": "CEO of Envoria",
               "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
             },
             {
-              "icon": "rCkISSQreCI",
               "title": "Dr. Egbert Schark",
-              "text": "Founder and Managing Director\n at d-fine GmbH",
+              "text": "Founder and Managing Director at d-fine GmbH",
               "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!\""
             },
             {
-              "icon": "g40FkVQZjUc",
-              "title": "Daniel Sailer",
-              "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
-              "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
-            },
-            {
-              "icon": "Jx1v2Z-9cBw",
               "title": "Dr. Anna-Lisa Schwarz",
               "text": "Managing Director at Werte-Stiftung",
               "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
             },
             {
-              "icon": "WJg2KKUVch4",
               "title": "Rudolf Siebel",
               "text": "Managing Director at BVI German Fund Association",
-              "date": "\"[Through Dataland], we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall.\""
-            },
-            {
-              "icon": "tFTkaG2p2D4",
-              "title": "Stephan Henkel",
-              "text": "Managing Directer at VÖB-Service GmbH",
-              "date": "\"Then came Dataland with the idea that ESG data should be a common good, and I think that's excellent [...].\""
-            },
-            {
-              "icon": "jeyQERlJPP8",
-              "title": "Jasmina Klein",
-              "text": "Manager at d-fine",
-              "date": "\"[Dataland] will help to let the data flow and this is the key to solve one of the most pressing issues of our time.\""
-            },
-            {
-              "icon": "Hz-5xC8BSAg",
-              "title": "Matthias Kopp",
-              "text": " Director of Sustainable Finance at WWF Germany",
-              "date": "\"Dataland can provide the data ecosystem we all need [to support our] transition to stay within 1.5 degrees or within the planetary boundaries.\""
-            },
-            {
-              "icon": "34qs_8D78JY",
-              "title": "Christian Heller",
-              "text": " CEO of Value Balancing Alliance",
-              "date": "\"Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one.\""
-            },
-            {
-              "icon": "NMaN0Autdok",
-              "title": "Fabian Klose",
-              "text": "Cloud Services Sales\n at T-Systems International",
-              "date": "\"Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!\""
-            },
-            {
-              "icon": "UpEYtR_v5ws",
-              "title": "Ingo Speich",
-              "text": "Head of Sustainability & Corporate Governance\n at Deka Investment",
-              "date": "\"We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner.\""
-            },
-            {
-              "icon": "1CArXxrcsvg",
-              "title": "Christoph Benner",
-              "text": "CEO of Chom Capital",
-              "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
+              "date": "\"We hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall.\""
             }
           ]
         },
@@ -176,7 +124,7 @@
             },
             {
               "title": "Request framework data",
-              "text": "Join a campaign to get the missing data."
+              "text": "Request framework data to get the missing data for the frameworks you need."
             },
             {
               "title": "Download",
@@ -185,16 +133,12 @@
           ]
         },
         {
-          "title": "Claim",
-          "text": ["In Dataland, ", "you", " have the power."]
-        },
-        {
-          "title": "Join a campaign",
+          "title": "Frameworks",
           "text": [
-            "Join a campaign to",
-            " get the missing ",
-            "data.",
-            "The campaigns are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
+            "Access data across",
+            " key ESG frameworks",
+            ".",
+            "Dataland covers the frameworks that matter most for European regulatory compliance and sustainable investing."
           ],
           "cards": [
             {
@@ -237,13 +181,18 @@
             },
             {
               "icon": "moritz.kiese@dataland.com",
-              "title": "Campaigns on Dataland",
-              "text": "Hello Moritz,\n \nI recently visited Dataland and I'm interested in the campaigns on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+              "title": "Frameworks on Dataland",
+              "text": "Hello Moritz,\n \nI recently visited Dataland and I'm interested in the frameworks on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
             },
             {
               "icon": "moritz.kiese@dataland.com",
-              "title": "Inquiry about Dataland: Shortest way to fill data gaps and improve data quality",
-              "text": "Hello Moritz,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get data / provide data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+              "title": "Dataland - Inquiry about Membership and Data Access",
+              "text": "Dear Dr. Kiese,\n\nI came across Dataland and am interested in learning how the platform could help us procure structured sustainability data more efficiently.\n\nCould we arrange a short call to discuss our requirements and how Dataland's member model works in practice?\n\nKind regards,\n[Your Name]\n[Your Organisation]"
+            },
+            {
+              "icon": "moritz.kiese@dataland.com",
+              "title": "Dataland - Interest in Collaboration",
+              "text": "Dear Dr. Kiese,\n\nI have read about Dataland's mission and governance model and would like to explore how a membership could support our sustainability data workflows.\n\nI would welcome the opportunity to schedule a brief conversation at your convenience.\n\nKind regards,\n[Your Name]\n[Your Organisation]"
             }
           ]
         }
@@ -254,15 +203,6 @@
       "url": "/about",
       "sections": [
         {
-          "title": "START YOUR DATALAND JOURNEY",
-          "text": [
-            "Our joint purpose, promise & passion is to ",
-            "let the data flow ",
-            "in order to create value.",
-            "EXPLORE OUR PRINCIPLES"
-          ]
-        },
-        {
           "title": "Our principles",
           "text": ["Our principles"],
           "cards": [
@@ -272,15 +212,15 @@
             },
             {
               "title": "Disclosure",
-              "text": "We will seek disclosure of sustainability data from our business relations."
+              "text": "We seek disclosure of sustainability data from our business relations."
             },
             {
               "title": "Transparency",
-              "text": "We will respect and promote data soveignty."
+              "text": "We respect and promote data sovereignty."
             },
             {
               "title": "Accountability",
-              "text": "Data should be timely and easliy accessible at fair cost."
+              "text": "Data should be timely and easily accessible at fair cost."
             },
             {
               "title": "Neutrality",
@@ -288,7 +228,7 @@
             },
             {
               "title": "Collaboration",
-              "text": "We will work together to achieve these principles and promote their acceptance."
+              "text": "We work together to achieve these principles and promote their acceptance."
             }
           ]
         }

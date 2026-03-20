@@ -74,6 +74,13 @@ export default defineConfig({
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `$bp-sm: 640px;\n$bp-md: 768px;\n$bp-lg: 1024px;\n$bp-xl: 1440px;\n`,
+      },
+    },
+  },
   build: {
     sourcemap: true,
   },

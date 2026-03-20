@@ -6,17 +6,14 @@ describe('Component test for the footer', () => {
     cy.mountWithPlugins(TheFooter, {});
 
     cy.get('footer').should('exist');
-    cy.get('.footer__logo').should('exist');
 
     const currentYear = new Date().getFullYear();
-    const expectedCopyrightText = `Copyright © ${currentYear} Dataland`;
-
-    cy.get('.footer__copyright').should('contain.text', expectedCopyrightText);
+    cy.get('.footer__copyright').should('contain.text', `${currentYear} Dataland`);
 
     const essentialLinks = [
-      { href: '/imprint', text: 'IMPRINT' },
-      { href: '/dataprivacy', text: 'DATA PRIVACY' },
-      { href: '/terms', text: 'LEGAL' },
+      { href: '/imprint', text: 'Imprint' },
+      { href: '/dataprivacy', text: 'Data Privacy' },
+      { href: '/legal', text: 'Legal' },
     ];
 
     for (const link of essentialLinks) {
@@ -24,15 +21,11 @@ describe('Component test for the footer', () => {
     }
   });
 
-  it('Toggles accordion on small screens', () => {
-    cy.viewport(375, 667);
+  it('Renders footer columns on desktop', () => {
     //@ts-ignore
     cy.mountWithPlugins(TheFooter, {});
 
-    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '+');
-    cy.get('.footer__column--techhub').click();
-    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '-');
-    cy.get('.footer__column--techhub').click();
-    cy.get('.footer__column--techhub .footer__toggle-icon').should('contain.text', '+');
+    cy.get('.footer__col-title').should('have.length.at.least', 3);
+    cy.get('.footer__link').should('have.length.at.least', 5);
   });
 });

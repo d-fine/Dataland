@@ -12,6 +12,7 @@
 
 **/prompt.md
 **/claude.md
+.claude/*
 
 # Package Files #
 *.jar

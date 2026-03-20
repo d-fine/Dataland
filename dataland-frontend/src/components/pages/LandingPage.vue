@@ -1,12 +1,15 @@
 <template>
-  <main role="main">
-    <TheIntro :sections="landingPage?.sections" />
-    <TheQuotes :sections="landingPage?.sections" />
-    <TheBrands :sections="landingPage?.sections" />
-    <TheStruggle :sections="landingPage?.sections" />
-    <TheHowItWorks :sections="landingPage?.sections" />
-    <TheJoinCampaign :sections="landingPage?.sections" />
-    <TheGetInTouch :sections="landingPage?.sections" />
+  <main id="main-content" role="main">
+    <TheIntro />
+    <TheFindLei />
+    <TheWhyUs />
+    <TheTrustedBy />
+    <TheCustomerStories />
+    <TheTestimonials />
+    <TheFrameworks />
+    <TheCustomerProfiles />
+    <TheNewsInsights />
+    <ContactInquiryModal />
   </main>
 </template>
 
@@ -18,17 +21,15 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { SessionDialogMode } from '@/utils/SessionTimeoutUtils';
 
 import TheIntro from '@/components/resources/landingPage/TheIntro.vue';
-import TheQuotes from '@/components/resources/landingPage/TheQuotes.vue';
-import TheBrands from '@/components/resources/landingPage/TheBrands.vue';
-import TheStruggle from '@/components/resources/landingPage/TheStruggle.vue';
-import TheHowItWorks from '@/components/resources/landingPage/TheHowItWorks.vue';
-import TheJoinCampaign from '@/components/resources/landingPage/TheJoinCampaign.vue';
-import TheGetInTouch from '@/components/resources/landingPage/TheGetInTouch.vue';
-import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
-
-const content: Content = contentData;
-const landingPage: Page | undefined = content.pages.find((page) => page.url === '/');
+import TheFindLei from '@/components/resources/landingPage/TheFindLei.vue';
+import TheWhyUs from '@/components/resources/landingPage/TheWhyUs.vue';
+import TheTrustedBy from '@/components/resources/landingPage/TheTrustedBy.vue';
+import TheCustomerStories from '@/components/resources/landingPage/TheCustomerStories.vue';
+import TheTestimonials from '@/components/resources/landingPage/TheTestimonials.vue';
+import TheFrameworks from '@/components/resources/landingPage/TheFrameworks.vue';
+import TheCustomerProfiles from '@/components/resources/landingPage/TheCustomerProfiles.vue';
+import TheNewsInsights from '@/components/resources/landingPage/TheNewsInsights.vue';
+import ContactInquiryModal from '@/components/generics/ContactInquiryModal.vue';
 
 const dialog = useDialog();
 const route = useRoute();
@@ -57,11 +58,11 @@ const openLogoutModal = (): void => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 main {
   margin-top: 132px;
-  @media only screen and (max-width: 768px) {
-    margin-top: 52px;
+  @media only screen and (max-width: $bp-md) {
+    margin-top: 80px;
   }
 }
 </style>

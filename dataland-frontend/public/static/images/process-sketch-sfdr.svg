@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="200" viewBox="0 0 900 200">
+  <!-- PLACEHOLDER: SFDR data gap resolution process -->
+
+  <!-- Step 1 -->
+  <rect x="10" y="60" width="140" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="80" y="90" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Identify SFDR</text>
+  <text x="80" y="105" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">PAI Data Gaps</text>
+  <text x="80" y="120" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:10px;fill:#94a3b8;">18 indicators</text>
+  <circle cx="80" cy="45" r="14" fill="#fff7ed"/>
+  <text x="80" y="50" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:14px;font-weight:bold;fill:#ff6813;">1</text>
+
+  <!-- Arrow -->
+  <line x1="155" y1="100" x2="185" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+  <polygon points="185,95 195,100 185,105" fill="#cbd5e1"/>
+
+  <!-- Step 2 -->
+  <rect x="200" y="60" width="140" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="270" y="90" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Request Portfolio</text>
+  <text x="270" y="105" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Company Data</text>
+  <text x="270" y="120" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:10px;fill:#94a3b8;">Batch upload</text>
+  <circle cx="270" cy="45" r="14" fill="#fff7ed"/>
+  <text x="270" y="50" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:14px;font-weight:bold;fill:#ff6813;">2</text>
+
+  <!-- Arrow -->
+  <line x1="345" y1="100" x2="375" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+  <polygon points="375,95 385,100 375,105" fill="#cbd5e1"/>
+
+  <!-- Step 3 -->
+  <rect x="390" y="60" width="140" height="80" rx="12" fill="#fff7ed" stroke="#ff6813" stroke-width="1.5"/>
+  <text x="460" y="90" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">AI Extraction</text>
+  <text x="460" y="105" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">from Sustainability</text>
+  <text x="460" y="120" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Reports</text>
+  <circle cx="460" cy="45" r="14" fill="#fff7ed"/>
+  <text x="460" y="50" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:14px;font-weight:bold;fill:#ff6813;">3</text>
+
+  <!-- Arrow -->
+  <line x1="535" y1="100" x2="565" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+  <polygon points="565,95 575,100 565,105" fill="#cbd5e1"/>
+
+  <!-- Step 4 -->
+  <rect x="580" y="60" width="140" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="650" y="90" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">QA Review &amp;</text>
+  <text x="650" y="105" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">SFDR-Structured</text>
+  <text x="650" y="120" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Dataset</text>
+  <circle cx="650" cy="45" r="14" fill="#fff7ed"/>
+  <text x="650" y="50" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:14px;font-weight:bold;fill:#ff6813;">4</text>
+
+  <!-- Arrow -->
+  <line x1="725" y1="100" x2="755" y2="100" stroke="#cbd5e1" stroke-width="2"/>
+  <polygon points="755,95 765,100 755,105" fill="#cbd5e1"/>
+
+  <!-- Step 5 -->
+  <rect x="770" y="60" width="120" height="80" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="830" y="90" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">PAI Statement</text>
+  <text x="830" y="105" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">Generation &amp;</text>
+  <text x="830" y="120" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;fill:#64748b;">API Export</text>
+  <circle cx="830" cy="45" r="14" fill="#fff7ed"/>
+  <text x="830" y="50" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:14px;font-weight:bold;fill:#ff6813;">5</text>
+
+  <!-- PLACEHOLDER label -->
+  <text x="450" y="190" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:10px;fill:#cbd5e1;">PLACEHOLDER -- SFDR data gap resolution process</text>
+</svg>
