@@ -48,7 +48,7 @@ class EuTaxonomyNonFinancials202673Framework :
         }
 
         root.edit<ComponentGroup>("revenue") {
-            uploadPageLabelBadgeColor = LabelBadgeColor.Green
+            uploadPageLabelBadgeColor = LabelBadgeColor.Red
             viewPageLabelBadgeColor = LabelBadgeColor.Green
         }
 
