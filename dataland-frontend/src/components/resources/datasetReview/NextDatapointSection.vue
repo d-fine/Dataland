@@ -1,7 +1,7 @@
 <template>
   <div>
-    <section class="judge-modal__section judge-modal__section--centered" data-test="next-datapoint-section">
-      <h3 class="judge-modal__section-title">Next datapoint</h3>
+    <section class="judge-modal__section" data-test="next-datapoint-section">
+      <h3>Next datapoint</h3>
 
       <div class="judge-modal__toggle">
         <ToggleSwitch
@@ -26,7 +26,7 @@
             data-test="next-datapoint-select"
         >
           <template #option="slotProps">
-            <div class="judge-modal__next-option" :class="{ 'judge-modal__next-option--reviewed': slotProps.option.reviewed }">
+            <div :class="{ 'judge-modal__next-option--reviewed': slotProps.option.reviewed }">
               <i
                   v-if="slotProps.option.reviewed"
                   class="pi pi-check judge-modal__next-option-icon--reviewed"
@@ -75,20 +75,10 @@ const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextData
 
 <style scoped lang="scss">
 .judge-modal__section {
-  padding: var(--spacing-xs);
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.judge-modal__section--centered {
   justify-content: center;
-}
-
-.judge-modal__section-title {
-  margin-top: 0;
-  margin-bottom: var(--spacing-xs);
-  white-space: nowrap;
 }
 
 .judge-modal__toggle {
@@ -101,12 +91,6 @@ const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextData
   display: flex;
   gap: var(--spacing-xs);
   margin-top: var(--spacing-sm);
-}
-
-.judge-modal__next-option {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
 }
 
 .judge-modal__next-option--reviewed {

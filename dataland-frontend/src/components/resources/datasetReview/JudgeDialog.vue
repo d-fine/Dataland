@@ -3,7 +3,7 @@
     id="judgeModal"
     :dismissable-mask="true"
     :modal="true"
-    :pt="{ root: { style: { minWidth: '60rem', maxWidth: '60rem' } } }"
+    :pt="{ root: { style: { width: '80vw', height: '80vh' } }, content: { style: { flex: '1', minHeight: '0', display: 'flex', flexDirection: 'column' } } }"
     v-model:visible="isOpen"
     @hide="emit('close')"
     data-test="judge-modal"
@@ -180,7 +180,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     comment:
       'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
     dataSource: {
-      fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+      fileName: 'Annual_Sustainability_Disclosure.pdf',
       page: '47-53',
       publicationDate: "2023-01-08"
     },
@@ -569,15 +569,17 @@ function hidePopover(): void {
 .judge-modal__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto 20rem;
-  gap: var(--spacing-xs);
+  grid-template-rows: auto auto 1fr;
+  gap: var(--spacing-xxs);
+  flex: 1;
+  min-height: 0;
 }
 
 .judge-modal__separator {
   grid-column: 1 / -1;
   height: 2px;
   background-color: var(--p-content-border-color);
-  margin: var(--spacing-xs) 0;
+  margin: var(--spacing-xxs) 0;
 }
 
 .judge-modal__overflow-popover-content {

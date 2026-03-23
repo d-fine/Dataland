@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="judge-modal__custom-actions">
+    <div class="judge-modal__copy-buttons">
       <PrimeButton
           label="Copy original datapoint"
           variant="text"
@@ -115,9 +115,6 @@
 
     <!-- Edit mode: Display as JSON editor -->
     <div v-else class="judge-modal__json-editor">
-      <label for="custom-json-textarea">
-        Custom datapoint JSON
-      </label>
       <Textarea
           id="custom-json-textarea"
           v-model="jsonValue"
@@ -276,6 +273,10 @@ watch(editModeEnabled, (newVal) => {
   }
 }
 
+.judge-modal__copy-buttons {
+  white-space: nowrap;
+}
+
 .judge-modal__toggle {
   display: flex;
   align-items: center;
@@ -306,19 +307,12 @@ watch(editModeEnabled, (newVal) => {
 }
 
 .judge-modal__json-editor {
-  margin-top: var(--spacing-xs);
-  flex: 1;
-  min-height: 12rem;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xxs);
 }
 
 .judge-modal__json-textarea {
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-  height: 100%;
+  height: 10.2rem;
   overflow: auto;
   resize: none;
 }
