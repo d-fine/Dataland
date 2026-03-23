@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.frameworks.vsme.model.validator.ReferencedRe
  * The root data-model for the Vsme Framework
  */
 @Suppress("MagicNumber", "MaxLineLength")
-@DataType("vsme", 8)
+@DataType("vsme", 9)
 @ReferencedReportsListValidator()
 data class VsmeData(
     @field:Valid()
