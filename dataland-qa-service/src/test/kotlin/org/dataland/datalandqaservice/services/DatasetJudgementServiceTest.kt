@@ -212,6 +212,7 @@ class DatasetJudgementServiceTest {
                 ?.dataPointType,
         )
         assertEquals(1, result.dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]?.qaReports?.size)
+        assertEquals("Dummy User", result.qaJudgeUserName)
     }
 
     private fun stubsForPostDatasetJudgement() {
