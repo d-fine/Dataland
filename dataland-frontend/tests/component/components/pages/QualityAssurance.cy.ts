@@ -481,18 +481,21 @@ describe('Component tests for the Quality Assurance page', () => {
       mockLksgDataAndMetaInfo,
     ]);
 
-    getMountingFunction({
-      keycloak: keycloakRole,
-      router: router,
-      dialogOptions: {
-        mountWithDialog: true,
-        propsToPassToTheMountedComponent: {
-          companyId: mockDataMetaInfo.companyId,
-          dataType: DataTypeEnum.Lksg,
-          dataId: mockDataMetaInfo.dataId,
+    const viewRoute = `/companies/${mockDataMetaInfo.companyId}/frameworks/${mockDataMetaInfo.dataType}/${mockDataMetaInfo.dataId}`;
+    cy.wrap(router.push(viewRoute)).then(() => {
+      getMountingFunction({
+        keycloak: keycloakRole,
+        router: router,
+        dialogOptions: {
+          mountWithDialog: true,
+          propsToPassToTheMountedComponent: {
+            companyId: mockDataMetaInfo.companyId,
+            dataType: DataTypeEnum.Lksg,
+            dataId: mockDataMetaInfo.dataId,
+          },
         },
-      },
-    })(ViewFrameworkData);
+      })(ViewFrameworkData);
+    });
 
     return mockDataMetaInfo;
   }

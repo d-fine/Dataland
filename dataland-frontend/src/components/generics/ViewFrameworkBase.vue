@@ -55,10 +55,11 @@
 
             <PrimeButton
               v-if="isJudgeableByCurrentUser && !!singleDataMetaInfoToDisplay"
+              :disabled="!datasetJudgementId"
               label="REVIEW PAGE"
               data-test="qaReviewPageButton"
               icon="pi pi-angle-double-right"
-              @click="visitReviewPage"
+              @click="visitJudgementPage"
             />
 
             <PrimeButton
@@ -166,6 +167,7 @@ const downloadErrors = ref('');
 const editModeIsOn = ref(false);
 const hasUserAdminRights = ref(false);
 const hasUserJudgeRights = ref(false);
+const datasetJudgementId = ref<string | undefined>(undefined);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -246,6 +248,7 @@ onMounted(async () => {
   if (dataId.value) {
     await getMetaData();
     setActiveDataForCurrentCompanyAndFramework();
+    await getDatasetJudgementId();
   } else {
     await getMetaData();
     await getAllActiveDataForCurrentCompanyAndFramework();
@@ -444,22 +447,29 @@ function handleFetchedCompanyInformation(info: CompanyInformation): void {
 }
 
 /**
- * Navigates to the review page for the dataset in review, if there is a dataset in review and the user has reviewer rights.
+ * Retrieves the dataset judgement id for the dataset in review and saves it in the datasetJudgementId ref.
+ * This is needed to navigate to the review page for the dataset in review, which requires the dataset judgement id in the url.
  */
-async function visitReviewPage(): Promise<void> {
+async function getDatasetJudgementId(): Promise<void> {
   try {
-    if (props.singleDataMetaInfoToDisplay) {
+    const routeDataId = route.params.dataId as string | undefined;
+    if (routeDataId) {
       const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-      const dataId = props.singleDataMetaInfoToDisplay.dataId;
       const response =
-        await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(dataId);
-      const datasetJudgementId = response.data[0]?.dataSetJudgementId;
-      await router.push(`/qualityassurance/review/${datasetJudgementId}`);
+        await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(routeDataId);
+      datasetJudgementId.value = response.data[0]?.dataSetJudgementId;
     }
   } catch (error) {
-    console.error('Error navigating to review page:', error);
+    console.error('Error getting dataset judgement id:', error);
     return;
   }
+}
+
+/**
+ * Navigates to the judgement page for the dataset in judgement.
+ */
+function visitJudgementPage(): void {
+  void router.push(`/qualityassurance/review/${datasetJudgementId.value}`);
 }
 
 /**
