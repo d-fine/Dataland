@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
@@ -101,8 +100,7 @@ class DatasetJudgementSupportService
          *
          * @param datasetJudgementId The unique identifier of the dataset judgement to load.
          * @return The dataset judgement entity for the given id.
-         * @throws ResourceNotFoundApiException If no dataset judgement exists for the given id.
          */
-        fun getDatasetJudgementEntityById(datasetJudgementId: UUID): DatasetJudgementEntity =
+        fun getDatasetJudgementEntityById(datasetJudgementId: UUID): DatasetJudgementEntity? =
             datasetJudgementRepository.findById(datasetJudgementId).orElse(null)
     }

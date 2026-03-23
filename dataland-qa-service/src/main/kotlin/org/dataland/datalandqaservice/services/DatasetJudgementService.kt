@@ -43,15 +43,15 @@ class DatasetJudgementService
          */
         @Transactional
         fun postDatasetJudgement(datasetId: UUID): DatasetJudgementResponse {
-            lateinit var datatypeToDatapointIds: Map<String, String>
-            try {
-                datatypeToDatapointIds = datasetJudgementSupportService.getContainedDataPoints(datasetId.toString())
-            } catch (_: BackendClientException) {
-                throw ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "Dataset with the id: $datasetId could not be found.",
-                )
-            }
+            val datatypeToDatapointIds =
+                try {
+                    datasetJudgementSupportService.getContainedDataPoints(datasetId.toString())
+                } catch (_: BackendClientException) {
+                    throw ResourceNotFoundApiException(
+                        "Dataset not found",
+                        "Dataset with the id: $datasetId could not be found.",
+                    )
+                }
             if (datasetJudgementRepository.findAllByDatasetIdAndJudgementState(datasetId, DatasetJudgementState.Pending).isNotEmpty()) {
                 throw ConflictApiException(
                     summary = "Pending dataset judgement entity already exists.",
@@ -194,7 +194,7 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport =
-                            UUID.fromString(patch.reporterUserIdOfAcceptedQaReport!!)
+                            UUID.fromString(patch.reporterUserIdOfAcceptedQaReport)
                     }
                 }
                 AcceptedDataPointSource.Custom -> {
@@ -240,12 +240,10 @@ class DatasetJudgementService
          * @return The dataset judgement entity for the given id.
          * @throws ResourceNotFoundApiException If no dataset judgement exists for the given id.
          */
-        private fun getDatasetJudgement(datasetJudgementId: UUID): DatasetJudgementEntity {
-            val datasetJudgement = datasetJudgementSupportService.getDatasetJudgementEntityById(datasetJudgementId)
-            DatasetJudgementValidationHelper.validateIfJudgementEntityExists(
-                datasetJudgementId,
-                datasetJudgement,
-            )
-            return datasetJudgement
-        }
+        private fun getDatasetJudgement(datasetJudgementId: UUID): DatasetJudgementEntity =
+            datasetJudgementSupportService.getDatasetJudgementEntityById(datasetJudgementId)
+                ?: throw ResourceNotFoundApiException(
+                    "Dataset review object not found",
+                    "No Dataset review object with the id: $datasetJudgementId could be found.",
+                )
     }

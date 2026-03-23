@@ -3,10 +3,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
@@ -46,7 +44,7 @@ object DatasetJudgementValidationHelper {
     }
 
     /**
-     * Validates the accepted QA report user ID for a data point.
+     * Validates the accepted QA report user ID for a data point
      *
      * Ensures the user ID is correctly provided or omitted and checks for the existence
      * of a QA report from the specified user.
@@ -86,25 +84,6 @@ object DatasetJudgementValidationHelper {
                 summary = "Only the reviewer is allowed to patch this dataset review object.",
                 message = "Please patch yourself as the reviewer before patching this object.",
             ) as Throwable
-        }
-    }
-
-    /**
-     * Validates that a dataset review exists for the given id.
-     *
-     * @param datasetReviewId The id used to locate the dataset review entity.
-     * @param datasetJudgementEntity The dataset review entity to check, or null if not found.
-     * @throws ResourceNotFoundApiException If the dataset review entity is null.
-     */
-    fun validateIfJudgementEntityExists(
-        datasetReviewId: UUID,
-        datasetJudgementEntity: DatasetJudgementEntity?,
-    ) {
-        if (datasetJudgementEntity == null) {
-            throw ResourceNotFoundApiException(
-                "Dataset review object not found",
-                "No Dataset review object with the id: $datasetReviewId could be found.",
-            )
         }
     }
 }
