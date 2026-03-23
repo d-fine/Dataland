@@ -1,4 +1,10 @@
-import { type EutaxonomyFinancialsData, type SfdrData, type StoredCompany } from '@clients/backend';
+import {
+  type DataMetaInformation,
+  type EutaxonomyFinancialsData,
+  MetaDataControllerApi,
+  type SfdrData,
+  type StoredCompany,
+} from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -8,6 +14,7 @@ import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
+import { DataPointQaReportControllerApi } from '@clients/qaservice';
 
 describeIf(
   'As a user, I expect to be able to log in',
@@ -45,9 +52,13 @@ describeIf(
           '2024',
           euTaxonomyData.t,
           false
-        ).then(() => {
-          startJudgement(storedCompany);
-        });
+        )
+          .then((dataMetaInfo: DataMetaInformation) => {
+            return uploadQaReportsForDataset(dataMetaInfo);
+          })
+          .then(() => {
+            startJudgement(storedCompany);
+          });
       });
     });
 
@@ -98,4 +109,28 @@ function startJudgement(storedCompany: StoredCompany): void {
     });
 
   cy.wait('@startJudgementRequest').its('response.statusCode').should('eq', 201);
+}
+
+/**
+ * Uploads QA reports for the data points of the dataset with the provided data meta information.
+ * The QA reports contain corrected values for some of the data points to be used in the judgement process.
+ * @param dataMetaInfo
+ */
+async function uploadQaReportsForDataset(dataMetaInfo: DataMetaInformation): Promise<void> {
+  const metaDataControllerApi = new MetaDataControllerApi();
+  const dataPointQaReportControllerApi = new DataPointQaReportControllerApi();
+  const containedDataPoints = await metaDataControllerApi.getContainedDataPoints(dataMetaInfo.dataId);
+
+  const dataPointTypesWithCorrectedValues = new Map<string, string>();
+  dataPointTypesWithCorrectedValues.set('extendedDateFiscalYearEnd', '{"value":"2026-03-23"}');
+  dataPointTypesWithCorrectedValues.set('totalGrossCarryingAmount', '{"value":"74568964325", "currency":"EUR"}');
+
+  for (const [dataPointType, correctedValue] of dataPointTypesWithCorrectedValues.entries()) {
+    const dataPointId = containedDataPoints.data[dataPointType];
+    await dataPointQaReportControllerApi.postQaReport(dataPointId, {
+      comment: 'The data point is not correct and hence rejected.',
+      verdict: 'QaRejected',
+      correctedData: correctedValue,
+    });
+  }
 }
