@@ -142,6 +142,7 @@ describe('Check the portfolio details view', function (): void {
         'SFDR',
         'EU Taxonomy Financials',
         'EU Taxonomy Non-Financials',
+        'EU Taxonomy Non-Financials (2026/73)',
         'EU Taxonomy Nuclear and Gas',
       ];
       const expectedSecondRow = [
@@ -149,6 +150,7 @@ describe('Check the portfolio details view', function (): void {
         'Cayman Islands',
         'ROI',
         2024,
+        'No data available',
         'No data available',
         'No data available',
         'No data available',
@@ -161,12 +163,14 @@ describe('Check the portfolio details view', function (): void {
         2023,
         'No data available',
         'No data available',
+        'No data available',
       ];
       const expectedFourthRow = [
         'Cherry Co',
         'Germany',
         'models',
         2024,
+        'No data available',
         'No data available',
         'No data available',
         2023,
@@ -179,8 +183,18 @@ describe('Check the portfolio details view', function (): void {
         checkHeader,
         checkHeader,
         checkHeader,
+        checkHeader,
       ];
-      const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+      const nothingToCheckRow = [
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      ];
       assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
       assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
     });
@@ -203,7 +217,13 @@ describe('Check the portfolio details view', function (): void {
       checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
       checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
       checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
-      checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
+      checkFilter(
+        'nth-child(7)',
+        'eutaxonomyNonFinancials202673AvailableReportingPeriodsFilter',
+        'No data available',
+        4
+      );
+      checkFilter('nth-child(8)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
     });
   });
 

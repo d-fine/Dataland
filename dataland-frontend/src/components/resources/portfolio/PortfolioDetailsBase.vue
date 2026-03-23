@@ -114,7 +114,7 @@
           :key="framework"
           :style="'width: ' + widthOfFrameworkColumn(framework) + '%'"
           :sortable="true"
-          :field="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriods'"
+          :field="getFrameworkFieldKey(framework) + 'AvailableReportingPeriods'"
           :header="humanizeStringOrNumber(framework)"
           :showFilterMatchModes="false"
         >
@@ -136,7 +136,7 @@
             <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
           </template>
           <template #filter="{ filterModel, filterCallback }">
-            <div :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterOverlay'">
+            <div :data-test="getFrameworkFieldKey(framework) + 'AvailableReportingPeriodsFilterOverlay'">
               <div
                 v-for="availableReportingPeriods in reportingPeriodOptions.get(framework)"
                 :key="availableReportingPeriods"
@@ -147,7 +147,7 @@
                   :inputId="availableReportingPeriods"
                   name="availableReportingPeriods"
                   :value="availableReportingPeriods"
-                  :data-test="convertKebabCaseToCamelCase(framework) + 'AvailableReportingPeriodsFilterValue'"
+                  :data-test="getFrameworkFieldKey(framework) + 'AvailableReportingPeriodsFilterValue'"
                   @change="filterCallback"
                 />
                 <label :for="availableReportingPeriods">{{ availableReportingPeriods }}</label>
@@ -166,7 +166,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { PORTFOLIO_OVERVIEW_FRAMEWORKS, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
-import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
 import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
@@ -204,6 +204,7 @@ class PortfolioEntryPrepared {
   readonly sfdrAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
+  readonly eutaxonomyNonFinancials202673AvailableReportingPeriods: string | undefined;
   readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
@@ -230,6 +231,8 @@ class PortfolioEntryPrepared {
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials] || 'No data available';
     this.eutaxonomyNonFinancialsAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
+    this.eutaxonomyNonFinancials202673AvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
   }
@@ -259,12 +262,13 @@ let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  country: { value: [], matchMode: FilterMatchMode.IN },
-  sector: { value: [], matchMode: FilterMatchMode.IN },
-  sfdrAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  eutaxonomyFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
-  nuclearAndGasAvailableReportingPeriods: { value: [], matchMode: FilterMatchMode.IN },
+  country: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  sector: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  sfdrAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  eutaxonomyFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  eutaxonomyNonFinancials202673AvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  nuclearAndGasAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
 });
 
 const enrichedPortfolio = ref<EnrichedPortfolio>();
@@ -332,6 +336,14 @@ function widthOfFrameworkColumn(framework: string): string {
 }
 
 /**
+ * Builds a stable data-table field key from a framework identifier.
+ * We remove all hyphens (including before digits) so PrimeVue can resolve object fields reliably.
+ */
+function getFrameworkFieldKey(framework: string): string {
+  return framework.replaceAll(/-([a-z0-9])/gi, (_, char: string) => char.toUpperCase());
+}
+
+/**
  * For a given prepared portfolio entry and (hyphenated) framework name, return the associated
  * string of available reporting periods.
  * @param portfolioEntryPrepared
@@ -348,6 +360,8 @@ function getAvailableReportingPeriods(
       return portfolioEntryPrepared.eutaxonomyFinancialsAvailableReportingPeriods;
     case DataTypeEnum.EutaxonomyNonFinancials:
       return portfolioEntryPrepared.eutaxonomyNonFinancialsAvailableReportingPeriods;
+    case DataTypeEnum.EutaxonomyNonFinancials202673:
+      return portfolioEntryPrepared.eutaxonomyNonFinancials202673AvailableReportingPeriods;
     case DataTypeEnum.NuclearAndGas:
       return portfolioEntryPrepared.nuclearAndGasAvailableReportingPeriods;
     default:
