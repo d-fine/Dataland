@@ -69,9 +69,11 @@
       <tr>
         <th scope="row" class="headers-bg">Document</th>
         <td>
-          <InputText
-              id="custom-document-field"
+          <Select
               v-model="formData.document"
+              :options="availableDocuments"
+              option-label="label"
+              option-value="value"
               size="small"
               fluid
               placeholder="Select Document"
@@ -149,7 +151,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
-import type { CustomFormData, DataPointSourceInfo, DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { CustomFormData, DataPointSourceInfo, DataPointDetail, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
     { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
@@ -166,6 +168,7 @@ const props = defineProps<{
   acceptDisabled?: boolean;
   canCopyOriginal?: boolean;
   canCopyCorrected?: boolean;
+  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -182,6 +185,10 @@ const formData = defineModel<CustomFormData>('formData', {
   default: () => ({ value: '', quality: '', document: '', pages: '', comment: '' }),
 });
 
+const selectedDocumentOption = computed<DocumentOption | null>(
+  () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null
+);
+
 const isCustomJsonValid = computed<boolean>(() => {
   if (!editModeEnabled.value) {
     const f = formData.value;
@@ -197,18 +204,23 @@ const isCustomJsonValid = computed<boolean>(() => {
 });
 
 function formDataToJson(): void {
-  const { value, quality, comment, document, pages } = formData.value;
+  const { value, quality, comment, pages } = formData.value;
 
-  const dataSource: DataPointSourceInfo = {
-    ...(document ? { fileName: document } : {}),
-    ...(pages ? { page: pages } : {}),
-  };
+  const documentDataSource = selectedDocumentOption.value?.dataSource ?? null;
+  let dataSource: DataPointSourceInfo | null;
+  if (documentDataSource) {
+    dataSource = { ...documentDataSource, ...(pages ? { page: pages } : {}) };
+  } else if (pages) {
+    dataSource = { page: pages };
+  } else {
+    dataSource = null;
+  }
 
   const data: DataPointDetail = {
     ...(value && { value }),
     ...(quality && { quality }),
     ...(comment && { comment }),
-    ...(Object.keys(dataSource).length > 0 && { dataSource }),
+    ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
   };
 
   jsonValue.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
@@ -272,6 +284,7 @@ watch(editModeEnabled, (newVal) => {
 
 .judge-modal__datatable {
   width: 100%;
+  table-layout: fixed;
 
   tr {
 
@@ -286,6 +299,8 @@ watch(editModeEnabled, (newVal) => {
       vertical-align: middle;
       font-size: var(--font-size-xs);
       width: 100%;
+      max-width: 0;
+      overflow: hidden;
     }
   }
 }

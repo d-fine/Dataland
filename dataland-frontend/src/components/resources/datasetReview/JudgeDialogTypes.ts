@@ -34,6 +34,12 @@ export interface NextDatapointOption {
   reviewed: boolean;
 }
 
+export interface DocumentOption {
+  label: string;
+  value: string;
+  dataSource: DataPointSourceInfo;
+}
+
 export interface CustomFormData {
   value: string;
   quality: string;

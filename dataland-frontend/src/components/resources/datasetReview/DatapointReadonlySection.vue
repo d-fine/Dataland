@@ -3,7 +3,7 @@
     <div class="judge-modal__section-header-with-nav">
       <h3 class="judge-modal__section-title">
         {{ title }}
-        <span v-if="navCount !== undefined && navCount > 0" style="margin-left: var(--spacing-xs)">
+        <span v-if="navCount !== undefined && navCount > 0" class="judge-modal__section-title__nav-count">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
       </h3>
@@ -191,6 +191,10 @@ function isOverflowing(text: string): boolean {
   margin-top: 0;
   margin-bottom: var(--spacing-xs);
   white-space: nowrap;
+
+  &__nav-count {
+    margin-left: var(--spacing-xs);
+  }
 }
 
 .judge-modal__section-header-with-nav {

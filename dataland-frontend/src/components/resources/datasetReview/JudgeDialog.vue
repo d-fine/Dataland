@@ -69,6 +69,7 @@
         :accept-disabled="isMutating"
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
+        :available-documents="availableDocuments"
         @accept="onAcceptClick('Custom')"
         @copy-original="copyOriginalToCustom"
         @copy-corrected="copyCorrectedToCustom"
@@ -106,6 +107,7 @@ import NextDatapointSection from '@/components/resources/datasetReview/NextDatap
 import type {
   CustomFormData,
   DataPointDetail,
+  DocumentOption,
   NextDatapointOption,
   QaReport,
   QaReporter,
@@ -155,8 +157,11 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     quality: 'Reported',
     comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
     dataSource: {
-      fileName: 'Sustainability_Report_2023.pdf',
-      page: 12,
+      page: "1026",
+      tagName: "web services",
+      fileName: "Sustainability_Report_2023.pdf",
+      fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+      publicationDate: "2024-01-07"
     },
   },
   'mock-dp-2': {
@@ -165,6 +170,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     comment: 'Mock original datapoint for custom acceptance.',
     dataSource: {
       fileName: 'MockSource-REF-77',
+      fileReference: "abcklwe78324",
       page: '4-6',
     },
   },
@@ -176,6 +182,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     dataSource: {
       fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
       page: '47-53',
+      publicationDate: "2023-01-08"
     },
   },
 };
@@ -252,6 +259,23 @@ function createMockDatasetReview() {
             }),
             reporterUserId: 'mock-user-2',
           },
+          {
+            qaReportId: 'mock-qa-5',
+            verdict: 'QaPending',
+            correctedData: JSON.stringify({
+              value: "No",
+              quality: "Incomplete",
+              comment: "program neural circuit",
+              dataSource: {
+                page: "1026",
+                tagName: "web services",
+                fileName: "Sustainability_Report_2023.pdf",
+                fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                publicationDate: "2024-01-07"
+              }
+            }),
+            reporterUserId: 'mock-user-2',
+          }
         ],
       },
     },
@@ -383,6 +407,37 @@ function goToNextReport(): void {
 
 // ===== Custom datapoint =====
 
+// Derive available documents from the mock data points.
+// Replace this with a real API call analogous to ExtendedDataPointFormFieldDialog:
+//   const response = await documentControllerApi.searchForDocumentMetaInformation(companyId);
+//   availableDocuments.value = response.data
+//     .filter((doc) => doc.documentName && doc.documentId)
+//     .map((doc) => ({
+//       label: doc.documentName!,
+//       value: doc.documentName!,
+//       dataSource: {
+//         fileName: doc.documentName ?? null,
+//         fileReference: doc.documentId ?? null,
+//         publicationDate: doc.publicationDate ?? null,
+//       },
+//     }));
+const availableDocuments = computed<DocumentOption[]>(() => {
+  const seen = new Set<string>();
+  const options: DocumentOption[] = [];
+  for (const dataPoint of Object.values(mockDataPointsById)) {
+    const { dataSource } = dataPoint;
+    const fileName = dataSource?.fileName;
+    if (!fileName || seen.has(String(fileName))) continue;
+    seen.add(String(fileName));
+    options.push({
+      label: String(fileName),
+      value: String(fileName),
+      dataSource: { ...dataSource },
+    });
+  }
+  return options;
+});
+
 const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
 const customFormData = ref<CustomFormData>({ ...DEFAULT_CUSTOM_FORM_DATA });
@@ -396,8 +451,8 @@ function copyOriginalToCustom(): void {
     customFormData.value = {
       value: String(originalData.value.value ?? ''),
       quality: String(originalData.value.quality ?? ''),
-      document: String(originalData.value.dataSource?.document ?? ''),
-      pages: String(originalData.value.dataSource?.pages ?? ''),
+      document: String(originalData.value.dataSource?.fileName ?? ''),
+      pages: String(originalData.value.dataSource?.page ?? ''),
       comment: String(originalData.value.comment ?? ''),
     };
   }
@@ -413,7 +468,7 @@ function copyCorrectedToCustom(): void {
       value: String(currentQaCorrectedData.value.value ?? ''),
       quality: String(currentQaCorrectedData.value.quality ?? ''),
       document: String(currentQaCorrectedData.value.dataSource?.fileName ?? ''),
-      pages: String(currentQaCorrectedData.value.dataSource?.pages ?? ''),
+      pages: String(currentQaCorrectedData.value.dataSource?.page ?? ''),
       comment: String(currentQaCorrectedData.value.comment ?? ''),
     };
   }
