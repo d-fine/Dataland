@@ -21,6 +21,9 @@ export function useGetCompanyInformationQuery(
     queryKey,
     enabled,
     queryFn: async () => {
+      if (!companyId.value) {
+        throw new Error('companyId is undefined');
+      }
       const response = await apiClientProvider.backendClients.companyDataController.getCompanyById(companyId.value);
       return response.data;
     },
