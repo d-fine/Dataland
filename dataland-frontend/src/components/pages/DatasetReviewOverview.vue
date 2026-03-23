@@ -187,7 +187,8 @@ const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 const assignToMe = (): void => {
   openConfirmationModal(
     'Assign Yourself',
-    'Are you sure you want to assign this dataset review to yourself? If there is already a user assigned, they will be unassigned and the dataset review will be assigned to you.',
+    `Are you sure you want to assign this dataset review to yourself?
+              If there is already a user assigned, they will be unassigned.`,
     () => {
       assignToMeMutation(undefined, {
         onSuccess: () => {

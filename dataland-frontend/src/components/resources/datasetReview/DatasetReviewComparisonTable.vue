@@ -11,37 +11,43 @@
         <table class="p-datatable-table w-full" aria-label="Dataset review comparison table">
           <thead class="p-datatable-thead">
             <tr class="border-bottom-table">
-              <th class="horizontal-headers-size">
-                <div class="p-column-header-content">
-                  <span class="p-column-title">KPI Name</span>
+              <!-- KPI Name -->
+              <th class="horizontal-headers-size align-top">
+                <div class="p-column-header-content flex flex-column align-items-start">
+                  <span class="font-semibold leading-tight">KPI Name</span>
+                  <span class="text-xs font-normal leading-tight">&nbsp;</span>
                 </div>
               </th>
-              <th class="horizontal-headers-size">
-                <div class="p-column-header-content">
-                  <span class="p-column-title">
-                    Original Datapoint
-                    <span class="block text-xs font-normal">Data extractor company</span>
+
+              <!-- Original Datapoint -->
+              <th class="horizontal-headers-size align-top">
+                <div class="p-column-header-content flex flex-column align-items-start">
+                  <span class="font-semibold leading-tight">Original Datapoint</span>
+                  <span class="text-xs font-normal leading-tight">
+                    {{ companyData?.companyInformation?.companyName || companyData?.companyId || 'n/a' }}
                   </span>
                 </div>
               </th>
-              <!-- dynamic Qa columns depending on number of report companies -->
+
+              <!-- Corrected Datapoint (one per QA reporter) -->
               <th
                 v-for="qaReporter in datasetReview.qaReporters"
                 :key="qaReporter.reporterUserId"
-                class="horizontal-headers-size"
+                class="horizontal-headers-size align-top"
               >
-                <div class="p-column-header-content">
-                  <span class="p-column-title">
-                    Corrected Datapoint
-                    <span class="block text-xs font-normal">{{
-                      qaReporter.reporterUserName || qaReporter.reporterEmailAddress || qaReporter.reporterUserId
-                    }}</span>
+                <div class="p-column-header-content flex flex-column align-items-start">
+                  <span class="font-semibold leading-tight">Corrected Datapoint</span>
+                  <span class="text-xs font-normal leading-tight">
+                    {{ qaReporter.reporterUserName || qaReporter.reporterEmailAddress || qaReporter.reporterUserId }}
                   </span>
                 </div>
               </th>
-              <th class="horizontal-headers-size">
-                <div class="p-column-header-content">
-                  <span class="p-column-title">Custom Datapoint</span>
+
+              <!-- Custom Datapoint -->
+              <th class="horizontal-headers-size align-top">
+                <div class="p-column-header-content flex flex-column align-items-start">
+                  <span class="font-semibold leading-tight">Custom Datapoint</span>
+                  <span class="text-xs font-normal leading-tight">&nbsp;</span>
                 </div>
               </th>
             </tr>
@@ -214,6 +220,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toTitleCase } from '@/utils/StringFormatter.ts';
+import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -255,6 +262,9 @@ const {
   framework: frameworkRef,
   dataId: dataIdRef,
 });
+
+const companyIdRef = computed(() => props.datasetReview.companyId || undefined);
+const { data: companyData } = useGetCompanyInformationQuery(companyIdRef);
 
 const sortedReportingPeriods = computed(() => {
   const reportingPeriod = originalDataAndMeta.value?.reportingPeriod;

@@ -13,7 +13,7 @@
       <i class="pi pi-check-circle" style="font-size: 3rem"></i>
     </div>
 
-    <div style="max-width: 30rem; margin: 8px auto 0; white-space: normal; text-align: left; word-break: break-word">
+    <div style="max-width: 30rem; margin: 8px auto 0; white-space: pre-line; text-align: left; word-break: break-word">
       <slot>
         {{ message }}
       </slot>
