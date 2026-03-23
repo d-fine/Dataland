@@ -152,7 +152,7 @@ const dataPointControllerApi = apiClientProvider.apiClients.dataPointController;
 const mockDataPointsById: Record<string, DataPointDetail> = {
   'mock-dp-1': {
     value: '12345',
-    quality: 'High',
+    quality: 'Reported',
     comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
     dataSource: {
       fileName: 'Sustainability_Report_2023.pdf',
@@ -161,7 +161,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   },
   'mock-dp-2': {
     value: '987',
-    quality: 'Medium',
+    quality: 'Incomplete',
     comment: 'Mock original datapoint for custom acceptance.',
     dataSource: {
       fileName: 'MockSource-REF-77',
@@ -170,7 +170,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   },
   'mock-dp-3': {
     value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED',
-    quality: 'Estimated_PreliminaryAudit_PendingFinalVerificationByExternalAuditorGmbH',
+    quality: 'Estimated',
     comment:
       'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
     dataSource: {
@@ -192,7 +192,7 @@ function createMockDatasetReview() {
             verdict: 'QaPending',
             correctedData: JSON.stringify({
               value: 12000,
-              quality: 'High',
+              quality: 'Reported',
               comment: 'Corrected based on updated table.',
               dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '13' },
             }),
@@ -203,7 +203,7 @@ function createMockDatasetReview() {
             verdict: 'QaPending',
             correctedData: JSON.stringify({
               value: 11890,
-              quality: 'High',
+              quality: 'Reported',
               comment: 'Adjusted for unit conversion.',
               dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '14-15' },
             }),
@@ -225,7 +225,7 @@ function createMockDatasetReview() {
             verdict: 'QaPending',
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
-              quality: 'Verified_FinalAudit_ConfirmedByExternalAuditorGmbH_SignedOff',
+              quality: 'Incomplete',
               comment:
                 'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
               dataSource: {
@@ -241,7 +241,7 @@ function createMockDatasetReview() {
             verdict: 'QaPending',
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
-              quality: 'Estimated_SecondReview_PendingGeothermalReclassification',
+              quality: 'NoDataFound',
               comment:
                 'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
               dataSource: {

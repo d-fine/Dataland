@@ -18,6 +18,7 @@
       <PrimeButton
           label="Copy original datapoint"
           variant="text"
+          size="small"
           @click="emit('copyOriginal')"
           :disabled="!canCopyOriginal"
           data-test="copy-original-to-custom"
@@ -25,6 +26,7 @@
       <PrimeButton
           label="Copy corrected datapoint"
           variant="text"
+          size="small"
           @click="emit('copyCorrected')"
           :disabled="!canCopyCorrected"
           data-test="copy-corrected-to-custom"
@@ -32,63 +34,80 @@
     </div>
 
     <!-- View mode: Display as editable form -->
-    <div v-if="!editModeEnabled" class="judge-modal__form-table">
-      <div class="judge-modal__form-row">
-        <label for="custom-value-field" class="judge-modal__form-label">Value</label>
-        <InputText
-            id="custom-value-field"
-            v-model="formData.value"
-            class="judge-modal__form-field"
-            placeholder="Select Value"
-            data-test="custom-value-field"
-        />
-      </div>
-
-      <div class="judge-modal__form-row">
-        <label class="judge-modal__form-label">Quality</label>
-        <Select
-            v-model="formData.quality"
-            :options="qualityOptions"
-            option-label="label"
-            option-value="value"
-            placeholder="Select Quality"
-            class="judge-modal__form-field"
-            data-test="custom-quality-field"
-        />
-      </div>
-
-      <div class="judge-modal__form-row">
-        <label for="custom-document-field" class="judge-modal__form-label">Document</label>
-        <InputText
-            id="custom-document-field"
-            v-model="formData.document"
-            class="judge-modal__form-field"
-            placeholder="Select Document"
-            data-test="custom-document-field"
-        />
-      </div>
-
-      <div class="judge-modal__form-row">
-        <label for="custom-pages-field" class="judge-modal__form-label">Page(s)</label>
-        <InputText
-            id="custom-pages-field"
-            v-model="formData.pages"
-            class="judge-modal__form-field"
-            placeholder="Select Page(s)"
-            data-test="custom-pages-field"
-        />
-      </div>
-
-      <div class="judge-modal__form-row">
-        <label for="custom-comment-field" class="judge-modal__form-label">Comment</label>
-        <Textarea
-            id="custom-comment-field"
-            v-model="formData.comment"
-            class="judge-modal__form-field"
-            placeholder="Write a comment"
-            rows="2"
-            data-test="custom-comment-field"
-        />
+    <div v-if="!editModeEnabled" class="p-datatable p-component">
+      <div class="p-datatable-wrapper">
+        <table class="p-datatable-table judge-modal__datatable" aria-label="Data point content">
+          <tbody class="p-datatable-body">
+          <tr>
+            <th scope="row" class="headers-bg">Value</th>
+        <td>
+          <InputText
+              id="custom-value-field"
+              v-model="formData.value"
+              size="small"
+              fluid
+              placeholder="Select Value"
+              data-test="custom-value-field"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="headers-bg">Quality</th>
+        <td>
+          <Select
+              v-model="formData.quality"
+              :options="qualityOptions"
+              option-label="label"
+              option-value="value"
+              size="small"
+              fluid
+              placeholder="Select Quality"
+              data-test="custom-quality-field"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="headers-bg">Document</th>
+        <td>
+          <InputText
+              id="custom-document-field"
+              v-model="formData.document"
+              size="small"
+              fluid
+              placeholder="Select Document"
+              data-test="custom-document-field"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="headers-bg">Page(s)</th>
+        <td>
+          <InputText
+              id="custom-pages-field"
+              v-model="formData.pages"
+              size="small"
+              fluid
+              placeholder="Select Page(s)"
+              data-test="custom-pages-field"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="headers-bg">Comment</th>
+        <td>
+          <InputText
+              id="custom-comment-field"
+              v-model="formData.comment"
+              size="small"
+              fluid
+              placeholder="Write a comment"
+              rows="2"
+              data-test="custom-comment-field"
+          />
+        </td>
+      </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -230,7 +249,6 @@ watch(editModeEnabled, (newVal) => {
 
 .judge-modal__section-title {
   margin-top: 0;
-  margin-bottom: var(--spacing-xs);
   white-space: nowrap;
 }
 
@@ -251,42 +269,29 @@ watch(editModeEnabled, (newVal) => {
   gap: var(--spacing-xs);
 }
 
+.judge-modal__datatable {
+  width: 100%;
+
+  tr {
+
+    th {
+      width: 6rem;
+      padding: var(--spacing-xxs) var(--spacing-xs);
+      vertical-align: middle;
+    }
+
+    td {
+      padding: var(--spacing-none) var(--spacing-none);
+      vertical-align: middle;
+      font-size: var(--font-size-xs);
+      width: 100%;
+    }
+  }
+}
 .judge-modal__custom-actions {
   display: flex;
-  gap: 0.25rem;
+  gap: var(--spacing-xxs);
   margin: 0;
-}
-
-.judge-modal__form-table {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  flex: 1;
-  min-height: 12rem;
-  margin-top: var(--spacing-xs);
-}
-
-.judge-modal__form-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0;
-  padding: 0.1rem 0;
-  flex-shrink: 0;
-}
-
-.judge-modal__form-label {
-  width: 8rem;
-  padding-right: var(--spacing-md);
-  text-align: left;
-  flex-shrink: 0;
-}
-
-.judge-modal__form-row:last-child .judge-modal__form-label {
-  padding-top: 0.4rem;
-}
-
-.judge-modal__form-field {
-  flex: 1;
 }
 
 .judge-modal__json-editor {
