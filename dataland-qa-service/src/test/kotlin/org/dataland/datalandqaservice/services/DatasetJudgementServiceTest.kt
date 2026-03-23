@@ -78,6 +78,16 @@ class DatasetJudgementServiceTest {
 
         whenever(datasetJudgementRepository.save(any<DatasetJudgementEntity>()))
             .thenAnswer { it.arguments[0] as DatasetJudgementEntity }
+
+        doReturn(
+            KeycloakUserInfo(
+                mockDatasetJudgementEntityForTest.DUMMY_USER_EMAIL,
+                mockDatasetJudgementEntityForTest.dummyUserId.toString(),
+                mockDatasetJudgementEntityForTest.DUMMY_USER_FIRST_NAME,
+                mockDatasetJudgementEntityForTest.DUMMY_USER_LAST_NAME,
+            ),
+        ).whenever(keycloakUserService)
+            .getUser(any())
     }
 
     private fun captureSavedJudgement(): DatasetJudgementEntity {
@@ -157,10 +167,9 @@ class DatasetJudgementServiceTest {
     @Test
     fun `setJudge sets judge user id and name`() {
         service.setJudge(UUID.randomUUID())
-
         val saved = captureSavedJudgement()
         assertEquals(mockDatasetJudgementEntityForTest.dummyUserId, saved.qaJudgeUserId)
-        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId.toString(), saved.qaJudgeUserName)
+        assertEquals("Dummy User", saved.qaJudgeUserName)
     }
 
     @Test
@@ -240,16 +249,6 @@ class DatasetJudgementServiceTest {
         doReturn(dummyMetaData)
             .whenever(datasetJudgementSupportService)
             .getDataMetaInfo(any())
-
-        doReturn(
-            KeycloakUserInfo(
-                mockDatasetJudgementEntityForTest.DUMMY_USER_EMAIL,
-                mockDatasetJudgementEntityForTest.dummyUserId.toString(),
-                mockDatasetJudgementEntityForTest.DUMMY_USER_FIRST_NAME,
-                mockDatasetJudgementEntityForTest.DUMMY_USER_LAST_NAME,
-            ),
-        ).whenever(keycloakUserService)
-            .getUser(any())
     }
 
     @Test
