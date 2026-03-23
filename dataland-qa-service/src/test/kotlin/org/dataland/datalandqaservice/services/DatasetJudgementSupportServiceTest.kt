@@ -10,7 +10,8 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
@@ -22,20 +23,22 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
-class DatasetReviewSupportServiceTest {
+class DatasetJudgementSupportServiceTest {
     private val dataPointControllerApi: DataPointControllerApi = mock()
     private val metaDataControllerApi: MetaDataControllerApi = mock()
     private val specificationControllerApi: SpecificationControllerApi = mock()
     private val dataPointQaReportRepository: DataPointQaReportRepository = mock()
+    private val datasetJudgementRepository: DatasetJudgementRepository = mock()
 
     private val dummyDatapoint = """{"foo":"bar"}"""
 
     private val service =
-        DatasetReviewSupportService(
+        DatasetJudgementSupportService(
             dataPointControllerApi,
             metaDataControllerApi,
             specificationControllerApi,
             dataPointQaReportRepository,
+            datasetJudgementRepository,
         )
 
     @Test
@@ -154,13 +157,12 @@ class DatasetReviewSupportServiceTest {
     }
 
     @Test
-    fun `findQaReportIdsForDataPoints returns qaReportIds from repository`() {
+    fun `findQaReports returns entities from repository including inactive`() {
         val dataPointIds = listOf("dp1", "dp2")
-        val expectedQaReportIds = listOf("qa1", "qa2")
 
         val entity1 =
             DataPointQaReportEntity(
-                qaReportId = expectedQaReportIds[0],
+                qaReportId = "qa1",
                 dataPointId = dataPointIds[0],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
@@ -172,7 +174,7 @@ class DatasetReviewSupportServiceTest {
             )
         val entity2 =
             DataPointQaReportEntity(
-                qaReportId = expectedQaReportIds[1],
+                qaReportId = "qa2",
                 dataPointId = dataPointIds[1],
                 comment = "test comment",
                 verdict = QaReportDataPointVerdict.QaAccepted,
@@ -180,24 +182,24 @@ class DatasetReviewSupportServiceTest {
                 dataPointType = "dummyType",
                 reporterUserId = "dummyUserId",
                 uploadTime = 1623456789L,
-                active = true,
+                active = false,
             )
 
         whenever(
             dataPointQaReportRepository.searchQaReportMetaInformation(
                 dataPointIds = dataPointIds,
-                showInactive = false,
+                showInactive = true,
                 reporterUserId = null,
             ),
         ).thenReturn(listOf(entity1, entity2))
 
-        val result = service.findQaReportIdsForDataPoints(dataPointIds)
+        val result = service.findQaReports(dataPointIds)
 
-        assertEquals(expectedQaReportIds, result)
+        assertEquals(listOf(entity1, entity2), result)
 
         verify(dataPointQaReportRepository).searchQaReportMetaInformation(
             dataPointIds = dataPointIds,
-            showInactive = false,
+            showInactive = true,
             reporterUserId = null,
         )
     }

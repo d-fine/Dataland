@@ -54,6 +54,15 @@
             />
 
             <PrimeButton
+              v-if="isJudgeableByCurrentUser && !!singleDataMetaInfoToDisplay"
+              :disabled="!datasetJudgementId"
+              label="REVIEW PAGE"
+              data-test="qaReviewPageButton"
+              icon="pi pi-angle-double-right"
+              @click="visitJudgementPage"
+            />
+
+            <PrimeButton
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
@@ -106,7 +115,12 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_JUDGE,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+} from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -152,6 +166,8 @@ const isDownloading = ref(false);
 const downloadErrors = ref('');
 const editModeIsOn = ref(false);
 const hasUserAdminRights = ref(false);
+const hasUserJudgeRights = ref(false);
+const datasetJudgementId = ref<string | undefined>(undefined);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -167,6 +183,10 @@ provide('editModeIsOn', editModeIsOn);
 
 const isReviewableByCurrentUser = computed(
   () => hasUserReviewerRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
+);
+
+const isJudgeableByCurrentUser = computed(
+  () => hasUserJudgeRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
 );
 
 const isEditableByCurrentUser = computed(
@@ -228,6 +248,7 @@ onMounted(async () => {
   if (dataId.value) {
     await getMetaData();
     setActiveDataForCurrentCompanyAndFramework();
+    await getDatasetJudgementId();
   } else {
     await getMetaData();
     await getAllActiveDataForCurrentCompanyAndFramework();
@@ -329,6 +350,7 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
  */
 async function setViewPageAttributesForUser(): Promise<void> {
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
+  hasUserJudgeRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise);
   hasUserUploaderRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   hasUserAdminRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
@@ -422,6 +444,36 @@ async function handleDatasetDownload(
  */
 function handleFetchedCompanyInformation(info: CompanyInformation): void {
   fetchedCompanyInformation.value = info;
+}
+
+/**
+ * Retrieves the dataset judgement id for the dataset in review and saves it in the datasetJudgementId ref.
+ * This is needed to navigate to the review page for the dataset in review, which requires the dataset judgement id in the url.
+ */
+async function getDatasetJudgementId(): Promise<void> {
+  try {
+    const routeDataId = route.params.dataId as string | undefined;
+    if (routeDataId) {
+      const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+      const response =
+        await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(routeDataId);
+      datasetJudgementId.value = response.data[0]?.dataSetJudgementId;
+    }
+  } catch (error) {
+    console.error('Error getting dataset judgement id:', error);
+    return;
+  }
+}
+
+/**
+ * Navigates to the judgement page for the dataset in judgement.
+ */
+async function visitJudgementPage(): Promise<void> {
+  try {
+    await router.push(`/qualityassurance/review/${datasetJudgementId.value}`);
+  } catch (error) {
+    console.error('Error navigating to judgement page:', error);
+  }
 }
 
 /**

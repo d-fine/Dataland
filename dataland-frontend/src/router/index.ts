@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, type RouteComponent } from 'vue-router';
+import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
 const LandingPage = (): Promise<RouteComponent> => import('@/components/pages/LandingPage.vue');
@@ -40,6 +40,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
+const DatasetReviewOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetReviewOverview.vue');
 
 const routes = [
   {
@@ -181,6 +182,17 @@ const routes = [
     component: QualityAssurance,
     meta: {
       initialTabId: 'qa',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/qualityassurance/review/:datasetJudgementId`,
+    name: 'DatasetReviewOverview',
+    component: DatasetReviewOverview,
+    props: (route: RouteLocationNormalized): { datasetJudgementId: string } => ({
+      datasetJudgementId: route.params.datasetJudgementId as string,
+    }),
+    meta: {
       requiresAuthentication: true,
     },
   },

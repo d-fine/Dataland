@@ -173,14 +173,14 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetId}": {
+    "/dataset-judgements/{datasetId}": {
       "post": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Upload new dataset review object.",
-        "description": "Upload a new dataset review object.",
-        "operationId": "postDatasetReview",
+        "summary": "Upload new dataset judgement object.",
+        "description": "Upload a new dataset judgement object.",
+        "operationId": "postDatasetJudgement",
         "parameters": [
           {
             "name": "datasetId",
@@ -195,31 +195,31 @@
         ],
         "responses": {
           "201": {
-            "description": "Successfully added dataset review object to Dataland.",
+            "description": "Successfully added dataset judgement object to Dataland.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Only admins and judges can access dataset review objects.",
+            "description": "Only admins and judges can access dataset judgement objects.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "409": {
-            "description": "A pending review already exists for this dataset.",
+            "description": "A pending judgement already exists for this dataset.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -1486,19 +1486,19 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/state": {
+    "/dataset-judgements/{datasetJudgementId}/state": {
       "patch": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Change the state of a dataset review object.",
-        "description": "Modify state of the dataset review object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
-        "operationId": "setReviewState",
+        "summary": "Change the state of a dataset judgement object.",
+        "description": "Modify state of the dataset judgement object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
+        "operationId": "setJudgementState",
         "parameters": [
           {
-            "name": "datasetReviewId",
+            "name": "datasetJudgementId",
             "in": "path",
-            "description": "The unique identifier of the data review.",
+            "description": "The unique identifier of the data judgment.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1506,12 +1506,12 @@
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
-            "name": "datasetReviewState",
+            "name": "datasetJudgementState",
             "in": "query",
-            "description": "The state of the dataset review.",
+            "description": "The state of the dataset judgement.",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/DatasetReviewState"
+              "$ref": "#/components/schemas/DatasetJudgementState"
             }
           }
         ],
@@ -1521,17 +1521,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the judge for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -1567,19 +1567,19 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/owner": {
+    "/dataset-judgements/{datasetJudgementId}/judge": {
       "patch": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Change the owner of a dataset review object.",
-        "description": "Set yourself as the owner of the dataset review object. Other users cannot modify this object.",
-        "operationId": "setOwner",
+        "summary": "Change the Judge of a dataset judgement object.",
+        "description": "Set yourself as the judge of the dataset judgement object. Other users cannot modify this object.",
+        "operationId": "setJudge",
         "parameters": [
           {
-            "name": "datasetReviewId",
+            "name": "datasetJudgementId",
             "in": "path",
-            "description": "The unique identifier of the data review.",
+            "description": "The unique identifier of the data judgment.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1589,21 +1589,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully set yourself as the owner.",
+            "description": "Successfully set yourself as the judge.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Only admins and judges can access dataset review objects.",
+            "description": "Only admins and judges can access dataset judgement objects.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -1639,213 +1639,28 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}/approvedQaReports": {
+    "/dataset-judgements/{datasetJudgementId}/data-points/{dataPointType}": {
       "patch": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Put a qa report to ApprovedQaReports map.",
-        "description": "Adds a datapoint to the ApprovedQaReports map. Removes the data point id and custom data point from approvedDataPoints and approvedCustomDataPoints with same data point type.",
-        "operationId": "acceptQaReport",
+        "summary": "Patch judgement details for a data point",
+        "description": "Updates acceptedSource, companyIdOfAcceptedQaReport and customValue of a data point within a dataset judgement.",
+        "operationId": "patchJudgementDetails",
         "parameters": [
           {
-            "name": "datasetReviewId",
+            "name": "datasetJudgementId",
             "in": "path",
-            "description": "The unique identifier of the data review.",
+            "description": "The unique identifier of the data judgment.",
             "required": true,
             "schema": {
               "type": "string"
             },
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          {
-            "name": "qaReportId",
-            "in": "query",
-            "description": "The unique identifier of the QA report",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully approved qa report.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/dataset-reviews/{datasetReviewId}/approvedDataPoints": {
-      "patch": {
-        "tags": [
-          "dataset-review-controller"
-        ],
-        "summary": "Put a datapoint to ApprovedDataPoints map.",
-        "description": "Adds a datapoint to the ApprovedDataPoints map. Removes the qa report and custom datapoint from approvedQaReports and approvedCustomDataPoints with same data point type.",
-        "operationId": "acceptOriginalDatapoint",
-        "parameters": [
-          {
-            "name": "datasetReviewId",
-            "in": "path",
-            "description": "The unique identifier of the data review.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          {
-            "name": "dataPointId",
-            "in": "query",
-            "description": "The unique identifier of the datapoint.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully approved datapoint.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/dataset-reviews/{datasetReviewId}/approvedCustomDataPoints": {
-      "patch": {
-        "tags": [
-          "dataset-review-controller"
-        ],
-        "summary": "Put a custom data point to ApprovedCustomDataPoints map.",
-        "description": "Adds a custom datapoint to the ApprovedCustomDataPoints map. Removes the data point id and qa report from approvedDataPoints and approvedQaReports with same data point type.",
-        "operationId": "acceptCustomDataPoint",
-        "parameters": [
-          {
-            "name": "datasetReviewId",
-            "in": "path",
-            "description": "The unique identifier of the data review.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          {
-            "name": "dataPoint",
-            "in": "query",
-            "description": "The data point as a JSON string.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": {
-              "value": "No",
-              "quality": "Incomplete",
-              "comment": "program neural circuit",
-              "dataSource": {
-                "page": "1026",
-                "tagName": "web services",
-                "fileName": "SustainabilityReport",
-                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-                "publicationDate": "2024-01-07"
-              }
-            }
           },
           {
             "name": "dataPointType",
-            "in": "query",
+            "in": "path",
             "description": "The data point type of the provided data point.",
             "required": true,
             "schema": {
@@ -1854,23 +1669,33 @@
             "example": "extendedEnumYesNoIsNfrdMandatory"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JudgementDetailsPatch"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Successfully approved and saved custom data point.",
+            "description": "Successfully patched judgement details.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden. You must first assign yourself as the owner for this object via the appropriate PATCH endpoint before editing it.",
+            "description": "Forbidden. You must first assign yourself as the judge for this object via the appropriate PATCH endpoint before editing it.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -2699,19 +2524,19 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetReviewId}": {
+    "/dataset-judgements/{datasetJudgementId}": {
       "get": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Get a dataset review object by its id.",
-        "description": "Get a dataset review object by its id.",
-        "operationId": "getDatasetReview",
+        "summary": "Get a dataset judgement object by its id.",
+        "description": "Get a dataset judgement object by its id.",
+        "operationId": "getDatasetJudgement",
         "parameters": [
           {
-            "name": "datasetReviewId",
+            "name": "datasetJudgementId",
             "in": "path",
-            "description": "The unique identifier of the data review.",
+            "description": "The unique identifier of the data judgment.",
             "required": true,
             "schema": {
               "type": "string"
@@ -2721,21 +2546,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved dataset review object.",
+            "description": "Successfully retrieved dataset judgement object.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Only admins and judges can access dataset review objects.",
+            "description": "Only admins and judges can access dataset judgement objects.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatasetReviewResponse"
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -2771,14 +2596,14 @@
         ]
       }
     },
-    "/dataset-reviews/{datasetId}/datasetId": {
+    "/dataset-judgements/{datasetId}/datasetId": {
       "get": {
         "tags": [
-          "dataset-review-controller"
+          "dataset-judgement-controller"
         ],
-        "summary": "Get dataset review objects by dataset id.",
-        "description": "Retrieve all dataset review objects associated with the specified dataset id.",
-        "operationId": "getDatasetReviewsByDatasetId",
+        "summary": "Get dataset judgement objects by dataset id.",
+        "description": "Retrieve all dataset judgement objects associated with the specified dataset id.",
+        "operationId": "getDatasetJudgementsByDatasetId",
         "parameters": [
           {
             "name": "datasetId",
@@ -2793,26 +2618,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved dataset review objects.",
+            "description": "Successfully retrieved dataset judgement objects.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                    "$ref": "#/components/schemas/DatasetJudgementResponse"
                   }
                 }
               }
             }
           },
           "403": {
-            "description": "Only admins and judges can access dataset review objects.",
+            "description": "Only admins and judges can access dataset judgement objects.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DatasetReviewResponse"
+                    "$ref": "#/components/schemas/DatasetJudgementResponse"
                   }
                 }
               }
@@ -3805,25 +3630,132 @@
           "Rejected"
         ]
       },
-      "DatasetReviewResponse": {
+      "AcceptedDataPointSource": {
+        "type": "string",
+        "description": "The source from which the value of the data point was accepted.",
+        "example": "Original",
+        "enum": [
+          "Original",
+          "Qa",
+          "Custom"
+        ]
+      },
+      "DataPointJudgement": {
         "required": [
-          "approvedCustomDataPointIds",
-          "approvedDataPointIds",
-          "approvedQaReportIds",
-          "companyId",
-          "dataSetReviewId",
-          "dataType",
-          "datasetId",
-          "preapprovedDataPointIds",
-          "qaReports",
-          "reportingPeriod",
-          "reviewState"
+          "dataPointId",
+          "dataPointType",
+          "qaReports"
         ],
         "type": "object",
         "properties": {
-          "dataSetReviewId": {
+          "dataPointType": {
             "type": "string",
-            "description": "The unique identifier of the data review.",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoIsNfrdMandatory"
+          },
+          "dataPointId": {
+            "type": "string",
+            "description": "The unique identifier of the datapoint.",
+            "example": "32c30bc5-ecfd-46ec-b849-628d5328e2e6"
+          },
+          "qaReports": {
+            "type": "array",
+            "description": "List of QA reports associated with this data point, including details about the reporter company.",
+            "items": {
+              "$ref": "#/components/schemas/DataPointQaReport"
+            }
+          },
+          "acceptedSource": {
+            "$ref": "#/components/schemas/AcceptedDataPointSource"
+          },
+          "reporterUserIdOfAcceptedQaReport": {
+            "type": "string",
+            "description": "The unique identifier of the user whose QA report was accepted for this data point, if applicable.",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "customValue": {
+            "type": "string",
+            "description": "Custom datapoints as json string to be uploaded.",
+            "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
+          }
+        },
+        "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
+      },
+      "DataPointQaReport": {
+        "required": [
+          "active",
+          "comment",
+          "dataPointId",
+          "dataPointType",
+          "qaReportId",
+          "uploadTime",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointId": {
+            "type": "string",
+            "description": "The unique identifier of the datapoint.",
+            "example": "The unique identifier of the datapoint."
+          },
+          "dataPointType": {
+            "type": "string",
+            "description": "The data point type of the provided data point.",
+            "example": "extendedEnumYesNoIsNfrdMandatory"
+          },
+          "qaReportId": {
+            "type": "string",
+            "description": "The unique identifier of the QA report",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reporterUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the QA report was uploaded.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Boolean flag. True if and only if the QA report is marked as active."
+          },
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "string",
+            "description": "Contains suggested data corrections for the rejected data point.",
+            "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+          }
+        },
+        "description": "List of QA reports associated with this data point, including details about the reporter company."
+      },
+      "DatasetJudgementResponse": {
+        "required": [
+          "companyId",
+          "dataPoints",
+          "dataSetJudgementId",
+          "dataType",
+          "datasetId",
+          "judgementState",
+          "qaReporters",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSetJudgementId": {
+            "type": "string",
+            "description": "The unique identifier of the data judgment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "datasetId": {
@@ -3855,86 +3787,91 @@
             "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
-          "reviewState": {
-            "$ref": "#/components/schemas/DatasetReviewState"
+          "judgementState": {
+            "$ref": "#/components/schemas/DatasetJudgementState"
           },
-          "ownerId": {
+          "qaJudgeUserId": {
             "type": "string",
-            "description": "The unique user ID of the user reviewing the dataset.",
+            "description": "The unique user ID of the user judging the dataset review.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "ownerName": {
+          "qaJudgeUserName": {
             "type": "string",
-            "description": "The name or email of the user reviewing the dataset.",
+            "description": "The name or email of the user judging the dataset review.",
             "example": "Jane Doe"
           },
-          "preapprovedDataPointIds": {
-            "uniqueItems": true,
+          "qaReporters": {
             "type": "array",
-            "description": "Datapoints automatically approved by Dataland.",
-            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
+            "description": "List of reporters that contributed a QA report to this dataset.",
+            "example": [
+              {
+                "reporterUserId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+                "reporterUserName": "Data Reviewer",
+                "reporterEmailAddress": "data.reviewer@dataland.com"
+              }
+            ],
             "items": {
-              "type": "string",
-              "description": "Datapoints automatically approved by Dataland.",
-              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
+              "$ref": "#/components/schemas/QaReporter"
             }
           },
-          "qaReports": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "QA reports associated to the dataset.",
-            "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }",
-            "items": {
-              "type": "string",
-              "description": "QA reports associated to the dataset.",
-              "example": "{ 1e63a842-1e65-43ed-b78a-5e7cec155c28, c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 }"
-            }
-          },
-          "approvedDataPointIds": {
+          "dataPoints": {
             "type": "object",
             "additionalProperties": {
-              "type": "string",
-              "description": "Data points approved and to be accepted.",
-              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
+              "$ref": "#/components/schemas/DataPointJudgement"
             },
-            "description": "Data points approved and to be accepted.",
-            "example": {
-              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
-            }
-          },
-          "approvedQaReportIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "description": "QA reports approved and to be accepted.",
-              "example": "{\"extendedDateFiscalYearEnd\":\" c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 \"}"
-            },
-            "description": "QA reports approved and to be accepted.",
-            "example": {
-              "extendedDateFiscalYearEnd": " c8e6840d-d0d6-4e48-ab2e-ca4c723814a9 "
-            }
-          },
-          "approvedCustomDataPointIds": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
-              "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
-            },
-            "description": "Custom datapoints as strings to be uploaded, approved and accepted.",
-            "example": {
-              "extendedDateFiscalYearEnd": " 2026-12-31 "
-            }
+            "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
           }
         }
       },
-      "DatasetReviewState": {
+      "DatasetJudgementState": {
         "type": "string",
-        "description": "The state of the dataset review.",
+        "description": "The state of the dataset judgement.",
         "enum": [
           "Pending",
           "Finished",
           "Aborted"
+        ]
+      },
+      "QaReportDataPointVerdict": {
+        "type": "string",
+        "description": "The verdict of a QA report regarding a data point.",
+        "enum": [
+          "QaAccepted",
+          "QaRejected",
+          "QaInconclusive",
+          "QaNotAttempted"
+        ]
+      },
+      "QaReporter": {
+        "required": [
+          "reporterUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "reporterUserId": {
+            "type": "string",
+            "description": "The unique user ID of the user who uploaded the QA report.",
+            "format": "uuid",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "reporterUserName": {
+            "type": "string",
+            "description": "The name of the user who uploaded the QA report.",
+            "example": "Bot_1_of_Dataland"
+          },
+          "reporterEmailAddress": {
+            "type": "string",
+            "description": "The email of the user who uploaded the QA report.",
+            "example": "bot1@dataland.com"
+          }
+        },
+        "description": "List of reporters that contributed a QA report to this dataset.",
+        "example": [
+          {
+            "reporterUserId": "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+            "reporterUserName": "Data Reviewer",
+            "reporterEmailAddress": "data.reviewer@dataland.com"
+          }
         ]
       },
       "CurrencyDataPoint": {
@@ -4315,16 +4252,6 @@
             "$ref": "#/components/schemas/ExtendedDataPointYesNo"
           }
         }
-      },
-      "QaReportDataPointVerdict": {
-        "type": "string",
-        "description": "The quality decision of this qa report.",
-        "enum": [
-          "QaAccepted",
-          "QaRejected",
-          "QaInconclusive",
-          "QaNotAttempted"
-        ]
       },
       "SfdrData": {
         "type": "object",
@@ -8779,65 +8706,26 @@
           }
         }
       },
-      "DataPointQaReport": {
-        "required": [
-          "active",
-          "comment",
-          "dataPointId",
-          "dataPointType",
-          "qaReportId",
-          "uploadTime",
-          "verdict"
-        ],
+      "JsonNode": {
+        "type": "object"
+      },
+      "JudgementDetailsPatch": {
         "type": "object",
         "properties": {
-          "dataPointId": {
-            "type": "string",
-            "description": "The unique identifier of the datapoint.",
-            "example": "The unique identifier of the datapoint."
+          "acceptedSource": {
+            "$ref": "#/components/schemas/AcceptedDataPointSource"
           },
-          "dataPointType": {
+          "reporterUserIdOfAcceptedQaReport": {
             "type": "string",
-            "description": "The data point type of the provided data point.",
-            "example": "extendedEnumYesNoIsNfrdMandatory"
-          },
-          "qaReportId": {
-            "type": "string",
-            "description": "The unique identifier of the QA report",
+            "description": "The unique identifier of the user whose QA report was accepted for this data point, if applicable.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "reporterUserId": {
+          "customDataPoint": {
             "type": "string",
-            "description": "The unique user ID of the user who uploaded the QA report.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "description": "The timestamp (epoch milliseconds) at which the QA report was uploaded.",
-            "format": "int64",
-            "example": 1751291891271
-          },
-          "active": {
-            "type": "boolean",
-            "description": "Boolean flag. True if and only if the QA report is marked as active."
-          },
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "type": "string",
-            "description": "Contains suggested data corrections for the rejected data point.",
+            "description": "The data point as a JSON string.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           }
         }
-      },
-      "JsonNode": {
-        "type": "object"
       },
       "QaReportStatusPatch": {
         "required": [
@@ -8898,19 +8786,19 @@
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
-          "ownerId": {
+          "qaJudgeUserId": {
             "type": "string",
-            "description": "The unique user ID of the user reviewing the dataset.",
+            "description": "The unique user ID of the user judging the dataset review.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "ownerName": {
+          "qaJudgeUserName": {
             "type": "string",
-            "description": "The name or email of the user reviewing the dataset.",
+            "description": "The name or email of the user judging the dataset review.",
             "example": "Jane Doe"
           },
           "datasetReviewId": {
             "type": "string",
-            "description": "The unique identifier of the data review.",
+            "description": "The unique identifier of the data judgment.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "numberQaReports": {

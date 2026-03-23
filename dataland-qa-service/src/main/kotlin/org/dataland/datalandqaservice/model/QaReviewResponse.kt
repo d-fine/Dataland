@@ -47,18 +47,18 @@ data class QaReviewResponse(
     )
     val qaStatus: QaStatus,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_ID_EXAMPLE,
     )
-    val ownerId: String?,
+    val qaJudgeUserId: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_USERNAME_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_OWNER_USERNAME_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE,
     )
-    val ownerName: String?,
+    val qaJudgeUserName: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.DATA_REVIEW_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
     )
     val datasetReviewId: String?,
     @field:Schema(
@@ -72,8 +72,8 @@ data class QaReviewResponse(
     )
     val comment: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.JUDGE_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.JUDGE_ID_EXAMPLE,
     )
     val triggeringUserId: String?,
     @field:Schema(

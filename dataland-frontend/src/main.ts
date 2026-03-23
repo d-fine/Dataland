@@ -14,12 +14,13 @@ import '@/assets/fonts/ibm-plex-sans.scss';
 import '@/assets/theme/main.css';
 import '@formkit/themes/genesis';
 import router from './router';
-
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
  */
 function instantiateVueApp(): void {
   const app = createApp(App);
+  const queryClient = new QueryClient(); // Standard query client (stale time: 5 minutes)
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({
@@ -27,6 +28,7 @@ function instantiateVueApp(): void {
       type: 'native',
     }) as PiniaPlugin
   );
+  app.use(VueQueryPlugin, { queryClient });
   app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);
