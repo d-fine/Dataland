@@ -383,7 +383,7 @@ class CompanyDataControllerTest {
             DataTypeEnum.entries
                 .associate { framework ->
                     val numOfReportingPeriods = expectedNumberForFramework[framework] ?: 0
-                    framework.toString() to
+                    framework.value to
                         AggregatedFrameworkDataSummary(
                             numberOfProvidedReportingPeriods = numOfReportingPeriods,
                         )
