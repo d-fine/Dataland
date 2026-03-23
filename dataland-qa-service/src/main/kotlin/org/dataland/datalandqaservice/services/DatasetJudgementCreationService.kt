@@ -73,6 +73,24 @@ class DatasetJudgementCreationService
         }
 
         /**
+         * Sets the QA judge details on the given dataset judgement.
+         *
+         * Resolves the user name via Keycloak and stores the UUID and display name.
+         *
+         * @param datasetJudgementEntity The dataset judgement entity to update.
+         * @param judgeUserId The judge user id as a string UUID.
+         */
+        fun setJudge(
+            datasetJudgementEntity: DatasetJudgementEntity,
+            judgeUserId: String,
+        ) {
+            datasetJudgementEntity.qaJudgeUserId = UUID.fromString(judgeUserId)
+            datasetJudgementEntity.qaJudgeUserName = getUserName(
+                keycloakUserService.getUser(judgeUserId),
+            ) ?: judgeUserId
+        }
+
+        /**
          * Resolve a human-readable display name for the given userInfo.
          *
          * Returns "First Last" when available; otherwise returns null.

@@ -79,8 +79,8 @@ class DatasetJudgementService
         @Transactional
         fun setJudge(datasetJudgementId: UUID): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
-            datasetJudgement.qaJudgeUserId = UUID.fromString(DatalandAuthentication.fromContext().userId)
-            datasetJudgement.qaJudgeUserName = DatalandAuthentication.fromContext().name
+            val judgeId = DatalandAuthentication.fromContext().userId
+            datasetJudgementCreationService.setJudge(datasetJudgement, judgeId)
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 
