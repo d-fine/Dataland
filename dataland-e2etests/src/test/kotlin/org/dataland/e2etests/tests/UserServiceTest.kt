@@ -59,7 +59,7 @@ class UserServiceTest {
                 it.companyId == companyId
             }
         assertEquals(1, matchingEntries.size)
-        return matchingEntries.first().availableReportingPeriods[framework.toString()]
+        return matchingEntries.first().availableReportingPeriods[framework.value]
     }
 
     @Test

@@ -377,6 +377,7 @@ class CompanyDataControllerTest {
             mapOf(
                 DataTypeEnum.eutaxonomyMinusFinancials to 0,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73 to 2,
                 DataTypeEnum.sfdr to 0,
             )
         val expectedMap =

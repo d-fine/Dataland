@@ -211,7 +211,10 @@ class DataControllerTest {
             .getAggregatedFrameworkDataSummary(
                 companyId = companyId,
             ).forEach { (framework, aggregatedFrameworkDataSummary) ->
-                if (framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value) {
+                if (
+                    framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value ||
+                    framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value
+                ) {
                     assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 } else {
                     assertEquals(0, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
