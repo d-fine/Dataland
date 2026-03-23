@@ -468,8 +468,12 @@ async function getDatasetJudgementId(): Promise<void> {
 /**
  * Navigates to the judgement page for the dataset in judgement.
  */
-function visitJudgementPage(): void {
-  void router.push(`/qualityassurance/review/${datasetJudgementId.value}`);
+async function visitJudgementPage(): Promise<void> {
+  try {
+    await router.push(`/qualityassurance/review/${datasetJudgementId.value}`);
+  } catch (error) {
+    console.error('Error navigating to judgement page:', error);
+  }
 }
 
 /**
