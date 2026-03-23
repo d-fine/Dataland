@@ -236,7 +236,7 @@ function isOverflowing(text: string): boolean {
 .judge-modal__cell-overflow {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--spacing-xxs);
   min-width: 0;
 }
 
@@ -253,15 +253,11 @@ function isOverflowing(text: string): boolean {
   flex-shrink: 0;
   width: 1.1rem;
   height: 1.1rem;
-  padding: 0;
+  padding: var(--spacing-none);
 }
 
 .judge-modal__section-actions {
-  margin-top: auto;
-  padding-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+  padding-top: var(--spacing-xs);
 }
 </style>
 

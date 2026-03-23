@@ -120,6 +120,7 @@
           id="custom-json-textarea"
           v-model="jsonValue"
           class="judge-modal__json-textarea"
+          size="small"
           spellcheck="false"
           data-test="custom-json-textarea"
       />
@@ -288,11 +289,6 @@ watch(editModeEnabled, (newVal) => {
     }
   }
 }
-.judge-modal__custom-actions {
-  display: flex;
-  gap: var(--spacing-xxs);
-  margin: 0;
-}
 
 .judge-modal__json-editor {
   margin-top: var(--spacing-xs);
@@ -309,14 +305,11 @@ watch(editModeEnabled, (newVal) => {
   min-height: 0;
   height: 100%;
   overflow: auto;
+  resize: none;
 }
 
 .judge-modal__section-actions {
-  margin-top: auto;
-  padding-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+  padding-top: var(--spacing-xs);
 }
 </style>
 
