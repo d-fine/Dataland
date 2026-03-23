@@ -166,4 +166,27 @@ class QaReviewManagerQaChangeTest(
         val message3 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.thirdValue)
         assert(message3.currentlyActiveDataId == dataId1)
     }
+
+    @Test
+    fun `test isUpdate flag of two accepted datasets`() {
+        storePendingQaReviewEntry(this.dataId1)
+        storePendingQaReviewEntry(this.dataId2)
+
+        sendQaChange(dataId1, QaStatus.Accepted)
+        sendQaChange(dataId2, QaStatus.Accepted)
+
+        val messageBodyCaptor = argumentCaptor<String>()
+        verify(cloudEventMessageHandler, times(2)).buildCEMessageAndSendToQueue(
+            messageBodyCaptor.capture(),
+            any(),
+            any(),
+            any(),
+            any(),
+        )
+
+        val message1 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.firstValue)
+        val message2 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
+        assert(message1.isUpdate == false)
+        assert(message2.isUpdate == true)
+    }
 }

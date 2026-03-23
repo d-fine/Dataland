@@ -146,7 +146,12 @@ class QaReviewManagerTest {
         expectedStatus: QaStatus,
     ) {
         spyQaReviewManager = spy(qaReviewManager)
-        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
+        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(
+            any<QaReviewEntity>(),
+            any(),
+            any(),
+            any(),
+        )
 
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(
@@ -167,6 +172,8 @@ class QaReviewManagerTest {
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
             argCaptor.capture(),
             eq(correlationId),
+            any(),
+            any(),
         )
         Assertions.assertEquals(dataId, argCaptor.firstValue.dataId)
         Assertions.assertEquals(companyId, argCaptor.firstValue.companyId)

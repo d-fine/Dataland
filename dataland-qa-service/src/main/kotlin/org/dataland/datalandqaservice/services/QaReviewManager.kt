@@ -209,8 +209,25 @@ class QaReviewManager
                     comment = comment,
                 )
 
+            val pastActiveDataId =
+                getDataIdOfCurrentlyActiveDataset(
+                    qaReviewEntity.companyId,
+                    qaReviewEntity.framework,
+                    qaReviewEntity.reportingPeriod,
+                )
             qaReviewRepository.save(qaReviewEntity)
-            this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
+            val newActiveDataId =
+                getDataIdOfCurrentlyActiveDataset(
+                    qaReviewEntity.companyId,
+                    qaReviewEntity.framework,
+                    qaReviewEntity.reportingPeriod,
+                )
+            this.sendQaStatusUpdateMessage(
+                qaReviewEntity = qaReviewEntity,
+                correlationId = correlationId,
+                pastActiveDataId != null,
+                newActiveDataId = newActiveDataId,
+            )
         }
 
         /**
@@ -240,26 +257,14 @@ class QaReviewManager
         fun sendQaStatusUpdateMessage(
             qaReviewEntity: QaReviewEntity,
             correlationId: String,
+            isUpdate: Boolean,
+            newActiveDataId: String?,
         ) {
-            val pastActiveDataId =
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
-                )
-            val isUpdate = pastActiveDataId != null
-            val currentlyActiveDataId =
-                if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
-                    qaReviewEntity.dataId
-                } else {
-                    pastActiveDataId
-                }
-
             val qaStatusChangeMessage =
                 QaStatusChangeMessage(
                     dataId = qaReviewEntity.dataId,
                     updatedQaStatus = qaReviewEntity.qaStatus,
-                    currentlyActiveDataId = currentlyActiveDataId,
+                    currentlyActiveDataId = newActiveDataId,
                     basicDataDimensions =
                         BasicDataDimensions(
                             companyId = qaReviewEntity.companyId,
@@ -316,7 +321,6 @@ class QaReviewManager
                     qaStatuses = setOf(QaStatus.Accepted),
                     companyName = null,
                 )
-
             return qaReviewRepository
                 .getSortedAndFilteredQaReviewMetadataset(searchFilter)
                 .maxByOrNull { it.timestamp }
