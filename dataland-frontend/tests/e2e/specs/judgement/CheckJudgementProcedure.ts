@@ -1,9 +1,10 @@
 import { type EutaxonomyFinancialsData, type SfdrData, type StoredCompany } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -33,18 +34,20 @@ describeIf(
       });
     });
 
-    it('Check whether newly added dataset is displayed at the QA Overview', () => {
+    it.only('Start Judgement', () => {
       const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
           token,
           storedCompany.companyId,
-          '2022',
+          '2024',
           euTaxonomyData.t,
           false
-        );
+        ).then(() => {
+          startJudgement(storedCompany);
+        });
       });
     });
 
@@ -64,3 +67,35 @@ describeIf(
     });
   }
 );
+
+/**
+ * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
+ *
+ * @param storedCompany The company owning the dataset to be judged.
+ */
+function startJudgement(storedCompany: StoredCompany): void {
+  cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
+  const companyName = storedCompany.companyInformation.companyName;
+  login(admin_name, admin_pw);
+  visitQaOverviewAndGoToLastPage();
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+    .last()
+    .should('exist')
+    .within(() => {
+      cy.contains('[data-test="qa-review-company-name"]', companyName)
+        .should('have.text', companyName)
+        .closest('tr')
+        .within(() => {
+          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
+          cy.contains('td', 'Start Review').should('exist').click();
+        });
+    });
+
+  cy.get('.p-dialog')
+    .should('be.visible')
+    .within(() => {
+      cy.contains('button', 'CONFIRM').should('exist').click();
+    });
+
+  cy.wait('@startJudgementRequest').its('response.statusCode').should('eq', 201);
+}
