@@ -1,12 +1,12 @@
 <template>
   <PrimeDialog
-      id="judgeModal"
-      :dismissable-mask="true"
-      :modal="true"
-      :pt="{ root: { style: { minWidth: '60rem', maxWidth: '60rem' } } }"
-      v-model:visible="isOpen"
-      @hide="emit('close')"
-      data-test="judge-modal"
+    id="judgeModal"
+    :dismissable-mask="true"
+    :modal="true"
+    :pt="{ root: { style: { minWidth: '60rem', maxWidth: '60rem' } } }"
+    v-model:visible="isOpen"
+    @hide="emit('close')"
+    data-test="judge-modal"
   >
     <!-- Header -->
     <template #header>
@@ -14,52 +14,48 @@
     </template>
 
     <!-- Loading / error states for dataset review -->
-    <div v-if="isDatasetReviewLoading">
-      Loading dataset review...
-    </div>
+    <div v-if="isDatasetReviewLoading">Loading dataset review...</div>
     <div v-else-if="datasetReviewError">
-      <Message severity="error">
-        Failed to load dataset review.
-      </Message>
+      <Message severity="error"> Failed to load dataset review. </Message>
     </div>
 
     <div v-else class="judge-modal__content">
       <!-- Top-left: Original datapoint -->
       <DatapointReadonlySection
-          title="Original datapoint"
-          :data="originalData"
-          :is-loading="isOriginalLoading"
-          :load-error="originalError"
-          empty-text="No original datapoint data available."
-          accept-label="ACCEPT ORIGINAL"
-          :accept-disabled="isMutating"
-          accept-data-test="accept-original-button"
-          data-test="original-datapoint-section"
-          :show-nav="false"
-          :nav-index="0"
-          @accept="onAcceptClick('Original')"
-          @show-popover="showPopover"
-          @hide-popover="hidePopover"
+        title="Original datapoint"
+        :data="originalData"
+        :is-loading="isOriginalLoading"
+        :load-error="originalError"
+        empty-text="No original datapoint data available."
+        accept-label="ACCEPT ORIGINAL"
+        :accept-disabled="isMutating"
+        accept-data-test="accept-original-button"
+        data-test="original-datapoint-section"
+        :show-nav="false"
+        :nav-index="0"
+        @accept="onAcceptClick('Original')"
+        @show-popover="showPopover"
+        @hide-popover="hidePopover"
       />
 
       <!-- Top-right: Corrected datapoint (QA reports) -->
       <DatapointReadonlySection
-          title="Corrected datapoint"
-          :data="currentQaCorrectedData"
-          empty-text="No QA reports available."
-          accept-label="ACCEPT REPORT"
-          :accept-disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
-          accept-data-test="accept-report-button"
-          data-test="corrected-datapoint-section"
-          :show-nav="filteredQaReports.length > 0"
-          :nav-index="currentQaReportIndex"
-          :nav-count="filteredQaReports.length"
-          :nav-label="currentQaReporterLabel"
-          @accept="onAcceptClick('Qa')"
-          @prev="goToPreviousReport"
-          @next="goToNextReport"
-          @show-popover="showPopover"
-          @hide-popover="hidePopover"
+        title="Corrected datapoint"
+        :data="currentQaCorrectedData"
+        empty-text="No QA reports available."
+        accept-label="ACCEPT REPORT"
+        :accept-disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
+        accept-data-test="accept-report-button"
+        data-test="corrected-datapoint-section"
+        :show-nav="filteredQaReports.length > 0"
+        :nav-index="currentQaReportIndex"
+        :nav-count="filteredQaReports.length"
+        :nav-label="currentQaReporterLabel"
+        @accept="onAcceptClick('Qa')"
+        @prev="goToPreviousReport"
+        @next="goToNextReport"
+        @show-popover="showPopover"
+        @hide-popover="hidePopover"
       />
 
       <!-- Separator line -->
@@ -67,32 +63,28 @@
 
       <!-- Bottom-left: Custom datapoint -->
       <CustomDatapointSection
-          v-model:edit-mode-enabled="editModeEnabled"
-          v-model:json="customJson"
-          v-model:form-data="customFormData"
-          :accept-disabled="isMutating"
-          :can-copy-original="!!originalData"
-          :can-copy-corrected="!!currentQaCorrectedData"
-          @accept="onAcceptClick('Custom')"
-          @copy-original="copyOriginalToCustom"
-          @copy-corrected="copyCorrectedToCustom"
+        v-model:edit-mode-enabled="editModeEnabled"
+        v-model:json="customJson"
+        v-model:form-data="customFormData"
+        :accept-disabled="isMutating"
+        :can-copy-original="!!originalData"
+        :can-copy-corrected="!!currentQaCorrectedData"
+        @accept="onAcceptClick('Custom')"
+        @copy-original="copyOriginalToCustom"
+        @copy-corrected="copyCorrectedToCustom"
       />
 
       <!-- Bottom-right: Next datapoint selection & patch error -->
       <NextDatapointSection
-          v-model:only-show-unreviewed="onlyShowUnreviewed"
-          v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
-          :options="nextDataPointOptions"
-          :patch-error="patchError"
-          @go-to="goToSelectedDataPoint"
+        v-model:only-show-unreviewed="onlyShowUnreviewed"
+        v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
+        :options="nextDataPointOptions"
+        :patch-error="patchError"
+        @go-to="goToSelectedDataPoint"
       />
     </div>
 
-    <Popover
-        ref="overflowPopover"
-        placement="top"
-        :pt="{ root: { style: { width: popoverWidth } } }"
-    >
+    <Popover ref="overflowPopover" placement="top" :pt="{ root: { style: { width: popoverWidth } } }">
       <div class="judge-modal__overflow-popover-content">{{ popoverText }}</div>
     </Popover>
   </PrimeDialog>
@@ -121,9 +113,9 @@ import type {
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
-    { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
-    null,
-    2
+  { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
+  null,
+  2
 );
 
 const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
@@ -148,6 +140,7 @@ const isOpen = defineModel<boolean>('isOpen');
 
 // ===== API clients =====
 
+// TODO : Replace with useApiClient() hook once DALA-6854 is merged to main
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -178,7 +171,8 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   'mock-dp-3': {
     value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED',
     quality: 'Estimated_PreliminaryAudit_PendingFinalVerificationByExternalAuditorGmbH',
-    comment: 'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
+    comment:
+      'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
     dataSource: {
       fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
       page: '47-53',
@@ -232,8 +226,13 @@ function createMockDatasetReview() {
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
               quality: 'Verified_FinalAudit_ConfirmedByExternalAuditorGmbH_SignedOff',
-              comment: 'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
-              dataSource: { fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf', page: '47-53' },
+              comment:
+                'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
+              dataSource: {
+                fileName:
+                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                page: '47-53',
+              },
             }),
             reporterUserId: 'mock-user-1',
           },
@@ -243,8 +242,13 @@ function createMockDatasetReview() {
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
               quality: 'Estimated_SecondReview_PendingGeothermalReclassification',
-              comment: 'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
-              dataSource: { fileName: 'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf', page: '51-52' },
+              comment:
+                'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
+              dataSource: {
+                fileName:
+                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                page: '51-52',
+              },
             }),
             reporterUserId: 'mock-user-2',
           },
@@ -270,11 +274,11 @@ const patchError = ref<string | null>(null);
 const currentDataPointTypeId = ref<string>(props.dataPointTypeId);
 
 watch(
-    () => props.dataPointTypeId,
-    (newVal) => {
-      currentDataPointTypeId.value = newVal;
-      resetStateForCurrentDataPoint();
-    }
+  () => props.dataPointTypeId,
+  (newVal) => {
+    currentDataPointTypeId.value = newVal;
+    resetStateForCurrentDataPoint();
+  }
 );
 
 const currentDataPointMeta = computed<any | null>(() => {
@@ -307,11 +311,11 @@ async function loadOriginalDataPoint(): Promise<void> {
 }
 
 watch(
-    () => currentDataPointTypeId.value,
-    () => {
-      loadOriginalDataPoint().catch((error) => console.error(error));
-    },
-    { immediate: true }
+  () => currentDataPointTypeId.value,
+  () => {
+    loadOriginalDataPoint().catch((error) => console.error(error));
+  },
+  { immediate: true }
 );
 
 // ===== QA reports =====
@@ -325,10 +329,10 @@ const filteredQaReports = computed<QaReport[]>(() => {
 const currentQaReportIndex = ref<number>(0);
 
 watch(
-    () => filteredQaReports.value.length,
-    () => {
-      currentQaReportIndex.value = 0;
-    }
+  () => filteredQaReports.value.length,
+  () => {
+    currentQaReportIndex.value = 0;
+  }
 );
 
 const currentQaReport = computed<QaReport | null>(() => {
@@ -494,9 +498,7 @@ function showPopover(event: MouseEvent, text: string): void {
 
   const dialog = btn.closest('.p-dialog') ?? btn.closest('#judgeModal') ?? document;
   const formInput = (dialog as Element).querySelector('.judge-modal__form-field') as HTMLElement | null;
-  const width = formInput
-    ? formInput.getBoundingClientRect().width
-    : anchor.getBoundingClientRect().width;
+  const width = formInput ? formInput.getBoundingClientRect().width : anchor.getBoundingClientRect().width;
   popoverWidth.value = `${width}px`;
 
   popoverText.value = text;
