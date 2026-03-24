@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="judge-modal__section" data-test="next-datapoint-section">
-      <h3>Next datapoint</h3>
+      <h3 class="judge-modal__section-title">Next datapoint</h3>
 
       <div class="judge-modal__toggle">
         <ToggleSwitch
@@ -75,10 +75,15 @@ const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextData
 
 <style scoped lang="scss">
 .judge-modal__section {
+  padding: var(--spacing-xs);
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: center;
+}
+
+.judge-modal__section-title {
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 .judge-modal__toggle {
