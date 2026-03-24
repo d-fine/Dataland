@@ -58,8 +58,6 @@
         @hide-popover="hidePopover"
       />
 
-      <!-- Separator line -->
-      <div class="judge-modal__separator"></div>
 
       <!-- Bottom-left: Custom datapoint -->
       <CustomDatapointSection
@@ -566,6 +564,11 @@ function hidePopover(): void {
 </script>
 
 <style scoped lang="scss">
+.p-dialog-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
 .judge-modal__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
