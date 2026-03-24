@@ -5,25 +5,23 @@ import { useMutation, UseMutationReturnType, useQueryClient } from '@tanstack/vu
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
 import { AxiosResponse } from 'axios';
 
-export function usePatchJudgmentDetailsForADatapointMutation(
-  datasetJudgmentIdRef: Ref<string>,
-  datapointIdRef: Ref<string>,
-  judgementDetailsRef: Ref<JudgementDetailsPatch>
-): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
+export interface PatchJudgementArgs {
+  judgmentId: string;
+  datapointId: string;
+  details: JudgementDetailsPatch;
+}
+
+export function usePatchJudgmentDetailsForADatapointMutation() {
   const apiClientProvider = useApiClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () =>
-      apiClientProvider.apiClients.datasetJudgementController.patchJudgementDetails(
-        datasetJudgmentIdRef.value,
-        datapointIdRef.value,
-        judgementDetailsRef.value
-      ),
+    mutationFn: ({ judgmentId, datapointId, details }: PatchJudgementArgs) =>
+      apiClientProvider.apiClients.datasetJudgementController.patchJudgementDetails(judgmentId, datapointId, details),
 
-    onSuccess: async () => {
+    onSuccess: async (_data, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: datasetReviewKeys.detail(datasetJudgmentIdRef.value),
+        queryKey: datasetReviewKeys.detail(variables.judgmentId),
       });
     },
 
