@@ -24,7 +24,7 @@
     </template>
 
     <!-- Loading / error states for dataset review -->
-    <div v-if="isDatasetReviewLoading">Loading dataset review...</div>
+    <div v-if="isDatasetJudgementPending">Loading dataset review...</div>
     <div v-else-if="datasetReviewError">
       <Message severity="error"> Failed to load dataset review. </Message>
     </div>
@@ -43,7 +43,7 @@
         data-test="original-datapoint-section"
         :show-nav="false"
         :nav-index="0"
-        @accept="onAcceptClick('Original')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
       />
@@ -61,7 +61,7 @@
         :nav-index="currentQaReportIndex"
         :nav-count="filteredQaReports.length"
         :nav-label="currentQaReporterLabel"
-        @accept="onAcceptClick('Qa')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"
         @show-popover="showPopover"
@@ -77,7 +77,7 @@
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
         :available-documents="availableDocuments"
-        @accept="onAcceptClick('Custom')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
         @copy-corrected="copyCorrectedToCustom"
       />
@@ -99,14 +99,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
-import type Keycloak from 'keycloak-js';
+import { computed, ref, watch } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import Message from 'primevue/message';
 import Popover from 'primevue/popover';
-
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
 import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
@@ -119,6 +115,8 @@ import type {
   QaReport,
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { AcceptedDataPointSource } from '@clients/qaservice';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -146,15 +144,6 @@ const emit = defineEmits<{
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
-
-// ===== API clients =====
-
-// TODO : Replace with useApiClient() hook once DALA-6854 is merged to main
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-const datasetReviewControllerApi = apiClientProvider.apiClients.datasetJudgementController;
-const dataPointControllerApi = apiClientProvider.apiClients.dataPointController;
 
 // ===== Dataset review =====
 
@@ -294,9 +283,12 @@ function createMockDatasetReview() {
   } as any;
 }
 
-const datasetReview = ref(createMockDatasetReview());
-const isDatasetReviewLoading = ref(false);
-const datasetReviewError = ref(null);
+const datasetJudgementId = computed(() => props.datasetReviewId);
+const {
+  data: datasetJudgement,
+  isPending: isDatasetJudgementPending,
+  isError: datasetReviewError,
+} = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
 const isMutating = ref(false);
 const patchError = ref<string | null>(null);
@@ -314,8 +306,8 @@ watch(
 );
 
 const currentDataPointMeta = computed<any | null>(() => {
-  if (!datasetReview.value?.dataPoints) return null;
-  return datasetReview.value.dataPoints[currentDataPointTypeId.value] ?? null;
+  if (!datasetJudgement.value?.dataPoints) return null;
+  return datasetJudgement.value.dataPoints[currentDataPointTypeId.value] ?? null;
 });
 
 // ===== Original datapoint =====
@@ -387,8 +379,8 @@ const currentQaReport = computed<QaReport | null>(() => {
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {
   const map: Record<string, QaReporter> = {};
-  if (!datasetReview.value?.qaReporters) return map;
-  for (const r of datasetReview.value.qaReporters as QaReporter[]) {
+  if (!datasetJudgement.value?.qaReporters) return map;
+  for (const r of datasetJudgement.value.qaReporters as QaReporter[]) {
     map[r.reporterUserId] = r;
   }
   return map;
@@ -506,10 +498,10 @@ function isDataPointJudged(meta: any): boolean {
 }
 
 const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
-  if (!datasetReview.value?.dataPoints) return [];
+  if (!datasetJudgement.value?.dataPoints) return [];
   const options: NextDatapointOption[] = [];
 
-  const entries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
+  const entries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
 
   for (const [dataPointType, meta] of entries) {
     const reviewed = isDataPointJudged(meta);
@@ -525,8 +517,8 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
 });
 
 function findNextUnreviewedAfter(afterId: string): string | null {
-  if (!datasetReview.value?.dataPoints) return null;
-  const allEntries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
+  if (!datasetJudgement.value?.dataPoints) return null;
+  const allEntries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
   const startIndex = allEntries.findIndex(([key]) => key === afterId);
   const rotated = [...allEntries.slice(startIndex + 1), ...allEntries.slice(0, startIndex)];
   const [key] = rotated.find(([, meta]) => !isDataPointJudged(meta)) ?? [];
@@ -541,13 +533,13 @@ function goToSelectedDataPoint(): void {
   resetStateForCurrentDataPoint();
 }
 
-function markCurrentAsReviewed(source: string): void {
-  if (datasetReview.value?.dataPoints?.[currentDataPointTypeId.value]) {
-    datasetReview.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
+function markCurrentAsReviewed(source: AcceptedDataPointSource): void {
+  if (datasetJudgement.value?.dataPoints?.[currentDataPointTypeId.value]) {
+    datasetJudgement.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
   }
 }
 
-function onAcceptClick(source: 'Original' | 'Qa' | 'Custom'): void {
+function onAcceptClick(source: AcceptedDataPointSource): void {
   isMutating.value = true;
   patchError.value = null;
   setTimeout(() => {
