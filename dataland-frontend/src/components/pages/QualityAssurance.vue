@@ -1,7 +1,7 @@
 <template>
   <TheContent class="min-h-screen relative">
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_JUDGE">
-      <JudgeDialog dataset-review-id="mock" data-point-type-id="mock-dp-1" v-model:visible="isJudgeDialogVisible" />
+      <JudgeDialog dataset-review-id="mock" data-point-type-id="mock-dp-4" v-model:visible="isJudgeDialogVisible" />
       <div class="container">
         <div class="company-search" data-test="companySearchBarWithMessage">
           <IconField id="company-search-bar">

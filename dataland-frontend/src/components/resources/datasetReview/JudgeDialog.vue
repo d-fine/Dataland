@@ -180,12 +180,15 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
       publicationDate: '2023-01-08',
     },
   },
+  'mock-dp-4': {
+    quality: 'NoDataFound',
+  },
 };
 
 function createMockDatasetReview() {
   return {
     dataPoints: {
-      'kpi.energyConsumption': {
+      'mock-dp-1': {
         dataPointId: 'mock-dp-1',
         acceptedSource: null,
         qaReports: [
@@ -272,6 +275,11 @@ function createMockDatasetReview() {
             reporterUserId: 'mock-user-3',
           },
         ],
+      },
+      'mock-dp-4': {
+        dataPointId: 'mock-dp-4',
+        acceptedSource: null,
+        qaReports: [],
       },
     },
     qaReporters: [
@@ -615,17 +623,11 @@ function hidePopover(): void {
   }
 }
 
-.p-dialog-title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-}
-
 .judge-modal__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto 1fr;
-  column-gap: var(--spacing-lg);
-  row-gap: var(--spacing-xs);
+  gap: var(--spacing-lg);
   flex: 1;
   min-height: 0;
 }
