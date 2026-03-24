@@ -15,6 +15,7 @@ import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRol
 import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import router from '@/router';
+import type Keycloak from 'keycloak-js';
 
 /**
  * Picks a reporting period to filter for in the column filter of the datatable.
@@ -99,8 +100,8 @@ type ReviewQueueElementOptions = {
   framework: string;
   reportingPeriod: string;
   datasetReviewId?: string;
-  ownerName?: string;
-  ownerId?: string;
+  reviewerUserName?: string;
+  reviewerUserId?: string;
   timestamp?: number;
   priorityOfAssociatedDataSourcing?: number;
 };
@@ -120,8 +121,8 @@ function buildReviewQueueElement(options: ReviewQueueElementOptions): QaReviewRe
     reportingPeriod: options.reportingPeriod,
     qaStatus: QaStatus.Pending,
     datasetReviewId: options.datasetReviewId,
-    ownerName: options.ownerName,
-    ownerId: options.ownerId,
+    qaJudgeUserName: options.reviewerUserName,
+    qaJudgeUserId: options.reviewerUserId,
     numberQaReports: 0,
     priorityOfAssociatedDataSourcing: options.priorityOfAssociatedDataSourcing,
   };
@@ -167,6 +168,7 @@ describe('Component tests for the Quality Assurance page', () => {
   });
 
   const dataIdAlpha = crypto.randomUUID();
+  const datasetReviewIdAlpha = crypto.randomUUID();
   const companyNameAlpha = 'Alpha Company AG';
   const companyIdAlpha = crypto.randomUUID();
   const timestampAlpha = 1700000000000;
@@ -183,9 +185,9 @@ describe('Component tests for the Quality Assurance page', () => {
   const dataIdBeta = crypto.randomUUID();
   const companyNameBeta = 'Beta Corporate Ltd.';
   const companyIdBeta = crypto.randomUUID();
-  const datasetReviewId = crypto.randomUUID();
-  const ownerName = 'Owner user name';
-  const ownerId = 'Owneruserid';
+  const datasetReviewIdBeta = crypto.randomUUID();
+  const reviewerUserName = 'Reviewer user name';
+  const reviewerUserId = 'Revieweruserid';
   const timestampBeta = 1711110000000;
   const reviewQueueElementBeta = buildReviewQueueElement({
     dataId: dataIdBeta,
@@ -193,9 +195,9 @@ describe('Component tests for the Quality Assurance page', () => {
     companyId: companyIdBeta,
     framework: DataTypeEnum.Sfdr,
     reportingPeriod: '2023',
-    datasetReviewId: datasetReviewId,
-    ownerName: ownerName,
-    ownerId: ownerId,
+    datasetReviewId: datasetReviewIdBeta,
+    reviewerUserName: reviewerUserName,
+    reviewerUserId: reviewerUserId,
     timestamp: timestampBeta,
   });
 
@@ -443,7 +445,11 @@ describe('Component tests for the Quality Assurance page', () => {
       });
   });
 
-  it('Check if dataset can be reviewed on the view page', () => {
+  /**
+   * Mounts the view page with mock data and returns the meta info used for assertions.
+   * @returns the mock meta info used in the view page
+   */
+  function mountViewPageWithMocks(keycloakRole: Keycloak): DataMetaInformation {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'lksgTestDataId',
       companyId: 'testCompanyId',
@@ -475,17 +481,27 @@ describe('Component tests for the Quality Assurance page', () => {
       mockLksgDataAndMetaInfo,
     ]);
 
-    getMountingFunction({
-      keycloak: keycloakMockWithReviewerRole,
-      dialogOptions: {
-        mountWithDialog: true,
-        propsToPassToTheMountedComponent: {
-          companyId: mockDataMetaInfo.companyId,
-          dataType: DataTypeEnum.Lksg,
-          dataId: mockDataMetaInfo.dataId,
+    const viewRoute = `/companies/${mockDataMetaInfo.companyId}/frameworks/${mockDataMetaInfo.dataType}/${mockDataMetaInfo.dataId}`;
+    cy.wrap(router.push(viewRoute)).then(() => {
+      getMountingFunction({
+        keycloak: keycloakRole,
+        router: router,
+        dialogOptions: {
+          mountWithDialog: true,
+          propsToPassToTheMountedComponent: {
+            companyId: mockDataMetaInfo.companyId,
+            dataType: DataTypeEnum.Lksg,
+            dataId: mockDataMetaInfo.dataId,
+          },
         },
-      },
-    })(ViewFrameworkData);
+      })(ViewFrameworkData);
+    });
+
+    return mockDataMetaInfo;
+  }
+
+  it('Check if dataset can be reviewed on the view page', () => {
+    const mockDataMetaInfo = mountViewPageWithMocks(keycloakMockWithReviewerRole);
     cy.get('h1').contains(LksgFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
@@ -511,16 +527,33 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('.p-dialog-close-button').click();
   });
 
+  it('Check routing of QA review page button.', () => {
+    const mockDataMetaInfo = mountViewPageWithMocks(keycloakMockWithJudgeRole);
+    cy.spy(router, 'push').as('routerPush');
+    cy.intercept('GET', `**/qa/dataset-judgements/${mockDataMetaInfo.dataId}/datasetId`, (request) => {
+      request.reply(200, [
+        {
+          dataSetJudgementId: datasetReviewIdAlpha,
+        },
+      ]);
+    }).as('getDatasetJudgement');
+    cy.get('button[data-test="qaReviewPageButton"]').should('exist').click();
+    cy.wait('@getDatasetJudgement');
+    cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdAlpha}`);
+  });
+
   it('Check routing of Start Review button.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
-    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+    cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, (request) => {
       request.reply(201, {
+        dataSetJudgementId: datasetReviewIdAlpha,
         companyId: companyIdAlpha,
         dataType: DataTypeEnum.Lksg,
+        dataId: dataIdAlpha,
       });
     }).as('createDatasetReview');
-    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${ownerName})`).click();
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
@@ -535,7 +568,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check display of error message.', () => {
     mountQaAssurancePageWithMocks();
-    cy.intercept('POST', `**/qa/dataset-reviews/${dataIdAlpha}`, (request) => {
+    cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, (request) => {
       request.reply(403, {
         errors: [
           {
@@ -548,7 +581,7 @@ describe('Component tests for the Quality Assurance page', () => {
         ],
       });
     }).as('createDatasetReviewForbidden');
-    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${ownerName})`).click();
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReviewForbidden');
     cy.get('[data-test="confirmation-modal-error-message"]')

@@ -13,10 +13,10 @@ import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -52,7 +52,7 @@ class QaReviewManagerTest {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
-    private val mockDatasetReviewService: DatasetReviewService = mock<DatasetReviewService>()
+    private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
 
     private val bypassQaComment = "Automatically QA approved."
@@ -90,20 +90,17 @@ class QaReviewManagerTest {
         )
 
     private val datasetReviewResponse =
-        DatasetReviewResponse(
-            dataSetReviewId = UUID.randomUUID().toString(),
+        DatasetJudgementResponse(
+            dataSetJudgementId = UUID.randomUUID().toString(),
             datasetId = dataId,
             companyId = companyId,
             dataType = "dummyFramework",
             reportingPeriod = reportingPeriod,
-            reviewState = DatasetReviewState.Pending,
-            ownerId = dummyUserId,
-            ownerName = dummyUserName,
-            preapprovedDataPointIds = emptySet(),
-            qaReports = emptySet(),
-            approvedDataPointIds = emptyMap(),
-            approvedQaReportIds = emptyMap(),
-            approvedCustomDataPointIds = emptyMap(),
+            judgementState = DatasetJudgementState.Pending,
+            qaJudgeUserId = dummyUserId,
+            qaJudgeUserName = dummyUserName,
+            qaReporters = emptyList(),
+            dataPoints = emptyMap(),
         )
 
     private lateinit var qaReviewManager: QaReviewManager
@@ -118,7 +115,7 @@ class QaReviewManagerTest {
             mockCloudEventMessageHandler,
             mockExceptionForwarder,
             mockDataPointQaReportManager,
-            mockDatasetReviewService,
+            mockDatasetJudgementService,
             mockDataSourcingService,
         )
         qaReviewManager =
@@ -130,7 +127,7 @@ class QaReviewManagerTest {
                 objectMapper,
                 mockExceptionForwarder,
                 mockDataPointQaReportManager,
-                mockDatasetReviewService,
+                mockDatasetJudgementService,
                 mockDataSourcingService,
             )
 
@@ -245,8 +242,8 @@ class QaReviewManagerTest {
             .whenever(mockDataPointQaReportManager)
             .countQaReportsForDataPointIds(any())
         doReturn(listOf(datasetReviewResponse))
-            .whenever(mockDatasetReviewService)
-            .getDatasetReviewsByDatasetId(any())
+            .whenever(mockDatasetJudgementService)
+            .getDatasetJudgementsByDatasetId(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(
@@ -266,8 +263,8 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId, responses.first().ownerId)
-        Assertions.assertEquals(dummyUserName, responses.first().ownerName)
+        Assertions.assertEquals(dummyUserId, responses.first().qaJudgeUserId)
+        Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
     }
 
     @Test
