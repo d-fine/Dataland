@@ -570,7 +570,8 @@ function hidePopover(): void {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto 1fr;
-  gap: var(--spacing-xxs);
+  column-gap: var(--spacing-lg);
+  row-gap: var(--spacing-xs);
   flex: 1;
   min-height: 0;
 }
