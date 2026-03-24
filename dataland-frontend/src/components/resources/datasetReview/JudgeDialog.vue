@@ -10,7 +10,17 @@
   >
     <!-- Header -->
     <template #header>
-      <span class="p-dialog-title">{{ currentDataPointTypeId }}</span>
+      <div class="judge-modal__header">
+        <span class="p-dialog-title">{{ currentDataPointTypeId }}</span>
+        <span
+          v-if="verdictBadge"
+          class="judge-modal__verdict-badge"
+          :class="verdictBadge.cssClass"
+          data-test="verdict-badge"
+        >
+          {{ verdictBadge.label }}
+        </span>
+      </div>
     </template>
 
     <!-- Loading / error states for dataset review -->
@@ -21,7 +31,7 @@
 
     <div v-else class="judge-modal__content">
       <!-- Top-left: Original datapoint -->
-      <DatapointReadonlySection
+      <JudgeDialogTopSection
         title="Original datapoint"
         :data="originalData"
         :is-loading="isOriginalLoading"
@@ -39,7 +49,7 @@
       />
 
       <!-- Top-right: Corrected datapoint (QA reports) -->
-      <DatapointReadonlySection
+      <JudgeDialogTopSection
         title="Corrected datapoint"
         :data="currentQaCorrectedData"
         empty-text="No QA reports available."
@@ -60,7 +70,7 @@
 
 
       <!-- Bottom-left: Custom datapoint -->
-      <CustomDatapointSection
+      <JudgeDialogCustomSection
         v-model:edit-mode-enabled="editModeEnabled"
         v-model:json="customJson"
         v-model:form-data="customFormData"
@@ -74,7 +84,7 @@
       />
 
       <!-- Bottom-right: Next datapoint selection & patch error -->
-      <NextDatapointSection
+      <JudgeDialogNextSection
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
@@ -99,9 +109,9 @@ import Popover from 'primevue/popover';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
-import DatapointReadonlySection from '@/components/resources/datasetReview/DatapointReadonlySection.vue';
-import CustomDatapointSection from '@/components/resources/datasetReview/CustomDatapointSection.vue';
-import NextDatapointSection from '@/components/resources/datasetReview/NextDatapointSection.vue';
+import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
+import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
+import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
 import type {
   CustomFormData,
   DataPointDetail,
@@ -194,7 +204,7 @@ function createMockDatasetReview() {
         qaReports: [
           {
             qaReportId: 'mock-qa-1',
-            verdict: 'QaPending',
+            verdict: 'QaAccepted',
             correctedData: JSON.stringify({
               value: 12000,
               quality: 'Reported',
@@ -205,7 +215,7 @@ function createMockDatasetReview() {
           },
           {
             qaReportId: 'mock-qa-2',
-            verdict: 'QaPending',
+            verdict: 'QaAccepted',
             correctedData: JSON.stringify({
               value: 11890,
               quality: 'Reported',
@@ -227,7 +237,7 @@ function createMockDatasetReview() {
         qaReports: [
           {
             qaReportId: 'mock-qa-3',
-            verdict: 'QaPending',
+            verdict: 'QaAccepted',
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
               quality: 'Incomplete',
@@ -243,7 +253,7 @@ function createMockDatasetReview() {
           },
           {
             qaReportId: 'mock-qa-4',
-            verdict: 'QaPending',
+            verdict: 'QaRejected',
             correctedData: JSON.stringify({
               value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
               quality: 'NoDataFound',
@@ -259,7 +269,7 @@ function createMockDatasetReview() {
           },
           {
             qaReportId: 'mock-qa-5',
-            verdict: 'QaPending',
+            verdict: 'QaAccepted',
             correctedData: JSON.stringify({
               value: "No",
               quality: "Incomplete",
@@ -272,7 +282,7 @@ function createMockDatasetReview() {
                 publicationDate: "2024-01-07"
               }
             }),
-            reporterUserId: 'mock-user-2',
+            reporterUserId: 'mock-user-3',
           }
         ],
       },
@@ -280,6 +290,7 @@ function createMockDatasetReview() {
     qaReporters: [
       { reporterUserId: 'mock-user-1', reporterUserName: 'Jane QA', reporterEmailAddress: 'jane.qa@example.com' },
       { reporterUserId: 'mock-user-2', reporterUserName: 'Alex QA', reporterEmailAddress: 'alex.qa@example.com' },
+      { reporterUserId: 'mock-user-3', reporterUserName: 'Peter QA', reporterEmailAddress: 'peter.qa@example.com' },
     ],
   } as any;
 }
@@ -345,7 +356,17 @@ watch(
 const filteredQaReports = computed<QaReport[]>(() => {
   const meta = currentDataPointMeta.value;
   if (!meta?.qaReports) return [];
-  return (meta.qaReports as QaReport[]).filter((r) => r.verdict !== 'QaAccepted');
+  return meta.qaReports as QaReport[];
+});
+
+const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
+  const meta = currentDataPointMeta.value;
+  if (!meta) return null;
+  const allReports = (meta.qaReports as QaReport[]) ?? [];
+  if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
+  if (allReports.every((r) => r.verdict === 'QaAccepted')) return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
+  if (allReports.some((r) => r.verdict === 'QaRejected')) return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
+  return { label: 'QA INCONCLUSIVE', cssClass: 'judge-modal__verdict-badge--yellow' };
 });
 
 const currentQaReportIndex = ref<number>(0);
@@ -477,6 +498,12 @@ function copyCorrectedToCustom(): void {
 const onlyShowUnreviewed = ref<boolean>(true);
 const selectedNextDataPointTypeId = ref<string | null>(null);
 
+function isDataPointJudged(meta: any): boolean {
+  if (meta.acceptedSource !== null) return true;
+  const reports = (meta.qaReports as QaReport[]) ?? [];
+  return reports.length > 0 && reports.every((r) => r.verdict === 'QaAccepted');
+}
+
 const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
   if (!datasetReview.value?.dataPoints) return [];
   const options: NextDatapointOption[] = [];
@@ -484,7 +511,7 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
   const entries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
 
   for (const [dataPointType, meta] of entries) {
-    const reviewed = meta.acceptedSource !== null;
+    const reviewed = isDataPointJudged(meta);
     if (onlyShowUnreviewed.value && reviewed) continue;
 
     options.push({
@@ -501,7 +528,7 @@ function findNextUnreviewedAfter(afterId: string): string | null {
   const allEntries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
   const startIndex = allEntries.findIndex(([key]) => key === afterId);
   const rotated = [...allEntries.slice(startIndex + 1), ...allEntries.slice(0, startIndex)];
-  const [key] = rotated.find(([, meta]) => meta.acceptedSource === null) ?? [];
+  const [key] = rotated.find(([, meta]) => !isDataPointJudged(meta)) ?? [];
   return key ?? null;
 }
 
@@ -564,6 +591,38 @@ function hidePopover(): void {
 </script>
 
 <style scoped lang="scss">
+.p-dialog-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+.judge-modal__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  flex: 1;
+}
+
+.judge-modal__verdict-badge {
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+
+  &--green {
+    background-color: var(--p-green-100);
+    color: var(--p-green-700);
+  }
+
+  &--red {
+    background-color: var(--p-red-100);
+    color: var(--p-red-700);
+  }
+
+  &--yellow {
+    background-color: var(--p-yellow-100);
+    color: var(--p-yellow-700);
+  }
+}
+
 .p-dialog-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);

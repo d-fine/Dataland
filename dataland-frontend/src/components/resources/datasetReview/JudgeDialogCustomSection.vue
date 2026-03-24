@@ -321,7 +321,7 @@ watch(editModeEnabled, (newVal) => {
 }
 
 .judge-modal__json-textarea {
-  height: 10.2rem;
+  height: 10.3rem;
   overflow: auto;
   resize: none;
 }
