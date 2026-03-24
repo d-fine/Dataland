@@ -43,7 +43,7 @@
         data-test="original-datapoint-section"
         :show-nav="false"
         :nav-index="0"
-        @accept="onAcceptClick('Original')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
       />
@@ -61,7 +61,7 @@
         :nav-index="currentQaReportIndex"
         :nav-count="filteredQaReports.length"
         :nav-label="currentQaReporterLabel"
-        @accept="onAcceptClick('Qa')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"
         @show-popover="showPopover"
@@ -77,7 +77,7 @@
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
         :available-documents="availableDocuments"
-        @accept="onAcceptClick('Custom')"
+        @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
         @copy-corrected="copyCorrectedToCustom"
       />
@@ -116,6 +116,7 @@ import type {
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { AcceptedDataPointSource } from '@clients/qaservice';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -532,13 +533,13 @@ function goToSelectedDataPoint(): void {
   resetStateForCurrentDataPoint();
 }
 
-function markCurrentAsReviewed(source: string): void {
+function markCurrentAsReviewed(source: AcceptedDataPointSource): void {
   if (datasetJudgement.value?.dataPoints?.[currentDataPointTypeId.value]) {
     datasetJudgement.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
   }
 }
 
-function onAcceptClick(source: 'Original' | 'Qa' | 'Custom'): void {
+function onAcceptClick(source: AcceptedDataPointSource): void {
   isMutating.value = true;
   patchError.value = null;
   setTimeout(() => {
