@@ -24,7 +24,7 @@
     </template>
 
     <!-- Loading / error states for dataset review -->
-    <div v-if="isDatasetReviewLoading">Loading dataset review...</div>
+    <div v-if="isDatasetJudgementPending">Loading dataset review...</div>
     <div v-else-if="datasetReviewError">
       <Message severity="error"> Failed to load dataset review. </Message>
     </div>
@@ -68,7 +68,6 @@
         @hide-popover="hidePopover"
       />
 
-
       <!-- Bottom-left: Custom datapoint -->
       <JudgeDialogCustomSection
         v-model:edit-mode-enabled="editModeEnabled"
@@ -100,14 +99,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
-import type Keycloak from 'keycloak-js';
+import { computed, ref, watch } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import Message from 'primevue/message';
 import Popover from 'primevue/popover';
-
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
 import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
@@ -120,6 +115,7 @@ import type {
   QaReport,
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -148,15 +144,6 @@ const emit = defineEmits<{
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
 
-// ===== API clients =====
-
-// TODO : Replace with useApiClient() hook once DALA-6854 is merged to main
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-const datasetReviewControllerApi = apiClientProvider.apiClients.datasetReviewController;
-const dataPointControllerApi = apiClientProvider.apiClients.dataPointController;
-
 // ===== Dataset review =====
 
 const mockDataPointsById: Record<string, DataPointDetail> = {
@@ -165,11 +152,11 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     quality: 'Reported',
     comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
     dataSource: {
-      page: "1026",
-      tagName: "web services",
-      fileName: "Sustainability_Report_2023.pdf",
-      fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-      publicationDate: "2024-01-07"
+      page: '1026',
+      tagName: 'web services',
+      fileName: 'Sustainability_Report_2023.pdf',
+      fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
+      publicationDate: '2024-01-07',
     },
   },
   'mock-dp-2': {
@@ -178,7 +165,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     comment: 'Mock original datapoint for custom acceptance.',
     dataSource: {
       fileName: 'MockSource-REF-77',
-      fileReference: "abcklwe78324",
+      fileReference: 'abcklwe78324',
       page: '4-6',
     },
   },
@@ -190,7 +177,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     dataSource: {
       fileName: 'Annual_Sustainability_Disclosure.pdf',
       page: '47-53',
-      publicationDate: "2023-01-08"
+      publicationDate: '2023-01-08',
     },
   },
 };
@@ -271,19 +258,19 @@ function createMockDatasetReview() {
             qaReportId: 'mock-qa-5',
             verdict: 'QaAccepted',
             correctedData: JSON.stringify({
-              value: "No",
-              quality: "Incomplete",
-              comment: "program neural circuit",
+              value: 'No',
+              quality: 'Incomplete',
+              comment: 'program neural circuit',
               dataSource: {
-                page: "1026",
-                tagName: "web services",
-                fileName: "Sustainability_Report_2023.pdf",
-                fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-                publicationDate: "2024-01-07"
-              }
+                page: '1026',
+                tagName: 'web services',
+                fileName: 'Sustainability_Report_2023.pdf',
+                fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
+                publicationDate: '2024-01-07',
+              },
             }),
             reporterUserId: 'mock-user-3',
-          }
+          },
         ],
       },
     },
@@ -295,9 +282,12 @@ function createMockDatasetReview() {
   } as any;
 }
 
-const datasetReview = ref(createMockDatasetReview());
-const isDatasetReviewLoading = ref(false);
-const datasetReviewError = ref(null);
+const datasetJudgementId = computed(() => props.datasetReviewId);
+const {
+  data: datasetJudgement,
+  isPending: isDatasetJudgementPending,
+  isError: datasetReviewError,
+} = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
 const isMutating = ref(false);
 const patchError = ref<string | null>(null);
@@ -315,8 +305,8 @@ watch(
 );
 
 const currentDataPointMeta = computed<any | null>(() => {
-  if (!datasetReview.value?.dataPoints) return null;
-  return datasetReview.value.dataPoints[currentDataPointTypeId.value] ?? null;
+  if (!datasetJudgement.value?.dataPoints) return null;
+  return datasetJudgement.value.dataPoints[currentDataPointTypeId.value] ?? null;
 });
 
 // ===== Original datapoint =====
@@ -364,8 +354,10 @@ const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => 
   if (!meta) return null;
   const allReports = (meta.qaReports as QaReport[]) ?? [];
   if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
-  if (allReports.every((r) => r.verdict === 'QaAccepted')) return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
-  if (allReports.some((r) => r.verdict === 'QaRejected')) return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
+  if (allReports.every((r) => r.verdict === 'QaAccepted'))
+    return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
+  if (allReports.some((r) => r.verdict === 'QaRejected'))
+    return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
   return { label: 'QA INCONCLUSIVE', cssClass: 'judge-modal__verdict-badge--yellow' };
 });
 
@@ -386,8 +378,8 @@ const currentQaReport = computed<QaReport | null>(() => {
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {
   const map: Record<string, QaReporter> = {};
-  if (!datasetReview.value?.qaReporters) return map;
-  for (const r of datasetReview.value.qaReporters as QaReporter[]) {
+  if (!datasetJudgement.value?.qaReporters) return map;
+  for (const r of datasetJudgement.value.qaReporters as QaReporter[]) {
     map[r.reporterUserId] = r;
   }
   return map;
@@ -505,10 +497,10 @@ function isDataPointJudged(meta: any): boolean {
 }
 
 const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
-  if (!datasetReview.value?.dataPoints) return [];
+  if (!datasetJudgement.value?.dataPoints) return [];
   const options: NextDatapointOption[] = [];
 
-  const entries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
+  const entries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
 
   for (const [dataPointType, meta] of entries) {
     const reviewed = isDataPointJudged(meta);
@@ -524,8 +516,8 @@ const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
 });
 
 function findNextUnreviewedAfter(afterId: string): string | null {
-  if (!datasetReview.value?.dataPoints) return null;
-  const allEntries = Object.entries(datasetReview.value.dataPoints) as [string, any][];
+  if (!datasetJudgement.value?.dataPoints) return null;
+  const allEntries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
   const startIndex = allEntries.findIndex(([key]) => key === afterId);
   const rotated = [...allEntries.slice(startIndex + 1), ...allEntries.slice(0, startIndex)];
   const [key] = rotated.find(([, meta]) => !isDataPointJudged(meta)) ?? [];
@@ -541,8 +533,8 @@ function goToSelectedDataPoint(): void {
 }
 
 function markCurrentAsReviewed(source: string): void {
-  if (datasetReview.value?.dataPoints?.[currentDataPointTypeId.value]) {
-    datasetReview.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
+  if (datasetJudgement.value?.dataPoints?.[currentDataPointTypeId.value]) {
+    datasetJudgement.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
   }
 }
 
