@@ -240,6 +240,15 @@ function jsonToFormData(): void {
   jsonValue.value = DEFAULT_CUSTOM_JSON;
 }
 
+watch(
+  () => formData.value.quality,
+  (newQuality) => {
+    if (newQuality === QualityOptions.NoDataFound) {
+      formData.value = { ...formData.value, value: '', document: '', pages: '', comment: '' };
+    }
+  }
+);
+
 watch(editModeEnabled, (newVal) => {
   if (newVal) {
     formDataToJson();
