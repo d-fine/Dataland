@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import type { Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
+import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
 import { type DatasetJudgementResponse } from '@clients/qaservice';
 import { type AxiosResponse } from 'axios';
 

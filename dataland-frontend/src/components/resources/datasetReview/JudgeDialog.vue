@@ -115,7 +115,7 @@ import type {
   QaReport,
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
-import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { AcceptedDataPointSource } from '@clients/qaservice';
 
 // ===== Props & emits =====
