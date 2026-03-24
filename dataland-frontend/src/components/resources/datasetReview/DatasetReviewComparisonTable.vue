@@ -70,7 +70,7 @@
               <tr
                 v-for="(row, index) in filteredRows"
                 :key="row.type + '-' + row.label + '-' + index"
-                :class="row.type === 'section' ? 'surface-100 ' : 'border-bottom-1 surface-border hover:surface-50'"
+                :class="row.type === 'section' ? 'surface-100 ' : 'border-bottom-1 surface-border'"
               >
                 <!-- Section header row -->
                 <template v-if="row.type === 'section'">
@@ -95,9 +95,10 @@
                     data-row-header="true"
                   >
                     <div class="flex justify-content-between align-items-center">
-                      <span class="table-left-label font-normal">
+                      <a class="kpi-link table-left-label font-normal" @click="emit('row-click', row)">
                         {{ row.label }}
-                      </span>
+                        <em class="pl-1 material-icons" aria-hidden="true">dataset</em>
+                      </a>
                       <em
                         v-if="row.explanation"
                         class="material-icons inline-flex align-items-center ml-2 cursor-help"
@@ -214,6 +215,10 @@ import { toTitleCase } from '@/utils/StringFormatter.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
+const emit = defineEmits<{
+  (e: 'row-click', row: CellRow): void;
+}>();
+
 const props = defineProps<{
   framework: DataTypeEnum;
   dataId: string;
@@ -291,7 +296,7 @@ type SectionRow = {
   level: number;
 };
 
-type CellRow = {
+export type CellRow = {
   type: 'cell';
   label: string;
   dataPointTypeId?: string;
@@ -567,5 +572,27 @@ function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
 /* slightly higher z-index for header so it stays above cells */
 .p-datatable-table thead th:first-child {
   z-index: 3;
+}
+
+.kpi-link {
+  color: var(--main-color);
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: hsl(from var(--main-color) h s calc(l - 20));
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: hsl(from var(--main-color) h s calc(l + 10));
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
+  }
 }
 </style>

@@ -68,7 +68,6 @@
         @hide-popover="hidePopover"
       />
 
-
       <!-- Bottom-left: Custom datapoint -->
       <JudgeDialogCustomSection
         v-model:edit-mode-enabled="editModeEnabled"
@@ -154,35 +153,35 @@ const isOpen = defineModel<boolean>('isOpen');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const datasetReviewControllerApi = apiClientProvider.apiClients.datasetReviewController;
+const datasetReviewControllerApi = apiClientProvider.apiClients.datasetJudgementController;
 const dataPointControllerApi = apiClientProvider.apiClients.dataPointController;
 
 // ===== Dataset review =====
 
 const mockDataPointsById: Record<string, DataPointDetail> = {
-  'mock-dp-1': {
+  'kpi.energyConsumption': {
     value: '12345',
     quality: 'Reported',
     comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
     dataSource: {
-      page: "1026",
-      tagName: "web services",
-      fileName: "Sustainability_Report_2023.pdf",
-      fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-      publicationDate: "2024-01-07"
+      page: '1026',
+      tagName: 'web services',
+      fileName: 'Sustainability_Report_2023.pdf',
+      fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
+      publicationDate: '2024-01-07',
     },
   },
-  'mock-dp-2': {
+  'kpi.co2Emissions': {
     value: '987',
     quality: 'Incomplete',
     comment: 'Mock original datapoint for custom acceptance.',
     dataSource: {
       fileName: 'MockSource-REF-77',
-      fileReference: "abcklwe78324",
+      fileReference: 'abcklwe78324',
       page: '4-6',
     },
   },
-  'mock-dp-3': {
+  'kpi.energyProduction': {
     value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED',
     quality: 'Estimated',
     comment:
@@ -190,7 +189,7 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
     dataSource: {
       fileName: 'Annual_Sustainability_Disclosure.pdf',
       page: '47-53',
-      publicationDate: "2023-01-08"
+      publicationDate: '2023-01-08',
     },
   },
 };
@@ -199,7 +198,7 @@ function createMockDatasetReview() {
   return {
     dataPoints: {
       'kpi.energyConsumption': {
-        dataPointId: 'mock-dp-1',
+        dataPointId: 'kpi.energyConsumption',
         acceptedSource: null,
         qaReports: [
           {
@@ -227,12 +226,12 @@ function createMockDatasetReview() {
         ],
       },
       'kpi.co2Emissions': {
-        dataPointId: 'mock-dp-2',
+        dataPointId: 'kpi.co2Emissions',
         acceptedSource: null,
         qaReports: [],
       },
       'kpi.energyProduction': {
-        dataPointId: 'mock-dp-3',
+        dataPointId: 'kpi.energyProduction',
         acceptedSource: null,
         qaReports: [
           {
@@ -271,19 +270,19 @@ function createMockDatasetReview() {
             qaReportId: 'mock-qa-5',
             verdict: 'QaAccepted',
             correctedData: JSON.stringify({
-              value: "No",
-              quality: "Incomplete",
-              comment: "program neural circuit",
+              value: 'No',
+              quality: 'Incomplete',
+              comment: 'program neural circuit',
               dataSource: {
-                page: "1026",
-                tagName: "web services",
-                fileName: "Sustainability_Report_2023.pdf",
-                fileReference: "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-                publicationDate: "2024-01-07"
-              }
+                page: '1026',
+                tagName: 'web services',
+                fileName: 'Sustainability_Report_2023.pdf',
+                fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
+                publicationDate: '2024-01-07',
+              },
             }),
             reporterUserId: 'mock-user-3',
-          }
+          },
         ],
       },
     },
@@ -364,8 +363,10 @@ const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => 
   if (!meta) return null;
   const allReports = (meta.qaReports as QaReport[]) ?? [];
   if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
-  if (allReports.every((r) => r.verdict === 'QaAccepted')) return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
-  if (allReports.some((r) => r.verdict === 'QaRejected')) return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
+  if (allReports.every((r) => r.verdict === 'QaAccepted'))
+    return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
+  if (allReports.some((r) => r.verdict === 'QaRejected'))
+    return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
   return { label: 'QA INCONCLUSIVE', cssClass: 'judge-modal__verdict-badge--yellow' };
 });
 

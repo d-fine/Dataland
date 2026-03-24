@@ -1,7 +1,6 @@
 <template>
   <TheContent class="min-h-screen relative">
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_JUDGE">
-      <JudgeDialog dataset-review-id="mock" data-point-type-id="mock-dp-1" v-model:visible="isJudgeDialogVisible" />
       <div class="container">
         <div class="company-search" data-test="companySearchBarWithMessage">
           <IconField id="company-search-bar">
@@ -306,9 +305,7 @@ import { FilterMatchMode } from '@primevue/core/api';
 import Slider from 'primevue/slider';
 import { type DataTypeEnum } from '@clients/backend';
 import { type QaReviewResponse } from '@clients/qaservice';
-import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
 
-const isJudgeDialogVisible = ref(true);
 const filters = ref({
   framework: {
     value: null as DataTypeEnum[] | null,

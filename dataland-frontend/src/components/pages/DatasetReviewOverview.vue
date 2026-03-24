@@ -83,6 +83,12 @@
               :search-query="''"
               :hide-empty-fields="hideEmptyFields"
               data-test="datasetReviewComparisonTable"
+              @row-click="onComparisonTableRowClicked"
+            />
+            <JudgeDialog
+              :dataset-review-id="props.datasetJudgementId"
+              :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
+              v-model:is-open="isJudgeDialogOpen"
             />
           </div>
         </div>
@@ -102,6 +108,8 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
+import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
@@ -127,6 +135,13 @@ const props = defineProps<{
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
+const isJudgeDialogOpen = ref(false);
+const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
+
+function onComparisonTableRowClicked(row: CellRow): void {
+  judgeDialogDataPointTypeId.value = row.dataPointTypeId ?? row.label;
+  isJudgeDialogOpen.value = true;
+}
 
 const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
