@@ -2,7 +2,7 @@ import { computed, type Ref } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import type { DatasetJudgementResponse } from '@clients/qaservice';
 import { useApiClient } from '@/utils/useApiClient';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
+import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
 
 /**
  * Fetch a dataset judgement by id.

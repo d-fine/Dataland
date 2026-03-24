@@ -121,10 +121,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetJudgementState } from '@clients/qaservice';
-import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
-import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
-import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
+import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewStateMutation.ts';
+import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 
