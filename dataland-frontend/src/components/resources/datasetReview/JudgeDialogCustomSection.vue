@@ -3,33 +3,27 @@
     <div class="judge-modal__section-header-row">
       <h3 class="judge-modal__section-title">Custom datapoint</h3>
       <div class="judge-modal__toggle">
-        <ToggleSwitch
-            id="edit-mode-toggle"
-            v-model="editModeEnabled"
-            data-test="edit-mode-toggle"
-        />
-        <label for="edit-mode-toggle">
-          JSON
-        </label>
+        <ToggleSwitch id="edit-mode-toggle" v-model="editModeEnabled" data-test="edit-mode-toggle" />
+        <label for="edit-mode-toggle"> JSON </label>
       </div>
     </div>
 
     <div class="judge-modal__copy-buttons">
       <PrimeButton
-          label="Copy original datapoint"
-          variant="text"
-          size="small"
-          @click="emit('copyOriginal')"
-          :disabled="!canCopyOriginal"
-          data-test="copy-original-to-custom"
+        label="Copy original datapoint"
+        variant="text"
+        size="small"
+        @click="emit('copyOriginal')"
+        :disabled="!canCopyOriginal"
+        data-test="copy-original-to-custom"
       />
       <PrimeButton
-          label="Copy corrected datapoint"
-          variant="text"
-          size="small"
-          @click="emit('copyCorrected')"
-          :disabled="!canCopyCorrected"
-          data-test="copy-corrected-to-custom"
+        label="Copy corrected datapoint"
+        variant="text"
+        size="small"
+        @click="emit('copyCorrected')"
+        :disabled="!canCopyCorrected"
+        data-test="copy-corrected-to-custom"
       />
     </div>
 
@@ -38,76 +32,76 @@
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" aria-label="Data point content">
           <tbody class="p-datatable-body">
-          <tr>
-            <th scope="row" class="headers-bg">Value</th>
-        <td>
-          <InputText
-              id="custom-value-field"
-              v-model="formData.value"
-              size="small"
-              fluid
-              placeholder="Select Value"
-              data-test="custom-value-field"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" class="headers-bg">Quality</th>
-        <td>
-          <Select
-              v-model="formData.quality"
-              :options="qualityOptions"
-              option-label="label"
-              option-value="value"
-              size="small"
-              fluid
-              placeholder="Select Quality"
-              data-test="custom-quality-field"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" class="headers-bg">Document</th>
-        <td>
-          <Select
-              v-model="formData.document"
-              :options="availableDocuments"
-              option-label="label"
-              option-value="value"
-              size="small"
-              fluid
-              placeholder="Select Document"
-              data-test="custom-document-field"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" class="headers-bg">Page(s)</th>
-        <td>
-          <InputText
-              id="custom-pages-field"
-              v-model="formData.pages"
-              size="small"
-              fluid
-              placeholder="Select Page(s)"
-              data-test="custom-pages-field"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" class="headers-bg">Comment</th>
-        <td>
-          <InputText
-              id="custom-comment-field"
-              v-model="formData.comment"
-              size="small"
-              fluid
-              placeholder="Write a comment"
-              rows="2"
-              data-test="custom-comment-field"
-          />
-        </td>
-      </tr>
+            <tr>
+              <th scope="row" class="headers-bg">Value</th>
+              <td>
+                <InputText
+                  id="custom-value-field"
+                  v-model="formData.value"
+                  size="small"
+                  fluid
+                  placeholder="Select Value"
+                  data-test="custom-value-field"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="headers-bg">Quality</th>
+              <td>
+                <Select
+                  v-model="formData.quality"
+                  :options="qualityOptions"
+                  option-label="label"
+                  option-value="value"
+                  size="small"
+                  fluid
+                  placeholder="Select Quality"
+                  data-test="custom-quality-field"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="headers-bg">Document</th>
+              <td>
+                <Select
+                  v-model="formData.document"
+                  :options="availableDocuments"
+                  option-label="label"
+                  option-value="value"
+                  size="small"
+                  fluid
+                  placeholder="Select Document"
+                  data-test="custom-document-field"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="headers-bg">Page(s)</th>
+              <td>
+                <InputText
+                  id="custom-pages-field"
+                  v-model="formData.pages"
+                  size="small"
+                  fluid
+                  placeholder="Select Page(s)"
+                  data-test="custom-pages-field"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="headers-bg">Comment</th>
+              <td>
+                <InputText
+                  id="custom-comment-field"
+                  v-model="formData.comment"
+                  size="small"
+                  fluid
+                  placeholder="Write a comment"
+                  rows="2"
+                  data-test="custom-comment-field"
+                />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -116,21 +110,21 @@
     <!-- Edit mode: Display as JSON editor -->
     <div v-else class="judge-modal__json-editor">
       <Textarea
-          id="custom-json-textarea"
-          v-model="jsonValue"
-          class="judge-modal__json-textarea"
-          size="small"
-          spellcheck="false"
-          data-test="custom-json-textarea"
+        id="custom-json-textarea"
+        v-model="jsonValue"
+        class="judge-modal__json-textarea"
+        size="small"
+        spellcheck="false"
+        data-test="custom-json-textarea"
       />
     </div>
 
     <div class="judge-modal__section-actions">
       <PrimeButton
-          label="ACCEPT CUSTOM"
-          @click="emit('accept')"
-          :disabled="acceptDisabled || !isCustomJsonValid"
-          data-test="accept-custom-button"
+        label="ACCEPT CUSTOM"
+        @click="emit('accept')"
+        :disabled="acceptDisabled || !isCustomJsonValid"
+        data-test="accept-custom-button"
       />
       <span v-if="editModeEnabled && !isCustomJsonValid && jsonValue.trim().length > 0">
         Custom JSON must be valid JSON.
@@ -147,12 +141,17 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
-import type { CustomFormData, DataPointSourceInfo, DataPointDetail, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type {
+  CustomFormData,
+  DataPointSourceInfo,
+  DataPointDetail,
+  DocumentOption,
+} from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
-    { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
-    null,
-    2
+  { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
+  null,
+  2
 );
 
 const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
@@ -175,7 +174,8 @@ const emit = defineEmits<{
 
 const editModeEnabled = defineModel<boolean>('editModeEnabled', { default: false });
 const jsonValue = defineModel<string>('json', {
-  default: () => JSON.stringify({ value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } }, null, 2),
+  default: () =>
+    JSON.stringify({ value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } }, null, 2),
 });
 const formData = defineModel<CustomFormData>('formData', {
   default: () => ({ value: '', quality: '', document: '', pages: '', comment: '' }),
@@ -296,7 +296,6 @@ watch(editModeEnabled, (newVal) => {
   table-layout: fixed;
 
   tr {
-
     th {
       width: 6rem;
       padding: var(--spacing-xxs) var(--spacing-xs);
@@ -326,8 +325,7 @@ watch(editModeEnabled, (newVal) => {
 }
 
 .judge-modal__section-actions {
+  margin-top: auto;
   padding-top: var(--spacing-xs);
 }
 </style>
-
-
