@@ -147,7 +147,6 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import type { CustomFormData, DataPointSourceInfo, DataPointDetail, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -157,7 +156,7 @@ const DEFAULT_CUSTOM_JSON = JSON.stringify(
 );
 
 const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
-  label: humanizeStringOrNumber(qualityOption),
+  label: qualityOption,
   value: qualityOption,
 }));
 
