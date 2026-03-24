@@ -3,7 +3,7 @@
     id="judgeModal"
     :dismissable-mask="true"
     :modal="true"
-    :pt="{ root: { style: { width: '80vw', height: '80vh' } }, content: { style: { flex: '1', minHeight: '0', display: 'flex', flexDirection: 'column' } } }"
+    :pt="{ root: { style: { width: '80vw', maxHeight: '80vh' } } }"
     v-model:visible="isOpen"
     @hide="emit('close')"
     data-test="judge-modal"
