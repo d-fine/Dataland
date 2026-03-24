@@ -92,6 +92,36 @@ interface QaApi {
     ): ResponseEntity<List<QaReviewResponse>>
 
     /**
+     * Gets meta info objects for each pending dataset.
+     */
+    @Operation(
+        summary = "Get relevant meta info on datasets with QA status pending.",
+        description =
+            "Gets chronologically ordered list of relevant meta info on datasets with QA status pending. Filtering " +
+                "for company name or ID is possible",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved metadata sets."),
+        ],
+    )
+    @GetMapping(
+        value = ["/datasets/queue"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_REVIEWER') or hasRole('ROLE_JUDGE')")
+    fun getInfoOnPendingDatasets(
+        @RequestParam
+        @Parameter(
+            name = "companyName",
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_NAME_EXAMPLE,
+            required = false,
+        )
+        companyName: String?,
+    ): ResponseEntity<List<QaReviewResponse>>
+
+    /**
      * A method to get the QA review status of an uploaded dataset for a given identifier
      * @param dataId the dataId
      */
