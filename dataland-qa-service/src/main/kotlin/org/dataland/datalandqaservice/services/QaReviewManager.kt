@@ -208,24 +208,19 @@ class QaReviewManager
                     triggeringUserId = triggeringUserId,
                     comment = comment,
                 )
-
-            val pastActiveDataId =
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
-                )
             qaReviewRepository.save(qaReviewEntity)
-            val newActiveDataId =
-                getDataIdOfCurrentlyActiveDataset(
+            val acceptedReviewsSorted =
+                getAcceptedReviewMetadataSorted(
                     qaReviewEntity.companyId,
                     qaReviewEntity.framework,
                     qaReviewEntity.reportingPeriod,
                 )
+            val newActiveDataId = acceptedReviewsSorted.elementAtOrNull(0)?.dataId
+            val previousActiveDataId = acceptedReviewsSorted.getOrNull(1)
             this.sendQaStatusUpdateMessage(
                 qaReviewEntity = qaReviewEntity,
                 correlationId = correlationId,
-                pastActiveDataId != null,
+                isUpdate = previousActiveDataId != null,
                 newActiveDataId = newActiveDataId,
             )
         }
@@ -298,20 +293,21 @@ class QaReviewManager
         }
 
         /**
-         * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+         * Retrieves all QA review entities with status Accepted for a given ([companyId], [dataType], [reportingPeriod])
+         * triple, sorted by timestamp in descending order.
          * @param companyId the ID of the company
          * @param dataType the dataType of the dataset
          * @param reportingPeriod the reportingPeriod of the dataset
-         * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
+         * @return a list of accepted [QaReviewEntity] objects sorted by timestamp descending
          */
-        fun getDataIdOfCurrentlyActiveDataset(
+        fun getAcceptedReviewMetadataSorted(
             companyId: String,
             dataType: String,
             reportingPeriod: String,
-        ): String? {
+        ): List<QaReviewEntity> {
             logger.info(
-                "Searching for currently active dataset for company $companyId, " +
-                    "dataType $dataType, and reportingPeriod $reportingPeriod",
+                "Retrieving accepted QA review entities sorted by timestamp for companyId $companyId, " +
+                    "dataType $dataType, reportingPeriod $reportingPeriod.",
             )
             val searchFilter =
                 QaSearchFilter(
@@ -323,9 +319,23 @@ class QaReviewManager
                 )
             return qaReviewRepository
                 .getSortedAndFilteredQaReviewMetadataset(searchFilter)
+        }
+
+        /**
+         * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+         * @param companyId the ID of the company
+         * @param dataType the dataType of the dataset
+         * @param reportingPeriod the reportingPeriod of the dataset
+         * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
+         */
+        fun getDataIdOfCurrentlyActiveDataset(
+            companyId: String,
+            dataType: String,
+            reportingPeriod: String,
+        ): String? =
+            getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod)
                 .maxByOrNull { it.timestamp }
                 ?.dataId
-        }
 
         /**
          * Calls backend to return companyIds for companyName
