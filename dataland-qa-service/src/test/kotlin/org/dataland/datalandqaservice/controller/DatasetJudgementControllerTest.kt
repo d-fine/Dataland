@@ -109,7 +109,7 @@ class DatasetJudgementControllerTest {
         whenever(datasetJudgementService.setJudgementState(id, state))
             .thenReturn(serviceResponse)
 
-        val result = controller.setJudgementState(id.toString(), state)
+        val result = controller.finishJudgement(id.toString(), state)
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)

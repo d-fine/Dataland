@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.DatasetJudgementApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,13 +36,13 @@ class DatasetJudgementController(
     override fun setJudge(datasetJudgementId: String): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity.ok(datasetJudgementService.setJudge(convertToUUID(datasetJudgementId)))
 
-    override fun setJudgementState(
+    override fun finishJudgement(
         datasetJudgementId: String,
-        state: DatasetJudgementState,
+        state: QaDecision,
     ): ResponseEntity<DatasetJudgementResponse> =
         ResponseEntity
             .ok(
-                datasetJudgementService.setJudgementState(
+                datasetJudgementService.finishJudgement(
                     convertToUUID(datasetJudgementId),
                     state,
                 ),

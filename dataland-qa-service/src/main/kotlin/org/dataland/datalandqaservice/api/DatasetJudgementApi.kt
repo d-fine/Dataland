@@ -9,7 +9,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -137,16 +137,16 @@ interface DatasetJudgementApi {
 
     /**
      * @param datasetJudgementId identifier used to uniquely specify the data judgement object
-     * @param state DatasetJudgementState to patch to
+     * @param state the QA decision to set for the associated dataset, either approve or reject
      */
     @Operation(
-        summary = "Change the state of a dataset judgement object.",
+        summary = "Set dataset judgement state to finished by changing the QA state of the dataset.",
         description =
-            "Modify state of the dataset judgement object. Approves or rejects associated data set. " +
+            "Set state of the dataset judgement object to finished. Approves or rejects associated data set. " +
                 "Uploads new datapoints and approves them, rejects unneeded datapoints.",
     )
-    @PatchMapping(
-        value = ["/{datasetJudgementId}/state"],
+    @PostMapping(
+        value = ["/{datasetJudgementId}/qa-decision"],
         produces = ["application/json"],
     )
     @ApiResponses(
@@ -161,7 +161,7 @@ interface DatasetJudgementApi {
         ],
     )
     @PreAuthorize("@SecurityUtilsService.canUserPatchDatasetJudgement(#datasetJudgementId)")
-    fun setJudgementState(
+    fun finishJudgement(
         @PathVariable @Parameter(
             description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
             example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
@@ -169,13 +169,13 @@ interface DatasetJudgementApi {
         datasetJudgementId: String,
         @Valid
         @Parameter(
-            description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_STATE_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_DECISION_DESCRIPTION,
         )
         @RequestParam(
-            name = "datasetJudgementState",
+            name = "qaDecision",
             required = true,
         )
-        state: DatasetJudgementState,
+        state: QaDecision,
     ): ResponseEntity<DatasetJudgementResponse>
 
     /**

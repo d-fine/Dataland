@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
@@ -28,6 +29,7 @@ class DatasetJudgementService
         private val datasetJudgementRepository: DatasetJudgementRepository,
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
+        private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -96,13 +98,21 @@ class DatasetJudgementService
          * @return DatasetJudgementResponse The API response with updated review details.
          */
         @Transactional
-        fun setJudgementState(
+        fun finishJudgement(
             datasetJudgementId: UUID,
-            state: DatasetJudgementState,
+            state: QaDecision,
         ): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
-            datasetJudgement.judgementState = state
+            DatasetJudgementValidationHelper.validateDatasetJudgementIsPending(datasetJudgement)
+            when (state) {
+                QaDecision.Accepted -> {
+                    DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement)
+                    datasetJudgementFinalizationService.handleAcceptance(datasetJudgement)
+                }
+                QaDecision.Rejected -> datasetJudgementFinalizationService.handleRejection(datasetJudgement)
+            }
+            datasetJudgement.judgementState = DatasetJudgementState.Finished
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 
