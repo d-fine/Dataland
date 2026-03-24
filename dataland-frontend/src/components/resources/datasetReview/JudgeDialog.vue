@@ -290,13 +290,19 @@ function createMockDatasetReview() {
     ],
   } as any;
 }
-
+//TODO: Use this when mock data is replaced by real data
+/* API Call
 const datasetJudgementId = computed(() => props.datasetReviewId);
 const {
   data: datasetJudgement,
   isPending: isDatasetJudgementPending,
   isError: datasetReviewError,
 } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
+*/
+
+const datasetJudgement = ref(createMockDatasetReview());
+const isDatasetJudgementPending = ref(false);
+const datasetReviewError = ref(false);
 
 const isMutating = ref(false);
 const patchError = ref<string | null>(null);
@@ -425,22 +431,6 @@ function goToNextReport(): void {
   }
 }
 
-// ===== Custom datapoint =====
-
-// Derive available documents from the mock data points.
-// Replace this with a real API call analogous to ExtendedDataPointFormFieldDialog:
-//   const response = await documentControllerApi.searchForDocumentMetaInformation(companyId);
-//   availableDocuments.value = response.data
-//     .filter((doc) => doc.documentName && doc.documentId)
-//     .map((doc) => ({
-//       label: doc.documentName!,
-//       value: doc.documentName!,
-//       dataSource: {
-//         fileName: doc.documentName ?? null,
-//         fileReference: doc.documentId ?? null,
-//         publicationDate: doc.publicationDate ?? null,
-//       },
-//     }));
 const availableDocuments = computed<DocumentOption[]>(() => {
   const seen = new Set<string>();
   const options: DocumentOption[] = [];

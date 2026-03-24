@@ -97,7 +97,6 @@
                     <div class="flex justify-content-between align-items-center">
                       <a class="kpi-link table-left-label font-normal" @click="emit('row-click', row)">
                         {{ row.label }}
-                        <em class="pl-1 material-icons" aria-hidden="true">dataset</em>
                       </a>
                       <em
                         v-if="row.explanation"
@@ -581,18 +580,5 @@ function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-
-  &:hover {
-    color: hsl(from var(--main-color) h s calc(l - 20));
-    text-decoration: underline;
-  }
-
-  &:active {
-    color: hsl(from var(--main-color) h s calc(l + 10));
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem var(--btn-focus-border-color);
-  }
 }
 </style>
