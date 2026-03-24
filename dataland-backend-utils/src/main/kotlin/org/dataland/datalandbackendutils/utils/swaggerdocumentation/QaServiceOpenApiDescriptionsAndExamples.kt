@@ -100,4 +100,8 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "The unique identifier of the user whose QA report was " +
             "accepted for this data point, if applicable."
     const val ACCEPTED_REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val QA_DECISION_DESCRIPTION =
+        "The QA state of the associated dataset. " +
+            "This is the state that determines whether the dataset is approved or rejected."
 }

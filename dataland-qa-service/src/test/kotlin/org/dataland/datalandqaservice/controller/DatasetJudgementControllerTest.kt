@@ -106,16 +106,16 @@ class DatasetJudgementControllerTest {
         val state = DatasetJudgementState.Finished
         val serviceResponse = mock<DatasetJudgementResponse>()
 
-        whenever(datasetJudgementService.setJudgementState(id, state))
+        whenever(datasetJudgementService.finishJudgement(id, state))
             .thenReturn(serviceResponse)
 
-        val result = controller.setJudgementState(id.toString(), state)
+        val result = controller.finishJudgement(id.toString(), state)
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetJudgementService).setJudgementState(idCaptor.capture(), eq(state))
+        verify(datasetJudgementService).finishJudgement(idCaptor.capture(), eq(state))
         assertEquals(id, idCaptor.firstValue)
     }
 

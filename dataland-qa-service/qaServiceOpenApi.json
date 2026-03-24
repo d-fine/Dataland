@@ -1486,14 +1486,14 @@
         ]
       }
     },
-    "/dataset-judgements/{datasetJudgementId}/state": {
+    "/dataset-judgements/{datasetJudgementId}/qa-decision": {
       "patch": {
         "tags": [
           "dataset-judgement-controller"
         ],
         "summary": "Change the state of a dataset judgement object.",
         "description": "Modify state of the dataset judgement object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
-        "operationId": "setJudgementState",
+        "operationId": "finishJudgement",
         "parameters": [
           {
             "name": "datasetJudgementId",
@@ -1506,12 +1506,12 @@
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           {
-            "name": "datasetJudgementState",
+            "name": "qaDecision",
             "in": "query",
-            "description": "The state of the dataset judgement.",
+            "description": "The final QA state of the dataset. This is the state that determines whether the dataset is approved or rejected.",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/DatasetJudgementState"
+              "$ref": "#/components/schemas/QaDecision"
             }
           }
         ],
@@ -3828,8 +3828,7 @@
         "description": "The state of the dataset judgement.",
         "enum": [
           "Pending",
-          "Finished",
-          "Aborted"
+          "Finished"
         ]
       },
       "QaReportDataPointVerdict": {
@@ -8708,6 +8707,13 @@
       },
       "JsonNode": {
         "type": "object"
+      },
+      "QaDecision": {
+        "type": "string",
+        "enum": [
+          "Accepted",
+          "Rejected"
+        ]
       },
       "JudgementDetailsPatch": {
         "type": "object",

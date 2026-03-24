@@ -59,7 +59,13 @@
                     outlined
                     @click="rejectDataset"
                   />
-                  <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
+                  <PrimeButton
+                    label="FINISH REVIEW"
+                    severity="success"
+                    icon="pi pi-check"
+                    :disabled="!canFinishReview || isFinishReviewMutationPending"
+                    @click="finishReview"
+                  />
                 </div>
                 <div v-else class="text-left">
                   <PrimeButton
@@ -112,19 +118,21 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState } from '@clients/qaservice';
+import { DatasetJudgementState, QaDecision } from '@clients/qaservice';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
+import { ApiClientProvider } from '@/services/ApiClients.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
 }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 
@@ -160,6 +168,8 @@ const dataPointsLeftToReview = computed(() => {
   return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
 });
 
+const canFinishReview = computed(() => dataPointsLeftToReview.value === 0);
+
 const isAssignedToCurrentUser = computed(() => {
   if (!datasetReview.value) return false;
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
@@ -169,7 +179,7 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDataset
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
   datasetJudgementIdRef,
-  DatasetJudgementState.Aborted
+  DatasetJudgementState.Finished
 );
 
 const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
@@ -203,46 +213,70 @@ const assignToMe = (): void => {
   );
 };
 
-const rejectDataset = (): void => {
-  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
+const getErrorMessage = (error: unknown): string => (error instanceof Error ? error.message : String(error));
+
+const redirectToQaPageAfterDelay = (): void => {
+  confirmationModal.value.visible = false;
+  isActionSuccess.value = false;
+  void goToQaPage();
+};
+
+const performDatasetRejection = async (): Promise<void> => {
+  try {
+    await apiClientProvider.apiClients.datasetJudgementController.finishJudgement(
+      props.datasetJudgementId,
+      QaDecision.Rejected
+    );
+
     rejectReviewMutation(undefined, {
       onSuccess: () => {
         isActionSuccess.value = true;
         confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-        setTimeout(() => {
-          confirmationModal.value.visible = false;
-          isActionSuccess.value = false;
-          void goToQaPage();
-        }, 3200);
+
+        setTimeout(redirectToQaPageAfterDelay, 3200);
       },
-      onError: (error) => {
-        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
+      onError: (error: unknown) => {
+        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + getErrorMessage(error);
       },
     });
+  } catch (error: unknown) {
+    confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + getErrorMessage(error);
+  }
+};
+
+const rejectDataset = (): void => {
+  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
+    void performDatasetRejection();
   });
 };
 
+const performDatasetAcceptance = async (): Promise<void> => {
+  try {
+    await apiClientProvider.apiClients.datasetJudgementController.finishJudgement(
+      props.datasetJudgementId,
+      QaDecision.Accepted
+    );
+
+    finishReviewMutation(undefined, {
+      onSuccess: () => {
+        isActionSuccess.value = true;
+        confirmationModal.value.message = 'Dataset review completed. Rerouting to QA page ...';
+
+        setTimeout(redirectToQaPageAfterDelay, 3200);
+      },
+      onError: (error) => {
+        confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + getErrorMessage(error);
+      },
+    });
+  } catch (error) {
+    confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + getErrorMessage(error);
+  }
+};
+
 const finishReview = (): void => {
-  openConfirmationModal(
-    'Finish Review',
-    'Are you sure you want to mark this dataset review as finished?',
-    () => {
-      finishReviewMutation(undefined, {
-        onSuccess: () => {
-          isActionSuccess.value = true;
-          confirmationModal.value.message = 'Dataset review completed. Rerouting to QA page ...';
-          setTimeout(() => {
-            confirmationModal.value.visible = false;
-            isActionSuccess.value = false;
-            void goToQaPage();
-          }, 3200);
-        },
-        onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + error.message;
-        },
-      });
-    } // Implement action here in seperate ticket
-  );
+  openConfirmationModal('Finish Review', 'Are you sure you want to mark this dataset review as finished?', () => {
+    void performDatasetAcceptance();
+  });
 };
 
 /**
