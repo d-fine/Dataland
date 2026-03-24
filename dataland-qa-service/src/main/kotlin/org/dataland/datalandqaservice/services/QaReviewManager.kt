@@ -49,7 +49,7 @@ class QaReviewManager
         var objectMapper: ObjectMapper,
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
-        val datasetReviewService: DatasetReviewService,
+        val datasetJudgementService: DatasetJudgementService,
         val dataSourcingControllerApi: DataSourcingControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -395,10 +395,8 @@ class QaReviewManager
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-            val datasetReviews = datasetReviewService.getDatasetReviewsByDatasetId(convertToUUID(dataId))
-            val latestDatasetReview = datasetReviews.firstOrNull()
-            val ownerName = latestDatasetReview?.ownerName
-            val ownerId = latestDatasetReview?.ownerId
+            val datasetJudgements = datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId))
+            val latestDatasetJudgement = datasetJudgements.firstOrNull()
             return QaReviewResponse(
                 dataId = this.dataId,
                 companyId = this.companyId,
@@ -407,9 +405,9 @@ class QaReviewManager
                 reportingPeriod = this.reportingPeriod,
                 timestamp = this.timestamp,
                 qaStatus = this.qaStatus,
-                ownerId = ownerId,
-                ownerName = ownerName,
-                datasetReviewId = latestDatasetReview?.dataSetReviewId,
+                qaJudgeUserId = latestDatasetJudgement?.qaJudgeUserId,
+                qaJudgeUserName = latestDatasetJudgement?.qaJudgeUserName,
+                datasetReviewId = latestDatasetJudgement?.dataSetJudgementId,
                 numberQaReports = numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
