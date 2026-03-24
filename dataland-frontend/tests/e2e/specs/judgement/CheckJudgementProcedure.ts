@@ -7,7 +7,15 @@ import {
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import {
+  admin_name,
+  admin_pw,
+  getBaseUrl,
+  reviewer_name,
+  reviewer_pw,
+  uploader_name,
+  uploader_pw,
+} from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -54,7 +62,13 @@ describeIf(
           false
         )
           .then((dataMetaInfo: DataMetaInformation) => {
-            return uploadQaReportsForDataset(dataMetaInfo);
+            const dataPointTypesWithCorrectedValues = new Map<string, string>();
+            dataPointTypesWithCorrectedValues.set('extendedDateFiscalYearEnd', '{"value":"2026-03-23"}');
+            dataPointTypesWithCorrectedValues.set(
+              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+              '{"value":"74568964325", "currency":"EUR"}'
+            );
+            uploadQaReportsForDataset(dataMetaInfo, dataPointTypesWithCorrectedValues);
           })
           .then(() => {
             startJudgement(storedCompany);
@@ -112,38 +126,62 @@ function startJudgement(storedCompany: StoredCompany): void {
 }
 
 /**
- * Uploads QA reports for the data points of the dataset with the provided data meta information.
- * The QA reports contain corrected values for some of the data points to be used in the judgement process.
- * @param dataMetaInfo
+ * Uploads QA reports for selected data point types in the given dataset.
+ *
+ * Uses the admin token to resolve data point IDs via the metadata endpoint and
+ * then posts QA reports for each provided data point type.
+ *
+ * @param dataMetaInfo Metadata of the dataset whose data points are queried.
+ * @param dataPointTypesWithCorrectedValues Map of data point type -> corrected value (JSON string).
  */
-function uploadQaReportsForDataset(dataMetaInfo: DataMetaInformation): void {
-  const dataPointTypesWithCorrectedValues = new Map<string, string>();
-  dataPointTypesWithCorrectedValues.set('extendedDateFiscalYearEnd', '{"value":"2026-03-23"}');
-  dataPointTypesWithCorrectedValues.set(
-    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
-    '{"value":"74568964325", "currency":"EUR"}'
-  );
-
-  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+function uploadQaReportsForDataset(
+  dataMetaInfo: DataMetaInformation,
+  dataPointTypesWithCorrectedValues: Map<string, string>
+): void {
+  getReviewerAndAdminTokens().then(({ reviewerToken, adminToken }) => {
     cy.request({
       method: 'GET',
       url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${adminToken}` },
     }).then((response) => {
       const containedDataPoints = response.body?.data ?? response.body;
       Array.from(dataPointTypesWithCorrectedValues.entries()).forEach(([dataPointType, correctedValue]) => {
-        const dataPointId = containedDataPoints[dataPointType];
-        cy.request({
-          method: 'POST',
-          url: `${apiBaseUrl}/qa/data-points/${dataPointId}/reports`,
-          headers: { Authorization: `Bearer ${token}` },
-          body: {
-            comment: 'The data point is not correct and hence rejected.',
-            verdict: 'QaRejected',
-            correctedData: correctedValue,
-          },
-        });
+        uploadQaReportForDataPoint(containedDataPoints[dataPointType], reviewerToken, correctedValue);
+        uploadQaReportForDataPoint(containedDataPoints[dataPointType], adminToken, correctedValue);
       });
     });
+  });
+}
+
+/**
+ * Retrieves reviewer and admin Keycloak tokens for subsequent API requests.
+ *
+ * @returns A chainable containing both reviewer and admin bearer tokens.
+ */
+function getReviewerAndAdminTokens(): Cypress.Chainable<{ reviewerToken: string; adminToken: string }> {
+  return getKeycloakToken(reviewer_name, reviewer_pw).then((reviewerToken: string) => {
+    return getKeycloakToken(admin_name, admin_pw).then((adminToken: string) => {
+      return { reviewerToken, adminToken };
+    });
+  });
+}
+
+/**
+ * Uploads a single QA report for the given data point.
+ *
+ * @param dataPointId The data point id the QA report is attached to.
+ * @param token Bearer token used to authorize the QA report upload.
+ * @param correctedValue JSON string representing the corrected value payload.
+ */
+function uploadQaReportForDataPoint(dataPointId: string, token: string, correctedValue: string): void {
+  cy.request({
+    method: 'POST',
+    url: `${apiBaseUrl}/qa/data-points/${dataPointId}/reports`,
+    headers: { Authorization: `Bearer ${token}` },
+    body: {
+      comment: 'The data point is not correct and hence rejected.',
+      verdict: 'QaRejected',
+      correctedData: correctedValue,
+    },
   });
 }
