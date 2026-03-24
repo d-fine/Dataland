@@ -120,9 +120,9 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
       return priorityUrgentTag;
     // data sourcing priority
     case 'sourcing-priority-high':
-      return priorityHighTag;
+      return priorityUrgentTag;
     case 'sourcing-priority-medium':
-      return priorityBaselineTag;
+      return priorityHighTag;
     case 'sourcing-priority-low':
       return priorityLowTag;
     case 'sourcing-priority-slate':
