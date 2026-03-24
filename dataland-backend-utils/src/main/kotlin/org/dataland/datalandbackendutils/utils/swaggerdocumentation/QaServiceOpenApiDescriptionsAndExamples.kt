@@ -10,7 +10,8 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val QA_REPORT_ID_DESCRIPTION = "The unique identifier of the QA report"
     const val QA_REPORT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The quality decision of this qa report."
+    const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The verdict of a QA report regarding a data point."
+    const val QA_REPORT_VERDICT_EXAMPLE = "QaAccepted"
 
     const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "Contains suggested data corrections for the rejected data point."
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
@@ -35,12 +36,18 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val REVIEW_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) at which the dataset was reviewed."
     const val REVIEW_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
 
-    const val REPORTER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
-    const val REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
-    const val REPORTER_USER_ID_LIST_EXAMPLE = "[\"$REPORTER_USER_ID_EXAMPLE\"]"
+    const val REVIEWER_USER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the QA report."
+    const val REVIEWER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val REVIEWER_USER_ID_LIST_EXAMPLE = "[\"$REVIEWER_USER_ID_EXAMPLE\"]"
 
-    const val REVIEWER_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
-    const val REVIEWER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val REVIEWER_USERNAME_EXAMPLE = "Bot_1_of_Dataland"
+    const val REVIEWER_USERNAME_DESCRIPTION = "The name of the user who uploaded the QA report."
+
+    const val REVIEWER_USER_EMAIL_EXAMPLE = "bot1@dataland.com"
+    const val REVIEWER_USER_EMAIL_DESCRIPTION = "The email of the user who uploaded the QA report."
+
+    const val JUDGE_ID_DESCRIPTION = "The unique user ID of the user who uploaded the review."
+    const val JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
     const val IS_REPORT_ACTIVE_DESCRIPTION = "Boolean flag. True if and only if the QA report is marked as active."
     const val QA_REPORT_UPLOAD_TIME_DESCRIPTION =
@@ -51,32 +58,46 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val OVERWRITE_DATA_POINT_QA_STATUS_DESCRIPTION =
         "Boolean flag. If true, the QA status of the data points are overwritten."
 
-    const val DATA_REVIEW_ID_DESCRIPTION = "The unique identifier of the data review."
-    const val DATA_REVIEW_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
+    const val DATA_JUDGEMENT_ID_DESCRIPTION = "The unique identifier of the data judgment."
+    const val DATA_JUDGEMENT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
-    const val DATA_REVIEW_STATE_DESCRIPTION = "The state of the dataset review."
+    const val DATA_JUDGEMENT_STATE_DESCRIPTION = "The state of the dataset judgement."
 
-    const val DATA_REVIEW_OWNER_ID_DESCRIPTION = "The unique user ID of the user reviewing the dataset."
-    const val DATA_REVIEW_OWNER_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+    const val DATA_JUDGEMENT_JUDGE_ID_DESCRIPTION = "The unique user ID of the user judging the dataset review."
+    const val DATA_JUDGEMENT_JUDGE_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 
-    const val DATA_REVIEW_OWNER_USERNAME_DESCRIPTION = "The name or email of the user reviewing the dataset."
-    const val DATA_REVIEW_OWNER_USERNAME_EXAMPLE = "Jane Doe"
+    const val DATA_JUDGEMENT_JUDGE_USERNAME_DESCRIPTION = "The name or email of the user judging the dataset review."
+    const val DATA_JUDGEMENT_JUDGE_USERNAME_EXAMPLE = "Jane Doe"
 
-    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_DESCRIPTION = "Datapoints automatically approved by Dataland."
-    const val DATA_REVIEW_PREAPPROVED_DATA_POINTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
-
-    const val DATA_REVIEW_QA_REPORTS_DESCRIPTION = "QA reports associated to the dataset."
-    const val DATA_REVIEW_QA_REPORTS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_SET_OF_UUIDS_EXAMPLE
-
-    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_DESCRIPTION = "Data points approved and to be accepted."
-    const val DATA_REVIEW_APPROVED_DATAPOINT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
-
-    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_DESCRIPTION = "QA reports approved and to be accepted."
-    const val DATA_REVIEW_APPROVED_QA_REPORT_IDS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_TO_UUID_MAP_EXAMPLE
-
-    const val DATA_REVIEW_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as strings to be uploaded, approved and accepted."
-    const val DATA_REVIEW_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
+    const val DATA_JUDGEMENT_CUSTOM_DATAPOINTS_DESCRIPTION = "Custom datapoints as json string to be uploaded."
+    const val DATA_JUDGEMENT_CUSTOM_DATAPOINTS_EXAMPLE = "{ \"extendedDateFiscalYearEnd\": \" 2026-12-31 \" }"
 
     const val NUMBER_QA_REPORTS_DESCRIPTION = "The number of QA reports associated with the dataset."
     const val NUMBER_QA_REPORTS_EXAMPLE = "5"
+
+    const val QA_REPORTER_DESCRIPTION = "List of reporters that contributed a QA report to this dataset."
+    const val QA_REPORTER_EXAMPLE =
+        "[{ \"reporterUserId\": \"c9710c7b-9cd6-446b-85b0-3773d2aceb48\", " +
+            "\"reporterUserName\": \"Data Reviewer\", " +
+            "\"reporterEmailAddress\": \"data.reviewer@dataland.com\" }]"
+
+    const val DATA_POINTS_MAP_DESCRIPTION =
+        "Map with details for all datapoints in the dataset. " +
+            "The key is the datapoint type."
+
+    const val DATA_POINT_ID_DESCRIPTION = "The unique identifier of the datapoint."
+    const val DATA_POINT_ID_EXAMPLE = "32c30bc5-ecfd-46ec-b849-628d5328e2e6"
+
+    const val QA_REPORTS_DESCRIPTION =
+        "List of QA reports associated with this data point, including details " +
+            "about the reporter company."
+
+    const val ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION =
+        "The unique identifier of the company whose QA report was " +
+            "accepted for this data point, if applicable."
+
+    const val ACCEPTED_REPORTER_USER_ID_DESCRIPTION =
+        "The unique identifier of the user whose QA report was " +
+            "accepted for this data point, if applicable."
+    const val ACCEPTED_REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 }
