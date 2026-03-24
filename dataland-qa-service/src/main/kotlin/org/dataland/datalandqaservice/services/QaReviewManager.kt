@@ -295,6 +295,7 @@ class QaReviewManager
         /**
          * Retrieves all QA review entities with status Accepted for a given ([companyId], [dataType], [reportingPeriod])
          * triple, sorted by timestamp in descending order.
+         *
          * @param companyId the ID of the company
          * @param dataType the dataType of the dataset
          * @param reportingPeriod the reportingPeriod of the dataset
@@ -323,6 +324,7 @@ class QaReviewManager
 
         /**
          * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+         *
          * @param companyId the ID of the company
          * @param dataType the dataType of the dataset
          * @param reportingPeriod the reportingPeriod of the dataset
@@ -334,7 +336,7 @@ class QaReviewManager
             reportingPeriod: String,
         ): String? =
             getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod)
-                .maxByOrNull { it.timestamp }
+                .firstOrNull()
                 ?.dataId
 
         /**
