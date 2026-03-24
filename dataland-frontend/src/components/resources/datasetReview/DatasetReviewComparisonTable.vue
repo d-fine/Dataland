@@ -140,18 +140,9 @@
                     class="vertical-align-top"
                   >
                     <div class="flex align-items-start gap-2">
-                      <span
-                        v-if="
-                          getQaReportFor(row, qaReporter.reporterUserId)?.verdict ===
-                          QaReportDataPointVerdict.QaAccepted
-                        "
-                      >
-                        QA Accepted
+                      <span class="main-text-color">
+                        {{ getQaDisplayText(row, qaReporter.reporterUserId) }}
                       </span>
-                      <span v-else-if="getQaReportFor(row, qaReporter.reporterUserId)" class="main-text-color">
-                        {{ getCorrectedDisplayFromQaReport(getQaReportFor(row, qaReporter.reporterUserId)) ?? '—' }}
-                      </span>
-                      <span v-else class="main-text-color"> &ndash; </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
                         class="pi pi-check text-green-500 ml-auto accepted-check"
@@ -534,6 +525,29 @@ function isRowEmpty(cellRow: CellRow): boolean {
   );
 
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllColumns;
+}
+
+/**
+ * Return the display text for a cell's QA report (verdict label or corrected value).
+ *
+ * @param {CellRow} cellRow - Table cell row describing the datapoint.
+ * @param {string} reporterUserId - Reporter user id to look up the QA report.
+ * @returns {string} Short label for the QA verdict or the corrected display value.
+ */
+function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
+  const report = getQaReportFor(cellRow, reporterUserId);
+  switch (report?.verdict) {
+    case QaReportDataPointVerdict.QaAccepted:
+      return 'QA Accepted';
+    case QaReportDataPointVerdict.QaRejected:
+      return 'QA Rejected';
+    case QaReportDataPointVerdict.QaInconclusive:
+      return 'QA Inconclusive';
+    case QaReportDataPointVerdict.QaNotAttempted:
+      return 'QA Not Attempted';
+    default:
+      return getCorrectedDisplayFromQaReport(report) ?? '–';
+  }
 }
 </script>
 
