@@ -91,6 +91,8 @@ describeIf(
 
 /**
  * Navigates to the review page from the judgement start view.
+ * ToDo Zu viele PATCH anfragen aufeinmal.
+ *
  */
 function judgeDatapoints(datasetJudgementId: string, adminToken: string): void {
   Object.keys(containedDataPoints).forEach((dataPointType) => {
