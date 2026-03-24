@@ -381,7 +381,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
 function dataSourcingPrioritySeverity(priority: number): string {
   if (priority <= 3) return 'sourcing-priority-high';
   if (priority <= 6) return 'sourcing-priority-medium';
-  if (priority <= 9) return 'sourcing-priority-low';
+  if (priority <= 10) return 'sourcing-priority-low';
   return 'sourcing-priority-slate';
 }
 
