@@ -540,7 +540,7 @@ function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
     case QaReportDataPointVerdict.QaAccepted:
       return 'QA Accepted';
     case QaReportDataPointVerdict.QaRejected:
-      return 'QA Rejected';
+      return getCorrectedDisplayFromQaReport(report) ?? '–';
     case QaReportDataPointVerdict.QaInconclusive:
       return 'QA Inconclusive';
     case QaReportDataPointVerdict.QaNotAttempted:
