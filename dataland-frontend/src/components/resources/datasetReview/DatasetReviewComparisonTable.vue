@@ -22,10 +22,8 @@
               <!-- Original Datapoint -->
               <th class="horizontal-headers-size align-top">
                 <div class="p-column-header-content flex flex-column align-items-start">
-                  <span class="font-semibold leading-tight">Original Datapoint</span>
-                  <span class="text-xs font-normal leading-tight">
-                    {{ companyData?.companyInformation?.companyName || companyData?.companyId || 'n/a' }}
-                  </span>
+                  <span class="font-semibold leading-tight">Original Data Point</span>
+                  <span class="text-xs font-normal leading-tight"> &nbsp; </span>
                 </div>
               </th>
 
@@ -36,7 +34,7 @@
                 class="horizontal-headers-size align-top"
               >
                 <div class="p-column-header-content flex flex-column align-items-start">
-                  <span class="font-semibold leading-tight">Corrected Datapoint</span>
+                  <span class="font-semibold leading-tight">Corrected Data Point</span>
                   <span class="text-xs font-normal leading-tight">
                     {{ qaReporter.reporterUserName || qaReporter.reporterEmailAddress || qaReporter.reporterUserId }}
                   </span>
@@ -46,7 +44,7 @@
               <!-- Custom Datapoint -->
               <th class="horizontal-headers-size align-top">
                 <div class="p-column-header-content flex flex-column align-items-start">
-                  <span class="font-semibold leading-tight">Custom Datapoint</span>
+                  <span class="font-semibold leading-tight">Custom Data Point</span>
                   <span class="text-xs font-normal leading-tight">&nbsp;</span>
                 </div>
               </th>
@@ -220,7 +218,6 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toTitleCase } from '@/utils/StringFormatter.ts';
-import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -262,9 +259,6 @@ const {
   framework: frameworkRef,
   dataId: dataIdRef,
 });
-
-const companyIdRef = computed(() => props.datasetReview.companyId || undefined);
-const { data: companyData } = useGetCompanyInformationQuery(companyIdRef);
 
 const sortedReportingPeriods = computed(() => {
   const reportingPeriod = originalDataAndMeta.value?.reportingPeriod;
