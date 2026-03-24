@@ -1,20 +1,20 @@
 import {
   type DataMetaInformation,
   type EutaxonomyFinancialsData,
-  MetaDataControllerApi,
   type SfdrData,
   type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
-import { DataPointQaReportControllerApi } from '@clients/qaservice';
+
+const apiBaseUrl = getBaseUrl();
 
 describeIf(
   'As a user, I expect to be able to log in',
@@ -116,21 +116,34 @@ function startJudgement(storedCompany: StoredCompany): void {
  * The QA reports contain corrected values for some of the data points to be used in the judgement process.
  * @param dataMetaInfo
  */
-async function uploadQaReportsForDataset(dataMetaInfo: DataMetaInformation): Promise<void> {
-  const metaDataControllerApi = new MetaDataControllerApi();
-  const dataPointQaReportControllerApi = new DataPointQaReportControllerApi();
-  const containedDataPoints = await metaDataControllerApi.getContainedDataPoints(dataMetaInfo.dataId);
-
+function uploadQaReportsForDataset(dataMetaInfo: DataMetaInformation): void {
   const dataPointTypesWithCorrectedValues = new Map<string, string>();
   dataPointTypesWithCorrectedValues.set('extendedDateFiscalYearEnd', '{"value":"2026-03-23"}');
-  dataPointTypesWithCorrectedValues.set('totalGrossCarryingAmount', '{"value":"74568964325", "currency":"EUR"}');
+  dataPointTypesWithCorrectedValues.set(
+    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+    '{"value":"74568964325", "currency":"EUR"}'
+  );
 
-  for (const [dataPointType, correctedValue] of dataPointTypesWithCorrectedValues.entries()) {
-    const dataPointId = containedDataPoints.data[dataPointType];
-    await dataPointQaReportControllerApi.postQaReport(dataPointId, {
-      comment: 'The data point is not correct and hence rejected.',
-      verdict: 'QaRejected',
-      correctedData: correctedValue,
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+    cy.request({
+      method: 'GET',
+      url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((response) => {
+      const containedDataPoints = response.body?.data ?? response.body;
+      Array.from(dataPointTypesWithCorrectedValues.entries()).forEach(([dataPointType, correctedValue]) => {
+        const dataPointId = containedDataPoints[dataPointType];
+        cy.request({
+          method: 'POST',
+          url: `${apiBaseUrl}/qa/data-points/${dataPointId}/reports`,
+          headers: { Authorization: `Bearer ${token}` },
+          body: {
+            comment: 'The data point is not correct and hence rejected.',
+            verdict: 'QaRejected',
+            correctedData: correctedValue,
+          },
+        });
+      });
     });
-  }
+  });
 }
