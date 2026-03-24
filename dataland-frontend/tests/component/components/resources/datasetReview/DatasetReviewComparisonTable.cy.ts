@@ -212,11 +212,11 @@ describe('DatasetReviewComparisonTable component tests', () => {
     mountComponent();
 
     cy.get('table[aria-label="Dataset review comparison table"]').should('exist');
-    cy.contains('th', 'Original Datapoint').should('be.visible');
-    cy.contains('th', 'Corrected Datapoint').should('be.visible');
+    cy.contains('th', 'Original Data Point').should('be.visible');
+    cy.contains('th', 'Corrected Data Point').should('be.visible');
     cy.contains('span', qaReporter1.reporterUserName).should('be.visible');
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
-    cy.contains('th', 'Custom Datapoint').should('be.visible');
+    cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
     cy.contains('span', 'Data Date').should('be.visible');
     cy.contains('span', 'Fiscal Year Deviation').should('be.visible');
