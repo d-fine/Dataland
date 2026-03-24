@@ -54,13 +54,15 @@
           <tbody>
             <!-- Loading / error for original dataset -->
             <tr v-if="loadingOriginal">
-              <td colspan="5" class="p-3 text-center">
+              <td :colspan="totalNumberOfColumns" class="p-3 text-center">
                 <p class="font-medium text-xl">Loading Dataset..</p>
                 <DatalandProgressSpinner />
               </td>
             </tr>
             <tr v-else-if="errorOriginal">
-              <td colspan="5" class="p-3 text-center text-red-500">Failed to load original dataset</td>
+              <td :colspan="totalNumberOfColumns" class="p-3 text-center text-red-500">
+                Failed to load original dataset
+              </td>
             </tr>
 
             <!-- Section + KPI rows -->
@@ -73,7 +75,7 @@
                 <!-- Section header row -->
                 <template v-if="row.type === 'section'">
                   <td
-                    colspan="5"
+                    :colspan="totalNumberOfColumns"
                     class="text-left p-3 border-bottom-1 surface-border"
                     :class="{
                       'uppercase text-base font-medium': row.level === 0,
@@ -108,7 +110,7 @@
                   </td>
 
                   <!-- Original datapoint -->
-                  <td class="vertical-align-top border-right-1 surface-border">
+                  <td class="vertical-align-top">
                     <div class="flex align-items-start gap-2">
                       <MultiLayerDataTableCell
                         :content="row.originalDisplay"
@@ -135,7 +137,7 @@
                   <td
                     v-for="qaReporter in datasetReview.qaReporters"
                     :key="qaReporter.reporterUserId"
-                    class="vertical-align-top border-right-1 surface-border"
+                    class="vertical-align-top"
                   >
                     <div class="flex align-items-start gap-2">
                       <span
@@ -163,7 +165,7 @@
                     </div>
                   </td>
 
-                  <td class="vertical-align-top border-right-1 surface-border">
+                  <td class="vertical-align-top">
                     <div class="flex align-items-start gap-2">
                       <span v-if="getCustomDisplayValue(row.dataPointTypeId) != null">
                         {{ getCustomDisplayValue(row.dataPointTypeId) }}
@@ -230,6 +232,7 @@ const props = defineProps<{
   hideEmptyFields: boolean;
 }>();
 
+const totalNumberOfColumns = computed(() => (props.datasetReview.qaReporters?.length ?? 0) + 3);
 const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework));
 const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
 const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
