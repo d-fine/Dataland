@@ -385,12 +385,6 @@ function goToSelectedDataPoint(): void {
   selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
 }
 
-function markCurrentAsReviewed(source: AcceptedDataPointSource): void {
-  if (datasetJudgement.value?.dataPoints?.[currentDataPointTypeId.value]) {
-    datasetJudgement.value.dataPoints[currentDataPointTypeId.value].acceptedSource = source;
-  }
-}
-
 function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
   switch (acceptedSource) {
     case AcceptedDataPointSource.Original:
