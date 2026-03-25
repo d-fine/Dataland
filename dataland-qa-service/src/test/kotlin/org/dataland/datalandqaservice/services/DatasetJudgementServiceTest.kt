@@ -20,6 +20,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaStatusService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -44,6 +45,7 @@ class DatasetJudgementServiceTest {
     private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
     private val keycloakUserService = mock<KeycloakUserService>()
     private val datasetJudgementFinalizationService = DatasetJudgementFinalizationService()
+    private val qaStatusService = mock<QaStatusService>()
 
     private val creationServiceClass =
         DatasetJudgementCreationService(
@@ -57,6 +59,7 @@ class DatasetJudgementServiceTest {
             datasetJudgementSupportService,
             creationServiceClass,
             datasetJudgementFinalizationService,
+            qaStatusService,
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
