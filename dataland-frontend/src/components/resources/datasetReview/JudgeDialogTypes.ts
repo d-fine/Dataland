@@ -30,7 +30,7 @@ export interface QaReporter {
 
 export interface NextDatapointOption {
   label: string;
-  value: string;
+  datapointTypeId: string;
   reviewed: boolean;
 }
 

@@ -205,7 +205,7 @@ const nextDataPointOptions = computed((): NextDatapointOption[] => {
     if (typeId && dataPoints[typeId]) {
       options.push({
         label: row.label,
-        value: typeId,
+        datapointTypeId: typeId,
         reviewed: dataPoints[typeId].acceptedSource != null,
       });
     }
