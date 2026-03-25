@@ -211,12 +211,14 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toTitleCase } from '@/utils/StringFormatter.ts';
+import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
 const emit = defineEmits<{
   (e: 'row-click', row: CellRow): void;
   (e: 'kpi-rows-built', rows: CellRow[]): void;
+  (e: 'documents-built', documents: DocumentOption[]): void;
 }>();
 
 const props = defineProps<{
@@ -289,6 +291,29 @@ const sortedReports = computed(() => {
     }
   }
 });
+
+const availableDocuments = computed<DocumentOption[]>(() => {
+  if (!sortedReports.value.length) return [];
+  return sortedReports.value.flatMap((reportsForPeriod) =>
+    Object.entries(reportsForPeriod ?? {}).map(([name, report]) => ({
+      label: name ? name : 'Unnamed_File',
+      value: name ? name : report.fileName ?? report.fileReference,
+      dataSource: {
+        fileName: report.fileName ?? name ?? null,
+        fileReference: report.fileReference,
+        publicationDate: report.publicationDate ?? null,
+      },
+    }))
+  );
+});
+
+watch(
+  availableDocuments,
+  (documents) => {
+    emit('documents-built', documents);
+  },
+  { immediate: true }
+);
 
 type SectionRow = {
   type: 'section';

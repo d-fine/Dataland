@@ -85,12 +85,14 @@
               data-test="datasetReviewComparisonTable"
               @row-click="onComparisonTableRowClicked"
               @kpi-rows-built="onKpiRowsBuilt"
+              @documents-built="onDocumentsBuilt"
             />
             <JudgeDialog
               v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
               :next-data-point-options="nextDataPointOptions"
+              :available-documents="availableDocuments"
               v-model:is-open="isJudgeDialogOpen"
             />
           </div>
@@ -130,7 +132,7 @@ import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/datas
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import type { NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { NextDataPointOption, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -141,6 +143,11 @@ const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 const isJudgeDialogOpen = ref(false);
 const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
+const availableDocuments = ref<DocumentOption[]>([]);
+
+function onDocumentsBuilt(documents: DocumentOption[]): void {
+  availableDocuments.value = documents;
+}
 
 function onComparisonTableRowClicked(row: CellRow): void {
   judgeDialogDataPointTypeId.value = row.dataPointTypeId ?? row.label;

@@ -119,8 +119,6 @@ import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgemen
 import { AcceptedDataPointSource, DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
-import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
-import { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -141,6 +139,7 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   nextDataPointOptions: NextDataPointOption[];
+  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -149,6 +148,7 @@ const emit = defineEmits<{
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
+const availableDocuments = computed(() => props.availableDocuments ?? []);
 
 // ===== Dataset review =====
 
@@ -303,31 +303,6 @@ function goToNextReport(): void {
     currentQaReportIndex.value += 1;
   }
 }
-
-const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
-
-const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
-
-const availableDocuments = computed<DocumentOption[]>(() => {
-  const docs = allDocumentMetaInfo?.value ?? [];
-  return docs
-    .filter(
-      (doc: DocumentMetaInfoResponse) =>
-        doc.reportingPeriod == null || doc.reportingPeriod === datasetJudgement.value?.reportingPeriod
-    )
-    .map((doc: DocumentMetaInfoResponse) => {
-      const label = doc.documentName ?? doc.documentId;
-      return {
-        label: label,
-        value: label,
-        dataSource: {
-          fileName: label,
-          fileReference: doc.documentId,
-          publicationDate: doc.publicationDate ?? null,
-        },
-      };
-    });
-});
 
 const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
