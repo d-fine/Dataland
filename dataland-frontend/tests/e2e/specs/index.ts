@@ -15,7 +15,7 @@ if (testGroupingDisabled) {
 
 /**
  * Test grouping overview
- * 1 - 4      : Traditional E2E-Tests
+ * 1 - 5      : Traditional E2E-Tests
  * 101 - 102  : Restartability E2E-Tests
  */
 
