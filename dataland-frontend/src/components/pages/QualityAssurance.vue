@@ -393,7 +393,7 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 /**
  * Handles the click on a row in the QA table.
  * If the dataset of the clicked row has not been reviewed before, the user will be directed to the dataset page.
- * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding QA review page.
+ * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
  */
 function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
@@ -406,7 +406,7 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
 /**
  * Handles the click on the review button in the QA table.
  * If no review exists yet, a confirmation modal is shown and the review is created before navigation.
- * If a review already exists, the user is directly navigated to the corresponding QA review page.
+ * If a review already exists, the user is directly navigated to the corresponding dataset review page.
  */
 function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId != null) {
@@ -431,7 +431,7 @@ function goToDatasetViewPage(companyId: string, framework: string, dataId: strin
 }
 
 /**
- * Navigates to the qa review page for the dataset with the given datasetReviewId.
+ * Navigates to the dataset review page for the dataset with the given datasetReviewId.
  */
 function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
   return router.push(`/qualityassurance/review/${datasetReviewId}`);
@@ -439,7 +439,7 @@ function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push>
 
 /**
  * Confirms the start of a dataset review in the confirmation modal.
- * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding QA review page.
+ * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
  */
 async function confirmStartReview(): Promise<void> {
   isCreatingReview.value = true;
