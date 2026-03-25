@@ -158,21 +158,12 @@ describeIf(
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
           cy.get('#existing-company-identifiers li').should('have.length', 2);
-        });
-      });
-      cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNamesAfterEdit');
-      cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolioAfterEdit');
-      cy.get('.p-dialog').within(() => {
-        cy.get('.portfolio-dialog-content').within(() => {
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: Cypress.env('medium_timeout_in_ms') as number,
           });
         });
       });
-      cy.wait(['@getEnrichedPortfolioAfterEdit', '@getPortfolioNamesAfterEdit']);
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`, {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
-      }).should('be.visible');
+      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
