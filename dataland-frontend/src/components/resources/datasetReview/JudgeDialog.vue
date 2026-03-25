@@ -138,6 +138,7 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   nextDataPointOptions: NextDataPointOption[];
+  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -146,152 +147,9 @@ const emit = defineEmits<{
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
+const availableDocuments = computed(() => props.availableDocuments ?? []);
 
 // ===== Dataset review =====
-
-const mockDataPointsById: Record<string, DataPointDetail> = {
-  'kpi.energyConsumption': {
-    value: '12345',
-    quality: 'Reported',
-    comment: 'Mock original datapoint for QA comparison. Test comment to check multiline display.',
-    dataSource: {
-      page: '1026',
-      tagName: 'web services',
-      fileName: 'Sustainability_Report_2023.pdf',
-      fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
-      publicationDate: '2024-01-07',
-    },
-  },
-  'kpi.co2Emissions': {
-    value: '987',
-    quality: 'Incomplete',
-    comment: 'Mock original datapoint for custom acceptance.',
-    dataSource: {
-      fileName: 'MockSource-REF-77',
-      fileReference: 'abcklwe78324',
-      page: '4-6',
-    },
-  },
-  'kpi.energyProduction': {
-    value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED',
-    quality: 'Estimated',
-    comment:
-      'This value was extracted from the consolidated energy production appendix on pages 47 through 53 of the annual sustainability disclosure. The figure includes all renewable sources as defined under EU Taxonomy Article 10 and has been adjusted for grid losses according to the methodology described in footnote 23. Please cross-reference with the interim report published in Q2 before final acceptance.',
-    dataSource: {
-      fileName: 'Annual_Sustainability_Disclosure.pdf',
-      page: '47-53',
-      publicationDate: '2023-01-08',
-    },
-  },
-  'mock-dp-4': {
-    quality: 'NoDataFound',
-  },
-};
-
-function createMockDatasetReview() {
-  return {
-    dataPoints: {
-      'kpi.energyConsumption': {
-        dataPointId: 'kpi.energyConsumption',
-        acceptedSource: null,
-        qaReports: [
-          {
-            qaReportId: 'mock-qa-1',
-            verdict: 'QaAccepted',
-            correctedData: JSON.stringify({
-              value: 12000,
-              quality: 'Reported',
-              comment: 'Corrected based on updated table.',
-              dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '13' },
-            }),
-            reporterUserId: 'mock-user-1',
-          },
-          {
-            qaReportId: 'mock-qa-2',
-            verdict: 'QaAccepted',
-            correctedData: JSON.stringify({
-              value: 11890,
-              quality: 'Reported',
-              comment: 'Adjusted for unit conversion.',
-              dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '14-15' },
-            }),
-            reporterUserId: 'mock-user-2',
-          },
-        ],
-      },
-      'kpi.co2Emissions': {
-        dataPointId: 'kpi.co2Emissions',
-        acceptedSource: null,
-        qaReports: [],
-      },
-      'kpi.energyProduction': {
-        dataPointId: 'kpi.energyProduction',
-        acceptedSource: null,
-        qaReports: [
-          {
-            qaReportId: 'mock-qa-3',
-            verdict: 'QaAccepted',
-            correctedData: JSON.stringify({
-              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
-              quality: 'Incomplete',
-              comment:
-                'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
-              dataSource: {
-                fileName:
-                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
-                page: '47-53',
-              },
-            }),
-            reporterUserId: 'mock-user-1',
-          },
-          {
-            qaReportId: 'mock-qa-4',
-            verdict: 'QaRejected',
-            correctedData: JSON.stringify({
-              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
-              quality: 'NoDataFound',
-              comment:
-                'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
-              dataSource: {
-                fileName:
-                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
-                page: '51-52',
-              },
-            }),
-            reporterUserId: 'mock-user-2',
-          },
-          {
-            qaReportId: 'mock-qa-5',
-            verdict: 'QaAccepted',
-            correctedData: JSON.stringify({
-              value: 'No',
-              quality: 'Incomplete',
-              comment: 'program neural circuit',
-              dataSource: {
-                page: '1026',
-                tagName: 'web services',
-                fileName: 'Sustainability_Report_2023.pdf',
-                fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
-                publicationDate: '2024-01-07',
-              },
-            }),
-            reporterUserId: 'mock-user-3',
-          },
-        ],
-      },
-      'mock-dp-4': {
-        dataPointId: 'mock-dp-4',
-        acceptedSource: null,
-        qaReports: [],
-      },
-    },
-    qaReporters: [
-      { reporterUserId: 'mock-user-1', reporterUserName: 'Jane QA', reporterEmailAddress: 'jane.qa@example.com' },
-      { reporterUserId: 'mock-user-2', reporterUserName: 'Alex QA', reporterEmailAddress: 'alex.qa@example.com' },
-      { reporterUserId: 'mock-user-3', reporterUserName: 'Peter QA', reporterEmailAddress: 'peter.qa@example.com' },
-    ],
-  } as any;
-}
 
 const datasetJudgementId = computed(() => props.datasetReviewId);
 const {
@@ -436,23 +294,6 @@ function goToNextReport(): void {
     currentQaReportIndex.value += 1;
   }
 }
-
-const availableDocuments = computed<DocumentOption[]>(() => {
-  const seen = new Set<string>();
-  const options: DocumentOption[] = [];
-  for (const dataPoint of Object.values(mockDataPointsById)) {
-    const { dataSource } = dataPoint;
-    const fileName = dataSource?.fileName;
-    if (!fileName || seen.has(String(fileName))) continue;
-    seen.add(String(fileName));
-    options.push({
-      label: String(fileName),
-      value: String(fileName),
-      dataSource: { ...dataSource },
-    });
-  }
-  return options;
-});
 
 const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
