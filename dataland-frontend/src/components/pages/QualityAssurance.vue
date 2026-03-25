@@ -392,7 +392,7 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 
 /**
  * Handles the click on a row in the QA table.
- * If the dataset of the clicked row has not been reviewed before, the user will be directed to the Dataset page.
+ * If the dataset of the clicked row has not been reviewed before, the user will be directed to the dataset page.
  * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
  */
 function handleRowAction(qaDataObject: QaReviewRow): void {
@@ -417,7 +417,8 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
   selectedDataId.value = qaDataObject.dataId;
   openConfirmationModal(
     'Start Review',
-    'Do you want to start a review for this dataset?',
+    'Are you sure you want to start a review for this dataset? ' +
+      'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
     () => void confirmStartReview()
   );
 }
@@ -431,7 +432,7 @@ function goToDatasetViewPage(companyId: string, framework: string, dataId: strin
 }
 
 /**
- * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
+ * Navigates to the qa review page for the dataset with the given datasetReviewId.
  */
 function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
   const qaUri = `/qualityassurance/review/${datasetReviewId}`;

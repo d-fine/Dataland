@@ -200,6 +200,18 @@ describe('Component tests for the Quality Assurance page', () => {
     reviewerUserId: reviewerUserId,
     timestamp: timestampBeta,
   });
+  const currentJudgeUserId = keycloakMockWithJudgeRole.idTokenParsed?.sub as string;
+  const datasetReviewIdOwnedByCurrentJudge = crypto.randomUUID();
+  const reviewQueueElementOwnedByCurrentJudge = buildReviewQueueElement({
+    dataId: crypto.randomUUID(),
+    companyName: 'Continue Review Company GmbH',
+    companyId: crypto.randomUUID(),
+    framework: DataTypeEnum.Lksg,
+    reportingPeriod: '2024',
+    datasetReviewId: datasetReviewIdOwnedByCurrentJudge,
+    reviewerUserName: 'Current judge',
+    reviewerUserId: currentJudgeUserId,
+  });
 
   /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
@@ -251,12 +263,8 @@ describe('Component tests for the Quality Assurance page', () => {
       });
       mockReviewQueue.push(reviewQueueElementGamma);
     }
-    cy.intercept(`**/qa/datasets/queue`, mockReviewQueue).as('nonFilteredFetch');
-
-    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    mountQaAssurancePageWithCustomQueue(mockReviewQueue);
     assertUnfilteredDatatableState();
-    cy.get('[data-test="qa-review-section"]').should('exist');
-    cy.get('#qa-data-result tbody tr').should('have.length', mockReviewQueue.length);
   }
 
   /**
@@ -577,18 +585,6 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check routing of Continue Review button.', () => {
     cy.spy(router, 'push').as('routerPush');
-    const currentJudgeUserId = keycloakMockWithJudgeRole.idTokenParsed?.sub as string;
-    const datasetReviewIdOwnedByCurrentJudge = crypto.randomUUID();
-    const reviewQueueElementOwnedByCurrentJudge = buildReviewQueueElement({
-      dataId: crypto.randomUUID(),
-      companyName: 'Continue Review Company GmbH',
-      companyId: crypto.randomUUID(),
-      framework: DataTypeEnum.Lksg,
-      reportingPeriod: '2024',
-      datasetReviewId: datasetReviewIdOwnedByCurrentJudge,
-      reviewerUserName: 'Current judge',
-      reviewerUserId: currentJudgeUserId,
-    });
 
     mountQaAssurancePageWithCustomQueue([reviewQueueElementOwnedByCurrentJudge]);
     cy.get('button[data-test="goToReviewButton"]').contains('Continue Review').click();
