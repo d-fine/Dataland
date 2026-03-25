@@ -76,11 +76,13 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept('POST', `${apiBaseUrl}/data-sourcing/requests**`).as('resubmit');
       cy.intercept('PATCH', `${apiBaseUrl}/data-sourcing/requests/*/state?requestState=Withdrawn`).as('withdraw');
+      cy.intercept('GET', `${apiBaseUrl}/data-sourcing/requests/*`).as('getRequest');
       createRequest().then((id) => {
         requestId = id;
         patchRequestToProcessing(requestId);
         patchRequestToProcessed(requestId).then(() => {
           cy.visit(getBaseUrl() + `/requests/${requestId}`);
+          cy.wait('@getRequest');
         });
       });
     });
@@ -98,6 +100,7 @@ describeIf(
       cy.wait('@resubmit');
       cy.get('[data-test="success-modal"]').should('exist').should('contain.text', 'successfully resubmitted');
       cy.get('[data-test="close-success-modal-button"]').should('be.visible').click();
+      cy.wait('@getRequest');
       cy.url().should('not.include', requestId);
       cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('exist').should('contain.text', 'Open');
     });
@@ -114,6 +117,7 @@ describeIf(
       cy.wait('@withdraw');
       cy.get('[data-test="success-modal"]').should('contain.text', 'successfully withdrawn');
       cy.contains('button', 'OK').click();
+      cy.wait('@getRequest');
       cy.get('[data-test="card_requestIs"] .dataland-inline-tag').should('contain.text', 'Withdrawn');
     });
   }

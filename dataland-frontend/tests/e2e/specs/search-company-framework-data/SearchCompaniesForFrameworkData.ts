@@ -63,7 +63,14 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
  * @param testCompany the company that was searched for
  */
 function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
-  cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
+  cy.get('.p-autocomplete-list-container', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
+  cy.get('.p-autocomplete-option', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+    'have.length.greaterThan',
+    0
+  );
+  cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`, {
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
+  }).then((items) => {
     if (items.length !== 1)
       throw new Error(
         `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
