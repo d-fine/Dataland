@@ -1,13 +1,11 @@
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { Ref } from 'vue';
-import { DatasetJudgementResponse, JudgementDetailsPatch } from '@clients/qaservice';
-import { useMutation, UseMutationReturnType, useQueryClient } from '@tanstack/vue-query';
+import { JudgementDetailsPatch } from '@clients/qaservice';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
-import { AxiosResponse } from 'axios';
 
 export interface PatchJudgementArgs {
   judgmentId: string;
-  datapointId: string;
+  dataPointTypeId: string;
   details: JudgementDetailsPatch;
 }
 
@@ -16,8 +14,12 @@ export function usePatchJudgmentDetailsForADatapointMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ judgmentId, datapointId, details }: PatchJudgementArgs) =>
-      apiClientProvider.apiClients.datasetJudgementController.patchJudgementDetails(judgmentId, datapointId, details),
+    mutationFn: ({ judgmentId, dataPointTypeId, details }: PatchJudgementArgs) =>
+      apiClientProvider.apiClients.datasetJudgementController.patchJudgementDetails(
+        judgmentId,
+        dataPointTypeId,
+        details
+      ),
 
     onSuccess: async (_data, variables) => {
       await queryClient.invalidateQueries({
