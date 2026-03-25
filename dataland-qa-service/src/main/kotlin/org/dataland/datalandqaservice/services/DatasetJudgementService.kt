@@ -110,7 +110,11 @@ class DatasetJudgementService
             when (state) {
                 QaDecision.Accepted -> {
                     DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
-                    datasetJudgementFinalizationService.handleAcceptance()
+                    datasetJudgementFinalizationService.handleAcceptance(
+                        datasetJudgement.dataPoints,
+                        datasetJudgement.datasetId,
+                        datasetJudgement.reportingPeriod,
+                    )
                     qaStatusService.changeQaStatus(
                         dataId = datasetJudgement.datasetId.toString(),
                         qaStatus = QaStatus.Accepted,
