@@ -87,6 +87,7 @@
               @kpi-rows-built="onKpiRowsBuilt"
             />
             <JudgeDialog
+              v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
               :next-data-point-options="nextDataPointOptions"

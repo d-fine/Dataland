@@ -116,6 +116,9 @@ import type {
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
+import { AcceptedDataPointSource, DataPointJudgement } from '@clients/qaservice';
+import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
+import { ExtendedDataPoint } from '@/utils/DataPoint.ts';
 import { AcceptedDataPointSource } from '@clients/qaservice';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 
@@ -188,6 +191,111 @@ const mockDataPointsById: Record<string, DataPointDetail> = {
   },
 };
 
+function createMockDatasetReview() {
+  return {
+    dataPoints: {
+      'kpi.energyConsumption': {
+        dataPointId: 'kpi.energyConsumption',
+        acceptedSource: null,
+        qaReports: [
+          {
+            qaReportId: 'mock-qa-1',
+            verdict: 'QaAccepted',
+            correctedData: JSON.stringify({
+              value: 12000,
+              quality: 'Reported',
+              comment: 'Corrected based on updated table.',
+              dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '13' },
+            }),
+            reporterUserId: 'mock-user-1',
+          },
+          {
+            qaReportId: 'mock-qa-2',
+            verdict: 'QaAccepted',
+            correctedData: JSON.stringify({
+              value: 11890,
+              quality: 'Reported',
+              comment: 'Adjusted for unit conversion.',
+              dataSource: { fileName: 'Sustainability_Report_2023.pdf', page: '14-15' },
+            }),
+            reporterUserId: 'mock-user-2',
+          },
+        ],
+      },
+      'kpi.co2Emissions': {
+        dataPointId: 'kpi.co2Emissions',
+        acceptedSource: null,
+        qaReports: [],
+      },
+      'kpi.energyProduction': {
+        dataPointId: 'kpi.energyProduction',
+        acceptedSource: null,
+        qaReports: [
+          {
+            qaReportId: 'mock-qa-3',
+            verdict: 'QaAccepted',
+            correctedData: JSON.stringify({
+              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_GEOTHERMAL_2023_CONSOLIDATED_GROSS_NET_ADJUSTED_REVISED',
+              quality: 'Incomplete',
+              comment:
+                'Corrected after cross-referencing the interim Q2 report and the footnote methodology in section 5.3. The original value underreported geothermal contribution by approximately 3.7% due to a unit conversion error. This revision aligns the figure with the EU Taxonomy gross production definition and has been signed off by the external auditor. No further changes expected.',
+              dataSource: {
+                fileName:
+                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                page: '47-53',
+              },
+            }),
+            reporterUserId: 'mock-user-1',
+          },
+          {
+            qaReportId: 'mock-qa-4',
+            verdict: 'QaRejected',
+            correctedData: JSON.stringify({
+              value: 'TWh_RENEWABLE_SOLAR_WIND_HYDRO_BIOMASS_2023_NET_ADJUSTED_EXCL_GEOTHERMAL',
+              quality: 'NoDataFound',
+              comment:
+                'Alternative correction excluding geothermal pending reclassification under the updated EU Taxonomy delegated act. Reviewer recommends holding acceptance until the reclassification outcome is published in the official journal. See internal ticket DL-4892 for tracking.',
+              dataSource: {
+                fileName:
+                  'Annual_Sustainability_Disclosure_and_EU_Taxonomy_Alignment_Report_FY2023_Final_Audited_v3.pdf',
+                page: '51-52',
+              },
+            }),
+            reporterUserId: 'mock-user-2',
+          },
+          {
+            qaReportId: 'mock-qa-5',
+            verdict: 'QaAccepted',
+            correctedData: JSON.stringify({
+              value: 'No',
+              quality: 'Incomplete',
+              comment: 'program neural circuit',
+              dataSource: {
+                page: '1026',
+                tagName: 'web services',
+                fileName: 'Sustainability_Report_2023.pdf',
+                fileReference: '1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868',
+                publicationDate: '2024-01-07',
+              },
+            }),
+            reporterUserId: 'mock-user-3',
+          },
+        ],
+      },
+      'mock-dp-4': {
+        dataPointId: 'mock-dp-4',
+        acceptedSource: null,
+        qaReports: [],
+      },
+    },
+    qaReporters: [
+      { reporterUserId: 'mock-user-1', reporterUserName: 'Jane QA', reporterEmailAddress: 'jane.qa@example.com' },
+      { reporterUserId: 'mock-user-2', reporterUserName: 'Alex QA', reporterEmailAddress: 'alex.qa@example.com' },
+      { reporterUserId: 'mock-user-3', reporterUserName: 'Peter QA', reporterEmailAddress: 'peter.qa@example.com' },
+    ],
+  } as any;
+}
+
 const datasetJudgementId = computed(() => props.datasetReviewId);
 const {
   data: datasetJudgement,
@@ -212,53 +320,59 @@ watch(
   }
 );
 
-const currentDataPointMeta = computed<any | null>(() => {
-  if (!datasetJudgement.value?.dataPoints || !currentDataPointTypeId) return null;
+const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
+  if (!datasetJudgement.value?.dataPoints) return null;
   return datasetJudgement.value.dataPoints[currentDataPointTypeId.value] ?? null;
 });
 
-// ===== Original datapoint =====
-
-const originalData = ref<DataPointDetail | null>(null);
-const isOriginalLoading = ref<boolean>(false);
-const originalError = ref<unknown | null>(null);
-
-async function loadOriginalDataPoint(): Promise<void> {
-  originalData.value = null;
-  originalError.value = null;
-
-  const meta = currentDataPointMeta.value;
-  if (!meta || !meta.dataPointId) return;
-
-  isOriginalLoading.value = true;
-  try {
-    originalData.value = mockDataPointsById[meta.dataPointId] ?? null;
-  } catch (error) {
-    console.error('Failed to load original datapoint', error);
-    originalError.value = error;
-  } finally {
-    isOriginalLoading.value = false;
-  }
-}
+const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');
+console.log('currentDataPointId', currentDataPointId.value);
 
 watch(
-  () => currentDataPointTypeId.value,
-  () => {
-    loadOriginalDataPoint().catch((error) => console.error(error));
+  [currentDataPointTypeId, currentDatapointJudgement, currentDataPointId],
+  ([typeId, meta, id]) => {
+    console.log('JudgeDialog currentDataPointTypeId:', typeId);
+    console.log('JudgeDialog matching meta:', meta);
+    console.log('JudgeDialog currentDataPointId:', id);
+    if (datasetJudgement.value?.dataPoints) {
+      console.log('Available dataPointType keys:', Object.keys(datasetJudgement.value.dataPoints));
+    }
   },
   { immediate: true }
 );
 
+// ===== Original datapoint =====
+
+const {
+  data: originalDataPoint,
+  isPending: isOriginalLoading,
+  error: originalError,
+} = useGetDataPointByIdQuery(currentDataPointId, {
+  enabled: computed(() => !!currentDataPointId.value),
+});
+
+const originalData = computed<DataPointDetail | null>(() => {
+  const dp = originalDataPoint.value;
+  if (!dp?.dataPoint) return null;
+
+  try {
+    return JSON.parse(dp.dataPoint) as DataPointDetail;
+  } catch (e) {
+    console.error('Failed to parse original datapoint JSON', e);
+    return null;
+  }
+});
+
 // ===== QA reports =====
 
 const filteredQaReports = computed<QaReport[]>(() => {
-  const meta = currentDataPointMeta.value;
+  const meta = currentDatapointJudgement.value;
   if (!meta?.qaReports) return [];
   return meta.qaReports as QaReport[];
 });
 
 const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
-  const meta = currentDataPointMeta.value;
+  const meta = currentDatapointJudgement.value;
   if (!meta) return null;
   const allReports = (meta.qaReports as QaReport[]) ?? [];
   if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
