@@ -119,8 +119,6 @@ import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgemen
 import { AcceptedDataPointSource, DataPointJudgement } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
-import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
-import { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
