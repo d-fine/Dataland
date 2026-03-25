@@ -5,14 +5,18 @@ import {
   type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
-import { getKeycloakToken, login } from '@e2e/utils/Auth';
+import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import {
   admin_name,
   admin_pw,
+  admin_userId,
   getBaseUrl,
+  judge_name,
+  judge_pw,
   reviewer_name,
   reviewer_pw,
+  reviewer_userId,
   uploader_name,
   uploader_pw,
 } from '@e2e/utils/Cypress';
@@ -23,7 +27,9 @@ import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 const apiBaseUrl = getBaseUrl();
-const containedDataPoints: Record<string, string> = {};
+const dataPointsWithQaReports: Record<string, string> = {};
+const dataPointsWithoutQaReports: Record<string, string> = {};
+let amountOfDataPointsToReview = 0;
 
 describeIf(
   'As a user, I expect to be able to log in',
@@ -52,8 +58,8 @@ describeIf(
 
     it.only('Start Judgement', () => {
       const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-
-      getReviewerAndAdminTokens().then(({ reviewerToken, adminToken, uploaderToken }) => {
+      let datasetJudgementId = '';
+      getTokens().then(({ reviewerToken, adminToken, uploaderToken, judgeToken }) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
           uploaderToken,
@@ -62,11 +68,17 @@ describeIf(
           euTaxonomyData.t,
           false
         ).then((dataMetaInfo: DataMetaInformation) => {
-          uploadQaReportsForDataset(dataMetaInfo, { reviewerToken, adminToken });
-          startJudgement(storedCompany).then((datasetJudgementId: string) => {
-            cy.contains('button', 'REVIEW PAGE').should('be.visible').click();
-            cy.contains('span', 'Custom Data Point').should('be.visible');
-            judgeDatapoints(datasetJudgementId, adminToken);
+          return uploadQaReportsForDataset(dataMetaInfo, { reviewerToken, adminToken }).then(() => {
+            return startJudgement(storedCompany)
+              .then((id) => {
+                datasetJudgementId = id;
+                return changeJudgeAssignment(storedCompany);
+              })
+              .then(() => {
+                return judgeDatapointsWithoutQaReports(datasetJudgementId, judgeToken).then(() =>
+                  judgeDatapointsWithQaReports(datasetJudgementId, judgeToken)
+                );
+              });
           });
         });
       });
@@ -90,25 +102,151 @@ describeIf(
 );
 
 /**
- * Navigates to the review page from the judgement start view.
- * ToDo Zu viele PATCH anfragen aufeinmal.
+ * Switches to the judge user, opens the review entry for the company, and assigns the dataset to the judge.
  *
+ * @param storedCompany - The company owning the dataset to be judged.
+ * @returns {Cypress.Chainable<JQuery<HTMLElement>>} A chainable for the assignment flow.
  */
-function judgeDatapoints(datasetJudgementId: string, adminToken: string): void {
-  Object.keys(containedDataPoints).forEach((dataPointType) => {
-    cy.request({
-      method: 'PATCH',
-      url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/${dataPointType}`,
-      headers: { Authorization: `Bearer ${adminToken}` },
-      body: {
-        acceptedSource: 'Original',
-      },
+function changeJudgeAssignment(storedCompany: StoredCompany): Cypress.Chainable<JQuery<HTMLElement>> {
+  cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
+  logout();
+  login(judge_name, judge_pw);
+  visitQaOverviewAndGoToLastPage();
+  const companyName = storedCompany.companyInformation.companyName;
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+    .last()
+    .should('exist')
+    .within(() => {
+      cy.contains('[data-test="qa-review-company-name"]', companyName)
+        .should('have.text', companyName)
+        .closest('tr')
+        .within(() => {
+          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
+          cy.contains('td', 'Data Admin').should('exist').click();
+        });
     });
-    cy.get(`tr[data-point-type-id="${dataPointType}"]`)
-      .should('exist')
-      .within(() => {
-        cy.get('td').eq(1).find('.accepted-check').should('be.visible');
+  cy.contains('button', 'REVIEW PAGE').should('be.visible').click();
+  cy.contains('p', 'Currently assigned to:').should('be.visible').next('p').should('have.text', 'Data Admin');
+  cy.contains('button', 'ASSIGN YOURSELF').should('be.visible').click();
+  cy.get('.p-dialog')
+    .should('be.visible')
+    .within(() => {
+      cy.contains('button', 'CONFIRM').should('exist').click();
+    });
+  return cy.wait('@reassignJudgement').its('response.statusCode').should('eq', 200);
+}
+
+/**
+ * Patches QA-report datapoints, reloads, and verifies the table renders.
+ *
+ * @param datasetJudgementId - The dataset judgement id to update.
+ * @param judgeToken - Bearer token for the judge user.
+ * @returns {Cypress.Chainable<unknown>} A chainable that completes after the checks.
+ */
+function judgeDatapointsWithQaReports(datasetJudgementId: string, judgeToken: string): Cypress.Chainable {
+  cy.request({
+    method: 'PATCH',
+    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedDateFiscalYearEnd`,
+    headers: { Authorization: `Bearer ${judgeToken}` },
+    body: {
+      acceptedSource: 'Original',
+    },
+  })
+    .its('status')
+    .should('eq', 200);
+
+  cy.request({
+    method: 'PATCH',
+    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount`,
+    headers: { Authorization: `Bearer ${judgeToken}` },
+    body: {
+      acceptedSource: 'Custom',
+      customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
+    },
+  })
+    .its('status')
+    .should('eq', 200);
+
+  cy.request({
+    method: 'PATCH',
+    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedEnumYesNoIsNfrdMandatory`,
+    headers: { Authorization: `Bearer ${judgeToken}` },
+    body: {
+      acceptedSource: 'Qa',
+      reporterUserIdOfAcceptedQaReport: reviewer_userId,
+      customDataPoint: '{"value":"No"}',
+    },
+  })
+    .its('status')
+    .should('eq', 200);
+
+  cy.request({
+    method: 'PATCH',
+    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedDecimalNumberOfEmployees`,
+    headers: { Authorization: `Bearer ${judgeToken}` },
+    body: {
+      acceptedSource: 'Qa',
+      reporterUserIdOfAcceptedQaReport: admin_userId,
+    },
+  })
+    .its('status')
+    .should('eq', 200);
+
+  cy.reload();
+  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
+  return cy.contains(0 + ' / ' + amountOfDataPointsToReview + ' data points to review').should('be.visible');
+}
+
+/**
+ * Patches all data points without QA reports as accepted original,
+ * reloads once, and then verifies the expected icons in each row.
+ *
+ * @param datasetJudgementId - The dataset judgement id to update.
+ * @param judgeToken - Bearer token for the judge user.
+ * @returns Cypress.Chainable A chainable that completes after the checks.
+ */
+function judgeDatapointsWithoutQaReports(datasetJudgementId: string, judgeToken: string): Cypress.Chainable {
+  const dataPointEntries = Object.entries(dataPointsWithoutQaReports);
+  return cy
+    .then(() => {
+      dataPointEntries.forEach(([dataPointType]) => {
+        cy.request({
+          method: 'PATCH',
+          url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/${dataPointType}`,
+          headers: { Authorization: `Bearer ${judgeToken}` },
+          body: {
+            acceptedSource: 'Original',
+          },
+        })
+          .its('status')
+          .should('eq', 200);
       });
+    })
+    .then(() => checkOriginalDatapointAccepted(dataPointEntries));
+}
+
+/**
+ * Reloads the review page and checks the expected icons for the original datapoint.
+ *
+ * @param dataPointEntries - Tuple entries of dataPointType and dataPointId.
+ * @returns Cypress.Chainable A chainable that completes after the checks.
+ */
+function checkOriginalDatapointAccepted(dataPointEntries: Array<[string, string]>): Cypress.Chainable {
+  cy.reload();
+  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
+  cy.contains(
+    Object.keys(dataPointsWithQaReports).length + ' / ' + amountOfDataPointsToReview + ' data points to review'
+  ).should('be.visible');
+  return cy.then(() => {
+    dataPointEntries.forEach(([, dataPointId]) => {
+      cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
+        cy.get('td').eq(1).find('.accepted-check').should('exist');
+        cy.get('td').eq(2).find('.accepted-check').should('not.exist');
+        cy.get('td').eq(2).find('.rejected-check').should('not.exist');
+        cy.get('td').eq(3).find('.accepted-check').should('not.exist');
+        cy.get('td').eq(3).find('.rejected-check').should('not.exist');
+      });
+    });
   });
 }
 
@@ -142,11 +280,19 @@ function startJudgement(storedCompany: StoredCompany): Cypress.Chainable<string>
       cy.contains('button', 'CONFIRM').should('exist').click();
     });
 
+  cy.contains('button', 'REVIEW PAGE').should('be.visible').click();
+  cy.contains('span', 'Custom Data Point').should('be.visible');
+
   return cy
     .wait('@startJudgementRequest')
     .then((interception) => {
       expect(interception.response?.statusCode).to.eq(201);
-      return interception.response?.body?.datasetJudgementId as string;
+      cy.log(`startJudgement url: ${interception.request?.url}`);
+      cy.log(`startJudgement status: ${interception.response?.statusCode}`);
+      cy.log(`startJudgement response body: ${JSON.stringify(interception.response?.body ?? null)}`);
+      const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
+      cy.log(`datasetJudgementId: ${dataSetJudgementId}`);
+      return cy.wrap(dataSetJudgementId as string, { log: false });
     })
     .should('exist');
 }
@@ -157,45 +303,67 @@ function startJudgement(storedCompany: StoredCompany): Cypress.Chainable<string>
  * Uses the admin token to resolve data point IDs via the metadata endpoint and
  * then posts QA reports using the reviewer/admin tokens based on the configured scenarios.
  *
- * @param dataMetaInfo Metadata of the dataset whose data points are queried.
- * @param tokens Reviewer/admin bearer tokens used for QA report uploads.
+ * @param {DataMetaInformation} dataMetaInfo Metadata of the dataset whose data points are queried.
+ * @param {{ reviewerToken: string; adminToken: string }} tokens Reviewer/admin bearer tokens used for QA report uploads.
+ * @returns {Cypress.Chainable<Cypress.Response<unknown>>} The response chainable from the metadata request.
  */
 function uploadQaReportsForDataset(
   dataMetaInfo: DataMetaInformation,
   tokens: { reviewerToken: string; adminToken: string }
-): void {
+): Cypress.Chainable<Cypress.Response<unknown>> {
   const dataPointTypesWithCorrectedValues = getCorrectedDataPointValues();
   const qaReportScenarios = buildQaReportScenarios(tokens.reviewerToken, tokens.adminToken);
 
-  cy.request({
-    method: 'GET',
-    url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
-    headers: { Authorization: `Bearer ${tokens.adminToken}` },
-  }).then((response) => {
-    cy.log(`GET /metadata/${dataMetaInfo.dataId}/data-points response: ${JSON.stringify(response.body)}`);
-    Object.assign(containedDataPoints, response.body?.data ?? response.body ?? {});
-    cy.log(`containedDataPoints: ${JSON.stringify(containedDataPoints)}`);
-    Array.from(dataPointTypesWithCorrectedValues.entries()).forEach(([dataPointType, correctedValue], index) => {
-      const dataPointId = containedDataPoints[dataPointType];
-      qaReportScenarios[index](dataPointId, correctedValue);
+  return cy
+    .request({
+      method: 'GET',
+      url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
+      headers: { Authorization: `Bearer ${tokens.adminToken}` },
+    })
+    .then((response) => {
+      return cy
+        .then(() => {
+          const allDataPoints = response.body?.data ?? response.body ?? {};
+          amountOfDataPointsToReview = Object.keys(allDataPoints).length;
+          cy.log(`GET /metadata/${dataMetaInfo.dataId}/data-points response: ${JSON.stringify(response.body)}`);
+          Object.keys(dataPointsWithQaReports).forEach((key) => delete dataPointsWithQaReports[key]);
+          Object.keys(dataPointsWithoutQaReports).forEach((key) => delete dataPointsWithoutQaReports[key]);
+          Object.entries(allDataPoints).forEach(([dataPointType, dataPointId]) => {
+            if (dataPointTypesWithCorrectedValues.has(dataPointType)) {
+              dataPointsWithQaReports[dataPointType] = dataPointId as string;
+            } else {
+              dataPointsWithoutQaReports[dataPointType] = dataPointId as string;
+            }
+          });
+          cy.log(`dataPointsWithQaReports: ${JSON.stringify(dataPointsWithQaReports)}`);
+          cy.log(`dataPointsWithoutQaReports: ${JSON.stringify(dataPointsWithoutQaReports)}`);
+          cy.log(`dataPointsWithoutQaReports: ${amountOfDataPointsToReview}`);
+          Array.from(dataPointTypesWithCorrectedValues.entries()).forEach(([dataPointType, correctedValue], index) => {
+            const dataPointId = dataPointsWithQaReports[dataPointType];
+            qaReportScenarios[index](dataPointId, correctedValue);
+          });
+        })
+        .then(() => response);
     });
-  });
 }
 
 /**
- * Retrieves reviewer, admin, and uploader Keycloak tokens for subsequent API requests.
+ * Retrieves reviewer, admin, uploader, and judge Keycloak tokens for subsequent API requests.
  *
- * @returns A chainable containing reviewer, admin, and uploader bearer tokens.
+ * @returns {Cypress.Chainable<{ reviewerToken: string; adminToken: string; uploaderToken: string; judgeToken: string }>} A chainable containing reviewer, admin, uploader, and judge bearer tokens.
  */
-function getReviewerAndAdminTokens(): Cypress.Chainable<{
+function getTokens(): Cypress.Chainable<{
   reviewerToken: string;
   adminToken: string;
   uploaderToken: string;
+  judgeToken: string;
 }> {
   return getKeycloakToken(reviewer_name, reviewer_pw).then((reviewerToken: string) => {
     return getKeycloakToken(admin_name, admin_pw).then((adminToken: string) => {
       return getKeycloakToken(uploader_name, uploader_pw).then((uploaderToken: string) => {
-        return { reviewerToken, adminToken, uploaderToken };
+        return getKeycloakToken(judge_name, judge_pw).then((judgeToken: string) => {
+          return { reviewerToken, adminToken, uploaderToken, judgeToken };
+        });
       });
     });
   });
@@ -204,9 +372,9 @@ function getReviewerAndAdminTokens(): Cypress.Chainable<{
 /**
  * Uploads a single QA report for the given data point with the verdict QaRejected.
  *
- * @param dataPointId The data point id the QA report is attached to.
- * @param token Bearer token used to authorize the QA report upload.
- * @param correctedValue JSON string representing the corrected value payload.
+ * @param {string} dataPointId The data point id the QA report is attached to.
+ * @param {string} token Bearer token used to authorize the QA report upload.
+ * @param {string} correctedValue JSON string representing the corrected value payload.
  */
 function uploadRejectedQaReportForDataPoint(dataPointId: string, token: string, correctedValue: string): void {
   cy.request({
@@ -224,8 +392,8 @@ function uploadRejectedQaReportForDataPoint(dataPointId: string, token: string, 
 /**
  * Uploads a single QA report for the given data point with the verdict QaAccepted.
  *
- * @param dataPointId The data point id the QA report is attached to.
- * @param token Bearer token used to authorize the QA report upload.
+ * @param {string} dataPointId The data point id the QA report is attached to.
+ * @param {string} token Bearer token used to authorize the QA report upload.
  */
 function uploadAcceptedQaReportForDataPoint(dataPointId: string, token: string): void {
   cy.request({
@@ -242,9 +410,9 @@ function uploadAcceptedQaReportForDataPoint(dataPointId: string, token: string):
 /**
  * Builds the ordered QA report scenarios applied to successive data points.
  *
- * @param reviewerToken Bearer token for the reviewer user.
- * @param adminToken Bearer token for the admin user.
- * @returns List of scenario functions executed by index order.
+ * @param {string} reviewerToken Bearer token for the reviewer user.
+ * @param {string} adminToken Bearer token for the admin user.
+ * @returns {Array<(dataPointId: string, correctedValue: string) => void>} List of scenario functions executed by index order.
  */
 function buildQaReportScenarios(
   reviewerToken: string,
@@ -273,7 +441,7 @@ function buildQaReportScenarios(
 /**
  * Builds the corrected values map for data point types used in QA report uploads.
  *
- * @returns Map of data point type -> corrected value (JSON string).
+ * @returns {Map<string, string>} Map of data point type -> corrected value (JSON string).
  */
 function getCorrectedDataPointValues(): Map<string, string> {
   const dataPointTypesWithCorrectedValues = new Map<string, string>();
