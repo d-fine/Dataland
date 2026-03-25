@@ -99,7 +99,6 @@ class QaReviewManager
             chunkSize: Int,
             chunkIndex: Int,
         ): List<QaReviewResponse> {
-            val offset = (chunkIndex) * (chunkSize)
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             return qaReviewRepository
                 .getSortedAndFilteredQaReviewMetadataset(
@@ -110,7 +109,7 @@ class QaReviewManager
                         companyName = companyName,
                         qaStatuses = setOf(qaStatus),
                     ),
-                    resultOffset = offset,
+                    resultOffset = chunkIndex * chunkSize,
                     resultLimit = chunkSize,
                 ).map { it.toQaReviewResponse(userIsAdmin) }
         }
@@ -258,20 +257,18 @@ class QaReviewManager
                     comment = comment,
                 )
             qaReviewRepository.save(qaReviewEntity)
-            val acceptedReviewsSorted =
-                getAcceptedReviewMetadataSorted(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
+            getAcceptedReviewMetadataSorted(
+                qaReviewEntity.companyId,
+                qaReviewEntity.framework,
+                qaReviewEntity.reportingPeriod,
+            ).also {
+                this.sendQaStatusUpdateMessage(
+                    qaReviewEntity = qaReviewEntity,
+                    correlationId = correlationId,
+                    isUpdate = it.size > 1,
+                    newActiveDataId = it.firstOrNull()?.dataId,
                 )
-            val newActiveDataId = acceptedReviewsSorted.elementAtOrNull(0)?.dataId
-            val previousActiveDataId = acceptedReviewsSorted.getOrNull(1)
-            this.sendQaStatusUpdateMessage(
-                qaReviewEntity = qaReviewEntity,
-                correlationId = correlationId,
-                isUpdate = previousActiveDataId != null,
-                newActiveDataId = newActiveDataId,
-            )
+            }
         }
 
         /**
@@ -383,10 +380,7 @@ class QaReviewManager
             companyId: String,
             dataType: String,
             reportingPeriod: String,
-        ): String? =
-            getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod)
-                .firstOrNull()
-                ?.dataId
+        ): String? = getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod).firstOrNull()?.dataId
 
         /**
          * Returns the number of QA reports for all data points contained in the given dataId
