@@ -523,9 +523,29 @@ function acceptCustomDatapoint(): void {
 
 function resetStateForCurrentDataPoint(): void {
   currentQaReportIndex.value = 0;
+}
+
+function setCustomFormForCurrentDataPoint(meta: DataPointJudgement | null): void {
+  if (meta?.acceptedSource === AcceptedDataPointSource.Custom && meta.customValue) {
+    try {
+      const prev = JSON.parse(meta.customValue) as DataPointDetail;
+      customFormData.value = {
+        value: String(prev.value ?? ''),
+        quality: String(prev.quality ?? ''),
+        document: String(prev.dataSource?.fileName ?? prev.dataSource?.fileReference ?? ''),
+        pages: String(prev.dataSource?.page ?? ''),
+        comment: String(prev.comment ?? ''),
+      };
+      customJson.value = JSON.stringify(prev, null, 2);
+      return;
+    } catch (e) {
+      console.error('Failed to parse previously accepted custom datapoint JSON', e);
+    }
+  }
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
 }
+watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });
 
 // ===== Overflow popover =====
 
