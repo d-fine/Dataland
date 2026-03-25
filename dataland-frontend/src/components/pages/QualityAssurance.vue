@@ -393,7 +393,7 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 /**
  * Handles the click on a row in the QA table.
  * If the dataset of the clicked row has not been reviewed before, the user will be directed to the dataset page.
- * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
+ * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding QA review page.
  */
 function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
@@ -427,21 +427,19 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
  * Navigates to the dataset page for the dataset with the given dataId, companyId and framework.
  */
 function goToDatasetViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
-  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
-  return router.push(qaUri);
+  return router.push(`/companies/${companyId}/frameworks/${framework}/${dataId}`);
 }
 
 /**
  * Navigates to the qa review page for the dataset with the given datasetReviewId.
  */
 function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
-  const qaUri = `/qualityassurance/review/${datasetReviewId}`;
-  return router.push(qaUri);
+  return router.push(`/qualityassurance/review/${datasetReviewId}`);
 }
 
 /**
  * Confirms the start of a dataset review in the confirmation modal.
- * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
+ * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding QA review page.
  */
 async function confirmStartReview(): Promise<void> {
   isCreatingReview.value = true;
