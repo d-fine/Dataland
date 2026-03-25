@@ -91,5 +91,6 @@ class SfdrDataController
 
         @Operation(operationId = "getLatestAvailableCompanyAssociatedSfdrData")
         override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
-            super.getLatestAvailableCompanyAssociatedData(identifier)
+            super
+                .getLatestAvailableCompanyAssociatedData(identifier)
     }
