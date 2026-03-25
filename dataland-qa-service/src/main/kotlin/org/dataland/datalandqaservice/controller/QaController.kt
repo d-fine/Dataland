@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaRev
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaStatusService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -25,6 +26,7 @@ import java.util.UUID.randomUUID
 class QaController(
     @Autowired var qaReviewManager: QaReviewManager,
     @Autowired var dataPointQaReviewManager: DataPointQaReviewManager,
+    @Autowired var qaStatusService: QaStatusService,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -83,26 +85,10 @@ class QaController(
     ) {
         qaReviewManager.assertQaServiceKnowsDataId(dataId)
 
-        val correlationId = randomUUID().toString()
-        val reviewerId = DatalandAuthentication.fromContext().userId
-        logger.info(
-            "Received request from user $reviewerId to change the quality status of dataset with ID $dataId " +
-                "(correlationId: $correlationId)",
-        )
-
-        qaReviewManager.handleQaChange(
+        qaStatusService.changeQaStatus(
             dataId = dataId,
             qaStatus = qaStatus,
-            triggeringUserId = reviewerId,
             comment = comment,
-            correlationId = correlationId,
-        )
-        dataPointQaReviewManager.reviewAssembledDataset(
-            dataId = dataId,
-            qaStatus = qaStatus,
-            triggeringUserId = reviewerId,
-            comment = comment,
-            correlationId = correlationId,
             overwriteDataPointQaStatus = overwriteDataPointQaStatus,
         )
     }

@@ -188,13 +188,17 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `finishJudgement with QaDecision accepted or rejected sets judgement state to finished when user is judge`() {
+    fun `finishJudgement with QaDecision accepted sets judgement state to finished when user is judge`() {
+        datasetJudgementEntity.dataPoints.first().acceptedSource = AcceptedDataPointSource.Original
         service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
-        var saved = captureSavedJudgement()
+        val saved = captureSavedJudgement()
         assertEquals(DatasetJudgementState.Finished, saved.judgementState)
+    }
 
+    @Test
+    fun `finishJudgement with QaDecision rejected sets judgement state to finished when user is judge`() {
         service.finishJudgement(UUID.randomUUID(), QaDecision.Rejected)
-        saved = captureSavedJudgement()
+        val saved = captureSavedJudgement()
         assertEquals(DatasetJudgementState.Finished, saved.judgementState)
     }
 
@@ -216,6 +220,14 @@ class DatasetJudgementServiceTest {
         datasetJudgementEntity.judgementState = DatasetJudgementState.Finished
 
         assertThrows<ConflictApiException> {
+            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+        }
+    }
+
+    @Test
+    fun `finishJudgement throws error when accepting judgement with unreviewed datapoints`() {
+        datasetJudgementEntity.dataPoints.first().acceptedSource = null
+        assertThrows<InvalidInputApiException> {
             service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
         }
     }

@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -30,6 +31,7 @@ class DatasetJudgementService
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
         private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
+        private val qaStatusService: QaStatusService,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -109,8 +111,22 @@ class DatasetJudgementService
                 QaDecision.Accepted -> {
                     DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
                     datasetJudgementFinalizationService.handleAcceptance()
+                    qaStatusService.changeQaStatus(
+                        dataId = datasetJudgement.datasetId.toString(),
+                        qaStatus = QaStatus.Accepted,
+                        comment = null,
+                        overwriteDataPointQaStatus = false,
+                    )
                 }
-                QaDecision.Rejected -> datasetJudgementFinalizationService.handleRejection()
+                QaDecision.Rejected -> {
+                    datasetJudgementFinalizationService.handleRejection()
+                    qaStatusService.changeQaStatus(
+                        dataId = datasetJudgement.datasetId.toString(),
+                        qaStatus = QaStatus.Rejected,
+                        comment = null,
+                        overwriteDataPointQaStatus = true,
+                    )
+                }
             }
             datasetJudgement.judgementState = DatasetJudgementState.Finished
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
