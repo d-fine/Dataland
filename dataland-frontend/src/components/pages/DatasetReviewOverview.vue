@@ -84,10 +84,12 @@
               :hide-empty-fields="hideEmptyFields"
               data-test="datasetReviewComparisonTable"
               @row-click="onComparisonTableRowClicked"
+              @kpi-rows-built="onKpiRowsBuilt"
             />
             <JudgeDialog
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
+              :next-data-point-options="nextDataPointOptions"
               v-model:is-open="isJudgeDialogOpen"
             />
           </div>
@@ -110,7 +112,7 @@
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed, inject } from 'vue';
+import { ref, onMounted, computed, inject, Ref } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -120,13 +122,14 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState } from '@clients/qaservice';
+import { DatasetJudgementResponse, DatasetJudgementState } from '@clients/qaservice';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewStateMutation.ts';
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
+import { NextDatapointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -178,6 +181,37 @@ const dataPointsLeftToReview = computed(() => {
 const isAssignedToCurrentUser = computed(() => {
   if (!datasetReview.value) return false;
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
+});
+
+const kpiRows = ref<CellRow[]>([]);
+function onKpiRowsBuilt(rows: CellRow[]): void {
+  kpiRows.value = rows;
+}
+
+// NOTE: Used by JudgeDialog for the "Next datapoint" dropdown.
+// TODO: Currently respects hideEmptyFields via kpiRows. If UX decides dropdown
+//       must truly list *all* KPIs regardless of this toggle, we need a variant
+//       of the rows that ignores hideEmptyFields.
+const nextDataPointOptions = computed((): NextDatapointOption[] => {
+  const review = datasetReview.value;
+  if (!review) return [];
+
+  const dataPoints = review.dataPoints as Record<string, { acceptedSource: unknown }>;
+  const options: NextDatapointOption[] = [];
+
+  for (const row of kpiRows.value) {
+    const typeId = row.dataPointTypeId;
+
+    if (typeId && dataPoints[typeId]) {
+      options.push({
+        label: row.label,
+        value: typeId,
+        reviewed: dataPoints[typeId].acceptedSource != null,
+      });
+    }
+  }
+
+  return options;
 });
 
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);

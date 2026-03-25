@@ -184,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
@@ -216,6 +216,7 @@ defineOptions({ name: 'DatasetReviewComparisonTable' });
 
 const emit = defineEmits<{
   (e: 'row-click', row: CellRow): void;
+  (e: 'kpi-rows-built', rows: CellRow[]): void;
 }>();
 
 const props = defineProps<{
@@ -348,6 +349,15 @@ const allRows = computed<KpiRow[]>(() => {
   if (!originalDataAndMeta.value || !mldtConfig.value) return [];
   return buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
 });
+
+watch(
+  allRows,
+  (rows) => {
+    const kpiRows = rows.filter((row): row is CellRow => row.type === 'cell' && !!row.dataPointTypeId);
+    emit('kpi-rows-built', kpiRows);
+  },
+  { immediate: true }
+);
 
 const filteredRows = computed<KpiRow[]>(() => {
   if (!props.searchQuery) return allRows.value;

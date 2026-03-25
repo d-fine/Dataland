@@ -136,6 +136,7 @@ const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
 const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
+  nextDataPointOptions: NextDatapointOption[];
 }>();
 
 const emit = defineEmits<{
@@ -489,45 +490,17 @@ function copyCorrectedToCustom(): void {
 const onlyShowUnreviewed = ref<boolean>(true);
 const selectedNextDataPointTypeId = ref<string | null>(null);
 
-function isDataPointJudged(meta: any): boolean {
-  if (meta.acceptedSource !== null) return true;
-  const reports = (meta.qaReports as QaReport[]) ?? [];
-  return reports.length > 0 && reports.every((r) => r.verdict === 'QaAccepted');
-}
-
+// Base options come from parent (Overview), which already encodes label, order, and "reviewed".
+// Here we only apply the "Only show unreviewed" toggle.
 const nextDataPointOptions = computed<NextDatapointOption[]>(() => {
-  if (!datasetJudgement.value?.dataPoints) return [];
-  const options: NextDatapointOption[] = [];
-
-  const entries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
-
-  for (const [dataPointType, meta] of entries) {
-    const reviewed = isDataPointJudged(meta);
-    if (onlyShowUnreviewed.value && reviewed) continue;
-
-    options.push({
-      label: dataPointType,
-      value: dataPointType,
-      reviewed,
-    });
-  }
-  return options;
+  const base = props.nextDataPointOptions ?? [];
+  return onlyShowUnreviewed.value ? base.filter((opt) => !opt.reviewed) : base;
 });
-
-function findNextUnreviewedAfter(afterId: string): string | null {
-  if (!datasetJudgement.value?.dataPoints) return null;
-  const allEntries = Object.entries(datasetJudgement.value.dataPoints) as [string, any][];
-  const startIndex = allEntries.findIndex(([key]) => key === afterId);
-  const rotated = [...allEntries.slice(startIndex + 1), ...allEntries.slice(0, startIndex)];
-  const [key] = rotated.find(([, meta]) => !isDataPointJudged(meta)) ?? [];
-  return key ?? null;
-}
 
 function goToSelectedDataPoint(): void {
   if (!selectedNextDataPointTypeId.value) return;
-  const currentSelection = selectedNextDataPointTypeId.value;
-  currentDataPointTypeId.value = currentSelection;
-  selectedNextDataPointTypeId.value = findNextUnreviewedAfter(currentSelection);
+
+  currentDataPointTypeId.value = selectedNextDataPointTypeId.value;
   resetStateForCurrentDataPoint();
 }
 
@@ -540,12 +513,21 @@ function markCurrentAsReviewed(source: AcceptedDataPointSource): void {
 function onAcceptClick(source: AcceptedDataPointSource): void {
   isMutating.value = true;
   patchError.value = null;
+
+  // TODO: Replace this mock with real PATCH using usePatchJudgmentDetailsForADatapointMutation.
   setTimeout(() => {
-    const next = findNextUnreviewedAfter(currentDataPointTypeId.value);
     markCurrentAsReviewed(source);
     isMutating.value = false;
-    selectedNextDataPointTypeId.value = next;
-    if (next) goToSelectedDataPoint();
+
+    if (selectedNextDataPointTypeId.value) {
+      // Route to whatever is currently selected in the dropdown
+      currentDataPointTypeId.value = selectedNextDataPointTypeId.value;
+      resetStateForCurrentDataPoint();
+    } else {
+      // No next datapoint selected -> close modal
+      isOpen.value = false;
+      emit('close');
+    }
   }, 1000);
 }
 
