@@ -11,7 +11,7 @@
     <!-- Header -->
     <template #header>
       <div class="judge-modal__header">
-        <span class="p-dialog-title">{{ currentDataPointTypeId }}</span>
+        <span class="p-dialog-title">{{ currentDataPointLabel }}</span>
         <span
           v-if="verdictBadge"
           class="judge-modal__verdict-badge"
@@ -118,9 +118,6 @@ import type {
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { AcceptedDataPointSource, DataPointJudgement } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
-import { ExtendedDataPoint } from '@/utils/DataPoint.ts';
-import { AcceptedDataPointSource } from '@clients/qaservice';
-import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -309,13 +306,15 @@ const patchError = ref<string | null>(null);
 // ===== Current datapoint selection =====
 
 const currentDataPointTypeId = ref<string>(props.dataPointTypeId);
-
+const currentDataPointLabel = computed(() => {
+  const option = props.nextDataPointOptions.find((opt) => opt.dataPointTypeId === currentDataPointTypeId.value);
+  return option ? option.label : currentDataPointTypeId.value;
+});
 watch(
   () => props.dataPointTypeId,
   (newVal) => {
     currentDataPointTypeId.value = newVal;
     selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(currentDataPointTypeId.value);
-
     resetStateForCurrentDataPoint();
   }
 );
@@ -497,9 +496,7 @@ const onlyShowUnreviewed = ref<boolean>(true);
 const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
 
 function isDataPointJudged(meta: any): boolean {
-  if (meta.acceptedSource != null) return true;
-  const reports = (meta.qaReports as QaReport[]) ?? [];
-  return reports.length > 0 && reports.every((r) => r.verdict === 'QaAccepted');
+  return meta.acceptedSource != null;
 }
 
 const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
