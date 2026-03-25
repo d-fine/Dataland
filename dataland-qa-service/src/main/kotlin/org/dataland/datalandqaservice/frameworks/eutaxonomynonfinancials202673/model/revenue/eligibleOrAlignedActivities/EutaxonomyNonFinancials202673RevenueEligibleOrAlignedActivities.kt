@@ -7,7 +7,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the EligibleOrAlignedActivities section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities(
     val eligibleOrAlignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity?>? = null,
 )

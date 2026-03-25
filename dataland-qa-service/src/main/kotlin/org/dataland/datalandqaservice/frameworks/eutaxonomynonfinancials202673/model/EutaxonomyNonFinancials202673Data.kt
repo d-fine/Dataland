@@ -14,7 +14,6 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.m
 /**
  * The root QA data-model for the Eutaxonomy-non-financials-2026-73 Framework
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673Data(
     @field:Valid()
     val general: EutaxonomyNonFinancials202673General? = null,

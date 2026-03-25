@@ -17,7 +17,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the Capex section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673Capex(
     val totalAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()

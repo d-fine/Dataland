@@ -17,7 +17,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the Revenue section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673Revenue(
     val totalAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()

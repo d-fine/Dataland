@@ -14,7 +14,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the General section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673General(
     @field:Valid()
     val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions?>? = null,

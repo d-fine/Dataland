@@ -8,8 +8,6 @@ import org.dataland.frameworktoolbox.intermediate.components.SingleSelectCompone
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
-import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File
@@ -27,19 +25,6 @@ class EuTaxonomyNonFinancials202673Framework :
         order = 5,
         enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
     ) {
-    override fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
-        addSupressAnnotationToPackageBuilder(dataModel.rootPackageBuilder, "\"MaxLineLength\"", null)
-    }
-
-    override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
-        val tooLargeClasses =
-            listOf(
-                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.EutaxonomyNonFinancialsCapex",
-                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.EutaxonomyNonFinancialsRevenue",
-            )
-        addSupressAnnotationToPackageBuilder(dataModel.rootPackageBuilder, "\"LargeClass\"", tooLargeClasses)
-    }
-
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true

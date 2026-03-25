@@ -8,7 +8,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the EligibleShare section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673RevenueEligibleShare(
     @field:Valid()
     val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

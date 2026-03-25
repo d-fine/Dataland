@@ -9,7 +9,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the AlignedShare section
  */
-@Suppress("MaxLineLength")
 data class EutaxonomyNonFinancials202673CapexAlignedShare(
     @field:Valid()
     val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
