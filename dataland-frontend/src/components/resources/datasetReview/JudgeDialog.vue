@@ -116,7 +116,7 @@ import type {
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
-import { AcceptedDataPointSource, DataPointJudgement } from '@clients/qaservice';
+import { AcceptedDataPointSource, DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
 import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
@@ -234,7 +234,7 @@ const originalData = computed<DataPointDetail | null>(() => {
 const filteredQaReports = computed<QaReport[]>(() => {
   const meta = currentDatapointJudgement.value;
   if (!meta?.qaReports) return [];
-  return meta.qaReports as QaReport[];
+  return (meta.qaReports as QaReport[]).filter((r) => r.verdict !== QaReportDataPointVerdict.QaAccepted);
 });
 
 const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
