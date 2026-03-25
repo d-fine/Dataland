@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -30,6 +31,7 @@ class DatasetJudgementService
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
         private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
+        private val qaStatusService: QaStatusService,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -41,7 +43,7 @@ class DatasetJudgementService
          * @param datasetId The UUID of the dataset to judge.
          * @return DatasetJudgementResponse API response with created judgement details.
          * @throws ResourceNotFoundApiException If the dataset is not found.
-         * @throws ConflictApiException If a pending judgement exists.
+         * @throws ConflictApiException If a dataset judgement exists.
          */
         @Transactional
         fun postDatasetJudgement(datasetId: UUID): DatasetJudgementResponse {
@@ -54,10 +56,10 @@ class DatasetJudgementService
                         "Dataset with the id: $datasetId could not be found.",
                     )
                 }
-            if (datasetJudgementRepository.findAllByDatasetIdAndJudgementState(datasetId, DatasetJudgementState.Pending).isNotEmpty()) {
+            if (datasetJudgementRepository.findAllByDatasetId(datasetId).isNotEmpty()) {
                 throw ConflictApiException(
-                    summary = "Pending dataset judgement entity already exists.",
-                    message = "There is already a dataset judgement entity for this dataset which is pending.",
+                    summary = "Dataset judgement entity already exists.",
+                    message = "There is already a dataset judgement entity for this dataset.",
                 )
             }
 
@@ -107,10 +109,28 @@ class DatasetJudgementService
             DatasetJudgementValidationHelper.validateDatasetJudgementIsPending(datasetJudgement)
             when (state) {
                 QaDecision.Accepted -> {
-                    DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource()
-                    datasetJudgementFinalizationService.handleAcceptance()
+                    DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
+                    datasetJudgementFinalizationService.handleAcceptance(
+                        datasetJudgement.dataPoints,
+                        datasetJudgement.datasetId,
+                        datasetJudgement.reportingPeriod,
+                    )
+                    qaStatusService.changeQaStatus(
+                        dataId = datasetJudgement.datasetId.toString(),
+                        qaStatus = QaStatus.Accepted,
+                        comment = null,
+                        overwriteDataPointQaStatus = false,
+                    )
                 }
-                QaDecision.Rejected -> datasetJudgementFinalizationService.handleRejection()
+                QaDecision.Rejected -> {
+                    datasetJudgementFinalizationService.handleRejection()
+                    qaStatusService.changeQaStatus(
+                        dataId = datasetJudgement.datasetId.toString(),
+                        qaStatus = QaStatus.Rejected,
+                        comment = null,
+                        overwriteDataPointQaStatus = true,
+                    )
+                }
             }
             datasetJudgement.judgementState = DatasetJudgementState.Finished
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()

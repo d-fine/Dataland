@@ -4,6 +4,7 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetJudgementController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -101,9 +102,9 @@ class DatasetJudgementControllerTest {
     }
 
     @Test
-    fun `setJudgementState delegates to service`() {
+    fun `finishJudgement delegates to service`() {
         val id = UUID.randomUUID()
-        val state = DatasetJudgementState.Finished
+        val state = QaDecision.Accepted
         val serviceResponse = mock<DatasetJudgementResponse>()
 
         whenever(datasetJudgementService.finishJudgement(id, state))
