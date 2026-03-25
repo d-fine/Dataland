@@ -8,6 +8,13 @@
         </span>
       </h3>
 
+      <span v-if="isLoading">
+        <Message severity="info"> Loading...</Message>
+      </span>
+      <span v-else-if="loadError">
+        <Message severity="error"> Failed to load original datapoint. </Message>
+      </span>
+
       <div class="judge-modal__qa-nav" :style="{ visibility: showNav ? 'visible' : 'hidden' }">
         <PrimeButton
           icon="pi pi-chevron-left"
@@ -27,14 +34,10 @@
       </div>
     </div>
 
-    <div v-if="isLoading">Loading...</div>
-    <div v-else-if="loadError">
-      <Message severity="error"> Failed to load datapoint. </Message>
-    </div>
-    <div v-else-if="!data && emptyText">
+    <div v-if="!isLoading && !data && emptyText">
       {{ emptyText }}
     </div>
-    <div v-else-if="data" class="p-datatable p-component">
+    <div v-else-if="isLoading || loadError || data" class="p-datatable p-component">
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" :aria-label="title">
           <tbody class="p-datatable-body">
@@ -42,15 +45,15 @@
               <th scope="row" class="headers-bg">Value</th>
               <td>
                 <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data.value ?? '—' }}</span>
+                  <span class="judge-modal__cell-text">{{ data?.value || '—' }}</span>
                   <PrimeButton
-                    v-if="isOverflowing(String(data.value ?? ''))"
+                    v-if="isOverflowing(String(data?.value || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
                     class="judge-modal__overflow-btn"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.value ?? ''))"
+                    @mouseenter="(e) => emit('showPopover', e, String(data?.value || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full value"
                   />
@@ -61,15 +64,15 @@
               <th scope="row" class="headers-bg">Quality</th>
               <td>
                 <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data.quality ?? '—' }}</span>
+                  <span class="judge-modal__cell-text">{{ data?.quality || '—' }}</span>
                   <PrimeButton
-                    v-if="isOverflowing(String(data.quality ?? ''))"
+                    v-if="isOverflowing(String(data?.quality || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
                     class="judge-modal__overflow-btn"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.quality ?? ''))"
+                    @mouseenter="(e) => emit('showPopover', e, String(data?.quality || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full quality"
                   />
@@ -81,10 +84,10 @@
               <td>
                 <div class="judge-modal__cell-overflow">
                   <span class="judge-modal__cell-text">
-                    {{ data.dataSource?.fileName ?? data.dataSource?.fileReference ?? '—' }}
+                    {{ data?.dataSource?.fileName || data?.dataSource?.fileReference || '—' }}
                   </span>
                   <PrimeButton
-                    v-if="isOverflowing(String(data.dataSource?.fileName ?? data.dataSource?.fileReference ?? ''))"
+                    v-if="isOverflowing(String(data?.dataSource?.fileName || data?.dataSource?.fileReference || ''))"
                     label="+"
                     variant="text"
                     rounded
@@ -95,7 +98,7 @@
                         emit(
                           'showPopover',
                           e,
-                          String(data?.dataSource?.fileName ?? data?.dataSource?.fileReference ?? '')
+                          String(data?.dataSource?.fileName || data?.dataSource?.fileReference || '')
                         )
                     "
                     @mouseleave="emit('hidePopover')"
@@ -107,22 +110,22 @@
             <tr>
               <th scope="row" class="headers-bg">Page(s)</th>
               <td>
-                <span class="judge-modal__cell-text">{{ data.dataSource?.page ?? '—' }}</span>
+                <span class="judge-modal__cell-text">{{ data?.dataSource?.page || '—' }}</span>
               </td>
             </tr>
             <tr>
               <th scope="row" class="headers-bg">Comment</th>
               <td>
                 <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data.comment ?? '—' }}</span>
+                  <span class="judge-modal__cell-text">{{ data?.comment || '—' }}</span>
                   <PrimeButton
-                    v-if="isOverflowing(String(data.comment ?? ''))"
+                    v-if="isOverflowing(String(data?.comment || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
                     class="judge-modal__overflow-btn"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.comment ?? ''))"
+                    @mouseenter="(e) => emit('showPopover', e, String(data?.comment || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full comment"
                   />
