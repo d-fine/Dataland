@@ -118,10 +118,9 @@ import type {
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { AcceptedDataPointSource, DataPointJudgement } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
-import {
-  useGetDocumentMetaInfoByCompanyIdQuery,
-} from "@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts";
-import {DocumentMetaInfoResponse} from "@clients/documentmanager";
+import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
+import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -160,8 +159,16 @@ const {
   isError: datasetReviewError,
 } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
-const isMutating = ref(false);
-const patchError = ref<string | null>(null);
+const {
+  mutate: patchJudgementDetail,
+  isPending: isPatching,
+  isError: isPatchError,
+} = usePatchJudgmentDetailsForADatapointMutation();
+
+const isMutating = computed(() => isPatching.value);
+const patchError = computed(() =>
+  isPatchError.value ? 'Failed to update datapoint judgement. Please try again.' : null
+);
 
 // ===== Current datapoint selection =====
 
@@ -299,15 +306,14 @@ function goToNextReport(): void {
 
 const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
 
-const {
-  data: allDocumentMetaInfo,
-} = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
+const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
 
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo?.value ?? [];
   return docs
-    .filter((doc: DocumentMetaInfoResponse) =>
-      doc.reportingPeriod == null || doc.reportingPeriod === datasetJudgement.value?.reportingPeriod
+    .filter(
+      (doc: DocumentMetaInfoResponse) =>
+        doc.reportingPeriod == null || doc.reportingPeriod === datasetJudgement.value?.reportingPeriod
     )
     .map((doc: DocumentMetaInfoResponse) => {
       const label = doc.documentName ?? doc.documentId;
@@ -410,16 +416,143 @@ function markCurrentAsReviewed(source: AcceptedDataPointSource): void {
   }
 }
 
-function onAcceptClick(source: AcceptedDataPointSource): void {
-  isMutating.value = true;
-  patchError.value = null;
-  markCurrentAsReviewed(source);
-  isMutating.value = false;
-  goToSelectedDataPoint();
+function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
+  switch (acceptedSource) {
+    case AcceptedDataPointSource.Original:
+      acceptOriginalDatapoint();
+      break;
+    case AcceptedDataPointSource.Qa:
+      acceptQaReportDatapoint();
+      break;
+    case AcceptedDataPointSource.Custom:
+      acceptCustomDatapoint();
+      break;
+  }
+}
+
+function afterSuccessfulPatch(): void {
+  if (selectedNextDataPointTypeId.value) {
+    const targetId = selectedNextDataPointTypeId.value;
+    currentDataPointTypeId.value = targetId;
+    resetStateForCurrentDataPoint();
+    selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
+  } else {
+    isOpen.value = false;
+    emit('close');
+  }
+}
+function buildCustomDataPointJson(): string {
+  const { value, quality, comment, pages, document } = customFormData.value;
+
+  const documentOption = availableDocuments.value?.find((doc) => doc.value === document) ?? null;
+  const documentDataSource = documentOption?.dataSource ?? null;
+
+  let dataSource: DataPointDetail['dataSource'] | null;
+  if (documentDataSource) {
+    dataSource = { ...documentDataSource, ...(pages ? { page: pages } : {}) };
+  } else if (pages) {
+    dataSource = { page: pages };
+  } else {
+    dataSource = null;
+  }
+
+  const data: DataPointDetail = {
+    ...(value && { value }),
+    ...(quality && { quality }),
+    ...(comment && { comment }),
+    ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
+  };
+
+  return Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
+}
+
+function acceptOriginalDatapoint(): void {
+  if (!currentDataPointTypeId.value) return;
+
+  patchJudgementDetail(
+    {
+      judgmentId: props.datasetReviewId,
+      dataPointTypeId: currentDataPointTypeId.value,
+      details: {
+        acceptedSource: AcceptedDataPointSource.Original,
+        reporterUserIdOfAcceptedQaReport: undefined,
+        customDataPoint: undefined,
+      },
+    },
+    {
+      onSuccess: () => {
+        afterSuccessfulPatch();
+      },
+      onError: () => {
+        console.log(
+          'Error in patching datasetJudgement object for datapointId: ',
+          currentDataPointTypeId.value,
+          ' with AcceptedDataPointSource.Original.'
+        );
+      },
+    }
+  );
+}
+function acceptQaReportDatapoint(): void {
+  if (!currentDataPointTypeId.value || !currentQaReport.value) return;
+
+  patchJudgementDetail(
+    {
+      judgmentId: props.datasetReviewId,
+      dataPointTypeId: currentDataPointTypeId.value,
+      details: {
+        acceptedSource: AcceptedDataPointSource.Qa,
+        reporterUserIdOfAcceptedQaReport: currentQaReport.value.reporterUserId,
+        customDataPoint: undefined,
+      },
+    },
+    {
+      onSuccess: () => {
+        afterSuccessfulPatch();
+      },
+      onError: () => {
+        console.log(
+          'Error in patching datasetJudgement object for datapointId: ',
+          currentDataPointTypeId.value,
+          ' with AcceptedDataPointSource.Qa and reporterUserId: ',
+          currentQaReport.value?.reporterUserId
+        );
+      },
+    }
+  );
+}
+
+function acceptCustomDatapoint(): void {
+  if (!currentDataPointTypeId.value) return;
+
+  const customDataPointJson = editModeEnabled.value ? customJson.value : buildCustomDataPointJson();
+
+  patchJudgementDetail(
+    {
+      judgmentId: props.datasetReviewId,
+      dataPointTypeId: currentDataPointTypeId.value,
+      details: {
+        acceptedSource: AcceptedDataPointSource.Custom,
+        reporterUserIdOfAcceptedQaReport: undefined,
+        customDataPoint: customDataPointJson,
+      },
+    },
+    {
+      onSuccess: () => {
+        afterSuccessfulPatch();
+      },
+      onError: () => {
+        console.log(
+          'Error in patching datasetJudgement object for datapointType: ',
+          currentDataPointTypeId.value,
+          ' with AcceptedDataPointSource.Custom.'
+        );
+      },
+    }
+  );
 }
 
 function resetStateForCurrentDataPoint(): void {
-  patchError.value = null;
   currentQaReportIndex.value = 0;
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
