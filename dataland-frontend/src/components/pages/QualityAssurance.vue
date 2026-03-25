@@ -417,7 +417,7 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
   selectedDataId.value = qaDataObject.dataId;
   openConfirmationModal(
     'Start Review',
-    'Are you sure you want to start a review for this dataset? ' +
+    'Are you sure you want to start a review for this dataset? \n\n' +
       'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
     () => void confirmStartReview()
   );
