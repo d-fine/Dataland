@@ -16,6 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Qa
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -50,7 +51,7 @@ class QaReviewManagerTest {
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
+    private val mockBackendAccessor: DatalandBackendAccessor = mock<DatalandBackendAccessor>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
     private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
@@ -113,7 +114,7 @@ class QaReviewManagerTest {
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
-            mockExceptionForwarder,
+            mockBackendAccessor,
             mockDataPointQaReportManager,
             mockDatasetJudgementService,
             mockDataSourcingService,
@@ -125,7 +126,7 @@ class QaReviewManagerTest {
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
                 objectMapper,
-                mockExceptionForwarder,
+                mockBackendAccessor,
                 mockDataPointQaReportManager,
                 mockDatasetJudgementService,
                 mockDataSourcingService,
