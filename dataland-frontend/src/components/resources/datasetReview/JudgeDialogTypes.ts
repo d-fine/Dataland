@@ -28,9 +28,9 @@ export interface QaReporter {
   reporterEmailAddress?: string | null;
 }
 
-export interface NextDatapointOption {
+export interface NextDataPointOption {
   label: string;
-  datapointTypeId: string;
+  dataPointTypeId: string;
   reviewed: boolean;
 }
 

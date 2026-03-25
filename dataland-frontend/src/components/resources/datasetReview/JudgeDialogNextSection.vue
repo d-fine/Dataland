@@ -4,43 +4,37 @@
       <h3 class="judge-modal__section-title">Next datapoint</h3>
 
       <div class="judge-modal__toggle">
-        <ToggleSwitch
-            id="only-unreviewed-toggle"
-            v-model="onlyShowUnreviewed"
-            data-test="only-unreviewed-toggle"
-        />
-        <label for="only-unreviewed-toggle">
-          Only show unreviewed
-        </label>
+        <ToggleSwitch id="only-unreviewed-toggle" v-model="onlyShowUnreviewed" data-test="only-unreviewed-toggle" />
+        <label for="only-unreviewed-toggle"> Only show unreviewed </label>
       </div>
 
       <div class="judge-modal__next-select-container">
         <Select
-            v-model="selectedNextDataPointTypeId"
-            :options="options"
-            optionLabel="label"
-            optionValue="value"
-            :filter="true"
-            placeholder="Select next datapoint"
-            :pt="{ root: { style: { flex: '1' } } }"
-            data-test="next-datapoint-select"
+          v-model="selectedNextDataPointTypeId"
+          :options="options"
+          optionLabel="label"
+          optionValue="dataPointTypeId"
+          :filter="true"
+          placeholder="Select next datapoint"
+          :pt="{ root: { style: { flex: '1' } } }"
+          data-test="next-datapoint-select"
         >
           <template #option="slotProps">
             <div :class="{ 'judge-modal__next-option--reviewed': slotProps.option.reviewed }">
               <i
-                  v-if="slotProps.option.reviewed"
-                  class="pi pi-check judge-modal__next-option-icon--reviewed"
-                  aria-hidden="true"
+                v-if="slotProps.option.reviewed"
+                class="pi pi-check judge-modal__next-option-icon--reviewed"
+                aria-hidden="true"
               ></i>
               <span>{{ slotProps.option.label }}</span>
             </div>
           </template>
         </Select>
         <PrimeButton
-            label="GO TO"
-            @click="emit('goTo')"
-            :disabled="!selectedNextDataPointTypeId"
-            data-test="go-to-datapoint-button"
+          label="GO TO"
+          @click="emit('goTo')"
+          :disabled="!selectedNextDataPointTypeId"
+          data-test="go-to-datapoint-button"
         />
       </div>
     </section>
@@ -58,10 +52,10 @@ import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
 import Message from 'primevue/message';
 import ToggleSwitch from 'primevue/toggleswitch';
-import type { NextDatapointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 defineProps<{
-  options: NextDatapointOption[];
+  options: NextDataPointOption[];
   patchError?: string | null;
 }>();
 
@@ -106,4 +100,3 @@ const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextData
   color: var(--p-green-500);
 }
 </style>
-

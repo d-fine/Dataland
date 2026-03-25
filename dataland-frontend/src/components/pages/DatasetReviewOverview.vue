@@ -112,7 +112,7 @@
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
-import { ref, onMounted, computed, inject, Ref } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -122,14 +122,14 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementResponse, DatasetJudgementState } from '@clients/qaservice';
+import { DatasetJudgementState } from '@clients/qaservice';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewStateMutation.ts';
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import { NextDatapointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -192,12 +192,12 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
 // TODO: Currently respects hideEmptyFields via kpiRows. If UX decides dropdown
 //       must truly list *all* KPIs regardless of this toggle, we need a variant
 //       of the rows that ignores hideEmptyFields.
-const nextDataPointOptions = computed((): NextDatapointOption[] => {
+const nextDataPointOptions = computed((): NextDataPointOption[] => {
   const review = datasetReview.value;
   if (!review) return [];
 
   const dataPoints = review.dataPoints as Record<string, { acceptedSource: unknown }>;
-  const options: NextDatapointOption[] = [];
+  const options: NextDataPointOption[] = [];
 
   for (const row of kpiRows.value) {
     const typeId = row.dataPointTypeId;
@@ -205,7 +205,7 @@ const nextDataPointOptions = computed((): NextDatapointOption[] => {
     if (typeId && dataPoints[typeId]) {
       options.push({
         label: row.label,
-        datapointTypeId: typeId,
+        dataPointTypeId: typeId,
         reviewed: dataPoints[typeId].acceptedSource != null,
       });
     }
