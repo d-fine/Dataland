@@ -399,7 +399,7 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
     void goToDatasetViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
   } else {
-    void goToQaViewPage(qaDataObject.datasetReviewId);
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
   }
 }
 
@@ -410,7 +410,7 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
  */
 function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId != null) {
-    void goToQaViewPage(qaDataObject.datasetReviewId);
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
     return;
   }
 
@@ -433,7 +433,7 @@ function goToDatasetViewPage(companyId: string, framework: string, dataId: strin
 /**
  * Navigates to the dataset review page for the dataset with the given datasetReviewId.
  */
-function goToQaViewPage(datasetReviewId: string): ReturnType<typeof router.push> {
+function goToDatasetReviewPage(datasetReviewId: string): ReturnType<typeof router.push> {
   return router.push(`/qualityassurance/review/${datasetReviewId}`);
 }
 
@@ -450,7 +450,7 @@ async function confirmStartReview(): Promise<void> {
     );
 
     confirmationModal.value.visible = false;
-    await goToQaViewPage(response.data.dataSetJudgementId);
+    await goToDatasetReviewPage(response.data.dataSetJudgementId);
   } catch (error) {
     if (error instanceof AxiosError) {
       confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
