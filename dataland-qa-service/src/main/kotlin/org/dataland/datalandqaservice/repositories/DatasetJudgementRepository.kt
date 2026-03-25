@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -18,12 +17,4 @@ interface DatasetJudgementRepository : JpaRepository<DatasetJudgementEntity, UUI
      * @return A list of DatasetReviewEntity objects associated with the datasetId.
      */
     fun findAllByDatasetId(datasetId: UUID): List<DatasetJudgementEntity>
-
-    /**
-     * Finds all DatasetReviewEntity objects by given datasetId and state.
-     */
-    fun findAllByDatasetIdAndJudgementState(
-        datasetId: UUID,
-        reviewState: DatasetJudgementState,
-    ): List<DatasetJudgementEntity>
 }

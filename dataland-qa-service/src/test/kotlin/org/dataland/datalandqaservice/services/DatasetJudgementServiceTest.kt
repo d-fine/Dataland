@@ -13,9 +13,11 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
@@ -41,6 +43,7 @@ class DatasetJudgementServiceTest {
     private val datasetJudgementRepository = mock<DatasetJudgementRepository>()
     private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
     private val keycloakUserService = mock<KeycloakUserService>()
+    private val datasetJudgementFinalizationService = DatasetJudgementFinalizationService()
 
     private val creationServiceClass =
         DatasetJudgementCreationService(
@@ -53,6 +56,7 @@ class DatasetJudgementServiceTest {
             datasetJudgementRepository,
             datasetJudgementSupportService,
             creationServiceClass,
+            datasetJudgementFinalizationService,
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
@@ -184,17 +188,18 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `setJudgementState updates status when user is judge`() {
-        val newState = DatasetJudgementState.Aborted
+    fun `finishJudgement with QaDecision accepted or rejected sets judgement state to finished when user is judge`() {
+        service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+        var saved = captureSavedJudgement()
+        assertEquals(DatasetJudgementState.Finished, saved.judgementState)
 
-        service.setJudgementState(UUID.randomUUID(), newState)
-
-        val saved = captureSavedJudgement()
-        assertEquals(newState, saved.judgementState)
+        service.finishJudgement(UUID.randomUUID(), QaDecision.Rejected)
+        saved = captureSavedJudgement()
+        assertEquals(DatasetJudgementState.Finished, saved.judgementState)
     }
 
     @Test
-    fun `setJudgementState throws InsufficientRights when current user is not judge`() {
+    fun `finishJudgement throws InsufficientRights when current user is not judge`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
@@ -202,7 +207,16 @@ class DatasetJudgementServiceTest {
         )
 
         assertThrows<InsufficientRightsApiException> {
-            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.Pending)
+            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+        }
+    }
+
+    @Test
+    fun `finishJudgement throws ConflictApiException when current judgement state is Finished`() {
+        datasetJudgementEntity.judgementState = DatasetJudgementState.Finished
+
+        assertThrows<ConflictApiException> {
+            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
         }
     }
 
@@ -252,7 +266,7 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `postDatasetJudgement throws ConflictApiException when dataset judgement status is pending`() {
+    fun `postDatasetJudgement throws ConflictApiException when datasetJudgementEntity already exists`() {
         val dummyDatapointId = UUID.randomUUID().toString()
 
         doReturn(mapOf(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE to dummyDatapointId))
@@ -261,7 +275,7 @@ class DatasetJudgementServiceTest {
 
         doReturn(listOf(datasetJudgementEntity))
             .whenever(datasetJudgementRepository)
-            .findAllByDatasetIdAndJudgementState(any(), any())
+            .findAllByDatasetId(any())
 
         assertThrows<ConflictApiException> {
             service.postDatasetJudgement(UUID.randomUUID())
