@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -49,7 +48,7 @@ class QaReviewManager
         val metaDataControllerApi: MetaDataControllerApi,
         var cloudEventMessageHandler: CloudEventMessageHandler,
         var objectMapper: ObjectMapper,
-        val exceptionForwarder: ExceptionForwarder,
+        val datalandBackendAccessor: DatalandBackendAccessor,
         val dataPointQaReportManager: DataPointQaReportManager,
         val datasetJudgementService: DatasetJudgementService,
         val dataSourcingControllerApi: DataSourcingControllerApi,
@@ -107,7 +106,7 @@ class QaReviewManager
                     QaSearchFilter(
                         dataTypes = dataTypes,
                         reportingPeriods = reportingPeriods,
-                        companyIds = getCompanyIdsForCompanyName(companyName),
+                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
                         companyName = companyName,
                         qaStatuses = setOf(qaStatus),
                     ),
@@ -129,7 +128,7 @@ class QaReviewManager
                         QaSearchFilter(
                             dataTypes = null,
                             reportingPeriods = null,
-                            companyIds = getCompanyIdsForCompanyName(companyName),
+                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
                             companyName = companyName,
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
@@ -177,7 +176,7 @@ class QaReviewManager
             qaReviewRepository.getNumberOfFilteredQaReviews(
                 QaSearchFilter(
                     dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-                    companyIds = getCompanyIdsForCompanyName(companyName), qaStatuses = setOf(QaStatus.Pending),
+                    companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName), qaStatuses = setOf(QaStatus.Pending),
                 ),
             )
 
@@ -388,28 +387,6 @@ class QaReviewManager
             getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod)
                 .firstOrNull()
                 ?.dataId
-
-        /**
-         * Calls backend to return companyIds for companyName
-         */
-        private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
-            var companyIds = emptySet<String>()
-            if (!companyName.isNullOrBlank()) {
-                try {
-                    companyIds =
-                        companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
-                } catch (clientException: ClientException) {
-                    val responseBody = (clientException.response as ClientError<*>).body.toString()
-                    exceptionForwarder.catchSearchStringTooShortClientException(
-                        responseBody,
-                        clientException.statusCode,
-                        clientException,
-                    )
-                    throw clientException
-                }
-            }
-            return companyIds
-        }
 
         /**
          * Returns the number of QA reports for all data points contained in the given dataId
