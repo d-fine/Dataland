@@ -107,7 +107,7 @@ class DatasetJudgementService
             DatasetJudgementValidationHelper.validateDatasetJudgementIsPending(datasetJudgement)
             when (state) {
                 QaDecision.Accepted -> {
-                    DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource()
+                    DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
                     datasetJudgementFinalizationService.handleAcceptance()
                 }
                 QaDecision.Rejected -> datasetJudgementFinalizationService.handleRejection()

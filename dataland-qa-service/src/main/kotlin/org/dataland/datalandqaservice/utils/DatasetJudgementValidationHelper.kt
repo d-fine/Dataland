@@ -91,9 +91,18 @@ object DatasetJudgementValidationHelper {
 
     /**
      * Ensures that all data points in the dataset judgement have an accepted source.
+     *
+     * @param dataPoints The collection of data point judgement entities to validate.
+     * @throws InvalidInputApiException If any data point has no accepted source set.
      */
-    fun validateAllDataPointsHaveAcceptedSource() {
-        return
+    fun validateAllDataPointsHaveAcceptedSource(dataPoints: Collection<DataPointJudgementEntity>) {
+        val unreviewed = dataPoints.filter { it.acceptedSource == null }.map { it.dataPointType }
+        if (unreviewed.isNotEmpty()) {
+            throw InvalidInputApiException(
+                summary = "Not all data points have an accepted source.",
+                message = "The following data points are missing an accepted source: ${unreviewed.joinToString()}.",
+            )
+        }
     }
 
     /**
