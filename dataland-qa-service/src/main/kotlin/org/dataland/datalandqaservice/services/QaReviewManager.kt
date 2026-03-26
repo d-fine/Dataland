@@ -20,6 +20,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
+import java.util.UUID.randomUUID
 import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
 
 /**
@@ -49,8 +51,9 @@ class QaReviewManager
         var objectMapper: ObjectMapper,
         val exceptionForwarder: ExceptionForwarder,
         val dataPointQaReportManager: DataPointQaReportManager,
-        val datasetJudgementService: DatasetJudgementService,
         val dataSourcingControllerApi: DataSourcingControllerApi,
+        val dataPointQaReviewManager: DataPointQaReviewManager,
+        val datasetJudgementRepository: DatasetJudgementRepository,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -352,6 +355,52 @@ class QaReviewManager
         }
 
         /**
+         * Changes the QA status of a dataset.
+         *
+         * Creates a new correlation ID, records the dataset-level QA status change triggered by the current reviewer,
+         * and propagates the same review decision to the assembled dataset's data points. Data point statuses are only
+         * overwritten when `overwriteDataPointQaStatus` is set to `true`.
+         *
+         * @param dataId identifier of the dataset whose QA status is changed
+         * @param qaStatus new QA status to assign
+         * @param comment optional reviewer comment explaining the status change
+         * @param overwriteDataPointQaStatus whether existing data point QA statuses should be overwritten
+         * @return the generated correlation ID used to trace the status change workflow
+         */
+        @Transactional
+        fun changeQaStatus(
+            dataId: String,
+            qaStatus: QaStatus,
+            comment: String?,
+            overwriteDataPointQaStatus: Boolean,
+        ): String {
+            val correlationId = randomUUID().toString()
+            val reviewerId = DatalandAuthentication.fromContext().userId
+            logger.info(
+                "User $reviewerId requested QA status change of dataset $dataId to $qaStatus (correlationId: $correlationId)",
+            )
+
+            handleQaChange(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = reviewerId,
+                comment = comment,
+                correlationId = correlationId,
+            )
+
+            dataPointQaReviewManager.reviewAssembledDataset(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = reviewerId,
+                comment = comment,
+                correlationId = correlationId,
+                overwriteDataPointQaStatus = overwriteDataPointQaStatus,
+            )
+
+            return correlationId
+        }
+
+        /**
          * Calls backend to return companyIds for companyName
          */
         private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
@@ -395,7 +444,10 @@ class QaReviewManager
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-            val datasetJudgements = datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId))
+            val datasetJudgements =
+                datasetJudgementRepository.findAllByDatasetId(convertToUUID(dataId)).map {
+                    it.toDatasetJudgementResponse()
+                }
             val latestDatasetJudgement = datasetJudgements.firstOrNull()
             return QaReviewResponse(
                 dataId = this.dataId,

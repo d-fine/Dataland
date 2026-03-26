@@ -25,13 +25,13 @@ class DatasetJudgementFinalizationService
     constructor(
         private val dataPointControllerApi: DataPointControllerApi,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
-        private val qaStatusService: QaStatusService,
+        private val qaReviewManager: QaReviewManager,
     ) {
         /**
          * Handles the rejection of a dataset
          */
         fun handleRejection(datasetJudgement: DatasetJudgementEntity) {
-            qaStatusService.changeQaStatus(
+            qaReviewManager.changeQaStatus(
                 dataId = datasetJudgement.datasetId.toString(),
                 qaStatus = QaStatus.Rejected,
                 comment = null,
@@ -45,7 +45,7 @@ class DatasetJudgementFinalizationService
         fun handleAcceptance(datasetJudgement: DatasetJudgementEntity) {
             DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
             dataPointQaStatusUpdate(datasetJudgement.dataPoints, datasetJudgement.datasetId, datasetJudgement.reportingPeriod)
-            qaStatusService.changeQaStatus(
+            qaReviewManager.changeQaStatus(
                 dataId = datasetJudgement.datasetId.toString(),
                 qaStatus = QaStatus.Accepted,
                 comment = null,

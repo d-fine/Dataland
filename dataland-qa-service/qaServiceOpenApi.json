@@ -173,6 +173,87 @@
         ]
       }
     },
+    "/dataset-judgements/{datasetJudgementId}/qa-decision": {
+      "post": {
+        "tags": [
+          "dataset-judgement-controller"
+        ],
+        "summary": "Set dataset judgement state to finished by changing the QA state of the dataset.",
+        "description": "Set state of the dataset judgement object to finished. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
+        "operationId": "finishJudgement",
+        "parameters": [
+          {
+            "name": "datasetJudgementId",
+            "in": "path",
+            "description": "The unique identifier of the data judgment.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          {
+            "name": "qaDecision",
+            "in": "query",
+            "description": "The QA state of the associated dataset. This is the state that determines whether the dataset is approved or rejected.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/QaDecision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully set state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. You must first assign yourself as the judge for this object via the appropriate PATCH endpoint before editing it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetJudgementResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/dataset-judgements/{datasetId}": {
       "post": {
         "tags": [
@@ -1451,87 +1532,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/dataset-judgements/{datasetJudgementId}/qa-decision": {
-      "patch": {
-        "tags": [
-          "dataset-judgement-controller"
-        ],
-        "summary": "Change the state of a dataset judgement object.",
-        "description": "Modify state of the dataset judgement object. Approves or rejects associated data set. Uploads new datapoints and approves them, rejects unneeded datapoints.",
-        "operationId": "finishJudgement",
-        "parameters": [
-          {
-            "name": "datasetJudgementId",
-            "in": "path",
-            "description": "The unique identifier of the data judgment.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          },
-          {
-            "name": "qaDecision",
-            "in": "query",
-            "description": "The final QA state of the dataset. This is the state that determines whether the dataset is approved or rejected.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/QaDecision"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully set state.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetJudgementResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden. You must first assign yourself as the judge for this object via the appropriate PATCH endpoint before editing it.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetJudgementResponse"
                 }
               }
             }
@@ -3626,6 +3626,13 @@
         "type": "string",
         "enum": [
           "Pending",
+          "Accepted",
+          "Rejected"
+        ]
+      },
+      "QaDecision": {
+        "type": "string",
+        "enum": [
           "Accepted",
           "Rejected"
         ]
@@ -8707,13 +8714,6 @@
       },
       "JsonNode": {
         "type": "object"
-      },
-      "QaDecision": {
-        "type": "string",
-        "enum": [
-          "Accepted",
-          "Rejected"
-        ]
       },
       "JudgementDetailsPatch": {
         "type": "object",
