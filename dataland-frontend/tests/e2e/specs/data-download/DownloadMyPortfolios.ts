@@ -106,12 +106,15 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(Cypress.env('long_timeout_in_ms') as number);
-    cy.task('findFileByPrefix', {
-      folder: downloadDir,
-      prefix: partialFileNamePrefix,
-      extension: fileExtension,
-    }).then((filePath) => {
+    cy.task(
+      'findFileByPrefix',
+      {
+        folder: downloadDir,
+        prefix: partialFileNamePrefix,
+        extension: fileExtension,
+      },
+      { timeout: Cypress.env('long_timeout_in_ms') as number }
+    ).then((filePath) => {
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 

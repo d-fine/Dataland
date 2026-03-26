@@ -99,12 +99,15 @@ describeIf(
      * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
-      cy.task('findFileByPrefix', {
-        folder: DOWNLOADS_FOLDER,
-        prefix: partialFileNamePrefix,
-        extension: fileExtension,
-      }).then((filePath) => {
+      cy.task(
+        'findFileByPrefix',
+        {
+          folder: DOWNLOADS_FOLDER,
+          prefix: partialFileNamePrefix,
+          extension: fileExtension,
+        },
+        { timeout: Cypress.env('medium_timeout_in_ms') as number }
+      ).then((filePath) => {
         const filePathStr = filePath as string;
         expect(filePathStr).to.exist;
         checkThatFileExists(filePathStr);
@@ -121,12 +124,15 @@ describeIf(
      * @param useAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyAliases(partialFileNamePrefix: string, fileExtension: string, useAliases: boolean): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number);
-      cy.task('findFileByPrefix', {
-        folder: DOWNLOADS_FOLDER,
-        prefix: partialFileNamePrefix,
-        extension: fileExtension,
-      }).then((filePath) => {
+      cy.task(
+        'findFileByPrefix',
+        {
+          folder: DOWNLOADS_FOLDER,
+          prefix: partialFileNamePrefix,
+          extension: fileExtension,
+        },
+        { timeout: Cypress.env('medium_timeout_in_ms') as number }
+      ).then((filePath) => {
         if (typeof filePath === 'string') {
           cy.readFile(filePath).then((txt) => {
             if (useAliases) {
