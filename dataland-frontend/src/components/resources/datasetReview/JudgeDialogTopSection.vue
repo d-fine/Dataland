@@ -4,14 +4,14 @@
       <h3 class="judge-modal__section-title">
         {{ props.title }}
         <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner --font-size-sm" />
+        <span v-else-if="loadError" class="ml-2 text-sm text-red-600">
+          {{ errorMessage }}
+        </span>
+
         <span v-if="navCount !== undefined && navCount > 0" class="judge-modal__section-title__nav-count">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
       </h3>
-
-      <span v-if="!isLoading && loadError">
-        <Message severity="error"> Failed to load original datapoint. </Message>
-      </span>
 
       <div class="judge-modal__qa-nav" :style="{ visibility: showNav ? 'visible' : 'hidden' }">
         <PrimeButton
@@ -31,11 +31,7 @@
         />
       </div>
     </div>
-
-    <div v-if="!isLoading && !data && emptyText">
-      {{ emptyText }}
-    </div>
-    <div v-else-if="isLoading || loadError || data" class="p-datatable p-component">
+    <div v-if="isLoading || loadError || data" class="p-datatable p-component">
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" :aria-label="title">
           <tbody class="p-datatable-body">
@@ -148,9 +144,9 @@
 
 <script setup lang="ts">
 import PrimeButton from 'primevue/button';
-import Message from 'primevue/message';
 import type { DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
+import { computed } from 'vue';
 
 const OVERFLOW_THRESHOLD = 40;
 
@@ -159,18 +155,24 @@ const props = defineProps<{
   data: DataPointDetail | null;
   isLoading?: boolean;
   loadError?: unknown;
-  emptyText?: string;
   acceptLabel: string;
   acceptDisabled?: boolean;
   acceptDataTest?: string;
   dataTest?: string;
-  // Navigation (used for corrected datapoint)
   showNav?: boolean;
   navIndex?: number;
   navCount?: number;
   navLabel?: string;
 }>();
 
+const errorMessage = computed(() => {
+  const err = props.loadError as any;
+  const status = err?.response?.status ?? err?.status;
+  if (status) {
+    return `Failed to load datapoint (HTTP ${status}).`;
+  }
+  return 'Failed to load datapoint. Please try again later!';
+});
 const emit = defineEmits<{
   accept: [];
   prev: [];

@@ -36,7 +36,6 @@
         :data="originalData"
         :is-loading="isOriginalLoading"
         :load-error="originalError"
-        empty-text="No original datapoint data available."
         accept-label="ACCEPT ORIGINAL"
         :accept-disabled="isMutating"
         accept-data-test="accept-original-button"
