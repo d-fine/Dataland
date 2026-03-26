@@ -89,7 +89,7 @@
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
         :patch-error="patchError"
-        @go-to="goToSelectedDataPoint"
+        @go-to="navigateToDataPoint(selectedNextDataPointTypeId)"
       />
     </div>
 
@@ -405,17 +405,63 @@ function findNextUnreviewedDataPoint(currentDataPointTypeId: string): string {
 }
 
 /**
- * Navigates to the selected datapoint type in the "next datapoint" section
- * and resets local state accordingly.
+ * Navigates to the given datapoint type, resets local state, and advances the
+ * "selected next" pointer to the next unreviewed datapoint after it.
  *
+ * @param targetId - The datapoint type ID to navigate to.
  * @returns Nothing.
  */
-function goToSelectedDataPoint(): void {
-  const targetId = selectedNextDataPointTypeId.value;
-  if (targetId == null) return;
+function navigateToDataPoint(targetId: string): void {
   currentDataPointTypeId.value = targetId;
   resetStateForCurrentDataPoint();
   selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
+}
+
+/**
+ * Handles navigation and cleanup after a successful patch of a datapoint judgement.
+ *
+ * @returns Nothing.
+ */
+function afterSuccessfulPatch(): void {
+  if (selectedNextDataPointTypeId.value) {
+    navigateToDataPoint(selectedNextDataPointTypeId.value);
+  } else {
+    isOpen.value = false;
+    emit('close');
+  }
+}
+
+/**
+ * Calls patchJudgementDetail for the current datapoint with the given details,
+ * navigating on success and logging on error.
+ *
+ * @param acceptedSource - The accepted data point source.
+ * @param reporterUserIdOfAcceptedQaReport - The reporter user ID of the accepted QA report, if applicable.
+ * @param customDataPoint - The custom data point JSON string, if applicable.
+ * @param errorLogMessage - Message logged when the patch fails.
+ * @returns Nothing.
+ */
+function patchCurrentDatapoint(
+  acceptedSource: AcceptedDataPointSource,
+  reporterUserIdOfAcceptedQaReport: string | undefined,
+  customDataPoint: string | undefined,
+  errorLogMessage: string
+): void {
+  patchJudgementDetail(
+    {
+      judgmentId: props.datasetReviewId,
+      dataPointTypeId: currentDataPointTypeId.value,
+      details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint },
+    },
+    {
+      onSuccess: () => {
+        afterSuccessfulPatch();
+      },
+      onError: () => {
+        console.log(errorLogMessage);
+      },
+    }
+  );
 }
 
 /**
@@ -440,52 +486,17 @@ function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
 }
 
 /**
- * Handles navigation and cleanup after a successful patch of a datapoint judgement.
- *
- * @returns Nothing.
- */
-function afterSuccessfulPatch(): void {
-  if (selectedNextDataPointTypeId.value) {
-    const targetId = selectedNextDataPointTypeId.value;
-    currentDataPointTypeId.value = targetId;
-    resetStateForCurrentDataPoint();
-    selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
-  } else {
-    isOpen.value = false;
-    emit('close');
-  }
-}
-
-/**
  * Accepts the original datapoint as the final judgement for the current datapoint type.
  *
  * @returns Nothing.
  */
 function acceptOriginalDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
-
-  patchJudgementDetail(
-    {
-      judgmentId: props.datasetReviewId,
-      dataPointTypeId: currentDataPointTypeId.value,
-      details: {
-        acceptedSource: AcceptedDataPointSource.Original,
-        reporterUserIdOfAcceptedQaReport: undefined,
-        customDataPoint: undefined,
-      },
-    },
-    {
-      onSuccess: () => {
-        afterSuccessfulPatch();
-      },
-      onError: () => {
-        console.log(
-          'Error in patching datasetJudgement object for datapointId: ',
-          currentDataPointTypeId.value,
-          ' with AcceptedDataPointSource.Original.'
-        );
-      },
-    }
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Original,
+    undefined,
+    undefined,
+    `Error in patching datasetJudgement object for datapointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
   );
 }
 
@@ -497,30 +508,11 @@ function acceptOriginalDatapoint(): void {
  */
 function acceptQaReportDatapoint(): void {
   if (!currentDataPointTypeId.value || !currentQaReport.value) return;
-
-  patchJudgementDetail(
-    {
-      judgmentId: props.datasetReviewId,
-      dataPointTypeId: currentDataPointTypeId.value,
-      details: {
-        acceptedSource: AcceptedDataPointSource.Qa,
-        reporterUserIdOfAcceptedQaReport: currentQaReport.value.reporterUserId,
-        customDataPoint: undefined,
-      },
-    },
-    {
-      onSuccess: () => {
-        afterSuccessfulPatch();
-      },
-      onError: () => {
-        console.log(
-          'Error in patching datasetJudgement object for datapointId: ',
-          currentDataPointTypeId.value,
-          ' with AcceptedDataPointSource.Qa and reporterUserId: ',
-          currentQaReport.value?.reporterUserId
-        );
-      },
-    }
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Qa,
+    currentQaReport.value.reporterUserId,
+    undefined,
+    `Error in patching datasetJudgement object for datapointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
   );
 }
 
@@ -532,34 +524,15 @@ function acceptQaReportDatapoint(): void {
  */
 function acceptCustomDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
-
   const documentOption = availableDocuments.value.find((doc) => doc.value === customFormData.value.document) ?? null;
   const customDataPointJson = editModeEnabled.value
     ? customJson.value
     : parseFormDataToDataPointJson(customFormData.value, documentOption);
-
-  patchJudgementDetail(
-    {
-      judgmentId: props.datasetReviewId,
-      dataPointTypeId: currentDataPointTypeId.value,
-      details: {
-        acceptedSource: AcceptedDataPointSource.Custom,
-        reporterUserIdOfAcceptedQaReport: undefined,
-        customDataPoint: customDataPointJson,
-      },
-    },
-    {
-      onSuccess: () => {
-        afterSuccessfulPatch();
-      },
-      onError: () => {
-        console.log(
-          'Error in patching datasetJudgement object for datapointType: ',
-          currentDataPointTypeId.value,
-          ' with AcceptedDataPointSource.Custom.'
-        );
-      },
-    }
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Custom,
+    undefined,
+    customDataPointJson,
+    `Error in patching datasetJudgement object for datapointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
   );
 }
 
