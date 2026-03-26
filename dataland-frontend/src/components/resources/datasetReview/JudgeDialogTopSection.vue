@@ -1,7 +1,7 @@
 <template>
-  <section class="judge-modal__section flex flex-column" :data-test="dataTest">
-    <div class="judge-modal__section-header-with-nav flex align-items-baseline justify-content-between gap-3">
-      <h3 class="judge-modal__section-title flex-1">
+  <section class="flex flex-column" :data-test="dataTest" style="padding: var(--spacing-xs); height: 100%">
+    <div class="flex align-items-baseline justify-content-between gap-3" style="margin-bottom: var(--spacing-sm)">
+      <h3 class="flex-1" style="margin-top: 0; margin-bottom: 0; white-space: nowrap">
         {{ title }}
         <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner" fontSize="0.875rem" />
         <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
@@ -47,9 +47,9 @@
               <th scope="row" class="headers-bg">Value</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
-                    data?.value || '—'
-                  }}</span>
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                    {{ data?.value || '—' }}
+                  </span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.value || ''))"
                     label="+"
@@ -68,9 +68,9 @@
               <th scope="row" class="headers-bg">Quality</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
-                    data?.quality || '—'
-                  }}</span>
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                    {{ data?.quality || '—' }}
+                  </span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.quality || ''))"
                     label="+"
@@ -116,18 +116,18 @@
             <tr>
               <th scope="row" class="headers-bg">Page(s)</th>
               <td>
-                <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
-                  data?.dataSource?.page || '—'
-                }}</span>
+                <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                  {{ data?.dataSource?.page || '—' }}
+                </span>
               </td>
             </tr>
             <tr>
               <th scope="row" class="headers-bg">Comment</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
-                    data?.comment || '—'
-                  }}</span>
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                    {{ data?.comment || '—' }}
+                  </span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.comment || ''))"
                     label="+"
@@ -147,7 +147,7 @@
       </div>
     </div>
 
-    <div class="judge-modal__section-actions">
+    <div class="judge-modal__section-actions" style="margin-top: auto; padding-top: var(--spacing-xs)">
       <PrimeButton
         :label="acceptLabel"
         @click="emit('accept')"
@@ -216,25 +216,6 @@ function isOverflowing(text: string): boolean {
 </script>
 
 <style scoped lang="scss">
-.judge-modal__section {
-  padding: var(--spacing-xs);
-  height: 100%;
-}
-
-.judge-modal__section-title {
-  margin-top: 0;
-  margin-bottom: var(--spacing-xs);
-  white-space: nowrap;
-}
-
-.judge-modal__section-header-with-nav {
-  margin-bottom: var(--spacing-sm);
-
-  > .judge-modal__section-title {
-    margin-bottom: 0;
-  }
-}
-
 .judge-modal__datatable {
   width: 100%;
 
@@ -260,10 +241,5 @@ function isOverflowing(text: string): boolean {
   width: var(--spacing-md);
   height: var(--spacing-md);
   padding: var(--spacing-none);
-}
-
-.judge-modal__section-actions {
-  margin-top: auto;
-  padding-top: var(--spacing-xs);
 }
 </style>
