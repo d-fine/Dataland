@@ -103,6 +103,17 @@
       <div class="judge-modal__overflow-popover-content">{{ popoverText }}</div>
     </Popover>
   </PrimeDialog>
+  <PopupConfirmationModal
+    v-model:visible="isErrorModalVisible"
+    :header="errorModalHeader"
+    :message="errorModalMessage"
+    :error-message="errorModalDetails"
+    :is-loading="false"
+    :is-success="false"
+    :show-cancel-button="false"
+    @confirm="isErrorModalVisible = false"
+    @cancel="isErrorModalVisible = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -111,6 +122,7 @@ import PrimeDialog from 'primevue/dialog';
 import Message from 'primevue/message';
 import Popover from 'primevue/popover';
 
+import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
 import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
 import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
@@ -153,6 +165,12 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
 }>();
+
+// Error popover
+const isErrorModalVisible = ref(false);
+const errorModalHeader = ref('Error updating datapoint');
+const errorModalMessage = ref('Failed to update datapoint judgement.');
+const errorModalDetails = ref<string | undefined>(undefined);
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
@@ -463,8 +481,14 @@ function patchCurrentDatapoint(
       onSuccess: () => {
         afterSuccessfulPatch();
       },
-      onError: () => {
-        console.log(errorLogMessage);
+      onError: (err: Error) => {
+        console.log(errorLogMessage, err);
+
+        errorModalHeader.value = 'Failed to update datapoint judgement';
+        errorModalMessage.value = 'Your decision could not be saved. Please try again.';
+        errorModalDetails.value = err.message || 'Unknown error.';
+
+        isErrorModalVisible.value = true;
       },
     }
   );

@@ -908,4 +908,14 @@ describe('JudgeDialog component tests', () => {
       cy.contains('KPI Beta Label').should('be.visible');
     });
   });
+
+  describe('Failed patch', () => {
+    it('shows a popup modal when the PATCH request fails and close using confirm', () => {
+      mountJudgeDialog({ patchStatusCode: 500 });
+      cy.get('[data-test="accept-original-button"]').click();
+      cy.get('[data-test="confirmation-modal-error-message"]').should('contain', '500');
+      cy.get('[data-test="ok-confirmation-modal-button"]').click();
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
+    });
+  });
 });
