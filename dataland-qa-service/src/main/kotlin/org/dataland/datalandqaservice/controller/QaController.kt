@@ -8,7 +8,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaRev
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaStatusService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -26,7 +25,6 @@ import java.util.UUID.randomUUID
 class QaController(
     @Autowired var qaReviewManager: QaReviewManager,
     @Autowired var dataPointQaReviewManager: DataPointQaReviewManager,
-    @Autowired var qaStatusService: QaStatusService,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -85,7 +83,7 @@ class QaController(
     ) {
         qaReviewManager.assertQaServiceKnowsDataId(dataId)
 
-        qaStatusService.changeQaStatus(
+        qaReviewManager.changeQaStatus(
             dataId = dataId,
             qaStatus = qaStatus,
             comment = comment,

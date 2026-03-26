@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -16,11 +17,12 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaStatusService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -44,8 +46,12 @@ class DatasetJudgementServiceTest {
     private val datasetJudgementRepository = mock<DatasetJudgementRepository>()
     private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
     private val keycloakUserService = mock<KeycloakUserService>()
-    private val datasetJudgementFinalizationService = DatasetJudgementFinalizationService()
-    private val qaStatusService = mock<QaStatusService>()
+    private val datasetJudgementFinalizationService =
+        DatasetJudgementFinalizationService(
+            mock<DataPointControllerApi>(),
+            mock<DataPointQaReviewManager>(),
+        )
+    private val qaReviewManager = mock<QaReviewManager>()
 
     private val creationServiceClass =
         DatasetJudgementCreationService(
@@ -59,7 +65,7 @@ class DatasetJudgementServiceTest {
             datasetJudgementSupportService,
             creationServiceClass,
             datasetJudgementFinalizationService,
-            qaStatusService,
+            qaReviewManager,
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest

@@ -6,7 +6,9 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,23 +25,32 @@ class DatasetJudgementFinalizationService
     constructor(
         private val dataPointControllerApi: DataPointControllerApi,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
+        private val qaReviewManager: QaReviewManager,
     ) {
         /**
          * Handles the rejection of a dataset
          */
-        fun handleRejection() {
-            return
+        fun handleRejection(datasetJudgement: DatasetJudgementEntity) {
+            qaReviewManager.changeQaStatus(
+                dataId = datasetJudgement.datasetId.toString(),
+                qaStatus = QaStatus.Rejected,
+                comment = null,
+                overwriteDataPointQaStatus = true,
+            )
         }
 
         /**
          * Handles the acceptance of a dataset
          */
-        fun handleAcceptance(
-            dataPoints: Collection<DataPointJudgementEntity>,
-            companyId: UUID,
-            reportingPeriod: String,
-        ) {
-            dataPointQaStatusUpdate(dataPoints, companyId, reportingPeriod)
+        fun handleAcceptance(datasetJudgement: DatasetJudgementEntity) {
+            DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
+            dataPointQaStatusUpdate(datasetJudgement.dataPoints, datasetJudgement.datasetId, datasetJudgement.reportingPeriod)
+            qaReviewManager.changeQaStatus(
+                dataId = datasetJudgement.datasetId.toString(),
+                qaStatus = QaStatus.Accepted,
+                comment = null,
+                overwriteDataPointQaStatus = false,
+            )
         }
 
         /**
