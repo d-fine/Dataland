@@ -11,14 +11,13 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -54,7 +53,6 @@ class QaReviewManagerTest {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockBackendAccessor: DatalandBackendAccessor = mock<DatalandBackendAccessor>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
-    private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
     private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
     private val mockDatasetJudgementRepository: DatasetJudgementRepository = mock<DatasetJudgementRepository>()
@@ -66,7 +64,7 @@ class QaReviewManagerTest {
     private val reportingPeriod: String = "dummyReportingPeriod"
     private val uploaderId = "dummyUploaderId"
     private val dummyUserName = "dummyUserName"
-    private val dummyUserId = "dummyUserId"
+    private val dummyUserId = UUID.randomUUID()
     private val framework = "dummyFramework"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
@@ -93,18 +91,18 @@ class QaReviewManagerTest {
             comment = null,
         )
 
-    private val datasetReviewResponse =
-        DatasetJudgementResponse(
-            dataSetJudgementId = UUID.randomUUID().toString(),
-            datasetId = dataId,
-            companyId = companyId,
-            dataType = "dummyFramework",
+    private val datasetJudgementEntity =
+        DatasetJudgementEntity(
+            dataSetJudgementId = UUID.randomUUID(),
+            datasetId = UUID.fromString(dataId),
+            companyId = UUID.randomUUID(),
+            dataType = DataTypeEnum.sfdr,
             reportingPeriod = reportingPeriod,
             judgementState = DatasetJudgementState.Pending,
             qaJudgeUserId = dummyUserId,
             qaJudgeUserName = dummyUserName,
-            qaReporters = emptyList(),
-            dataPoints = emptyMap(),
+            qaReporters = mutableListOf(),
+            dataPoints = mutableListOf(),
         )
 
     private lateinit var qaReviewManager: QaReviewManager
@@ -119,8 +117,8 @@ class QaReviewManagerTest {
             mockCloudEventMessageHandler,
             mockBackendAccessor,
             mockDataPointQaReportManager,
-            mockDatasetJudgementService,
             mockDataSourcingService,
+            mockDatasetJudgementRepository,
         )
         qaReviewManager =
             QaReviewManager(
@@ -253,9 +251,9 @@ class QaReviewManagerTest {
         doReturn(2L)
             .whenever(mockDataPointQaReportManager)
             .countQaReportsForDataPointIds(any())
-        doReturn(listOf(datasetReviewResponse))
-            .whenever(mockDatasetJudgementService)
-            .getDatasetJudgementsByDatasetId(any())
+        doReturn(listOf(datasetJudgementEntity))
+            .whenever(mockDatasetJudgementRepository)
+            .findAllByDatasetId(any())
 
         val responses =
             AuthenticationMock.withAuthenticationMock(
@@ -275,7 +273,7 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId, responses.first().qaJudgeUserId)
+        Assertions.assertEquals(dummyUserId.toString(), responses.first().qaJudgeUserId)
         Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
     }
 
