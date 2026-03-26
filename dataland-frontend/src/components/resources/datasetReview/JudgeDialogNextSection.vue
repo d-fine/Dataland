@@ -1,14 +1,17 @@
 <template>
   <div>
-    <section class="judge-modal__section" data-test="next-datapoint-section">
-      <h3 class="judge-modal__section-title">Next datapoint</h3>
+    <section
+      data-test="next-datapoint-section"
+      style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%"
+    >
+      <h3 style="margin-top: 0; white-space: nowrap">Next datapoint</h3>
 
-      <div class="judge-modal__toggle">
+      <div style="display: flex; align-items: center; gap: var(--spacing-xs)">
         <ToggleSwitch id="only-unreviewed-toggle" v-model="onlyShowUnreviewed" data-test="only-unreviewed-toggle" />
         <label for="only-unreviewed-toggle"> Only show unreviewed </label>
       </div>
 
-      <div class="judge-modal__next-select-container">
+      <div style="display: flex; gap: var(--spacing-xs); margin-top: var(--spacing-sm)">
         <Select
           v-model="selectedNextDataPointTypeId"
           :options="options"
@@ -20,11 +23,12 @@
           data-test="next-datapoint-select"
         >
           <template #option="slotProps">
-            <div :class="{ 'judge-modal__next-option--reviewed': slotProps.option.reviewed }">
+            <div :style="slotProps.option.reviewed ? 'color: var(--p-gray-300);' : ''">
               <i
                 v-if="slotProps.option.reviewed"
-                class="pi pi-check judge-modal__next-option-icon--reviewed"
+                class="pi pi-check"
                 aria-hidden="true"
+                :style="{ color: 'var(--p-gray-300)', marginRight: 'var(--spacing-xs)' }"
               ></i>
               <span>{{ slotProps.option.label }}</span>
             </div>
@@ -35,11 +39,12 @@
           @click="emit('goTo')"
           :disabled="!selectedNextDataPointTypeId"
           data-test="go-to-datapoint-button"
+          style="white-space: nowrap"
         />
       </div>
     </section>
 
-    <section v-if="patchError" class="judge-modal__section">
+    <section v-if="patchError" style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%">
       <Message severity="error" data-test="judge-modal-patch-error">
         {{ patchError }}
       </Message>
@@ -66,38 +71,3 @@ const emit = defineEmits<{
 const onlyShowUnreviewed = defineModel<boolean>('onlyShowUnreviewed', { default: true });
 const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextDataPointTypeId', { default: null });
 </script>
-
-<style scoped lang="scss">
-.judge-modal__section {
-  padding: var(--spacing-xs);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.judge-modal__section-title {
-  margin-top: 0;
-  white-space: nowrap;
-}
-
-.judge-modal__toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.judge-modal__next-select-container {
-  display: flex;
-  gap: var(--spacing-xs);
-  margin-top: var(--spacing-sm);
-}
-
-.judge-modal__next-option--reviewed {
-  color: var(--p-gray-300);
-}
-
-.judge-modal__next-option-icon--reviewed {
-  color: var(--p-gray-300);
-  margin-right: var(--spacing-xs);
-}
-</style>
