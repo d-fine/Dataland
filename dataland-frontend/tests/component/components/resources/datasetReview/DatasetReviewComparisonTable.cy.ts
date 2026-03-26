@@ -166,6 +166,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     searchQuery?: string;
     hideEmptyFields?: boolean;
     data?: SfdrData;
+    rowClickable?: boolean;
   }): void {
     const queryClient = new QueryClient({
       defaultOptions: {
@@ -194,6 +195,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         datasetReview: options?.datasetReview ?? baseDatasetReview,
         dataMetaInformation: mockMetaInformation,
         hideEmptyFields: options?.hideEmptyFields ?? false,
+        rowClickable: options?.rowClickable ?? false,
       },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
@@ -218,14 +220,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
-    cy.contains('a.kpi-link', 'Data Date').should('be.visible');
-    cy.contains('a.kpi-link', 'Fiscal Year Deviation').should('be.visible');
+    cy.contains('a', 'Data Date').should('be.visible');
+    cy.contains('a', 'Fiscal Year Deviation').should('be.visible');
   });
 
   it('shows accepted and rejected icons for original and QA sources', () => {
     mountComponent();
 
-    cy.contains('a.kpi-link', 'Data Date')
+    cy.contains('a', 'Data Date')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.accepted-check').should('exist');
@@ -235,7 +237,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.rejected-check').should('not.exist');
       });
 
-    cy.contains('a.kpi-link', 'Fiscal Year Deviation')
+    cy.contains('a', 'Fiscal Year Deviation')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -243,7 +245,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.accepted-check').should('exist');
       });
 
-    cy.contains('a.kpi-link', 'Fiscal Year End')
+    cy.contains('a', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -256,14 +258,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('hides empty KPI rows when hideEmptyFields is true', () => {
     mountComponent({ hideEmptyFields: true });
 
-    cy.contains('a.kpi-link', 'Scope 2 GHG emissions').should('not.exist');
-    cy.contains('a.kpi-link', 'Data Date').should('be.visible');
+    cy.contains('a', 'Scope 2 GHG emissions').should('not.exist');
+    cy.contains('a', 'Data Date').should('be.visible');
   });
 
   it('shows empty KPI rows when hideEmptyFields is false', () => {
     mountComponent({ hideEmptyFields: false });
 
-    cy.contains('a.kpi-link', 'Scope 2 GHG emissions').should('be.visible');
+    cy.contains('a', 'Scope 2 GHG emissions').should('be.visible');
   });
 
   it('renders the company reports banner with referenced reports', () => {
@@ -290,11 +292,58 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('renders the custom datapoint value from JSON', () => {
     mountComponent();
 
-    cy.contains('a.kpi-link', 'Fiscal Year End')
+    cy.contains('a', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(4).should('contain.text', '2023-12-15');
         cy.get('td').eq(4).find('.accepted-check').should('exist');
       });
+  });
+
+  it('emits row-click and applies kpi-link style when rowClickable is true', () => {
+    const onRowClick = cy.spy().as('onRowClick');
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    cy.intercept('GET', '**/api/data/**', {
+      statusCode: 200,
+      body: { data: baseSfdrData, meta: {}, reportingPeriod },
+    }).as('getFrameworkData2');
+
+    const mount = getMountingFunction();
+    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
+    const apiClientProvider = new ApiClientProvider(keycloakPromise);
+
+    mount(DatasetReviewComparisonTable, {
+      props: {
+        framework,
+        dataId,
+        searchQuery: '',
+        datasetReview: baseDatasetReview,
+        dataMetaInformation: mockMetaInformation,
+        hideEmptyFields: false,
+        rowClickable: true,
+        onRowClick,
+      },
+      global: {
+        plugins: [[VueQueryPlugin, { queryClient }]],
+        provide: {
+          getKeycloakPromise: () => keycloakPromise,
+          authenticated: computed(() => true),
+          apiClientProvider: computed(() => apiClientProvider),
+        },
+      },
+    });
+
+    cy.wait('@getFrameworkData2');
+
+    cy.contains('a', 'Data Date').should('have.class', 'kpi-link').click();
+
+    cy.get('@onRowClick').should('have.been.calledOnce');
+  });
+
+  it('does not apply kpi-link style and does not emit row-click when rowClickable is false', () => {
+    mountComponent({ rowClickable: false });
+
+    cy.contains('a', 'Data Date').should('not.have.class', 'kpi-link').should('have.class', 'cursor-default');
   });
 });
