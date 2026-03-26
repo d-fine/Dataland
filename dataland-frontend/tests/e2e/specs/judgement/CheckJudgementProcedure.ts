@@ -71,7 +71,7 @@ describeIf(
 
     it.only('Start Judgement', () => {
       const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-
+      const companyName = storedCompany.companyInformation.companyName;
       getTokens().then(({ reviewerToken, adminToken, uploaderToken, judgeToken }) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
@@ -82,8 +82,8 @@ describeIf(
           false
         ).then((dataMetaInfo: DataMetaInformation) => {
           uploadQaReportsForDataset(dataMetaInfo, { reviewerToken, adminToken });
-          startJudgement(storedCompany).then((datasetJudgementId) => {
-            const companyName = storedCompany.companyInformation.companyName;
+          checkoutDataset(companyName);
+          startJudgement(companyName).then((datasetJudgementId) => {
             changeJudgeAssignment(companyName);
             judgeDatapointsWithoutQaReports(datasetJudgementId, judgeToken);
             judgeDatapointsWithQaReports(datasetJudgementId, judgeToken);
@@ -109,6 +109,19 @@ describeIf(
     });
   }
 );
+
+/**
+ * Checks out the dataset for the given company by navigating to the QA overview and selecting the dataset row
+ *
+ * @param companyName Name of the company whose QA dataset row should be selected.
+ */
+function checkoutDataset(companyName: string): void {
+  login(admin_name, admin_pw);
+  cy.visitAndCheckAppMount('/qualityassurance');
+  qaOverviewNavigateToLastPage();
+  cy.contains('[data-test="qa-review-company-name"]', companyName).should('be.visible').click({ force: true });
+  cy.get('[data-test="qaReviewPageButton"]').should('be.visible').and('be.disabled');
+}
 
 /**
  * Finishes the judgement by clicking the "Finish Judgement" button, confirming the dialog, and verifying the judgement is completed.
@@ -162,7 +175,6 @@ function changeJudgeAssignment(companyName: string): void {
           cy.contains('td', 'Data Admin').should('exist').click();
         });
     });
-  cy.contains('button', 'REVIEW PAGE').should('be.visible').click();
   cy.contains('p', 'Currently assigned to:').should('be.visible').next('p').should('have.text', 'Data Admin');
   cy.contains('button', 'ASSIGN YOURSELF').should('be.visible').click();
   cy.get('.p-dialog')
@@ -340,10 +352,8 @@ function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string
  * @param storedCompany The company owning the dataset to be judged.
  * @returns The dataset judgement id returned by the start judgement request.
  */
-function startJudgement(storedCompany: StoredCompany): Cypress.Chainable<string> {
+function startJudgement(companyName: string): Cypress.Chainable<string> {
   cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
-  const companyName = storedCompany.companyInformation.companyName;
-  login(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
   qaOverviewNavigateToLastPage();
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
@@ -364,9 +374,6 @@ function startJudgement(storedCompany: StoredCompany): Cypress.Chainable<string>
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
     });
-
-  cy.contains('button', 'REVIEW PAGE').should('be.visible').click();
-  cy.contains('span', 'Custom Data Point').should('be.visible');
 
   return cy
     .wait('@startJudgementRequest')
