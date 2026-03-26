@@ -1,5 +1,7 @@
 // main
 
+import java.nio.file.Files
+
 val jacocoVersion: String by project
 val ktlintVersion: String by project
 val githubUser: String by project
@@ -74,6 +76,26 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
+val normalizeFeCoverageForSonar by tasks.registering {
+    doLast {
+        val feCoverageDir = projectDir.toPath().resolve("fe-coverage")
+        if (!Files.isDirectory(feCoverageDir)) return@doLast
+
+        Files.list(feCoverageDir).use { reportStream ->
+            reportStream
+                .filter { Files.isRegularFile(it) && it.fileName.toString().endsWith(".info") }
+                .forEach { reportPath ->
+                    val content = Files.readString(reportPath)
+                    val normalized =
+                        content
+                            .replace(Regex("""SF:/app/dataland-frontend/"""), "SF:dataland-frontend/")
+                            .replace(Regex("""SF:.*/Dataland/"""), "SF:")
+                    Files.writeString(reportPath, normalized)
+                }
+        }
+    }
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
@@ -87,7 +109,11 @@ sonar {
                 .asFile,
         )
         property("sonar.qualitygate.wait", true)
-        property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
+        val frontendLcovFiles =
+            fileTree("$projectDir/fe-coverage") {
+                include("*.info")
+            }.files
+        property("sonar.javascript.lcov.reportPaths", frontendLcovFiles.joinToString(",") { file -> file.path })
         property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage").files)
         property(
             "sonar.coverage.exclusions",
@@ -223,6 +249,10 @@ sonar {
         property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
         property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
     }
+}
+
+tasks.named("sonar") {
+    dependsOn(normalizeFeCoverageForSonar)
 }
 
 jacoco {
