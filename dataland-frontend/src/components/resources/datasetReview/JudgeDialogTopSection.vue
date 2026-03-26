@@ -3,15 +3,13 @@
     <div class="judge-modal__section-header-with-nav">
       <h3 class="judge-modal__section-title">
         {{ props.title }}
+        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner --font-size-sm" />
         <span v-if="navCount !== undefined && navCount > 0" class="judge-modal__section-title__nav-count">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
       </h3>
 
-      <span v-if="isLoading">
-        <Message severity="info"> Loading...</Message>
-      </span>
-      <span v-else-if="loadError">
+      <span v-if="!isLoading && loadError">
         <Message severity="error"> Failed to load original datapoint. </Message>
       </span>
 
@@ -152,6 +150,7 @@
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import type { DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const OVERFLOW_THRESHOLD = 40;
 
