@@ -3,7 +3,7 @@
     <div class="flex align-items-baseline justify-content-between gap-3" style="margin-bottom: var(--spacing-sm)">
       <h3 class="flex-1" style="margin-top: 0; margin-bottom: 0; white-space: nowrap">
         {{ title }}
-        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner" fontSize="0.875rem" />
+        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner" fontSize="font-size-sm" />
         <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
           {{ errorMessage }}
         </span>
@@ -227,7 +227,7 @@ function isOverflowing(text: string): boolean {
     }
 
     th {
-      width: 6rem;
+      width: var(--spacing-xxxxxl);
     }
 
     td {
