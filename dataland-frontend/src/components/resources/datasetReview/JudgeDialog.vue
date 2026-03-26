@@ -93,7 +93,6 @@
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
-        :patch-error="patchError"
         @go-to="navigateToDataPoint(selectedNextDataPointTypeId)"
       />
     </div>
@@ -202,16 +201,9 @@ const {
 } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
 // ===== Accept Button mutations  =====
-const {
-  mutate: patchJudgementDetail,
-  isPending: isPatching,
-  isError: isPatchError,
-} = usePatchJudgmentDetailsForADatapointMutation();
+const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgmentDetailsForADatapointMutation();
 
 const isMutating = computed(() => isPatching.value);
-const patchError = computed(() =>
-  isPatchError.value ? 'Failed to update datapoint judgement. Please try again.' : null
-);
 
 // ===== Current datapoint selection =====
 

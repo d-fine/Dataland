@@ -6,49 +6,49 @@
     :closable="false"
     :dismissable-mask="!isLoading"
     data-test="confirmation-modal"
-    class="w-full"
+    :style="{ width: '30rem' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <div class="flex flex-column align-items-center">
-      <div v-if="isSuccess" class="mb-3 text-green-500">
-        <i class="pi pi-check-circle text-4xl"></i>
+    <div class="flex flex-column gap-3 pt-2">
+      <div v-if="isSuccess" class="flex justify-content-center text-green-500 mb-2">
+        <i class="pi pi-check-circle text-5xl"></i>
       </div>
 
-      <div class="w-full" style="max-width: 30rem">
-        <slot>
-          <p class="m-0 mt-2 text-left white-space-pre-line">
-            {{ message }}
-          </p>
-        </slot>
-      </div>
+      <slot>
+        <p class="m-0 text-left white-space-pre-line line-height-3 text-color-secondary">
+          {{ message }}
+        </p>
+      </slot>
 
-      <div
+      <Message
         v-if="errorMessage"
-        class="w-full mt-3"
-        style="max-width: 30rem"
+        severity="error"
+        :closable="false"
+        class="m-0 mt-2"
         data-test="confirmation-modal-error-message"
       >
-        <Message severity="error" class="w-full text-left">
-          {{ errorMessage }}
-        </Message>
-      </div>
+        {{ errorMessage }}
+      </Message>
     </div>
 
-    <!-- Hide footer when isSuccess = true -->
     <template #footer v-if="!isSuccess">
-      <PrimeButton
-        v-if="showCancelButton"
-        label="CANCEL"
-        @click="handleCancel"
-        variant="outlined"
-        :disabled="isLoading"
-        data-test="cancel-confirmation-modal-button"
-      />
-      <PrimeButton
-        label="CONFIRM"
-        @click="handleConfirm"
-        :loading="isLoading"
-        data-test="ok-confirmation-modal-button"
-      />
+      <div class="flex justify-content-end gap-2 w-full mt-2">
+        <PrimeButton
+          v-if="showCancelButton"
+          label="CANCEL"
+          @click="handleCancel"
+          severity="secondary"
+          outlined
+          :disabled="isLoading"
+          data-test="cancel-confirmation-modal-button"
+        />
+        <PrimeButton
+          label="CONFIRM"
+          @click="handleConfirm"
+          :loading="isLoading"
+          data-test="ok-confirmation-modal-button"
+        />
+      </div>
     </template>
   </PrimeDialog>
 </template>
