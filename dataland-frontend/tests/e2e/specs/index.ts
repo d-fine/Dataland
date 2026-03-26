@@ -1,4 +1,4 @@
-const cypressEnv = Cypress.config('env') as Record<string, unknown>;
+const cypressEnv = Cypress.env() as Record<string, unknown>;
 const rawTestGroup = cypressEnv.TEST_GROUP;
 const parsedTestGroup =
   typeof rawTestGroup === 'number'
