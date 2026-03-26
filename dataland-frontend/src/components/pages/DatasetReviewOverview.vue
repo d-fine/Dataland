@@ -92,7 +92,7 @@
               v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId && isAssignedToCurrentUser"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
-              :next-data-point-options="nextDataPointOptions"
+              :kpi-rows="kpiRows"
               :available-documents="availableDocuments"
               v-model:is-open="isJudgeDialogOpen"
             />
@@ -133,7 +133,7 @@ import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/datas
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import type { NextDataPointOption, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -211,31 +211,10 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
   kpiRows.value = rows;
 }
 
-// NOTE: Used by JudgeDialog for the "Next datapoint" dropdown.
+// NOTE: kpiRows are passed to JudgeDialog, which computes nextDataPointOptions internally.
 // TODO: Currently respects hideEmptyFields via kpiRows. If UX decides dropdown
 //       must truly list *all* KPIs regardless of this toggle, we need a variant
 //       of the rows that ignores hideEmptyFields.
-const nextDataPointOptions = computed((): NextDataPointOption[] => {
-  const review = datasetReview.value;
-  if (!review) return [];
-
-  const dataPoints = review.dataPoints as Record<string, { acceptedSource: unknown }>;
-  const options: NextDataPointOption[] = [];
-
-  for (const row of kpiRows.value) {
-    const typeId = row.dataPointTypeId;
-
-    if (typeId && dataPoints[typeId]) {
-      options.push({
-        label: row.label,
-        dataPointTypeId: typeId,
-        reviewed: dataPoints[typeId].acceptedSource != null,
-      });
-    }
-  }
-
-  return options;
-});
 
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);
 

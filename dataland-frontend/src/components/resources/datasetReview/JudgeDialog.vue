@@ -143,6 +143,7 @@ import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgemen
 import { AcceptedDataPointSource, type DataPointJudgement } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
+import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 
 // ===== Props & emits =====
 
@@ -157,7 +158,7 @@ const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
 const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
-  nextDataPointOptions: NextDataPointOption[];
+  kpiRows: CellRow[];
   availableDocuments?: DocumentOption[];
 }>();
 
@@ -170,6 +171,22 @@ const isErrorModalVisible = ref(false);
 const errorModalHeader = ref('Error updating datapoint');
 const errorModalMessage = ref('Failed to update datapoint judgement.');
 const errorModalDetails = ref<string | undefined>(undefined);
+
+const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
+  const options: NextDataPointOption[] = [];
+  for (const row of props.kpiRows ?? []) {
+    if (!row.dataPointTypeId) continue;
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
+    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
+    if (onlyShowUnreviewed.value && reviewed) continue;
+    options.push({
+      label: row.label,
+      dataPointTypeId: row.dataPointTypeId,
+      reviewed,
+    });
+  }
+  return options;
+});
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
@@ -200,7 +217,7 @@ const patchError = computed(() =>
 
 const currentDataPointTypeId = ref<string>(props.dataPointTypeId);
 const currentDataPointLabel = computed(() => {
-  const option = props.nextDataPointOptions.find((opt) => opt.dataPointTypeId === currentDataPointTypeId.value);
+  const option = nextDataPointOptions.value.find((opt) => opt.dataPointTypeId === currentDataPointTypeId.value);
   return option ? option.label : currentDataPointTypeId.value;
 });
 watch(
@@ -398,22 +415,6 @@ function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
   return judgementMetaData.acceptedSource != null;
 }
 
-const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
-  const options: NextDataPointOption[] = [];
-  for (const row of props.nextDataPointOptions) {
-    if (!row.dataPointTypeId) continue;
-    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
-    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
-    if (onlyShowUnreviewed.value && reviewed) continue;
-    options.push({
-      label: row.label,
-      dataPointTypeId: row.dataPointTypeId,
-      reviewed,
-    });
-  }
-  return options;
-});
-
 /**
  * Finds the next unreviewed datapoint type ID, starting after the current one
  * and wrapping around when necessary.
@@ -422,7 +423,7 @@ const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
  * @returns The next unreviewed datapoint type ID, or the current one if none found.
  */
 function findNextUnreviewedDataPoint(currentDataPointTypeId: string): string {
-  const ids = props.nextDataPointOptions.map((row) => row.dataPointTypeId).filter(Boolean);
+  const ids = nextDataPointOptions.value.map((row) => row.dataPointTypeId).filter(Boolean);
   const currentIndex = ids.indexOf(currentDataPointTypeId);
   const total = ids.length;
   for (let offset = 1; offset < total; offset++) {

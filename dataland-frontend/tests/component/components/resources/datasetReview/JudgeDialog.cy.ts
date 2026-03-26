@@ -7,7 +7,9 @@ import type { DatasetJudgementResponse, DataPointJudgement } from '@clients/qase
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
-import type { DocumentOption, NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
 
 // ===== Shared test data =====
@@ -82,9 +84,19 @@ const baseDatasetJudgement: DatasetJudgementResponse = {
   },
 };
 
-const nextDataPointOptions: NextDataPointOption[] = [
-  { label: 'KPI Alpha Label', dataPointTypeId: dataPointTypeId, reviewed: false },
-  { label: 'KPI Beta Label', dataPointTypeId: secondDataPointTypeId, reviewed: false },
+const kpiRows: CellRow[] = [
+  {
+    type: 'cell',
+    label: 'KPI Alpha Label',
+    dataPointTypeId: dataPointTypeId,
+    originalDisplay: MLDTDisplayObjectForEmptyString,
+  },
+  {
+    type: 'cell',
+    label: 'KPI Beta Label',
+    dataPointTypeId: secondDataPointTypeId,
+    originalDisplay: MLDTDisplayObjectForEmptyString,
+  },
 ];
 
 const availableDocuments: DocumentOption[] = [
@@ -112,7 +124,7 @@ function mountJudgeDialog(options?: {
   originalDataPointStatusCode?: number;
   patchStatusCode?: number;
   dataPointTypeId?: string;
-  nextDataPointOptions?: NextDataPointOption[];
+  kpiRows?: CellRow[];
   availableDocuments?: DocumentOption[];
 }): void {
   const judgement = options?.datasetJudgement ?? baseDatasetJudgement;
@@ -158,7 +170,7 @@ function mountJudgeDialog(options?: {
     props: {
       datasetReviewId: datasetJudgementId,
       dataPointTypeId: options?.dataPointTypeId ?? dataPointTypeId,
-      nextDataPointOptions: options?.nextDataPointOptions ?? nextDataPointOptions,
+      kpiRows: options?.kpiRows ?? kpiRows,
       availableDocuments: options?.availableDocuments ?? availableDocuments,
       isOpen: true,
     },
