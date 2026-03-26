@@ -104,7 +104,7 @@ const alignedActivitiesDataTableConfiguration = {
 export default defineComponent({
   name: 'AlignedActivitiesDataTable',
   extends: BaseActivitiesDataTable,
-  beforeCreate() {
+  created() {
     this.activitiesDataTableConfiguration = alignedActivitiesDataTableConfiguration;
   },
 });

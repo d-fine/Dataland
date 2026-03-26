@@ -71,7 +71,7 @@ const eligibleOrAlignedActivitiesDataTableConfiguration = {
 export default defineComponent({
   name: 'EligibleOrAlignedActivitiesDataTable',
   extends: BaseActivitiesDataTable,
-  beforeCreate() {
+  created() {
     this.activitiesDataTableConfiguration = eligibleOrAlignedActivitiesDataTableConfiguration;
   },
 });
