@@ -35,7 +35,11 @@
       </div>
     </div>
 
-    <div v-if="isLoading || isLoadingError || data" class="p-datatable p-component">
+    <div data-test="empty-text" v-if="!isLoading && !isLoadingError && !data && emptyText">
+      {{ emptyText }}
+    </div>
+
+    <div v-else class="p-datatable p-component">
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" :aria-label="title">
           <tbody class="p-datatable-body">
@@ -167,7 +171,8 @@ const props = defineProps<{
   data: DataPointDetail | null;
   isLoading?: boolean;
   isLoadingError?: boolean;
-  loadingErrorObject?: Ref<Error | null> | null;
+  loadingErrorObject?: Ref<Error | null, Error | null> | null | undefined;
+  emptyText?: string;
   acceptLabel: string;
   acceptDisabled?: boolean;
   acceptDataTest?: string;
