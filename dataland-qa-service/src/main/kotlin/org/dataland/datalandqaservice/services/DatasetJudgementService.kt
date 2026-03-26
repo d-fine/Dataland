@@ -31,7 +31,7 @@ class DatasetJudgementService
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
         private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
-        private val qaStatusService: QaStatusService,
+        private val qaReviewManager: QaReviewManager,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -115,7 +115,7 @@ class DatasetJudgementService
                         datasetJudgement.datasetId,
                         datasetJudgement.reportingPeriod,
                     )
-                    qaStatusService.changeQaStatus(
+                    qaReviewManager.changeQaStatus(
                         dataId = datasetJudgement.datasetId.toString(),
                         qaStatus = QaStatus.Accepted,
                         comment = null,
@@ -124,7 +124,7 @@ class DatasetJudgementService
                 }
                 QaDecision.Rejected -> {
                     datasetJudgementFinalizationService.handleRejection()
-                    qaStatusService.changeQaStatus(
+                    qaReviewManager.changeQaStatus(
                         dataId = datasetJudgement.datasetId.toString(),
                         qaStatus = QaStatus.Rejected,
                         comment = null,
