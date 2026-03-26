@@ -53,15 +53,15 @@
 
           <tbody>
             <!-- Loading / error for original dataset -->
-            <tr v-if="loadingOriginal">
+            <tr v-if="isInitialFrameworkLoading">
               <td :colspan="totalNumberOfColumns" class="p-3 text-center">
                 <p class="font-medium text-xl">Loading Dataset..</p>
                 <DatalandProgressSpinner />
               </td>
             </tr>
-            <tr v-else-if="errorOriginal">
+            <tr v-else-if="isInitialFrameworkError">
               <td :colspan="totalNumberOfColumns" class="p-3 text-center text-red-500">
-                Failed to load original dataset
+                {{ frameworkErrorMessage }}
               </td>
             </tr>
 
@@ -254,11 +254,27 @@ const showMultipleReportsBanner = computed(() => {
 
 const {
   data: originalDataAndMeta,
-  isPending: loadingOriginal,
-  error: errorOriginal,
+  isPending,
+  isFetching,
+  isError,
+  error,
 } = useGetFrameworkDataQuery({
   framework: frameworkRef,
   dataId: dataIdRef,
+});
+
+const hasFrameworkData = computed(() => !!originalDataAndMeta.value);
+const isInitialFrameworkLoading = computed(() => isPending.value && !hasFrameworkData.value);
+const isInitialFrameworkError = computed(() => isError.value && !hasFrameworkData.value);
+
+const frameworkErrorMessage = computed(() => {
+  const err = error.value as any;
+  const status = err?.response?.status ?? err?.status;
+  const backendMessage = err?.response?.data?.message ?? err?.message;
+  if (status && backendMessage) return `Failed to load dataset (HTTP ${status}): ${backendMessage}`;
+  if (status) return `Failed to load dataset (HTTP ${status}).`;
+  if (backendMessage) return `Failed to load dataset: ${backendMessage}`;
+  return 'Failed to load dataset.';
 });
 
 const sortedReportingPeriods = computed(() => {
@@ -296,8 +312,8 @@ const availableDocuments = computed<DocumentOption[]>(() => {
   if (!sortedReports.value.length) return [];
   return sortedReports.value.flatMap((reportsForPeriod) =>
     Object.entries(reportsForPeriod ?? {}).map(([name, report]) => ({
-      label: name ? name : 'Unnamed_File',
-      value: name ? name : (report.fileName ?? report.fileReference),
+      label: name ?? 'Unnamed_File',
+      value: name ?? report.fileName ?? report.fileReference,
       dataSource: {
         fileName: report.fileName ?? name ?? null,
         fileReference: report.fileReference,
