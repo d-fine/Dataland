@@ -147,6 +147,7 @@ import type {
   DataPointDetail,
   DocumentOption,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import { toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
 
 const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
@@ -199,6 +200,9 @@ const isCustomJsonValid = computed<boolean>(() => {
   }
 });
 
+/**
+ * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
+ */
 function formDataToJson(): void {
   const { value, quality, comment, pages } = formData.value;
 
@@ -222,10 +226,13 @@ function formDataToJson(): void {
   jsonValue.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
 }
 
+/**
+ * Parses the JSON from jsonValue and updates the form data accordingly. If the JSON is invalid, the form data is left unchanged.
+ */
 function jsonToFormData(): void {
   try {
     const parsed = JSON.parse(jsonValue.value) as DataPointDetail;
-    const toStr = (v: unknown): string => (v === null || v === undefined ? '' : String(v));
+    const toStr = (v: unknown): string => (v === null || v === undefined ? '' : toSafeDisplayString(v));
     formData.value = {
       value: toStr(parsed.value),
       quality: toStr(parsed.quality),

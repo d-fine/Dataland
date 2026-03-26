@@ -2,7 +2,7 @@
   <section class="judge-modal__section" :data-test="dataTest">
     <div class="judge-modal__section-header-with-nav">
       <h3 class="judge-modal__section-title">
-        {{ title }}
+        {{ props.title }}
         <span v-if="navCount !== undefined && navCount > 0" class="judge-modal__section-title__nav-count">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
@@ -180,6 +180,11 @@ const emit = defineEmits<{
   hidePopover: [];
 }>();
 
+/**
+ * Checks if the given text exceeds the defined overflow threshold.
+ * @param text The text to check for overflow.
+ * @returns True if the text length exceeds the overflow threshold, false otherwise.
+ */
 function isOverflowing(text: string): boolean {
   return text.length > OVERFLOW_THRESHOLD;
 }

@@ -1,13 +1,10 @@
 import { computed, type Ref } from 'vue';
-import { useQuery, UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
+import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient';
 import { dataPointKeys } from '@/api-queries/backend/data-point/dataPointKeys';
 import { type UploadedDataPoint } from '@clients/backend';
 /**
  * Vue Query hook that fetches a data point for a given data point id.
- *
- * @param {Ref<string>} dataPointId - Reactive reference containing the data point id.
- * @returns {UseQueryReturnType<UploadedDataPoint, Error>} Query result containing the uploaded data point.
  */
 export function useGetDataPointByIdQuery(
   dataPointId: Ref<string>,
