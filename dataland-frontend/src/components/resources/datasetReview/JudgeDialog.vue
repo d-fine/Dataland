@@ -114,18 +114,18 @@ import type {
   QaReport,
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
-import { toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
+import {
+  parseDataPointJsonToFormData,
+  parseFormDataToDataPointJson,
+  transformDataPointDetailToFormData,
+  DEFAULT_CUSTOM_JSON,
+} from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
 import { AcceptedDataPointSource, type DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
 
 // ===== Props & emits =====
-const DEFAULT_CUSTOM_JSON = JSON.stringify(
-  { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
-  null,
-  2
-);
 
 const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
   value: '',
@@ -331,13 +331,7 @@ function copyOriginalToCustom(): void {
   if (editModeEnabled.value) {
     customJson.value = JSON.stringify(originalData.value, null, 2);
   } else {
-    customFormData.value = {
-      value: toSafeDisplayString(originalData.value.value),
-      quality: toSafeDisplayString(originalData.value.quality),
-      document: toSafeDisplayString(originalData.value.dataSource?.fileName),
-      pages: toSafeDisplayString(originalData.value.dataSource?.page),
-      comment: toSafeDisplayString(originalData.value.comment),
-    };
+    customFormData.value = transformDataPointDetailToFormData(originalData.value);
   }
 }
 
@@ -353,13 +347,7 @@ function copyCorrectedToCustom(): void {
   if (editModeEnabled.value) {
     customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
   } else {
-    customFormData.value = {
-      value: toSafeDisplayString(currentQaCorrectedData.value.value),
-      quality: toSafeDisplayString(currentQaCorrectedData.value.quality),
-      document: toSafeDisplayString(currentQaCorrectedData.value.dataSource?.fileName),
-      pages: toSafeDisplayString(currentQaCorrectedData.value.dataSource?.page),
-      comment: toSafeDisplayString(currentQaCorrectedData.value.comment),
-    };
+    customFormData.value = transformDataPointDetailToFormData(currentQaCorrectedData.value);
   }
 }
 
@@ -466,37 +454,6 @@ function afterSuccessfulPatch(): void {
 }
 
 /**
- * Builds the JSON string for a custom datapoint from the current form data,
- * taking into account selected documents and pages.
- *
- * @returns A pretty-printed JSON string representing the custom datapoint.
- */
-function buildCustomDataPointJson(): string {
-  const { value, quality, comment, pages, document } = customFormData.value;
-
-  const documentOption = availableDocuments.value?.find((doc) => doc.value === document) ?? null;
-  const documentDataSource = documentOption?.dataSource ?? null;
-
-  let dataSource: DataPointDetail['dataSource'] | null;
-  if (documentDataSource) {
-    dataSource = { ...documentDataSource, ...(pages ? { page: pages } : {}) };
-  } else if (pages) {
-    dataSource = { page: pages };
-  } else {
-    dataSource = null;
-  }
-
-  const data: DataPointDetail = {
-    ...(value && { value }),
-    ...(quality && { quality }),
-    ...(comment && { comment }),
-    ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
-  };
-
-  return Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
-}
-
-/**
  * Accepts the original datapoint as the final judgement for the current datapoint type.
  *
  * @returns Nothing.
@@ -573,7 +530,10 @@ function acceptQaReportDatapoint(): void {
 function acceptCustomDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
 
-  const customDataPointJson = editModeEnabled.value ? customJson.value : buildCustomDataPointJson();
+  const documentOption = availableDocuments.value.find((doc) => doc.value === customFormData.value.document) ?? null;
+  const customDataPointJson = editModeEnabled.value
+    ? customJson.value
+    : parseFormDataToDataPointJson(customFormData.value, documentOption);
 
   patchJudgementDetail(
     {
@@ -618,20 +578,13 @@ function resetStateForCurrentDataPoint(): void {
  */
 function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement | null): void {
   if (judgementMetaData?.acceptedSource === AcceptedDataPointSource.Custom && judgementMetaData.customValue) {
-    try {
-      const prev = JSON.parse(judgementMetaData.customValue) as DataPointDetail;
-      customFormData.value = {
-        value: toSafeDisplayString(prev.value),
-        quality: toSafeDisplayString(prev.quality),
-        document: toSafeDisplayString(prev.dataSource?.fileName ?? prev.dataSource?.fileReference),
-        pages: toSafeDisplayString(prev.dataSource?.page),
-        comment: toSafeDisplayString(prev.comment),
-      };
+    const parsed = parseDataPointJsonToFormData(judgementMetaData.customValue);
+    if (parsed !== null) {
+      customFormData.value = parsed;
       customJson.value = judgementMetaData.customValue;
       return;
-    } catch (e) {
-      console.error('Failed to parse previously accepted custom datapoint JSON', e);
     }
+    console.error('Failed to parse previously accepted custom datapoint JSON');
   }
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };

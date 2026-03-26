@@ -1,19 +1,22 @@
 <template>
-  <section class="judge-modal__section" :data-test="dataTest">
-    <div class="judge-modal__section-header-with-nav">
-      <h3 class="judge-modal__section-title">
+  <section class="judge-modal__section flex flex-column" :data-test="dataTest">
+    <div class="judge-modal__section-header-with-nav flex align-items-baseline justify-content-between gap-3">
+      <h3 class="judge-modal__section-title flex-1">
         {{ props.title }}
         <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner --font-size-sm" />
         <span v-else-if="loadError" class="ml-2 text-sm text-red-600">
           {{ errorMessage }}
         </span>
 
-        <span v-if="navCount !== undefined && navCount > 0" class="judge-modal__section-title__nav-count">
+        <span v-if="navCount !== undefined && navCount > 0" class="ml-2">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
       </h3>
 
-      <div class="judge-modal__qa-nav" :style="{ visibility: showNav ? 'visible' : 'hidden' }">
+      <div
+        class="flex align-items-baseline gap-2 flex-shrink-0"
+        :style="{ visibility: showNav ? 'visible' : 'hidden' }"
+      >
         <PrimeButton
           icon="pi pi-chevron-left"
           variant="text"
@@ -39,15 +42,17 @@
             <tr>
               <th scope="row" class="headers-bg">Value</th>
               <td>
-                <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data?.value || '—' }}</span>
+                <div class="flex align-items-center gap-1" style="min-width: 0">
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
+                    data?.value || '—'
+                  }}</span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.value || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
-                    class="judge-modal__overflow-btn"
+                    class="judge-modal__overflow-btn flex-shrink-0"
                     @mouseenter="(e) => emit('showPopover', e, String(data?.value || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full value"
@@ -58,15 +63,17 @@
             <tr>
               <th scope="row" class="headers-bg">Quality</th>
               <td>
-                <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data?.quality || '—' }}</span>
+                <div class="flex align-items-center gap-1" style="min-width: 0">
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
+                    data?.quality || '—'
+                  }}</span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.quality || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
-                    class="judge-modal__overflow-btn"
+                    class="judge-modal__overflow-btn flex-shrink-0"
                     @mouseenter="(e) => emit('showPopover', e, String(data?.quality || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full quality"
@@ -77,8 +84,8 @@
             <tr>
               <th scope="row" class="headers-bg">Document</th>
               <td>
-                <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">
+                <div class="flex align-items-center gap-1" style="min-width: 0">
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
                     {{ data?.dataSource?.fileName || data?.dataSource?.fileReference || '—' }}
                   </span>
                   <PrimeButton
@@ -87,7 +94,7 @@
                     variant="text"
                     rounded
                     size="small"
-                    class="judge-modal__overflow-btn"
+                    class="judge-modal__overflow-btn flex-shrink-0"
                     @mouseenter="
                       (e) =>
                         emit(
@@ -105,21 +112,25 @@
             <tr>
               <th scope="row" class="headers-bg">Page(s)</th>
               <td>
-                <span class="judge-modal__cell-text">{{ data?.dataSource?.page || '—' }}</span>
+                <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
+                  data?.dataSource?.page || '—'
+                }}</span>
               </td>
             </tr>
             <tr>
               <th scope="row" class="headers-bg">Comment</th>
               <td>
-                <div class="judge-modal__cell-overflow">
-                  <span class="judge-modal__cell-text">{{ data?.comment || '—' }}</span>
+                <div class="flex align-items-center gap-1" style="min-width: 0">
+                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">{{
+                    data?.comment || '—'
+                  }}</span>
                   <PrimeButton
                     v-if="isOverflowing(String(data?.comment || ''))"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
-                    class="judge-modal__overflow-btn"
+                    class="judge-modal__overflow-btn flex-shrink-0"
                     @mouseenter="(e) => emit('showPopover', e, String(data?.comment || ''))"
                     @mouseleave="emit('hidePopover')"
                     aria-label="Show full comment"
@@ -196,8 +207,6 @@ function isOverflowing(text: string): boolean {
 <style scoped lang="scss">
 .judge-modal__section {
   padding: var(--spacing-xs);
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
@@ -205,71 +214,40 @@ function isOverflowing(text: string): boolean {
   margin-top: 0;
   margin-bottom: var(--spacing-xs);
   white-space: nowrap;
-
-  &__nav-count {
-    margin-left: var(--spacing-xs);
-  }
 }
 
 .judge-modal__section-header-with-nav {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
 
   > .judge-modal__section-title {
     margin-bottom: 0;
-    flex: 1;
   }
-}
-
-.judge-modal__qa-nav {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-xs);
-  flex-shrink: 0;
 }
 
 .judge-modal__datatable {
   width: 100%;
 
   tr {
-    th {
-      width: 6rem;
+    th,
+    td {
       padding: var(--spacing-xxs) var(--spacing-xs);
       vertical-align: middle;
     }
 
+    th {
+      width: 6rem;
+    }
+
     td {
-      padding: var(--spacing-xxs) var(--spacing-xs);
-      vertical-align: middle;
       min-width: 0;
       max-width: 0;
     }
   }
 }
 
-.judge-modal__cell-overflow {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xxs);
-  min-width: 0;
-}
-
-.judge-modal__cell-text {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  min-width: 0;
-}
-
 .judge-modal__overflow-btn {
-  flex-shrink: 0;
-  width: 1.1rem;
-  height: 1.1rem;
+  width: var(--spacing-md);
+  height: var(--spacing-md);
   padding: var(--spacing-none);
 }
 

@@ -141,19 +141,12 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
-import type {
-  CustomFormData,
-  DataPointSourceInfo,
-  DataPointDetail,
-  DocumentOption,
-} from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
-import { toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
-
-const DEFAULT_CUSTOM_JSON = JSON.stringify(
-  { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
-  null,
-  2
-);
+import type { CustomFormData, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import {
+  parseDataPointJsonToFormData,
+  parseFormDataToDataPointJson,
+  DEFAULT_CUSTOM_JSON,
+} from '@/utils/JudgeDialogUtils.ts';
 
 const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
   label: qualityOption,
@@ -204,44 +197,16 @@ const isCustomJsonValid = computed<boolean>(() => {
  * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
  */
 function formDataToJson(): void {
-  const { value, quality, comment, pages } = formData.value;
-
-  const documentDataSource = selectedDocumentOption.value?.dataSource ?? null;
-  let dataSource: DataPointSourceInfo | null;
-  if (documentDataSource) {
-    dataSource = { ...documentDataSource, ...(pages ? { page: pages } : {}) };
-  } else if (pages) {
-    dataSource = { page: pages };
-  } else {
-    dataSource = null;
-  }
-
-  const data: DataPointDetail = {
-    ...(value && { value }),
-    ...(quality && { quality }),
-    ...(comment && { comment }),
-    ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
-  };
-
-  jsonValue.value = Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
+  jsonValue.value = parseFormDataToDataPointJson(formData.value, selectedDocumentOption.value);
 }
 
 /**
  * Parses the JSON from jsonValue and updates the form data accordingly. If the JSON is invalid, the form data is left unchanged.
  */
 function jsonToFormData(): void {
-  try {
-    const parsed = JSON.parse(jsonValue.value) as DataPointDetail;
-    const toStr = (v: unknown): string => (v === null || v === undefined ? '' : toSafeDisplayString(v));
-    formData.value = {
-      value: toStr(parsed.value),
-      quality: toStr(parsed.quality),
-      document: toStr(parsed.dataSource?.fileName ?? parsed.dataSource?.fileReference),
-      pages: toStr(parsed.dataSource?.page),
-      comment: toStr(parsed.comment),
-    };
-  } catch {
-    // invalid JSON, leave form as-is
+  const parsed = parseDataPointJsonToFormData(jsonValue.value);
+  if (parsed !== null) {
+    formData.value = parsed;
   }
   jsonValue.value = DEFAULT_CUSTOM_JSON;
 }
