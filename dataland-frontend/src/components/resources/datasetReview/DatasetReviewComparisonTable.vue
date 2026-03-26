@@ -95,7 +95,11 @@
                     data-row-header="true"
                   >
                     <div class="flex justify-content-between align-items-center">
-                      <a class="kpi-link table-left-label font-normal" @click="emit('row-click', row)">
+                      <a
+                        class="table-left-label font-normal"
+                        :class="{ 'kpi-link': props.rowClickable, 'cursor-default': !props.rowClickable }"
+                        @click="props.rowClickable ? emit('row-click', row) : undefined"
+                      >
                         {{ row.label }}
                       </a>
                       <em
@@ -228,6 +232,7 @@ const props = defineProps<{
   datasetReview: DatasetJudgementResponse;
   dataMetaInformation: DataMetaInformation;
   hideEmptyFields: boolean;
+  rowClickable?: boolean;
 }>();
 
 const totalNumberOfColumns = computed(() => (props.datasetReview.qaReporters?.length ?? 0) + 3);

@@ -82,13 +82,14 @@
               :data-meta-information="dataMetaInformation!"
               :search-query="''"
               :hide-empty-fields="hideEmptyFields"
+              :row-clickable="isAssignedToCurrentUser"
               data-test="datasetReviewComparisonTable"
               @row-click="onComparisonTableRowClicked"
               @kpi-rows-built="onKpiRowsBuilt"
               @documents-built="onDocumentsBuilt"
             />
             <JudgeDialog
-              v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId"
+              v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId && isAssignedToCurrentUser"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
               :next-data-point-options="nextDataPointOptions"
