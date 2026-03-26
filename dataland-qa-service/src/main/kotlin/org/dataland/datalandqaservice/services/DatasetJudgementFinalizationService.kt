@@ -12,6 +12,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.Datas
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
 
@@ -30,6 +31,7 @@ class DatasetJudgementFinalizationService
         /**
          * Handles the rejection of a dataset
          */
+        @Transactional
         fun handleRejection(datasetJudgement: DatasetJudgementEntity) {
             qaReviewManager.changeQaStatus(
                 dataId = datasetJudgement.datasetId.toString(),
@@ -42,9 +44,10 @@ class DatasetJudgementFinalizationService
         /**
          * Handles the acceptance of a dataset
          */
+        @Transactional
         fun handleAcceptance(datasetJudgement: DatasetJudgementEntity) {
             DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
-            dataPointQaStatusUpdate(datasetJudgement.dataPoints, datasetJudgement.datasetId, datasetJudgement.reportingPeriod)
+            dataPointQaStatusUpdate(datasetJudgement.dataPoints, datasetJudgement.companyId, datasetJudgement.reportingPeriod)
             qaReviewManager.changeQaStatus(
                 dataId = datasetJudgement.datasetId.toString(),
                 qaStatus = QaStatus.Accepted,
@@ -60,6 +63,7 @@ class DatasetJudgementFinalizationService
          * @param companyId The company ID to use when uploading new data points.
          * @param reportingPeriod The reporting period to use when uploading new data points.
          */
+        @Transactional
         fun dataPointQaStatusUpdate(
             dataPoints: Collection<DataPointJudgementEntity>,
             companyId: UUID,
@@ -88,7 +92,8 @@ class DatasetJudgementFinalizationService
          * @param companyId The company ID to use when uploading the replacement data point.
          * @param reportingPeriod The reporting period to use when uploading the replacement data point.
          */
-        private fun uploadReplacementDataPointIfNeeded(
+        @Transactional
+        fun uploadReplacementDataPointIfNeeded(
             dataPoint: DataPointJudgementEntity,
             companyId: UUID,
             reportingPeriod: String,
@@ -125,7 +130,8 @@ class DatasetJudgementFinalizationService
          * @return The corrected data string from the accepted QA report.
          * @throws InvalidInputApiException If no matching QA report is found or it has no corrected data.
          */
-        private fun getReplacementValueFromQaReport(dataPoint: DataPointJudgementEntity): String {
+        @Transactional
+        fun getReplacementValueFromQaReport(dataPoint: DataPointJudgementEntity): String {
             val acceptedReport =
                 dataPoint.qaReports.find {
                     it.reporterUserId == dataPoint.reporterUserIdOfAcceptedQaReport?.toString()
@@ -154,7 +160,8 @@ class DatasetJudgementFinalizationService
          * @return A [ReviewDataPointTask] ready to be submitted.
          * @throws InvalidInputApiException If the data point has no accepted source set.
          */
-        private fun buildReviewTask(
+        @Transactional
+        fun buildReviewTask(
             dataPoint: DataPointJudgementEntity,
             triggeringUserId: String,
             correlationId: String,

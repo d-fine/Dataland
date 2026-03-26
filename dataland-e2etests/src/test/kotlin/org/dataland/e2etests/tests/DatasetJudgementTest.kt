@@ -34,20 +34,20 @@ class DatasetJudgementTest {
     private val datapointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
     private val datapointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
     private val datapointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
-    private val customDataPoint = "{ \"value\": \" 1000\", \"quality\": \"Reported\"}"
+    private val customDataPoint = "{\"value\":1000,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}"
 
     private val dummyQaReport1 =
         QaReportDataPointString(
             comment = "",
             verdict = QaReportDataPointVerdict.QaAccepted,
-            correctedData = "{ \"value\": \" 100\", \"quality\": \"Reported\"}",
+            correctedData = "{\"value\":100,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}",
         )
 
     private val dummyQaReport2 =
         QaReportDataPointString(
             comment = "",
             verdict = QaReportDataPointVerdict.QaRejected,
-            correctedData = "{ \"value\": \" 200\", \"quality\": \"Reported\"}",
+            correctedData = "{\"value\":200,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}",
         )
 
     @BeforeAll
@@ -128,6 +128,8 @@ class DatasetJudgementTest {
                 val customDataPoint: String? = null,
             )
 
+            val explicitlyHandledDataPointIds = setOf(datapointId1, datapointId2, datapointId3)
+
             val patchOperations =
                 listOf(
                     PatchOperation(datapointType1, AcceptedDataPointSource.Qa, reporterUserId1),
@@ -135,7 +137,13 @@ class DatasetJudgementTest {
                     PatchOperation(datapointType1, AcceptedDataPointSource.Original),
                     PatchOperation(datapointType2, AcceptedDataPointSource.Qa, reporterUserId2),
                     PatchOperation(datapointType3, AcceptedDataPointSource.Custom, null, customDataPoint),
-                )
+                ) +
+                    dataPoints
+                        .filter { (_, dataPointId) -> dataPointId !in explicitlyHandledDataPointIds }
+                        .keys
+                        .map { dataPointType ->
+                            PatchOperation(dataPointType, AcceptedDataPointSource.Original)
+                        }
 
             val currentDatasetJudgementId = requireNotNull(datasetJudgementId)
             patchOperations.forEach {
@@ -249,8 +257,17 @@ class DatasetJudgementTest {
         datapointType: String,
         expectedDataPointContent: String,
     ) {
-        val datapointsInDataset = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
-        val datapointId = datapointsInDataset[datapointType]!!
+        val dataset = QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(datasetId))
+        val datapointsInDataset =
+            QaService.qaControllerApi.getDataPointQaReviewInformation(
+                companyId = dataset.companyId,
+                reportingPeriod = dataset.reportingPeriod,
+                dataType = datapointType,
+                qaStatus = QaStatus.Accepted,
+            )
+        val datapoints = datapointsInDataset.filter { it.dataPointType == datapointType }
+        assertEquals(1, datapoints.size)
+        val datapointId = datapoints[0].dataPointId
         assertEquals(
             expectedDataPointContent,
             Backend.dataPointControllerApi.getDataPoint(datapointId).dataPoint,

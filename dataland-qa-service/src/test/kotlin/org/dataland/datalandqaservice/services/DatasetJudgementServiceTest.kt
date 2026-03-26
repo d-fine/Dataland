@@ -50,8 +50,8 @@ class DatasetJudgementServiceTest {
         DatasetJudgementFinalizationService(
             mock<DataPointControllerApi>(),
             mock<DataPointQaReviewManager>(),
+            mock<QaReviewManager>(),
         )
-    private val qaReviewManager = mock<QaReviewManager>()
 
     private val creationServiceClass =
         DatasetJudgementCreationService(
@@ -65,7 +65,6 @@ class DatasetJudgementServiceTest {
             datasetJudgementSupportService,
             creationServiceClass,
             datasetJudgementFinalizationService,
-            qaReviewManager,
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest

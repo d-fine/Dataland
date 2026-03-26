@@ -14,7 +14,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -54,6 +56,8 @@ class QaReviewManagerTest {
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
     private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
+    private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
+    private val mockDatasetJudgementRepository: DatasetJudgementRepository = mock<DatasetJudgementRepository>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -127,8 +131,9 @@ class QaReviewManagerTest {
                 objectMapper,
                 mockBackendAccessor,
                 mockDataPointQaReportManager,
-                mockDatasetJudgementService,
                 mockDataSourcingService,
+                mockDataPointQaReviewManager,
+                mockDatasetJudgementRepository,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
