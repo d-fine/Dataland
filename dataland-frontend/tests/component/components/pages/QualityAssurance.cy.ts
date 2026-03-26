@@ -200,6 +200,18 @@ describe('Component tests for the Quality Assurance page', () => {
     reviewerUserId: reviewerUserId,
     timestamp: timestampBeta,
   });
+  const currentJudgeUserId = keycloakMockWithJudgeRole.idTokenParsed?.sub as string;
+  const datasetReviewIdOwnedByCurrentJudge = crypto.randomUUID();
+  const reviewQueueElementOwnedByCurrentJudge = buildReviewQueueElement({
+    dataId: crypto.randomUUID(),
+    companyName: 'Continue Review Company GmbH',
+    companyId: crypto.randomUUID(),
+    framework: DataTypeEnum.Lksg,
+    reportingPeriod: '2024',
+    datasetReviewId: datasetReviewIdOwnedByCurrentJudge,
+    reviewerUserName: 'Current judge',
+    reviewerUserId: currentJudgeUserId,
+  });
 
   /**
    * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
@@ -251,10 +263,22 @@ describe('Component tests for the Quality Assurance page', () => {
       });
       mockReviewQueue.push(reviewQueueElementGamma);
     }
+    mountQaAssurancePageWithCustomQueue(mockReviewQueue);
+    assertUnfilteredDatatableState();
+  }
+
+  /**
+   * Mounts the qa assurance page with a custom mock queue.
+   * @param mockReviewQueue queue entries to display
+   * @param keycloak keycloak mock to mount the page with
+   */
+  function mountQaAssurancePageWithCustomQueue(
+    mockReviewQueue: Array<QaReviewResponse>,
+    keycloak: Keycloak = keycloakMockWithJudgeRole
+  ): void {
     cy.intercept(`**/qa/datasets/queue`, mockReviewQueue).as('nonFilteredFetch');
 
-    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
-    assertUnfilteredDatatableState();
+    getMountingFunction({ keycloak })(QualityAssurance);
     cy.get('[data-test="qa-review-section"]').should('exist');
     cy.get('#qa-data-result tbody tr').should('have.length', mockReviewQueue.length);
   }
@@ -556,14 +580,33 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
+    cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdAlpha}`);
+  });
+
+  it('Check routing of Continue Review button.', () => {
+    cy.spy(router, 'push').as('routerPush');
+
+    mountQaAssurancePageWithCustomQueue([reviewQueueElementOwnedByCurrentJudge]);
+    cy.get('button[data-test="goToReviewButton"]').contains('Continue Review').click();
+    cy.get('@routerPush').should(
+      'have.been.calledWith',
+      `/qualityassurance/review/${datasetReviewIdOwnedByCurrentJudge}`
+    );
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('not.exist');
+  });
+
+  it('Check routing of row click without existing review.', () => {
+    cy.spy(router, 'push').as('routerPush');
+    mountQaAssurancePageWithMocks();
+    cy.contains('td', `${dataIdAlpha}`).click();
     cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdAlpha}/frameworks/lksg/${dataIdAlpha}`);
   });
 
-  it('Check routing of row click.', () => {
+  it('Check routing of row click with existing review.', () => {
     cy.spy(router, 'push').as('routerPush');
     mountQaAssurancePageWithMocks();
     cy.contains('td', `${dataIdBeta}`).click();
-    cy.get('@routerPush').should('have.been.calledWith', `/companies/${companyIdBeta}/frameworks/sfdr/${dataIdBeta}`);
+    cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdBeta}`);
   });
 
   it('Check display of error message.', () => {

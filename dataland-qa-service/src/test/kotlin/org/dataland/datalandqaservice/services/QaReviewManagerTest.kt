@@ -9,13 +9,13 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -50,7 +50,7 @@ class QaReviewManagerTest {
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
+    private val mockBackendAccessor: DatalandBackendAccessor = mock<DatalandBackendAccessor>()
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
     private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
@@ -113,7 +113,7 @@ class QaReviewManagerTest {
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
-            mockExceptionForwarder,
+            mockBackendAccessor,
             mockDataPointQaReportManager,
             mockDatasetJudgementService,
             mockDataSourcingService,
@@ -125,7 +125,7 @@ class QaReviewManagerTest {
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
                 objectMapper,
-                mockExceptionForwarder,
+                mockBackendAccessor,
                 mockDataPointQaReportManager,
                 mockDatasetJudgementService,
                 mockDataSourcingService,
@@ -149,7 +149,12 @@ class QaReviewManagerTest {
         expectedStatus: QaStatus,
     ) {
         spyQaReviewManager = spy(qaReviewManager)
-        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
+        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(
+            any<QaReviewEntity>(),
+            any(),
+            any(),
+            any(),
+        )
 
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(
@@ -170,6 +175,8 @@ class QaReviewManagerTest {
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
             argCaptor.capture(),
             eq(correlationId),
+            any(),
+            any(),
         )
         Assertions.assertEquals(dataId, argCaptor.firstValue.dataId)
         Assertions.assertEquals(companyId, argCaptor.firstValue.companyId)
