@@ -382,13 +382,11 @@ describe('JudgeDialog component tests', () => {
       it('advances the header to the next KPI after a successful accept', () => {
         mountJudgeDialog();
 
-        // Current KPI is Alpha
         cy.contains('KPI Alpha Label').should('be.visible');
 
         cy.get('[data-test="accept-original-button"]').click();
         cy.wait('@patchJudgementDetail');
 
-        // After patching, the component should navigate to the next unreviewed KPI (Beta)
         cy.contains('KPI Beta Label').should('be.visible');
         cy.contains('KPI Alpha Label').should('not.exist');
       });
@@ -489,7 +487,6 @@ describe('JudgeDialog component tests', () => {
     it('disables the accept-custom button when the form is completely empty', () => {
       mountJudgeDialog();
 
-      // Default state: all fields empty
       cy.get('[data-test="accept-custom-button"]').should('be.disabled');
     });
   });
@@ -642,16 +639,13 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithMixedKpis });
 
-      // First KPI has pre-populated value
       cy.get('[data-test="custom-value-field"]').should('have.value', 'should-not-appear');
 
-      // Navigate to second KPI via "Go To"
       cy.get('[data-test="next-datapoint-select"]').click();
       cy.get('.p-select-overlay').should('be.visible');
       cy.contains('KPI Beta Label').click();
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
-      // Custom form should be reset for the second KPI
       cy.get('[data-test="custom-value-field"]').should('have.value', '');
     });
   });
@@ -808,7 +802,6 @@ describe('JudgeDialog component tests', () => {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
             qaReports: [
               {
-                // This accepted report should NOT appear in the corrected section
                 qaReportId: 'qa-report-accepted',
                 verdict: QaReportDataPointVerdict.QaAccepted,
                 reporterUserId: reporterUserId1,
@@ -819,7 +812,6 @@ describe('JudgeDialog component tests', () => {
                 comment: '',
               },
               {
-                // Only this rejected report should be shown
                 qaReportId: 'qa-report-rejected',
                 verdict: QaReportDataPointVerdict.QaRejected,
                 correctedData: JSON.stringify(secondCorrectedDataPoint),
@@ -837,11 +829,9 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog({ datasetJudgement: judgementWithAcceptedAndRejected });
 
       cy.get('[data-test="corrected-datapoint-section"]').within(() => {
-        // Only 1 filtered report is shown
         cy.contains('1 / 1').should('not.exist');
         cy.contains('Reporter Two').should('be.visible');
         cy.contains('second-corrected-value').should('be.visible');
-        // The accepted reporter should not be driving the display
         cy.contains('Reporter One').should('not.exist');
       });
     });
@@ -862,6 +852,60 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
       cy.get('.p-dialog-title').should('have.text', 'KPI Beta Label');
+    });
+
+    it('shows all KPIs in the dropdown when no KPIs have been reviewed yet', () => {
+      mountJudgeDialog();
+
+      cy.get('[data-test="next-datapoint-select"]').click();
+      cy.get('.p-select-overlay').should('be.visible');
+
+      cy.contains('KPI Alpha Label').should('be.visible');
+      cy.contains('KPI Beta Label').should('be.visible');
+    });
+
+    it('hides reviewed KPIs from the dropdown when "only show unreviewed" toggle is on', () => {
+      const judgementWithAlphaReviewed: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithAlphaReviewed });
+
+      cy.get('[data-test="next-datapoint-select"]').click();
+      cy.get('.p-select-overlay')
+        .should('be.visible')
+        .within(() => {
+          cy.contains('KPI Alpha Label').should('not.exist');
+          cy.contains('KPI Beta Label').should('be.visible');
+        });
+    });
+
+    it('shows reviewed KPIs in the dropdown after turning off the "only show unreviewed" toggle', () => {
+      const judgementWithAlphaReviewed: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithAlphaReviewed });
+
+      cy.get('[data-test="only-unreviewed-toggle"]').click();
+
+      cy.get('[data-test="next-datapoint-select"]').click();
+      cy.get('.p-select-overlay').should('be.visible');
+
+      cy.contains('KPI Alpha Label').should('be.visible');
+      cy.contains('KPI Beta Label').should('be.visible');
     });
   });
 });

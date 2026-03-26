@@ -339,6 +339,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('a', 'Data Date').should('have.class', 'kpi-link').click();
 
     cy.get('@onRowClick').should('have.been.calledOnce');
+    cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'plainDateSfdrDataDate' });
   });
 
   it('does not apply kpi-link style and does not emit row-click when rowClickable is false', () => {
