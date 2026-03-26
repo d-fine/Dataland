@@ -10,7 +10,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils';
+import { qaOverviewNavigateToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
@@ -89,8 +89,8 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
 
   safeLogout();
   login(admin_name, admin_pw);
-
-  visitQaOverviewAndGoToLastPage();
+  cy.visitAndCheckAppMount('/qualityassurance');
+  qaOverviewNavigateToLastPage();
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -131,7 +131,8 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 ): void {
   login(admin_name, admin_pw);
 
-  visitQaOverviewAndGoToLastPage();
+  cy.visitAndCheckAppMount('/qualityassurance');
+  qaOverviewNavigateToLastPage();
 
   cy.visit(`/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/${dataMetaInfo.dataId}`);
 

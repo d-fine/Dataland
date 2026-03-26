@@ -21,7 +21,7 @@ import {
   uploader_pw,
 } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { visitQaOverviewAndGoToLastPage } from '@e2e/utils/QualityAssuranceUtils';
+import { qaOverviewNavigateToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -83,10 +83,11 @@ describeIf(
         ).then((dataMetaInfo: DataMetaInformation) => {
           uploadQaReportsForDataset(dataMetaInfo, { reviewerToken, adminToken });
           startJudgement(storedCompany).then((datasetJudgementId) => {
-            changeJudgeAssignment(storedCompany);
+            const companyName = storedCompany.companyInformation.companyName;
+            changeJudgeAssignment(companyName);
             judgeDatapointsWithoutQaReports(datasetJudgementId, judgeToken);
             judgeDatapointsWithQaReports(datasetJudgementId, judgeToken);
-            finishJudgementSuccesfully(judgeToken);
+            finishJudgementSuccesfully(companyName);
           });
         });
       });
@@ -114,22 +115,41 @@ describeIf(
  *
  * @param judgeToken Bearer token for the judge user, used to verify the judgement completion via API if necessary.
  */
-function finishJudgementSuccesfully(judgeToken: string): void {
-  cy.intercept('POST', '**/qa/dataset-judgements/**/finish').as('finishJudgement');
-  cy.log('Hallo', judgeToken);
+function finishJudgementSuccesfully(companyName: string): void {
+  cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
+  cy.get('.p-dialog')
+    .should('be.visible')
+    .within(() => {
+      cy.contains('button', 'CONFIRM').should('exist').click();
+    });
+  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').then(($tbody) => {
+    const $rows = $tbody.find('tr');
+
+    // Falls keine Zeile existiert: nichts prüfen
+    if (!$rows.length) {
+      return;
+    }
+
+    const $secondCellOfLastRow = $rows.last().find('td').eq(1);
+
+    cy.wrap($secondCellOfLastRow).should('not.contain', companyName);
+    // oder, wenn wirklich exakt der Text nicht gleich sein soll:
+    // cy.wrap($secondCellOfLastRow).should('not.have.text', companyName);
+  });
 }
 
 /**
  * Switches to the judge user, opens the review entry for the company, and assigns the dataset to the judge.
  *
- * @param storedCompany - The company owning the dataset to be judged.
+ * @param companyName - The name of the company owning the dataset to be judged.
  */
-function changeJudgeAssignment(storedCompany: StoredCompany): void {
+function changeJudgeAssignment(companyName: string): void {
   cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
   logout();
   login(judge_name, judge_pw);
-  visitQaOverviewAndGoToLastPage();
-  const companyName = storedCompany.companyInformation.companyName;
+  cy.visitAndCheckAppMount('/qualityassurance');
+  qaOverviewNavigateToLastPage();
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
@@ -324,7 +344,8 @@ function startJudgement(storedCompany: StoredCompany): Cypress.Chainable<string>
   cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
   const companyName = storedCompany.companyInformation.companyName;
   login(admin_name, admin_pw);
-  visitQaOverviewAndGoToLastPage();
+  cy.visitAndCheckAppMount('/qualityassurance');
+  qaOverviewNavigateToLastPage();
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
