@@ -35,9 +35,8 @@
         title="Original datapoint"
         :data="originalData"
         :is-loading="isOriginalLoading"
-        :is-loading-error="isOriginalError"
-        :loading-error-object="originalError"
-        empty-text="No original datapoint available."
+        :is-loading-error="isOriginalLoadingError"
+        :loading-error-object="originalErrorValue"
         accept-label="ACCEPT ORIGINAL"
         :accept-disabled="isMutating"
         accept-data-test="accept-original-button"
@@ -236,14 +235,20 @@ watch(
 
 // ===== Original datapoint =====
 
+const isOriginalQueryEnabled = computed(() => !!currentDataPointId.value);
+
 const {
   data: originalDataPoint,
-  isPending: isOriginalLoading,
+  isPending: isOriginalPending,
   isError: isOriginalError,
   error: originalError,
 } = useGetDataPointByIdQuery(currentDataPointId, {
-  enabled: computed(() => !!currentDataPointId.value),
+  enabled: isOriginalQueryEnabled,
 });
+
+const isOriginalLoading = computed(() => isOriginalQueryEnabled.value && isOriginalPending.value);
+const isOriginalLoadingError = computed(() => isOriginalQueryEnabled.value && isOriginalError.value);
+const originalErrorValue = computed<Error | null>(() => (isOriginalLoadingError.value ? originalError.value : null));
 
 const originalData = computed<DataPointDetail | null>(() => {
   const dp = originalDataPoint.value;

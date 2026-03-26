@@ -7,7 +7,11 @@
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
         <span v-if="isAccepted" class="pi pi-check text-green-500 ml-2 accepted-check" aria-label="Accepted" />
-        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner ml-2" fontSize="font-size-sm" />
+        <DatalandProgressSpinner
+          v-if="isLoading && !data"
+          class="judge-modal__title-spinner ml-2"
+          fontSize="font-size-sm"
+        />
         <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
           {{ errorMessage }}
         </span>
