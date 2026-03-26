@@ -162,7 +162,7 @@
 import PrimeButton from 'primevue/button';
 import type { DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import { computed, type Ref } from 'vue';
+import { computed } from 'vue';
 
 const OVERFLOW_THRESHOLD = 40;
 
@@ -171,7 +171,7 @@ const props = defineProps<{
   data: DataPointDetail | null;
   isLoading?: boolean;
   isLoadingError?: boolean;
-  loadingErrorObject?: Ref<Error | null, Error | null> | null | undefined;
+  loadingErrorObject?: Error | null;
   emptyText?: string;
   acceptLabel: string;
   acceptDisabled?: boolean;
@@ -195,7 +195,7 @@ const errorMessage = computed(() => {
   if (!props.isLoadingError || !props.loadingErrorObject) {
     return 'Failed to load datapoint. Please try again later!';
   }
-  const err = props.loadingErrorObject.value;
+  const err = props.loadingErrorObject;
   if (!err) {
     return 'Failed to load datapoint. Please try again later!';
   }
