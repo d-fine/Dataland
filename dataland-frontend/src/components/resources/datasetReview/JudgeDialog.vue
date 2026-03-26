@@ -197,9 +197,9 @@ console.log('currentDataPointId', currentDataPointId.value);
 
 watch(
   [currentDataPointTypeId, currentDatapointJudgement, currentDataPointId],
-  ([typeId, judgement, id]) => {
+  ([typeId, judgementMetaData, id]) => {
     console.log('JudgeDialog currentDataPointTypeId:', typeId);
-    console.log('JudgeDialog matching judgement:', judgement);
+    console.log('JudgeDialog matching judgement:', judgementMetaData);
     console.log('JudgeDialog currentDataPointId:', id);
     if (datasetJudgement.value?.dataPoints) {
       console.log('Available dataPointType keys:', Object.keys(datasetJudgement.value.dataPoints));
@@ -233,15 +233,15 @@ const originalData = computed<DataPointDetail | null>(() => {
 // ===== QA reports =====
 
 const filteredQaReports = computed<QaReport[]>(() => {
-  const judgement = currentDatapointJudgement.value;
-  if (!judgement?.qaReports) return [];
-  return (judgement.qaReports as QaReport[]).filter((r) => r.verdict !== QaReportDataPointVerdict.QaAccepted);
+  const judgementMetaData = currentDatapointJudgement.value;
+  if (!judgementMetaData?.qaReports) return [];
+  return (judgementMetaData.qaReports as QaReport[]).filter((r) => r.verdict !== QaReportDataPointVerdict.QaAccepted);
 });
 
 const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
-  const judgement = currentDatapointJudgement.value;
-  if (!judgement) return null;
-  const allReports = (judgement.qaReports as QaReport[]) ?? [];
+  const judgementMetaData = currentDatapointJudgement.value;
+  if (!judgementMetaData) return null;
+  const allReports = (judgementMetaData.qaReports as QaReport[]) ?? [];
   if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
   if (allReports.every((r) => r.verdict === 'QaAccepted'))
     return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
@@ -371,19 +371,19 @@ const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(curr
 /**
  * Determines whether the given datapoint judgement has already been decided.
  *
- * @param dataPointJudgement - Datapoint judgement metadata.
+ * @param judgementMetaData - Datapoint judgement metadata.
  * @returns True if the datapoint has an accepted source; otherwise false.
  */
-function isDataPointJudged(dataPointJudgement: any): boolean {
-  return dataPointJudgement.acceptedSource != null;
+function isDataPointJudged(judgementMetaData: any): boolean {
+  return judgementMetaData.acceptedSource != null;
 }
 
 const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
   const options: NextDataPointOption[] = [];
   for (const row of props.nextDataPointOptions) {
     if (!row.dataPointTypeId) continue;
-    const dataPointJudgement = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
-    const reviewed = dataPointJudgement ? isDataPointJudged(dataPointJudgement) : false;
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
+    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
     if (onlyShowUnreviewed.value && reviewed) continue;
     options.push({
       label: row.label,
@@ -407,8 +407,8 @@ function findNextUnreviewedDataPoint(currentDataPointTypeId: string): string {
   const total = ids.length;
   for (let offset = 1; offset < total; offset++) {
     const id = ids[(currentIndex + offset) % total];
-    const dataPointJudgement = datasetJudgement.value?.dataPoints?.[id];
-    if (!dataPointJudgement || !isDataPointJudged(dataPointJudgement)) return id;
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[id];
+    if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return id;
   }
   return currentDataPointTypeId;
 }
@@ -613,13 +613,13 @@ function resetStateForCurrentDataPoint(): void {
  * Initializes the custom form / JSON for the currently selected datapoint
  * based on previously accepted custom judgement, if present.
  *
- * @param judgement - The current datapoint judgement metadata.
+ * @param judgementMetaData - The current datapoint judgement metadata.
  * @returns Nothing.
  */
-function setCustomFormForCurrentDataPoint(judgement: DataPointJudgement | null): void {
-  if (judgement?.acceptedSource === AcceptedDataPointSource.Custom && judgement.customValue) {
+function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement | null): void {
+  if (judgementMetaData?.acceptedSource === AcceptedDataPointSource.Custom && judgementMetaData.customValue) {
     try {
-      const prev = JSON.parse(judgement.customValue) as DataPointDetail;
+      const prev = JSON.parse(judgementMetaData.customValue) as DataPointDetail;
       customFormData.value = {
         value: toSafeDisplayString(prev.value),
         quality: toSafeDisplayString(prev.quality),
@@ -627,7 +627,7 @@ function setCustomFormForCurrentDataPoint(judgement: DataPointJudgement | null):
         pages: toSafeDisplayString(prev.dataSource?.page),
         comment: toSafeDisplayString(prev.comment),
       };
-      customJson.value = judgement.customValue;
+      customJson.value = judgementMetaData.customValue;
       return;
     } catch (e) {
       console.error('Failed to parse previously accepted custom datapoint JSON', e);
