@@ -35,7 +35,8 @@
         title="Original datapoint"
         :data="originalData"
         :is-loading="isOriginalLoading"
-        :load-error="originalError"
+        :is-loading-error="isOriginalError"
+        :loading-error-object="originalError"
         accept-label="ACCEPT ORIGINAL"
         :accept-disabled="isMutating"
         accept-data-test="accept-original-button"
@@ -213,6 +214,7 @@ watch(
 const {
   data: originalDataPoint,
   isPending: isOriginalLoading,
+  isError: isOriginalError,
   error: originalError,
 } = useGetDataPointByIdQuery(currentDataPointId, {
   enabled: computed(() => !!currentDataPointId.value),
@@ -362,7 +364,7 @@ const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(curr
  * @param judgementMetaData - Datapoint judgement metadata.
  * @returns True if the datapoint has an accepted source; otherwise false.
  */
-function isDataPointJudged(judgementMetaData: any): boolean {
+function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
   return judgementMetaData.acceptedSource != null;
 }
 

@@ -2,9 +2,9 @@
   <section class="judge-modal__section flex flex-column" :data-test="dataTest">
     <div class="judge-modal__section-header-with-nav flex align-items-baseline justify-content-between gap-3">
       <h3 class="judge-modal__section-title flex-1">
-        {{ props.title }}
-        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner --font-size-sm" />
-        <span v-else-if="loadError" class="ml-2 text-sm text-red-600">
+        {{ title }}
+        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner" fontSize="0.875rem" />
+        <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
           {{ errorMessage }}
         </span>
 
@@ -34,7 +34,8 @@
         />
       </div>
     </div>
-    <div v-if="isLoading || loadError || data" class="p-datatable p-component">
+
+    <div v-if="isLoading || isLoadingError || data" class="p-datatable p-component">
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" :aria-label="title">
           <tbody class="p-datatable-body">
@@ -157,7 +158,7 @@
 import PrimeButton from 'primevue/button';
 import type { DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import { computed } from 'vue';
+import { computed, type Ref } from 'vue';
 
 const OVERFLOW_THRESHOLD = 40;
 
@@ -165,7 +166,8 @@ const props = defineProps<{
   title: string;
   data: DataPointDetail | null;
   isLoading?: boolean;
-  loadError?: unknown;
+  isLoadingError?: boolean;
+  loadingErrorObject?: Ref<Error | null> | null;
   acceptLabel: string;
   acceptDisabled?: boolean;
   acceptDataTest?: string;
@@ -176,14 +178,6 @@ const props = defineProps<{
   navLabel?: string;
 }>();
 
-const errorMessage = computed(() => {
-  const err = props.loadError as any;
-  const status = err?.response?.status ?? err?.status;
-  if (status) {
-    return `Failed to load datapoint (HTTP ${status}).`;
-  }
-  return 'Failed to load datapoint. Please try again later!';
-});
 const emit = defineEmits<{
   accept: [];
   prev: [];
@@ -191,6 +185,20 @@ const emit = defineEmits<{
   showPopover: [event: MouseEvent, text: string];
   hidePopover: [];
 }>();
+
+const errorMessage = computed(() => {
+  if (!props.isLoadingError || !props.loadingErrorObject) {
+    return 'Failed to load datapoint. Please try again later!';
+  }
+  const err = props.loadingErrorObject.value;
+  if (!err) {
+    return 'Failed to load datapoint. Please try again later!';
+  }
+  const backendMessage = err.message;
+  return backendMessage
+    ? `Failed to load datapoint: ${backendMessage}`
+    : 'Failed to load datapoint. Please try again later!';
+});
 
 /**
  * Checks if the given text exceeds the defined overflow threshold.

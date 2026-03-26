@@ -255,7 +255,6 @@ const showMultipleReportsBanner = computed(() => {
 const {
   data: originalDataAndMeta,
   isPending,
-  isFetching,
   isError,
   error,
 } = useGetFrameworkDataQuery({
@@ -268,11 +267,8 @@ const isInitialFrameworkLoading = computed(() => isPending.value && !hasFramewor
 const isInitialFrameworkError = computed(() => isError.value && !hasFrameworkData.value);
 
 const frameworkErrorMessage = computed(() => {
-  const err = error.value as any;
-  const status = err?.response?.status ?? err?.status;
-  const backendMessage = err?.response?.data?.message ?? err?.message;
-  if (status && backendMessage) return `Failed to load dataset (HTTP ${status}): ${backendMessage}`;
-  if (status) return `Failed to load dataset (HTTP ${status}).`;
+  const err = error.value;
+  const backendMessage = err?.message;
   if (backendMessage) return `Failed to load dataset: ${backendMessage}`;
   return 'Failed to load dataset.';
 });
