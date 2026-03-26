@@ -240,7 +240,7 @@
                   v-if="
                     slotProps.data.reviewStatus === 'Start Review' || slotProps.data.reviewStatus === 'Continue Review'
                   "
-                  @click.stop="handleRowAction(slotProps.data)"
+                  @click.stop="handleReviewButtonClick(slotProps.data)"
                   class="qa-review-button"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
@@ -392,33 +392,49 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 
 /**
  * Handles the click on a row in the QA table.
- * If the dataset of the clicked row has not been reviewed before, a confirmation modal will be opened to confirm the start of a new dataset review.
+ * If the dataset of the clicked row has not been reviewed before, the user will be directed to the dataset page.
  * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
  */
 function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
-    selectedDataId.value = qaDataObject.dataId;
-    openConfirmationModal(
-      'Start Review',
-      'Are you sure you want to start a review for this dataset? ' +
-        'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
-      () => {
-        void confirmStartReview();
-      }
-    );
+    void goToDatasetViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
   } else {
-    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
   }
 }
 
 /**
- * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
+ * Handles the click on the review button in the QA table.
+ * If no review exists yet, a confirmation modal is shown and the review is created before navigation.
+ * If a review already exists, the user is directly navigated to the corresponding dataset review page.
  */
-function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
-  // In the future, this is supposed to navigate to: `/qualityassurance/review/${datasetReviewId}`.
-  // However, until the dataset review overview page is fully implemented, we navigate to the dataset view page.
-  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
-  return router.push(qaUri);
+function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
+  if (qaDataObject.datasetReviewId != null) {
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
+    return;
+  }
+
+  selectedDataId.value = qaDataObject.dataId;
+  openConfirmationModal(
+    'Start Review',
+    'Are you sure you want to start a review for this dataset? \n\n' +
+      'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
+    () => void confirmStartReview()
+  );
+}
+
+/**
+ * Navigates to the dataset page for the dataset with the given dataId, companyId and framework.
+ */
+function goToDatasetViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
+  return router.push(`/companies/${companyId}/frameworks/${framework}/${dataId}`);
+}
+
+/**
+ * Navigates to the dataset review page for the dataset with the given datasetReviewId.
+ */
+function goToDatasetReviewPage(datasetReviewId: string): ReturnType<typeof router.push> {
+  return router.push(`/qualityassurance/review/${datasetReviewId}`);
 }
 
 /**
@@ -434,7 +450,7 @@ async function confirmStartReview(): Promise<void> {
     );
 
     confirmationModal.value.visible = false;
-    await goToQaViewPage(response.data.companyId, response.data.dataType, selectedDataId.value);
+    await goToDatasetReviewPage(response.data.dataSetJudgementId);
   } catch (error) {
     if (error instanceof AxiosError) {
       confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
