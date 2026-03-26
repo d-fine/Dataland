@@ -1,14 +1,17 @@
 <template>
-  <section class="judge-modal__section" data-test="custom-datapoint-section">
-    <div class="judge-modal__section-header-row">
-      <h3 class="judge-modal__section-title">Custom datapoint</h3>
-      <div class="judge-modal__toggle">
+  <section
+    data-test="custom-datapoint-section"
+    style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%"
+  >
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-xs)">
+      <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom datapoint</h3>
+      <div style="display: flex; align-items: center; gap: var(--spacing-xs)">
         <ToggleSwitch id="edit-mode-toggle" v-model="editModeEnabled" data-test="edit-mode-toggle" />
         <label for="edit-mode-toggle"> JSON </label>
       </div>
     </div>
 
-    <div class="judge-modal__copy-buttons">
+    <div style="white-space: nowrap">
       <PrimeButton
         label="Copy original datapoint"
         variant="text"
@@ -30,7 +33,11 @@
     <!-- View mode: Display as editable form -->
     <div v-if="!editModeEnabled" class="p-datatable p-component">
       <div class="p-datatable-wrapper">
-        <table class="p-datatable-table judge-modal__datatable" aria-label="Data point content">
+        <table
+          class="p-datatable-table judge-modal__datatable"
+          aria-label="Data point content"
+          style="width: 100%; table-layout: fixed"
+        >
           <tbody class="p-datatable-body">
             <tr>
               <th scope="row" class="headers-bg">Value</th>
@@ -108,7 +115,7 @@
     </div>
 
     <!-- Edit mode: Display as JSON editor -->
-    <div v-else class="judge-modal__json-editor">
+    <div v-else style="display: flex; flex-direction: column">
       <Textarea
         id="custom-json-textarea"
         v-model="jsonValue"
@@ -116,10 +123,11 @@
         size="small"
         spellcheck="false"
         data-test="custom-json-textarea"
+        style="height: 10.3rem; overflow: auto; resize: none"
       />
     </div>
 
-    <div class="judge-modal__section-actions">
+    <div style="margin-top: auto; padding-top: var(--spacing-xs)">
       <PrimeButton
         label="ACCEPT CUSTOM"
         @click="emit('accept')"
@@ -230,46 +238,10 @@ watch(editModeEnabled, (newVal) => {
 </script>
 
 <style scoped lang="scss">
-.judge-modal__section {
-  padding: var(--spacing-xs);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.judge-modal__section-title {
-  margin-top: 0;
-  white-space: nowrap;
-}
-
-.judge-modal__section-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-xs);
-
-  > .judge-modal__section-title {
-    margin-bottom: 0;
-  }
-}
-
-.judge-modal__copy-buttons {
-  white-space: nowrap;
-}
-
-.judge-modal__toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
 .judge-modal__datatable {
-  width: 100%;
-  table-layout: fixed;
-
   tr {
     th {
-      width: 6rem;
+      width: var(--spacing-xxxxxl);
       padding: var(--spacing-xxs) var(--spacing-xs);
       vertical-align: middle;
     }
@@ -283,21 +255,5 @@ watch(editModeEnabled, (newVal) => {
       overflow: hidden;
     }
   }
-}
-
-.judge-modal__json-editor {
-  display: flex;
-  flex-direction: column;
-}
-
-.judge-modal__json-textarea {
-  height: 10.3rem;
-  overflow: auto;
-  resize: none;
-}
-
-.judge-modal__section-actions {
-  margin-top: auto;
-  padding-top: var(--spacing-xs);
 }
 </style>
