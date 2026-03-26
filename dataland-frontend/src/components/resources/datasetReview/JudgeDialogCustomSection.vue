@@ -123,7 +123,7 @@
         size="small"
         spellcheck="false"
         data-test="custom-json-textarea"
-        style="height: 10.3rem; overflow: auto; resize: none"
+        style="height: 11.1rem; overflow: auto; resize: none"
       />
     </div>
 
