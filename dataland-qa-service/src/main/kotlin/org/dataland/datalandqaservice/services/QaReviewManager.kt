@@ -9,8 +9,8 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
@@ -18,6 +18,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
@@ -47,7 +48,7 @@ class QaReviewManager
         val metaDataControllerApi: MetaDataControllerApi,
         var cloudEventMessageHandler: CloudEventMessageHandler,
         var objectMapper: ObjectMapper,
-        val exceptionForwarder: ExceptionForwarder,
+        val datalandBackendAccessor: DatalandBackendAccessor,
         val dataPointQaReportManager: DataPointQaReportManager,
         val datasetJudgementService: DatasetJudgementService,
         val dataSourcingControllerApi: DataSourcingControllerApi,
@@ -98,18 +99,17 @@ class QaReviewManager
             chunkSize: Int,
             chunkIndex: Int,
         ): List<QaReviewResponse> {
-            val offset = (chunkIndex) * (chunkSize)
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             return qaReviewRepository
                 .getSortedAndFilteredQaReviewMetadataset(
                     QaSearchFilter(
                         dataTypes = dataTypes,
                         reportingPeriods = reportingPeriods,
-                        companyIds = getCompanyIdsForCompanyName(companyName),
+                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
                         companyName = companyName,
                         qaStatuses = setOf(qaStatus),
                     ),
-                    resultOffset = offset,
+                    resultOffset = chunkIndex * chunkSize,
                     resultLimit = chunkSize,
                 ).map { it.toQaReviewResponse(userIsAdmin) }
         }
@@ -127,7 +127,7 @@ class QaReviewManager
                         QaSearchFilter(
                             dataTypes = null,
                             reportingPeriods = null,
-                            companyIds = getCompanyIdsForCompanyName(companyName),
+                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
                             companyName = companyName,
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
@@ -175,7 +175,7 @@ class QaReviewManager
             qaReviewRepository.getNumberOfFilteredQaReviews(
                 QaSearchFilter(
                     dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-                    companyIds = getCompanyIdsForCompanyName(companyName), qaStatuses = setOf(QaStatus.Pending),
+                    companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName), qaStatuses = setOf(QaStatus.Pending),
                 ),
             )
 
@@ -256,9 +256,19 @@ class QaReviewManager
                     triggeringUserId = triggeringUserId,
                     comment = comment,
                 )
-            this.sendQaStatusUpdateMessage(qaReviewEntity = qaReviewEntity, correlationId = correlationId)
-
             qaReviewRepository.save(qaReviewEntity)
+            getAcceptedReviewMetadataSorted(
+                qaReviewEntity.companyId,
+                qaReviewEntity.framework,
+                qaReviewEntity.reportingPeriod,
+            ).also {
+                this.sendQaStatusUpdateMessage(
+                    qaReviewEntity = qaReviewEntity,
+                    correlationId = correlationId,
+                    isUpdate = it.size > 1,
+                    newActiveDataId = it.firstOrNull()?.dataId,
+                )
+            }
         }
 
         /**
@@ -288,14 +298,22 @@ class QaReviewManager
         fun sendQaStatusUpdateMessage(
             qaReviewEntity: QaReviewEntity,
             correlationId: String,
+            isUpdate: Boolean,
+            newActiveDataId: String?,
         ) {
-            val pastActiveDataId =
-                getDataIdOfCurrentlyActiveDataset(
-                    qaReviewEntity.companyId,
-                    qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod,
+            val qaStatusChangeMessage =
+                QaStatusChangeMessage(
+                    dataId = qaReviewEntity.dataId,
+                    updatedQaStatus = qaReviewEntity.qaStatus,
+                    currentlyActiveDataId = newActiveDataId,
+                    basicDataDimensions =
+                        BasicDataDimensions(
+                            companyId = qaReviewEntity.companyId,
+                            dataType = qaReviewEntity.framework,
+                            reportingPeriod = qaReviewEntity.reportingPeriod,
+                        ),
+                    isUpdate = isUpdate,
                 )
-            val qaStatusChangeMessage = QaReviewUtils.buildQaStatusChangeMessage(qaReviewEntity, pastActiveDataId)
 
             logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
             val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
@@ -321,20 +339,22 @@ class QaReviewManager
         }
 
         /**
-         * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+         * Retrieves all QA review entities with status Accepted for a given ([companyId], [dataType], [reportingPeriod])
+         * triple, sorted by timestamp in descending order.
+         *
          * @param companyId the ID of the company
          * @param dataType the dataType of the dataset
          * @param reportingPeriod the reportingPeriod of the dataset
-         * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
+         * @return a list of accepted [QaReviewEntity] objects sorted by timestamp descending
          */
-        fun getDataIdOfCurrentlyActiveDataset(
+        fun getAcceptedReviewMetadataSorted(
             companyId: String,
             dataType: String,
             reportingPeriod: String,
-        ): String? {
+        ): List<QaReviewEntity> {
             logger.info(
-                "Searching for currently active dataset for company $companyId, " +
-                    "dataType $dataType, and reportingPeriod $reportingPeriod",
+                "Retrieving accepted QA review entities sorted by timestamp for companyId $companyId, " +
+                    "dataType $dataType, reportingPeriod $reportingPeriod.",
             )
             val searchFilter =
                 QaSearchFilter(
@@ -344,34 +364,23 @@ class QaReviewManager
                     qaStatuses = setOf(QaStatus.Accepted),
                     companyName = null,
                 )
-
             return qaReviewRepository
                 .getSortedAndFilteredQaReviewMetadataset(searchFilter)
-                .maxByOrNull { it.timestamp }
-                ?.dataId
         }
 
         /**
-         * Calls backend to return companyIds for companyName
+         * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+         *
+         * @param companyId the ID of the company
+         * @param dataType the dataType of the dataset
+         * @param reportingPeriod the reportingPeriod of the dataset
+         * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
          */
-        private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
-            var companyIds = emptySet<String>()
-            if (!companyName.isNullOrBlank()) {
-                try {
-                    companyIds =
-                        companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
-                } catch (clientException: ClientException) {
-                    val responseBody = (clientException.response as ClientError<*>).body.toString()
-                    exceptionForwarder.catchSearchStringTooShortClientException(
-                        responseBody,
-                        clientException.statusCode,
-                        clientException,
-                    )
-                    throw clientException
-                }
-            }
-            return companyIds
-        }
+        fun getDataIdOfCurrentlyActiveDataset(
+            companyId: String,
+            dataType: String,
+            reportingPeriod: String,
+        ): String? = getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod).firstOrNull()?.dataId
 
         /**
          * Returns the number of QA reports for all data points contained in the given dataId
