@@ -44,6 +44,7 @@
         data-test="original-datapoint-section"
         :show-nav="false"
         :nav-index="0"
+        :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
@@ -62,6 +63,10 @@
         :nav-index="currentQaReportIndex"
         :nav-count="filteredQaReports.length"
         :nav-label="currentQaReporterLabel"
+        :is-accepted="
+          currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Qa &&
+          currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
+        "
         @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"
@@ -78,6 +83,7 @@
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
         :available-documents="availableDocuments"
+        :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Custom"
         @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
         @copy-corrected="copyCorrectedToCustom"

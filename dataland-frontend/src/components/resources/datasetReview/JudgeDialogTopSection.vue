@@ -3,13 +3,13 @@
     <div class="flex align-items-baseline justify-content-between gap-3" style="margin-bottom: var(--spacing-sm)">
       <h3 class="flex-1" style="margin-top: 0; margin-bottom: 0; white-space: nowrap">
         {{ title }}
-        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner" fontSize="font-size-sm" />
-        <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
-          {{ errorMessage }}
-        </span>
-
         <span v-if="navCount !== undefined && navCount > 0" class="ml-2">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
+        </span>
+        <span v-if="isAccepted" class="pi pi-check text-green-500 ml-2 accepted-check" aria-label="Accepted" />
+        <DatalandProgressSpinner v-if="isLoading" class="judge-modal__title-spinner ml-2" fontSize="font-size-sm" />
+        <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
+          {{ errorMessage }}
         </span>
       </h3>
 
@@ -181,6 +181,7 @@ const props = defineProps<{
   navIndex?: number;
   navCount?: number;
   navLabel?: string;
+  isAccepted?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -227,7 +228,7 @@ function isOverflowing(text: string): boolean {
     }
 
     th {
-      width: var(--spacing-xxxxxl);
+      width: 6rem;
     }
 
     td {

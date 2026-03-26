@@ -4,7 +4,10 @@
     style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%"
   >
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-xs)">
-      <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom datapoint</h3>
+      <div style="display: flex; align-items: center; gap: var(--spacing-xxs)">
+        <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom datapoint</h3>
+        <span v-if="isAccepted" class="pi pi-check text-green-500 ml-2 accepted-check" aria-label="Accepted" />
+      </div>
       <div style="display: flex; align-items: center; gap: var(--spacing-xs)">
         <ToggleSwitch id="edit-mode-toggle" v-model="editModeEnabled" data-test="edit-mode-toggle" />
         <label for="edit-mode-toggle"> JSON </label>
@@ -123,7 +126,7 @@
         size="small"
         spellcheck="false"
         data-test="custom-json-textarea"
-        style="height: 11.1rem; overflow: auto; resize: none"
+        style="height: 10.8rem; overflow: auto; resize: none"
       />
     </div>
 
@@ -166,6 +169,7 @@ const props = defineProps<{
   canCopyOriginal?: boolean;
   canCopyCorrected?: boolean;
   availableDocuments?: DocumentOption[];
+  isAccepted?: boolean;
 }>();
 
 const emit = defineEmits<{
