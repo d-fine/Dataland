@@ -695,20 +695,18 @@ describe('JudgeDialog component tests', () => {
   // 8. Error message when PATCH fails
   // ---------------------------------------------------------------------------
   describe('PATCH error handling', () => {
-    it('shows an error message when the PATCH request fails', () => {
-      mountJudgeDialog({ patchStatusCode: 500 });
-
-      cy.get('[data-test="accept-original-button"]').click();
-
-      cy.get('[data-test="judge-modal-patch-error"]')
-        .should('be.visible')
-        .and('contain.text', 'Failed to update datapoint judgement. Please try again.');
-    });
-
     it('does not show an error message on initial load without any action', () => {
       mountJudgeDialog();
 
       cy.get('[data-test="judge-modal-patch-error"]').should('not.exist');
+    });
+
+    it('shows a popup modal when the PATCH request fails and close using confirm', () => {
+      mountJudgeDialog({ patchStatusCode: 500 });
+      cy.get('[data-test="accept-original-button"]').click();
+      cy.get('[data-test="confirmation-modal-error-message"]').should('contain', '500');
+      cy.get('[data-test="ok-confirmation-modal-button"]').click();
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
   });
 
@@ -906,16 +904,6 @@ describe('JudgeDialog component tests', () => {
 
       cy.contains('KPI Alpha Label').should('be.visible');
       cy.contains('KPI Beta Label').should('be.visible');
-    });
-  });
-
-  describe('Failed patch', () => {
-    it('shows a popup modal when the PATCH request fails and close using confirm', () => {
-      mountJudgeDialog({ patchStatusCode: 500 });
-      cy.get('[data-test="accept-original-button"]').click();
-      cy.get('[data-test="confirmation-modal-error-message"]').should('contain', '500');
-      cy.get('[data-test="ok-confirmation-modal-button"]').click();
-      cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
   });
 });
