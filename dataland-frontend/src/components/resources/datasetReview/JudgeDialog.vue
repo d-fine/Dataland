@@ -123,7 +123,7 @@ import {
   DEFAULT_CUSTOM_JSON,
 } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
-import { AcceptedDataPointSource, type DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
+import { AcceptedDataPointSource, type DataPointJudgement } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
 
@@ -238,7 +238,7 @@ const originalData = computed<DataPointDetail | null>(() => {
 const filteredQaReports = computed<QaReport[]>(() => {
   const judgementMetaData = currentDatapointJudgement.value;
   if (!judgementMetaData?.qaReports) return [];
-  return (judgementMetaData.qaReports as QaReport[]).filter((r) => r.verdict !== QaReportDataPointVerdict.QaAccepted);
+  return judgementMetaData.qaReports as QaReport[];
 });
 
 const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
