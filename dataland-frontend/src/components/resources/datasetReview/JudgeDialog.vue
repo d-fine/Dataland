@@ -50,12 +50,12 @@
         @hide-popover="hidePopover"
       />
 
-      <!-- Top-right: Corrected datapoint (QA reports) -->
+      <!-- Top-right: Reviewed datapoint (QA reports) -->
       <JudgeDialogTopSection
-        title="Corrected datapoint"
+        title="Reviewed datapoint"
         :data="currentQaCorrectedData"
         empty-text="No QA reports available."
-        accept-label="ACCEPT REPORT"
+        accept-label="ACCEPT REVIEWED"
         :accept-disabled="isMutating || filteredQaReports.length === 0 || !currentQaReport"
         accept-data-test="accept-report-button"
         data-test="corrected-datapoint-section"
