@@ -7,6 +7,10 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
+const cypressEnv = Cypress.env() as { short_timeout_in_ms?: number | string; medium_timeout_in_ms?: number | string };
+const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
+const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
+
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
 
@@ -63,13 +67,10 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
  * @param testCompany the company that was searched for
  */
 function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
-  cy.get('.p-autocomplete-list-container', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should('exist');
-  cy.get('.p-autocomplete-option', { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
-    'have.length.greaterThan',
-    0
-  );
+  cy.get('.p-autocomplete-list-container', { timeout: mediumTimeoutInMs }).should('exist');
+  cy.get('.p-autocomplete-option', { timeout: mediumTimeoutInMs }).should('have.length.greaterThan', 0);
   cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`, {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   }).then((items) => {
     if (items.length !== 1)
       throw new Error(
@@ -187,7 +188,7 @@ describeIf(
             cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
             cy.get('input[id=search-bar-input]').should('be.focused');
-            cy.wait(Cypress.env('short_timeout_in_ms') as number);
+            cy.wait(shortTimeoutInMs);
             cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);

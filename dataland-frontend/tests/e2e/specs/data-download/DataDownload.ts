@@ -10,12 +10,16 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
+const cypressEnv = Cypress.env() as { short_timeout_in_ms?: number | string; medium_timeout_in_ms?: number | string };
+const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
+const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
+
 /**
  * Checks that the downloaded file does actually exist
  * @param filePath path to file
  */
 function checkThatFileExists(filePath: string): void {
-  cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+  cy.readFile(filePath, { timeout: shortTimeoutInMs }).should('exist');
 }
 
 /**
@@ -99,7 +103,7 @@ describeIf(
      * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
+      cy.wait(mediumTimeoutInMs); // optional short delay
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
@@ -121,7 +125,7 @@ describeIf(
      * @param useAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyAliases(partialFileNamePrefix: string, fileExtension: string, useAliases: boolean): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+      cy.wait(mediumTimeoutInMs);
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,

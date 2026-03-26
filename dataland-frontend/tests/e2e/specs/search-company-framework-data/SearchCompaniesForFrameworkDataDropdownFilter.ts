@@ -18,6 +18,10 @@ import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefiniti
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+const cypressEnv = Cypress.env() as { short_timeout_in_ms?: number | string; medium_timeout_in_ms?: number | string };
+const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
+const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
+
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
@@ -176,20 +180,20 @@ describe('As a user, I expect the search functionality on the /companies page to
       verifySearchResultTableExists();
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay')
         .should('be.visible')
@@ -234,7 +238,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           );
           cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
           cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
-          cy.wait('@searchCompanyInput', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(() => {
+          cy.wait('@searchCompanyInput', { timeout: mediumTimeoutInMs }).then(() => {
             cy.get('.p-autocomplete-option').eq(0).find("span[class='font-normal']").contains(preFix).should('exist');
           });
         }
@@ -260,7 +264,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
-          cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
+          cy.wait('@getFilterOptions', { timeout: shortTimeoutInMs }).then(() => {
             verifySearchResultTableExists();
             cy.get('#sector-filter').click({ scrollBehavior: false });
             cy.get('input[placeholder="Search sectors"]').type(sector, { scrollBehavior: false });
@@ -269,7 +273,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept('**/api/companies*').as('searchCompany');
           cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
           cy.get('input[id=search-bar-input]').type(companyName, { scrollBehavior: false });
-          cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
+          cy.wait('@searchCompany', { timeout: shortTimeoutInMs }).then(() => {
             const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
             // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
