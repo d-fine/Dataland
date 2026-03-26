@@ -239,7 +239,10 @@ class QaEventListenerQaService
                     if (newActiveDataId != null) {
                         val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)
                         qaReviewManager.sendQaStatusUpdateMessage(
-                            qaReviewEntity = requireNotNull(newQaReviewEntity), correlationId = correlationId,
+                            qaReviewEntity = requireNotNull(newQaReviewEntity),
+                            correlationId = correlationId,
+                            true,
+                            newActiveDataId = newActiveDataId,
                         )
                     }
                 }
