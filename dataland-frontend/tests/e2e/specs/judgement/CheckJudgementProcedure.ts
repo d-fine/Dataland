@@ -31,6 +31,19 @@ const dataPointsWithQaReports: Record<string, string> = {};
 const dataPointsWithoutQaReports: Record<string, string> = {};
 let amountOfDataPointsToReview = 0;
 
+interface PatchDataPointOptions {
+  dataPointType: string;
+  acceptedSource?: string;
+  reporterUserIdOfAcceptedQaReport?: string;
+  customDataPoint?: string;
+}
+
+enum IconState {
+  Accepted,
+  Rejected,
+  None,
+}
+
 describeIf(
   'As a user, I expect to be able to log in',
   {
@@ -141,99 +154,127 @@ function changeJudgeAssignment(storedCompany: StoredCompany): void {
 }
 
 /**
+ * Patches a datapoint with the given accepted source, reporter user id, and custom datapoint value.
+ *
+ * @param datasetJudgementId The dataset for which the datapoint should be patched
+ * @param token Authentication token
+ * @param options Options for patching the datapoint, including dataPointType, acceptedSource,
+ * reporterUserIdOfAcceptedQaReport, and customDataPoint
+ */
+function patchDataPoint(datasetJudgementId: string, token: string, options: PatchDataPointOptions): void {
+  cy.request({
+    method: 'PATCH',
+    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/${options.dataPointType}`,
+    headers: { Authorization: `Bearer ${token}` },
+    body: {
+      acceptedSource: options.acceptedSource,
+      reporterUserIdOfAcceptedQaReport: options.reporterUserIdOfAcceptedQaReport,
+      customDataPoint: options.customDataPoint,
+    },
+  })
+    .its('status')
+    .should('eq', 200);
+}
+
+/**
+ * Checks the icons in the row of the given data point id and verifies that they match the expected ones.
+ *
+ * @param dataPointId Id of the datapoint we want to check
+ * @param expectedIcons The expected icons of the given datapoint
+ */
+function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
+  cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
+    expectedIcons.forEach((state, index) => {
+      switch (expectedIcons[index]) {
+        case IconState.Accepted: {
+          cy.get('td')
+            .eq(index + 1)
+            .find('.accepted-check')
+            .should('exist');
+          break;
+        }
+        case IconState.Rejected: {
+          cy.get('td')
+            .eq(index + 1)
+            .find('.rejected-check')
+            .should('exist');
+          break;
+        }
+        case IconState.None: {
+          cy.get('td')
+            .eq(index + 1)
+            .find('.accepted-check')
+            .should('not.exist');
+          cy.get('td')
+            .eq(index + 1)
+            .find('.rejected-check')
+            .should('not.exist');
+          break;
+        }
+      }
+    });
+  });
+}
+
+/**
  * Patches QA-report datapoints, reloads, and verifies the table renders.
  *
  * @param datasetJudgementId - The dataset judgement id to update.
  * @param judgeToken - Bearer token for the judge user.
  */
 function judgeDatapointsWithQaReports(datasetJudgementId: string, judgeToken: string): void {
-  cy.request({
-    method: 'PATCH',
-    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedDateFiscalYearEnd`,
-    headers: { Authorization: `Bearer ${judgeToken}` },
-    body: {
-      acceptedSource: 'Original',
-    },
-  })
-    .its('status')
-    .should('eq', 200);
-
-  cy.request({
-    method: 'PATCH',
-    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount`,
-    headers: { Authorization: `Bearer ${judgeToken}` },
-    body: {
-      acceptedSource: 'Custom',
-      customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
-    },
-  })
-    .its('status')
-    .should('eq', 200);
-
-  cy.request({
-    method: 'PATCH',
-    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedEnumYesNoIsNfrdMandatory`,
-    headers: { Authorization: `Bearer ${judgeToken}` },
-    body: {
-      acceptedSource: 'Qa',
-      reporterUserIdOfAcceptedQaReport: reviewer_userId,
-      customDataPoint: '{"value":"No"}',
-    },
-  })
-    .its('status')
-    .should('eq', 200);
-
-  cy.request({
-    method: 'PATCH',
-    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/extendedDecimalNumberOfEmployees`,
-    headers: { Authorization: `Bearer ${judgeToken}` },
-    body: {
-      acceptedSource: 'Qa',
-      reporterUserIdOfAcceptedQaReport: admin_userId,
-    },
-  })
-    .its('status')
-    .should('eq', 200);
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: 'extendedDateFiscalYearEnd',
+    acceptedSource: 'Original',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+    acceptedSource: 'Custom',
+    customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: 'extendedEnumYesNoIsNfrdMandatory',
+    acceptedSource: 'Qa',
+    reporterUserIdOfAcceptedQaReport: reviewer_userId,
+    customDataPoint: '{"value":"No"}',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: 'extendedDecimalNumberOfEmployees',
+    acceptedSource: 'Qa',
+    reporterUserIdOfAcceptedQaReport: admin_userId,
+  });
 
   cy.reload();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(0 + ' / ' + amountOfDataPointsToReview + ' data points to review').should('be.visible');
 
-  cy.get(`[data-test="data-point-row-${dataPointsWithQaReports['extendedDateFiscalYearEnd']}"]`).within(() => {
-    cy.get('td').eq(1).find('.accepted-check').should('exist');
-    cy.get('td').eq(2).find('.accepted-check').should('not.exist');
-    cy.get('td').eq(2).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(3).find('.accepted-check').should('not.exist');
-    cy.get('td').eq(3).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(4).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(4).find('.accepted-check').should('not.exist');
-  });
+  checkRowIcons(dataPointsWithQaReports['extendedDateFiscalYearEnd'], [
+    IconState.Accepted,
+    IconState.None,
+    IconState.None,
+    IconState.None,
+  ]);
 
-  cy.get(
-    `[data-test="data-point-row-${dataPointsWithQaReports['extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount']}"]`
-  ).within(() => {
-    cy.get('td').eq(1).find('.rejected-check').should('exist');
-    cy.get('td').eq(2).find('.rejected-check').should('exist');
-    cy.get('td').eq(3).find('.rejected-check').should('exist');
-    cy.get('td').eq(4).find('.accepted-check').should('exist');
-  });
+  checkRowIcons(
+    dataPointsWithQaReports[
+      'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount'
+    ],
+    [IconState.Rejected, IconState.Rejected, IconState.Rejected, IconState.Accepted]
+  );
 
-  cy.get(`[data-test="data-point-row-${dataPointsWithQaReports['extendedEnumYesNoIsNfrdMandatory']}"]`).within(() => {
-    cy.get('td').eq(1).find('.rejected-check').should('exist');
-    cy.get('td').eq(2).find('.accepted-check').should('exist');
-    cy.get('td').eq(3).find('.accepted-check').should('not.exist');
-    cy.get('td').eq(3).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(4).find('.rejected-check').should('exist');
-  });
+  checkRowIcons(dataPointsWithQaReports['extendedEnumYesNoIsNfrdMandatory'], [
+    IconState.Rejected,
+    IconState.Accepted,
+    IconState.None,
+    IconState.Rejected,
+  ]);
 
-  cy.get(`[data-test="data-point-row-${dataPointsWithQaReports['extendedDecimalNumberOfEmployees']}"]`).within(() => {
-    cy.get('td').eq(1).find('.rejected-check').should('exist');
-    cy.get('td').eq(2).find('.accepted-check').should('not.exist');
-    cy.get('td').eq(2).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(3).find('.accepted-check').should('exist');
-    cy.get('td').eq(4).find('.rejected-check').should('not.exist');
-    cy.get('td').eq(4).find('.accepted-check').should('not.exist');
-  });
+  checkRowIcons(dataPointsWithQaReports['extendedDecimalNumberOfEmployees'], [
+    IconState.Rejected,
+    IconState.None,
+    IconState.Accepted,
+    IconState.None,
+  ]);
 }
 
 /**
@@ -247,18 +288,12 @@ function judgeDatapointsWithoutQaReports(datasetJudgementId: string, judgeToken:
   const dataPointEntries = Object.entries(dataPointsWithoutQaReports);
   cy.then(() => {
     dataPointEntries.forEach(([dataPointType]) => {
-      cy.request({
-        method: 'PATCH',
-        url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/${dataPointType}`,
-        headers: { Authorization: `Bearer ${judgeToken}` },
-        body: {
-          acceptedSource: 'Original',
-        },
-      })
-        .its('status')
-        .should('eq', 200);
+      patchDataPoint(datasetJudgementId, judgeToken, {
+        dataPointType: dataPointType,
+        acceptedSource: 'Original',
+      });
     });
-  }).then(() => checkOriginalDatapointAccepted(dataPointEntries));
+  }).then(() => checkOriginalDatapointsAccepted(dataPointEntries));
 }
 
 /**
@@ -266,7 +301,7 @@ function judgeDatapointsWithoutQaReports(datasetJudgementId: string, judgeToken:
  *
  * @param dataPointEntries - Tuple entries of dataPointType and dataPointId.
  */
-function checkOriginalDatapointAccepted(dataPointEntries: Array<[string, string]>): void {
+function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string]>): void {
   cy.reload();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(
@@ -274,15 +309,7 @@ function checkOriginalDatapointAccepted(dataPointEntries: Array<[string, string]
   ).should('be.visible');
   cy.then(() => {
     dataPointEntries.forEach(([, dataPointId]) => {
-      cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
-        cy.get('td').eq(1).find('.accepted-check').should('exist');
-        cy.get('td').eq(2).find('.accepted-check').should('not.exist');
-        cy.get('td').eq(2).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(3).find('.accepted-check').should('not.exist');
-        cy.get('td').eq(3).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(4).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(4).find('.accepted-check').should('not.exist');
-      });
+      checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
     });
   });
 }
