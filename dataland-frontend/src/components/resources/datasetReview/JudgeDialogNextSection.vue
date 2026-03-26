@@ -93,10 +93,11 @@ const selectedNextDataPointTypeId = defineModel<string | null>('selectedNextData
 }
 
 .judge-modal__next-option--reviewed {
-  opacity: 0.45;
+  color: var(--p-gray-300);
 }
 
 .judge-modal__next-option-icon--reviewed {
-  color: var(--p-green-500);
+  color: var(--p-gray-300);
+  margin-right: var(--spacing-xs);
 }
 </style>
