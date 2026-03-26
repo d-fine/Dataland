@@ -145,10 +145,18 @@ const isJudgeDialogOpen = ref(false);
 const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
 const availableDocuments = ref<DocumentOption[]>([]);
 
+/**
+ * Callback function to receive the list of available documents for a datapoint from the ComparisonTable child component.
+ * @param documents
+ */
 function onDocumentsBuilt(documents: DocumentOption[]): void {
   availableDocuments.value = documents;
 }
 
+/**
+ * Callback function to handle clicks on rows in the ComparisonTable child component. Opens the JudgeDialog for the clicked datapoint.
+ * @param row
+ */
 function onComparisonTableRowClicked(row: CellRow): void {
   judgeDialogDataPointTypeId.value = row.dataPointTypeId ?? row.label;
   isJudgeDialogOpen.value = true;
@@ -192,6 +200,12 @@ const isAssignedToCurrentUser = computed(() => {
 });
 
 const kpiRows = ref<CellRow[]>([]);
+
+/**
+ * Callback function to receive the list of KPI rows from the ComparisonTable child component.
+ * These are needed to populate the "Next datapoint" dropdown in the JudgeDialog.
+ * @param rows
+ */
 function onKpiRowsBuilt(rows: CellRow[]): void {
   kpiRows.value = rows;
 }

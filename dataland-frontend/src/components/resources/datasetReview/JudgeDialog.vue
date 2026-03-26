@@ -26,7 +26,7 @@
     <!-- Loading / error states for dataset review -->
     <div v-if="isDatasetJudgementPending">Loading dataset review...</div>
     <div v-else-if="datasetReviewError">
-      <Message severity="error"> Failed to load dataset review. </Message>
+      <Message severity="error"> Failed to load dataset review.</Message>
     </div>
 
     <div v-else class="judge-modal__content">
@@ -115,8 +115,9 @@ import type {
   QaReport,
   QaReporter,
 } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import { toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
-import { AcceptedDataPointSource, DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
+import { AcceptedDataPointSource, type DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
 
@@ -292,12 +293,22 @@ const currentQaCorrectedData = computed<DataPointDetail | null>(() => {
   }
 });
 
+/**
+ * Navigates to the previous QA report in the filtered list, if available.
+ *
+ * @returns Nothing.
+ */
 function goToPreviousReport(): void {
   if (currentQaReportIndex.value > 0) {
     currentQaReportIndex.value -= 1;
   }
 }
 
+/**
+ * Navigates to the next QA report in the filtered list, if available.
+ *
+ * @returns Nothing.
+ */
 function goToNextReport(): void {
   if (currentQaReportIndex.value < filteredQaReports.value.length - 1) {
     currentQaReportIndex.value += 1;
@@ -308,6 +319,12 @@ const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
 const customFormData = ref<CustomFormData>({ ...DEFAULT_CUSTOM_FORM_DATA });
 
+/**
+ * Copies the original datapoint values into the custom section
+ * (either as JSON or into the structured form).
+ *
+ * @returns Nothing.
+ */
 function copyOriginalToCustom(): void {
   if (!originalData.value) return;
 
@@ -315,15 +332,21 @@ function copyOriginalToCustom(): void {
     customJson.value = JSON.stringify(originalData.value, null, 2);
   } else {
     customFormData.value = {
-      value: String(originalData.value.value ?? ''),
-      quality: String(originalData.value.quality ?? ''),
-      document: String(originalData.value.dataSource?.fileName ?? ''),
-      pages: String(originalData.value.dataSource?.page ?? ''),
-      comment: String(originalData.value.comment ?? ''),
+      value: toSafeDisplayString(originalData.value.value),
+      quality: toSafeDisplayString(originalData.value.quality),
+      document: toSafeDisplayString(originalData.value.dataSource?.fileName),
+      pages: toSafeDisplayString(originalData.value.dataSource?.page),
+      comment: toSafeDisplayString(originalData.value.comment),
     };
   }
 }
 
+/**
+ * Copies the current QA-corrected datapoint values into the custom section
+ * (either as JSON or into the structured form).
+ *
+ * @returns Nothing.
+ */
 function copyCorrectedToCustom(): void {
   if (!currentQaCorrectedData.value) return;
 
@@ -331,11 +354,11 @@ function copyCorrectedToCustom(): void {
     customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
   } else {
     customFormData.value = {
-      value: String(currentQaCorrectedData.value.value ?? ''),
-      quality: String(currentQaCorrectedData.value.quality ?? ''),
-      document: String(currentQaCorrectedData.value.dataSource?.fileName ?? ''),
-      pages: String(currentQaCorrectedData.value.dataSource?.page ?? ''),
-      comment: String(currentQaCorrectedData.value.comment ?? ''),
+      value: toSafeDisplayString(currentQaCorrectedData.value.value),
+      quality: toSafeDisplayString(currentQaCorrectedData.value.quality),
+      document: toSafeDisplayString(currentQaCorrectedData.value.dataSource?.fileName),
+      pages: toSafeDisplayString(currentQaCorrectedData.value.dataSource?.page),
+      comment: toSafeDisplayString(currentQaCorrectedData.value.comment),
     };
   }
 }
@@ -345,6 +368,12 @@ function copyCorrectedToCustom(): void {
 const onlyShowUnreviewed = ref<boolean>(true);
 const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
 
+/**
+ * Determines whether the given datapoint judgement has already been decided.
+ *
+ * @param dataPointJudgement - Datapoint judgement metadata.
+ * @returns True if the datapoint has an accepted source; otherwise false.
+ */
 function isDataPointJudged(dataPointJudgement: any): boolean {
   return dataPointJudgement.acceptedSource != null;
 }
@@ -365,8 +394,15 @@ const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
   return options;
 });
 
+/**
+ * Finds the next unreviewed datapoint type ID, starting after the current one
+ * and wrapping around when necessary.
+ *
+ * @param currentDataPointTypeId - The datapoint type ID to start from.
+ * @returns The next unreviewed datapoint type ID, or the current one if none found.
+ */
 function findNextUnreviewedDataPoint(currentDataPointTypeId: string): string {
-  const ids = props.nextDataPointOptions.map((row) => row.dataPointTypeId).filter(Boolean) as string[];
+  const ids = props.nextDataPointOptions.map((row) => row.dataPointTypeId).filter(Boolean);
   const currentIndex = ids.indexOf(currentDataPointTypeId);
   const total = ids.length;
   for (let offset = 1; offset < total; offset++) {
@@ -377,6 +413,12 @@ function findNextUnreviewedDataPoint(currentDataPointTypeId: string): string {
   return currentDataPointTypeId;
 }
 
+/**
+ * Navigates to the selected datapoint type in the "next datapoint" section
+ * and resets local state accordingly.
+ *
+ * @returns Nothing.
+ */
 function goToSelectedDataPoint(): void {
   const targetId = selectedNextDataPointTypeId.value;
   if (targetId == null) return;
@@ -385,6 +427,13 @@ function goToSelectedDataPoint(): void {
   selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
 }
 
+/**
+ * Central handler for accepting a datapoint from a given source
+ * (original / QA / custom).
+ *
+ * @param acceptedSource - The selected datapoint source to accept.
+ * @returns Nothing.
+ */
 function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
   switch (acceptedSource) {
     case AcceptedDataPointSource.Original:
@@ -399,6 +448,11 @@ function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
   }
 }
 
+/**
+ * Handles navigation and cleanup after a successful patch of a datapoint judgement.
+ *
+ * @returns Nothing.
+ */
 function afterSuccessfulPatch(): void {
   if (selectedNextDataPointTypeId.value) {
     const targetId = selectedNextDataPointTypeId.value;
@@ -410,6 +464,13 @@ function afterSuccessfulPatch(): void {
     emit('close');
   }
 }
+
+/**
+ * Builds the JSON string for a custom datapoint from the current form data,
+ * taking into account selected documents and pages.
+ *
+ * @returns A pretty-printed JSON string representing the custom datapoint.
+ */
 function buildCustomDataPointJson(): string {
   const { value, quality, comment, pages, document } = customFormData.value;
 
@@ -435,6 +496,11 @@ function buildCustomDataPointJson(): string {
   return Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
 }
 
+/**
+ * Accepts the original datapoint as the final judgement for the current datapoint type.
+ *
+ * @returns Nothing.
+ */
 function acceptOriginalDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
 
@@ -462,6 +528,13 @@ function acceptOriginalDatapoint(): void {
     }
   );
 }
+
+/**
+ * Accepts the currently selected QA report as the final judgement
+ * for the current datapoint type.
+ *
+ * @returns Nothing.
+ */
 function acceptQaReportDatapoint(): void {
   if (!currentDataPointTypeId.value || !currentQaReport.value) return;
 
@@ -491,6 +564,12 @@ function acceptQaReportDatapoint(): void {
   );
 }
 
+/**
+ * Accepts the custom datapoint (either from JSON or from the structured form)
+ * as the final judgement for the current datapoint type.
+ *
+ * @returns Nothing.
+ */
 function acceptCustomDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
 
@@ -521,20 +600,32 @@ function acceptCustomDatapoint(): void {
   );
 }
 
+/**
+ * Resets transient state (e.g. current QA report index) for the active datapoint.
+ *
+ * @returns Nothing.
+ */
 function resetStateForCurrentDataPoint(): void {
   currentQaReportIndex.value = 0;
 }
 
+/**
+ * Initializes the custom form / JSON for the currently selected datapoint
+ * based on previously accepted custom judgement, if present.
+ *
+ * @param judgement - The current datapoint judgement metadata.
+ * @returns Nothing.
+ */
 function setCustomFormForCurrentDataPoint(judgement: DataPointJudgement | null): void {
   if (judgement?.acceptedSource === AcceptedDataPointSource.Custom && judgement.customValue) {
     try {
       const prev = JSON.parse(judgement.customValue) as DataPointDetail;
       customFormData.value = {
-        value: String(prev.value ?? ''),
-        quality: String(prev.quality ?? ''),
-        document: String(prev.dataSource?.fileName ?? prev.dataSource?.fileReference ?? ''),
-        pages: String(prev.dataSource?.page ?? ''),
-        comment: String(prev.comment ?? ''),
+        value: toSafeDisplayString(prev.value),
+        quality: toSafeDisplayString(prev.quality),
+        document: toSafeDisplayString(prev.dataSource?.fileName ?? prev.dataSource?.fileReference),
+        pages: toSafeDisplayString(prev.dataSource?.page),
+        comment: toSafeDisplayString(prev.comment),
       };
       customJson.value = judgement.customValue;
       return;
@@ -545,6 +636,7 @@ function setCustomFormForCurrentDataPoint(judgement: DataPointJudgement | null):
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
 }
+
 watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });
 
 // ===== Overflow popover =====
@@ -553,13 +645,21 @@ const overflowPopover = ref<InstanceType<typeof Popover> | null>(null);
 const popoverText = ref<string>('');
 const popoverWidth = ref<string>('auto');
 
+/**
+ * Shows the overflow popover for truncated content with a width
+ * matching the corresponding table cell or form field.
+ *
+ * @param event - Mouse event from the trigger element.
+ * @param text - Text content to display inside the popover.
+ * @returns Nothing.
+ */
 function showPopover(event: MouseEvent, text: string): void {
   const btn = event.currentTarget as HTMLElement;
   const td = btn.closest('td') as HTMLElement | null;
   const anchor = td ?? btn;
 
   const dialog = btn.closest('.p-dialog') ?? btn.closest('#judgeModal') ?? document;
-  const formInput = (dialog as Element).querySelector('.judge-modal__form-field') as HTMLElement | null;
+  const formInput = (dialog as Element).querySelector('.judge-modal__form-field');
   const width = formInput ? formInput.getBoundingClientRect().width : anchor.getBoundingClientRect().width;
   popoverWidth.value = `${width}px`;
 
@@ -567,6 +667,11 @@ function showPopover(event: MouseEvent, text: string): void {
   overflowPopover.value?.show(event, anchor);
 }
 
+/**
+ * Hides the overflow popover, if visible.
+ *
+ * @returns Nothing.
+ */
 function hidePopover(): void {
   overflowPopover.value?.hide();
 }
@@ -577,6 +682,7 @@ function hidePopover(): void {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
 }
+
 .judge-modal__header {
   display: flex;
   align-items: center;
