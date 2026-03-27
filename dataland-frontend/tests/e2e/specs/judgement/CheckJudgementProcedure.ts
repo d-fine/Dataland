@@ -25,15 +25,6 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
-const apiBaseUrl = getBaseUrl();
-
-interface PatchDataPointOptions {
-  dataPointType: string;
-  acceptedSource?: string;
-  reporterUserIdOfAcceptedQaReport?: string;
-  customDataPoint?: string;
-}
-
 enum IconState {
   Accepted,
   Rejected,
@@ -43,26 +34,53 @@ enum IconState {
 type QaVerdict = 'QaAccepted' | 'QaRejected';
 type QaRole = 'reviewer' | 'admin';
 
+type QaTokens = {
+  reviewerToken: string;
+  adminToken: string;
+  uploaderToken: string;
+  judgeToken: string;
+};
+
 interface QaAction {
   role: QaRole;
   verdict: QaVerdict;
 }
 
-interface QaConfigEntry {
-  dataPointType: string;
+interface QaReportData {
+  dataPointType: DataPointType;
   correctedValue?: string;
   actions: QaAction[];
 }
 
-interface QaReviewState {
+interface DataPointOverview {
   dataPointsWithQaReports: Record<string, string>;
   dataPointsWithoutQaReports: Record<string, string>;
   amountOfDataPointsToReview: number;
 }
 
-const QA_REPORT_CONFIG: QaConfigEntry[] = [
+interface PatchDataPointOptions {
+  dataPointType: string;
+  acceptedSource?: string;
+  reporterUserIdOfAcceptedQaReport?: string;
+  customDataPoint?: string;
+}
+
+const DATA_POINT_TYPES = {
+  fiscalYearEnd: 'extendedDateFiscalYearEnd',
+  greenAssetRatioTotal:
+    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+  isNfrdMandatory: 'extendedEnumYesNoIsNfrdMandatory',
+  numberOfEmployees: 'extendedDecimalNumberOfEmployees',
+} as const;
+
+type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
+type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
+
+const apiBaseUrl = getBaseUrl();
+
+const QA_REPORT_CONFIG: QaReportData[] = [
   {
-    dataPointType: 'extendedDateFiscalYearEnd',
+    dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
     correctedValue: '{"value":"2026-03-23"}',
     actions: [
       { role: 'reviewer', verdict: 'QaAccepted' },
@@ -70,7 +88,7 @@ const QA_REPORT_CONFIG: QaConfigEntry[] = [
     ],
   },
   {
-    dataPointType: 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+    dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
     correctedValue: '{"value":"74568964325", "currency":"EUR"}',
     actions: [
       { role: 'reviewer', verdict: 'QaRejected' },
@@ -78,7 +96,7 @@ const QA_REPORT_CONFIG: QaConfigEntry[] = [
     ],
   },
   {
-    dataPointType: 'extendedEnumYesNoIsNfrdMandatory',
+    dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
     correctedValue: '{"value":"No"}',
     actions: [
       { role: 'reviewer', verdict: 'QaRejected' },
@@ -86,7 +104,7 @@ const QA_REPORT_CONFIG: QaConfigEntry[] = [
     ],
   },
   {
-    dataPointType: 'extendedDecimalNumberOfEmployees',
+    dataPointType: DATA_POINT_TYPES.numberOfEmployees,
     correctedValue: '{"value":"2409600.75"}',
     actions: [
       { role: 'reviewer', verdict: 'QaAccepted' },
@@ -104,6 +122,7 @@ describeIf(
     let storedCompany: StoredCompany;
     let preparedEuTaxonomyFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
     let preparedSfdrFixtures: Array<FixtureData<SfdrData>>;
+    let companyName: string;
 
     before(function () {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
@@ -116,58 +135,73 @@ describeIf(
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
-        return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
+        return uploadCompanyViaApi(token, testCompany).then((newCompany) => {
+          storedCompany = newCompany;
+          companyName = storedCompany.companyInformation.companyName;
+        });
       });
     });
 
     it('Check full judgement process from upload to acceptance', () => {
       const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-      const companyName = storedCompany.companyInformation.companyName;
 
-      getTokens().then(({ reviewerToken, adminToken, uploaderToken, judgeToken }) => {
-        return uploadFrameworkDataForPublicToolboxFramework(
-          EuTaxonomyFinancialsBaseFrameworkDefinition,
-          uploaderToken,
-          storedCompany.companyId,
-          '2024',
-          euTaxonomyData.t,
-          false
-        ).then((dataMetaInfo: DataMetaInformation) => {
-          return initializeQaReviewStateForDataset(dataMetaInfo, adminToken).then((qaState) => {
-            uploadQaReportsForDataset(qaState, { reviewerToken, adminToken });
-            checkoutDataset(companyName);
+      let tokens: QaTokens;
+      let overview: DataPointOverview;
 
-            startJudgement(companyName).then((datasetJudgementId) => {
-              changeJudgeAssignment(companyName);
-              judgeDatapointsWithoutQaReports(datasetJudgementId, judgeToken, qaState);
-              tryFinishingJudgementBeforeAllDataPointsReviewed();
-              judgeDatapointsWithQaReports(datasetJudgementId, judgeToken, qaState);
-              finishJudgement(companyName);
-            });
+      return getTokens()
+        .then((t) => {
+          tokens = t;
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
+            tokens.uploaderToken,
+            storedCompany.companyId,
+            '2024',
+            euTaxonomyData.t,
+            false
+          );
+        })
+        .then((dataMetaInfo: DataMetaInformation) =>
+          initializeDataPointOverviewForDataset(dataMetaInfo, tokens.adminToken)
+        )
+        .then((o) => {
+          overview = o;
+          uploadQaReportsForDataset(overview, {
+            reviewerToken: tokens.reviewerToken,
+            adminToken: tokens.adminToken,
           });
+          checkoutDataset(companyName);
+          return startJudgement(companyName);
+        })
+        .then((datasetJudgementId) => {
+          changeJudgeAssignment(companyName);
+          judgeDatapointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
+          tryFinishingJudgementBeforeAllDataPointsReviewed();
+          judgeDatapointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
+          finishJudgement(companyName);
         });
-      });
     });
 
     it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
       const sfdrData = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedSfdrFixtures);
-      const companyName = storedCompany.companyInformation.companyName;
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkDataForPublicToolboxFramework(
-          SfdrBaseFrameworkDefinition,
-          token,
-          storedCompany.companyId,
-          '2024',
-          sfdrData.t,
-          false
-        ).then(() => {
+      return getKeycloakToken(uploader_name, uploader_pw)
+        .then((uploaderToken: string) =>
+          uploadFrameworkDataForPublicToolboxFramework(
+            SfdrBaseFrameworkDefinition,
+            uploaderToken,
+            storedCompany.companyId,
+            '2024',
+            sfdrData.t,
+            false
+          )
+        )
+        .then(() => {
           login(admin_name, admin_pw);
-          startJudgement(companyName).then(() => {
-            rejectDatasetInJudgementModel(companyName);
-          });
+          return startJudgement(companyName);
+        })
+        .then(() => {
+          rejectDatasetInJudgementModel(companyName);
         });
-      });
     });
   }
 );
@@ -177,12 +211,7 @@ describeIf(
  *
  * @returns A Cypress.Chainable that resolves to an object containing the retrieved tokens.
  */
-function getTokens(): Cypress.Chainable<{
-  reviewerToken: string;
-  adminToken: string;
-  uploaderToken: string;
-  judgeToken: string;
-}> {
+function getTokens(): Cypress.Chainable<QaTokens> {
   let reviewerToken: string;
   let adminToken: string;
   let uploaderToken: string;
@@ -238,25 +267,17 @@ function uploadQaReportForDataPoint(
 }
 
 /**
- * Loads all data points for a dataset and builds the QA review state.
- *
- * This function:
- * - retrieves all data points via the metadata endpoint,
- * - determines which data points have QA configuration,
- * - returns a QaReviewState containing:
- *   - dataPointsWithQaReports
- *   - dataPointsWithoutQaReports
- *   - amountOfDataPointsToReview
+ * Loads all data points for a dataset and builds the DataPointOverview.
  *
  * @param dataMetaInfo Metadata information of the dataset whose data points are to be loaded.
  * @param adminToken   Bearer token of the admin user used to call the metadata endpoint.
- * @returns A Cypress.Chainable that resolves to the built QaReviewState.
+ * @returns A Cypress.Chainable that resolves to the built DataPointOverview.
  */
-function initializeQaReviewStateForDataset(
+function initializeDataPointOverviewForDataset(
   dataMetaInfo: DataMetaInformation,
   adminToken: string
-): Cypress.Chainable<QaReviewState> {
-  const qaConfigByType = new Map<string, QaConfigEntry>();
+): Cypress.Chainable<DataPointOverview> {
+  const qaConfigByType = new Map<string, QaReportData>();
   QA_REPORT_CONFIG.forEach((entry) => qaConfigByType.set(entry.dataPointType, entry));
 
   return cy
@@ -279,32 +300,31 @@ function initializeQaReviewStateForDataset(
         }
       });
 
-      const qaState: QaReviewState = {
+      const overview: DataPointOverview = {
         dataPointsWithQaReports,
         dataPointsWithoutQaReports,
         amountOfDataPointsToReview: Object.keys(allDataPoints).length,
       };
 
-      return qaState;
+      return overview;
     });
 }
 
 /**
- * Uploads QA reports for all configured data point types using the provided QA review state.
+ * Uploads QA reports for all configured data point types using the provided DataPointOverview.
  *
  * For each entry in `QA_REPORT_CONFIG`, the corresponding data point ID is resolved from
- * `qaState.dataPointsWithQaReports` and the configured QA actions are executed via
- * `runQaScenarioForDataPoint`.
+ * `overview.dataPointsWithQaReports` and the configured QA actions are executed.
  *
- * @param qaState QA review state containing data point IDs and counts.
- * @param tokens  Authentication tokens for the reviewer and admin users, used to upload QA reports.
+ * @param overview DataPointOverview containing data point IDs and counts.
+ * @param tokens   Authentication tokens for the reviewer and admin users, used to upload QA reports.
  */
 function uploadQaReportsForDataset(
-  qaState: QaReviewState,
+  overview: DataPointOverview,
   tokens: { reviewerToken: string; adminToken: string }
 ): void {
   QA_REPORT_CONFIG.forEach((config) => {
-    const dataPointId = qaState.dataPointsWithQaReports[config.dataPointType];
+    const dataPointId = overview.dataPointsWithQaReports[config.dataPointType];
     if (!dataPointId) {
       return;
     }
@@ -321,38 +341,13 @@ function uploadQaReportsForDataset(
  */
 function runQaScenarioForDataPoint(
   dataPointId: string,
-  config: QaConfigEntry,
+  config: QaReportData,
   tokens: { reviewerToken: string; adminToken: string }
 ): void {
   config.actions.forEach((action) => {
     const token = action.role === 'reviewer' ? tokens.reviewerToken : tokens.adminToken;
-
     uploadQaReportForDataPoint(dataPointId, token, action.verdict, config.correctedValue);
   });
-}
-
-/**
- * Reject Dataset via the button on the Judgement Page
- *
- * @param companyName Name of the company whose dataset should be rejected
- */
-function rejectDatasetInJudgementModel(companyName: string): void {
-  cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
-  cy.get('.p-dialog')
-    .should('be.visible')
-    .within(() => {
-      cy.contains('button', 'CONFIRM').should('exist').click();
-      cy.contains('Dataset successfully rejected.').should('be.visible');
-    });
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
-}
-
-/**
- * Checks if the "Finish Judgement" button is visible and disabled.
- */
-function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
-  cy.get('[data-test="qaReviewPageFinishButton"]').should('be.visible').and('be.disabled');
 }
 
 /**
@@ -369,20 +364,42 @@ function checkoutDataset(companyName: string): void {
 }
 
 /**
- * Finishes the judgement by clicking the "Finish Judgement" button.
+ * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
  *
- * @param companyName Name of the company whose dataset is judged
+ * @param companyName The company owning the dataset to be judged.
+ * @returns The dataset judgement id returned by the start judgement request.
  */
-function finishJudgement(companyName: string): void {
-  cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
+function startJudgement(companyName: string): Cypress.Chainable<string> {
+  cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
+  cy.visitAndCheckAppMount('/qualityassurance');
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+    .last()
+    .should('exist')
+    .within(() => {
+      cy.contains('[data-test="qa-review-company-name"]', companyName)
+        .should('have.text', companyName)
+        .closest('tr')
+        .within(() => {
+          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
+          cy.contains('td', 'Start Review').should('exist').click();
+        });
+    });
+
   cy.get('.p-dialog')
     .should('be.visible')
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
-      cy.contains('Dataset review completed.').should('be.visible');
     });
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
+
+  return cy
+    .wait('@startJudgementRequest')
+    .then((interception) => {
+      expect(interception.response?.statusCode).to.eq(201);
+      const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
+      return cy.wrap(dataSetJudgementId as string, { log: false });
+    })
+    .should('exist');
 }
 
 /**
@@ -416,6 +433,120 @@ function changeJudgeAssignment(companyName: string): void {
       cy.contains('button', 'CONFIRM').should('exist').click();
     });
   cy.wait('@reassignJudgement').its('response.statusCode').should('eq', 200);
+}
+
+/**
+ * Patches all data points without QA reports as accepted original.
+ *
+ * @param datasetJudgementId - The dataset judgement id to update.
+ * @param judgeToken         - Bearer token for the judge user.
+ * @param overview           - DataPointOverview containing data point IDs and counts.
+ */
+function judgeDatapointsWithoutQaReports(
+  datasetJudgementId: string,
+  judgeToken: string,
+  overview: DataPointOverview
+): void {
+  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
+
+  cy.then(() => {
+    dataPointEntries.forEach(([dataPointType]) => {
+      patchDataPoint(datasetJudgementId, judgeToken, {
+        dataPointType,
+        acceptedSource: 'Original',
+      });
+    });
+  }).then(() => checkOriginalDatapointsAccepted(dataPointEntries, overview));
+}
+
+/**
+ * Checks if the "Finish Judgement" button is visible and disabled.
+ */
+function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
+  cy.get('[data-test="qaReviewPageFinishButton"]').should('be.visible').and('be.disabled');
+}
+
+/**
+ * Patches QA-report datapoints, reloads, and verifies the table renders.
+ *
+ * @param datasetJudgementId - The dataset judgement id to update.
+ * @param judgeToken         - Bearer token for the judge user.
+ * @param overview           - DataPointOverview containing data point IDs and counts.
+ */
+function judgeDatapointsWithQaReports(
+  datasetJudgementId: string,
+  judgeToken: string,
+  overview: DataPointOverview
+): void {
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
+    acceptedSource: 'Original',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
+    acceptedSource: 'Custom',
+    customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
+    acceptedSource: 'Qa',
+    reporterUserIdOfAcceptedQaReport: reviewer_userId,
+    customDataPoint: '{"value":"No"}',
+  });
+  patchDataPoint(datasetJudgementId, judgeToken, {
+    dataPointType: DATA_POINT_TYPES.numberOfEmployees,
+    acceptedSource: 'Qa',
+    reporterUserIdOfAcceptedQaReport: admin_userId,
+  });
+
+  cy.reload();
+  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
+  cy.contains(`0 / ${overview.amountOfDataPointsToReview} data points to review`).should('be.visible');
+
+  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.fiscalYearEnd], [
+    IconState.Accepted,
+    IconState.None,
+    IconState.None,
+    IconState.None,
+  ]);
+
+  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.greenAssetRatioTotal], [
+    IconState.Rejected,
+    IconState.Rejected,
+    IconState.Rejected,
+    IconState.Accepted,
+  ]);
+
+  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.isNfrdMandatory], [
+    IconState.Rejected,
+    IconState.Accepted,
+    IconState.None,
+    IconState.Rejected,
+  ]);
+
+  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.numberOfEmployees], [
+    IconState.Rejected,
+    IconState.None,
+    IconState.Accepted,
+    IconState.None,
+  ]);
+}
+
+/**
+ * Finishes the judgement by clicking the "Finish Judgement" button.
+ *
+ * @param companyName Name of the company whose dataset is judged
+ */
+function finishJudgement(companyName: string): void {
+  cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
+  cy.get('.p-dialog')
+    .should('be.visible')
+    .within(() => {
+      cy.contains('button', 'CONFIRM').should('exist').click();
+      cy.contains('Dataset review completed.').should('be.visible');
+    });
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
 }
 
 /**
@@ -482,99 +613,16 @@ function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
 }
 
 /**
- * Patches QA-report datapoints, reloads, and verifies the table renders.
- *
- * @param datasetJudgementId - The dataset judgement id to update.
- * @param judgeToken         - Bearer token for the judge user.
- * @param qaState            - QA review state containing data point IDs and counts.
- */
-function judgeDatapointsWithQaReports(datasetJudgementId: string, judgeToken: string, qaState: QaReviewState): void {
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: 'extendedDateFiscalYearEnd',
-    acceptedSource: 'Original',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
-    acceptedSource: 'Custom',
-    customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: 'extendedEnumYesNoIsNfrdMandatory',
-    acceptedSource: 'Qa',
-    reporterUserIdOfAcceptedQaReport: reviewer_userId,
-    customDataPoint: '{"value":"No"}',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: 'extendedDecimalNumberOfEmployees',
-    acceptedSource: 'Qa',
-    reporterUserIdOfAcceptedQaReport: admin_userId,
-  });
-
-  cy.reload();
-  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
-  cy.contains(`0 / ${qaState.amountOfDataPointsToReview} data points to review`).should('be.visible');
-
-  checkRowIcons(qaState.dataPointsWithQaReports['extendedDateFiscalYearEnd'], [
-    IconState.Accepted,
-    IconState.None,
-    IconState.None,
-    IconState.None,
-  ]);
-
-  checkRowIcons(
-    qaState.dataPointsWithQaReports[
-      'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount'
-    ],
-    [IconState.Rejected, IconState.Rejected, IconState.Rejected, IconState.Accepted]
-  );
-
-  checkRowIcons(qaState.dataPointsWithQaReports['extendedEnumYesNoIsNfrdMandatory'], [
-    IconState.Rejected,
-    IconState.Accepted,
-    IconState.None,
-    IconState.Rejected,
-  ]);
-
-  checkRowIcons(qaState.dataPointsWithQaReports['extendedDecimalNumberOfEmployees'], [
-    IconState.Rejected,
-    IconState.None,
-    IconState.Accepted,
-    IconState.None,
-  ]);
-}
-
-/**
- * Patches all data points without QA reports as accepted original,
- * reloads once, and then verifies the expected icons in each row.
- *
- * @param datasetJudgementId - The dataset judgement id to update.
- * @param judgeToken         - Bearer token for the judge user.
- * @param qaState            - QA review state containing data point IDs and counts.
- */
-function judgeDatapointsWithoutQaReports(datasetJudgementId: string, judgeToken: string, qaState: QaReviewState): void {
-  const dataPointEntries = Object.entries(qaState.dataPointsWithoutQaReports);
-
-  cy.then(() => {
-    dataPointEntries.forEach(([dataPointType]) => {
-      patchDataPoint(datasetJudgementId, judgeToken, {
-        dataPointType,
-        acceptedSource: 'Original',
-      });
-    });
-  }).then(() => checkOriginalDatapointsAccepted(dataPointEntries, qaState));
-}
-
-/**
  * Reloads the review page and checks the expected icons for the original datapoints.
  *
  * @param dataPointEntries - Tuple entries of dataPointType and dataPointId.
- * @param qaState          - QA review state containing data point IDs and counts.
+ * @param overview         - DataPointOverview containing data point IDs and counts.
  */
-function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string]>, qaState: QaReviewState): void {
+function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string]>, overview: DataPointOverview): void {
   cy.reload();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(
-    `${Object.keys(qaState.dataPointsWithQaReports).length} / ${qaState.amountOfDataPointsToReview} data points to review`
+    `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
   ).should('be.visible');
 
   cy.then(() => {
@@ -585,40 +633,18 @@ function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string
 }
 
 /**
- * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
+ * Reject Dataset via the button on the Judgement Page
  *
- * @param companyName The company owning the dataset to be judged.
- * @returns The dataset judgement id returned by the start judgement request.
+ * @param companyName Name of the company whose dataset should be rejected
  */
-function startJudgement(companyName: string): Cypress.Chainable<string> {
-  cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
-  cy.visitAndCheckAppMount('/qualityassurance');
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .last()
-    .should('exist')
-    .within(() => {
-      cy.contains('[data-test="qa-review-company-name"]', companyName)
-        .should('have.text', companyName)
-        .closest('tr')
-        .within(() => {
-          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
-          cy.contains('td', 'Start Review').should('exist').click();
-        });
-    });
-
+function rejectDatasetInJudgementModel(companyName: string): void {
+  cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
+      cy.contains('Dataset successfully rejected.').should('be.visible');
     });
-
-  return cy
-    .wait('@startJudgementRequest')
-    .then((interception) => {
-      expect(interception.response?.statusCode).to.eq(201);
-      const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
-      return cy.wrap(dataSetJudgementId as string, { log: false });
-    })
-    .should('exist');
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
 }
