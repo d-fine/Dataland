@@ -35,8 +35,8 @@ data class QaReportMetaInformation(
     val qaReportId: String,
     @field:JsonProperty()
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
     )
     val reporterUserId: String?,
     @field:JsonProperty(required = true)
