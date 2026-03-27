@@ -108,9 +108,9 @@ class DatasetJudgementTest {
     ): String {
         var datasetJudgementId: String? = null
 
-        val datapointId1 = dataPoints[datapointType1]!!
-        val datapointId2 = dataPoints[datapointType2]!!
-        val datapointId3 = dataPoints[datapointType3]!!
+        val datapointId1 = dataPoints.getValue(datapointType1)
+        val datapointId2 = dataPoints.getValue(datapointType2)
+        val datapointId3 = dataPoints.getValue(datapointType3)
         val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
@@ -166,9 +166,9 @@ class DatasetJudgementTest {
             datasetId,
             datasetJudgementId,
             mapOf(
-                datapointType1 to dataPoints[datapointType1]!!,
-                datapointType2 to dataPoints[datapointType2]!!,
-                datapointType3 to dataPoints[datapointType3]!!,
+                datapointType1 to dataPoints.getValue(datapointType1),
+                datapointType2 to dataPoints.getValue(datapointType2),
+                datapointType3 to dataPoints.getValue(datapointType3),
             ),
         )
     }
@@ -202,16 +202,16 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Accepted, datasetId)
         assertDatasetJudgementIsFinished(datasetJudgementId)
 
-        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds[datapointType1]!!)
+        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds[datapointType2]!!)
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType2))
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
             datapointType2,
             dummyQaReport2.correctedData!!,
         )
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds[datapointType3]!!)
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType3))
 
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
@@ -231,9 +231,9 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Rejected, datasetId)
         assertDatasetJudgementIsFinished(datasetJudgementId)
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds[datapointType1]!!)
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds[datapointType2]!!)
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds[datapointType3]!!)
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType2))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType3))
     }
 
     private fun assertQaStatusOfDataset(

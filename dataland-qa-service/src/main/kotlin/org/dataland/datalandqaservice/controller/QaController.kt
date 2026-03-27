@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaRev
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -24,6 +25,7 @@ import java.util.UUID.randomUUID
 @RestController
 class QaController(
     @Autowired var qaReviewManager: QaReviewManager,
+    @Autowired var qaReviewQueryService: QaReviewQueryService,
     @Autowired var dataPointQaReviewManager: DataPointQaReviewManager,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -40,7 +42,7 @@ class QaController(
             "Received request to respond with information about datasets, with filters applied.",
         )
         return ResponseEntity.ok(
-            qaReviewManager
+            qaReviewQueryService
                 .getInfoOnDatasets(
                     dataTypes = dataTypes,
                     reportingPeriods = reportingPeriods,
@@ -55,7 +57,7 @@ class QaController(
     override fun getInfoOnPendingDatasets(companyName: String?): ResponseEntity<List<QaReviewResponse>> {
         logger.info("Received request to respond with information about pending datasets.")
         return ResponseEntity.ok(
-            qaReviewManager
+            qaReviewQueryService
                 .getInfoOnPendingDatasets(
                     companyName = companyName,
                 ),
@@ -69,7 +71,7 @@ class QaController(
         )
 
         val datasetQaReviewResponse =
-            qaReviewManager.getQaReviewResponseByDataId(dataId)
+            qaReviewQueryService.getQaReviewResponseByDataId(dataId)
                 ?: return ResponseEntity.notFound().build()
 
         return ResponseEntity.ok(datasetQaReviewResponse)
@@ -81,7 +83,7 @@ class QaController(
         comment: String?,
         overwriteDataPointQaStatus: Boolean,
     ) {
-        qaReviewManager.assertQaServiceKnowsDataId(dataId)
+        qaReviewQueryService.assertQaServiceKnowsDataId(dataId)
 
         qaReviewManager.changeQaStatus(
             dataId = dataId,
@@ -105,7 +107,7 @@ class QaController(
         logger.info("Received request to respond with number of pending datasets")
 
         return ResponseEntity.ok(
-            qaReviewManager.getNumberOfPendingDatasets(dataTypes, reportingPeriods, companyName),
+            qaReviewQueryService.getNumberOfPendingDatasets(dataTypes, reportingPeriods, companyName),
         )
     }
 
