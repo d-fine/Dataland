@@ -58,6 +58,7 @@
                     icon="pi pi-times"
                     outlined
                     @click="rejectDataset"
+                    data-test="qaReviewPageRejectButton"
                   />
                   <PrimeButton
                     label="FINISH REVIEW"
@@ -65,6 +66,7 @@
                     icon="pi pi-check"
                     :disabled="!canFinishReview || isFinishReviewMutationPending"
                     @click="finishReview"
+                    data-test="qaReviewPageFinishButton"
                   />
                 </div>
                 <div v-else class="text-left">
