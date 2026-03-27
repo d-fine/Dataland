@@ -21,7 +21,6 @@ import {
   uploader_pw,
 } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { qaOverviewNavigateToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
@@ -118,7 +117,7 @@ describeIf(
 function checkoutDataset(companyName: string): void {
   login(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.contains('[data-test="qa-review-company-name"]', companyName).should('be.visible').click({ force: true });
   cy.get('[data-test="qaReviewPageButton"]').should('be.visible').and('be.disabled');
 }
@@ -135,7 +134,7 @@ function finishJudgementSuccesfully(companyName: string): void {
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
     });
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody').then(($tbody) => {
     const $rows = $tbody.find('tr');
 
@@ -162,7 +161,7 @@ function changeJudgeAssignment(companyName: string): void {
   logout();
   login(judge_name, judge_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
@@ -355,7 +354,7 @@ function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string
 function startJudgement(companyName: string): Cypress.Chainable<string> {
   cy.intercept('POST', '**/qa/**').as('startJudgementRequest');
   cy.visitAndCheckAppMount('/qualityassurance');
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should('exist')
@@ -374,7 +373,6 @@ function startJudgement(companyName: string): Cypress.Chainable<string> {
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
     });
-
   return cy
     .wait('@startJudgementRequest')
     .then((interception) => {
@@ -412,7 +410,6 @@ function uploadQaReportsForDataset(
   }).then((response) => {
     const allDataPoints = response.body?.data ?? response.body ?? {};
     amountOfDataPointsToReview = Object.keys(allDataPoints).length;
-    cy.log(`GET /metadata/${dataMetaInfo.dataId}/data-points response: ${JSON.stringify(response.body)}`);
     Object.keys(dataPointsWithQaReports).forEach((key) => delete dataPointsWithQaReports[key]);
     Object.keys(dataPointsWithoutQaReports).forEach((key) => delete dataPointsWithoutQaReports[key]);
     Object.entries(allDataPoints).forEach(([dataPointType, dataPointId]) => {
@@ -422,9 +419,6 @@ function uploadQaReportsForDataset(
         dataPointsWithoutQaReports[dataPointType] = dataPointId as string;
       }
     });
-    cy.log(`dataPointsWithQaReports: ${JSON.stringify(dataPointsWithQaReports)}`);
-    cy.log(`dataPointsWithoutQaReports: ${JSON.stringify(dataPointsWithoutQaReports)}`);
-    cy.log(`dataPointsWithoutQaReports: ${amountOfDataPointsToReview}`);
     Array.from(dataPointTypesWithCorrectedValues.entries()).forEach(([dataPointType, correctedValue], index) => {
       const dataPointId = dataPointsWithQaReports[dataPointType];
       qaReportScenarios[index](dataPointId, correctedValue);
