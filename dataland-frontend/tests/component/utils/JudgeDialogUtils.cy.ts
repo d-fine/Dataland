@@ -4,6 +4,8 @@ import {
   parseDataPointJsonToFormData,
   transformDataPointDetailToFormData,
   toSafeDisplayString,
+  unwrapDataPointJson,
+  wrapDataPointJson,
 } from '@/utils/JudgeDialogUtils';
 import type {
   CustomFormData,
@@ -245,5 +247,83 @@ describe('toSafeDisplayString', () => {
   it('stringifies objects', () => {
     expect(toSafeDisplayString({ a: 1, b: 'x' })).to.equal('{"a":1,"b":"x"}');
     expect(toSafeDisplayString([1, 2, 3])).to.equal('[1,2,3]');
+  });
+});
+
+describe('unwrapDataPointJson', () => {
+  it('unwraps to a plain primitive when original datapoint was a primitive and custom JSON is a DataPointDetail', () => {
+    const rawDataPoint = JSON.stringify('2024-01-01'); // original backend value: "2024-01-01"
+    const customDetail: DataPointDetail = {
+      value: '2024-01-01',
+      quality: 'Audited',
+      comment: 'Some comment',
+    };
+    const customJson = JSON.stringify(customDetail);
+
+    const result = unwrapDataPointJson(customJson, rawDataPoint);
+
+    expect(result).to.equal(JSON.stringify('2024-01-01'));
+  });
+
+  it('unwraps to a plain primitive when both original datapoint and custom JSON are primitives', () => {
+    const rawDataPoint = JSON.stringify(123); // original: 123
+    const customJson = JSON.stringify(456); // custom: 456
+
+    const result = unwrapDataPointJson(customJson, rawDataPoint);
+    expect(result).to.equal(JSON.stringify(456));
+  });
+
+  it('returns original custom JSON unchanged when original datapoint is an object', () => {
+    const rawDetail: DataPointDetail = { value: 'v', quality: 'q' };
+    const rawDataPoint = JSON.stringify(rawDetail);
+
+    const customDetail: DataPointDetail = { value: 'new-v', quality: 'Audited' };
+    const customJson = JSON.stringify(customDetail);
+
+    const result = unwrapDataPointJson(customJson, rawDataPoint);
+    expect(result).to.equal(customJson);
+  });
+
+  it('returns original custom JSON when rawDataPoint is invalid JSON', () => {
+    const rawDataPoint = '{ not valid json }';
+    const customJson = JSON.stringify({ value: 'v' });
+
+    const result = unwrapDataPointJson(customJson, rawDataPoint);
+    expect(result).to.equal(customJson);
+  });
+});
+
+describe('wrapDataPointJson', () => {
+  it('returns a DataPointDetail object unchanged when JSON represents an object', () => {
+    const detail: DataPointDetail = {
+      value: 'v',
+      quality: 'q',
+      comment: 'c',
+      dataSource: {
+        fileName: 'WrappedReport.pdf',
+        page: '5',
+      },
+    };
+    const json = JSON.stringify(detail);
+    const wrapped = wrapDataPointJson(json);
+    expect(wrapped).to.deep.equal(detail);
+  });
+
+  it('wraps a primitive string JSON into a DataPointDetail with value', () => {
+    const json = JSON.stringify('2024-01-01');
+    const wrapped = wrapDataPointJson(json);
+    expect(wrapped).to.deep.equal({ value: '2024-01-01' });
+  });
+
+  it('wraps a primitive number JSON into a DataPointDetail with value', () => {
+    const json = JSON.stringify(123);
+    const wrapped = wrapDataPointJson(json);
+    expect(wrapped).to.deep.equal({ value: 123 });
+  });
+
+  it('returns null when JSON is invalid', () => {
+    const invalidJson = '{ this is not valid json }';
+    const wrapped = wrapDataPointJson(invalidJson);
+    expect(wrapped).to.equal(null);
   });
 });
