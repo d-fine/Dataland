@@ -1,8 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
-import org.dataland.dataSourcingService.openApiClient.model.DataSourcingPriorityByDataDimensions
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -11,17 +9,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -51,11 +43,8 @@ class QaReviewManagerTest {
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockBackendAccessor: DatalandBackendAccessor = mock<DatalandBackendAccessor>()
-    private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
-    private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
     private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
-    private val mockDatasetJudgementRepository: DatasetJudgementRepository = mock<DatasetJudgementRepository>()
+    private val mockQaReviewQueryService: QaReviewQueryService = mock<QaReviewQueryService>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -63,9 +52,6 @@ class QaReviewManagerTest {
     private val dataId: String = UUID.randomUUID().toString()
     private val reportingPeriod: String = "dummyReportingPeriod"
     private val uploaderId = "dummyUploaderId"
-    private val dummyUserName = "dummyUserName"
-    private val dummyUserId = UUID.randomUUID()
-    private val framework = "dummyFramework"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
     private val mockCompanyInformation = mock<CompanyInformation> { on { companyName } doReturn "dummyCompanyName" }
@@ -78,33 +64,6 @@ class QaReviewManagerTest {
             on { reportingPeriod } doReturn reportingPeriod
         }
 
-    private val qaReviewEntity =
-        QaReviewEntity(
-            dataId = dataId,
-            companyId = companyId,
-            companyName = "dummyCompanyName",
-            framework = framework,
-            reportingPeriod = reportingPeriod,
-            timestamp = 0L,
-            qaStatus = QaStatus.Pending,
-            triggeringUserId = uploaderId,
-            comment = null,
-        )
-
-    private val datasetJudgementEntity =
-        DatasetJudgementEntity(
-            dataSetJudgementId = UUID.randomUUID(),
-            datasetId = UUID.fromString(dataId),
-            companyId = UUID.randomUUID(),
-            dataType = DataTypeEnum.sfdr,
-            reportingPeriod = reportingPeriod,
-            judgementState = DatasetJudgementState.Pending,
-            qaJudgeUserId = dummyUserId,
-            qaJudgeUserName = dummyUserName,
-            qaReporters = mutableListOf(),
-            dataPoints = mutableListOf(),
-        )
-
     private lateinit var qaReviewManager: QaReviewManager
     private lateinit var spyQaReviewManager: QaReviewManager
 
@@ -115,10 +74,8 @@ class QaReviewManagerTest {
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
-            mockBackendAccessor,
-            mockDataPointQaReportManager,
-            mockDataSourcingService,
-            mockDatasetJudgementRepository,
+            mockDataPointQaReviewManager,
+            mockQaReviewQueryService,
         )
         qaReviewManager =
             QaReviewManager(
@@ -127,19 +84,16 @@ class QaReviewManagerTest {
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
                 objectMapper,
-                mockBackendAccessor,
-                mockDataPointQaReportManager,
-                mockDataSourcingService,
                 mockDataPointQaReviewManager,
-                mockDatasetJudgementRepository,
+                mockQaReviewQueryService,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
         doReturn(mockStoredCompany).whenever(mockCompanyDataControllerApi).getCompanyById(any())
         doReturn(mock<QaReviewEntity>()).whenever(mockQaReviewRepository).save(any<QaReviewEntity>())
         doReturn(listOf(mockQaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+            .whenever(mockQaReviewQueryService)
+            .getAcceptedReviewMetadataSorted(any(), any(), any())
     }
 
     @ParameterizedTest
@@ -238,100 +192,5 @@ class QaReviewManagerTest {
             )
         }
         Assertions.assertEquals(uploaderId, dummyUploadQaReviewEntity.triggeringUserId)
-    }
-
-    @Test
-    fun `check that QaReviewResponse includes qa report count and reviewer user name`() {
-        doReturn(listOf(qaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
-        doReturn(mapOf("first" to "dp1", "second" to "dp2"))
-            .whenever(mockMetaDataControllerApi)
-            .getContainedDataPoints(eq(dataId))
-        doReturn(2L)
-            .whenever(mockDataPointQaReportManager)
-            .countQaReportsForDataPointIds(any())
-        doReturn(listOf(datasetJudgementEntity))
-            .whenever(mockDatasetJudgementRepository)
-            .findAllByDatasetId(any())
-
-        val responses =
-            AuthenticationMock.withAuthenticationMock(
-                username = "user",
-                userId = uploaderId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
-            ) {
-                qaReviewManager.getInfoOnDatasets(
-                    dataTypes = setOf(DataTypeEnum.sfdr),
-                    reportingPeriods = setOf(reportingPeriod),
-                    companyName = null,
-                    qaStatus = QaStatus.Pending,
-                    chunkSize = 10,
-                    chunkIndex = 0,
-                )
-            }
-
-        Assertions.assertEquals(1, responses.size)
-        Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId.toString(), responses.first().qaJudgeUserId)
-        Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
-    }
-
-    @Test
-    fun `check that getInfoOnPendingDatasets fetches correct data sourcing priority`() {
-        val dummyPriorityByDataDimension =
-            DataSourcingPriorityByDataDimensions(
-                dataType = framework,
-                reportingPeriod = reportingPeriod,
-                companyId = companyId,
-                priority = 4,
-            )
-
-        doReturn(listOf(dummyPriorityByDataDimension))
-            .whenever(mockDataSourcingService)
-            .getDataSourcingPriorities(any())
-
-        doReturn(listOf(qaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getPendingQaReviewMetadatasetsByCompany(any())
-
-        val responses =
-            AuthenticationMock.withAuthenticationMock(
-                username = "user",
-                userId = uploaderId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
-            ) {
-                qaReviewManager.getInfoOnPendingDatasets(
-                    companyName = null,
-                )
-            }
-
-        Assertions.assertEquals(1, responses.size)
-        Assertions.assertEquals(4, responses.first().priorityOfAssociatedDataSourcing)
-    }
-
-    @Test
-    fun `check that getInfoOnPendingDatasets fetches data sourcing priority of null if it is not specified`() {
-        doReturn(null)
-            .whenever(mockDataSourcingService)
-            .getDataSourcingPriorities(any())
-
-        doReturn(listOf(qaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getPendingQaReviewMetadatasetsByCompany(any())
-
-        val responses =
-            AuthenticationMock.withAuthenticationMock(
-                username = "user",
-                userId = uploaderId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
-            ) {
-                qaReviewManager.getInfoOnPendingDatasets(
-                    companyName = null,
-                )
-            }
-
-        Assertions.assertEquals(1, responses.size)
-        Assertions.assertNull(responses.first().priorityOfAssociatedDataSourcing)
     }
 }
