@@ -45,7 +45,7 @@ class DatasetJudgementFinalizationServiceTest {
     }
 
     @Test
-    fun `handleRejection calls changeQaStatus with Rejected and overwriteDataPointQaStatus=true`() {
+    fun `handleRejection calls changeQaStatus with Rejected and with overwriteDataPointQaStatus true`() {
         service.handleRejection(dummyDatasetJudgement)
 
         verify(qaReviewManager).changeQaStatus(
