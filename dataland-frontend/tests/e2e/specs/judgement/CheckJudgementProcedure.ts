@@ -129,7 +129,7 @@ function rejectDatasetInJudgementModel(companyName: string): void {
       cy.contains('Dataset successfully rejected.').should('be.visible');
     });
   cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
+  cy.get('[data-test="qa-review-company-name"]').should('not.contain', companyName);
 }
 
 /**
@@ -165,6 +165,7 @@ function finishJudgement(companyName: string): void {
       cy.contains('button', 'CONFIRM').should('exist').click();
       cy.contains('Dataset review completed.').should('be.visible');
     });
+  cy.log(`company name: ${companyName}`);
   cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
 }
 
@@ -449,15 +450,29 @@ function getTokens(): Cypress.Chainable<{
   uploaderToken: string;
   judgeToken: string;
 }> {
-  return getKeycloakToken(reviewer_name, reviewer_pw).then((reviewerToken: string) => {
-    return getKeycloakToken(admin_name, admin_pw).then((adminToken: string) => {
-      return getKeycloakToken(uploader_name, uploader_pw).then((uploaderToken: string) => {
-        return getKeycloakToken(judge_name, judge_pw).then((judgeToken: string) => {
-          return { reviewerToken, adminToken, uploaderToken, judgeToken };
-        });
-      });
-    });
-  });
+  let reviewerToken: string;
+  let adminToken: string;
+  let uploaderToken: string;
+
+  return getKeycloakToken(reviewer_name, reviewer_pw)
+    .then((token) => {
+      reviewerToken = token;
+      return getKeycloakToken(admin_name, admin_pw);
+    })
+    .then((token) => {
+      adminToken = token;
+      return getKeycloakToken(uploader_name, uploader_pw);
+    })
+    .then((token) => {
+      uploaderToken = token;
+      return getKeycloakToken(judge_name, judge_pw);
+    })
+    .then((judgeToken) => ({
+      reviewerToken,
+      adminToken,
+      uploaderToken,
+      judgeToken,
+    }));
 }
 
 /**
