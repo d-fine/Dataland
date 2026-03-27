@@ -247,7 +247,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
      */
     findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-          (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
+        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
       );
       return value ? value.content : '';
     },
@@ -308,22 +308,22 @@ const BaseActivitiesDataTableComponent = defineComponent({
      */
     // eslint-disable-next-line vue/no-unused-properties
     createActivityGroupData<T>(
-        activityName: string,
-        groupName: string,
-        fields: { [key: string]: T } | undefined,
-        valueFormatter: (value: T) => string
+      activityName: string,
+      groupName: string,
+      fields: { [key: string]: T } | undefined,
+      valueFormatter: (value: T) => string
     ) {
       const fieldsEntries = Object.entries(fields ?? {});
       return fieldsEntries
-          .filter(([, value]) => value != null)
-          .map(([field, value]) => {
-            return {
-              activity: activityName,
-              group: groupName,
-              field,
-              content: valueFormatter(value) ?? '',
-            };
-          });
+        .filter(([, value]) => value != null)
+        .map(([field, value]) => {
+          return {
+            activity: activityName,
+            group: groupName,
+            field,
+            content: valueFormatter(value) ?? '',
+          };
+        });
     },
     /**
      * @param activity targeted activity object
