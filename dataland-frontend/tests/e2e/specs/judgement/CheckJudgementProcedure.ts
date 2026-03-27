@@ -68,7 +68,7 @@ describeIf(
       });
     });
 
-    it.only('Start Judgement', () => {
+    it('Check full judgement process from upload to acceptance', () => {
       const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
       const companyName = storedCompany.companyInformation.companyName;
       getTokens().then(({ reviewerToken, adminToken, uploaderToken, judgeToken }) => {
@@ -85,29 +85,59 @@ describeIf(
           startJudgement(companyName).then((datasetJudgementId) => {
             changeJudgeAssignment(companyName);
             judgeDatapointsWithoutQaReports(datasetJudgementId, judgeToken);
+            tryFinishingJudgementBeforeAllDataPointsReviewed();
             judgeDatapointsWithQaReports(datasetJudgementId, judgeToken);
-            finishJudgementSuccesfully(companyName);
+            finishJudgement(companyName);
           });
         });
       });
     });
 
-    it('Start and finish a Judgement', () => {
+    it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
       const sfdrData = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedSfdrFixtures);
-
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      const companyName = storedCompany.companyInformation.companyName;
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           SfdrBaseFrameworkDefinition,
           token,
           storedCompany.companyId,
-          '2021',
+          '2024',
           sfdrData.t,
           false
-        );
+        ).then(() => {
+          login(admin_name, admin_pw);
+          startJudgement(companyName).then(() => {
+            rejectDatasetInJudgementModel(companyName);
+          });
+        });
       });
     });
   }
 );
+
+/**
+ * Reject Dataset via the button on the Judgement Page
+ *
+ * @param companyName Name of the company whose dataset should be rejected
+ */
+function rejectDatasetInJudgementModel(companyName: string): void {
+  cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
+  cy.get('.p-dialog')
+    .should('be.visible')
+    .within(() => {
+      cy.contains('button', 'CONFIRM').should('exist').click();
+      cy.contains('Dataset successfully rejected.').should('be.visible');
+    });
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
+}
+
+/**
+ * Checks if the "Finish Judgement" button is visable and disabled.
+ */
+function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
+  cy.get('[data-test="qaReviewPageFinishButton"]').should('be.visible').and('be.disabled');
+}
 
 /**
  * Checks out the dataset for the given company by navigating to the QA overview and selecting the dataset row
@@ -123,32 +153,19 @@ function checkoutDataset(companyName: string): void {
 }
 
 /**
- * Finishes the judgement by clicking the "Finish Judgement" button, confirming the dialog, and verifying the judgement is completed.
+ * Finishes the judgement by clicking the "Finish Judgement" button.
  *
- * @param judgeToken Bearer token for the judge user, used to verify the judgement completion via API if necessary.
+ * @param companyName Name of the company whose dataset is judged
  */
-function finishJudgementSuccesfully(companyName: string): void {
+function finishJudgement(companyName: string): void {
   cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
     .within(() => {
       cy.contains('button', 'CONFIRM').should('exist').click();
+      cy.contains('Dataset review completed.').should('be.visible');
     });
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').then(($tbody) => {
-    const $rows = $tbody.find('tr');
-
-    // Falls keine Zeile existiert: nichts prüfen
-    if (!$rows.length) {
-      return;
-    }
-
-    const $secondCellOfLastRow = $rows.last().find('td').eq(1);
-
-    cy.wrap($secondCellOfLastRow).should('not.contain', companyName);
-    // oder, wenn wirklich exakt der Text nicht gleich sein soll:
-    // cy.wrap($secondCellOfLastRow).should('not.have.text', companyName);
-  });
+  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
 }
 
 /**
@@ -348,7 +365,7 @@ function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string
 /**
  * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
  *
- * @param storedCompany The company owning the dataset to be judged.
+ * @param companyName The company owning the dataset to be judged.
  * @returns The dataset judgement id returned by the start judgement request.
  */
 function startJudgement(companyName: string): Cypress.Chainable<string> {
@@ -377,11 +394,7 @@ function startJudgement(companyName: string): Cypress.Chainable<string> {
     .wait('@startJudgementRequest')
     .then((interception) => {
       expect(interception.response?.statusCode).to.eq(201);
-      cy.log(`startJudgement url: ${interception.request?.url}`);
-      cy.log(`startJudgement status: ${interception.response?.statusCode}`);
-      cy.log(`startJudgement response body: ${JSON.stringify(interception.response?.body ?? null)}`);
       const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
-      cy.log(`datasetJudgementId: ${dataSetJudgementId}`);
       return cy.wrap(dataSetJudgementId as string, { log: false });
     })
     .should('exist');
@@ -450,9 +463,9 @@ function getTokens(): Cypress.Chainable<{
 /**
  * Uploads a single QA report for the given data point with the verdict QaRejected.
  *
- * @param {string} dataPointId The data point id the QA report is attached to.
- * @param {string} token Bearer token used to authorize the QA report upload.
- * @param {string} correctedValue JSON string representing the corrected value payload.
+ * @param dataPointId The data point id the QA report is attached to.
+ * @param token Bearer token used to authorize the QA report upload.
+ * @param correctedValue JSON string representing the corrected value payload.
  */
 function uploadRejectedQaReportForDataPoint(dataPointId: string, token: string, correctedValue: string): void {
   cy.request({
