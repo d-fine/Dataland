@@ -43,25 +43,17 @@
         />
       </div>
     </section>
-
-    <section v-if="patchError" style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%">
-      <Message severity="error" data-test="judge-modal-patch-error">
-        {{ patchError }}
-      </Message>
-    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
-import Message from 'primevue/message';
 import ToggleSwitch from 'primevue/toggleswitch';
 import type { NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
 
 defineProps<{
   options: NextDataPointOption[];
-  patchError?: string | null;
 }>();
 
 const emit = defineEmits<{
