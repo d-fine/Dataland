@@ -803,7 +803,7 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
-    it.skip('excludes QaAccepted reports from the corrected section', () => {
+    it('includes QaAccepted reports in the corrected section like every other report', () => {
       const judgementWithAcceptedAndRejected: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
         dataPoints: {
@@ -814,6 +814,7 @@ describe('JudgeDialog component tests', () => {
               {
                 qaReportId: 'qa-report-accepted',
                 verdict: QaReportDataPointVerdict.QaAccepted,
+                correctedData: JSON.stringify(correctedDataPoint),
                 reporterUserId: reporterUserId1,
                 uploadTime: 1000,
                 active: true,
@@ -839,10 +840,14 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog({ datasetJudgement: judgementWithAcceptedAndRejected });
 
       cy.get('[data-test="corrected-datapoint-section"]').within(() => {
-        cy.contains('1 / 1').should('not.exist');
+        cy.contains('1 / 2').should('be.visible');
+        cy.contains('Reporter One').should('be.visible');
+        cy.contains('corrected-value').should('be.visible');
+
+        cy.get('[data-test="qa-next-button"]').click();
+        cy.contains('2 / 2').should('be.visible');
         cy.contains('Reporter Two').should('be.visible');
         cy.contains('second-corrected-value').should('be.visible');
-        cy.contains('Reporter One').should('not.exist');
       });
     });
   });
