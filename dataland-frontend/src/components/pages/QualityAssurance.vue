@@ -18,41 +18,12 @@
           </Message>
         </div>
 
-        <DatePicker
-          class="search-filter"
-          input-class="w-full"
-          data-test="reportingPeriod"
-          v-model="availableReportingPeriods"
-          :updateModelType="'date'"
-          placeholder="Reporting Period"
-          :showIcon="true"
-          :manualInput="false"
-          view="year"
-          dateFormat="yy"
-          selectionMode="multiple"
+        <PrimeButton
+          variant="link"
+          @click="resetFilterAndSearchBar"
+          label="RESET FILTERS"
+          data-test="reset-filters-button"
         />
-
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedFrameworks"
-          class="search-filter"
-          input-class="w-full"
-          :available-items="availableFrameworks"
-          filter-name="Framework"
-          data-test="framework-picker"
-          id="framework-filter"
-          filter-placeholder="Search by Frameworks"
-          :max-selected-labels="1"
-          selected-items-label="{0} frameworks selected"
-        />
-
-        <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filters-button" />
-        <Message
-          class="info-message"
-          variant="simple"
-          severity="secondary"
-          data-test="showingNumberOfUnreviewedDatasets"
-          >{{ numberOfUnreviewedDatasets }}</Message
-        >
       </div>
 
       <div class="col-12 text-left p-3">
@@ -68,63 +39,208 @@
             class="table-cursor"
             id="qa-data-result"
             :rowHover="true"
-            :first="firstRowIndex"
             data-test="qa-review-section"
             @row-click="onRowClicked($event)"
             paginator
             paginator-position="top"
-            :rows="datasetsPerPage"
-            lazy
-            :total-records="totalRecords"
-            @page="onPage($event)"
+            :rows="10"
+            :rowsPerPageOptions="[5, 10, 20, 50]"
+            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            :pageLinkSize="5"
+            sortMode="multiple"
+            removableSort
+            filterDisplay="menu"
+            v-model:filters="filters"
           >
-            <Column header="DATA ID">
+            <Column field="dataId" header="DATA ID">
               <template #body="slotProps">
                 {{ slotProps.data.dataId }}
               </template>
             </Column>
-            <Column header="COMPANY NAME">
+            <Column field="companyName" header="COMPANY NAME">
               <template #body="slotProps">
                 <span data-test="qa-review-company-name">{{ slotProps.data.companyName }}</span>
               </template>
             </Column>
-            <Column header="FRAMEWORK">
+            <Column
+              field="framework"
+              header="FRAMEWORK"
+              :sortable="true"
+              :filterMatchMode="FilterMatchMode.IN"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
+              sortField="frameworkHumanized"
+            >
               <template #body="slotProps">
-                {{ humanizeStringOrNumber(slotProps.data.framework) }}
+                {{ slotProps.data.frameworkHumanized }}
               </template>
+              <template #filter="{ filterModel, filterCallback }">
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
+                  <FrameworkDataSearchDropdownFilter
+                    :modelValue="selectedFrameworks"
+                    appendTo="body"
+                    input-class="w-full"
+                    :available-items="availableFrameworks"
+                    filter-name="Framework"
+                    data-test="framework-picker"
+                    id="framework-filter"
+                    filter-placeholder="Search by Frameworks"
+                    :max-selected-labels="1"
+                    selected-items-label="{0} frameworks selected"
+                    @focusin.once="openFrameworkFilterDropdown"
+                    @update:modelValue="
+                      (items: Array<FrameworkSelectableItem> | null) => {
+                        selectedFrameworks = items ?? [];
+                        filterModel.value =
+                          items && items.length
+                            ? items.map((item: FrameworkSelectableItem) => item.frameworkDataType)
+                            : null;
+                        filterCallback();
+                      }
+                    "
+                  />
+                  <PrimeButton
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    size="small"
+                    variant="text"
+                    class="p-datatable-filter-clear-button"
+                    @click="
+                      () => {
+                        selectedFrameworks = [];
+                        filterModel.value = null;
+                        filterCallback();
+                      }
+                    "
+                  />
+                </div>
+              </template>
+              <template #filterclear></template>
+              <template #filterapply></template>
             </Column>
-            <Column header="REPORTING PERIOD">
+            <Column
+              field="reportingPeriod"
+              header="REPORTING PERIOD"
+              :filterMatchMode="FilterMatchMode.IN"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
+              :sortable="true"
+            >
               <template #body="slotProps">
                 {{ slotProps.data.reportingPeriod }}
               </template>
+              <template #filter="{ filterModel, filterCallback }">
+                <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
+                  <DatePicker
+                    data-test="reporting-period-filter"
+                    class="w-full"
+                    input-class="w-full"
+                    v-model="filterModel.value"
+                    :updateModelType="'string'"
+                    placeholder="Reporting Period"
+                    :showIcon="true"
+                    :manualInput="false"
+                    view="year"
+                    dateFormat="yy"
+                    selectionMode="multiple"
+                    @update:modelValue="filterCallback"
+                  />
+                  <PrimeButton
+                    type="button"
+                    icon="pi pi-filter-slash"
+                    size="small"
+                    variant="text"
+                    class="p-datatable-filter-clear-button"
+                    @click="
+                      () => {
+                        filterModel.value = null;
+                        filterCallback();
+                      }
+                    "
+                  />
+                </div>
+              </template>
+              <template #filterclear></template>
+              <template #filterapply></template>
             </Column>
-            <Column header="SUBMISSION DATE">
+            <Column header="SUBMISSION DATE" field="timestamp" :sortable="true">
               <template #body="slotProps">
                 {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
               </template>
             </Column>
-            <Column header="PRIORITY" class="w-2">
+            <Column
+              field="priorityOfAssociatedDataSourcing"
+              sortField="priorityWithNullHandling"
+              header="PRIORITY"
+              :sortable="true"
+              filterMatchMode="between"
+              :showFilterMenu="true"
+              :showFilterOperator="false"
+              :showFilterMatchModes="false"
+            >
               <template #body="slotProps">
                 <DatalandTag
-                  v-if="getPriorityForRow(slotProps.data) !== undefined"
+                  v-if="
+                    slotProps.data.priorityOfAssociatedDataSourcing !== undefined &&
+                    slotProps.data.priorityOfAssociatedDataSourcing !== null
+                  "
                   class="dataland-tag"
-                  :severity="dataSourcingPrioritySeverity(getPriorityForRow(slotProps.data)!)"
-                  :value="String(getPriorityForRow(slotProps.data)!)"
+                  data-test="priority-tag"
+                  :severity="dataSourcingPrioritySeverity(slotProps.data.priorityOfAssociatedDataSourcing!)"
+                  :value="String(slotProps.data.priorityOfAssociatedDataSourcing!)"
                 />
               </template>
+              <template #filter="{ filterModel, filterCallback }">
+                <div class="px-2" style="min-width: 12rem">
+                  <span style="color: var(--text-color-secondary); font-size: 1rem; font-weight: 300">
+                    Priorities:
+                    {{ filterModel.value ? filterModel.value[0] + ' - ' + filterModel.value[1] : 'All' }}
+                  </span>
+                  <div class="flex align-items-center gap-3">
+                    <Slider
+                      data-test="priority-slider"
+                      v-model="filterModel.value"
+                      :min="1"
+                      :max="10"
+                      :step="1"
+                      range
+                      class="w-full"
+                      @update:modelValue="filterCallback"
+                    />
+                    <PrimeButton
+                      type="button"
+                      icon="pi pi-filter-slash"
+                      size="small"
+                      variant="text"
+                      class="p-datatable-filter-clear-button"
+                      @click="
+                        () => {
+                          filterModel.value = null;
+                          filterCallback();
+                        }
+                      "
+                    />
+                  </div>
+                </div>
+              </template>
+              <template #filterclear> </template>
+              <template #filterapply> </template>
             </Column>
-            <Column header="NUMBER OF QA REPORTS">
+            <Column field="numberQaReports" header="NUMBER OF QA REPORTS" :sortable="true">
               <template #body="slotProps">
                 {{ slotProps.data.numberQaReports }}
               </template>
             </Column>
-            <Column field="reviewDataset" header="REVIEW" class="qa-review-status-cell">
+            <Column field="reviewStatus" header="REVIEW" class="qa-review-status-cell" :sortable="true">
               <template #body="slotProps">
                 <PrimeButton
                   v-if="
                     slotProps.data.reviewStatus === 'Start Review' || slotProps.data.reviewStatus === 'Continue Review'
                   "
-                  @click.stop="handleRowAction(slotProps.data)"
+                  @click.stop="handleReviewButtonClick(slotProps.data)"
                   class="qa-review-button"
                   data-test="goToReviewButton"
                   :label="slotProps.data.reviewStatus"
@@ -144,39 +260,17 @@
             </div>
           </div>
         </div>
-        <PrimeDialog
-          v-model:visible="isConfirmationModalVisible"
-          header="Start Review?"
-          modal
-          :dismissable-mask="true"
-          style="min-width: 20rem; text-align: center"
-          data-test="confirmation-modal"
-          @hide="closeConfirmationModal"
-        >
-          <div style="text-align: center; padding: 8px 0">
-            <div class="confirmation-modal-message">
-              <div>Are you sure you want to start a review for this dataset?</div>
-              <div>Once started, the review cannot be deleted and will be visible for other judges on Dataland.</div>
-            </div>
-          </div>
-          <div v-if="errorMessage" data-test="confirmation-modal-error-message">
-            <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">{{
-              errorMessage
-            }}</Message>
-          </div>
-          <template #footer>
-            <PrimeButton
-              label="CANCEL"
-              @click="closeConfirmationModal"
-              variant="outlined"
-              data-test="cancel-confirmation-modal-button"
-            />
-            <PrimeButton label="CONFIRM" @click="confirmStartReview" data-test="ok-confirmation-modal-button" />
-          </template>
-        </PrimeDialog>
       </div>
     </AuthorizationWrapper>
   </TheContent>
+  <PopupConfirmationModal
+    v-model:visible="confirmationModal.visible"
+    :header="confirmationModal.header"
+    :message="confirmationModal.message"
+    :error-message="confirmationModal.errorMessage"
+    :is-loading="isCreatingReview"
+    @confirm="confirmationModal.onConfirm"
+  />
 </template>
 
 <script setup lang="ts">
@@ -192,57 +286,63 @@ import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDow
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataTypeEnum } from '@clients/backend';
-import { type BasicDataDimensions } from '@clients/datasourcingservice';
-import { type GetInfoOnDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import DatePicker from 'primevue/datepicker';
 import Column from 'primevue/column';
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import DataTable, { type DataTableRowClickEvent } from 'primevue/datatable';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import PrimeDialog from 'primevue/dialog';
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
+import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
+import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
+import { FilterMatchMode } from '@primevue/core/api';
+import Slider from 'primevue/slider';
+import { type DataTypeEnum } from '@clients/backend';
+import { type QaReviewResponse } from '@clients/qaservice';
 
-const datasetsPerPage = 10;
+const filters = ref({
+  framework: {
+    value: null as DataTypeEnum[] | null,
+    matchMode: FilterMatchMode.IN,
+  },
+  reportingPeriod: {
+    value: null,
+    matchMode: FilterMatchMode.IN,
+  },
+  priorityOfAssociatedDataSourcing: {
+    value: null,
+    matchMode: FilterMatchMode.BETWEEN,
+  },
+});
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-type QaReviewRow = QaReviewResponse & { reviewStatus: string };
+type QaReviewRow = QaReviewResponse & {
+  reviewStatus: string;
+  priorityWithNullHandling: number;
+  frameworkHumanized: string;
+};
 const displayDataOfPage = ref<QaReviewRow[]>([]);
 const waitingForData = ref(true);
-const currentChunkIndex = ref(0);
-const firstRowIndex = ref(0);
-const totalRecords = ref(0);
 const searchBarInput = ref('');
 const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const availableReportingPeriods = ref<Array<Date>>([]);
 const showNotEnoughCharactersWarning = ref(false);
-const isConfirmationModalVisible = ref(false);
 const selectedDataId = ref<string>('');
-const errorMessage = ref<string>('');
-const priorityByDimensions = ref<Record<string, number>>({});
+const isCreatingReview = ref(false);
 
 const debounceInMs = 300;
 let timerId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
-/**
- * Tells the TypeScript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
- * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
- * @param input is a value with type DataTypeEnum
- * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
- */
-function manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnDatasetsDataTypesEnum {
-  return input as GetInfoOnDatasetsDataTypesEnum;
-}
+const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 
 /**
  * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
@@ -252,38 +352,20 @@ async function getQaDataForCurrentPage(): Promise<void> {
     waitingForData.value = true;
     displayDataOfPage.value = [];
 
-    const selectedFrameworksAsSet = new Set<GetInfoOnDatasetsDataTypesEnum>(
-      selectedFrameworks.value.map((selectableItem) =>
-        manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
-      )
-    );
-    const reportingPeriodFilter: Set<string> = new Set<string>(
-      availableReportingPeriods.value.map((date) => date.getFullYear().toString())
-    );
     const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
-    const response = await apiClientProvider.apiClients.qaController.getInfoOnDatasets(
-      selectedFrameworksAsSet,
-      reportingPeriodFilter,
-      companyNameFilter,
-      undefined,
-      datasetsPerPage,
-      currentChunkIndex.value
-    );
+    const response = await apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(companyNameFilter);
     displayDataOfPage.value = await Promise.all(
       response.data.map(async (row) => ({
         ...row,
-        reviewStatus: await getReviewStatus(row.ownerId, row.ownerName),
+        reviewStatus: await getReviewStatus(row.qaJudgeUserId, row.qaJudgeUserName),
+        priorityWithNullHandling:
+          row.priorityOfAssociatedDataSourcing === null || row.priorityOfAssociatedDataSourcing === undefined
+            ? Number.MAX_SAFE_INTEGER
+            : row.priorityOfAssociatedDataSourcing,
+        frameworkHumanized: humanizeStringOrNumber(row.framework),
       }))
     );
-    totalRecords.value = (
-      await apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
-        selectedFrameworksAsSet,
-        reportingPeriodFilter,
-        companyNameFilter
-      )
-    ).data;
     waitingForData.value = false;
-    await fetchPriorities();
   } catch (error) {
     console.error(error);
   }
@@ -296,38 +378,8 @@ async function getQaDataForCurrentPage(): Promise<void> {
 function dataSourcingPrioritySeverity(priority: number): string {
   if (priority <= 3) return 'sourcing-priority-high';
   if (priority <= 6) return 'sourcing-priority-medium';
-  if (priority <= 9) return 'sourcing-priority-low';
+  if (priority <= 10) return 'sourcing-priority-low';
   return 'sourcing-priority-slate';
-}
-
-/**
- * Returns the priority for the given QA row, or undefined if none is available.
- * @param row the QA review response row
- */
-function getPriorityForRow(row: QaReviewRow): number | undefined {
-  return priorityByDimensions.value[`${row.companyId}|${row.framework}|${row.reportingPeriod}`];
-}
-
-/**
- * Fetches priorities for the currently displayed datasets and populates priorityByDimensions.
- */
-async function fetchPriorities(): Promise<void> {
-  try {
-    const dimensions: BasicDataDimensions[] = displayDataOfPage.value.map((row) => ({
-      companyId: row.companyId,
-      dataType: row.framework,
-      reportingPeriod: row.reportingPeriod,
-    }));
-    const priorityResponse =
-      await apiClientProvider.apiClients.dataSourcingController.getDataSourcingPriorities(dimensions);
-    const newPriorityByDimensions: Record<string, number> = {};
-    priorityResponse.data.forEach((entry) => {
-      newPriorityByDimensions[`${entry.companyId}|${entry.dataType}|${entry.reportingPeriod}`] = entry.priority;
-    });
-    priorityByDimensions.value = newPriorityByDimensions;
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 /**
@@ -340,42 +392,49 @@ function onRowClicked(event: DataTableRowClickEvent): void {
 
 /**
  * Handles the click on a row in the QA table.
- * If the dataset of the clicked row has not been reviewed before, a confirmation modal will be opened to confirm the start of a new dataset review.
+ * If the dataset of the clicked row has not been reviewed before, the user will be directed to the dataset page.
  * If the dataset already has an ongoing review, the user will be directly navigated to the corresponding dataset review page.
  */
 function handleRowAction(qaDataObject: QaReviewRow): void {
   if (qaDataObject.datasetReviewId == null) {
-    selectedDataId.value = qaDataObject.dataId;
-    isConfirmationModalVisible.value = true;
+    void goToDatasetViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
   } else {
-    void goToQaViewPage(qaDataObject.companyId, qaDataObject.framework, qaDataObject.dataId);
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
   }
 }
 
 /**
- * Navigates to the dataset review page for the dataset with the given dataId, companyId and framework.
+ * Handles the click on the review button in the QA table.
+ * If no review exists yet, a confirmation modal is shown and the review is created before navigation.
+ * If a review already exists, the user is directly navigated to the corresponding dataset review page.
  */
-function goToQaViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
-  const qaUri = `/companies/${companyId}/frameworks/${framework}/${dataId}`;
-  return router.push(qaUri);
+function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
+  if (qaDataObject.datasetReviewId != null) {
+    void goToDatasetReviewPage(qaDataObject.datasetReviewId);
+    return;
+  }
+
+  selectedDataId.value = qaDataObject.dataId;
+  openConfirmationModal(
+    'Start Review',
+    'Are you sure you want to start a review for this dataset? \n\n' +
+      'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
+    () => void confirmStartReview()
+  );
 }
 
 /**
- * Creates a dataset review for the dataset with the given dataId and navigates to the corresponding dataset review page.
- *
+ * Navigates to the dataset page for the dataset with the given dataId, companyId and framework.
  */
-async function createAndViewDatasetReview(dataId: string): Promise<void> {
-  try {
-    const response = await apiClientProvider.apiClients.datasetReviewController.postDatasetReview(dataId);
-    await goToQaViewPage(response.data.companyId, response.data.dataType, dataId);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      errorMessage.value = formatAxiosErrorMessage(error);
-    } else {
-      errorMessage.value = 'Failed to create dataset review.';
-    }
-    console.error(errorMessage.value);
-  }
+function goToDatasetViewPage(companyId: string, framework: string, dataId: string): ReturnType<typeof router.push> {
+  return router.push(`/companies/${companyId}/frameworks/${framework}/${dataId}`);
+}
+
+/**
+ * Navigates to the dataset review page for the dataset with the given datasetReviewId.
+ */
+function goToDatasetReviewPage(datasetReviewId: string): ReturnType<typeof router.push> {
+  return router.push(`/qualityassurance/review/${datasetReviewId}`);
 }
 
 /**
@@ -383,42 +442,37 @@ async function createAndViewDatasetReview(dataId: string): Promise<void> {
  * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
  */
 async function confirmStartReview(): Promise<void> {
-  await createAndViewDatasetReview(selectedDataId.value);
-  if (!errorMessage.value) {
-    closeConfirmationModal();
-  }
-}
+  isCreatingReview.value = true;
 
-/**
- * Closes the confirmation modal and resets the selected data id and error message.
- */
-function closeConfirmationModal(): void {
-  isConfirmationModalVisible.value = false;
-  selectedDataId.value = '';
-  errorMessage.value = '';
+  try {
+    const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetJudgement(
+      selectedDataId.value
+    );
+
+    confirmationModal.value.visible = false;
+    await goToDatasetReviewPage(response.data.dataSetJudgementId);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
+    } else {
+      confirmationModal.value.errorMessage = 'Failed to create dataset review.';
+    }
+    console.error(confirmationModal.value.errorMessage);
+  } finally {
+    isCreatingReview.value = false;
+  }
 }
 
 /**
  * Resets selected frameworks and searchBarInput
  */
 function resetFilterAndSearchBar(): void {
-  currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
-  availableReportingPeriods.value = [];
   searchBarInput.value = '';
-}
 
-/**
- * Updates the current Page
- * @param event DataTablePageEvent
- */
-function onPage(event: DataTablePageEvent): void {
-  globalThis.scrollTo(0, 0);
-  if (event.page != currentChunkIndex.value) {
-    currentChunkIndex.value = event.page;
-    firstRowIndex.value = currentChunkIndex.value * datasetsPerPage;
-    void getQaDataForCurrentPage();
-  }
+  filters.value.framework.value = null;
+  filters.value.reportingPeriod.value = null;
+  filters.value.priorityOfAssociatedDataSourcing.value = null;
 }
 
 /**
@@ -445,59 +499,42 @@ function validateSearchBarInput(): boolean {
 }
 
 /**
+ * Opens the framework filter dropdown immediately when the framework filter
+ * component is clicked.
+ * @param event the filter component focus event
+ */
+function openFrameworkFilterDropdown(event: FocusEvent): void {
+  const target = event.currentTarget as HTMLElement | null;
+  if (!target) return;
+  target.click();
+}
+
+/**
  * Determines the label of the review button in the table depending.
- * @param ownerId the user id of the owner of the dataset review
- * @param ownerName the user name of the owner of the dataset review
+ * @param reviewerUserId the user id of the reviewer of the dataset
+ * @param reviewerUserName the user name of the reviewer of the dataset
  * @returns the label of the review button
  */
-async function getReviewStatus(ownerId: string | undefined, ownerName: string | undefined): Promise<string> {
+async function getReviewStatus(
+  reviewerUserId: string | undefined,
+  reviewerUserName: string | undefined
+): Promise<string> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
-  if (ownerId && ownerName) {
-    return keycloakUserId === ownerId ? 'Continue Review' : ownerName;
+  if (reviewerUserId && reviewerUserName) {
+    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
   }
   return 'Start Review';
 }
 
-watch(selectedFrameworks, () => {
-  currentChunkIndex.value = 0;
-  firstRowIndex.value = 0;
-  if (!waitingForData.value) {
-    void getQaDataForCurrentPage();
-  }
-});
-
-watch(availableReportingPeriods, () => {
-  currentChunkIndex.value = 0;
-  firstRowIndex.value = 0;
-  if (!waitingForData.value) {
-    void getQaDataForCurrentPage();
-  }
-});
-
 watch(searchBarInput, () => {
   const isValid = validateSearchBarInput();
   if (isValid) {
-    currentChunkIndex.value = 0;
-    firstRowIndex.value = 0;
     if (timerId) {
       clearTimeout(timerId);
     }
     timerId = setTimeout(() => getQaDataForCurrentPage(), debounceInMs);
   }
-});
-
-const numberOfUnreviewedDatasets = computed((): string => {
-  if (!waitingForData.value) {
-    if (totalRecords.value === 0) {
-      return 'No results for this search.';
-    } else {
-      const startIndex = currentChunkIndex.value * datasetsPerPage + 1;
-      const endIndex = Math.min(startIndex + datasetsPerPage - 1, totalRecords.value);
-      return `Showing results ${startIndex}-${endIndex} of ${totalRecords.value}.`;
-    }
-  }
-  return '';
 });
 
 onMounted(() => {
@@ -519,16 +556,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     width: 30%;
-  }
-
-  .search-filter {
-    width: 15%;
-    text-align: left;
-  }
-
-  .info-message:last-child {
-    margin-left: auto;
-    margin-top: var(--spacing-xs);
   }
 }
 
@@ -555,16 +582,6 @@ onMounted(() => {
   justify-content: flex-start;
   text-align: left;
   padding-inline: 0;
-}
-
-.confirmation-modal-message {
-  max-width: 30rem;
-  margin: 8px auto 0;
-  white-space: normal;
-  text-align: left;
-  word-break: break-word;
-  display: grid;
-  gap: var(--spacing-xs);
 }
 
 .dataland-tag {

@@ -162,8 +162,8 @@ interface DataPointQaReportApi {
         showInactive: Boolean?,
         @RequestParam(required = false)
         @Parameter(
-            description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-            example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
             required = false,
         )
         reporterUserId: String?,
