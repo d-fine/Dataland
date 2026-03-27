@@ -102,18 +102,17 @@ class DatasetJudgementTest {
         val datapointIds: Map<String, String>,
     )
 
-    private fun createDatasetWithJudgement(): DatasetAndJudgementAndDataPointIds {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
-        val dataPoints = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
+    private fun postJudgementWithPatches(
+        datasetId: String,
+        dataPoints: Map<String, String>,
+    ): String {
+        var datasetJudgementId: String? = null
+
         val datapointId1 = dataPoints[datapointType1]!!
         val datapointId2 = dataPoints[datapointType2]!!
         val datapointId3 = dataPoints[datapointType3]!!
-
         val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
-
-        var datasetJudgementId: String? = null
 
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             datasetJudgementId =
@@ -127,7 +126,6 @@ class DatasetJudgementTest {
                 val reporterUserIdOfAcceptedQaReport: String? = null,
                 val customDataPoint: String? = null,
             )
-
             val explicitlyHandledDataPointIds = setOf(datapointId1, datapointId2, datapointId3)
 
             val patchOperations =
@@ -156,13 +154,21 @@ class DatasetJudgementTest {
                 )
             }
         }
+        return datasetJudgementId!!
+    }
+
+    private fun createDatasetWithJudgement(): DatasetAndJudgementAndDataPointIds {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
+        val dataPoints = Backend.metaDataControllerApi.getContainedDataPoints(datasetId)
+        val datasetJudgementId = postJudgementWithPatches(datasetId, dataPoints)
         return DatasetAndJudgementAndDataPointIds(
             datasetId,
-            datasetJudgementId!!,
+            datasetJudgementId,
             mapOf(
-                datapointType1 to datapointId1,
-                datapointType2 to datapointId2,
-                datapointType3 to datapointId3,
+                datapointType1 to dataPoints[datapointType1]!!,
+                datapointType2 to dataPoints[datapointType2]!!,
+                datapointType3 to dataPoints[datapointType3]!!,
             ),
         )
     }
