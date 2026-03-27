@@ -848,7 +848,77 @@ describe('JudgeDialog component tests', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // 10. "Go To" advances the header KPI label
+  // 10. Accepted-source checkmark
+  // ---------------------------------------------------------------------------
+  describe('Accepted-source checkmark', () => {
+    it('shows the accepted-check on the original section when acceptedSource is Original', () => {
+      const judgementWithOriginalAccepted: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithOriginalAccepted });
+
+      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('be.visible');
+      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+    });
+
+    it('shows the accepted-check on the reviewed section when acceptedSource is Qa and the reporter matches', () => {
+      const judgementWithQaAccepted: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Qa,
+            reporterUserIdOfAcceptedQaReport: reporterUserId1,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithQaAccepted });
+
+      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('be.visible');
+      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+    });
+
+    it('shows the accepted-check on the custom section when acceptedSource is Custom', () => {
+      const previousCustomValue = { value: 'accepted-custom-value', quality: 'Audited' };
+      const judgementWithCustomAccepted: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Custom,
+            customValue: JSON.stringify(previousCustomValue),
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithCustomAccepted });
+
+      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('be.visible');
+      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
+    });
+
+    it('shows no accepted-check on any section when there is no accepted source', () => {
+      mountJudgeDialog();
+
+      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 11. "Go To" advances the header KPI label
   // ---------------------------------------------------------------------------
   describe('Go To navigation', () => {
     it('updates the dialog title to the selected KPI after clicking Go To', () => {

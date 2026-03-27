@@ -211,11 +211,6 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
   kpiRows.value = rows;
 }
 
-// NOTE: kpiRows are passed to JudgeDialog, which computes nextDataPointOptions internally.
-// TODO: Currently respects hideEmptyFields via kpiRows. If UX decides dropdown
-//       must truly list *all* KPIs regardless of this toggle, we need a variant
-//       of the rows that ignores hideEmptyFields.
-
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
