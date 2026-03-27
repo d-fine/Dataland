@@ -216,6 +216,7 @@ import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/u
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toTitleCase } from '@/utils/StringFormatter.ts';
 import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import { wrapDataPointJson, toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -451,12 +452,9 @@ function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport
  */
 function getCorrectedDisplayFromQaReport(qaReport: DataPointQaReport | undefined): string | null {
   if (!qaReport?.correctedData) return null;
-  try {
-    const parsed = JSON.parse(qaReport.correctedData);
-    return parsed.value == null ? null : parsed.value;
-  } catch {
-    return null;
-  }
+  const detail = wrapDataPointJson(qaReport.correctedData);
+  if (detail?.value == null) return null;
+  return toSafeDisplayString(detail.value);
 }
 
 /**
@@ -472,16 +470,9 @@ function getCustomDisplayValue(dataPointTypeId?: string): string | null {
   const reviewInfo = getReviewInfo(dataPointTypeId);
   const customValue = reviewInfo?.customValue;
   if (customValue == null) return null;
-  const trimmed = customValue.trim();
-  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-    try {
-      const parsed = JSON.parse(trimmed);
-      return parsed?.value == null ? null : String(parsed.value);
-    } catch {
-      return null;
-    }
-  }
-  return customValue;
+  const detail = wrapDataPointJson(customValue);
+  if (detail?.value == null) return null;
+  return toSafeDisplayString(detail.value);
 }
 
 /**
