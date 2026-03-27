@@ -33,6 +33,7 @@ enum IconState {
 
 type QaVerdict = 'QaAccepted' | 'QaRejected';
 type QaRole = 'reviewer' | 'admin';
+type AcceptedSource = 'Original' | 'Qa' | 'Custom';
 
 type QaTokens = {
   reviewerToken: string;
@@ -46,10 +47,15 @@ interface QaAction {
   verdict: QaVerdict;
 }
 
-interface QaReportData {
+interface QaScenarioConfig {
   dataPointType: DataPointType;
   correctedValue?: string;
   actions: QaAction[];
+  judgement: {
+    acceptedSource: AcceptedSource;
+    acceptedQaReporterUserId?: string;
+    customDataPoint?: string;
+  };
 }
 
 interface DataPointOverview {
@@ -78,7 +84,7 @@ type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
 
 const apiBaseUrl = getBaseUrl();
 
-const QA_REPORT_CONFIG: QaReportData[] = [
+const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
     correctedValue: '{"value":"2026-03-23"}',
@@ -86,6 +92,9 @@ const QA_REPORT_CONFIG: QaReportData[] = [
       { role: 'reviewer', verdict: 'QaAccepted' },
       { role: 'admin', verdict: 'QaAccepted' },
     ],
+    judgement: {
+      acceptedSource: 'Original',
+    },
   },
   {
     dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
@@ -94,6 +103,10 @@ const QA_REPORT_CONFIG: QaReportData[] = [
       { role: 'reviewer', verdict: 'QaRejected' },
       { role: 'admin', verdict: 'QaRejected' },
     ],
+    judgement: {
+      acceptedSource: 'Custom',
+      customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
+    },
   },
   {
     dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
@@ -102,6 +115,11 @@ const QA_REPORT_CONFIG: QaReportData[] = [
       { role: 'reviewer', verdict: 'QaRejected' },
       { role: 'admin', verdict: 'QaAccepted' },
     ],
+    judgement: {
+      acceptedSource: 'Qa',
+      acceptedQaReporterUserId: reviewer_userId,
+      customDataPoint: '{"value":"No"}',
+    },
   },
   {
     dataPointType: DATA_POINT_TYPES.numberOfEmployees,
@@ -110,6 +128,10 @@ const QA_REPORT_CONFIG: QaReportData[] = [
       { role: 'reviewer', verdict: 'QaAccepted' },
       { role: 'admin', verdict: 'QaRejected' },
     ],
+    judgement: {
+      acceptedSource: 'Qa',
+      acceptedQaReporterUserId: admin_userId,
+    },
   },
 ];
 
@@ -277,8 +299,8 @@ function initializeDataPointOverviewForDataset(
   dataMetaInfo: DataMetaInformation,
   adminToken: string
 ): Cypress.Chainable<DataPointOverview> {
-  const qaConfigByType = new Map<string, QaReportData>();
-  QA_REPORT_CONFIG.forEach((entry) => qaConfigByType.set(entry.dataPointType, entry));
+  const qaConfigByType = new Map<string, QaScenarioConfig>();
+  QA_SCENARIO_CONFIG.forEach((entry) => qaConfigByType.set(entry.dataPointType, entry));
 
   return cy
     .request({
@@ -313,7 +335,7 @@ function initializeDataPointOverviewForDataset(
 /**
  * Uploads QA reports for all configured data point types using the provided DataPointOverview.
  *
- * For each entry in `QA_REPORT_CONFIG`, the corresponding data point ID is resolved from
+ * For each entry in `QA_SCENARIO_CONFIG`, the corresponding data point ID is resolved from
  * `overview.dataPointsWithQaReports` and the configured QA actions are executed.
  *
  * @param overview DataPointOverview containing data point IDs and counts.
@@ -323,7 +345,7 @@ function uploadQaReportsForDataset(
   overview: DataPointOverview,
   tokens: { reviewerToken: string; adminToken: string }
 ): void {
-  QA_REPORT_CONFIG.forEach((config) => {
+  QA_SCENARIO_CONFIG.forEach((config) => {
     const dataPointId = overview.dataPointsWithQaReports[config.dataPointType];
     if (!dataPointId) {
       return;
@@ -336,12 +358,12 @@ function uploadQaReportsForDataset(
  * Executes all configured QA actions for a single data point.
  *
  * @param dataPointId Identifier of the data point for which QA reports should be created.
- * @param config      QA configuration describing verdicts and roles.
+ * @param config      QA scenario configuration describing verdicts, roles, and correctedValue.
  * @param tokens      Authentication tokens for reviewer and admin.
  */
 function runQaScenarioForDataPoint(
   dataPointId: string,
-  config: QaReportData,
+  config: QaScenarioConfig,
   tokens: { reviewerToken: string; adminToken: string }
 ): void {
   config.actions.forEach((action) => {
@@ -467,7 +489,8 @@ function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
 }
 
 /**
- * Patches QA-report datapoints, reloads, and verifies the table renders.
+ * Patches QA-report datapoints according to the configured QA scenarios,
+ * reloads the page once, and verifies the expected icons for each data point row.
  *
  * @param datasetJudgementId - The dataset judgement id to update.
  * @param judgeToken         - Bearer token for the judge user.
@@ -478,58 +501,85 @@ function judgeDatapointsWithQaReports(
   judgeToken: string,
   overview: DataPointOverview
 ): void {
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
-    acceptedSource: 'Original',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
-    acceptedSource: 'Custom',
-    customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
-    acceptedSource: 'Qa',
-    reporterUserIdOfAcceptedQaReport: reviewer_userId,
-    customDataPoint: '{"value":"No"}',
-  });
-  patchDataPoint(datasetJudgementId, judgeToken, {
-    dataPointType: DATA_POINT_TYPES.numberOfEmployees,
-    acceptedSource: 'Qa',
-    reporterUserIdOfAcceptedQaReport: admin_userId,
+  QA_SCENARIO_CONFIG.forEach((scenario) => {
+    const { judgement } = scenario;
+
+    patchDataPoint(datasetJudgementId, judgeToken, {
+      dataPointType: scenario.dataPointType,
+      acceptedSource: judgement.acceptedSource,
+      reporterUserIdOfAcceptedQaReport: judgement.acceptedQaReporterUserId,
+      customDataPoint: judgement.customDataPoint,
+    });
   });
 
   cy.reload();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(`0 / ${overview.amountOfDataPointsToReview} data points to review`).should('be.visible');
 
-  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.fiscalYearEnd], [
-    IconState.Accepted,
-    IconState.None,
-    IconState.None,
-    IconState.None,
-  ]);
+  QA_SCENARIO_CONFIG.forEach((scenario) => {
+    const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
+    const expectedIcons = buildExpectedIconsForScenario(scenario);
+    checkRowIcons(dataPointId, expectedIcons);
+  });
+}
 
-  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.greenAssetRatioTotal], [
-    IconState.Rejected,
-    IconState.Rejected,
-    IconState.Rejected,
-    IconState.Accepted,
-  ]);
+/**
+ * Calculate the expected Icons for a data point based on the QA scenario configuration and the judgement.
+ *
+ * Column Order: [Original, Reviewer-QA, Admin-QA, Custom]
+ */
+function buildExpectedIconsForScenario(scenario: QaScenarioConfig): IconState[] {
+  const originalIcon = scenario.judgement.acceptedSource === 'Original' ? IconState.Accepted : IconState.Rejected;
 
-  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.isNfrdMandatory], [
-    IconState.Rejected,
-    IconState.Accepted,
-    IconState.None,
-    IconState.Rejected,
-  ]);
+  const reviewerAction = scenario.actions.find((a) => a.role === 'reviewer');
+  const adminAction = scenario.actions.find((a) => a.role === 'admin');
 
-  checkRowIcons(overview.dataPointsWithQaReports[DATA_POINT_TYPES.numberOfEmployees], [
-    IconState.Rejected,
-    IconState.None,
-    IconState.Accepted,
-    IconState.None,
-  ]);
+  const reviewerIcon = buildQaIconForAction(reviewerAction, scenario.judgement, reviewer_userId);
+  const adminIcon = buildQaIconForAction(adminAction, scenario.judgement, admin_userId);
+
+  const customIcon = buildCustomIcon(scenario.judgement);
+
+  return [originalIcon, reviewerIcon, adminIcon, customIcon];
+}
+
+/**
+ * Determines the expected icon state for a QA action based on verdict, judgement, and reporter.
+ *
+ * @param action             QA action whose icon state should be calculated; if undefined, no icon is shown.
+ * @param judgement          Judgement configuration of the QA scenario used to interpret the QA action.
+ * @param thisReporterUserId User ID of the reporter for whom the icon state should be determined.
+ * @returns                  The icon state representing an accepted, rejected, or absent QA action.
+ */
+function buildQaIconForAction(
+  action: QaAction | undefined,
+  judgement: QaScenarioConfig['judgement'],
+  thisReporterUserId: string
+): IconState {
+  if (!action) {
+    return IconState.None;
+  }
+
+  if (action.verdict === 'QaAccepted') {
+    return IconState.None;
+  }
+
+  const isAcceptedQa = judgement.acceptedSource === 'Qa' && judgement.acceptedQaReporterUserId === thisReporterUserId;
+
+  return isAcceptedQa ? IconState.Accepted : IconState.Rejected;
+}
+
+/**
+ * Determines the expected icon state for the custom column based on the judgement configuration.
+ *
+ * @param judgement Judgement configuration of the QA scenario used to evaluate the custom data point.
+ * @returns         The icon state representing an accepted, rejected, or absent custom data point.
+ */
+function buildCustomIcon(judgement: QaScenarioConfig['judgement']): IconState {
+  if (!judgement.customDataPoint) {
+    return IconState.None;
+  }
+
+  return judgement.acceptedSource === 'Custom' ? IconState.Accepted : IconState.Rejected;
 }
 
 /**
