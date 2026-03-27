@@ -93,21 +93,6 @@ const euTaxonomyObjectives = [
   'ProtectionAndRestorationOfBiodiversityAndEcosystems',
 ];
 
-type ActivityFieldValueObject = {
-  activity: string;
-  group: string;
-  field: string;
-  content: string;
-};
-
-type MainColumnDefinition = {
-  field: string;
-  header: string;
-  frozen?: boolean;
-  group: string;
-  groupIndex: number;
-};
-
 const defaultActivitiesDataTableConfiguration = {
   createAdditionalMainColumnDefinitions(): MainColumnDefinition[] {
     return [];
@@ -118,12 +103,12 @@ const defaultActivitiesDataTableConfiguration = {
   getAdditionalGroupColspans(): { [groupName: string]: number } {
     return {};
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: any) {
+  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): ActivityFieldValueObject[] {
     return self.createBaseMainColumnDataForRow(activity);
   },
 };
 
-export default defineComponent({
+const BaseActivitiesDataTableComponent = defineComponent({
   inject: ['dialogRef'],
   name: 'BaseActivitiesDataTable',
   components: { DataTable, Column, ColumnGroup, Row },
@@ -140,8 +125,11 @@ export default defineComponent({
         naceCodes: string[] | undefined;
       }>,
       mainColumnData: [] as Array<ActivityFieldValueObject>,
-      activitiesDataTableConfiguration: defaultActivitiesDataTableConfiguration,
+      activitiesDataTableConfiguration: null as unknown as typeof defaultActivitiesDataTableConfiguration,
     };
+  },
+  created() {
+    this.activitiesDataTableConfiguration = defaultActivitiesDataTableConfiguration;
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
@@ -167,6 +155,9 @@ export default defineComponent({
   },
   methods: {
     activityApiNameToHumanizedName,
+    /**
+     * @returns the frozen column definitions displayed on the left-hand side of the table
+     */
     createFrozenColumnDefinitions() {
       return [
         { field: 'activity', header: this.humanizeHeaderName('activity'), frozen: true, group: '_frozen' },
@@ -216,6 +207,7 @@ export default defineComponent({
      * @param activity one activity row from the dialog payload
      * @returns the KPI-related data entries shared by all activity table variants
      */
+    // eslint-disable-next-line vue/no-unused-properties
     createBaseMainColumnDataForRow(activity: Record<string, unknown>) {
       return [...this.createKpiGroupData(activity, this.kpiKeyOfTable)];
     },
@@ -231,6 +223,7 @@ export default defineComponent({
     /**
      * @returns the number of configured EU taxonomy environmental objectives
      */
+    // eslint-disable-next-line vue/no-unused-properties
     getEnvironmentalObjectivesLength() {
       return euTaxonomyObjectives.length;
     },
@@ -254,7 +247,7 @@ export default defineComponent({
      */
     findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
+          (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
       );
       return value ? value.content : '';
     },
@@ -265,6 +258,7 @@ export default defineComponent({
      * @param shouldAppendInPercentSuffix whether fields should end with InPercent
      * @returns column definitions for group
      */
+    // eslint-disable-next-line vue/no-unused-properties
     makeGroupColumns(groupName: string, prefix: string, shouldAppendInPercentSuffix = true) {
       const environmentalObjectiveKeys = euTaxonomyObjectives.map((suffix) => {
         const extendedKey = `${prefix}To${suffix}`;
@@ -312,23 +306,24 @@ export default defineComponent({
      * @param valueFormatter function which formats the final look of the value
      * @returns grouped list of data items
      */
+    // eslint-disable-next-line vue/no-unused-properties
     createActivityGroupData<T>(
-      activityName: string,
-      groupName: string,
-      fields: { [key: string]: T } | undefined,
-      valueFormatter: (value: T) => string
+        activityName: string,
+        groupName: string,
+        fields: { [key: string]: T } | undefined,
+        valueFormatter: (value: T) => string
     ) {
       const fieldsEntries = Object.entries(fields ?? {});
       return fieldsEntries
-        .filter(([, value]) => value != null)
-        .map(([field, value]) => {
-          return {
-            activity: activityName,
-            group: groupName,
-            field,
-            content: valueFormatter(value) ?? '',
-          };
-        });
+          .filter(([, value]) => value != null)
+          .map(([field, value]) => {
+            return {
+              activity: activityName,
+              group: groupName,
+              field,
+              content: valueFormatter(value) ?? '',
+            };
+          });
     },
     /**
      * @param activity targeted activity object
@@ -336,6 +331,7 @@ export default defineComponent({
      * @param fieldName the source field name on the activity object
      * @returns list with a single data item
      */
+    // eslint-disable-next-line vue/no-unused-properties
     createSingleFieldGroupData(activity: Record<string, unknown>, groupName: string, fieldName: string) {
       return [
         {
@@ -378,6 +374,25 @@ export default defineComponent({
     },
   },
 });
+
+type ActivityFieldValueObject = {
+  activity: string;
+  group: string;
+  field: string;
+  content: string;
+};
+
+type MainColumnDefinition = {
+  field: string;
+  header: string;
+  frozen?: boolean;
+  group: string;
+  groupIndex: number;
+};
+
+type Self = InstanceType<typeof BaseActivitiesDataTableComponent>;
+
+export default BaseActivitiesDataTableComponent;
 </script>
 <style scoped>
 ul.unstyled-ul-list {

@@ -5,8 +5,10 @@ import { type YesNo } from '@clients/backend/org/dataland/datalandfrontend/openA
 import BaseActivitiesDataTable from '@/components/general/BaseActivitiesDataTable.vue';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';
 
+type Self = InstanceType<typeof BaseActivitiesDataTable>;
+
 const alignedActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions(self: any): Array<Record<string, unknown>> {
+  createAdditionalMainColumnDefinitions(self: Self): Array<Record<string, unknown>> {
     return [
       ...self.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       ...self.makeGroupColumns('dnshCriteria', 'dnsh', false),
@@ -30,7 +32,7 @@ const alignedActivitiesDataTableConfiguration = {
       },
     ];
   },
-  createAdditionalMainColumnGroups(self: any): Array<Record<string, unknown>> {
+  createAdditionalMainColumnGroups(self: Self): Array<Record<string, unknown>> {
     return [
       {
         key: 'substantialContributionCriteria',
@@ -47,7 +49,7 @@ const alignedActivitiesDataTableConfiguration = {
       { key: '_transitionalActivity', label: '', colspan: self.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
-  getAdditionalGroupColspans(self: any): { [groupName: string]: number } {
+  getAdditionalGroupColspans(self: Self): { [groupName: string]: number } {
     const environmentalObjectivesLength = self.getEnvironmentalObjectivesLength();
     return {
       substantialContributionCriteria: environmentalObjectivesLength,
@@ -57,7 +59,7 @@ const alignedActivitiesDataTableConfiguration = {
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: any): Array<Record<string, unknown>> {
+  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): Array<Record<string, unknown>> {
     return [
       ...self.createBaseMainColumnDataForRow(activity),
       ...self.createActivityGroupData<number>(

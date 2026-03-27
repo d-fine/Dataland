@@ -4,8 +4,10 @@ import { defineComponent } from 'vue';
 import BaseActivitiesDataTable from '@/components/general/BaseActivitiesDataTable.vue';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';
 
+type Self = InstanceType<typeof BaseActivitiesDataTable>;
+
 const eligibleOrAlignedActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions(self: any): Array<Record<string, unknown>> {
+  createAdditionalMainColumnDefinitions(self: Self): Array<Record<string, unknown>> {
     return [
       ...self.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       {
@@ -22,7 +24,7 @@ const eligibleOrAlignedActivitiesDataTableConfiguration = {
       },
     ];
   },
-  createAdditionalMainColumnGroups(self: any): Array<Record<string, unknown>> {
+  createAdditionalMainColumnGroups(self: Self): Array<Record<string, unknown>> {
     return [
       {
         key: 'substantialContributionCriteria',
@@ -33,14 +35,14 @@ const eligibleOrAlignedActivitiesDataTableConfiguration = {
       { key: '_transitionalActivity', label: '', colspan: self.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
-  getAdditionalGroupColspans(self: any): { [groupName: string]: number } {
+  getAdditionalGroupColspans(self: Self): { [groupName: string]: number } {
     return {
       substantialContributionCriteria: self.getEnvironmentalObjectivesLength(),
       _enablingActivity: 1,
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: any): Array<Record<string, unknown>> {
+  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): Array<Record<string, unknown>> {
     return [
       ...self.createBaseMainColumnDataForRow(activity),
       ...self.createActivityGroupData<number>(
