@@ -94,7 +94,5 @@ class EutaxonomyNonFinancialsDataController
         @Operation(operationId = "getLatestAvailableCompanyAssociatedEutaxonomyNonFinancialsData")
         override fun getLatestAvailableCompanyAssociatedData(
             identifier: String,
-        ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =
-            super
-                .getLatestAvailableCompanyAssociatedData(identifier)
+        ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> = super.getLatestAvailableCompanyAssociatedData(identifier)
     }
