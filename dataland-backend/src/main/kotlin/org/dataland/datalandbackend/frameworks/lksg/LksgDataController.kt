@@ -91,6 +91,5 @@ class LksgDataController
 
         @Operation(operationId = "getLatestAvailableCompanyAssociatedLksgData")
         override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<LksgData>> =
-            super
-                .getLatestAvailableCompanyAssociatedData(identifier)
+            super.getLatestAvailableCompanyAssociatedData(identifier)
     }
