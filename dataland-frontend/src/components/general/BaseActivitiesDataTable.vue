@@ -108,53 +108,18 @@ type MainColumnDefinition = {
   groupIndex: number;
 };
 
-type ActivitiesDataTableConfigurationContext = {
-  humanizeHeaderName: (key: string) => string;
-  findMaxColspanForGroup: (groupName: string) => number;
-  makeGroupColumns: (
-    groupName: string,
-    prefix: string,
-    shouldAppendInPercentSuffix?: boolean
-  ) => MainColumnDefinition[];
-  createBaseMainColumnDataForRow: (activity: Record<string, unknown>) => ActivityFieldValueObject[];
-  createActivityGroupData: <T>(
-    activityName: string,
-    groupName: string,
-    fields: { [key: string]: T } | undefined,
-    valueFormatter: (value: T) => string
-  ) => ActivityFieldValueObject[];
-  createSingleFieldGroupData: (
-    activity: Record<string, unknown>,
-    groupName: string,
-    fieldName: string
-  ) => ActivityFieldValueObject[];
-  getEnvironmentalObjectivesLength: () => number;
-};
-
-type ActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions: (context: ActivitiesDataTableConfigurationContext) => MainColumnDefinition[];
-  createAdditionalMainColumnGroups: (
-    context: ActivitiesDataTableConfigurationContext
-  ) => Array<{ key: string; label: string; colspan: number }>;
-  getAdditionalGroupColspans: (context: ActivitiesDataTableConfigurationContext) => { [groupName: string]: number };
-  createMainColumnDataForRow: (
-    activity: Record<string, unknown>,
-    context: ActivitiesDataTableConfigurationContext
-  ) => ActivityFieldValueObject[];
-};
-
-const defaultActivitiesDataTableConfiguration: ActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions() {
+const defaultActivitiesDataTableConfiguration = {
+  createAdditionalMainColumnDefinitions(): MainColumnDefinition[] {
     return [];
   },
-  createAdditionalMainColumnGroups() {
+  createAdditionalMainColumnGroups(): Array<{ key: string; label: string; colspan: number }> {
     return [];
   },
-  getAdditionalGroupColspans() {
+  getAdditionalGroupColspans(): { [groupName: string]: number } {
     return {};
   },
-  createMainColumnDataForRow(activity, context) {
-    return context.createBaseMainColumnDataForRow(activity);
+  createMainColumnDataForRow(activity: Record<string, unknown>, self: any) {
+    return self.createBaseMainColumnDataForRow(activity);
   },
 };
 
@@ -202,31 +167,6 @@ export default defineComponent({
   },
   methods: {
     activityApiNameToHumanizedName,
-    /**
-     * @returns the shared table configuration hooks for the current component instance
-     */
-    getActivitiesDataTableConfigurationContext(): ActivitiesDataTableConfigurationContext {
-      return {
-        humanizeHeaderName: (key: string) => this.humanizeHeaderName(key),
-        findMaxColspanForGroup: (groupName: string) => this.findMaxColspanForGroup(groupName),
-        makeGroupColumns: (groupName: string, prefix: string, shouldAppendInPercentSuffix = true) =>
-          this.makeGroupColumns(groupName, prefix, shouldAppendInPercentSuffix),
-        createBaseMainColumnDataForRow: (activity: Record<string, unknown>) =>
-          this.createBaseMainColumnDataForRow(activity),
-        createActivityGroupData: <T,>(
-          activityName: string,
-          groupName: string,
-          fields: { [key: string]: T } | undefined,
-          valueFormatter: (value: T) => string
-        ) => this.createActivityGroupData(activityName, groupName, fields, valueFormatter),
-        createSingleFieldGroupData: (activity: Record<string, unknown>, groupName: string, fieldName: string) =>
-          this.createSingleFieldGroupData(activity, groupName, fieldName),
-        getEnvironmentalObjectivesLength: () => this.getEnvironmentalObjectivesLength(),
-      };
-    },
-    /**
-     * @returns the frozen column definitions displayed on the left-hand side of the table
-     */
     createFrozenColumnDefinitions() {
       return [
         { field: 'activity', header: this.humanizeHeaderName('activity'), frozen: true, group: '_frozen' },
@@ -234,7 +174,7 @@ export default defineComponent({
       ];
     },
     /**
-     * @returns the full list of main column definitions including configuration-specific additions
+     * @returns the full list of main column definitions including subclass-specific additions
      */
     createMainColumnDefinitions() {
       const kpiField = this.kpiKeyOfTable;
@@ -253,9 +193,7 @@ export default defineComponent({
           group: '_kpi',
           groupIndex: 1,
         },
-        ...this.activitiesDataTableConfiguration.createAdditionalMainColumnDefinitions(
-          this.getActivitiesDataTableConfigurationContext()
-        ),
+        ...this.activitiesDataTableConfiguration.createAdditionalMainColumnDefinitions.call(this, this),
       ];
     },
     /**
@@ -272,10 +210,7 @@ export default defineComponent({
      * @returns the main column data entries for that row according to the active configuration
      */
     createMainColumnDataForRow(activity: Record<string, unknown>) {
-      return this.activitiesDataTableConfiguration.createMainColumnDataForRow(
-        activity,
-        this.getActivitiesDataTableConfigurationContext()
-      );
+      return this.activitiesDataTableConfiguration.createMainColumnDataForRow(activity, this);
     },
     /**
      * @param activity one activity row from the dialog payload
@@ -285,14 +220,12 @@ export default defineComponent({
       return [...this.createKpiGroupData(activity, this.kpiKeyOfTable)];
     },
     /**
-     * @returns the grouped table header metadata including configuration-specific groups
+     * @returns the grouped table header metadata including subclass-specific groups
      */
     createMainColumnGroups() {
       return [
         { key: '_kpi', label: '', colspan: this.findMaxColspanForGroup('_kpi') },
-        ...this.activitiesDataTableConfiguration.createAdditionalMainColumnGroups(
-          this.getActivitiesDataTableConfigurationContext()
-        ),
+        ...this.activitiesDataTableConfiguration.createAdditionalMainColumnGroups.call(this, this),
       ];
     },
     /**
@@ -308,9 +241,7 @@ export default defineComponent({
     findMaxColspanForGroup(groupName: string): number {
       const colspans: { [groupName: string]: number } = {
         _kpi: 2,
-        ...this.activitiesDataTableConfiguration.getAdditionalGroupColspans(
-          this.getActivitiesDataTableConfigurationContext()
-        ),
+        ...this.activitiesDataTableConfiguration.getAdditionalGroupColspans.call(this, this),
       };
       return colspans[groupName];
     },
