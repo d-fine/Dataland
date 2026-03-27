@@ -1008,14 +1008,14 @@ describe('JudgeDialog component tests', () => {
     it('updates the dialog title to the selected KPI after clicking Go To', () => {
       mountJudgeDialog();
 
-      cy.get('.p-dialog-title').should('have.text', 'KPI Alpha Label');
+      cy.get('[data-test="dialog-title"]').should('have.text', 'KPI Alpha Label');
 
       cy.get('[data-test="next-datapoint-select"]').click();
       cy.get('.p-select-overlay').should('be.visible');
       cy.contains('KPI Beta Label').click();
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
-      cy.get('.p-dialog-title').should('have.text', 'KPI Beta Label');
+      cy.get('[data-test="dialog-title"]').should('have.text', 'KPI Beta Label');
     });
 
     it('shows all KPIs in the dropdown when no KPIs have been reviewed yet', () => {
