@@ -635,7 +635,7 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
     if (parsed !== null) {
       customFormData.value = parsed;
       const wrapped = wrapDataPointJson(judgementMetaData.customValue);
-      customJson.value = wrapped !== null ? JSON.stringify(wrapped, null, 2) : judgementMetaData.customValue;
+      customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
       return;
     }
     console.error('Failed to parse previously accepted custom datapoint JSON');
