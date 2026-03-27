@@ -171,22 +171,6 @@ const errorModalHeader = ref('Error updating datapoint');
 const errorModalMessage = ref('Failed to update datapoint judgement.');
 const errorModalDetails = ref<string | undefined>(undefined);
 
-const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
-  const options: NextDataPointOption[] = [];
-  for (const row of props.kpiRows ?? []) {
-    if (!row.dataPointTypeId) continue;
-    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
-    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
-    if (onlyShowUnreviewed.value && reviewed) continue;
-    options.push({
-      label: row.label,
-      dataPointTypeId: row.dataPointTypeId,
-      reviewed,
-    });
-  }
-  return options;
-});
-
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
 const availableDocuments = computed(() => props.availableDocuments ?? []);
@@ -209,8 +193,8 @@ const isMutating = computed(() => isPatching.value);
 
 const currentDataPointTypeId = ref<string>(props.dataPointTypeId);
 const currentDataPointLabel = computed(() => {
-  const option = nextDataPointOptions.value.find((opt) => opt.dataPointTypeId === currentDataPointTypeId.value);
-  return option ? option.label : currentDataPointTypeId.value;
+  const row = props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value);
+  return row ? row.label : currentDataPointTypeId.value;
 });
 watch(
   () => props.dataPointTypeId,
@@ -395,6 +379,23 @@ function copyCorrectedToCustom(): void {
 // ===== Next datapoint =====
 
 const onlyShowUnreviewed = ref<boolean>(true);
+
+const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
+  const options: NextDataPointOption[] = [];
+  for (const row of props.kpiRows ?? []) {
+    if (!row.dataPointTypeId) continue;
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
+    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
+    if (onlyShowUnreviewed.value && reviewed) continue;
+    options.push({
+      label: row.label,
+      dataPointTypeId: row.dataPointTypeId,
+      reviewed,
+    });
+  }
+  return options;
+});
+
 const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
 
 /**
