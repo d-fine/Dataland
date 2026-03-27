@@ -59,6 +59,7 @@
                     {{ data?.value || '—' }}
                   </span>
                   <PrimeButton
+                    data-test="value-overflow-icon"
                     v-if="isOverflowing(String(data?.value || ''))"
                     label="+"
                     variant="text"
@@ -80,6 +81,7 @@
                     {{ data?.quality || '—' }}
                   </span>
                   <PrimeButton
+                    data-test="quality-overflow-icon"
                     v-if="isOverflowing(String(data?.quality || ''))"
                     label="+"
                     variant="text"
@@ -101,6 +103,7 @@
                     {{ data?.dataSource?.fileName || data?.dataSource?.fileReference || '—' }}
                   </span>
                   <PrimeButton
+                    data-test="document-overflow-icon"
                     v-if="isOverflowing(String(data?.dataSource?.fileName || data?.dataSource?.fileReference || ''))"
                     label="+"
                     variant="text"
@@ -137,6 +140,7 @@
                     {{ data?.comment || '—' }}
                   </span>
                   <PrimeButton
+                    data-test="comment-overflow-icon"
                     v-if="isOverflowing(String(data?.comment || ''))"
                     label="+"
                     variant="text"

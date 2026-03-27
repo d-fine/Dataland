@@ -114,7 +114,16 @@
       />
     </div>
 
-    <Popover ref="overflowPopover" placement="top" :pt="{ root: { style: { width: popoverWidth } } }">
+    <Popover
+      ref="overflowPopover"
+      placement="top"
+      :pt="{
+        root: {
+          style: { width: popoverWidth },
+          'data-test': 'overflow-popover',
+        },
+      }"
+    >
       <div style="white-space: pre-wrap; word-break: break-word">
         {{ popoverText }}
       </div>

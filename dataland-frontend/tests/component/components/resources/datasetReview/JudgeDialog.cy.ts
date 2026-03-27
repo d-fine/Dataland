@@ -22,19 +22,39 @@ const secondDataPointId = 'dp-id-beta';
 
 const reporterUserId1 = 'reporter-user-id-1';
 const reporterUserId2 = 'reporter-user-id-2';
+const overflowingCommentEntry =
+  'original-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
+const correctedCommentEntry =
+  'original-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
+const overflowingValueEntry =
+  'original-value-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
+const overflowingQualityEntry =
+  'original-quality-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
+const overflowingDataSourceEntry = {
+  fileName:
+    'original-doc-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior.pdf',
+  page: '3',
+};
 
 const originalDataPoint = {
   value: 'original-value',
   quality: 'Audited',
-  comment: 'original-comment',
+  comment: overflowingCommentEntry,
   dataSource: { fileName: 'original-doc.pdf', page: '3' },
 };
 
 const correctedDataPoint = {
   value: 'corrected-value',
   quality: 'Estimated',
-  comment: 'corrected-comment',
+  comment: correctedCommentEntry,
   dataSource: { fileName: 'corrected-doc.pdf', page: '7' },
+};
+
+const overflowingOriginalDataPoint = {
+  value: overflowingValueEntry,
+  quality: overflowingQualityEntry,
+  comment: overflowingCommentEntry,
+  dataSource: overflowingDataSourceEntry,
 };
 
 const baseDatasetJudgement: DatasetJudgementResponse = {
@@ -112,6 +132,32 @@ const availableDocuments: DocumentOption[] = [
   },
 ];
 
+const overflowTestCases = [
+  {
+    description: 'shows and hides the overflow popover for original comment',
+    sectionDataTest: 'original-datapoint-section',
+    iconDataTest: 'comment-overflow-icon',
+    expectedPopoverText: overflowingCommentEntry,
+  },
+  {
+    description: 'shows and hides the overflow popover for original value',
+    sectionDataTest: 'original-datapoint-section',
+    iconDataTest: 'value-overflow-icon',
+    expectedPopoverText: overflowingValueEntry,
+  },
+  {
+    description: 'shows and hides the overflow popover for original document',
+    sectionDataTest: 'original-datapoint-section',
+    iconDataTest: 'document-overflow-icon',
+    expectedPopoverText: overflowingDataSourceEntry.fileName,
+  },
+  {
+    description: 'shows and hides the overflow popover for original quality',
+    sectionDataTest: 'original-datapoint-section',
+    iconDataTest: 'quality-overflow-icon',
+    expectedPopoverText: overflowingQualityEntry,
+  },
+] as const;
 // ===== Mount helper =====
 
 /**
@@ -138,7 +184,7 @@ function mountJudgeDialog(options?: {
     statusCode: options?.originalDataPointStatusCode ?? 200,
     body: {
       dataPointId: dataPointId,
-      dataPoint: JSON.stringify(originalDataPoint),
+      dataPoint: JSON.stringify(options?.originalDataPointBody ?? originalDataPoint),
     },
   }).as('getOriginalDataPoint');
 
@@ -187,6 +233,39 @@ function mountJudgeDialog(options?: {
   cy.wait('@getDatasetJudgement');
 }
 
+/**
+ * Tests the overflow popover behavior for a specific field.
+ * Mounts the dialog, triggers the overflow icon, verifies the popover content, and tests dismissal.
+ *
+ * @param {Object} params - Configuration for the test.
+ * @param {string} params.description - Test description.
+ * @param {string} params.sectionDataTest - Data test identifier for the section.
+ * @param {string} params.iconDataTest - Data test identifier for the overflow icon.
+ * @param {string} params.expectedPopoverText - Expected text in the popover.
+ * @param {object} [params.originalDataPointBody] - Optional original data point override.
+ */
+function checkOverflowBehavior(params: {
+  description: string;
+  sectionDataTest: string;
+  iconDataTest: string;
+  expectedPopoverText: string;
+  originalDataPointBody?: object;
+}): void {
+  const { description, sectionDataTest, iconDataTest, expectedPopoverText, originalDataPointBody } = params;
+
+  it(description, () => {
+    mountJudgeDialog({
+      originalDataPointBody: originalDataPointBody ?? overflowingOriginalDataPoint,
+    });
+
+    cy.get(`[data-test="${sectionDataTest}"]`).within(() => {
+      cy.get(`[data-test="${iconDataTest}"]`).should('be.visible').trigger('mouseenter');
+    });
+    cy.get('[data-test="overflow-popover"]').should('be.visible').and('contain.text', expectedPopoverText);
+    cy.get(`[data-test="${sectionDataTest}"] [data-test="${iconDataTest}"]`).trigger('mouseleave');
+    cy.get('[data-test="overflow-popover"]').should('not.exist');
+  });
+}
 // ===== Tests =====
 
 describe('JudgeDialog component tests', () => {
@@ -210,7 +289,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Audited').should('be.visible');
         cy.contains('original-doc.pdf').should('be.visible');
         cy.contains('3').should('be.visible');
-        cy.contains('original-comment').should('be.visible');
+        cy.contains(overflowingCommentEntry).should('be.visible');
       });
     });
 
@@ -222,7 +301,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Estimated').should('be.visible');
         cy.contains('corrected-doc.pdf').should('be.visible');
         cy.contains('7').should('be.visible');
-        cy.contains('corrected-comment').should('be.visible');
+        cy.contains(correctedCommentEntry).should('be.visible');
       });
     });
 
@@ -515,7 +594,7 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="custom-value-field"]').should('have.value', 'original-value');
       cy.get('[data-test="custom-pages-field"]').should('have.value', '3');
-      cy.get('[data-test="custom-comment-field"]').should('have.value', 'original-comment');
+      cy.get('[data-test="custom-comment-field"]').should('have.value', overflowingCommentEntry);
     });
 
     it('copies the corrected data point into the custom form fields', () => {
@@ -525,7 +604,7 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="custom-value-field"]').should('have.value', 'corrected-value');
       cy.get('[data-test="custom-pages-field"]').should('have.value', '7');
-      cy.get('[data-test="custom-comment-field"]').should('have.value', 'corrected-comment');
+      cy.get('[data-test="custom-comment-field"]').should('have.value', correctedCommentEntry);
     });
 
     it('copies the original data point into the JSON textarea when in JSON mode', () => {
@@ -991,6 +1070,27 @@ describe('JudgeDialog component tests', () => {
 
       cy.contains('KPI Alpha Label').should('be.visible');
       cy.contains('KPI Beta Label').should('be.visible');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 11. overflow popup behavior
+  // ---------------------------------------------------------------------------
+  describe('Overflow behavior of contents', () => {
+    it('Overflow behavior for original datapoint is behaving correctly', () => {
+      mountJudgeDialog({ originalDataPointBody: overflowingOriginalDataPoint });
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('th', 'Value')
+          .parent('tr')
+          .within(() => {
+            cy.contains(overflowingValueEntry.substring(0, 10)).should('be.visible'); // optional
+            cy.get('[data-test="value-overflow-icon"]').should('be.visible');
+            cy.get('[data-test="value-overflow-icon"]').click();
+          });
+      });
+    });
+    overflowTestCases.forEach((testCase) => {
+      checkOverflowBehavior(testCase);
     });
   });
 });
