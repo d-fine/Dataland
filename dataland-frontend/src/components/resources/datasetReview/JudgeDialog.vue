@@ -11,12 +11,18 @@
   >
     <!-- Header -->
     <template #header>
-      <div class="judge-modal__header">
-        <span class="p-dialog-title">{{ currentDataPointLabel }}</span>
+      <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; flex: 1">
+        <span style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)">
+          {{ currentDataPointLabel }}
+        </span>
         <span
           v-if="verdictBadge"
-          class="judge-modal__verdict-badge"
-          :class="verdictBadge.cssClass"
+          :style="{
+            fontSize: 'var(--font-size-sm)',
+            whiteSpace: 'nowrap',
+            backgroundColor: verdictBadge.background,
+            color: verdictBadge.color,
+          }"
           data-test="verdict-badge"
         >
           {{ verdictBadge.label }}
@@ -30,7 +36,17 @@
       <Message severity="error"> Failed to load dataset review.</Message>
     </div>
 
-    <div v-else class="judge-modal__content">
+    <div
+      v-else
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto 1fr;
+        gap: var(--spacing-lg);
+        flex: 1;
+        min-height: 0;
+      "
+    >
       <!-- Top-left: Original datapoint -->
       <JudgeDialogTopSection
         title="Original datapoint"
@@ -99,7 +115,9 @@
     </div>
 
     <Popover ref="overflowPopover" placement="top" :pt="{ root: { style: { width: popoverWidth } } }">
-      <div class="judge-modal__overflow-popover-content">{{ popoverText }}</div>
+      <div style="white-space: pre-wrap; word-break: break-word">
+        {{ popoverText }}
+      </div>
     </Popover>
   </PrimeDialog>
   <PopupConfirmationModal
@@ -264,16 +282,40 @@ const filteredQaReports = computed<QaReport[]>(() => {
   return judgementMetaData.qaReports as QaReport[];
 });
 
-const verdictBadge = computed<{ label: string; cssClass: string } | null>(() => {
+const verdictBadge = computed<{ label: string; background: string; color: string } | null>(() => {
   const judgementMetaData = currentDatapointJudgement.value;
   if (!judgementMetaData) return null;
   const allReports = (judgementMetaData.qaReports as QaReport[]) ?? [];
-  if (allReports.length === 0) return { label: 'QA NOT ATTEMPTED', cssClass: 'judge-modal__verdict-badge--yellow' };
-  if (allReports.every((r) => r.verdict === 'QaAccepted'))
-    return { label: 'QA ACCEPTED', cssClass: 'judge-modal__verdict-badge--green' };
-  if (allReports.some((r) => r.verdict === 'QaRejected'))
-    return { label: 'QA REJECTED', cssClass: 'judge-modal__verdict-badge--red' };
-  return { label: 'QA INCONCLUSIVE', cssClass: 'judge-modal__verdict-badge--yellow' };
+
+  if (allReports.length === 0) {
+    return {
+      label: 'QA NOT ATTEMPTED',
+      background: 'var(--p-yellow-100)',
+      color: 'var(--p-yellow-700)',
+    };
+  }
+
+  if (allReports.every((r) => r.verdict === 'QaAccepted')) {
+    return {
+      label: 'QA ACCEPTED',
+      background: 'var(--p-green-100)',
+      color: 'var(--p-green-700)',
+    };
+  }
+
+  if (allReports.some((r) => r.verdict === 'QaRejected')) {
+    return {
+      label: 'QA REJECTED',
+      background: 'var(--p-red-100)',
+      color: 'var(--p-red-700)',
+    };
+  }
+
+  return {
+    label: 'QA INCONCLUSIVE',
+    background: 'var(--p-yellow-100)',
+    color: 'var(--p-yellow-700)',
+  };
 });
 
 const currentQaReportIndex = ref<number>(0);
@@ -635,59 +677,3 @@ function hidePopover(): void {
   overflowPopover.value?.hide();
 }
 </script>
-
-<style scoped lang="scss">
-.p-dialog-title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-}
-
-.judge-modal__header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  width: 100%;
-  flex: 1;
-}
-
-.judge-modal__verdict-badge {
-  font-size: var(--font-size-sm);
-  white-space: nowrap;
-
-  &--green {
-    background-color: var(--p-green-100);
-    color: var(--p-green-700);
-  }
-
-  &--red {
-    background-color: var(--p-red-100);
-    color: var(--p-red-700);
-  }
-
-  &--yellow {
-    background-color: var(--p-yellow-100);
-    color: var(--p-yellow-700);
-  }
-}
-
-.judge-modal__content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto 1fr;
-  gap: var(--spacing-lg);
-  flex: 1;
-  min-height: 0;
-}
-
-.judge-modal__separator {
-  grid-column: 1 / -1;
-  height: 2px;
-  background-color: var(--p-content-border-color);
-  margin: var(--spacing-xxs) 0;
-}
-
-.judge-modal__overflow-popover-content {
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-</style>
