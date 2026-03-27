@@ -11,6 +11,49 @@ export const DEFAULT_CUSTOM_JSON = JSON.stringify(
 );
 
 /**
+ * Unwraps a datapoint JSON string for the backend.
+ * If the original stored datapoint (`rawDataPoint`) was a plain primitive
+ * (e.g. plainDate stored as `"2024-01-01"`), the custom value is unwrapped
+ * to that same primitive format. Otherwise the value is returned unchanged.
+ *
+ * @param json - The custom JSON string to unwrap.
+ * @param rawDataPoint - The original stored datapoint JSON, used to detect plain-primitive types.
+ * @returns The unwrapped JSON string, or the original if no unwrapping is needed.
+ */
+export function unwrapDataPointJson(json: string, rawDataPoint: string): string {
+  try {
+    const original = JSON.parse(rawDataPoint);
+    if (typeof original !== 'object') {
+      const parsed: unknown = JSON.parse(json);
+      const value =
+        parsed !== null && typeof parsed === 'object' ? ((parsed as DataPointDetail).value ?? null) : parsed;
+      return JSON.stringify(value);
+    }
+  } catch {
+    // return original
+  }
+  return json;
+}
+
+/**
+ * Wraps a datapoint JSON string into a {@link DataPointDetail} object.
+ * This is the inverse of {@link unwrapDataPointJson}: if the stored JSON is a plain
+ * primitive (e.g. `"2024-01-01"` for a plainDate), it is wrapped into `{ value: primitive }`
+ * so it can be handled uniformly as a {@link DataPointDetail}.
+ *
+ * @param json - JSON string to wrap.
+ * @returns The wrapped {@link DataPointDetail}, or `null` on parse failure.
+ */
+export function wrapDataPointJson(json: string): DataPointDetail | null {
+  try {
+    const parsed: unknown = JSON.parse(json);
+    return parsed !== null && typeof parsed === 'object' ? (parsed as DataPointDetail) : { value: parsed };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Converts {@link CustomFormData} into the pretty-printed JSON string expected by the backend.
  * Returns {@link DEFAULT_CUSTOM_JSON} when the resulting datapoint would be empty.
  *
@@ -47,16 +90,16 @@ export function parseFormDataToDataPointJson(
 /**
  * Parses a JSON string representing a datapoint and maps it into a {@link CustomFormData} object.
  * Returns `null` if the JSON is invalid or cannot be parsed.
+ * If the parsed value is a plain primitive (e.g. a plainDate `"2024-01-01"`), it is treated
+ * as the `value` field.
  *
  * @param json - JSON string to parse.
  * @returns The mapped {@link CustomFormData}, or `null` on parse failure.
  */
 export function parseDataPointJsonToFormData(json: string): CustomFormData | null {
-  try {
-    return transformDataPointDetailToFormData(JSON.parse(json) as DataPointDetail);
-  } catch {
-    return null;
-  }
+  const detail = wrapDataPointJson(json);
+  if (detail === null) return null;
+  return transformDataPointDetailToFormData(detail);
 }
 
 /**

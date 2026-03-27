@@ -163,6 +163,8 @@ import type {
 import {
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
+  unwrapDataPointJson,
+  wrapDataPointJson,
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
 } from '@/utils/JudgeDialogUtils.ts';
@@ -274,13 +276,9 @@ const originalErrorValue = computed<Error | null>(() => (isOriginalLoadingError.
 const originalData = computed<DataPointDetail | null>(() => {
   const dp = originalDataPoint.value;
   if (!dp?.dataPoint) return null;
-
-  try {
-    return JSON.parse(dp.dataPoint) as DataPointDetail;
-  } catch (e) {
-    console.error('Failed to parse original datapoint JSON', e);
-    return null;
-  }
+  const detail = wrapDataPointJson(dp.dataPoint);
+  if (detail === null) console.error('Failed to parse original datapoint JSON');
+  return detail;
 });
 
 // ===== QA reports =====
@@ -362,12 +360,9 @@ const currentQaReporterLabel = computed(() => {
 
 const currentQaCorrectedData = computed<DataPointDetail | null>(() => {
   if (!currentQaReport.value?.correctedData) return null;
-  try {
-    return JSON.parse(currentQaReport.value.correctedData) as DataPointDetail;
-  } catch (error) {
-    console.error('Failed to parse correctedData JSON', error);
-    return null;
-  }
+  const detail = wrapDataPointJson(currentQaReport.value.correctedData);
+  if (detail === null) console.error('Failed to parse correctedData JSON');
+  return detail;
 });
 
 /**
@@ -606,9 +601,10 @@ function acceptQaReportDatapoint(): void {
 function acceptCustomDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
   const documentOption = availableDocuments.value.find((doc) => doc.value === customFormData.value.document) ?? null;
-  const customDataPointJson = editModeEnabled.value
-    ? customJson.value
-    : parseFormDataToDataPointJson(customFormData.value, documentOption);
+  const customDataPointJson = unwrapDataPointJson(
+    editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
+    originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
+  );
   patchCurrentDatapoint(
     AcceptedDataPointSource.Custom,
     undefined,

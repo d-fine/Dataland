@@ -156,11 +156,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
-import {
-  parseDataPointJsonToFormData,
-  parseFormDataToDataPointJson,
-  DEFAULT_CUSTOM_JSON,
-} from '@/utils/JudgeDialogUtils.ts';
+import { parseDataPointJsonToFormData, parseFormDataToDataPointJson } from '@/utils/JudgeDialogUtils.ts';
 
 const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
   label: qualityOption,
@@ -223,7 +219,6 @@ function jsonToFormData(): void {
   if (parsed !== null) {
     formData.value = parsed;
   }
-  jsonValue.value = DEFAULT_CUSTOM_JSON;
 }
 
 watch(
