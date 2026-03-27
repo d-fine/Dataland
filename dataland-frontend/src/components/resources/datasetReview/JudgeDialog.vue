@@ -2,6 +2,7 @@
   <PrimeDialog
     id="judgeModal"
     :dismissable-mask="true"
+    :draggable="false"
     :modal="true"
     :pt="{ root: { style: { width: '80vw', maxHeight: '80vh' } } }"
     v-model:visible="isOpen"
