@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+
+:root {
+  --color-primary: #ff6813;
+  --color-primary-hover: #e55d10;
+  --color-secondary: #013d48;
+  --color-surface-0: #ffffff;
+  --color-surface-50: #f7f7f5;
+  --color-surface-200: #e6e6e6;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --font-family: 'IBM Plex Sans', sans-serif;
+}
+
+html {
+  font-family: var(--font-family);
+  color: var(--color-text);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-0);
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+}
+
+.skip-to-content:focus {
+  left: 0;
+}
+
+/* Shared button styles used across pages */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn {
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-secondary);
+  border: 1.5px solid var(--color-secondary);
+}
+
+.btn--outline:hover {
+  background: var(--color-secondary);
+  color: #fff;
+}

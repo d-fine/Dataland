@@ -3,5 +3,4 @@
  */
 describe('Landing Page Tests', () => {
   require('./CookieBanner');
-  require('./LandingPage');
 });

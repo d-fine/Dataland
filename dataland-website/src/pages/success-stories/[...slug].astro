@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const stories = await getCollection('success-stories');
+  return stories.map((story) => ({
+    params: { slug: story.data.slug },
+    props: { story },
+  }));
+}
+
+const { story } = Astro.props;
+const { Content } = await render(story);
+const { title, companyName, companyType, logo, quoteText, quoteAuthor, quoteRole } = story.data;
+---
+
+<Base title={`${companyName} — Success Story — Dataland`} description={`Read how ${companyName} uses Dataland for ESG data.`}>
+
+  <article class="pt-16 pb-12 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:pb-16 lg:px-8" aria-label={`${companyName} success story`}>
+    <div class="max-w-[800px] mx-auto flex flex-col gap-10">
+
+      <!-- Header -->
+      <div class="flex flex-col gap-4">
+        <img
+          src={logo}
+          alt={`${companyName} logo`}
+          class="max-h-14 w-auto object-contain self-start"
+          loading="eager"
+          width="180"
+          height="60"
+        />
+        <span class="inline-block self-start bg-[var(--color-primary)] text-white text-xs font-semibold px-3 py-1 rounded-full">{companyType}</span>
+        <h1 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] leading-snug lg:text-[2.25rem]">{title}</h1>
+      </div>
+
+      <!-- MDX Body -->
+      <div class="success-story-content">
+        <Content />
+      </div>
+
+      <!-- Quote -->
+      <blockquote class="bg-[var(--color-surface-50)] border-l-4 border-[var(--color-primary)] py-6 px-8 rounded-r-xl m-0">
+        <p class="italic text-base leading-[1.7] m-0 mb-4 text-[var(--color-text)]">&ldquo;{quoteText}&rdquo;</p>
+        <footer class="flex flex-col gap-0.5">
+          <cite class="not-italic font-bold text-[0.9375rem] text-[var(--color-text)]">{quoteAuthor}</cite>
+          <span class="text-[0.8125rem] text-[var(--color-text-muted)]">{quoteRole}</span>
+        </footer>
+      </blockquote>
+
+      <!-- CTA -->
+      <div class="flex">
+        <a href="/product#customer-stories" class="btn btn--outline">&larr; Back to customer stories</a>
+      </div>
+
+    </div>
+  </article>
+
+</Base>
+
+<style>
+  /* MDX content styling — must use :global() for rendered markdown elements */
+  .success-story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .success-story-content :global(p) {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .success-story-content :global(h2) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0;
+    color: var(--color-primary);
+  }
+
+  .success-story-content :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .success-story-content :global(ol) {
+    padding-left: 1.25rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .success-story-content :global(li) {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+</style>

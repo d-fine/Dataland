@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import { WHY_US_PAIRS } from '../data/whyUs';
+import { TRUSTED_BY_LOGOS } from '../data/members';
+import { TESTIMONIALS } from '../data/testimonials';
+import { FRAMEWORK_CARDS } from '../data/frameworks';
+import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
+---
+
+<Base title="Dataland — Non-profit sustainability data">
+
+  <!-- Section 1: Hero (grey) -->
+  <section class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8" aria-label="The open-source platform for structured sustainability data">
+    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[60%_40%]">
+      <div>
+        <h1 class="text-[2rem] font-bold leading-[1.2] m-0 mb-4 text-[var(--color-text)] lg:text-[3rem]">
+          The open-source platform for<br />
+          <span class="text-[var(--color-primary)]">structured sustainability data</span>
+        </h1>
+        <p class="text-lg text-[var(--color-text-muted)] m-0 mb-6">Non-profit. Source-based. Unrestricted use.</p>
+        <div class="flex flex-wrap gap-3">
+          <!-- Placeholder: actual Keycloak registration URL depends on deployment -->
+          <a href="/keycloak" class="btn btn--primary">Try it free</a>
+          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+        </div>
+      </div>
+      <div class="flex justify-center" style="perspective: 1500px;">
+        <img
+          src="/static/images/platform-screenshot.png"
+          alt="Dataland platform showing structured ESG data for a company"
+          class="w-full max-w-[520px] h-auto rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)] motion-safe:transition-transform motion-safe:duration-400 lg:motion-safe:[transform:perspective(1500px)_rotateY(-5deg)_rotateX(2deg)]"
+          loading="eager"
+          width="600"
+          height="400"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: LEI Search (dark) -->
+  <section class="py-12 px-6 bg-[#111111] text-white" aria-label="Search sustainability data by company name or LEI">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-6">
+      <h2 class="text-2xl font-bold m-0 text-center">Search sustainability data by company name or LEI</h2>
+      <div class="relative w-full max-w-[520px]">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input
+          type="text"
+          placeholder="Search by company name or LEI..."
+          class="w-full py-3.5 pr-4 pl-11 border-[1.5px] border-white/20 rounded-lg text-base font-[var(--font-family)] text-[var(--color-text)] bg-white box-border placeholder:text-[var(--color-text-muted)]"
+          readonly
+          aria-label="Search by company name or LEI"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Why Us (grey) -->
+  <section id="why-us" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Why financial institutions choose Dataland">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Why financial institutions choose Dataland</h2>
+
+      <div class="flex flex-col gap-8">
+        {WHY_US_PAIRS.map((pair) => (
+          <div class="grid grid-cols-1 gap-4 p-6 bg-[var(--color-surface-0)] rounded-xl lg:grid-cols-[40%_auto_40%] lg:gap-6 lg:items-start">
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-text)]">{pair.problemTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
+            </div>
+            <div class="hidden lg:flex items-center justify-center" aria-hidden="true">
+              <img src="/static/images/arrow_big.svg" alt="" width="48" height="48" />
+            </div>
+            <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.solutionText}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/product#features" class="btn btn--primary">Discover platform features</a>
+        <a href="/product#use-cases" class="btn btn--outline">Explore use cases</a>
+        <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Trusted By (white) -->
+  <section class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Trusted by leading financial institutions">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Trusted by leading financial institutions</h2>
+      <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12">
+        {TRUSTED_BY_LOGOS.map((logo) => (
+          <img
+            src={logo.imagePath}
+            alt={logo.name}
+            class="h-8 lg:h-10 w-auto object-contain grayscale-[20%] opacity-85 motion-safe:transition-[opacity,filter] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0"
+            loading="lazy"
+            width="120"
+            height="40"
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Customer Stories (grey) -->
+  <section class="py-12 px-6 bg-[var(--color-surface-50)]" aria-label="How our members use Dataland">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">How our members use Dataland</h2>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {CUSTOMER_STORY_SUMMARIES.map((story) => (
+          <a href={story.link} class="flex flex-col gap-3 p-6 bg-[var(--color-surface-0)] rounded-xl no-underline text-[var(--color-text)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+            <img
+              src={story.logo}
+              alt=""
+              class="h-10 w-auto object-contain self-start"
+              loading="lazy"
+              width="120"
+              height="40"
+            />
+            <span class="inline-block self-start bg-[var(--color-primary)] text-white text-xs font-semibold px-3 py-1 rounded-full">{story.tag}</span>
+            <p class="m-0 text-[0.9375rem] leading-normal text-[var(--color-text-muted)]">{story.text}</p>
+            <span class="text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Testimonials (dark blue) -->
+  <section class="py-12 px-6 bg-[#0f3a82] text-white lg:py-16 lg:px-8" aria-label="What our members say">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-center">What our members say</h2>
+      <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-color:rgba(255,255,255,0.3)_transparent] [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30">
+        {TESTIMONIALS.map((t) => (
+          <blockquote class="shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
+            <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
+            <footer class="flex flex-col gap-0.5">
+              <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
+              <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+      <div class="flex justify-center">
+        <a href="/testimonials" class="inline-flex items-center px-6 py-2.5 bg-white text-[#0f3a82] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Watch member testimonials</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Frameworks (grey) -->
+  <section id="frameworks" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Frameworks on Dataland">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Frameworks on Dataland</h2>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {FRAMEWORK_CARDS.map((fw) => (
+          <div class="relative bg-[var(--color-surface-0)] border border-[var(--color-surface-200)] rounded-xl p-6 overflow-hidden flex flex-col gap-2">
+            <div class="absolute top-0 right-0 w-12 h-12 bg-[var(--color-primary)] [clip-path:polygon(100%_0,0_0,100%_100%)]" aria-hidden="true"></div>
+            <h3 class="text-lg font-bold m-0 text-[var(--color-text)]">{fw.title}</h3>
+            {fw.subtitle && <p class="text-sm font-medium m-0 text-[var(--color-text-muted)]">{fw.subtitle}</p>}
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{fw.description}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-base m-0 text-[var(--color-text-muted)] text-center">Explore how companies and investors report under these frameworks</p>
+    </div>
+  </section>
+
+</Base>

@@ -17,7 +17,8 @@ server {
 
     add_header Content-Security-Policy $default_content_security_policy always;
 
-    # locations
+    # locations — Astro static website (marketing pages) must come before the SPA catch-all
+    include                 utils/locations/website.conf;
     include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf;
     # The [.] is used to prevent throwing of an error when the specified config file is not found. We need this because
     # we no longer use a backend.conf, but backendDev.conf and this is used as a switch to load the correct dev config

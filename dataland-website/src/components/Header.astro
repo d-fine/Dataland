@@ -1,0 +1,80 @@
+---
+import MobileNav from './MobileNav.vue';
+
+const currentPath = Astro.url.pathname;
+
+/** Check whether a nav link matches the current page */
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/product', label: 'Product' },
+  { href: '/about', label: 'About' },
+] as const;
+
+const baseLinkClasses = 'no-underline font-medium text-[0.9375rem] motion-safe:transition-colors duration-150';
+const inactiveClasses = 'text-[var(--color-text)] hover:text-[var(--color-primary)]';
+const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] pb-[2px]';
+---
+
+<header class="sticky top-0 z-50 h-[72px] bg-[var(--color-surface-50)] border-b border-[var(--color-surface-200)]">
+  <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
+      <img
+        src="/static/logos/gfx_logo_dataland_orange_S.svg"
+        alt="Dataland"
+        class="h-7 w-auto"
+        width="140"
+        height="32"
+      />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden lg:flex gap-8 items-center" aria-label="Main navigation">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[baseLinkClasses, isActive(href) ? activeClasses : inactiveClasses]}
+          aria-current={isActive(href) ? 'page' : undefined}
+        >{label}</a>
+      ))}
+    </nav>
+
+    <!-- Desktop actions -->
+    <div class="hidden lg:flex items-center gap-5">
+      <!-- Placeholder: actual Keycloak login URL depends on deployment -->
+      <a href="/keycloak" class="no-underline text-[var(--color-text)] font-medium text-[0.9375rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
+      <!-- Placeholder: actual Keycloak registration URL depends on deployment -->
+      <a href="/keycloak" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
+    </div>
+
+    <!-- Mobile hamburger (visible < lg only) -->
+    <button
+      type="button"
+      class="flex lg:hidden items-center justify-center bg-transparent border-none cursor-pointer p-2 text-[var(--color-text)]"
+      aria-label="Open menu"
+      id="mobile-menu-toggle"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav (Vue island) -->
+  <MobileNav client:media="(max-width: 1023px)" currentPath={currentPath} />
+</header>
+
+<!-- Intentional inline script: bridges the static hamburger button to the Vue MobileNav island via a custom event -->
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  toggle?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('toggle-mobile-nav'));
+  });
+</script>

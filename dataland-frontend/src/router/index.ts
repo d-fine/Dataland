@@ -1,8 +1,6 @@
 import { createWebHistory, createRouter, type RouteComponent } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
-const LandingPage = (): Promise<RouteComponent> => import('@/components/pages/LandingPage.vue');
-import AboutPage from '@/components/pages/AboutPage.vue';
 
 const QualityAssurance = (): Promise<RouteComponent> => import('@/components/pages/QualityAssurance.vue');
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -39,66 +37,12 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
-import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
+import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Welcome to Dataland',
-    component: LandingPage,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/about',
-    name: 'About Page',
-    component: AboutPage,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/product',
-    name: 'Product Page',
-    component: (): Promise<RouteComponent> => import('@/components/pages/ProductPage.vue'),
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/newsletter',
-    name: 'Newsletter Page',
-    component: (): Promise<RouteComponent> => import('@/components/pages/NewsletterPage.vue'),
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/contact',
-    name: 'Contact Page',
-    component: (): Promise<RouteComponent> => import('@/components/pages/ContactPage.vue'),
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/testimonials',
-    name: 'Testimonials Page',
-    component: (): Promise<RouteComponent> => import('@/components/pages/TestimonialsPage.vue'),
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/success-stories/:slug',
-    name: 'success-story',
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    component: () => import('@/components/pages/SuccessStoryPage.vue'),
-    meta: {
-      layout: 'landing',
-      requiresAuthentication: false,
-    },
+    redirect: '/companies',
   },
   {
     path: '/companies/choose',
@@ -142,7 +86,6 @@ const routes = [
     component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: false,
-      useLandingPageHeader: false,
     },
   },
   {

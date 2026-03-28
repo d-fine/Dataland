@@ -1,0 +1,296 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  HOW_IT_WORKS_BLOCKS,
+  GETTING_DATA_BLOCKS,
+  FEATURE_CARDS,
+  USE_CASES,
+  CUSTOMER_STORIES_DETAILED,
+  VALUE_PROPOSITIONS,
+  PRICING_CARD,
+  CREDITS_VISUAL,
+  FRAMEWORK_DOC,
+  API_DOC_LINKS,
+} from '../data/product';
+
+const CREDITS_TABLE = [
+  { members: '1', cost: '1' },
+  { members: '2', cost: '0,5' },
+  { members: '3', cost: '0,4' },
+  { members: '4', cost: '0,3' },
+  { members: '5-9', cost: '0,2' },
+  { members: '> 10', cost: '0,1' },
+];
+---
+
+<Base title="Product — Dataland" description="Explore Dataland's ESG data platform features, frameworks, use cases, and pricing.">
+
+  <!-- Section 1: Intro (grey) -->
+  <section class="pt-16 pb-12 px-6 bg-[var(--color-surface-50)] lg:pt-24 lg:pb-16 lg:px-8" aria-label="Product introduction">
+    <div class="max-w-[900px] mx-auto text-center">
+      <h1 class="text-[2rem] font-bold leading-[1.2] m-0 text-[var(--color-text)] lg:text-[3rem]">
+        Structured sustainability data.<br />
+        <span class="text-[var(--color-primary)]">For regulatory reporting and investment analysis.</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Section 2: How It Works (white) -->
+  <section id="how-it-works" class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="How it works">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">How it works</h2>
+      <div class="flex flex-col gap-8">
+        {HOW_IT_WORKS_BLOCKS.map((block) => (
+          <div class="grid grid-cols-1 gap-4 p-6 bg-[var(--color-surface-50)] rounded-xl lg:grid-cols-[40%_auto_40%] lg:gap-6 lg:items-start">
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-text)]">{block.leftTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.leftText}</p>
+            </div>
+            <div class="hidden lg:flex items-center justify-center" aria-hidden="true">
+              <img src="/static/images/arrow_big.svg" alt="" width="48" height="48" />
+            </div>
+            <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-primary)]">{block.rightTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.rightText}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Getting Data (grey) -->
+  <section id="getting-data" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Getting data">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Getting the data you need</h2>
+      <div class="flex flex-col gap-8">
+        {GETTING_DATA_BLOCKS.map((block) => (
+          <div class="grid grid-cols-1 gap-4 p-6 bg-[var(--color-surface-0)] rounded-xl lg:grid-cols-[40%_auto_40%] lg:gap-6 lg:items-start">
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-text)]">{block.leftTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.leftText}</p>
+            </div>
+            <div class="hidden lg:flex items-center justify-center" aria-hidden="true">
+              <img src="/static/images/arrow_big.svg" alt="" width="48" height="48" />
+            </div>
+            <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
+            <div>
+              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-primary)]">{block.rightTitle}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.rightText}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Features (white) -->
+  <section id="features" class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Platform features">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Platform features</h2>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {FEATURE_CARDS.map((card) => (
+          <div class="relative bg-[var(--color-surface-0)] border border-[var(--color-surface-200)] rounded-xl p-6 overflow-hidden flex flex-col gap-2">
+            <div class="absolute top-0 right-0 w-12 h-12 bg-[var(--color-primary)] [clip-path:polygon(100%_0,0_0,100%_100%)]" aria-hidden="true"></div>
+            <h3 class="text-lg font-bold m-0 text-[var(--color-text)]">{card.title}</h3>
+            <p class="text-sm font-medium m-0 text-[var(--color-text-muted)]">{card.subtitle}</p>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{card.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Use Cases (grey) -->
+  <section id="use-cases" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Use cases">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Use cases</h2>
+      <div class="flex flex-col gap-6">
+        {USE_CASES.map((uc, idx) => (
+          <div class="flex gap-5 items-start p-6 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)]">
+            <span class="text-2xl font-bold text-[var(--color-primary)] leading-none shrink-0">{String(idx + 1).padStart(2, '0')}</span>
+            <div class="flex flex-col gap-2">
+              <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)]">{uc.title}</h3>
+              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Customer Stories (dark blue) -->
+  <section id="customer-stories" class="py-12 px-6 bg-[#0f3a82] text-white lg:py-16 lg:px-8" aria-label="Customer stories">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
+      <h2 class="text-[1.75rem] font-bold m-0 text-center">Customer stories</h2>
+      {CUSTOMER_STORIES_DETAILED.map((story) => (
+        <article id={story.anchor} class="grid grid-cols-1 gap-6 p-6 bg-white/10 rounded-xl scroll-mt-24 lg:grid-cols-[24%_76%] lg:p-8">
+          <div class="flex flex-col gap-3 items-start">
+            <img
+              src={story.logo}
+              alt={`${story.anchor.toUpperCase()} logo`}
+              class="max-h-12 w-auto object-contain brightness-0 invert"
+              loading="lazy"
+              width="160"
+              height="60"
+            />
+            <span class="inline-block bg-[var(--color-primary)] text-white text-xs font-semibold px-3 py-1 rounded-full">{story.tag}</span>
+          </div>
+          <div class="flex flex-col gap-4">
+            <h3 class="text-xl font-bold m-0">{story.title}</h3>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.summary}</p>
+
+            <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Challenge</h4>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.challenge}</p>
+
+            <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Solution</h4>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.solution}</p>
+
+            <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Value</h4>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.value}</p>
+
+            <blockquote class="bg-white/10 border-l-4 border-[var(--color-primary)] py-5 px-6 rounded-r-lg m-0">
+              <p class="italic text-[0.9375rem] leading-relaxed m-0 mb-3 text-white/90">&ldquo;{story.quoteText}&rdquo;</p>
+              <footer class="flex flex-col gap-0.5">
+                <cite class="not-italic font-bold text-sm text-white">{story.quoteAuthor}</cite>
+                <span class="text-[0.8125rem] text-white/70">{story.quoteRole}</span>
+              </footer>
+            </blockquote>
+
+            {story.successStorySlug && (
+              <a href={`/success-stories/${story.successStorySlug}`} class="text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline self-start hover:underline">
+                Read full story &rarr;
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 7: Membership & Pricing (grey) -->
+  <section id="membership-pricing" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8" aria-label="Membership and pricing">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
+
+      <!-- Header with subtitle -->
+      <div class="flex flex-col items-center gap-2 text-center">
+        <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">Membership and pricing</h2>
+        <p class="text-[0.9375rem] m-0 text-[var(--color-text-muted)] max-w-[640px]">One membership. Full platform access. The more members request the same company, the lower the cost per dataset.</p>
+      </div>
+
+      <!-- 3 value proposition cards with top accent -->
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {VALUE_PROPOSITIONS.map((vp) => (
+          <div class="flex flex-col items-center gap-4 text-center p-6 pt-8 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+            <div class="w-12 h-12 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
+              <img src={vp.icon} alt="" aria-hidden="true" width="28" height="28" loading="lazy" />
+            </div>
+            <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)]">{vp.title}</h3>
+            <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{vp.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Pricing + Credits unified card -->
+      <div class="bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] shadow-[0_2px_16px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+          <!-- Left: Pricing -->
+          <div>
+            <div class="bg-[#0f3a82] px-8 py-4 flex items-center min-h-[60px]">
+              <h3 class="text-lg font-bold m-0 text-white">{PRICING_CARD.title}</h3>
+            </div>
+            <div class="px-8 py-6 flex flex-col gap-4">
+              <ul class="list-none pl-0 m-0 flex flex-col gap-3.5">
+                {PRICING_CARD.items.map((item) => (
+                  <li class="flex items-start gap-3 text-[0.9375rem] text-[var(--color-text)]">
+                    <span class="mt-1.5 w-2 h-2 shrink-0 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right: Credits table -->
+          <div class="border-t border-[var(--color-surface-200)] lg:border-t-0 lg:border-l flex flex-col">
+            <div class="px-8 py-4 bg-[var(--color-surface-50)] flex items-center min-h-[60px]">
+              <h3 class="text-[0.9375rem] font-bold m-0 text-[var(--color-text)]">{CREDITS_VISUAL.title}</h3>
+            </div>
+            <div class="px-8 py-6 flex flex-col gap-4 flex-1">
+              <table class="w-full text-sm border-collapse">
+                <thead>
+                  <tr class="border-b-2 border-[#0f3a82]">
+                    <th class="py-2.5 pr-4 text-left font-semibold text-[#0f3a82] text-xs uppercase tracking-wide"># of Members</th>
+                    <th class="py-2.5 pr-4 text-left font-semibold text-[#0f3a82] text-xs uppercase tracking-wide">Cost (Credits)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CREDITS_TABLE.map((row, idx) => (
+                    <tr class:list={['border-b border-[var(--color-surface-200)]', idx === CREDITS_TABLE.length - 1 && 'border-b-0']}>
+                      <td class="py-2.5 pr-4 text-[var(--color-text)]">{row.members}</td>
+                      <td class="py-2.5 pr-4 text-[var(--color-text)] font-semibold">{row.cost}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p class="text-[0.8125rem] text-[var(--color-text-muted)] m-0 mt-auto">{CREDITS_VISUAL.caption}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom note integrated as card footer -->
+        <div class="border-t border-[var(--color-surface-200)] bg-[#0f3a82]/[0.04] px-8 py-4 flex items-start gap-3">
+          <svg class="w-5 h-5 shrink-0 mt-0.5 text-[#0f3a82]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01"></path>
+          </svg>
+          <p class="text-[0.875rem] text-[var(--color-text)] m-0 leading-relaxed font-medium">{PRICING_CARD.footer}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 8: Documentation (dark) -->
+  <section id="documentation" class="py-16 px-6 bg-[#111111] text-white lg:py-20 lg:px-8" aria-label="Documentation and API references">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12">
+      <h2 class="text-[1.75rem] font-bold m-0 text-center">Documentation</h2>
+
+      <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-[1fr_1.5fr]">
+        <!-- Left card: Framework Guide -->
+        <div class="flex flex-col gap-4 p-6 rounded-xl border border-white/10 bg-white/[0.04]">
+          <h3 class="text-lg font-bold m-0 text-white">Framework Guide</h3>
+          <p class="text-[0.9375rem] leading-relaxed m-0 text-white/70">{FRAMEWORK_DOC.description}</p>
+          <a href={FRAMEWORK_DOC.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[var(--color-primary)] text-sm font-semibold no-underline self-start hover:underline">
+            View on GitHub &rarr;
+          </a>
+        </div>
+
+        <!-- Right card: API Reference -->
+        <div class="flex flex-col gap-4 p-6 rounded-xl border border-white/10 bg-white/[0.04]">
+          <h3 class="text-lg font-bold m-0 text-white">API Reference</h3>
+          <p class="text-[0.9375rem] leading-relaxed m-0 text-white/70">Interactive Swagger documentation for every Dataland service.</p>
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {API_DOC_LINKS.map((doc) => (
+              <a href={doc.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.06] text-white/90 text-sm font-medium no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/[0.12] hover:text-white">
+                <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shrink-0" aria-hidden="true"></span>
+                {doc.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-col items-center gap-5 pt-4 border-t border-white/10 w-full">
+        <p class="text-[0.9375rem] text-white/50 m-0">Ready to get started?</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/about#contact" class="inline-flex items-center px-6 py-2.5 bg-[var(--color-primary)] text-white font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]">Get in touch</a>
+          <!-- Placeholder: actual Keycloak registration URL depends on deployment -->
+          <a href="/keycloak" class="inline-flex items-center px-6 py-2.5 bg-white text-[#111111] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Try it free</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Base>

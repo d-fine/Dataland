@@ -4,8 +4,7 @@
     v-if="route.meta.requiresAuthentication !== undefined"
     :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
-    <LandingPageHeader v-if="useLandingPageHeader" />
-    <TheHeader v-else />
+    <TheHeader />
     <router-view />
   </component>
   <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
@@ -30,7 +29,6 @@ import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUti
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { useRoute } from 'vue-router';
 
-import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { useDialog } from 'primevue/usedialog';
@@ -42,7 +40,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
+  components: { TheHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {
@@ -60,10 +58,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const dialog = useDialog();
-    const useLandingPageHeader = computed(() => {
-      return route.meta.useLandingPageHeader ?? !route.meta.requiresAuthentication;
-    });
-    return { route, useLandingPageHeader, dialog };
+    return { route, dialog };
   },
 
   computed: {

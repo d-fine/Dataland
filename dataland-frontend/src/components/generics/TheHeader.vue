@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
-import AuthSection from '@/components/resources/landingPage/AuthSection.vue';
+import AuthSection from '@/components/general/AuthSection.vue';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { defineComponent, inject } from 'vue';
 
