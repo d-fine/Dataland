@@ -2,6 +2,8 @@ import { type DataTypeEnum } from '@clients/backend';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
@@ -20,7 +22,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   }).as(metaRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
   return cy
-    .wait(`@${metaRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number })
+    .wait(`@${metaRequestAlias}`, { timeout: mediumTimeoutInMs })
     .then((interception) => {
       const metaInformation = interception.response?.body as Array<{ dataId?: string; dataType?: string }> | undefined;
       const dataId = metaInformation?.find((meta) => meta.dataType === dataType)?.dataId;
@@ -32,7 +34,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
         url: `**/api/data/**/${dataId}`,
       }).as(getRequestAlias);
       cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
-      return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
+      return cy.wait(`@${getRequestAlias}`, { timeout: mediumTimeoutInMs });
     });
 }
 

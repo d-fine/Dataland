@@ -1,3 +1,5 @@
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+
 /**
  * Checks if the dataland footer element is present
  */
@@ -22,7 +24,7 @@ export function verifySearchResultTableExists(): void {
  */
 export function validateCompanyCockpitPage(expectedCompanyName: string, expectedCompanyId: string): void {
   cy.url().should('contain', `/companies/${expectedCompanyId}`);
-  cy.get('h1[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+  cy.get('h1[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).should(
     'have.text',
     expectedCompanyName
   );
