@@ -13,30 +13,12 @@ import {
 export function generateEutaxonomyFinancials202673PreparedFixtures(): Array<
   FixtureData<EutaxonomyFinancials202673Data>
 > {
-  const preparedFixtures = [];
-  // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
+  const [preparedFixture] = generateEutaxonomyFinancials202673Fixtures(1);
 
-  const manipulatorFunctions: Array<
-    (input: FixtureData<EutaxonomyFinancials202673Data>) => FixtureData<EutaxonomyFinancials202673Data>
-  > = [createCompanyWithEutaxonomyFinancials202673DataAllFieldsDefined];
-  const preparedFixturesBeforeManipulation = generateEutaxonomyFinancials202673Fixtures(manipulatorFunctions.length);
+  preparedFixture.companyInformation.companyName =
+    'All-fields-defined-for-EU-Taxonomy-Financials-202673-Framework-Company';
+  preparedFixture.reportingPeriod = '2026';
+  preparedFixture.t = generateEutaxonomyFinancials202673Data(0);
 
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
-  return preparedFixtures;
-}
-
-/**
- * Creates a company with EU Taxonomy Financials (2026/73) data where all data fields are defined
- * @param input
- */
-function createCompanyWithEutaxonomyFinancials202673DataAllFieldsDefined(
-  input: FixtureData<EutaxonomyFinancials202673Data>
-): FixtureData<EutaxonomyFinancials202673Data> {
-  input.companyInformation.companyName = 'All-fields-defined-for-EU-Taxonomy-Financials-202673-Framework-Company';
-  input.reportingPeriod = '2026';
-  input.t = generateEutaxonomyFinancials202673Data(0);
-  return input;
+  return [preparedFixture];
 }
