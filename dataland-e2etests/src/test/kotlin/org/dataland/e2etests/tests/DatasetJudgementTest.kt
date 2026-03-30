@@ -90,16 +90,14 @@ class DatasetJudgementTest {
         datasetId: String,
         dataPoints: Map<String, String>,
     ): String {
-        var datasetJudgementId: String? = null
-
         val datapointId1 = dataPoints.getValue(dataPointType1)
         val datapointId2 = dataPoints.getValue(dataPointType2)
         val datapointId3 = dataPoints.getValue(dataPointType3)
         val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            datasetJudgementId =
+        return GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val datasetJudgementId =
                 QaService.datasetJudgementControllerApi
                     .postDatasetJudgement(datasetId)
                     .dataSetJudgementId
@@ -127,10 +125,9 @@ class DatasetJudgementTest {
                             PatchOperation(dataPointType, AcceptedDataPointSource.Original)
                         }
 
-            val currentDatasetJudgementId = requireNotNull(datasetJudgementId)
             patchOperations.forEach {
                 QaService.datasetJudgementControllerApi.patchJudgementDetails(
-                    currentDatasetJudgementId,
+                    datasetJudgementId,
                     it.dataPointType,
                     JudgementDetailsPatch(
                         it.acceptedSource,
@@ -139,8 +136,9 @@ class DatasetJudgementTest {
                     ),
                 )
             }
+
+            datasetJudgementId
         }
-        return datasetJudgementId!!
     }
 
     private fun createDatasetWithJudgement(): DatasetAndJudgementAndDataPointIds {

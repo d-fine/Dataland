@@ -11,7 +11,6 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val QA_REPORT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 
     const val QA_REPORT_DATA_POINT_VERDICT_DESCRIPTION = "The verdict of a QA report regarding a data point."
-    const val QA_REPORT_VERDICT_EXAMPLE = "QaAccepted"
 
     const val QA_REPORT_CORRECTED_DATA_DESCRIPTION = "Contains suggested data corrections for the rejected data point."
     const val QA_REPORT_CORRECTED_DATA_EXAMPLE = DATA_POINT_EXAMPLE
@@ -92,16 +91,8 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "List of QA reports associated with this data point, including details " +
             "about the reporter company."
 
-    const val ACCEPTED_QA_REPORT_COMPANY_ID_DESCRIPTION =
-        "The unique identifier of the company whose QA report was " +
-            "accepted for this data point, if applicable."
-
     const val ACCEPTED_REPORTER_USER_ID_DESCRIPTION =
         "The unique identifier of the user whose QA report was " +
             "accepted for this data point, if applicable."
     const val ACCEPTED_REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
-
-    const val QA_DECISION_DESCRIPTION =
-        "The QA state of the associated dataset. " +
-            "This is the state that determines whether the dataset is approved or rejected."
 }
