@@ -189,14 +189,13 @@ describeIf(
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
-        finishJudgement(dataSetJudgementId);
+        finishJudgement(uploadedDataMetaInfo.dataId);
       });
     });
 
     it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
-      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
-        rejectDatasetInJudgementModal(dataSetJudgementId);
-      });
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
+      rejectDatasetInJudgementModal(uploadedDataMetaInfo.dataId);
     });
   }
 );
@@ -589,9 +588,9 @@ function buildCustomIcon(judgement: QaJudgement): IconState {
 /**
  * Finishes the judgement with the given dataset judgement id by clicking the "Finish Judgement" button
  *
- * @param dataSetJudgementId The id of the dataset judgement that should be finished.
+ * @param dataSetId The id of the dataset that should be finished.
  */
-function finishJudgement(dataSetJudgementId: string): void {
+function finishJudgement(dataSetId: string): void {
   cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
@@ -600,7 +599,7 @@ function finishJudgement(dataSetJudgementId: string): void {
       cy.contains('Dataset review completed.').should('be.visible');
     });
   cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-data-id"]', dataSetJudgementId).should('not.exist');
+  cy.contains('[data-test="qa-review-data-id"]', dataSetId).should('not.exist');
 }
 
 /**
@@ -670,9 +669,9 @@ function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
 /**
  * Reject Dataset via the button on the Judgement Page.
  *
- * @param dataSetJudgementId The id of the dataset judgement that should be finished.
+ * @param dataSetId The id of the dataset that should be finished.
  */
-function rejectDatasetInJudgementModal(dataSetJudgementId: string): void {
+function rejectDatasetInJudgementModal(dataSetId: string): void {
   cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
@@ -681,5 +680,5 @@ function rejectDatasetInJudgementModal(dataSetJudgementId: string): void {
       cy.contains('Dataset successfully rejected.').should('be.visible');
     });
   cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-data-id"]', dataSetJudgementId).should('not.exist');
+  cy.contains('[data-test="qa-review-data-id"]', dataSetId).should('not.exist');
 }
