@@ -4,6 +4,9 @@ import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion
  * @param searchTerm the term to search for
@@ -37,7 +40,7 @@ describeIf(
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(
         alphaCompanyIdAndName.companyName
       );
     });
@@ -49,11 +52,11 @@ describeIf(
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+      cy.url({ timeout: longTimeoutInMs }).should(
         'not.contain',
         `/companies/${alphaCompanyIdAndName.companyId}`
       );
-      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(
         betaCompanyIdAndName.companyName
       );
     });
@@ -62,7 +65,7 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+      cy.url({ timeout: longTimeoutInMs }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
       );
@@ -73,7 +76,7 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-provide-data-button']`).click();
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+      cy.url({ timeout: longTimeoutInMs }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
@@ -100,7 +103,7 @@ describeIf(
       cy.get("[data-test='submitButton']").should('exist').click();
       cy.wait('@postCompanyOwnershipRequest');
       cy.get("[data-test='claimOwnershipDialogSubmittedMessage']", {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       }).should('exist');
       cy.get("[data-test='claimOwnershipDialogMessage']").should('not.exist');
       cy.get("[data-test='closeButton']").should('exist').click();
