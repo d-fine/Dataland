@@ -6,7 +6,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 const mediumTimeoutInMs = Number(
-  (Cypress.env() as { medium_timeout_in_ms?: number | string }).medium_timeout_in_ms ?? 30000
+  (Cypress.expose() as { medium_timeout_in_ms?: number | string }).medium_timeout_in_ms ?? 30000
 );
 
 /**

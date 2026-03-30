@@ -1,7 +1,13 @@
-const cypressEnv = Cypress.env() as {
+type TestEnv = {
   TEST_GROUP?: string | number;
   SINGLE_POPULATE?: boolean;
   RUN_PREPOPULATION?: boolean;
+};
+
+const cypressEnv: TestEnv = {
+  TEST_GROUP: Cypress.expose('TEST_GROUP'),
+  SINGLE_POPULATE: Cypress.expose('SINGLE_POPULATE'),
+  RUN_PREPOPULATION: Cypress.expose('RUN_PREPOPULATION'),
 };
 
 const testGroupingDisabled = Number.isNaN(Number(cypressEnv.TEST_GROUP));
