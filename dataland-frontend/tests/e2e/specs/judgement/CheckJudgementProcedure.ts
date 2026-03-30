@@ -1,9 +1,4 @@
-import {
-  type DataMetaInformation,
-  type EutaxonomyFinancialsData,
-  type SfdrData,
-  type StoredCompany,
-} from '@clients/backend';
+import { type DataMetaInformation, type EutaxonomyFinancialsData, type StoredCompany } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -23,7 +18,6 @@ import {
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
-import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 enum IconState {
   Accepted,
@@ -138,16 +132,14 @@ describeIf(
   function () {
     let storedCompany: StoredCompany;
     let preparedEuTaxonomyFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
-    let preparedSfdrFixtures: Array<FixtureData<SfdrData>>;
     let companyName: string;
+    let tokens: QaTokens;
+    let uploadedDataMetaInfo: DataMetaInformation;
+    let overview: DataPointOverview;
 
     before(function () {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
-      });
-
-      cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
-        preparedSfdrFixtures = jsonContent as Array<FixtureData<SfdrData>>;
       });
 
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
@@ -159,66 +151,49 @@ describeIf(
       });
     });
 
-    it('Check full judgement process from upload to acceptance', () => {
-      const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+    beforeEach(() =>
+      getTokens().then((retrievedTokens) => {
+        tokens = retrievedTokens;
+        const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
 
-      let tokens: QaTokens;
-      let overview: DataPointOverview;
-
-      return getTokens()
-        .then((t) => {
-          tokens = t;
-          return uploadFrameworkDataForPublicToolboxFramework(
-            EuTaxonomyFinancialsBaseFrameworkDefinition,
-            tokens.uploaderToken,
-            storedCompany.companyId,
-            '2024',
-            euTaxonomyData.t,
-            false
+        return uploadFrameworkDataForPublicToolboxFramework(
+          EuTaxonomyFinancialsBaseFrameworkDefinition,
+          tokens.uploaderToken,
+          storedCompany.companyId,
+          '2024',
+          euTaxonomyData.t,
+          false
+        ).then((dataMetaInfo: DataMetaInformation) => {
+          uploadedDataMetaInfo = dataMetaInfo;
+          return initializeDataPointOverviewForDataset(uploadedDataMetaInfo, tokens.adminToken).then(
+            (preparedOverview: DataPointOverview) => {
+              overview = preparedOverview;
+              uploadQaReportsForDataset(overview, {
+                reviewerToken: tokens.reviewerToken,
+                adminToken: tokens.adminToken,
+              });
+            }
           );
-        })
-        .then((dataMetaInfo: DataMetaInformation) =>
-          initializeDataPointOverviewForDataset(dataMetaInfo, tokens.adminToken)
-        )
-        .then((o) => {
-          overview = o;
-          uploadQaReportsForDataset(overview, {
-            reviewerToken: tokens.reviewerToken,
-            adminToken: tokens.adminToken,
-          });
-          checkoutDataset(companyName);
-          return startJudgement(companyName);
-        })
-        .then((datasetJudgementId) => {
-          changeJudgeAssignment(companyName);
-          judgeDataPointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
-          tryFinishingJudgementBeforeAllDataPointsReviewed();
-          judgeDataPointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
-          finishJudgement(companyName);
         });
+      })
+    );
+
+    it('Check full judgement process from upload to acceptance', () => {
+      checkoutDataset(companyName);
+      return startJudgement(companyName).then((datasetJudgementId: string) => {
+        changeJudgeAssignment(companyName);
+        judgeDataPointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
+        tryFinishingJudgementBeforeAllDataPointsReviewed();
+        judgeDataPointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
+        finishJudgement(companyName);
+      });
     });
 
     it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
-      const sfdrData = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedSfdrFixtures);
-
-      return getKeycloakToken(uploader_name, uploader_pw)
-        .then((uploaderToken: string) =>
-          uploadFrameworkDataForPublicToolboxFramework(
-            SfdrBaseFrameworkDefinition,
-            uploaderToken,
-            storedCompany.companyId,
-            '2024',
-            sfdrData.t,
-            false
-          )
-        )
-        .then(() => {
-          login(admin_name, admin_pw);
-          return startJudgement(companyName);
-        })
-        .then(() => {
-          rejectDatasetInJudgementModal(companyName);
-        });
+      login(admin_name, admin_pw);
+      return startJudgement(companyName).then(() => {
+        rejectDatasetInJudgementModal(companyName);
+      });
     });
   }
 );
