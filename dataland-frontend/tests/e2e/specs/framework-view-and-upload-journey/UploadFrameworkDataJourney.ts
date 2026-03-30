@@ -17,6 +17,9 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+
 /**
  * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
  * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
@@ -141,7 +144,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('div[id=option1Container]').find("[data-test='add-it-button']").click();
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
-          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: mediumTimeoutInMs });
           cy.url().should('eq', getBaseUrl() + '/companies/' + company.companyId + '/frameworks/upload');
         });
       });
@@ -230,12 +233,12 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           cy.intercept('**/api/companies/names*').as('searchCompanyName');
           cy.get('input[id=company_search_bar_standard]').click({ force: true });
           cy.get('input[id=company_search_bar_standard]').type(testCompanyNameForManyDatasetsCompany);
-          cy.wait('@searchCompanyName', { timeout: Cypress.env('short_timeout_in_ms') as number });
+          cy.wait('@searchCompanyName', { timeout: shortTimeoutInMs });
           cy.get('.p-autocomplete-list-container').should('exist');
           cy.get('input[id=company_search_bar_standard]').type('{downArrow}');
           cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
           cy.get('input[id=company_search_bar_standard]').type('{enter}');
-          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('short_timeout_in_ms') as number });
+          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: shortTimeoutInMs });
           cy.url().should(
             'eq',
             getBaseUrl() + `/companies/${storedCompanyForManyDatasetsCompany.companyId}/frameworks/upload`
@@ -250,7 +253,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             dataIdOfLksgUpload
           );
 
-          cy.wait(Cypress.env('short_timeout_in_ms') as number);
+          cy.wait(shortTimeoutInMs);
 
           checkIfDropDownSwitchRendersData();
         }
