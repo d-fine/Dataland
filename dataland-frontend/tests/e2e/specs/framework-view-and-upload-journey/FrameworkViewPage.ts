@@ -12,6 +12,9 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+const longTimeoutInMs  = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+
 /**
  * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
  * in the search results table.
@@ -44,7 +47,7 @@ function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: strin
   }).as('autocompleteSuggestions');
   cy.get(searchBarSelector).click();
   cy.get(searchBarSelector).type(companyName, { force: true });
-  cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
+  cy.wait('@autocompleteSuggestions', { timeout: longTimeoutInMs });
   const companySelector = '.p-autocomplete-option';
   cy.get(companySelector).first().click({ force: true });
 }
@@ -457,7 +460,7 @@ describeIf(
 
     it(
       'Check that using the reporting period in URL still yields data for assembled datasets',
-      { defaultCommandTimeout: Cypress.env('short_timeout_in_ms') as number },
+      { defaultCommandTimeout: shortTimeoutInMs },
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}/reportingPeriods/2019`);
