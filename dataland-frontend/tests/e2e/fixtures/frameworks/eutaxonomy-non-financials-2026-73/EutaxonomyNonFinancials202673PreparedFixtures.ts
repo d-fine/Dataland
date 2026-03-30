@@ -13,30 +13,12 @@ import {
 export function generateEutaxonomyNonFinancials202673PreparedFixtures(): Array<
   FixtureData<EutaxonomyNonFinancials202673Data>
 > {
-  const preparedFixtures = [];
-  // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
+  const [preparedFixture] = generateEutaxonomyNonFinancials202673Fixtures(1);
 
-  const manipulatorFunctions: Array<
-    (input: FixtureData<EutaxonomyNonFinancials202673Data>) => FixtureData<EutaxonomyNonFinancials202673Data>
-  > = [createCompanyWithEutaxonomyNonFinancials202673DataAllFieldsDefined];
-  const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancials202673Fixtures(manipulatorFunctions.length);
+  preparedFixture.companyInformation.companyName =
+    'All-fields-defined-for-EU-Taxonomy-Non-Financials-202673-Framework-Company';
+  preparedFixture.reportingPeriod = '2026';
+  preparedFixture.t = generateEutaxonomyNonFinancials202673Data(0);
 
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
-  return preparedFixtures;
-}
-
-/**
- * Creates a company with EU Taxonomy Non-Financials (2026/73) data where all data fields are defined
- * @param input
- */
-function createCompanyWithEutaxonomyNonFinancials202673DataAllFieldsDefined(
-  input: FixtureData<EutaxonomyNonFinancials202673Data>
-): FixtureData<EutaxonomyNonFinancials202673Data> {
-  input.companyInformation.companyName = 'All-fields-defined-for-EU-Taxonomy-Non-Financials-202673-Framework-Company';
-  input.reportingPeriod = '2026';
-  input.t = generateEutaxonomyNonFinancials202673Data(0);
-  return input;
+  return [preparedFixture];
 }
