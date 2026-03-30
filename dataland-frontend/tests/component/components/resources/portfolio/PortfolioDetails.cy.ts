@@ -152,7 +152,6 @@ describe('Check the portfolio details view', function (): void {
         'No data available',
         'No data available',
         'No data available',
-        'No data available',
       ];
       const expectedThirdRow = [
         'Banana LLC',
@@ -162,14 +161,12 @@ describe('Check the portfolio details view', function (): void {
         2023,
         'No data available',
         'No data available',
-        'No data available',
       ];
       const expectedFourthRow = [
         'Cherry Co',
         'Germany',
         'models',
         2024,
-        'No data available',
         'No data available',
         'No data available',
         2023,
@@ -182,18 +179,8 @@ describe('Check the portfolio details view', function (): void {
         checkHeader,
         checkHeader,
         checkHeader,
-        checkHeader,
       ];
-      const nothingToCheckRow = [
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-      ];
+      const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
       assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
       assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
     });
