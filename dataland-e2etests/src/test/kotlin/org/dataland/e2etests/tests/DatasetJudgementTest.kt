@@ -77,24 +77,6 @@ class DatasetJudgementTest {
         .postQaReport(datapointId, qaReport)
         .reporterUserId
 
-    private fun patchJudgementDetails(
-        datasetJudgementId: String,
-        dataPointType: String,
-        acceptedSource: AcceptedDataPointSource,
-        reporterUserIdOfAcceptedQaReport: String?,
-        customDataPoint: String?,
-    ) {
-        QaService.datasetJudgementControllerApi.patchJudgementDetails(
-            datasetJudgementId,
-            dataPointType,
-            JudgementDetailsPatch(
-                acceptedSource,
-                reporterUserIdOfAcceptedQaReport,
-                customDataPoint,
-            ),
-        )
-    }
-
     private data class DatasetAndJudgementAndDataPointIds(
         val datasetId: String,
         val datasetJudgementId: String,
@@ -105,16 +87,14 @@ class DatasetJudgementTest {
         datasetId: String,
         dataPoints: Map<String, String>,
     ): String {
-        var datasetJudgementId: String? = null
-
         val datapointId1 = dataPoints.getValue(datapointType1)
         val datapointId2 = dataPoints.getValue(datapointType2)
         val datapointId3 = dataPoints.getValue(datapointType3)
         val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-            datasetJudgementId =
+        return GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            val datasetJudgementId =
                 QaService.datasetJudgementControllerApi
                     .postDatasetJudgement(datasetId)
                     .dataSetJudgementId
@@ -142,18 +122,20 @@ class DatasetJudgementTest {
                             PatchOperation(dataPointType, AcceptedDataPointSource.Original)
                         }
 
-            val currentDatasetJudgementId = requireNotNull(datasetJudgementId)
             patchOperations.forEach {
-                patchJudgementDetails(
-                    currentDatasetJudgementId,
+                QaService.datasetJudgementControllerApi.patchJudgementDetails(
+                    datasetJudgementId,
                     it.dataPointType,
-                    it.acceptedSource,
-                    it.reporterUserIdOfAcceptedQaReport,
-                    it.customDataPoint,
+                    JudgementDetailsPatch(
+                        it.acceptedSource,
+                        it.reporterUserIdOfAcceptedQaReport,
+                        it.customDataPoint,
+                    ),
                 )
             }
+
+            datasetJudgementId
         }
-        return datasetJudgementId!!
     }
 
     private fun createDatasetWithJudgement(): DatasetAndJudgementAndDataPointIds {
