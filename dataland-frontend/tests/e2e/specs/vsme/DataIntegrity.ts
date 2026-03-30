@@ -14,6 +14,8 @@ let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 const uploadReports = new UploadReports('referencedReports');
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Fills out an AddressFormField
  * @param inputSection the section to which the AddressFormField belongs to
@@ -111,12 +113,12 @@ function uploadDocument(): void {
  */
 function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
   cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs ,
   })
     .then((expectedFileBinary) => cy.task('calculateHash', expectedFileBinary))
     .then((expectedFileHash) => {
       cy.readFile(expectedPathToDownloadedReport, 'binary', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs ,
       })
         .then((receivedFileBinary) => cy.task('calculateHash', receivedFileBinary))
         .should('eq', expectedFileHash);
@@ -129,8 +131,8 @@ function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
  * Check that data can be viewed and documents downloaded
  */
 function verifyDocumentDownloadAndDataIsViewable(): void {
-  cy.wait('@waitOnMyDatasetPage', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-  cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+  cy.wait('@waitOnMyDatasetPage', { timeout: mediumTimeoutInMs  });
+  cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs  }).then(
     (postResponseInterception) => {
       cy.url().should('eq', getBaseUrl() + '/datasets');
       const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;

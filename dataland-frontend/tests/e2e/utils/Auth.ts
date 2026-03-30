@@ -4,16 +4,21 @@ import { Configuration } from '@clients/backend';
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
+
+const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 export function logout(): void {
   cy.intercept({ times: 1, url: '**/api-keys/getApiKeyMetaInfoForUser' })
     .as('apikey')
     .visitAndCheckAppMount('/api-key')
-    .wait('@apikey', { timeout: Cypress.env('short_timeout_in_ms') as number });
+    .wait('@apikey', { timeout: shortTimeoutInMs  });
   cy.get("[data-test='user-profile-toggle']").click();
   cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("[data-test='login-dataland-button']").should('exist').should('be.visible');
 }
+
 
 let globalJwt = '';
 
@@ -32,7 +37,7 @@ export function login(
   cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
   cy.visitAndCheckAppMount('/');
-  cy.get("[data-test='login-dataland-button']", { timeout: Cypress.env('long_timeout_in_ms') as number }).click();
+  cy.get("[data-test='login-dataland-button']", { timeout: LongTimeoutInMs  }).click();
 
   loginWithCredentials(username, password);
 
@@ -60,8 +65,8 @@ export function login(
       if (doesUserHavePortfolios) {
         urlToRedirectTo = getBaseUrl() + '/portfolios';
       }
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should('eq', urlToRedirectTo);
-      cy.wait('@getPortfolios', { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
+      cy.url({ timeout: ClongTimeoutInMs  }).should('eq', urlToRedirectTo);
+      cy.wait('@getPortfolios', { timeout: ClongTimeoutInMs  }).then((interception) => {
         globalJwt = interception.request.headers['authorization'] as string;
       });
     });

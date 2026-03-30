@@ -10,6 +10,9 @@ describe('As a user I want to be able to register for an account and be able to 
   const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, '0')).join('');
 
+  const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+  const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+
   it('Checks that the Dataland password-policy gets respected', () => {
     cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
@@ -107,13 +110,13 @@ describe('As a user I want to be able to register for an account and be able to 
           cy.get("button:contains('Account security')").should('exist').click();
           cy.get("a:contains('Signing in')").should('exist').click();
           cy.get("button:contains('Set up Authenticator application')")
-            .should('be.visible', { timeout: Cypress.env('medium_timeout_in_ms') as number })
+            .should('be.visible', { timeout: mediumTimeoutInMs })
             .click();
           cy.get("a:contains('Unable to scan')")
-            .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
+            .should('be.visible', { timeout: shortTimeoutInMs })
             .click();
           cy.get("span[id='kc-totp-secret-key']")
-            .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
+            .should('be.visible', { timeout: shortTimeoutInMs })
             .invoke('text')
             .then((text) => {
               const totpKey = text.replaceAll(/\s/g, '');
@@ -122,7 +125,7 @@ describe('As a user I want to be able to register for an account and be able to 
                 cy.get("input[id='saveTOTPBtn']").click();
                 cy.get(`button:contains('${firstName} ${lastName}')`).click();
                 cy.get("span:contains('Sign out')").should('exist', {
-                  timeout: Cypress.env('medium_timeout_in_ms') as number,
+                  timeout: mediumTimeoutInMs,
                 });
                 cy.task('setTotpKey', totpKey);
               });
@@ -139,7 +142,7 @@ describe('As a user I want to be able to register for an account and be able to 
               throw new Error('Email or password or TOTP key retrieved by task is not a string. Cannot proceed.');
             }
 
-            cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+            cy.wait(mediumTimeoutInMs);
 
             login(returnEmail, returnPassword, () => {
               return generate({ secret: key });
