@@ -225,7 +225,7 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `setJudgementState throws error when accepting judgement with unreviewed datapoints`() {
+    fun `setJudgementState throws error when finishing judgement with unreviewed datapoints`() {
         datasetJudgementEntity.dataPoints.first().acceptedSource = null
         assertThrows<InvalidInputApiException> {
             service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
