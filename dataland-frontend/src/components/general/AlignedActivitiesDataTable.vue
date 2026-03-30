@@ -1,5 +1,4 @@
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import { type YesNo } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 import BaseActivitiesDataTable from '@/components/general/BaseActivitiesDataTable.vue';
@@ -7,50 +6,66 @@ import { formatPercentageNumberAsString } from '@/utils/Formatter';
 
 type Self = InstanceType<typeof BaseActivitiesDataTable>;
 
-const alignedActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions(self: Self): Array<Record<string, unknown>> {
+type AlignedActivityRow = Record<string, unknown> & {
+  activityName?: string;
+  substantialContributionToClimateChangeMitigationInPercent?: number;
+  substantialContributionToClimateChangeAdaptationInPercent?: number;
+  substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number;
+  substantialContributionToTransitionToACircularEconomyInPercent?: number;
+  substantialContributionToPollutionPreventionAndControlInPercent?: number;
+  substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number;
+  dnshToClimateChangeMitigation?: YesNo;
+  dnshToClimateChangeAdaptation?: YesNo;
+  dnshToSustainableUseAndProtectionOfWaterAndMarineResources?: YesNo;
+  dnshToTransitionToACircularEconomy?: YesNo;
+  dnshToPollutionPreventionAndControl?: YesNo;
+  dnshToProtectionAndRestorationOfBiodiversityAndEcosystems?: YesNo;
+};
+
+const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfiguration'] = {
+  createAdditionalMainColumnDefinitions(this: Self) {
     return [
-      ...self.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
-      ...self.makeGroupColumns('dnshCriteria', 'dnsh', false),
+      ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
+      ...this.makeGroupColumns('dnshCriteria', 'dnsh', false),
       {
         field: 'minimumSafeguards',
-        header: self.humanizeHeaderName('minimumSafeguards'),
+        header: this.humanizeHeaderName('minimumSafeguards'),
         group: '_minimumSafeguards',
         groupIndex: 0,
       },
       {
         field: 'enablingActivity',
-        header: self.humanizeHeaderName('enablingActivity'),
+        header: this.humanizeHeaderName('enablingActivity'),
         group: '_enablingActivity',
         groupIndex: 0,
       },
       {
         field: 'transitionalActivity',
-        header: self.humanizeHeaderName('transitionalActivity'),
+        header: this.humanizeHeaderName('transitionalActivity'),
         group: '_transitionalActivity',
         groupIndex: 0,
       },
     ];
   },
-  createAdditionalMainColumnGroups(self: Self): Array<Record<string, unknown>> {
+  createAdditionalMainColumnGroups(this: Self) {
     return [
       {
         key: 'substantialContributionCriteria',
-        label: self.humanizeHeaderName('substantialContributionCriteria'),
-        colspan: self.findMaxColspanForGroup('substantialContributionCriteria'),
+        label: this.humanizeHeaderName('substantialContributionCriteria'),
+        colspan: this.findMaxColspanForGroup('substantialContributionCriteria'),
       },
       {
         key: 'dnshCriteria',
-        label: self.humanizeHeaderName('dnshCriteria'),
-        colspan: self.findMaxColspanForGroup('dnshCriteria'),
+        label: this.humanizeHeaderName('dnshCriteria'),
+        colspan: this.findMaxColspanForGroup('dnshCriteria'),
       },
-      { key: '_minimumSafeguards', label: '', colspan: self.findMaxColspanForGroup('_minimumSafeguards') },
-      { key: '_enablingActivity', label: '', colspan: self.findMaxColspanForGroup('_enablingActivity') },
-      { key: '_transitionalActivity', label: '', colspan: self.findMaxColspanForGroup('_transitionalActivity') },
+      { key: '_minimumSafeguards', label: '', colspan: this.findMaxColspanForGroup('_minimumSafeguards') },
+      { key: '_enablingActivity', label: '', colspan: this.findMaxColspanForGroup('_enablingActivity') },
+      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
-  getAdditionalGroupColspans(self: Self): { [groupName: string]: number } {
-    const environmentalObjectivesLength = self.getEnvironmentalObjectivesLength();
+  getAdditionalGroupColspans(this: Self): { [groupName: string]: number } {
+    const environmentalObjectivesLength = this.getEnvironmentalObjectivesLength();
     return {
       substantialContributionCriteria: environmentalObjectivesLength,
       dnshCriteria: environmentalObjectivesLength,
@@ -59,47 +74,48 @@ const alignedActivitiesDataTableConfiguration = {
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): Array<Record<string, unknown>> {
+  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>) {
+    const typedActivity = activity as AlignedActivityRow;
     return [
-      ...self.createBaseMainColumnDataForRow(activity),
-      ...self.createActivityGroupData<number>(
-        activity.activityName as string,
+      ...this.createBaseMainColumnDataForRow(activity),
+      ...this.createActivityGroupData<number | undefined>(
+        typedActivity.activityName as string,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:
-            activity.substantialContributionToClimateChangeMitigationInPercent,
+            typedActivity.substantialContributionToClimateChangeMitigationInPercent,
           substantialContributionToClimateChangeAdaptationInPercent:
-            activity.substantialContributionToClimateChangeAdaptationInPercent,
+            typedActivity.substantialContributionToClimateChangeAdaptationInPercent,
           substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-            activity.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+            typedActivity.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
           substantialContributionToTransitionToACircularEconomyInPercent:
-            activity.substantialContributionToTransitionToACircularEconomyInPercent,
+            typedActivity.substantialContributionToTransitionToACircularEconomyInPercent,
           substantialContributionToPollutionPreventionAndControlInPercent:
-            activity.substantialContributionToPollutionPreventionAndControlInPercent,
+            typedActivity.substantialContributionToPollutionPreventionAndControlInPercent,
           substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-            activity.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+            typedActivity.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
         },
         formatPercentageNumberAsString
       ),
-      ...self.createActivityGroupData<YesNo>(
-        activity.activityName as string,
+      ...this.createActivityGroupData<YesNo | undefined>(
+        typedActivity.activityName as string,
         'dnshCriteria',
         {
-          dnshToClimateChangeMitigation: activity.dnshToClimateChangeMitigation,
-          dnshToClimateChangeAdaptation: activity.dnshToClimateChangeAdaptation,
+          dnshToClimateChangeMitigation: typedActivity.dnshToClimateChangeMitigation,
+          dnshToClimateChangeAdaptation: typedActivity.dnshToClimateChangeAdaptation,
           dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
-            activity.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
-          dnshToTransitionToACircularEconomy: activity.dnshToTransitionToACircularEconomy,
-          dnshToPollutionPreventionAndControl: activity.dnshToPollutionPreventionAndControl,
+            typedActivity.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
+          dnshToTransitionToACircularEconomy: typedActivity.dnshToTransitionToACircularEconomy,
+          dnshToPollutionPreventionAndControl: typedActivity.dnshToPollutionPreventionAndControl,
           dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
-            activity.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
+            typedActivity.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
         },
-        (value: YesNo) => (value ? `${value}` : '')
+        (value: YesNo | undefined) => (value ? `${value}` : '')
       ),
-      ...self.createSingleFieldGroupData(activity, '_minimumSafeguards', 'minimumSafeguards'),
-      ...self.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
-      ...self.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
-    ];
+      ...this.createSingleFieldGroupData(activity, '_minimumSafeguards', 'minimumSafeguards'),
+      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
+      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
+    ] as ReturnType<Self['createBaseMainColumnDataForRow']>;
   },
 };
 

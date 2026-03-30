@@ -16,46 +16,46 @@ type EligibleOrAlignedActivityRow = Record<string, unknown> & {
 };
 
 const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfiguration'] = {
-  createAdditionalMainColumnDefinitions(self: Self) {
+  createAdditionalMainColumnDefinitions(this: Self) {
     return [
-      ...self.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
+      ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       {
         field: 'enablingActivity',
-        header: self.humanizeHeaderName('enablingActivity'),
+        header: this.humanizeHeaderName('enablingActivity'),
         group: '_enablingActivity',
         groupIndex: 0,
       },
       {
         field: 'transitionalActivity',
-        header: self.humanizeHeaderName('transitionalActivity'),
+        header: this.humanizeHeaderName('transitionalActivity'),
         group: '_transitionalActivity',
         groupIndex: 0,
       },
     ];
   },
-  createAdditionalMainColumnGroups(self: Self) {
+  createAdditionalMainColumnGroups(this: Self) {
     return [
       {
         key: 'substantialContributionCriteria',
-        label: self.humanizeHeaderName('substantialContributionCriteria'),
-        colspan: self.findMaxColspanForGroup('substantialContributionCriteria'),
+        label: this.humanizeHeaderName('substantialContributionCriteria'),
+        colspan: this.findMaxColspanForGroup('substantialContributionCriteria'),
       },
-      { key: '_enablingActivity', label: '', colspan: self.findMaxColspanForGroup('_enablingActivity') },
-      { key: '_transitionalActivity', label: '', colspan: self.findMaxColspanForGroup('_transitionalActivity') },
+      { key: '_enablingActivity', label: '', colspan: this.findMaxColspanForGroup('_enablingActivity') },
+      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
-  getAdditionalGroupColspans(self: Self): { [groupName: string]: number } {
+  getAdditionalGroupColspans(this: Self): { [groupName: string]: number } {
     return {
-      substantialContributionCriteria: self.getEnvironmentalObjectivesLength(),
+      substantialContributionCriteria: this.getEnvironmentalObjectivesLength(),
       _enablingActivity: 1,
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self) {
+  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>) {
     const typedActivity = activity as EligibleOrAlignedActivityRow;
     return [
-      ...self.createBaseMainColumnDataForRow(activity),
-      ...self.createActivityGroupData<number | undefined>(
+      ...this.createBaseMainColumnDataForRow(activity),
+      ...this.createActivityGroupData<number | undefined>(
         typedActivity.activityName as string,
         'substantialContributionCriteria',
         {
@@ -74,8 +74,8 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
         },
         formatPercentageNumberAsString
       ),
-      ...self.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
-      ...self.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
+      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
+      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
     ] as ReturnType<Self['createBaseMainColumnDataForRow']>;
   },
 };
