@@ -91,5 +91,6 @@ class PcafDataController
 
         @Operation(operationId = "getLatestAvailableCompanyAssociatedPcafData")
         override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<PcafData>> =
-            super.getLatestAvailableCompanyAssociatedData(identifier)
+            super
+                .getLatestAvailableCompanyAssociatedData(identifier)
     }
