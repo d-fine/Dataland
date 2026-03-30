@@ -7,8 +7,12 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
-const shortTimeoutInMs = Number((cy.env(['short_timeout_in_ms']) as number | string | undefined) ?? 10000);
-const mediumTimeoutInMs = Number((cy.env(['medium_timeout_in_ms']) as number | string | undefined) ?? 30000);
+const cypressEnv = Cypress.env() as {
+  short_timeout_in_ms?: number | string;
+  medium_timeout_in_ms?: number | string;
+};
+const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
+const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
