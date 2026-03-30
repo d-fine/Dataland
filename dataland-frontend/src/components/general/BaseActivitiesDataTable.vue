@@ -73,13 +73,13 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { type AmountWithCurrency } from '@clients/backend';
 import { type Activity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from '@/utils/Formatter';
@@ -93,17 +93,31 @@ const euTaxonomyObjectives = [
   'ProtectionAndRestorationOfBiodiversityAndEcosystems',
 ];
 
+type KpiKey = 'revenue' | 'capex' | 'opex';
+
+type ActivityRow = Record<string, unknown> & {
+  activityName?: Activity;
+  naceCodes?: string[];
+  share?: {
+    absoluteShare?: AmountWithCurrency | null;
+    relativeShareInPercent?: number | null;
+  };
+};
+
 const defaultActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions(): MainColumnDefinition[] {
+  createAdditionalMainColumnDefinitions(self: Self): MainColumnDefinition[] {
+    void self;
     return [];
   },
-  createAdditionalMainColumnGroups(): Array<{ key: string; label: string; colspan: number }> {
+  createAdditionalMainColumnGroups(self: Self): Array<{ key: string; label: string; colspan: number }> {
+    void self;
     return [];
   },
-  getAdditionalGroupColspans(): { [groupName: string]: number } {
+  getAdditionalGroupColspans(self: Self): { [groupName: string]: number } {
+    void self;
     return {};
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): ActivityFieldValueObject[] {
+  createMainColumnDataForRow(activity: ActivityRow, self: Self): ActivityFieldValueObject[] {
     return self.createBaseMainColumnDataForRow(activity);
   },
 };
@@ -114,8 +128,8 @@ const BaseActivitiesDataTableComponent = defineComponent({
   components: { DataTable, Column, ColumnGroup, Row },
   data() {
     return {
-      listOfRowContents: [] as Array<Record<string, unknown>>,
-      kpiKeyOfTable: '' as string,
+      listOfRowContents: [] as Array<ActivityRow>,
+      kpiKeyOfTable: '' as KpiKey | '',
       columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
@@ -138,13 +152,13 @@ const BaseActivitiesDataTableComponent = defineComponent({
       kpiKeyOfTable: string;
       columnHeaders: { [kpiKeyOfTable: string]: { [columnName: string]: string } };
     };
-    this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
+    this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable as KpiKey;
     this.columnHeaders = dialogRefData.columnHeaders;
 
     if (typeof dialogRefData.listOfRowContents[0] === 'string') {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
-      this.listOfRowContents = dialogRefData.listOfRowContents as Array<Record<string, unknown>>;
+      this.listOfRowContents = dialogRefData.listOfRowContents as Array<ActivityRow>;
     }
 
     this.frozenColumnDefinitions = this.createFrozenColumnDefinitions();
@@ -200,7 +214,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
      * @param activity one activity row from the dialog payload
      * @returns the main column data entries for that row according to the active configuration
      */
-    createMainColumnDataForRow(activity: Record<string, unknown>) {
+    createMainColumnDataForRow(activity: ActivityRow) {
       return this.activitiesDataTableConfiguration.createMainColumnDataForRow(activity, this);
     },
     /**
@@ -208,8 +222,8 @@ const BaseActivitiesDataTableComponent = defineComponent({
      * @returns the KPI-related data entries shared by all activity table variants
      */
     // eslint-disable-next-line vue/no-unused-properties
-    createBaseMainColumnDataForRow(activity: Record<string, unknown>) {
-      return [...this.createKpiGroupData(activity, this.kpiKeyOfTable)];
+    createBaseMainColumnDataForRow(activity: ActivityRow) {
+      return [...this.createKpiGroupData(activity, this.kpiKeyOfTable as KpiKey)];
     },
     /**
      * @returns the grouped table header metadata including subclass-specific groups
@@ -280,19 +294,20 @@ const BaseActivitiesDataTableComponent = defineComponent({
      * @param kpiKey key of displayed kpi
      * @returns list of kpi data items
      */
-    createKpiGroupData(activity: Record<string, unknown>, kpiKey: 'revenue' | 'capex' | 'opex') {
+    createKpiGroupData(activity: ActivityRow, kpiKey: KpiKey) {
       const value = activity.share?.absoluteShare;
       const percent = activity.share?.relativeShareInPercent;
+      const activityName = (activity.activityName as string | undefined) ?? '';
 
       return [
         {
-          activity: activity.activityName,
+          activity: activityName,
           group: '_kpi',
           field: kpiKey,
           content: formatAmountWithCurrency(value),
         },
         {
-          activity: activity.activityName,
+          activity: activityName,
           group: '_kpi',
           field: `${kpiKey}Percent`,
           content: formatPercentageNumberAsString(percent),
@@ -332,7 +347,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
      * @returns list with a single data item
      */
     // eslint-disable-next-line vue/no-unused-properties
-    createSingleFieldGroupData(activity: Record<string, unknown>, groupName: string, fieldName: string) {
+    createSingleFieldGroupData(activity: ActivityRow, groupName: string, fieldName: string) {
       return [
         {
           activity: activity.activityName as string,
@@ -390,7 +405,9 @@ type MainColumnDefinition = {
   groupIndex: number;
 };
 
-type Self = InstanceType<typeof BaseActivitiesDataTableComponent>;
+type Self = {
+  createBaseMainColumnDataForRow: (activity: ActivityRow) => ActivityFieldValueObject[];
+};
 
 export default BaseActivitiesDataTableComponent;
 </script>
