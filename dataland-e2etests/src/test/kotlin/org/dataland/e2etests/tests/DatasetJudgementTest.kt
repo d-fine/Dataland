@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandqaservice.openApiClient.model.AcceptedDataPointSource
 import org.dataland.datalandqaservice.openApiClient.model.DatasetJudgementState
 import org.dataland.datalandqaservice.openApiClient.model.JudgementDetailsPatch
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -30,9 +33,9 @@ class DatasetJudgementTest {
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
-    private val datapointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
-    private val datapointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
-    private val datapointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
+    private val dataPointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
+    private val dataPointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
+    private val dataPointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
     private val customDataPoint = "{\"value\":1000,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}"
 
     private val dummyQaReport1 =
@@ -77,24 +80,6 @@ class DatasetJudgementTest {
         .postQaReport(datapointId, qaReport)
         .reporterUserId
 
-    private fun patchJudgementDetails(
-        datasetJudgementId: String,
-        dataPointType: String,
-        acceptedSource: AcceptedDataPointSource,
-        reporterUserIdOfAcceptedQaReport: String?,
-        customDataPoint: String?,
-    ) {
-        QaService.datasetJudgementControllerApi.patchJudgementDetails(
-            datasetJudgementId,
-            dataPointType,
-            JudgementDetailsPatch(
-                acceptedSource,
-                reporterUserIdOfAcceptedQaReport,
-                customDataPoint,
-            ),
-        )
-    }
-
     private data class DatasetAndJudgementAndDataPointIds(
         val datasetId: String,
         val datasetJudgementId: String,
@@ -107,9 +92,9 @@ class DatasetJudgementTest {
     ): String {
         var datasetJudgementId: String? = null
 
-        val datapointId1 = dataPoints.getValue(datapointType1)
-        val datapointId2 = dataPoints.getValue(datapointType2)
-        val datapointId3 = dataPoints.getValue(datapointType3)
+        val datapointId1 = dataPoints.getValue(dataPointType1)
+        val datapointId2 = dataPoints.getValue(dataPointType2)
+        val datapointId3 = dataPoints.getValue(dataPointType3)
         val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
         val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
 
@@ -129,11 +114,11 @@ class DatasetJudgementTest {
 
             val patchOperations =
                 listOf(
-                    PatchOperation(datapointType1, AcceptedDataPointSource.Qa, reporterUserId1),
-                    PatchOperation(datapointType2, AcceptedDataPointSource.Qa, reporterUserId2),
-                    PatchOperation(datapointType1, AcceptedDataPointSource.Original),
-                    PatchOperation(datapointType2, AcceptedDataPointSource.Qa, reporterUserId2),
-                    PatchOperation(datapointType3, AcceptedDataPointSource.Custom, null, customDataPoint),
+                    PatchOperation(dataPointType1, AcceptedDataPointSource.Qa, reporterUserId1),
+                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
+                    PatchOperation(dataPointType1, AcceptedDataPointSource.Original),
+                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
+                    PatchOperation(dataPointType3, AcceptedDataPointSource.Custom, null, customDataPoint),
                 ) +
                     dataPoints
                         .filter { (_, dataPointId) -> dataPointId !in explicitlyHandledDataPointIds }
@@ -144,12 +129,14 @@ class DatasetJudgementTest {
 
             val currentDatasetJudgementId = requireNotNull(datasetJudgementId)
             patchOperations.forEach {
-                patchJudgementDetails(
+                QaService.datasetJudgementControllerApi.patchJudgementDetails(
                     currentDatasetJudgementId,
                     it.dataPointType,
-                    it.acceptedSource,
-                    it.reporterUserIdOfAcceptedQaReport,
-                    it.customDataPoint,
+                    JudgementDetailsPatch(
+                        it.acceptedSource,
+                        it.reporterUserIdOfAcceptedQaReport,
+                        it.customDataPoint,
+                    ),
                 )
             }
         }
@@ -165,9 +152,9 @@ class DatasetJudgementTest {
             datasetId,
             datasetJudgementId,
             mapOf(
-                datapointType1 to dataPoints.getValue(datapointType1),
-                datapointType2 to dataPoints.getValue(datapointType2),
-                datapointType3 to dataPoints.getValue(datapointType3),
+                dataPointType1 to dataPoints.getValue(dataPointType1),
+                dataPointType2 to dataPoints.getValue(dataPointType2),
+                dataPointType3 to dataPoints.getValue(dataPointType3),
             ),
         )
     }
@@ -181,13 +168,13 @@ class DatasetJudgementTest {
                 .getDatasetJudgementsByDatasetId(datasetAndDataPointIds.datasetId)
                 .first { it.dataSetJudgementId == datasetAndDataPointIds.datasetJudgementId }
 
-        assertEquals(AcceptedDataPointSource.Original, datasetJudgement.dataPoints[datapointType1]?.acceptedSource)
-        assertNull(datasetJudgement.dataPoints[datapointType1]?.reporterUserIdOfAcceptedQaReport)
+        assertEquals(AcceptedDataPointSource.Original, datasetJudgement.dataPoints[dataPointType1]?.acceptedSource)
+        assertNull(datasetJudgement.dataPoints[dataPointType1]?.reporterUserIdOfAcceptedQaReport)
 
-        assertEquals(AcceptedDataPointSource.Qa, datasetJudgement.dataPoints[datapointType2]?.acceptedSource)
+        assertEquals(AcceptedDataPointSource.Qa, datasetJudgement.dataPoints[dataPointType2]?.acceptedSource)
 
-        assertEquals(AcceptedDataPointSource.Custom, datasetJudgement.dataPoints[datapointType3]?.acceptedSource)
-        assertEquals(customDataPoint, datasetJudgement.dataPoints[datapointType3]?.customValue)
+        assertEquals(AcceptedDataPointSource.Custom, datasetJudgement.dataPoints[dataPointType3]?.acceptedSource)
+        assertEquals(customDataPoint, datasetJudgement.dataPoints[dataPointType3]?.customValue)
     }
 
     @Test
@@ -201,20 +188,20 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Accepted, datasetId)
         assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetAcceptance)
 
-        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
+        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType1))
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType2))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType2))
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
-            datapointType2,
+            dataPointType2,
             dummyQaReport2.correctedData!!,
         )
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType3))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType3))
 
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
-            datapointType3,
+            dataPointType3,
             customDataPoint,
         )
     }
@@ -230,9 +217,76 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Rejected, datasetId)
         assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetRejection)
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType2))
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType3))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType1))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType2))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType3))
+    }
+
+    @Test
+    fun `ensure non-judge cannot call patchJudgementDetails or setJudgementState`() {
+        val (_, datasetJudgementId, _) = createDatasetWithJudgement()
+
+        for (nonJudgeUser in listOf(TechnicalUser.Uploader, TechnicalUser.Reviewer, TechnicalUser.Reader)) {
+            GlobalAuth.withTechnicalUser(nonJudgeUser) {
+                val patchException =
+                    assertThrows<ClientException> {
+                        QaService.datasetJudgementControllerApi.patchJudgementDetails(
+                            datasetJudgementId,
+                            dataPointType1,
+                            JudgementDetailsPatch(
+                                AcceptedDataPointSource.Original,
+                                null,
+                                null,
+                            ),
+                        )
+                    }
+                assertEquals(HttpStatus.FORBIDDEN.value(), patchException.statusCode)
+
+                val stateException =
+                    assertThrows<ClientException> {
+                        QaService.datasetJudgementControllerApi.setJudgementState(
+                            datasetJudgementId,
+                            DatasetJudgementState.FinishedWithDatasetAcceptance,
+                        )
+                    }
+                assertEquals(HttpStatus.FORBIDDEN.value(), stateException.statusCode)
+            }
+        }
+    }
+
+    @Test
+    fun `ensure posting a dataset judgement twice returns 409`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val datasetId = uploadDummySfdrDataset(companyId, bypassQa = false).dataId
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            QaService.datasetJudgementControllerApi.postDatasetJudgement(datasetId)
+
+            val exception =
+                assertThrows<ClientException> {
+                    QaService.datasetJudgementControllerApi.postDatasetJudgement(datasetId)
+                }
+            assertEquals(HttpStatus.CONFLICT.value(), exception.statusCode)
+        }
+    }
+
+    @Test
+    fun `ensure finishing an already-finished judgement throws an error`() {
+        val (_, datasetJudgementId, _) = createDatasetWithJudgement()
+
+        QaService.datasetJudgementControllerApi.setJudgementState(
+            datasetJudgementId,
+            DatasetJudgementState.FinishedWithDatasetAcceptance,
+        )
+
+        val exception =
+            assertThrows<ClientException> {
+                QaService.datasetJudgementControllerApi.setJudgementState(
+                    datasetJudgementId,
+                    DatasetJudgementState.FinishedWithDatasetRejection,
+                )
+            }
+        assertEquals(HttpStatus.CONFLICT.value(), exception.statusCode)
     }
 
     private fun assertQaStatusOfDataset(
