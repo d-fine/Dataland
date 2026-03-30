@@ -972,6 +972,53 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
     });
 
+    it('shows message indicating which qa report has been selected on the reviewed section when acceptedSource is Qa for another report and the reporter does not match', () => {
+      const judgementWithQaAccepted: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Qa,
+            reporterUserIdOfAcceptedQaReport: reporterUserId2,
+            qaReports: [
+              {
+                qaReportId: 'qa-report-1',
+                verdict: QaReportDataPointVerdict.QaAccepted,
+                correctedData: JSON.stringify(correctedDataPoint),
+                reporterUserId: reporterUserId1,
+                uploadTime: 1000,
+                active: true,
+                dataPointId: dataPointId,
+                dataPointType: dataPointTypeId,
+                comment: '',
+              },
+              {
+                qaReportId: 'qa-report-2',
+                verdict: QaReportDataPointVerdict.QaRejected,
+                correctedData: JSON.stringify(correctedDataPoint),
+                reporterUserId: reporterUserId2,
+                uploadTime: 2000,
+                active: true,
+                dataPointId: dataPointId,
+                dataPointType: dataPointTypeId,
+                comment: '',
+              },
+            ],
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementWithQaAccepted });
+
+      cy.get('[data-test="corrected-datapoint-section"]').find('.qa-accepted-info-text').should('be.visible');
+      cy.get('[data-test="corrected-datapoint-section"]')
+        .find('.qa-accepted-info-text')
+        .should('contain.text', 'report 2/2 accepted');
+      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+    });
+
     it('shows the accepted-check on the custom section when acceptedSource is Custom', () => {
       const previousCustomValue = { value: 'accepted-custom-value', quality: 'Audited' };
       const judgementWithCustomAccepted: DatasetJudgementResponse = {

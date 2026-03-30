@@ -7,10 +7,13 @@
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
         <span
-          v-if="isAccepted"
+          v-if="showOriginalCheckmark || showQaCheckmark"
           class="pi pi-check text-green-500 ml-2 text-xl font-bold accepted-check"
           aria-label="Accepted"
         />
+        <span v-else-if="qaAcceptedInfoText" class="ml-2 text-sm text-green-600 font-semibold qa-accepted-info-text">
+          ({{ qaAcceptedInfoText }})
+        </span>
         <DatalandProgressSpinner
           v-if="isLoading && !data"
           class="judge-modal__title-spinner ml-2"
@@ -194,6 +197,7 @@ const props = defineProps<{
   navCount?: number;
   navLabel?: string;
   isAccepted?: boolean;
+  indexOfAcceptedQaReport?: number;
 }>();
 
 const emit = defineEmits<{
@@ -203,6 +207,43 @@ const emit = defineEmits<{
   showPopover: [event: MouseEvent, text: string];
   hidePopover: [];
 }>();
+
+const isQaSection = computed(() => props.showNav);
+const isOriginalSection = computed(() => !props.showNav);
+
+const showOriginalCheckmark = computed(() => {
+  return isOriginalSection.value && props.isAccepted;
+});
+
+const showQaCheckmark = computed(() => {
+  return (
+    isQaSection.value &&
+    props.isAccepted &&
+    props.indexOfAcceptedQaReport != null &&
+    props.navIndex === props.indexOfAcceptedQaReport
+  );
+});
+
+const qaAcceptedInfoText = computed(() => {
+  if (
+    !isQaSection.value ||
+    props.indexOfAcceptedQaReport == null ||
+    props.indexOfAcceptedQaReport < 0 ||
+    props.navCount == null ||
+    props.navCount <= 1
+  ) {
+    return '';
+  }
+
+  if (props.navIndex === props.indexOfAcceptedQaReport) {
+    return '';
+  }
+
+  const acceptedNumber = props.indexOfAcceptedQaReport + 1;
+  const total = props.navCount;
+
+  return `report ${acceptedNumber}/${total} accepted`;
+});
 
 const errorMessage = computed(() => {
   if (!props.isLoadingError || !props.loadingErrorObject) {

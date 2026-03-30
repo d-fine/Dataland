@@ -61,6 +61,7 @@
         :show-nav="false"
         :nav-index="0"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
+        :index-of-accepted-qa-report="indexOfAcceptedQaReport"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
@@ -83,6 +84,7 @@
           currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Qa &&
           currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
         "
+        :index-of-accepted-qa-report="indexOfAcceptedQaReport"
         @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"
@@ -323,6 +325,16 @@ const verdictBadge = computed<{ label: string; background: string; color: string
     background: 'var(--p-yellow-100)',
     color: 'var(--p-yellow-700)',
   };
+});
+
+const indexOfAcceptedQaReport = computed(() => {
+  const judgement = currentDatapointJudgement.value;
+  if (judgement?.acceptedSource !== AcceptedDataPointSource.Qa) return -1;
+
+  const reports = filteredQaReports.value;
+  if (!reports.length) return -1;
+
+  return reports.findIndex((r) => r.reporterUserId === judgement.reporterUserIdOfAcceptedQaReport);
 });
 
 const currentQaReportIndex = ref<number>(0);
