@@ -237,11 +237,7 @@ sonar {
 
                 // qa-service
                 "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
-                "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt" +
-
-                // e2e tests
-                "dataland-frontend/tests/e2e/specs/**," +
-                "dataland-frontend/tests/component/**/*.cy.ts",
+                "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
         property("sonar.issue.ignore.multicriteria", "upload, view")
         property("sonar.issue.ignore.multicriteria.upload.ruleKey", "typescript:S6535")
