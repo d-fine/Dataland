@@ -193,7 +193,7 @@ describeIf(
       });
     });
 
-    it.only('Check rejecting a Dataset on the Judgement Page works as expected', () => {
+    it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
       rejectDatasetInJudgementModal(companyName);
     });
@@ -211,7 +211,7 @@ function createJudgementAndOpenReviewPage(
   uploadedDataMetaInfo: DataMetaInformation,
   token: string
 ): Cypress.Chainable<string> {
-  login(admin_name, admin_pw);
+  login(judge_name, judge_pw);
   return cy
     .request({
       method: 'POST',
@@ -221,6 +221,8 @@ function createJudgementAndOpenReviewPage(
     .then((response) => {
       expect(response.status).to.eq(201);
       const dataSetJudgementId = response.body?.dataSetJudgementId as string;
+      cy.visit(`/qualityassurance/review/${dataSetJudgementId}`);
+      cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
       return cy.wrap(dataSetJudgementId, { log: false });
     });
 }
