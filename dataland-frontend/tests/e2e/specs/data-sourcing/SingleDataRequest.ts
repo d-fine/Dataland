@@ -15,6 +15,8 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
 import { assignCompanyRight } from '@e2e/utils/CompanyRightsUtils.ts';
 
+const shortTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Checks if all expected human-readable labels are visible in the dropdown options
  */
@@ -153,7 +155,7 @@ describeIf(
 
       cy.get('[data-test="enterComment"] input').type(testMessage);
       cy.get('button[type="submit"]').click();
-      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+      cy.wait('@postRequestData', { timeout: shortTimeoutInMs }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
       checkCompanyInfoSheet();
