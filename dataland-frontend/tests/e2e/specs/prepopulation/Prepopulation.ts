@@ -51,7 +51,7 @@ function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCo
 describe(
   'As a user, I want to be able to see some data on the Dataland webpage',
   {
-    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 2000,
+    defaultCommandTimeout: Number(Cypress.expose('prepopulate_timeout_s') ?? 180) * 2000,
     retries: {
       runMode: 0,
       openMode: 0,
