@@ -26,6 +26,8 @@ const queues = [
   'user-service.processMessageForAvailableDataAndUpdates',
 ];
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Checks if all expected queues exist.
  * @param $rows - rows of the table.
@@ -57,7 +59,7 @@ describe('As a developer, I expect the RabbitMQ GUI console to be available to m
     cy.get('#logout').contains('Log out').should('contain.value', 'Log out');
     cy.get("ul[id='tabs']").find("a[href='#/queues']").click();
     cy.get('table.list tbody tr td:nth-child(2) a', {
-      timeout: Cypress.env('medium_timeout_in_ms'),
+      timeout: mediumTimeoutInMs,
     }).should('have.length.greaterThan', 0);
 
     cy.get('table.list tbody tr').then(($rows) => {
