@@ -347,8 +347,10 @@ function runQaScenarioForDataPoint(
 function checkoutDataset(companyName: string): void {
   login(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('be.visible').click({ force: true });
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+    .contains('[data-test="qa-review-company-name"]', companyName)
+    .should('be.visible')
+    .click();
   cy.get('[data-test="qaReviewPageButton"]').should('be.visible').and('be.disabled');
 }
 
