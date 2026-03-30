@@ -11,6 +11,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -76,7 +78,11 @@ class DatasetJudgementFinalizationServiceTest {
 
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
         verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        assert(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Accepted })
+        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
+        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
+        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Accepted })
+        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
+        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
 
         verify(qaReviewManager).changeQaStatus(
             dataId = dummyDatasetJudgement.datasetId.toString(),
@@ -97,13 +103,17 @@ class DatasetJudgementFinalizationServiceTest {
 
         val uploadCaptor = argumentCaptor<UploadedDataPoint>()
         verify(dataPointControllerApi).postDataPoint(uploadCaptor.capture(), any())
-        assert(uploadCaptor.firstValue.dataPoint == MockDatasetJudgementEntityForTest.CUSTOM_VALUE)
-        assert(uploadCaptor.firstValue.companyId == dummyDatasetJudgement.companyId.toString())
-        assert(uploadCaptor.firstValue.reportingPeriod == dummyDatasetJudgement.reportingPeriod)
+        assertEquals(MockDatasetJudgementEntityForTest.CUSTOM_VALUE, uploadCaptor.firstValue.dataPoint)
+        assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
+        assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
 
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
         verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        assert(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
+        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
+        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
+        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
+        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
+        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
     }
 
     @Test
@@ -134,13 +144,17 @@ class DatasetJudgementFinalizationServiceTest {
 
         val uploadCaptor = argumentCaptor<UploadedDataPoint>()
         verify(dataPointControllerApi).postDataPoint(uploadCaptor.capture(), any())
-        assert(uploadCaptor.firstValue.dataPoint == correctedData)
-        assert(uploadCaptor.firstValue.companyId == dummyDatasetJudgement.companyId.toString())
-        assert(uploadCaptor.firstValue.reportingPeriod == dummyDatasetJudgement.reportingPeriod)
+        assertEquals(correctedData, uploadCaptor.firstValue.dataPoint)
+        assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
+        assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
 
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
         verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        assert(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
+        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
+        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
+        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
+        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
+        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
     }
 
     @Test
