@@ -178,25 +178,55 @@ describeIf(
       })
     );
 
-    it('Check full judgement process from upload to acceptance', () => {
+    it('Check creating a Judgement and reassigning the Judge works as expected', () => {
       checkoutDataset(companyName);
-      return startJudgement(companyName).then((datasetJudgementId: string) => {
-        changeJudgeAssignment(companyName);
-        judgeDataPointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
+      startJudgement(companyName);
+      changeJudgeAssignment(companyName);
+    });
+
+    it('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
+        judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
-        judgeDataPointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
+        judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         finishJudgement(companyName);
       });
     });
 
     it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
-      login(admin_name, admin_pw);
-      return startJudgement(companyName).then(() => {
-        rejectDatasetInJudgementModal(companyName);
-      });
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
+      startJudgement(companyName);
+      rejectDatasetInJudgementModal(companyName);
     });
   }
 );
+
+/**
+ * Starts a dataset judgement via the backend API and returns the created dataset judgement id.
+ *
+ * @param uploadedDataMetaInfo Metadata of the uploaded dataset for which the judgement should be created.
+ * @param token                Bearer token used to authenticate the request against the QA backend.
+ * @returns                    A Cypress.Chainable that resolves to the created dataset judgement id.
+ */
+function createJudgementAndOpenReviewPage(
+  uploadedDataMetaInfo: DataMetaInformation,
+  token: string
+): Cypress.Chainable<string> {
+  login(admin_name, admin_pw);
+  return cy
+    .request({
+      method: 'POST',
+      url: `${apiBaseUrl}/qa/dataset-judgements/${uploadedDataMetaInfo.dataId}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => {
+      expect(response.status).to.eq(201);
+      const dataSetJudgementId = response.body?.dataSetJudgementId as string;
+      cy.log('response.body: ', response.body);
+      cy.log('datasetJudgementId: ', dataSetJudgementId);
+      return cy.wrap(dataSetJudgementId, { log: false });
+    });
+}
 
 /**
  * Retrieves reviewer, admin, uploader, and judge Keycloak tokens for subsequent API requests.
@@ -358,9 +388,8 @@ function checkoutDataset(companyName: string): void {
  * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
  *
  * @param companyName The company owning the dataset to be judged.
- * @returns The dataset judgement id returned by the start judgement request.
  */
-function startJudgement(companyName: string): Cypress.Chainable<string> {
+function startJudgement(companyName: string): void {
   cy.intercept('POST', '**/qa/dataset-judgements/**').as('startJudgementRequest');
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
@@ -372,10 +401,8 @@ function startJudgement(companyName: string): Cypress.Chainable<string> {
 
   cy.get('.p-dialog').should('be.visible').contains('button', 'CONFIRM').click();
 
-  return cy.wait('@startJudgementRequest').then((interception) => {
+  cy.wait('@startJudgementRequest').then((interception) => {
     expect(interception.response?.statusCode).to.eq(201);
-    const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
-    return cy.wrap(dataSetJudgementId as string, { log: false });
   });
 }
 
