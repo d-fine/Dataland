@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.AcceptedDataPointSource
 import org.dataland.datalandqaservice.openApiClient.model.DatasetJudgementState
 import org.dataland.datalandqaservice.openApiClient.model.JudgementDetailsPatch
-import org.dataland.datalandqaservice.openApiClient.model.QaDecision
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointString
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
@@ -197,10 +196,10 @@ class DatasetJudgementTest {
         val datasetId = datasetAndJudgementAndDataPointIds.datasetId
         val datasetJudgementId = datasetAndJudgementAndDataPointIds.datasetJudgementId
 
-        QaService.datasetJudgementControllerApi.finishJudgement(datasetJudgementId, QaDecision.Accepted)
+        QaService.datasetJudgementControllerApi.setJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetAcceptance)
 
         assertQaStatusOfDataset(QaStatus.Accepted, datasetId)
-        assertDatasetJudgementIsFinished(datasetJudgementId)
+        assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetAcceptance)
 
         assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
 
@@ -226,10 +225,10 @@ class DatasetJudgementTest {
         val datasetId = datasetAndJudgementAndDataPointIds.datasetId
         val datasetJudgementId = datasetAndJudgementAndDataPointIds.datasetJudgementId
 
-        QaService.datasetJudgementControllerApi.finishJudgement(datasetJudgementId, QaDecision.Rejected)
+        QaService.datasetJudgementControllerApi.setJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetRejection)
 
         assertQaStatusOfDataset(QaStatus.Rejected, datasetId)
-        assertDatasetJudgementIsFinished(datasetJudgementId)
+        assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetRejection)
 
         assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType1))
         assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(datapointType2))
@@ -244,11 +243,13 @@ class DatasetJudgementTest {
         QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(datasetId)).qaStatus,
     )
 
-    private fun assertDatasetJudgementIsFinished(datasetJudgementId: String) =
-        assertEquals(
-            DatasetJudgementState.Finished,
-            QaService.datasetJudgementControllerApi.getDatasetJudgement(datasetJudgementId).judgementState,
-        )
+    private fun assertDatasetJudgementState(
+        datasetJudgementId: String,
+        datasetJudgementState: DatasetJudgementState,
+    ) = assertEquals(
+        datasetJudgementState,
+        QaService.datasetJudgementControllerApi.getDatasetJudgement(datasetJudgementId).judgementState,
+    )
 
     private fun assertQaStatusOfDatapoint(
         expectedQaStatus: QaStatus,

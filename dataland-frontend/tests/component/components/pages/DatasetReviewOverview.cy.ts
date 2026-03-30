@@ -255,7 +255,6 @@ describe('DatasetReviewOverview page details', () => {
     expectedUrlSuffix: string;
     expectedStateParam?: string;
     allDataPointsReviewed?: boolean;
-    requestMethod: string;
   }
 
   /**
@@ -287,7 +286,7 @@ describe('DatasetReviewOverview page details', () => {
       mountPage();
     }
     cy.wait('@getDatasetJudgement');
-    cy.intercept({ method: config.requestMethod, url: config.interceptUrl }, { statusCode: 200, body: {} }).as(
+    cy.intercept({ method: 'PATCH', url: config.interceptUrl }, { statusCode: 200, body: {} }).as(
       config.interceptAlias
     );
 
@@ -297,7 +296,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.contains('CONFIRM').click();
 
     cy.wait(`@${config.interceptAlias}`).then((interception) => {
-      expect(interception.request.method).to.eq(config.requestMethod);
+      expect(interception.request.method).to.eq('PATCH');
       expect(interception.request.url).to.contain(config.expectedUrlSuffix);
       if (config.expectedStateParam != null) {
         expect(interception.request.url).to.contain(config.expectedStateParam);
@@ -310,7 +309,6 @@ describe('DatasetReviewOverview page details', () => {
       mountAssignedToCurrentUser: false,
       interceptUrl: '**/qa/dataset-judgements/**/judge',
       interceptAlias: 'setJudge',
-      requestMethod: 'PATCH',
       triggerButtonText: 'ASSIGN YOURSELF',
       modalTitle: 'Assign Yourself',
       modalBody: 'Are you sure you want to assign this dataset review to yourself?',
@@ -321,14 +319,13 @@ describe('DatasetReviewOverview page details', () => {
   it('opens the reject dataset modal when assigned and performs correct API call', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: true,
-      interceptUrl: '**/qa/dataset-judgements/**/qa-decision**',
+      interceptUrl: '**/qa/dataset-judgements/**/state**',
       interceptAlias: 'rejectReview',
       triggerButtonText: 'REJECT DATASET',
       modalTitle: 'Reject Dataset',
       modalBody: 'Are you sure you want to reject this dataset review?',
-      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/qa-decision`,
-      expectedStateParam: 'qaDecision=Rejected',
-      requestMethod: 'POST',
+      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
+      expectedStateParam: 'datasetJudgementState=FinishedWithDatasetRejection',
     });
   });
 
@@ -342,14 +339,13 @@ describe('DatasetReviewOverview page details', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: true,
       allDataPointsReviewed: true,
-      interceptUrl: '**/qa/dataset-judgements/**/qa-decision**',
+      interceptUrl: '**/qa/dataset-judgements/**/state**',
       interceptAlias: 'finishReview',
       triggerButtonText: 'FINISH REVIEW',
       modalTitle: 'Finish Review',
       modalBody: 'Are you sure you want to mark this dataset review as finished?',
-      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/qa-decision`,
-      expectedStateParam: 'qaDecision=Accepted',
-      requestMethod: 'POST',
+      expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
+      expectedStateParam: 'datasetJudgementState=Finished',
     });
   });
 });

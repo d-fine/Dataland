@@ -8,7 +8,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
@@ -98,22 +97,26 @@ class DatasetJudgementService
          * @return DatasetJudgementResponse The API response with updated review details.
          */
         @Transactional
-        fun finishJudgement(
+        fun setJudgementState(
             datasetJudgementId: UUID,
-            state: QaDecision,
+            state: DatasetJudgementState,
         ): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validateDatasetJudgementIsPending(datasetJudgement)
             when (state) {
-                QaDecision.Accepted -> {
+                DatasetJudgementState.FinishedWithDatasetAcceptance -> {
                     datasetJudgementFinalizationService.handleAcceptance(datasetJudgement)
                 }
-                QaDecision.Rejected -> {
+                DatasetJudgementState.FinishedWithDatasetRejection -> {
                     datasetJudgementFinalizationService.handleRejection(datasetJudgement)
                 }
+                DatasetJudgementState.Pending -> throw InvalidInputApiException(
+                    summary = "Invalid judgement state.",
+                    message = "Cannot set judgement state to pending.",
+                )
             }
-            datasetJudgement.judgementState = DatasetJudgementState.Finished
+            datasetJudgement.judgementState = state
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
 

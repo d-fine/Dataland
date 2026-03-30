@@ -4,7 +4,6 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DatasetJudgementController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -102,21 +101,21 @@ class DatasetJudgementControllerTest {
     }
 
     @Test
-    fun `finishJudgement delegates to service`() {
+    fun `setJudgementState delegates to service`() {
         val id = UUID.randomUUID()
-        val state = QaDecision.Accepted
+        val state = DatasetJudgementState.FinishedWithDatasetAcceptance
         val serviceResponse = mock<DatasetJudgementResponse>()
 
-        whenever(datasetJudgementService.finishJudgement(id, state))
+        whenever(datasetJudgementService.setJudgementState(id, state))
             .thenReturn(serviceResponse)
 
-        val result = controller.finishJudgement(id.toString(), state)
+        val result = controller.setJudgementState(id.toString(), state)
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(serviceResponse, result.body)
 
         val idCaptor = argumentCaptor<UUID>()
-        verify(datasetJudgementService).finishJudgement(idCaptor.capture(), eq(state))
+        verify(datasetJudgementService).setJudgementState(idCaptor.capture(), eq(state))
         assertEquals(id, idCaptor.firstValue)
     }
 

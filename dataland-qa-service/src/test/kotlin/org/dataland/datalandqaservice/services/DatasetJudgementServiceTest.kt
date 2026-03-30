@@ -14,7 +14,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaDecision
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
@@ -196,22 +195,15 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `finishJudgement with QaDecision accepted sets judgement state to finished when user is judge`() {
+    fun `setJudgementState updates status when user is judge`() {
         datasetJudgementEntity.dataPoints.first().acceptedSource = AcceptedDataPointSource.Original
-        service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+        service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         val saved = captureSavedJudgement()
-        assertEquals(DatasetJudgementState.Finished, saved.judgementState)
+        assertEquals(DatasetJudgementState.FinishedWithDatasetAcceptance, saved.judgementState)
     }
 
     @Test
-    fun `finishJudgement with QaDecision rejected sets judgement state to finished when user is judge`() {
-        service.finishJudgement(UUID.randomUUID(), QaDecision.Rejected)
-        val saved = captureSavedJudgement()
-        assertEquals(DatasetJudgementState.Finished, saved.judgementState)
-    }
-
-    @Test
-    fun `finishJudgement throws InsufficientRights when current user is not judge`() {
+    fun `setJudgementState throws InsufficientRights when current user is not judge`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",
             UUID.randomUUID().toString(),
@@ -219,24 +211,24 @@ class DatasetJudgementServiceTest {
         )
 
         assertThrows<InsufficientRightsApiException> {
-            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         }
     }
 
     @Test
-    fun `finishJudgement throws ConflictApiException when current judgement state is Finished`() {
-        datasetJudgementEntity.judgementState = DatasetJudgementState.Finished
+    fun `setJudgementState throws ConflictApiException when current judgement state is Finished`() {
+        datasetJudgementEntity.judgementState = DatasetJudgementState.FinishedWithDatasetAcceptance
 
         assertThrows<ConflictApiException> {
-            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         }
     }
 
     @Test
-    fun `finishJudgement throws error when accepting judgement with unreviewed datapoints`() {
+    fun `setJudgementState throws error when accepting judgement with unreviewed datapoints`() {
         datasetJudgementEntity.dataPoints.first().acceptedSource = null
         assertThrows<InvalidInputApiException> {
-            service.finishJudgement(UUID.randomUUID(), QaDecision.Accepted)
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         }
     }
 

@@ -120,7 +120,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { QaDecision } from '@clients/qaservice';
+import { DatasetJudgementState } from '@clients/qaservice';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
@@ -179,12 +179,12 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDataset
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
   datasetJudgementIdRef,
-  QaDecision.Rejected
+  DatasetJudgementState.FinishedWithDatasetRejection
 );
 
 const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
   datasetJudgementIdRef,
-  QaDecision.Accepted
+  DatasetJudgementState.FinishedWithDatasetAcceptance
 );
 
 const isModalActionPending = computed(
