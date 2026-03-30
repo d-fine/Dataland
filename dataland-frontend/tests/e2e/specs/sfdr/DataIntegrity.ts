@@ -13,6 +13,8 @@ import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@s
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
   cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
@@ -160,7 +162,7 @@ describeIf(
               '?templateDataId=' +
               uploadIds.dataId
           );
-          cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.wait('@fetchDataForPrefill', { timeout: mediumTimeoutInMs });
           cy.get('h1').should('contain', companyName);
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
