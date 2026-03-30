@@ -2,6 +2,8 @@ import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
 import { browserThen } from '@e2e/utils/Cypress';
 import 'cypress-wait-until';
 
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -45,7 +47,7 @@ declare global {
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
   cy.visit(endpoint);
-  cy.get('#app', { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
+  cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
   closeCookieBannerIfItExists();
   return cy.get('#app');
 }
@@ -80,7 +82,7 @@ export function visitAndCheckExternalAdminPage(options: {
     containsText,
     urlShouldInclude,
     method = 'GET',
-    timeoutInMs = Cypress.env('long_timeout_in_ms'),
+    timeoutInMs = longTimeoutInMs,
     ignoreExceptions = [],
   } = options;
 
@@ -155,7 +157,7 @@ export function waitForPageLoad(options: {
     elementSelectors = [],
     containsText,
     customCheck,
-    timeout = Cypress.env('long_timeout_in_ms'),
+    timeout = longTimeoutInMs,
     interval = 1000,
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
