@@ -47,15 +47,17 @@ interface QaAction {
   verdict: QaVerdict;
 }
 
+interface QaJudgement {
+  acceptedSource?: AcceptedSource;
+  reporterUserIdOfAcceptedQaReport?: string;
+  customDataPoint?: string;
+}
+
 interface QaScenarioConfig {
   dataPointType: DataPointType;
   correctedValue?: string;
   actions: QaAction[];
-  judgement: {
-    acceptedSource: AcceptedSource;
-    acceptedQaReporterUserId?: string;
-    customDataPoint?: string;
-  };
+  judgement: QaJudgement;
 }
 
 interface DataPointOverview {
@@ -64,11 +66,8 @@ interface DataPointOverview {
   amountOfDataPointsToReview: number;
 }
 
-interface PatchDataPointOptions {
+interface PatchDataPointOptions extends QaJudgement {
   dataPointType: string;
-  acceptedSource?: string;
-  reporterUserIdOfAcceptedQaReport?: string;
-  customDataPoint?: string;
 }
 
 const DATA_POINT_TYPES = {
@@ -117,7 +116,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     ],
     judgement: {
       acceptedSource: 'Qa',
-      acceptedQaReporterUserId: reviewer_userId,
+      reporterUserIdOfAcceptedQaReport: reviewer_userId,
       customDataPoint: '{"value":"No"}',
     },
   },
@@ -130,13 +129,13 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     ],
     judgement: {
       acceptedSource: 'Qa',
-      acceptedQaReporterUserId: admin_userId,
+      reporterUserIdOfAcceptedQaReport: admin_userId,
     },
   },
 ];
 
 describeIf(
-  'As a user, I expect to be able to log in',
+  'As a user, I expect to be able to go through the full judgement process',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
@@ -196,9 +195,9 @@ describeIf(
         })
         .then((datasetJudgementId) => {
           changeJudgeAssignment(companyName);
-          judgeDatapointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
+          judgeDataPointsWithoutQaReports(datasetJudgementId, tokens.judgeToken, overview);
           tryFinishingJudgementBeforeAllDataPointsReviewed();
-          judgeDatapointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
+          judgeDataPointsWithQaReports(datasetJudgementId, tokens.judgeToken, overview);
           finishJudgement(companyName);
         });
     });
@@ -252,10 +251,10 @@ function getTokens(): Cypress.Chainable<QaTokens> {
       return getKeycloakToken(judge_name, judge_pw);
     })
     .then((judgeToken) => ({
-      reviewerToken,
-      adminToken,
-      uploaderToken,
-      judgeToken,
+      reviewerToken: reviewerToken,
+      adminToken: adminToken,
+      uploaderToken: uploaderToken,
+      judgeToken: judgeToken,
     }));
 }
 
@@ -310,7 +309,6 @@ function initializeDataPointOverviewForDataset(
     })
     .then((response) => {
       const allDataPoints = response.body?.data ?? response.body ?? {};
-
       const dataPointsWithQaReports: Record<string, string> = {};
       const dataPointsWithoutQaReports: Record<string, string> = {};
 
@@ -322,13 +320,11 @@ function initializeDataPointOverviewForDataset(
         }
       });
 
-      const overview: DataPointOverview = {
-        dataPointsWithQaReports,
-        dataPointsWithoutQaReports,
+      return {
+        dataPointsWithQaReports: dataPointsWithQaReports,
+        dataPointsWithoutQaReports: dataPointsWithoutQaReports,
         amountOfDataPointsToReview: Object.keys(allDataPoints).length,
-      };
-
-      return overview;
+      } as DataPointOverview;
     });
 }
 
@@ -396,38 +392,24 @@ function startJudgement(companyName: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .last()
-    .should('exist')
-    .within(() => {
-      cy.contains('[data-test="qa-review-company-name"]', companyName)
-        .should('have.text', companyName)
-        .closest('tr')
-        .within(() => {
-          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
-          cy.contains('td', 'Start Review').should('exist').click();
-        });
-    });
+    .contains('[data-test="qa-review-company-name"]', companyName)
+    .closest('tr')
+    .contains('td', 'Start Review')
+    .click();
 
-  cy.get('.p-dialog')
-    .should('be.visible')
-    .within(() => {
-      cy.contains('button', 'CONFIRM').should('exist').click();
-    });
+  cy.get('.p-dialog').should('be.visible').contains('button', 'CONFIRM').click();
 
-  return cy
-    .wait('@startJudgementRequest')
-    .then((interception) => {
-      expect(interception.response?.statusCode).to.eq(201);
-      const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
-      return cy.wrap(dataSetJudgementId as string, { log: false });
-    })
-    .should('exist');
+  return cy.wait('@startJudgementRequest').then((interception) => {
+    expect(interception.response?.statusCode).to.eq(201);
+    const dataSetJudgementId = interception.response?.body?.dataSetJudgementId;
+    return cy.wrap(dataSetJudgementId as string, { log: false });
+  });
 }
 
 /**
  * Switches to the judge user, opens the review entry for the company, and assigns the dataset to the judge.
  *
- * @param companyName - The name of the company owning the dataset to be judged.
+ * @param companyName The name of the company owning the dataset to be judged.
  */
 function changeJudgeAssignment(companyName: string): void {
   cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
@@ -436,17 +418,10 @@ function changeJudgeAssignment(companyName: string): void {
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .last()
-    .should('exist')
-    .within(() => {
-      cy.contains('[data-test="qa-review-company-name"]', companyName)
-        .should('have.text', companyName)
-        .closest('tr')
-        .within(() => {
-          cy.get('[data-test="qa-review-company-name"]').should('have.text', companyName);
-          cy.contains('td', 'Data Admin').should('exist').click();
-        });
-    });
+    .contains('[data-test="qa-review-company-name"]', companyName)
+    .closest('tr')
+    .contains('td', 'Data Admin')
+    .click();
   cy.contains('p', 'Currently assigned to:').should('be.visible').next('p').should('have.text', 'Data Admin');
   cy.contains('button', 'ASSIGN YOURSELF').should('be.visible').click();
   cy.get('.p-dialog')
@@ -460,25 +435,43 @@ function changeJudgeAssignment(companyName: string): void {
 /**
  * Patches all data points without QA reports as accepted original.
  *
- * @param datasetJudgementId - The dataset judgement id to update.
- * @param judgeToken         - Bearer token for the judge user.
- * @param overview           - DataPointOverview containing data point IDs and counts.
+ * @param datasetJudgementId The dataset judgement id to update.
+ * @param judgeToken         Bearer token for the judge user.
+ * @param overview           DataPointOverview containing data point IDs and counts.
  */
-function judgeDatapointsWithoutQaReports(
+function judgeDataPointsWithoutQaReports(
   datasetJudgementId: string,
   judgeToken: string,
   overview: DataPointOverview
 ): void {
   const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
 
-  cy.then(() => {
-    dataPointEntries.forEach(([dataPointType]) => {
-      patchDataPoint(datasetJudgementId, judgeToken, {
-        dataPointType,
-        acceptedSource: 'Original',
-      });
+  dataPointEntries.forEach(([dataPointType]) => {
+    patchDataPoint(datasetJudgementId, judgeToken, {
+      dataPointType,
+      acceptedSource: 'Original',
     });
-  }).then(() => checkOriginalDatapointsAccepted(dataPointEntries, overview));
+  });
+
+  checkOriginalDataPointsAccepted(dataPointEntries, overview);
+}
+
+/**
+ * Reloads the Judgement page and checks the expected icons for the original datapoints.
+ *
+ * @param dataPointEntries Tuple entries of dataPointType and dataPointId.
+ * @param overview         DataPointOverview containing data point IDs and counts.
+ */
+function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string]>, overview: DataPointOverview): void {
+  cy.reload();
+  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
+  cy.contains(
+    `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
+  ).should('be.visible');
+
+  dataPointEntries.forEach(([, dataPointId]) => {
+    checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
+  });
 }
 
 /**
@@ -489,26 +482,22 @@ function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
 }
 
 /**
- * Patches QA-report datapoints according to the configured QA scenarios,
- * reloads the page once, and verifies the expected icons for each data point row.
+ * Patches QA-report data points according to the configured QA scenarios, reloads once,
+ * and verifies the expected icons for each data point row.
  *
- * @param datasetJudgementId - The dataset judgement id to update.
- * @param judgeToken         - Bearer token for the judge user.
- * @param overview           - DataPointOverview containing data point IDs and counts.
+ * @param datasetJudgementId The dataset judgement id to update.
+ * @param judgeToken         Bearer token for the judge user.
+ * @param overview           DataPointOverview containing data point IDs and counts.
  */
-function judgeDatapointsWithQaReports(
+function judgeDataPointsWithQaReports(
   datasetJudgementId: string,
   judgeToken: string,
   overview: DataPointOverview
 ): void {
   QA_SCENARIO_CONFIG.forEach((scenario) => {
-    const { judgement } = scenario;
-
     patchDataPoint(datasetJudgementId, judgeToken, {
       dataPointType: scenario.dataPointType,
-      acceptedSource: judgement.acceptedSource,
-      reporterUserIdOfAcceptedQaReport: judgement.acceptedQaReporterUserId,
-      customDataPoint: judgement.customDataPoint,
+      ...scenario.judgement,
     });
   });
 
@@ -527,6 +516,8 @@ function judgeDatapointsWithQaReports(
  * Calculate the expected Icons for a data point based on the QA scenario configuration and the judgement.
  *
  * Column Order: [Original, Reviewer-QA, Admin-QA, Custom]
+ *
+ * @param scenario QA scenario configuration including judgement rules.
  */
 function buildExpectedIconsForScenario(scenario: QaScenarioConfig): IconState[] {
   const originalIcon = scenario.judgement.acceptedSource === 'Original' ? IconState.Accepted : IconState.Rejected;
@@ -545,16 +536,19 @@ function buildExpectedIconsForScenario(scenario: QaScenarioConfig): IconState[] 
 /**
  * Determines the expected icon state for a QA action based on verdict, judgement, and reporter.
  *
- * @param action             QA action whose icon state should be calculated; if undefined, no icon is shown.
- * @param judgement          Judgement configuration of the QA scenario used to interpret the QA action.
- * @param thisReporterUserId User ID of the reporter for whom the icon state should be determined.
- * @returns                  The icon state representing an accepted, rejected, or absent QA action.
+ * Rules:
+ * - If no QA action is present: IconState.None.
+ * - If verdict = QaAccepted: IconState.None (no icon in the QA column).
+ * - If verdict = QaRejected:
+ *   - and this QA was accepted as the source -> IconState.Accepted
+ *   - otherwise -> IconState.Rejected
+ *
+ * @param action         QA action whose icon state should be calculated; if undefined, no icon is shown.
+ * @param judgement      Judgement configuration of the QA scenario used to interpret the QA action.
+ * @param reporterUserId User ID of the reporter for whom the icon state should be determined.
+ * @return               The icon state representing an accepted, rejected, or absent QA action.
  */
-function buildQaIconForAction(
-  action: QaAction | undefined,
-  judgement: QaScenarioConfig['judgement'],
-  thisReporterUserId: string
-): IconState {
+function buildQaIconForAction(action: QaAction | undefined, judgement: QaJudgement, reporterUserId: string): IconState {
   if (!action) {
     return IconState.None;
   }
@@ -563,7 +557,8 @@ function buildQaIconForAction(
     return IconState.None;
   }
 
-  const isAcceptedQa = judgement.acceptedSource === 'Qa' && judgement.acceptedQaReporterUserId === thisReporterUserId;
+  const isAcceptedQa =
+    judgement.acceptedSource === 'Qa' && judgement.reporterUserIdOfAcceptedQaReport === reporterUserId;
 
   return isAcceptedQa ? IconState.Accepted : IconState.Rejected;
 }
@@ -571,14 +566,19 @@ function buildQaIconForAction(
 /**
  * Determines the expected icon state for the custom column based on the judgement configuration.
  *
+ * Rules:
+ * - If no customDataPoint is set -> IconState.None
+ * - If customDataPoint is set:
+ *   - and acceptedSource = 'Custom' -> IconState.Accepted
+ *   - otherwise -> IconState.Rejected
+ *
  * @param judgement Judgement configuration of the QA scenario used to evaluate the custom data point.
- * @returns         The icon state representing an accepted, rejected, or absent custom data point.
+ * @return          The icon state representing an accepted, rejected, or absent custom data point.
  */
-function buildCustomIcon(judgement: QaScenarioConfig['judgement']): IconState {
+function buildCustomIcon(judgement: QaJudgement): IconState {
   if (!judgement.customDataPoint) {
     return IconState.None;
   }
-
   return judgement.acceptedSource === 'Custom' ? IconState.Accepted : IconState.Rejected;
 }
 
@@ -602,10 +602,11 @@ function finishJudgement(companyName: string): void {
 /**
  * Patches a datapoint with the given accepted source, reporter user id, and custom datapoint value.
  *
- * @param datasetJudgementId The dataset for which the datapoint should be patched
- * @param token              Authentication token
- * @param options            Options for patching the datapoint, including dataPointType, acceptedSource,
- *                           reporterUserIdOfAcceptedQaReport, and customDataPoint
+ * @param datasetJudgementId The dataset for which the datapoint should be patched.
+ * @param token              Authentication token.
+ * @param options            Options for patching the datapoint, including:
+ *                           - dataPointType
+ *                           - judgement-related fields (acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint)
  */
 function patchDataPoint(datasetJudgementId: string, token: string, options: PatchDataPointOptions): void {
   cy.request({
@@ -625,8 +626,8 @@ function patchDataPoint(datasetJudgementId: string, token: string, options: Patc
 /**
  * Checks the icons in the row of the given data point id and verifies that they match the expected ones.
  *
- * @param dataPointId   Id of the datapoint we want to check
- * @param expectedIcons The expected icons of the given datapoint
+ * @param dataPointId   Id of the datapoint we want to check.
+ * @param expectedIcons The expected icons of the given datapoint.
  */
 function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
   cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
@@ -663,29 +664,9 @@ function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
 }
 
 /**
- * Reloads the review page and checks the expected icons for the original datapoints.
+ * Reject Dataset via the button on the Judgement Page.
  *
- * @param dataPointEntries - Tuple entries of dataPointType and dataPointId.
- * @param overview         - DataPointOverview containing data point IDs and counts.
- */
-function checkOriginalDatapointsAccepted(dataPointEntries: Array<[string, string]>, overview: DataPointOverview): void {
-  cy.reload();
-  cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
-  cy.contains(
-    `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
-  ).should('be.visible');
-
-  cy.then(() => {
-    dataPointEntries.forEach(([, dataPointId]) => {
-      checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
-    });
-  });
-}
-
-/**
- * Reject Dataset via the button on the Judgement Page
- *
- * @param companyName Name of the company whose dataset should be rejected
+ * @param companyName Name of the company whose dataset should be rejected.
  */
 function rejectDatasetInJudgementModel(companyName: string): void {
   cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
