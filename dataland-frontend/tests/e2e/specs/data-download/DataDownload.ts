@@ -10,9 +10,8 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
-const cypressEnv = Cypress.env() as { short_timeout_in_ms?: number | string; medium_timeout_in_ms?: number | string };
-const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
-const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
+const shortTimeoutInMs = Number(Cypress.env('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.env('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Checks that the downloaded file does actually exist

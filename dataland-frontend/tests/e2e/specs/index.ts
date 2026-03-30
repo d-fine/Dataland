@@ -1,20 +1,11 @@
-const cypressEnv = Cypress.env() as Record<string, unknown>;
-const rawTestGroup = cypressEnv.TEST_GROUP;
-const parsedTestGroup =
-  typeof rawTestGroup === 'number'
-    ? rawTestGroup
-    : typeof rawTestGroup === 'string'
-      ? Number.parseInt(rawTestGroup, 10)
-      : Number.NaN;
-
-const testGroupingDisabled = Number.isNaN(parsedTestGroup);
+const testGroupingDisabled = Number.isNaN(cy.env(['TEST_GROUP']) as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parsedTestGroup;
+  cypressTestGroup = Number.parseInt(cy.env(['TEST_GROUP']) as string);
 }
 
-const singlePopulate = !testGroupingDisabled && cypressEnv.SINGLE_POPULATE === true;
-const runPrepopulation = cypressEnv.RUN_PREPOPULATION !== false;
+const singlePopulate = !testGroupingDisabled && cy.env(['SINGLE_POPULATE']) === true;
+const runPrepopulation = cy.env(['RUN_PREPOPULATION']) !== false;
 
 if (testGroupingDisabled) {
   console.log('Test grouping disabled. Loading all tests...');

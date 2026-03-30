@@ -18,9 +18,8 @@ import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefiniti
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-const cypressEnv = Cypress.env() as { short_timeout_in_ms?: number | string; medium_timeout_in_ms?: number | string };
-const shortTimeoutInMs = Number(cypressEnv.short_timeout_in_ms ?? 10000);
-const mediumTimeoutInMs = Number(cypressEnv.medium_timeout_in_ms ?? 30000);
+const shortTimeoutInMs = Number((cy.env(['short_timeout_in_ms']) as number | string | undefined) ?? 10000);
+const mediumTimeoutInMs = Number((cy.env(['medium_timeout_in_ms']) as number | string | undefined) ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
