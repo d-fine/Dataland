@@ -49,6 +49,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./user-experience');
   require('./portfolios');
   require('./data-sourcing');
+  require('./judgement');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {

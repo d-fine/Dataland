@@ -10,7 +10,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { qaOverviewNavigateToLastPage } from '@e2e/utils/QualityAssuranceUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
@@ -90,7 +89,13 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
   safeLogout();
   login(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+    if (element.prop('disabled')) {
+      return;
+    }
+    element.trigger('click');
+  });
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -132,7 +137,13 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   login(admin_name, admin_pw);
 
   cy.visitAndCheckAppMount('/qualityassurance');
-  qaOverviewNavigateToLastPage();
+  cy.get('[data-test="qa-review-section"]').should('be.visible');
+  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+    if (element.prop('disabled')) {
+      return;
+    }
+    element.trigger('click');
+  });
 
   cy.visit(`/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/${dataMetaInfo.dataId}`);
 
