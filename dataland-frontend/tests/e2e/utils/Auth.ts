@@ -37,7 +37,7 @@ export function login(
   cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
   cy.visitAndCheckAppMount('/');
-  cy.get("[data-test='login-dataland-button']", { timeout: LongTimeoutInMs  }).click();
+  cy.get("[data-test='login-dataland-button']", { timeout: longTimeoutInMs  }).click();
 
   loginWithCredentials(username, password);
 
@@ -65,8 +65,8 @@ export function login(
       if (doesUserHavePortfolios) {
         urlToRedirectTo = getBaseUrl() + '/portfolios';
       }
-      cy.url({ timeout: ClongTimeoutInMs  }).should('eq', urlToRedirectTo);
-      cy.wait('@getPortfolios', { timeout: ClongTimeoutInMs  }).then((interception) => {
+      cy.url({ timeout: longTimeoutInMs  }).should('eq', urlToRedirectTo);
+      cy.wait('@getPortfolios', { timeout: longTimeoutInMs  }).then((interception) => {
         globalJwt = interception.request.headers['authorization'] as string;
       });
     });

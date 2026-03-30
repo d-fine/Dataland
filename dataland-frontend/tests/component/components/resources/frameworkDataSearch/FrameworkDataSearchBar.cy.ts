@@ -49,7 +49,7 @@ describe('Component tests for the search bar on the company search page', () => 
     getMountingFunction({ keycloak: minimalKeycloakMock() })(FrameworkDataSearchBar);
     cy.intercept('**/api/companies*', modifiedMockDataSearchResponse).as('searchCompany');
     typeIntoSearchBar(highlightedSubString);
-    cy.wait('@searchCompany', { timeout: shortTTimeoutInMs });
+    cy.wait('@searchCompany', { timeout: shortTimeoutInMs });
     validateAutocompletePanel(true);
     cy.get('.p-autocomplete-option')
       .eq(0)

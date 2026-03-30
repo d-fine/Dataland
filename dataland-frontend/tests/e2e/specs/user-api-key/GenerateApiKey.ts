@@ -1,17 +1,16 @@
+const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+
 /**
  * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if
  * the Chrome browser is used to execute this cypress test. For other browsers it skips that part of the test.
  */
 function verifyCreatingApiKeyAndCopyingIt(): void {
-
-  const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
-  const mediumTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
-
   cy.get('div.middle-center-div button').contains('CREATE NEW API KEY').click();
   cy.get('div#expiryTime').click();
   cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
   cy.get('button#generateApiKey').click();
-  cy.wait('@generateApiKey', { shortTimeoutInMs });
+  cy.wait('@generateApiKey', { timeout: shortTimeoutInMs });
   cy.get('[data-test="apiKeyInfo"]').should('exist');
   cy.get('textarea#newKeyHolder').should('exist');
   cy.get('#existingApiKeyCard').find('span').contains('The API Key has no defined expiry date').should('exist');
