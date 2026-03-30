@@ -50,7 +50,7 @@ describeIf(
         betaCompanyIdAndName = beta;
       });
       getKeycloakToken(admin_name, admin_pw).then((t) => {
-        Cypress.env('token', t);
+        Cypress.expose('token', t);
       });
     });
 
@@ -95,7 +95,7 @@ describeIf(
     });
 
     it('Shows conflict modal for already associated document', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.expose('token');
       cy.readFile(testDocFilePath, null).then((buffer) => {
         void uploadDocumentViaApi(token, buffer, testDocFileName, {
           documentName: testDocFileName,
@@ -110,7 +110,7 @@ describeIf(
     });
 
     it('Associate document with new company after conflict', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.expose('token');
       cy.readFile(testDocFilePath, null).then((buffer) => {
         void uploadDocumentViaApi(token, buffer, testDocFileName, {
           documentName: testDocFileName,
