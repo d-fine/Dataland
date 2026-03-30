@@ -1,13 +1,22 @@
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import BaseActivitiesDataTable from '@/components/general/BaseActivitiesDataTable.vue';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';
 
 type Self = InstanceType<typeof BaseActivitiesDataTable>;
 
-const eligibleOrAlignedActivitiesDataTableConfiguration = {
-  createAdditionalMainColumnDefinitions(self: Self): Array<Record<string, unknown>> {
+type EligibleOrAlignedActivityRow = Record<string, unknown> & {
+  activityName?: string;
+  substantialContributionToClimateChangeMitigationInPercent?: number;
+  substantialContributionToClimateChangeAdaptationInPercent?: number;
+  substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number;
+  substantialContributionToTransitionToACircularEconomyInPercent?: number;
+  substantialContributionToPollutionPreventionAndControlInPercent?: number;
+  substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?: number;
+};
+
+const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfiguration'] = {
+  createAdditionalMainColumnDefinitions(self: Self) {
     return [
       ...self.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       {
@@ -24,7 +33,7 @@ const eligibleOrAlignedActivitiesDataTableConfiguration = {
       },
     ];
   },
-  createAdditionalMainColumnGroups(self: Self): Array<Record<string, unknown>> {
+  createAdditionalMainColumnGroups(self: Self) {
     return [
       {
         key: 'substantialContributionCriteria',
@@ -42,31 +51,32 @@ const eligibleOrAlignedActivitiesDataTableConfiguration = {
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self): Array<Record<string, unknown>> {
+  createMainColumnDataForRow(activity: Record<string, unknown>, self: Self) {
+    const typedActivity = activity as EligibleOrAlignedActivityRow;
     return [
       ...self.createBaseMainColumnDataForRow(activity),
-      ...self.createActivityGroupData<number>(
-        activity.activityName as string,
+      ...self.createActivityGroupData<number | undefined>(
+        typedActivity.activityName as string,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:
-            activity.substantialContributionToClimateChangeMitigationInPercent,
+            typedActivity.substantialContributionToClimateChangeMitigationInPercent,
           substantialContributionToClimateChangeAdaptationInPercent:
-            activity.substantialContributionToClimateChangeAdaptationInPercent,
+            typedActivity.substantialContributionToClimateChangeAdaptationInPercent,
           substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-            activity.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+            typedActivity.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
           substantialContributionToTransitionToACircularEconomyInPercent:
-            activity.substantialContributionToTransitionToACircularEconomyInPercent,
+            typedActivity.substantialContributionToTransitionToACircularEconomyInPercent,
           substantialContributionToPollutionPreventionAndControlInPercent:
-            activity.substantialContributionToPollutionPreventionAndControlInPercent,
+            typedActivity.substantialContributionToPollutionPreventionAndControlInPercent,
           substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-            activity.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+            typedActivity.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
         },
         formatPercentageNumberAsString
       ),
       ...self.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
       ...self.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
-    ];
+    ] as ReturnType<Self['createBaseMainColumnDataForRow']>;
   },
 };
 
