@@ -5,6 +5,8 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 import { DataTypeEnum } from '@clients/backend';
 
+const awaitPrepopulationRetries = Number(Cypress.expose('AWAIT_PREPOPULATION_RETRIES') ?? 250);
+
 describeIf(
   'I want to ensure that the prepopulation has finished before executing any further tests',
   {
@@ -32,8 +34,8 @@ describeIf(
       'Should wait until prepopulation has finished',
       {
         retries: {
-          runMode: Cypress.env('AWAIT_PREPOPULATION_RETRIES') as number,
-          openMode: Cypress.env('AWAIT_PREPOPULATION_RETRIES') as number,
+          runMode: awaitPrepopulationRetries,
+          openMode: awaitPrepopulationRetries,
         },
       },
       () => {
