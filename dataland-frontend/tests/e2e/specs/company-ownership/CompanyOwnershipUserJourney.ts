@@ -7,6 +7,10 @@ import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 import { type StoredCompany } from '@clients/backend';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
+
 /**
  * This method verifies that the summary panel for each framework is presented as expected
  */
@@ -15,7 +19,7 @@ function checkFrameworks(): void {
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     cy.get(frameworkSummaryPanelSelector).should('exist');
     cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
-      timeout: Cypress.env('long_timeout_in_ms') as number,
+      timeout: longTimeoutInMs,
     }).should('exist');
   }
 }
@@ -41,7 +45,7 @@ describeIf(
         storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         await assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
       });
-      cy.wait('@postCompanyOwner', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+      cy.wait('@postCompanyOwner', { timeout: mediumTimeoutInMs });
     });
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
