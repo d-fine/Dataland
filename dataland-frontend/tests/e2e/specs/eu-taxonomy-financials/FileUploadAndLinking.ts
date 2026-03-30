@@ -9,6 +9,8 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
+const shortTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
 
@@ -80,7 +82,7 @@ describeIf(
           }
         ).as('postDataWithTwoReports');
         cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithTwoReports', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
+        cy.wait('@postDataWithTwoReports', { timeout: shortTimeoutInMs }).then(
           (interception) => {
             expect(interception.response?.statusCode).to.eq(200);
           }
@@ -111,7 +113,7 @@ describeIf(
           }
         ).as('postDataWithOneReport');
         cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithOneReport', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
+        cy.wait('@postDataWithOneReport', { timeout: shortTimeoutInMs }).then(
           (interception) => {
             expect(interception.response?.statusCode).to.eq(200);
           }
