@@ -13,6 +13,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 describeIf(
   'As a user, I expect to be able to add a new dataset and see it as pending',
   {
@@ -157,7 +159,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 function viewRecentlyUploadedDatasetsInQaTable(): void {
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.contains('span', 'REVIEW');
-  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+  cy.get('.p-paginator-last', { timeout: mediumTimeoutInMs }).then((element) => {
     if (element.prop('disabled')) {
       return;
     }
@@ -176,7 +178,7 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
   cy.wait('@getMyDatasets');
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   })
     .first()
     .find('.data-test-company-name')
@@ -193,7 +195,7 @@ function safeLogout(): void {
   cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
   cy.get('[data-test="user-profile-toggle"]').click();
   cy.get('a:contains("LOG OUT")').click();
-  cy.wait(Cypress.env('short_timeout_in_ms') as number);
+  cy.wait(mediumTimeoutInMs);
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("[data-test='login-dataland-button']").should('exist');
 }

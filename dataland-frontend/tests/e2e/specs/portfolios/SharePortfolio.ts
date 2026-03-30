@@ -4,6 +4,8 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { Configuration, NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
 
+const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 describeIf(
   'As a user I want to share portfolios with other users who can view and remove them',
   {
@@ -52,14 +54,14 @@ describeIf(
       cy.intercept('POST', '**/community/emails/validation').as('emailValidation');
       cy.intercept('GET', '**/portfolios/**/access-rights').as('getAccessRights');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should(
         'exist'
       );
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.wait(['@getEnrichedPortfolio']);
 
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="share-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.get('.p-dialog').find('.p-dialog-header').contains('Manage Portfolio Access');
@@ -72,11 +74,11 @@ describeIf(
       cy.wait('@emailValidation');
 
       cy.get('[data-test="users-with-access-listbox"]', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       }).should('contain', 'data.reader@example.com');
 
       cy.get('[data-test="save-changes-button"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.wait('@patchSharing').then((interception) => {
@@ -95,7 +97,7 @@ describeIf(
       cy.visitAndCheckAppMount('/shared-portfolios');
       cy.wait('@getSharedPortfolios');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should(
         'exist'
       );
       cy.get(`[data-test="${portfolioName}"]`).click();
@@ -106,7 +108,7 @@ describeIf(
 
       cy.intercept('DELETE', '**/users/portfolios/shared/**').as('deleteSharing');
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="remove-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.get('[data-test="remove-sharing-modal"]').should('be.visible');

@@ -10,6 +10,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
+const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+
 /**
  * Choose reporting periods
  */
@@ -172,7 +174,7 @@ describeIf(
       additionalTodos();
       cy.get('button[type="submit"]').click();
 
-      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+      cy.wait('@postRequestData', { timeout: shortTimeoutInMs }).then((interception) => {
         checkIfIdentifiersProperlyDisplayed(interception);
       });
     }
