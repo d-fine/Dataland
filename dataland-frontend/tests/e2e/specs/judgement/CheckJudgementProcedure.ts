@@ -189,13 +189,14 @@ describeIf(
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
-        finishJudgement(companyName);
+        finishJudgement(dataSetJudgementId);
       });
     });
 
     it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
-      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
-      rejectDatasetInJudgementModal(companyName);
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
+        rejectDatasetInJudgementModal(dataSetJudgementId);
+      });
     });
   }
 );
@@ -586,11 +587,11 @@ function buildCustomIcon(judgement: QaJudgement): IconState {
 }
 
 /**
- * Finishes the judgement by clicking the "Finish Judgement" button.
+ * Finishes the judgement with the given dataset judgement id by clicking the "Finish Judgement" button
  *
- * @param companyName Name of the company whose dataset is judged
+ * @param dataSetJudgementId The id of the dataset judgement that should be finished.
  */
-function finishJudgement(companyName: string): void {
+function finishJudgement(dataSetJudgementId: string): void {
   cy.contains('button', 'FINISH REVIEW').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
@@ -599,7 +600,7 @@ function finishJudgement(companyName: string): void {
       cy.contains('Dataset review completed.').should('be.visible');
     });
   cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
+  cy.contains('[data-test="qa-review-data-id"]', dataSetJudgementId).should('not.exist');
 }
 
 /**
@@ -669,9 +670,9 @@ function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
 /**
  * Reject Dataset via the button on the Judgement Page.
  *
- * @param companyName Name of the company whose dataset should be rejected.
+ * @param dataSetJudgementId The id of the dataset judgement that should be finished.
  */
-function rejectDatasetInJudgementModal(companyName: string): void {
+function rejectDatasetInJudgementModal(dataSetJudgementId: string): void {
   cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();
   cy.get('.p-dialog')
     .should('be.visible')
@@ -680,5 +681,5 @@ function rejectDatasetInJudgementModal(companyName: string): void {
       cy.contains('Dataset successfully rejected.').should('be.visible');
     });
   cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.contains('[data-test="qa-review-company-name"]', companyName).should('not.exist');
+  cy.contains('[data-test="qa-review-data-id"]', dataSetJudgementId).should('not.exist');
 }

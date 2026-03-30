@@ -55,7 +55,7 @@
           >
             <Column field="dataId" header="DATA ID">
               <template #body="slotProps">
-                {{ slotProps.data.dataId }}
+                <span data-test="qa-review-data-id">{{ slotProps.data.dataId }}</span>
               </template>
             </Column>
             <Column field="companyName" header="COMPANY NAME">
