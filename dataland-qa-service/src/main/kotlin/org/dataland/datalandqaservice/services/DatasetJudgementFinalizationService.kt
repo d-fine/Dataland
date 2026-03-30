@@ -47,7 +47,7 @@ class DatasetJudgementFinalizationService
         @Transactional
         fun handleAcceptance(datasetJudgement: DatasetJudgementEntity) {
             DatasetJudgementValidationHelper.validateAllDataPointsHaveAcceptedSource(datasetJudgement.dataPoints)
-            dataPointQaStatusUpdate(datasetJudgement.dataPoints, datasetJudgement.companyId, datasetJudgement.reportingPeriod)
+            updateDataPointQaStatus(datasetJudgement.dataPoints, datasetJudgement.companyId, datasetJudgement.reportingPeriod)
             qaReviewManager.changeQaStatus(
                 dataId = datasetJudgement.datasetId.toString(),
                 qaStatus = QaStatus.Accepted,
@@ -63,7 +63,7 @@ class DatasetJudgementFinalizationService
          * @param companyId The company ID to use when uploading new data points.
          * @param reportingPeriod The reporting period to use when uploading new data points.
          */
-        private fun dataPointQaStatusUpdate(
+        private fun updateDataPointQaStatus(
             dataPoints: Collection<DataPointJudgementEntity>,
             companyId: UUID,
             reportingPeriod: String,
@@ -78,9 +78,7 @@ class DatasetJudgementFinalizationService
                     buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
                 }
 
-            if (reviewTasks.isNotEmpty()) {
-                dataPointQaReviewManager.reviewDataPoints(reviewTasks)
-            }
+            dataPointQaReviewManager.reviewDataPoints(reviewTasks)
         }
 
         /**
