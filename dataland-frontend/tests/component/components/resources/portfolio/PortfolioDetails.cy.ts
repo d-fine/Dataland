@@ -142,7 +142,6 @@ describe('Check the portfolio details view', function (): void {
         'SFDR',
         'EU Taxonomy Financials',
         'EU Taxonomy Non-Financials',
-        'EU Taxonomy Non-Financials (2026/73)',
         'EU Taxonomy Nuclear and Gas',
       ];
       const expectedSecondRow = [
@@ -217,13 +216,7 @@ describe('Check the portfolio details view', function (): void {
       checkFilter('nth-child(4)', 'sfdrAvailableReportingPeriodsFilter', '2024', 3);
       checkFilter('nth-child(5)', 'eutaxonomyFinancialsAvailableReportingPeriodsFilter', '2023', 2);
       checkFilter('nth-child(6)', 'eutaxonomyNonFinancialsAvailableReportingPeriodsFilter', 'No data available', 4);
-      checkFilter(
-        'nth-child(7)',
-        'eutaxonomyNonFinancials202673AvailableReportingPeriodsFilter',
-        'No data available',
-        4
-      );
-      checkFilter('nth-child(8)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
+      checkFilter('nth-child(7)', 'nuclearAndGasAvailableReportingPeriodsFilter', '2023', 2);
     });
   });
 
