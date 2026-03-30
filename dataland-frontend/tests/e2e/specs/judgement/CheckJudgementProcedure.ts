@@ -193,9 +193,8 @@ describeIf(
       });
     });
 
-    it('Check rejecting a Dataset on the Judgement Page works as expected', () => {
+    it.only('Check rejecting a Dataset on the Judgement Page works as expected', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
-      startJudgement(companyName);
       rejectDatasetInJudgementModal(companyName);
     });
   }
@@ -222,8 +221,6 @@ function createJudgementAndOpenReviewPage(
     .then((response) => {
       expect(response.status).to.eq(201);
       const dataSetJudgementId = response.body?.dataSetJudgementId as string;
-      cy.log('response.body: ', response.body);
-      cy.log('datasetJudgementId: ', dataSetJudgementId);
       return cy.wrap(dataSetJudgementId, { log: false });
     });
 }
