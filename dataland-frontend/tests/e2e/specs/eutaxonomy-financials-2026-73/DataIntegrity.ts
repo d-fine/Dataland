@@ -17,6 +17,9 @@ import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyRoleAssignment } from '@clients/communitymanager';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+
 let eutaxonomyFinancials202673FixtureData: FixtureData<EutaxonomyFinancials202673Data>;
 before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyFinancials202673PreparedFixtures.json').then(function (jsonContent) {
@@ -117,7 +120,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -127,7 +130,7 @@ describeIf(
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-EU-Taxonomy-Financials-202673-Blanket-Test-' + uniqueCompanyMarker;
 
-        cy.wrap(null, { timeout: Cypress.env('long_timeout_in_ms') as number })
+        cy.wrap(null, { timeout: longTimeoutInMs })
           .then(() => setupCompanyAndFramework(testCompanyName))
           .then(({ token, storedCompany, dataId }) => {
             cy.ensureLoggedIn(admin_name, admin_pw);
@@ -139,7 +142,7 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials202673}`
             );
             cy.wait('@getUploadedData', {
-              timeout: Cypress.env('medium_timeout_in_ms') as number,
+              timeout: mediumTimeoutInMs,
             });
             cy.get('h1').should('contain', testCompanyName);
             cy.wrap(null).then(() => validateUploadedDataset(token, dataId, eutaxonomyFinancials202673FixtureData.t));

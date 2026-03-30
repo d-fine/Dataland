@@ -16,6 +16,8 @@ import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUt
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 /**
  * Fills all the required fields of the eu-taxonomy upload form for non-financial companies to enable submit button
  */
@@ -96,7 +98,7 @@ describeIf(
     let frontendDocumentHash = '';
     const uploadReports = new UploadReports('referencedReports');
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     /**
@@ -151,7 +153,7 @@ describeIf(
         }
       }).as('submitData');
       cy.get('button[data-test="submitButton"]').click();
-      cy.wait(`@submitData`, { timeout: Cypress.env('long_timeout_in_ms') as number }).then(() => {
+      cy.wait(`@submitData`, { timeout: longTimeoutInMs }).then(() => {
         validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
       });
       cy.url().should('eq', getBaseUrl() + '/datasets');
@@ -176,17 +178,15 @@ describeIf(
         expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
       }).as('submitEditData');
       cy.get('button[data-test="submitButton"]').click();
-      return cy
-        .wait(`@submitEditData`, { timeout: Cypress.env('long_timeout_in_ms') as number })
-        .then((interception) => {
-          expect(interception.response?.statusCode).to.eq(200);
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          cy.get('[data-test="datasets-table"]').should('be.visible');
+      return cy.wait(`@submitEditData`, { timeout: longTimeoutInMs }).then((interception) => {
+        expect(interception.response?.statusCode).to.eq(200);
+        cy.url().should('eq', getBaseUrl() + '/datasets');
+        cy.get('[data-test="datasets-table"]').should('be.visible');
 
-          goToEditFormAndValidateExistenceOfReports(companyId, false);
-          const dataMetaInformation = assertDefined(interception.response?.body) as DataMetaInformation;
-          return cy.then(() => dataMetaInformation);
-        });
+        goToEditFormAndValidateExistenceOfReports(companyId, false);
+        const dataMetaInformation = assertDefined(interception.response?.body) as DataMetaInformation;
+        return cy.then(() => dataMetaInformation);
+      });
     }
 
     /**
@@ -200,7 +200,7 @@ describeIf(
       cy.visitAndCheckAppMount(
         `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
       );
-      cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('short_timeout_in_ms') as number });
+      cy.wait('@getDataToPrefillForm', { timeout: shortTimeoutInMs });
       cy.get('[data-test="pageWrapperTitle"]').should('contain', 'Edit');
       cy.get('input[type=file]').selectFile(
         { contents: `../${TEST_PDF_FILE_PATH}`, fileName: differentFileNameForSameFile + '.pdf' },
@@ -220,10 +220,8 @@ describeIf(
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
       cy.get('button[data-test="submitButton"]').click();
 
-      cy.wait('@documentExists', { timeout: Cypress.env('short_timeout_in_ms') as number })
-        .its('response.statusCode')
-        .should('equal', 200);
-      cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('short_timeout_in_ms') as number });
+      cy.wait('@documentExists', { timeout: shortTimeoutInMs }).its('response.statusCode').should('equal', 200);
+      cy.wait('@postCompanyAssociatedData', { timeout: shortTimeoutInMs });
       cy.url().should('eq', getBaseUrl() + '/datasets');
       cy.get('[data-test="datasets-table"]').should('be.visible');
       cy.get('@postDocument').should('not.have.been.called');

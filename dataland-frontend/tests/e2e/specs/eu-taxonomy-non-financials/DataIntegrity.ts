@@ -17,6 +17,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import EuTaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 
 type UploadedDatasetContext = {
@@ -100,34 +102,29 @@ function submitInEditModeAndFetchReuploadedDataset(
       '/upload?templateDataId=' +
       dataId
   );
-  return cy
-    .wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .then((interception) => {
-      const datasetFromPrefillRequest = (
-        interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-      ).data;
-      cy.get('h1').should('contain', testCompanyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}?bypassQa=true`,
-        times: 1,
-      }).as('postCompanyAssociatedData');
-      submitButton.clickButton();
+  return cy.wait('@getDataToPrefillForm', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData)
+      .data;
+    cy.get('h1').should('contain', testCompanyName);
+    cy.intercept({
+      url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}?bypassQa=true`,
+      times: 1,
+    }).as('postCompanyAssociatedData');
+    submitButton.clickButton();
+    return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((interceptionAfterPost) => {
+      const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
+      cy.url().should('eq', getBaseUrl() + '/datasets');
+      isDatasetAccepted();
       return cy
-        .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-        .then((interceptionAfterPost) => {
-          const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          isDatasetAccepted();
-          return cy
-            .then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId))
-            .then((reuploadedDatasetFromBackend) => {
-              return {
-                datasetFromPrefillRequest,
-                reuploadedDatasetFromBackend,
-              };
-            });
+        .then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId))
+        .then((reuploadedDatasetFromBackend) => {
+          return {
+            datasetFromPrefillRequest,
+            reuploadedDatasetFromBackend,
+          };
         });
     });
+  });
 }
 
 before(function () {
@@ -148,7 +145,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(

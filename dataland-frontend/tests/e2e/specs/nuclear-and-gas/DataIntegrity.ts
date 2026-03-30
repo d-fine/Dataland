@@ -17,6 +17,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import EuTaxonomyNuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 let euTaxonomyForNuclearAndGasFixtureForTest: FixtureData<NuclearAndGasData>;
 
 type UploadedDatasetContext = {
@@ -93,13 +95,11 @@ function openEditFormAndCapturePrefillDataset(
   cy.visitAndCheckAppMount(
     '/companies/' + companyId + '/frameworks/' + DataTypeEnum.NuclearAndGas + '/upload?templateDataId=' + dataId
   );
-  return cy
-    .wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .then((interception) => {
-      const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataNuclearAndGasData).data;
-      cy.get('h1').should('contain', testCompanyName);
-      return cy.then(() => datasetFromPrefillRequest);
-    });
+  return cy.wait('@getDataToPrefillForm', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataNuclearAndGasData).data;
+    cy.get('h1').should('contain', testCompanyName);
+    return cy.then(() => datasetFromPrefillRequest);
+  });
 }
 
 /**
@@ -114,14 +114,12 @@ function submitAndFetchReuploadedDataset(token: string): Cypress.Chainable<Nucle
     times: 1,
   }).as('postCompanyAssociatedData');
   submitButton.clickButton();
-  return cy
-    .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .then((interception) => {
-      const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-      cy.url().should('eq', getBaseUrl() + '/datasets');
-      isDatasetAccepted();
-      return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
-    });
+  return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+    cy.url().should('eq', getBaseUrl() + '/datasets');
+    isDatasetAccepted();
+    return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
+  });
 }
 
 before(function () {
@@ -142,7 +140,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(

@@ -18,6 +18,8 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Defines intercepts and submits data on the lksg upload for the lksg blanket test
  *
@@ -39,7 +41,7 @@ function interceptsAndSubmitsDataset(
       '/upload?templateDataId=' +
       dataMetaInformation.dataId
   );
-  cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.wait('@getCompanyInformation', { timeout: mediumTimeoutInMs });
   cy.get('h1').should('contain', testCompanyName);
   cy.intercept({
     url: `**/api/data/${DataTypeEnum.Lksg}*`,
@@ -94,7 +96,7 @@ describeIf(
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
         lksgFixtureWithMinimalFields = getPreparedFixture('lksg-almost-only-nulls', preparedFixturesLksg);
       });
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     /**
@@ -144,14 +146,12 @@ describeIf(
       testCompanyName: string
     ): Cypress.Chainable<DataMetaInformation> {
       interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
-      return cy
-        .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-        .then((postInterception) => {
-          const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          isDatasetAccepted();
-          return cy.then(() => dataMetaInformation);
-        });
+      return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postInterception) => {
+        const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
+        cy.url().should('eq', getBaseUrl() + '/datasets');
+        isDatasetAccepted();
+        return cy.then(() => dataMetaInformation);
+      });
     }
 
     /**
@@ -204,7 +204,7 @@ describeIf(
     }
 
     afterEach(function () {
-      Cypress.env('excludeBypassQaIntercept', false);
+      Cypress.expose('excludeBypassQaIntercept', false);
     });
 
     it(

@@ -18,6 +18,8 @@ import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyRoleAssignment } from '@clients/communitymanager';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 let pcafFixtureData: FixtureData<PcafData>;
 before(function () {
   cy.fixture('CompanyInformationWithPcafPreparedFixtures.json').then(function (jsonContent) {
@@ -135,7 +137,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -163,7 +165,7 @@ describeIf(
             );
             let initiallyUploadedData: PcafData;
             cy.wait('@getInitiallyUploadedData', {
-              timeout: Cypress.env('medium_timeout_in_ms') as number,
+              timeout: mediumTimeoutInMs,
             }).then((interception) => {
               initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
             });
@@ -175,11 +177,9 @@ describeIf(
                 cy.get('.p-datepicker-year').contains(pcafFixtureData.reportingPeriod.toString()).click();
               });
             cy.get('[data-test="submitButton"]').click();
-            cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-              (interception) => {
-                handleDataResubmissionValidation(interception, token, initiallyUploadedData);
-              }
-            );
+            cy.wait('@resubmitPcafData', { timeout: mediumTimeoutInMs }).then((interception) => {
+              handleDataResubmissionValidation(interception, token, initiallyUploadedData);
+            });
           });
       }
     );
