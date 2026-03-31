@@ -132,7 +132,6 @@ describeIf(
   function () {
     let storedCompany: StoredCompany;
     let preparedEuTaxonomyFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
-    let companyName: string;
     let tokens: QaTokens;
     let uploadedDataMetaInfo: DataMetaInformation;
     let overview: DataPointOverview;
@@ -146,7 +145,6 @@ describeIf(
         const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => {
           storedCompany = newCompany;
-          companyName = storedCompany.companyInformation.companyName;
         });
       });
     });
@@ -179,9 +177,10 @@ describeIf(
     );
 
     it('Check creating a Judgement and reassigning the Judge works as expected', () => {
-      checkoutDataset(companyName);
-      startJudgement(companyName);
-      changeJudgeAssignment(companyName);
+      const dataSetId = uploadedDataMetaInfo.dataId;
+      checkoutDataset(dataSetId);
+      startJudgement(dataSetId);
+      changeJudgeAssignment(dataSetId);
     });
 
     it('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
@@ -371,13 +370,13 @@ function runQaScenarioForDataPoint(
 /**
  * Checks out the dataset for the given company by navigating to the QA overview and selecting the dataset row
  *
- * @param companyName Name of the company whose QA dataset row should be selected.
+ * @param dataSetId Id of the dataset whose QA dataset row should be selected.
  */
-function checkoutDataset(companyName: string): void {
+function checkoutDataset(dataSetId: string): void {
   login(admin_name, admin_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .contains('[data-test="qa-review-company-name"]', companyName)
+    .contains('[data-test="qa-review-data-id"]', dataSetId)
     .should('be.visible')
     .click();
   cy.get('[data-test="qaReviewPageButton"]').should('be.visible').and('be.disabled');
@@ -386,14 +385,14 @@ function checkoutDataset(companyName: string): void {
 /**
  * Starts a judgement by navigating to QA and verifying the uploaded dataset is listed for the company.
  *
- * @param companyName The company owning the dataset to be judged.
+ * @param dataSetId Id of the dataset for which we want to start the judgement
  */
-function startJudgement(companyName: string): void {
+function startJudgement(dataSetId: string): void {
   cy.intercept('POST', '**/qa/dataset-judgements/**').as('startJudgementRequest');
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .contains('[data-test="qa-review-company-name"]', companyName)
+    .contains('[data-test="qa-review-data-id"]', dataSetId)
     .closest('tr')
     .contains('td', 'Start Review')
     .click();
@@ -408,16 +407,16 @@ function startJudgement(companyName: string): void {
 /**
  * Switches to the judge user, opens the review entry for the company, and assigns the dataset to the judge.
  *
- * @param companyName The name of the company owning the dataset to be judged.
+ * @param dataSetId The Id of the the dataset to be judged.
  */
-function changeJudgeAssignment(companyName: string): void {
+function changeJudgeAssignment(dataSetId: string): void {
   cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
   logout();
   login(judge_name, judge_pw);
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
-    .contains('[data-test="qa-review-company-name"]', companyName)
+    .contains('[data-test="qa-review-data-id"]', dataSetId)
     .closest('tr')
     .contains('td', 'Data Admin')
     .click();
