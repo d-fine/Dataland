@@ -1,24 +1,23 @@
 import { getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
 import { PortfolioControllerApi } from '@clients/userservice';
 import { Configuration } from '@clients/backend';
-/**
- * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
- */
 
 const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
+/**
+ * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
+ */
 export function logout(): void {
   cy.intercept({ times: 1, url: '**/api-keys/getApiKeyMetaInfoForUser' })
     .as('apikey')
     .visitAndCheckAppMount('/api-key')
-    .wait('@apikey', { timeout: shortTimeoutInMs  });
+    .wait('@apikey', { timeout: shortTimeoutInMs });
   cy.get("[data-test='user-profile-toggle']").click();
   cy.get('.p-menu-item-link').contains('LOG OUT').click();
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("[data-test='login-dataland-button']").should('exist').should('be.visible');
 }
-
 
 let globalJwt = '';
 
@@ -37,7 +36,7 @@ export function login(
   cy.intercept({ times: 1, url: '/users/portfolios/names' }).as('getPortfolios');
 
   cy.visitAndCheckAppMount('/');
-  cy.get("[data-test='login-dataland-button']", { timeout: longTimeoutInMs  }).click();
+  cy.get("[data-test='login-dataland-button']", { timeout: longTimeoutInMs }).click();
 
   loginWithCredentials(username, password);
 
@@ -65,8 +64,8 @@ export function login(
       if (doesUserHavePortfolios) {
         urlToRedirectTo = getBaseUrl() + '/portfolios';
       }
-      cy.url({ timeout: longTimeoutInMs  }).should('eq', urlToRedirectTo);
-      cy.wait('@getPortfolios', { timeout: longTimeoutInMs  }).then((interception) => {
+      cy.url({ timeout: longTimeoutInMs }).should('eq', urlToRedirectTo);
+      cy.wait('@getPortfolios', { timeout: longTimeoutInMs }).then((interception) => {
         globalJwt = interception.request.headers['authorization'] as string;
       });
     });
