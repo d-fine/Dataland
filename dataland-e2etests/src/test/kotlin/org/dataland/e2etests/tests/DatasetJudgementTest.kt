@@ -30,7 +30,7 @@ import java.util.UUID
 class DatasetJudgementTest {
     private val testDataProvider =
         FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
-    private val dummyDataset = testDataProvider.getTData(1)[0]
+    private val dummyDataset = testDataProvider.getTData(1).first()
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
     private val dataPointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
@@ -74,27 +74,27 @@ class DatasetJudgementTest {
     }
 
     private fun postQaReport(
-        datapointId: String,
+        dataPointId: String,
         qaReport: QaReportDataPointString,
     ) = QaService.dataPointQaReportControllerApi
-        .postQaReport(datapointId, qaReport)
+        .postQaReport(dataPointId, qaReport)
         .reporterUserId
 
     private data class DatasetAndJudgementAndDataPointIds(
         val datasetId: String,
         val datasetJudgementId: String,
-        val datapointIds: Map<String, String>,
+        val dataPointIds: Map<String, String>,
     )
 
     private fun postJudgementWithPatches(
         datasetId: String,
         dataPoints: Map<String, String>,
     ): String {
-        val datapointId1 = dataPoints.getValue(dataPointType1)
-        val datapointId2 = dataPoints.getValue(dataPointType2)
-        val datapointId3 = dataPoints.getValue(dataPointType3)
-        val reporterUserId1 = postQaReport(datapointId1, dummyQaReport1)
-        val reporterUserId2 = postQaReport(datapointId2, dummyQaReport2)
+        val dataPointId1 = dataPoints.getValue(dataPointType1)
+        val dataPointId2 = dataPoints.getValue(dataPointType2)
+        val dataPointId3 = dataPoints.getValue(dataPointType3)
+        val reporterUserId1 = postQaReport(dataPointId1, dummyQaReport1)
+        val reporterUserId2 = postQaReport(dataPointId2, dummyQaReport2)
 
         return GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetJudgementId =
@@ -108,7 +108,7 @@ class DatasetJudgementTest {
                 val reporterUserIdOfAcceptedQaReport: String? = null,
                 val customDataPoint: String? = null,
             )
-            val explicitlyHandledDataPointIds = setOf(datapointId1, datapointId2, datapointId3)
+            val explicitlyHandledDataPointIds = setOf(dataPointId1, dataPointId2, dataPointId3)
 
             val patchOperations =
                 listOf(
@@ -186,16 +186,16 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Accepted, datasetId)
         assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetAcceptance)
 
-        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType1))
+        assertQaStatusOfDatapoint(QaStatus.Accepted, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType1))
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType2))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType2))
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
             dataPointType2,
             dummyQaReport2.correctedData!!,
         )
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType3))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType3))
 
         assertNewDatapointWithQaStatusAccepted(
             datasetId,
@@ -215,9 +215,9 @@ class DatasetJudgementTest {
         assertQaStatusOfDataset(QaStatus.Rejected, datasetId)
         assertDatasetJudgementState(datasetJudgementId, DatasetJudgementState.FinishedWithDatasetRejection)
 
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType1))
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType2))
-        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.datapointIds.getValue(dataPointType3))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType1))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType2))
+        assertQaStatusOfDatapoint(QaStatus.Rejected, datasetAndJudgementAndDataPointIds.dataPointIds.getValue(dataPointType3))
     }
 
     @Test
@@ -305,35 +305,41 @@ class DatasetJudgementTest {
 
     private fun assertQaStatusOfDatapoint(
         expectedQaStatus: QaStatus,
-        datapointId: String,
+        dataPointId: String,
     ) = assertEquals(
         expectedQaStatus,
-        QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(datapointId)[0].qaStatus,
+        QaService.qaControllerApi
+            .getDataPointQaReviewInformationByDataId(dataPointId)
+            .first()
+            .qaStatus,
     )
 
     private fun assertNewDatapointWithQaStatusAccepted(
         datasetId: String,
-        datapointType: String,
+        dataPointType: String,
         expectedDataPointContent: String,
     ) {
         val dataset = QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(datasetId))
-        val datapointsInDataset =
+        val dataPointsInDataset =
             QaService.qaControllerApi.getDataPointQaReviewInformation(
                 companyId = dataset.companyId,
                 reportingPeriod = dataset.reportingPeriod,
-                dataType = datapointType,
+                dataType = dataPointType,
                 qaStatus = QaStatus.Accepted,
             )
-        val datapoints = datapointsInDataset.filter { it.dataPointType == datapointType }
-        assertEquals(1, datapoints.size)
-        val datapointId = datapoints[0].dataPointId
+        val dataPoints = dataPointsInDataset.filter { it.dataPointType == dataPointType }
+        assertEquals(1, dataPoints.size)
+        val dataPointId = dataPoints.first().dataPointId
         assertEquals(
             expectedDataPointContent,
-            Backend.dataPointControllerApi.getDataPoint(datapointId).dataPoint,
+            Backend.dataPointControllerApi.getDataPoint(dataPointId).dataPoint,
         )
         assertEquals(
             QaStatus.Accepted,
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(datapointId)[0].qaStatus,
+            QaService.qaControllerApi
+                .getDataPointQaReviewInformationByDataId(dataPointId)
+                .first()
+                .qaStatus,
         )
     }
 }
