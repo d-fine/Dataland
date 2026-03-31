@@ -112,9 +112,7 @@ describe('As a user I want to be able to register for an account and be able to 
           cy.get("button:contains('Set up Authenticator application')")
             .should('be.visible', { timeout: mediumTimeoutInMs })
             .click();
-          cy.get("a:contains('Unable to scan')")
-            .should('be.visible', { timeout: shortTimeoutInMs })
-            .click();
+          cy.get("a:contains('Unable to scan')").should('be.visible', { timeout: shortTimeoutInMs }).click();
           cy.get("span[id='kc-totp-secret-key']")
             .should('be.visible', { timeout: shortTimeoutInMs })
             .invoke('text')

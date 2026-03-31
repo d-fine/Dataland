@@ -13,7 +13,7 @@ import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@s
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {

@@ -113,12 +113,12 @@ function uploadDocument(): void {
  */
 function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
   cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
-    timeout: mediumTimeoutInMs ,
+    timeout: mediumTimeoutInMs,
   })
     .then((expectedFileBinary) => cy.task('calculateHash', expectedFileBinary))
     .then((expectedFileHash) => {
       cy.readFile(expectedPathToDownloadedReport, 'binary', {
-        timeout: mediumTimeoutInMs ,
+        timeout: mediumTimeoutInMs,
       })
         .then((receivedFileBinary) => cy.task('calculateHash', receivedFileBinary))
         .should('eq', expectedFileHash);
@@ -131,33 +131,31 @@ function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
  * Check that data can be viewed and documents downloaded
  */
 function verifyDocumentDownloadAndDataIsViewable(): void {
-  cy.wait('@waitOnMyDatasetPage', { timeout: mediumTimeoutInMs  });
-  cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs  }).then(
-    (postResponseInterception) => {
-      cy.url().should('eq', getBaseUrl() + '/datasets');
-      const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
+  cy.wait('@waitOnMyDatasetPage', { timeout: mediumTimeoutInMs });
+  cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postResponseInterception) => {
+    cy.url().should('eq', getBaseUrl() + '/datasets');
+    const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
 
-      cy.visitAndCheckAppMount(
-        '/companies/' +
-          storedTestCompany.companyId +
-          '/frameworks/' +
-          DataTypeEnum.Vsme +
-          '/' +
-          dataMetaInformationOfReuploadedDataset.dataId
-      );
+    cy.visitAndCheckAppMount(
+      '/companies/' +
+        storedTestCompany.companyId +
+        '/frameworks/' +
+        DataTypeEnum.Vsme +
+        '/' +
+        dataMetaInformationOfReuploadedDataset.dataId
+    );
 
-      MLDT.getSectionHead('Energy and greenhous gas emissions').should('have.attr', 'data-section-expanded', 'true');
-      MLDT.getCellValueContainer('Electricity Total').find('a.link').should('include.text', 'MWh').click();
-      const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}-private.pdf`;
-      cy.task('fileExists', expectedPathToDownloadedReport).should('eq', false);
-      cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
-      cy.get('[data-test="download-link-some-document-private"]').click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
-      cy.wait('@documentDownload');
-      verifyDownloadedFile(expectedPathToDownloadedReport);
-    }
-  );
+    MLDT.getSectionHead('Energy and greenhous gas emissions').should('have.attr', 'data-section-expanded', 'true');
+    MLDT.getCellValueContainer('Electricity Total').find('a.link').should('include.text', 'MWh').click();
+    const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}-private.pdf`;
+    cy.task('fileExists', expectedPathToDownloadedReport).should('eq', false);
+    cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
+    cy.get('[data-test="download-link-some-document-private"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.wait('@documentDownload');
+    verifyDownloadedFile(expectedPathToDownloadedReport);
+  });
 }
 
 /**

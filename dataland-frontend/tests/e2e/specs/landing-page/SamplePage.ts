@@ -1,6 +1,6 @@
 import { getBaseUrl } from '@e2e/utils/Cypress';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describe('As a user, I expect the sample page to be functional and reachable without logging in', () => {
   it('Check that the sample section works properly without authentication', () => {

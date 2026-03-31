@@ -13,7 +13,7 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describeIf(
   'As a user, I expect to be able to add a new dataset and see it as pending',

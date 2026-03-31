@@ -4,7 +4,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { Configuration, NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describeIf(
   'As a user I want to share portfolios with other users who can view and remove them',
@@ -54,9 +54,7 @@ describeIf(
       cy.intercept('POST', '**/community/emails/validation').as('emailValidation');
       cy.intercept('GET', '**/portfolios/**/access-rights').as('getAccessRights');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should(
-        'exist'
-      );
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should('exist');
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.wait(['@getEnrichedPortfolio']);
 
@@ -97,9 +95,7 @@ describeIf(
       cy.visitAndCheckAppMount('/shared-portfolios');
       cy.wait('@getSharedPortfolios');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should(
-        'exist'
-      );
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should('exist');
       cy.get(`[data-test="${portfolioName}"]`).click();
 
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="shared-by-tag"]`)

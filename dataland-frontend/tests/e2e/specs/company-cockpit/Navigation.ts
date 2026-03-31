@@ -4,7 +4,7 @@ import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
@@ -52,13 +52,8 @@ describeIf(
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-      cy.url({ timeout: longTimeoutInMs }).should(
-        'not.contain',
-        `/companies/${alphaCompanyIdAndName.companyId}`
-      );
-      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(
-        betaCompanyIdAndName.companyName
-      );
+      cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
     });
 
     it('From the company cockpit page visit a view page', () => {

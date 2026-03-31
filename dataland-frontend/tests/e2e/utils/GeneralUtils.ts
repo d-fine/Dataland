@@ -21,21 +21,19 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
     url: `**/api/metadata?companyId=${companyId}`,
   }).as(metaRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  return cy
-    .wait(`@${metaRequestAlias}`, { timeout: mediumTimeoutInMs })
-    .then((interception) => {
-      const metaInformation = interception.response?.body as Array<{ dataId?: string; dataType?: string }> | undefined;
-      const dataId = metaInformation?.find((meta) => meta.dataType === dataType)?.dataId;
-      if (!dataId) {
-        throw new Error('No dataId found in metadata for edit navigation.');
-      }
-      cy.intercept({
-        method: 'GET',
-        url: `**/api/data/**/${dataId}`,
-      }).as(getRequestAlias);
-      cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
-      return cy.wait(`@${getRequestAlias}`, { timeout: mediumTimeoutInMs });
-    });
+  return cy.wait(`@${metaRequestAlias}`, { timeout: mediumTimeoutInMs }).then((interception) => {
+    const metaInformation = interception.response?.body as Array<{ dataId?: string; dataType?: string }> | undefined;
+    const dataId = metaInformation?.find((meta) => meta.dataType === dataType)?.dataId;
+    if (!dataId) {
+      throw new Error('No dataId found in metadata for edit navigation.');
+    }
+    cy.intercept({
+      method: 'GET',
+      url: `**/api/data/**/${dataId}`,
+    }).as(getRequestAlias);
+    cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
+    return cy.wait(`@${getRequestAlias}`, { timeout: mediumTimeoutInMs });
+  });
 }
 
 /**

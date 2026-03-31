@@ -12,8 +12,8 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-const longTimeoutInMs  = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
-const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
 
 /**
  * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector

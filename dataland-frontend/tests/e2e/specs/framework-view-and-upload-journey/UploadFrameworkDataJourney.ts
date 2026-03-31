@@ -17,8 +17,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-const mediumTimeoutInMs  = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
 
 /**
  * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the

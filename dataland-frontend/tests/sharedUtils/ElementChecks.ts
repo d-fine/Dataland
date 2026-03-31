@@ -24,10 +24,7 @@ export function verifySearchResultTableExists(): void {
  */
 export function validateCompanyCockpitPage(expectedCompanyName: string, expectedCompanyId: string): void {
   cy.url().should('contain', `/companies/${expectedCompanyId}`);
-  cy.get('h1[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).should(
-    'have.text',
-    expectedCompanyName
-  );
+  cy.get('h1[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).should('have.text', expectedCompanyName);
 }
 
 /**

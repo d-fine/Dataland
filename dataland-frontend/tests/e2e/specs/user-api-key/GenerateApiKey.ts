@@ -1,4 +1,4 @@
-const shortTimeoutInMs  = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
 const mediumTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
 
 /**
