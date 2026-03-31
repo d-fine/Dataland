@@ -221,7 +221,7 @@ class DatasetJudgementTest {
     }
 
     @Test
-    fun `ensure non-judge cannot call patchJudgementDetails or setJudgementState`() {
+    fun `ensure non judge cannot call patchJudgementDetails or setJudgementState`() {
         val (_, datasetJudgementId, _) = createDatasetWithJudgement()
 
         for (nonJudgeUser in listOf(TechnicalUser.Uploader, TechnicalUser.Reviewer, TechnicalUser.Reader)) {
@@ -269,7 +269,7 @@ class DatasetJudgementTest {
     }
 
     @Test
-    fun `ensure finishing an already-finished judgement throws an error`() {
+    fun `ensure finishing an already finished judgement throws an error`() {
         val (_, datasetJudgementId, _) = createDatasetWithJudgement()
 
         QaService.datasetJudgementControllerApi.setJudgementState(
