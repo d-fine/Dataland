@@ -1,3 +1,6 @@
+// @ts-ignore: Cypress types are internal;
+import type Bluebird from 'cypress/types/bluebird';
+
 export const reader_name = 'data_reader';
 export const reader_pw = getStringCypressEnv('KEYCLOAK_READER_PASSWORD');
 export const reader_userId = '18b67ecc-1176-4506-8414-1e81661017ca';
@@ -38,7 +41,7 @@ export function doThingsInChunks<T>(
       (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
     );
   }
-  return cy.then((): PromiseLike<void> => {
+  return cy.then((): Bluebird<void> => {
     return wrapPromiseToCypressPromise(promise);
   });
 }
@@ -48,7 +51,7 @@ export function doThingsInChunks<T>(
  * @param promise the browser promise
  * @returns the converted cypress (Bluebird) promise
  */
-export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): PromiseLike<T> {
+export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T> {
   return new Cypress.Promise((resolve, reject): void => {
     promise
       .then(
@@ -65,7 +68,7 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): PromiseLike
  * @returns a cypress chainable
  */
 export function browserThen<T>(promise: Promise<T>): Cypress.Chainable<T> {
-  return cy.then((): PromiseLike<T> => wrapPromiseToCypressPromise(promise));
+  return cy.then((): Bluebird<T> => wrapPromiseToCypressPromise(promise));
 }
 
 /**
@@ -87,8 +90,7 @@ export function getBaseUrl(): string {
  * @returns the string value of the environment variable
  */
 export function getStringCypressEnv(variableName: string): string {
-  const configEnv = Cypress.config('env') as Record<string, unknown> | undefined;
-  const cypressEnv = configEnv?.[variableName];
+  const cypressEnv: unknown = Cypress.env(variableName);
   if (typeof cypressEnv === 'string') {
     return cypressEnv;
   }
