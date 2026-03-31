@@ -79,7 +79,5 @@ export async function assignCompanyOwnershipToDatalandAdmin(
  * Checks that the QA status of the uploaded dataset is automatically set to Accepted
  */
 export function isDatasetAccepted(): void {
-  cy.get('[data-test="qa-status"]', { mediumTimeoutInMs })
-    .first()
-    .should('have.text', 'Accepted');
+  cy.get('[data-test="qa-status"]', { timeout: mediumTimeoutInMs }).first().should('have.text', 'Accepted');
 }
