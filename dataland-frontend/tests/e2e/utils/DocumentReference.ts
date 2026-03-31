@@ -18,11 +18,7 @@ export function getAllFakeFixtureDocumentIds(): string[] {
   if (documentIds) return documentIds;
 
   if (globalThis.window !== undefined) {
-<<<<<<< HEAD
-    const ids = String(Cypress.expose('fakeFixtureDocumentIds')) ?? [];
-=======
     const ids = (Cypress.expose('fakeFixtureDocumentIds') ?? []) as string[];
->>>>>>> 5b6e28586fc25aa1eff0e57e034a0ef309ddd676
     if (!ids.length) {
       throw new Error(
         'fakeFixtureDocumentIds missing. Ensure cypress.config.ts sets config.env.fakeFixtureDocumentIds in setupNodeEvents().'
