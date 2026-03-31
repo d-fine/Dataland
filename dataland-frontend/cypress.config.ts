@@ -12,7 +12,6 @@ let returnTotpKey: string;
 export default defineConfig({
   env: {
     commit_id: require('git-commit-id')({ cwd: '../' }),
-    prepopulate_timeout_s: 180,
     mobile_device_viewport_height: 667,
     mobile_device_viewport_width: 300,
     EXECUTION_ENVIRONMENT: 'developmentLocal',
@@ -35,6 +34,7 @@ export default defineConfig({
     GRAFANA_PASSWORD: process.env.GRAFANA_PASSWORD,
   },
   expose: {
+    prepopulate_timeout_s: 180,
     short_timeout_in_ms: 10000,
     medium_timeout_in_ms: 30000,
     long_timeout_in_ms: 100000,
