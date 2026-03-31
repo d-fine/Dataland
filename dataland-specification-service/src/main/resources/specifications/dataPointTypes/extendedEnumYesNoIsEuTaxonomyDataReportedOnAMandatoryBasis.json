@@ -3,6 +3,6 @@
   "name" : "Is EU Taxonomy data reported on a mandatory basis?",
   "businessDefinition" : "Does Article 1(2) of Regulation (EU) 2020/852 apply to the undertaking and, therefore, is EU Taxonomy data reported on a mandatory basis?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : null
 }

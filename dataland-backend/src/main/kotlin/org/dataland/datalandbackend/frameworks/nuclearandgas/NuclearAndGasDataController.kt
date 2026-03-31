@@ -91,5 +91,6 @@ class NuclearAndGasDataController
 
         @Operation(operationId = "getLatestAvailableCompanyAssociatedNuclearAndGasData")
         override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
-            super.getLatestAvailableCompanyAssociatedData(identifier)
+            super
+                .getLatestAvailableCompanyAssociatedData(identifier)
     }
