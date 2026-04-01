@@ -1034,7 +1034,7 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithCustomAccepted });
 
-      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('be.visible');
+      cy.get('[data-test="accepted-check-custom-section"]').should('be.visible');
       cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
       cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
     });

@@ -8,7 +8,8 @@
         <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom datapoint</h3>
         <span
           v-if="isAccepted"
-          class="pi pi-check text-green-500 ml-2 text-xl font-bold accepted-check"
+          class="pi pi-check text-green-500 ml-2 text-xl font-bold"
+          data-test="accepted-check-custom-section"
           aria-label="Accepted"
         />
       </div>
@@ -54,7 +55,7 @@
                   v-model="formData.value"
                   size="small"
                   fluid
-                  placeholder="Select Value"
+                  placeholder="Enter Value"
                   data-test="custom-value-field"
                 />
               </td>
@@ -97,7 +98,7 @@
                   v-model="formData.pages"
                   size="small"
                   fluid
-                  placeholder="Select Page(s)"
+                  placeholder="Enter Page(s)"
                   data-test="custom-pages-field"
                 />
               </td>
@@ -111,7 +112,6 @@
                   size="small"
                   fluid
                   placeholder="Write a comment"
-                  rows="2"
                   data-test="custom-comment-field"
                 />
               </td>
@@ -156,7 +156,11 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
-import { parseDataPointJsonToFormData, parseFormDataToDataPointJson } from '@/utils/JudgeDialogUtils.ts';
+import {
+  DEFAULT_CUSTOM_JSON,
+  parseDataPointJsonToFormData,
+  parseFormDataToDataPointJson,
+} from '@/utils/JudgeDialogUtils.ts';
 
 const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
   label: qualityOption,
@@ -179,11 +183,10 @@ const emit = defineEmits<{
 
 const editModeEnabled = defineModel<boolean>('editModeEnabled', { default: false });
 const jsonValue = defineModel<string>('json', {
-  default: () =>
-    JSON.stringify({ value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } }, null, 2),
+  default: () => DEFAULT_CUSTOM_JSON,
 });
 const formData = defineModel<CustomFormData>('formData', {
-  default: () => ({ value: '', quality: '', document: '', pages: '', comment: '' }),
+  default: () => DEFAULT_CUSTOM_JSON,
 });
 
 const selectedDocumentOption = computed<DocumentOption | null>(
@@ -206,6 +209,7 @@ const isCustomJsonValid = computed<boolean>(() => {
 
 /**
  * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
+ * @returns nothing, updates jsonValue in place.
  */
 function formDataToJson(): void {
   jsonValue.value = parseFormDataToDataPointJson(formData.value, selectedDocumentOption.value);
