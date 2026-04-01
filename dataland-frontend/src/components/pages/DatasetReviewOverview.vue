@@ -159,7 +159,7 @@ function onDocumentsBuilt(documents: DocumentOption[]): void {
  * @param row
  */
 function onComparisonTableRowClicked(row: CellRow): void {
-  judgeDialogDataPointTypeId.value = row.dataPointTypeId ?? row.label;
+  judgeDialogDataPointTypeId.value = row.dataPointTypeId;
   isJudgeDialogOpen.value = true;
 }
 
