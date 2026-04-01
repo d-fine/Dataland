@@ -1,4 +1,5 @@
 import { type DataMetaInformation, type EutaxonomyFinancialsData, type StoredCompany } from '@clients/backend';
+import { AcceptedDataPointSource } from '@clients/qaservice';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -27,7 +28,6 @@ enum IconState {
 
 type QaVerdict = 'QaAccepted' | 'QaRejected';
 type QaRole = 'reviewer' | 'admin';
-type AcceptedSource = 'Original' | 'Qa' | 'Custom';
 
 type QaTokens = {
   reviewerToken: string;
@@ -43,7 +43,7 @@ interface QaReport {
 }
 
 interface QaJudgement {
-  acceptedSource?: AcceptedSource;
+  acceptedSource?: AcceptedDataPointSource;
   reporterUserIdOfAcceptedQaReport?: string;
   customDataPoint?: string;
 }
@@ -85,7 +85,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       { role: 'admin', verdict: 'QaAccepted' },
     ],
     judgement: {
-      acceptedSource: 'Original',
+      acceptedSource: AcceptedDataPointSource.Original,
     },
   },
   {
@@ -95,7 +95,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       { role: 'admin', verdict: 'QaRejected', correctedValue: '{"value":"74568964325", "currency":"EUR"}' },
     ],
     judgement: {
-      acceptedSource: 'Custom',
+      acceptedSource: AcceptedDataPointSource.Custom,
       customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
     },
   },
@@ -106,7 +106,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       { role: 'admin', verdict: 'QaAccepted' },
     ],
     judgement: {
-      acceptedSource: 'Qa',
+      acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: reviewer_userId,
       customDataPoint: '{"value":"No"}',
     },
@@ -118,7 +118,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       { role: 'admin', verdict: 'QaRejected', correctedValue: '{"value":"2409600.75"}' },
     ],
     judgement: {
-      acceptedSource: 'Qa',
+      acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: admin_userId,
     },
   },
@@ -249,12 +249,7 @@ function getTokens(): Cypress.Chainable<QaTokens> {
       uploaderToken = token;
       return getKeycloakToken(judge_name, judge_pw);
     })
-    .then((judgeToken) => ({
-      reviewerToken: reviewerToken,
-      adminToken: adminToken,
-      uploaderToken: uploaderToken,
-      judgeToken: judgeToken,
-    }));
+    .then((judgeToken) => ({ reviewerToken, adminToken, uploaderToken, judgeToken }));
 }
 
 /**
@@ -407,7 +402,7 @@ function startJudgement(dataSetId: string): void {
 /**
  * Switches to the judge user, opens the review entry for the company, and assigns the dataset to the judge.
  *
- * @param dataSetId The Id of the the dataset to be judged.
+ * @param dataSetId The Id of the dataset to be judged.
  */
 function changeJudgeAssignment(dataSetId: string): void {
   cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
@@ -447,7 +442,7 @@ function judgeDataPointsWithoutQaReports(
   dataPointEntries.forEach(([dataPointType]) => {
     patchDataPoint(datasetJudgementId, judgeToken, {
       dataPointType,
-      acceptedSource: 'Original',
+      acceptedSource: AcceptedDataPointSource.Original,
     });
   });
 
@@ -518,7 +513,8 @@ function judgeDataPointsWithQaReports(
  * @param scenario QA scenario configuration including judgement rules.
  */
 function buildExpectedIconsForScenario(scenario: QaScenarioConfig): IconState[] {
-  const originalIcon = scenario.judgement.acceptedSource === 'Original' ? IconState.Accepted : IconState.Rejected;
+  const originalIcon =
+    scenario.judgement.acceptedSource === AcceptedDataPointSource.Original ? IconState.Accepted : IconState.Rejected;
 
   const reviewerAction = scenario.qaReports.find((a) => a.role === 'reviewer');
   const adminAction = scenario.qaReports.find((a) => a.role === 'admin');
@@ -560,7 +556,8 @@ function buildQaIconForAction(
   }
 
   const isAcceptedQa =
-    judgement.acceptedSource === 'Qa' && judgement.reporterUserIdOfAcceptedQaReport === reporterUserId;
+    judgement.acceptedSource === AcceptedDataPointSource.Qa &&
+    judgement.reporterUserIdOfAcceptedQaReport === reporterUserId;
 
   return isAcceptedQa ? IconState.Accepted : IconState.Rejected;
 }
@@ -581,7 +578,7 @@ function buildCustomIcon(judgement: QaJudgement): IconState {
   if (!judgement.customDataPoint) {
     return IconState.None;
   }
-  return judgement.acceptedSource === 'Custom' ? IconState.Accepted : IconState.Rejected;
+  return judgement.acceptedSource === AcceptedDataPointSource.Custom ? IconState.Accepted : IconState.Rejected;
 }
 
 /**
@@ -668,7 +665,7 @@ function checkRowIcons(dataPointId: string, expectedIcons: IconState[]): void {
 /**
  * Reject Dataset via the button on the Judgement Page.
  *
- * @param dataSetId The id of the dataset that should be finished.
+ * @param dataSetId The id of the dataset that should be rejected.
  */
 function rejectDatasetInJudgementModal(dataSetId: string): void {
   cy.get('[data-test="qaReviewPageRejectButton"]').should('be.visible').click();

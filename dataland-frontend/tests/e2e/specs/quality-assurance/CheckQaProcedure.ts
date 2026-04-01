@@ -88,14 +88,8 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
 
   safeLogout();
   login(admin_name, admin_pw);
-  cy.visitAndCheckAppMount('/qualityassurance');
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
-    if (element.prop('disabled')) {
-      return;
-    }
-    element.trigger('click');
-  });
+
+  viewRecentlyUploadedDatasetsInQaTable();
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -136,14 +130,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 ): void {
   login(admin_name, admin_pw);
 
-  cy.visitAndCheckAppMount('/qualityassurance');
-  cy.get('[data-test="qa-review-section"]').should('be.visible');
-  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
-    if (element.prop('disabled')) {
-      return;
-    }
-    element.trigger('click');
-  });
+  viewRecentlyUploadedDatasetsInQaTable();
 
   cy.visit(`/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/${dataMetaInfo.dataId}`);
 
@@ -162,6 +149,20 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.visit(
     `/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/upload?templateDataId=${dataMetaInfo.dataId}`
   );
+}
+
+/**
+ * Visits the quality assurance page and switches to the last table page
+ */
+function viewRecentlyUploadedDatasetsInQaTable(): void {
+  cy.visitAndCheckAppMount('/qualityassurance');
+  cy.contains('span', 'REVIEW');
+  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+    if (element.prop('disabled')) {
+      return;
+    }
+    element.trigger('click');
+  });
 }
 
 /**
