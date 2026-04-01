@@ -55,6 +55,10 @@ class QaReviewManager
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        private companion object {
+            const val MAX_PENDING_DATASETS = 10
+        }
+
         /**
          * Add a new qa review entry corresponding to a dataset event (upload, qa status change, etc.) to the qa review
          * history
@@ -132,8 +136,10 @@ class QaReviewManager
                             companyName = companyName,
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
-                    ).map { it.toQaReviewResponse(userIsAdmin) }
+                    ).take(MAX_PENDING_DATASETS)
+                    .map { it.toQaReviewResponse(userIsAdmin) }
             logger.info("Retrieved information about pending datasets for companyName $companyName.")
+
             return addPrioritiesToResponse(qaReviewResponses)
         }
 
