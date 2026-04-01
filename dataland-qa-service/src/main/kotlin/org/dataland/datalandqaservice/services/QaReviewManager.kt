@@ -121,6 +121,7 @@ class QaReviewManager
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            logger.info("Retrieving information about pending datasets for companyName $companyName.")
             val qaReviewResponses =
                 qaReviewRepository
                     .getPendingQaReviewMetadatasetsByCompany(
@@ -132,6 +133,7 @@ class QaReviewManager
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
                     ).map { it.toQaReviewResponse(userIsAdmin) }
+            logger.info("Retrieved information about pending datasets for companyName $companyName.")
             return addPrioritiesToResponse(qaReviewResponses)
         }
 
@@ -145,6 +147,7 @@ class QaReviewManager
          * @return list of QA review responses with priorities added or null if unavailable
          */
         private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
+            logger.info("Fetching data sourcing priorities to ${qaReviewResponses.size} QA review responses.")
             val dsDimensions =
                 qaReviewResponses.map {
                     DsBasicDataDimensions(it.companyId, it.framework, it.reportingPeriod)
@@ -156,8 +159,10 @@ class QaReviewManager
                 } catch (ex: ClientException) {
                     if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) null else throw ex
                 }
-
-            return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
+            logger.info("Adding data sourcing priorities to ${qaReviewResponses.size} QA review responses.")
+            val responsesWithPriorities = QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
+            logger.info("Successfully added data sourcing priorities to ${qaReviewResponses.size} QA review responses.")
+            return responsesWithPriorities
         }
 
         /**
