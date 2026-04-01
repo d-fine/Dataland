@@ -1,5 +1,5 @@
 import { type DataMetaInformation, type EutaxonomyFinancialsData, type StoredCompany } from '@clients/backend';
-import { AcceptedDataPointSource } from '@clients/qaservice';
+import { AcceptedDataPointSource, QaReportDataPointVerdict } from '@clients/qaservice';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -26,7 +26,6 @@ enum IconState {
   None,
 }
 
-type QaVerdict = 'QaAccepted' | 'QaRejected';
 type QaRole = 'reviewer' | 'admin';
 
 type QaTokens = {
@@ -38,7 +37,7 @@ type QaTokens = {
 
 interface QaReport {
   role: QaRole;
-  verdict: QaVerdict;
+  verdict: QaReportDataPointVerdict;
   correctedValue?: string;
 }
 
@@ -81,8 +80,8 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
     qaReports: [
-      { role: 'reviewer', verdict: 'QaAccepted' },
-      { role: 'admin', verdict: 'QaAccepted' },
+      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
+      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Original,
@@ -91,8 +90,16 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
     qaReports: [
-      { role: 'reviewer', verdict: 'QaRejected', correctedValue: '{"value":"5453445343", "currency":"EUR"}' },
-      { role: 'admin', verdict: 'QaRejected', correctedValue: '{"value":"74568964325", "currency":"EUR"}' },
+      {
+        role: 'reviewer',
+        verdict: QaReportDataPointVerdict.QaRejected,
+        correctedValue: '{"value":"5453445343", "currency":"EUR"}',
+      },
+      {
+        role: 'admin',
+        verdict: QaReportDataPointVerdict.QaRejected,
+        correctedValue: '{"value":"74568964325", "currency":"EUR"}',
+      },
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Custom,
@@ -102,8 +109,8 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
     qaReports: [
-      { role: 'reviewer', verdict: 'QaRejected', correctedValue: '{"value":"No"}' },
-      { role: 'admin', verdict: 'QaAccepted' },
+      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"No"}' },
+      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
@@ -114,8 +121,8 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.numberOfEmployees,
     qaReports: [
-      { role: 'reviewer', verdict: 'QaAccepted' },
-      { role: 'admin', verdict: 'QaRejected', correctedValue: '{"value":"2409600.75"}' },
+      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
+      { role: 'admin', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"2409600.75"}' },
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
@@ -257,13 +264,14 @@ function getTokens(): Cypress.Chainable<QaTokens> {
  *
  * @param dataPointId     Identifier of the data point for which the QA report is created.
  * @param token           Bearer token used for authentication in the request header.
- * @param verdict         QA verdict for the data point (e.g. accepted or rejected).
- * @param correctedValue  Optional corrected value; sent as `correctedData` when the verdict is 'QaRejected'.
+ * @param verdict         QA verdict for the data point, using `QaReportDataPointVerdict` values.
+ * @param correctedValue  Optional corrected value for the data point, required if the verdict is
+ *                        `QaReportDataPointVerdict.QaRejected`.
  */
 function uploadQaReportForDataPoint(
   dataPointId: string,
   token: string,
-  verdict: QaVerdict,
+  verdict: QaReportDataPointVerdict,
   correctedValue?: string
 ): void {
   cy.request({
@@ -272,11 +280,11 @@ function uploadQaReportForDataPoint(
     headers: { Authorization: `Bearer ${token}` },
     body: {
       comment:
-        verdict === 'QaAccepted'
+        verdict === QaReportDataPointVerdict.QaAccepted
           ? 'The data point is correct and hence accepted.'
           : 'The data point is not correct and hence rejected.',
       verdict,
-      ...(verdict === 'QaRejected' && correctedValue ? { correctedData: correctedValue } : {}),
+      ...(verdict === QaReportDataPointVerdict.QaRejected && correctedValue ? { correctedData: correctedValue } : {}),
     },
   });
 }
@@ -532,8 +540,8 @@ function buildExpectedIconsForScenario(scenario: QaScenarioConfig): IconState[] 
  *
  * Rules:
  * - If no QA report is present: IconState.None.
- * - If verdict = QaAccepted: IconState.None (no icon in the QA column).
- * - If verdict = QaRejected:
+ * - If verdict = `QaReportDataPointVerdict.QaAccepted`: IconState.None (no icon in the QA column).
+ * - If verdict = `QaReportDataPointVerdict.QaRejected`:
  *   - and this QA was accepted as the source -> IconState.Accepted
  *   - otherwise -> IconState.Rejected
  *
@@ -551,7 +559,7 @@ function buildQaIconForAction(
     return IconState.None;
   }
 
-  if (qaReport.verdict === 'QaAccepted') {
+  if (qaReport.verdict === QaReportDataPointVerdict.QaAccepted) {
     return IconState.None;
   }
 
