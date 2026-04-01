@@ -1,23 +1,11 @@
-type TestEnv = {
-  TEST_GROUP?: string | number;
-  SINGLE_POPULATE?: boolean;
-  RUN_PREPOPULATION?: boolean;
-};
-
-const cypressEnv: TestEnv = {
-  TEST_GROUP: Cypress.expose('TEST_GROUP'),
-  SINGLE_POPULATE: Cypress.expose('SINGLE_POPULATE'),
-  RUN_PREPOPULATION: Cypress.expose('RUN_PREPOPULATION'),
-};
-
-const testGroupingDisabled = Number.isNaN(Number(cypressEnv.TEST_GROUP));
+const testGroupingDisabled = Number.isNaN(Cypress.expose('TEST_GROUP') as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = Number.parseInt(String(cypressEnv.TEST_GROUP));
+  cypressTestGroup = Number.parseInt(Cypress.expose('TEST_GROUP') as string);
 }
 
-const singlePopulate = !testGroupingDisabled && cypressEnv.SINGLE_POPULATE === true;
-const runPrepopulation = cypressEnv.RUN_PREPOPULATION !== false;
+const singlePopulate = !testGroupingDisabled && Cypress.expose('SINGLE_POPULATE') === true;
+const runPrepopulation = Cypress.expose('RUN_PREPOPULATION') !== false;
 
 if (testGroupingDisabled) {
   console.log('Test grouping disabled. Loading all tests...');
