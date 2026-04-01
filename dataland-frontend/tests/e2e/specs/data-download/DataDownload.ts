@@ -1,6 +1,6 @@
 import { DataTypeEnum, ExportFileType, type LksgData, type StoredCompany } from '@clients/backend';
-import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -164,7 +164,7 @@ describeIf(
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
@@ -184,7 +184,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
     });
 
     it('Download data as CSV file, check for appropriate size and delete it afterwards', () => {

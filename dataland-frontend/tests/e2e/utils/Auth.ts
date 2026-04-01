@@ -91,6 +91,15 @@ export function loginWithCredentials(username: string, password: string): void {
 }
 
 /**
+ * Logs in with credentials after fetching the reader password via the keycloak login form.
+ */
+export function loginWithCredentialsOfReader(): void {
+  getReaderPw().then((pw) => {
+    loginWithCredentials(reader_name, pw);
+  });
+}
+
+/**
  * Performs a login if required to ensure that the user is logged in with the credentials.
  * Sessions are cached for enhanced performance
  * @param username the username to use

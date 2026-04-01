@@ -1,6 +1,5 @@
 import { countCompaniesAndDatasetsForDataType } from '@e2e/utils/GeneralApiUtils';
-import { getKeycloakToken } from '@e2e/utils/Auth';
-import { reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { getReaderToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 import { DataTypeEnum } from '@clients/backend';
@@ -42,7 +41,7 @@ describeIf(
         const delayToWaitForPrepopulationSoThatNotAllRetriesAreWastedInstantly = 5000;
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(delayToWaitForPrepopulationSoThatNotAllRetriesAreWastedInstantly)
-          .then(() => getKeycloakToken(reader_name, reader_pw))
+          .then(() => getReaderToken())
           .then({ timeout: 150000 }, async (error_) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
               countCompaniesAndDatasetsForDataType(error_, key as DataTypeEnum)

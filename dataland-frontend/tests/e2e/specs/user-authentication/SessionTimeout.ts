@@ -1,4 +1,4 @@
-import { login } from '@e2e/utils/Auth';
+import { loginAsReader } from '@e2e/utils/Auth';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 type TokenResponse = { id_token: string; access_token: string; refresh_token: string };
@@ -23,7 +23,7 @@ describe('The page should behave well-defined when the user logs out in a differ
       'after the user gets logged out in the background',
     () => {
       cy.intercept('**/token').as('tokenResponse');
-      login();
+      loginAsReader();
       cy.wait('@tokenResponse').then(({ response }) => {
         const responseTyped = response as { body: TokenResponse };
         const idToken = assertDefined(responseTyped.body?.id_token);
@@ -53,7 +53,7 @@ describe('The page should behave well-defined when the user logs out in a differ
         });
       }
     });
-    login();
+    loginAsReader();
     cy.get('button[name=refresh_session_button]', { timeout: 10000 }).click();
     cy.url().should('contain', '/companies');
   });

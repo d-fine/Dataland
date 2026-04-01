@@ -1,4 +1,3 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import {
   type DataMetaInformation,
@@ -6,7 +5,7 @@ import {
   type EutaxonomyNonFinancialsData,
   type StoredCompany,
 } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
@@ -69,7 +68,7 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
  * @return {void} This function does not return a value.
  */
 function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
-  cy.ensureLoggedIn(admin_name, admin_pw);
+  cy.ensureLoggedInAsAdmin();
   cy.visitAndCheckAppMount('/portfolios');
   cy.get('[data-test="add-portfolio"]').click();
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
@@ -169,7 +168,7 @@ describeIf(
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
       portfolioName = `Download Portfolio ${Date.now()}`;
 
-      return getKeycloakToken(admin_name, admin_pw)
+      return getAdminToken()
         .then((token) => {
           return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
             .then((company1) => {
@@ -186,7 +185,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();

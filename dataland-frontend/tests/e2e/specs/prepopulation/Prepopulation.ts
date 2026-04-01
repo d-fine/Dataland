@@ -1,4 +1,4 @@
-import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
+import { doThingsInChunks, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
 import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -33,7 +33,7 @@ function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCo
       },
     },
     () => {
-      cy.getKeycloakToken(admin_name, admin_pw)
+      cy.getAdminToken()
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier)))
         .then((response) => {
           assert(
@@ -60,7 +60,7 @@ describe(
 
   () => {
     before(function uploadDocumentsAndStoreDocumentIds() {
-      cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+      cy.getAdminToken().then((token) => {
         uploadAllDocuments(token);
       });
     });
@@ -91,7 +91,7 @@ describe(
           });
 
           it(`Upload data for framework ${frameworkIdentifier}`, () => {
-            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+            cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadGenericFrameworkData(
@@ -132,7 +132,7 @@ describe(
           });
 
           it(`Upload data for framework ${DataTypeEnum.Vsme}`, () => {
-            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+            cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadVsmeFrameworkData(
