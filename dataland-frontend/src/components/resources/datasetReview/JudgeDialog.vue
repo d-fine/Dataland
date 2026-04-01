@@ -62,6 +62,7 @@
         :nav-index="0"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
         :index-of-accepted-qa-report="indexOfAcceptedQaReport"
+        section-type="original"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
@@ -85,6 +86,7 @@
           currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
         "
         :index-of-accepted-qa-report="indexOfAcceptedQaReport"
+        section-type="qa"
         @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"

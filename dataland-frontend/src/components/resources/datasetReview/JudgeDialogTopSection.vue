@@ -117,6 +117,7 @@ const props = defineProps<{
   navLabel?: string;
   isAccepted?: boolean;
   indexOfAcceptedQaReport?: number;
+  sectionType: 'original' | 'qa';
 }>();
 
 const emit = defineEmits<{
@@ -135,8 +136,8 @@ const tableRows = computed(() => [
   { label: 'Comment', value: props.data?.comment },
 ]);
 
-const isQaSection = computed(() => props.showNav);
-const isOriginalSection = computed(() => !props.showNav);
+const isQaSection = computed(() => props.sectionType === 'qa');
+const isOriginalSection = computed(() => props.sectionType === 'original');
 
 const showOriginalCheckmark = computed(() => {
   return isOriginalSection.value && props.isAccepted;
