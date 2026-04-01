@@ -82,8 +82,7 @@ export default defineComponent({
 
   setup() {
     const onSelect = (company: CompanyIdAndName) => {
-      const base = window.location.origin;
-      window.location.href = `${base}/companies/${company.companyId}`;
+      window.location.href = `/companies/${company.companyId}`;
     };
     return useCompanySearch(fetchCompaniesByNameOrLei, onSelect);
   },
