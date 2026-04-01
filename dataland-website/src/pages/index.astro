@@ -5,6 +5,7 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
 import { TESTIMONIALS } from '../data/testimonials';
 import { FRAMEWORK_CARDS } from '../data/frameworks';
 import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
+import CompanySearchBar from '../components/CompanySearchBar.vue';
 ---
 
 <Base title="Dataland — Non-profit sustainability data">
@@ -41,18 +42,7 @@ import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
   <section class="py-12 px-6 bg-[#111111] text-white" aria-label="Search sustainability data by company name or LEI">
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-6">
       <h2 class="text-2xl font-bold m-0 text-center">Search sustainability data by company name or LEI</h2>
-      <div class="relative w-full max-w-[520px]">
-        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input
-          type="text"
-          placeholder="Search by company name or LEI..."
-          class="w-full py-3.5 pr-4 pl-11 border-[1.5px] border-white/20 rounded-lg text-base font-[var(--font-family)] text-[var(--color-text)] bg-white box-border placeholder:text-[var(--color-text-muted)]"
-          readonly
-          aria-label="Search by company name or LEI"
-        />
-      </div>
+      <CompanySearchBar client:load />
     </div>
   </section>
 
