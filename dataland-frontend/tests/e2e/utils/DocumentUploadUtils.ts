@@ -100,7 +100,6 @@ export async function patchDocumentMetaInfo(
       accessToken: token,
     })
   );
-  const documentHash = await sha256Hex(new Uint8Array(0));
   return await documentControllerApi
     .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
@@ -109,10 +108,10 @@ export async function patchDocumentMetaInfo(
     .catch((error: AxiosError) => {
       if (error.status == 403) {
         console.log('You do not have the right to update the companyIds field.');
-        return { documentId: documentHash } as DocumentMetaInfoResponse;
+        return { documentId: documentId } as DocumentMetaInfoResponse;
       } else if (error.status == 404) {
         console.log('Document Id does not match any stored document.');
-        return { documentId: documentHash } as DocumentMetaInfoResponse;
+        return { documentId: documentId } as DocumentMetaInfoResponse;
       } else {
         throw error;
       }
