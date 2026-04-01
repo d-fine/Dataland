@@ -55,6 +55,10 @@ class QaReviewManager
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        companion object {
+            private const val NANOSECONDS_IN_A_MILLISECOND = 1_000_000
+        }
+
         private data class ToQaReviewResponseTiming(
             var mappedCount: Int = 0,
             var qaReportLookupDurationNanos: Long = 0,
@@ -76,9 +80,9 @@ class QaReviewManager
                 return
             }
             val qaReportLookupDurationMs =
-                timing.qaReportLookupDurationNanos.toDouble() / timing.mappedCount / 1_000_000
+                timing.qaReportLookupDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
             val datasetJudgementLookupDurationMs =
-                timing.datasetJudgementLookupDurationNanos.toDouble() / timing.mappedCount / 1_000_000
+                timing.datasetJudgementLookupDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
             logger.info(
                 "Average toQaReviewResponse call durations for {} over " +
                     "{} datasets: getNumberOfQaReportsForDataId={} ms, getDatasetJudgementsByDatasetId={} ms.",
