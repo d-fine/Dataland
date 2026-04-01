@@ -27,6 +27,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    register: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isUserOnMobileDevice(): boolean {
@@ -45,7 +49,10 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            return keycloak.login();
+            const baseUrl = globalThis.location.origin;
+            return this.register
+              ? keycloak.register({ redirectUri: `${baseUrl}/platform-redirect` })
+              : keycloak.login();
           }
         })
         .catch((error) => console.log(error));
