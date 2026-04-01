@@ -320,7 +320,7 @@ const routes = [
     name: 'Platform Redirect',
     component: PlatformRedirect,
     meta: {
-      requiresAuthentication: true,
+      requiresAuthentication: false,
     },
   },
   {

@@ -14,6 +14,10 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 onMounted(async () => {
   const keycloak = await assertDefined(getKeycloakPromise)();
+  if (!keycloak.authenticated) {
+    void router.replace({ path: '/' });
+    return;
+  }
   const apiClientProvider = new ApiClientProvider(Promise.resolve(keycloak));
   const userPortfoliosResponse =
     await apiClientProvider.apiClients.portfolioController.getAllPortfolioNamesForCurrentUser();
