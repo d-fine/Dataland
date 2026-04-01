@@ -10,5 +10,14 @@ export default defineConfig({
   integrations: [mdx(), vue(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/api': {
+          target: process.env.VITE_API_PROXY_TARGET ?? 'https://local-dev.dataland.com',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
   },
 });
