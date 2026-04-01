@@ -9,7 +9,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
 
-const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Choose reporting periods

@@ -1,4 +1,4 @@
-const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * Verifies the successful creation of the request on the single request page

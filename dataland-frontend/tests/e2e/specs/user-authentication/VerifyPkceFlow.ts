@@ -1,6 +1,6 @@
 import { loginAsReader } from '@e2e/utils/Auth';
 
-const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 describe('As a user I expect Dataland to use PKCE flow to prevent auth loss', () => {
   it(`Test that code_verifier is sent along with token request`, () => {

@@ -11,7 +11,7 @@ describe('As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, '0')).join('');
 
   const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-  const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+  const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
   it('Checks that the Dataland password-policy gets respected', () => {
     cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();

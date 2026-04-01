@@ -1,4 +1,4 @@
-const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * Checks if the dataland footer element is present

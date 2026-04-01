@@ -1,5 +1,5 @@
-const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
-const mediumTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if
