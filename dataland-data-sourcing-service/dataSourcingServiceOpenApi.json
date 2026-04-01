@@ -1836,6 +1836,7 @@
           "DocumentSourcingDone",
           "DataExtraction",
           "DataVerification",
+          "NonSourceableVerification",
           "NonSourceable",
           "Done"
         ]
@@ -2494,6 +2495,7 @@
           "DataExtraction",
           "DataVerification",
           "NonSourceable",
+          "NonSourceableVerification",
           "Done"
         ]
       },

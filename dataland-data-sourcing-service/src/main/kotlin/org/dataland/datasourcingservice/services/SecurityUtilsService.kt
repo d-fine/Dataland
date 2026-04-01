@@ -88,14 +88,8 @@ class SecurityUtilsService
             state: DataSourcingState,
         ): Boolean {
             val dataSourcing = dataSourcingManager.getStoredDataSourcing(ValidationUtils.convertToUUID(dataSourcingId))
-            val result =
-                when (state) {
-                    DataSourcingState.DocumentSourcingDone -> doesUserBelongTo(dataSourcing) { it.documentCollector }
-                    DataSourcingState.NonSourceable ->
-                        doesUserBelongTo(dataSourcing) { it.documentCollector } ||
-                            doesUserBelongTo(dataSourcing) { it.dataExtractor }
-                    else -> false
-                }
-            return result
+            return state === DataSourcingState.DocumentSourcingDone &&
+                dataSourcing.state === DataSourcingState.DocumentSourcing &&
+                doesUserBelongTo(dataSourcing) { it.documentCollector }
         }
     }
