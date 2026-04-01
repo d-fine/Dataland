@@ -51,7 +51,7 @@ export default defineComponent({
           if (!keycloak.authenticated) {
             return this.register
               ? keycloak.register({ redirectUri: `${globalThis.location.origin}/platform-redirect` })
-              : keycloak.login();
+              : keycloak.login({ redirectUri: `${globalThis.location.origin}/platform-redirect` });
           }
         })
         .catch((error) => console.log(error));
