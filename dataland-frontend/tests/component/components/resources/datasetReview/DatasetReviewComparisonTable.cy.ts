@@ -220,14 +220,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
-    cy.contains('a', 'Data Date').should('be.visible');
-    cy.contains('a', 'Fiscal Year Deviation').should('be.visible');
+    cy.contains('button', 'Data Date').should('be.visible');
+    cy.contains('button', 'Fiscal Year Deviation').should('be.visible');
   });
 
   it('shows accepted and rejected icons for original and QA sources', () => {
     mountComponent();
 
-    cy.contains('a', 'Data Date')
+    cy.contains('button', 'Data Date')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.accepted-check').should('exist');
@@ -237,7 +237,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.rejected-check').should('not.exist');
       });
 
-    cy.contains('a', 'Fiscal Year Deviation')
+    cy.contains('button', 'Fiscal Year Deviation')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -245,7 +245,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.accepted-check').should('exist');
       });
 
-    cy.contains('a', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -258,14 +258,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('hides empty KPI rows when hideEmptyFields is true', () => {
     mountComponent({ hideEmptyFields: true });
 
-    cy.contains('a', 'Scope 2 GHG emissions').should('not.exist');
-    cy.contains('a', 'Data Date').should('be.visible');
+    cy.contains('button', 'Scope 2 GHG emissions').should('not.exist');
+    cy.contains('button', 'Data Date').should('be.visible');
   });
 
   it('shows empty KPI rows when hideEmptyFields is false', () => {
     mountComponent({ hideEmptyFields: false });
 
-    cy.contains('a', 'Scope 2 GHG emissions').should('be.visible');
+    cy.contains('button', 'Scope 2 GHG emissions').should('be.visible');
   });
 
   it('renders the company reports banner with referenced reports', () => {
@@ -292,7 +292,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('renders the custom datapoint value from JSON', () => {
     mountComponent();
 
-    cy.contains('a', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(4).should('contain.text', '2023-12-15');
@@ -336,7 +336,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
 
     cy.wait('@getFrameworkData2');
 
-    cy.contains('a', 'Data Date').should('have.class', 'kpi-link').click();
+    cy.contains('button', 'Data Date').should('have.class', 'kpi-link').click();
 
     cy.get('@onRowClick').should('have.been.calledOnce');
     cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'plainDateSfdrDataDate' });
@@ -345,6 +345,6 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('does not apply kpi-link style and does not emit row-click when rowClickable is false', () => {
     mountComponent({ rowClickable: false });
 
-    cy.contains('a', 'Data Date').should('not.have.class', 'kpi-link').should('have.class', 'cursor-default');
+    cy.contains('button', 'Data Date').should('have.class', 'kpi-link').should('have.class', 'cursor-default');
   });
 });
