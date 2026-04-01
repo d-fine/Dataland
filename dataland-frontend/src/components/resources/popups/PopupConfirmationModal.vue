@@ -3,8 +3,8 @@
     v-model:visible="isVisible"
     :header="header"
     modal
-    :closable="false"
     :dismissable-mask="!isLoading"
+    :closable="false"
     data-test="confirmation-modal"
     :style="{ width: '30rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
@@ -34,7 +34,6 @@
     <template #footer v-if="!isSuccess">
       <div class="flex justify-content-end gap-2 w-full mt-2">
         <PrimeButton
-          v-if="showCancelButton"
           label="CANCEL"
           @click="handleCancel"
           severity="secondary"
@@ -66,7 +65,6 @@ const props = defineProps<{
   errorMessage?: string;
   isLoading?: boolean;
   isSuccess?: boolean;
-  showCancelButton?: boolean;
 }>();
 
 const emit = defineEmits<{
