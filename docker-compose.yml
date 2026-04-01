@@ -42,7 +42,6 @@ services:
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
-      - ./dataland-website/dist:/var/www/astro:ro
     <<: *uncritical-constants-env
     environment:
       # The primary server URL all other URLS get redirected to
