@@ -6,7 +6,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import { getAdminToken, ensureLoggedInAsReader, ensureLoggedInAsUploader } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { convertStringToQueryParamFormat } from '@e2e/utils/Converters';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -49,7 +49,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[3];
 
   it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
-    ensureLoggedInAsReader();
+    cy.ensureLoggedInAsReader();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
     cy.visit('/companies').wait('@companies-meta-information');
     verifySearchResultTableExists();
@@ -107,7 +107,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const demoCompanyToTestForCountryName = assertDefined(
             getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode)
           );
-          ensureLoggedInAsReader();
+          cy.ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
@@ -144,7 +144,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           );
           expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
-          ensureLoggedInAsReader();
+          cy.ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`
@@ -164,7 +164,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     }
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {
-    ensureLoggedInAsReader();
+    cy.ensureLoggedInAsReader();
     cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
     cy.get("span:contains('RESET')").click();
     cy.url().should('eq', getBaseUrl() + '/companies');
@@ -173,7 +173,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     'Check that the filter dropdowns close when you scroll, especially on the resulting query when you check a box while you are not at the top of the page',
     { scrollBehavior: false },
     () => {
-      ensureLoggedInAsReader();
+      cy.ensureLoggedInAsReader();
       cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
@@ -214,7 +214,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
-        ensureLoggedInAsUploader();
+        cy.ensureLoggedInAsUploader();
       });
 
       const companyNameMarker = `Data${Date.now().toString()}`;

@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { type LksgData } from '@clients/backend';
-import { getAdminToken, ensureLoggedInAsAdmin } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -13,7 +13,7 @@ describeIf(
   },
   () => {
     beforeEach(() => {
-      ensureLoggedInAsAdmin();
+      cy.ensureLoggedInAsAdmin();
     });
 
     let lksgFixture: FixtureData<LksgData>;

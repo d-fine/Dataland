@@ -1,6 +1,6 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
-import { ensureLoggedInAsReader, getUploaderToken } from '@e2e/utils/Auth';
+import { getUploaderToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
@@ -84,7 +84,7 @@ before(function () {
 });
 
 beforeEach(function () {
-  ensureLoggedInAsReader();
+  cy.ensureLoggedInAsReader();
 });
 describeIf(
   'As a user, I expect the search functionality on the /companies page to show me the desired results',

@@ -2,7 +2,7 @@ import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/Company
 import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { describeIf } from '@e2e/support/TestUtility';
 import type { CompanyIdAndName } from '@clients/backend';
-import { getAdminToken, ensureLoggedInAsAdmin } from '@e2e/utils/Auth'; // new helpers
+import { getAdminToken } from '@e2e/utils/Auth'; // new helpers
 
 /** Views document details and edits the category */
 function viewDocumentDetailsAndEditCategory(documentName: string, expectedCategory: string): void {
@@ -56,7 +56,7 @@ describeIf(
 
     beforeEach(() => {
       setupCommonInterceptions();
-      ensureLoggedInAsAdmin();
+      cy.ensureLoggedInAsAdmin();
       cy.task('createUniquePdfFixture').then((filename) => {
         testDocFileName = filename as string;
         testDocFilePath = testDocFilePathBase + testDocFileName;

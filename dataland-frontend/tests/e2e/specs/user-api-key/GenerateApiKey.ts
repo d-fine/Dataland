@@ -58,7 +58,7 @@ function verifyAlreadyExistingApiKeyState(): void {
 
 describe('As a user I expect my api key will be generated correctly', () => {
   it('Check Api Key functionalities', () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
     cy.intercept('GET', '**/api-keys/getApiKeyMetaInfoForUser*').as('getApiKeyMetaInfoForUser');
     cy.intercept('GET', '**/api-keys/generateApiKey*').as('generateApiKey');
     cy.visitAndCheckAppMount('/api-key');

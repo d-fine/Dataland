@@ -1,6 +1,6 @@
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from '@e2e/utils/CompanyUpload';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
   DataTypeEnum,
@@ -91,7 +91,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
-        getKeycloakToken(admin_name, admin_pw).then(async (token: string): Promise<void> => {
+        getAdminToken().then(async (token: string): Promise<void> => {
           await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
           storedCompanyForManyDatasetsCompany = await uploadCompanyViaApi(
             token,
@@ -135,7 +135,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       });
 
       it('Go through the whole dataset creation process for a newly created company and verify pages and elements', function () {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         cy.visitAndCheckAppMount('/companies');
         verifySearchResultTableExists();
 
@@ -150,7 +150,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       });
 
       it('Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland', function () {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         cy.visitAndCheckAppMount('/companies/choose');
         const identifierDoesExistMessage = 'There already exists a company with this ID';
         cy.contains(identifierDoesExistMessage).should('not.exist');
@@ -222,7 +222,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
           ' and verify pages and elements.',
         function () {
-          cy.ensureLoggedIn(uploader_name, uploader_pw);
+          cy.ensureLoggedInAsUploader();
           cy.visitAndCheckAppMount('/companies');
           verifySearchResultTableExists();
           cy.get('button').contains('NEW DATASET').click({ force: true });

@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   Configuration,
   type DataMetaInformation,
@@ -211,10 +211,10 @@ describeIf(
       'Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and ' +
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithNoNullFields, true);
           })
@@ -264,10 +264,10 @@ describeIf(
       'Create a company and a Lksg dataset via api with most entries being null and then verify that it can be ' +
         'reuploaded.',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Minimal-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithMinimalFields, false);
           })

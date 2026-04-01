@@ -1,4 +1,14 @@
-import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
+import {
+  ensureLoggedIn,
+  ensureLoggedInAsAdmin,
+  ensureLoggedInAsJudge,
+  ensureLoggedInAsReader,
+  ensureLoggedInAsReviewer,
+  ensureLoggedInAsUploader,
+  getAdminToken,
+  getKeycloakToken,
+  getReaderToken,
+} from '@e2e/utils/Auth';
 import { browserThen } from '@e2e/utils/Cypress';
 import 'cypress-wait-until';
 
@@ -11,7 +21,14 @@ declare global {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
       closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
       ensureLoggedIn: typeof ensureLoggedIn;
+      ensureLoggedInAsReader: typeof ensureLoggedInAsReader;
+      ensureLoggedInAsUploader: typeof ensureLoggedInAsUploader;
+      ensureLoggedInAsReviewer: typeof ensureLoggedInAsReviewer;
+      ensureLoggedInAsJudge: typeof ensureLoggedInAsJudge;
+      ensureLoggedInAsAdmin: typeof ensureLoggedInAsAdmin;
       getKeycloakToken: typeof getKeycloakToken;
+      getReaderToken: typeof getReaderToken;
+      getAdminToken: typeof getAdminToken;
       browserThen: typeof browserThen;
 
       setExceptionContext(context: string | null): void;
@@ -205,5 +222,12 @@ Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
 Cypress.Commands.add('visitAndCheckExternalAdminPage', visitAndCheckExternalAdminPage);
 Cypress.Commands.add('waitForPageLoad', waitForPageLoad);
 Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
+Cypress.Commands.add('ensureLoggedInAsReader', ensureLoggedInAsReader);
+Cypress.Commands.add('ensureLoggedInAsUploader', ensureLoggedInAsUploader);
+Cypress.Commands.add('ensureLoggedInAsReviewer', ensureLoggedInAsReviewer);
+Cypress.Commands.add('ensureLoggedInAsJudge', ensureLoggedInAsJudge);
+Cypress.Commands.add('ensureLoggedInAsAdmin', ensureLoggedInAsAdmin);
 Cypress.Commands.add('getKeycloakToken', getKeycloakToken);
+Cypress.Commands.add('getReaderToken', getReaderToken);
+Cypress.Commands.add('getAdminToken', getAdminToken);
 Cypress.Commands.add('browserThen', browserThen);

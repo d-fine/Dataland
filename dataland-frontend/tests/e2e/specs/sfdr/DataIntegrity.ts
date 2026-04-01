@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { DataTypeEnum, type SfdrData } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -138,13 +138,13 @@ describeIf(
   },
   function () {
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
     });
 
     it('Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form', () => {
       const uniqueCompanyMarker = Date.now().toString();
       const companyName = 'Company-Created-In-Sfdr-DataIntegrity-Test-' + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
           SfdrBaseFrameworkDefinition,
           token,

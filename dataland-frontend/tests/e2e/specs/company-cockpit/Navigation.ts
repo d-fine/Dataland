@@ -1,4 +1,3 @@
-import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -57,7 +56,7 @@ describeIf(
     });
 
     it('From the company cockpit page visit a view page', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
       cy.url({ timeout: longTimeoutInMs }).should(
@@ -68,7 +67,7 @@ describeIf(
     });
 
     it('From the company cockpit page visit an upload page', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-provide-data-button']`).click();
       cy.url({ timeout: longTimeoutInMs }).should(
@@ -81,7 +80,7 @@ describeIf(
       cy.intercept('POST', '**/community/company-ownership/**', {
         statusCode: 200,
       }).as('postCompanyOwnershipRequest');
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
