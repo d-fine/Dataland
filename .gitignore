@@ -34,6 +34,7 @@ hs_err_pid*
 **/bin/
 **/node_modules/
 **/venv/
+dataland-website/dist/
 
 local
 
