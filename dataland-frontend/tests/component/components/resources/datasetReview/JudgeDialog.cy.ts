@@ -385,7 +385,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="verdict-badge"]').should('contain.text', 'QA REJECTED');
     });
 
-    it('shows "QA INCONCLUSIVE" badge when no report is rejected but not all are accepted', () => {
+    it('shows "MIXED VERDICTS" badge when no report is rejected but not all are accepted', () => {
       const judgement: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
         dataPoints: {
@@ -410,7 +410,7 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgement });
 
-      cy.get('[data-test="verdict-badge"]').should('contain.text', 'QA INCONCLUSIVE');
+      cy.get('[data-test="verdict-badge"]').should('contain.text', 'MIXED VERDICTS');
     });
   });
 
