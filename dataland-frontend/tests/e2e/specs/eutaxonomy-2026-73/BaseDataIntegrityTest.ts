@@ -2,13 +2,15 @@ import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrame
 import { type CompanyRoleAssignment } from '@clients/communitymanager';
 import { type DataMetaInformation, type DataTypeEnum, type StoredCompany } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 type SetupResult = {
   token: string;
@@ -39,17 +41,17 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
           const uniqueCompanyMarker = Date.now().toString();
           const testCompanyName = this.getTestCompanyPrefix() + uniqueCompanyMarker;
 
-          cy.wrap(null, { timeout: Cypress.env('long_timeout_in_ms') as number })
+          cy.wrap(null, { timeout: longTimeoutInMs })
             .then(() => this.setupCompanyAndFramework(testCompanyName))
             .then(({ token, storedCompany, dataId }) => {
-              cy.ensureLoggedIn(admin_name, admin_pw);
+              cy.ensureLoggedInAsAdmin();
               cy.intercept({
                 url: `**/api/data/${this.getDataTypeEnum()}/**`,
                 times: 1,
               }).as('getUploadedData');
               cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${this.getDataTypeEnum()}`);
               cy.wait('@getUploadedData', {
-                timeout: Cypress.env('medium_timeout_in_ms') as number,
+                timeout: mediumTimeoutInMs,
               });
               cy.get('h1').should('contain', testCompanyName);
               cy.wrap(null).then(() => this.validateUploadedDataset(token, dataId, this.fixtureData.t));
@@ -133,7 +135,7 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
    * @returns keycloak token for the admin user.
    */
   private getToken(): Cypress.Chainable<string> {
-    return getKeycloakToken(admin_name, admin_pw);
+    return getAdminToken();
   }
 
   /**

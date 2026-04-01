@@ -11,7 +11,7 @@ describe('As a developer, I expect the PGAdmin console to be available to me', (
 
     cy.get('input[name=email]').should('exist').type('admin@dataland.com');
     getStringCypressEnv('PGADMIN_PASSWORD').then((password) => {
-      cy.get('#password').should('exist').type(password);
+      cy.get('input[name=password]').should('exist').type(password);
     });
     cy.get('button[name=internal_button]').should('contain.text', 'Login').click();
 
