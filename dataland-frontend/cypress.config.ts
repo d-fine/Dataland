@@ -10,6 +10,7 @@ let returnPassword: string;
 let returnTotpKey: string;
 
 export default defineConfig({
+  allowCypressEnv: false,
   env: {
     commit_id: require('git-commit-id')({ cwd: '../' }),
     mobile_device_viewport_height: 667,

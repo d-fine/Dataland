@@ -34,7 +34,7 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
       },
       (): void => {
         before((): void => {
-          Cypress.env('excludeBypassQaIntercept', true);
+          Cypress.expose('excludeBypassQaIntercept', true);
         });
 
         it(this.getTestTitle(), (): void => {
