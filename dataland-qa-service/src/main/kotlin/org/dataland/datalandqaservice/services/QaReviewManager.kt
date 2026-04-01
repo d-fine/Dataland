@@ -55,8 +55,38 @@ class QaReviewManager
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
-        private companion object {
-            const val MAX_PENDING_DATASETS = 10
+        private data class ToQaReviewResponseTiming(
+            var mappedCount: Int = 0,
+            var qaReportLookupDurationNanos: Long = 0,
+            var datasetJudgementLookupDurationNanos: Long = 0,
+        )
+
+        private inline fun <T> measureExecutionNanos(block: () -> T): Pair<T, Long> {
+            val start = System.nanoTime()
+            val result = block()
+            return Pair(result, System.nanoTime() - start)
+        }
+
+        private fun logToQaReviewResponseAverages(
+            context: String,
+            timing: ToQaReviewResponseTiming,
+        ) {
+            if (timing.mappedCount == 0) {
+                logger.info("No datasets mapped in toQaReviewResponse for $context.")
+                return
+            }
+            val qaReportLookupDurationMs =
+                timing.qaReportLookupDurationNanos.toDouble() / timing.mappedCount / 1_000_000
+            val datasetJudgementLookupDurationMs =
+                timing.datasetJudgementLookupDurationNanos.toDouble() / timing.mappedCount / 1_000_000
+            logger.info(
+                "Average toQaReviewResponse call durations for {} over " +
+                    "{} datasets: getNumberOfQaReportsForDataId={} ms, getDatasetJudgementsByDatasetId={} ms.",
+                context,
+                timing.mappedCount,
+                qaReportLookupDurationMs,
+                datasetJudgementLookupDurationMs,
+            )
         }
 
         /**
@@ -104,18 +134,22 @@ class QaReviewManager
             chunkIndex: Int,
         ): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            return qaReviewRepository
-                .getSortedAndFilteredQaReviewMetadataset(
-                    QaSearchFilter(
-                        dataTypes = dataTypes,
-                        reportingPeriods = reportingPeriods,
-                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                        companyName = companyName,
-                        qaStatuses = setOf(qaStatus),
-                    ),
-                    resultOffset = chunkIndex * chunkSize,
-                    resultLimit = chunkSize,
-                ).map { it.toQaReviewResponse(userIsAdmin) }
+            val toQaReviewResponseTiming = ToQaReviewResponseTiming()
+            val qaReviewResponses =
+                qaReviewRepository
+                    .getSortedAndFilteredQaReviewMetadataset(
+                        QaSearchFilter(
+                            dataTypes = dataTypes,
+                            reportingPeriods = reportingPeriods,
+                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                            companyName = companyName,
+                            qaStatuses = setOf(qaStatus),
+                        ),
+                        resultOffset = chunkIndex * chunkSize,
+                        resultLimit = chunkSize,
+                    ).map { it.toQaReviewResponse(userIsAdmin, toQaReviewResponseTiming) }
+            logToQaReviewResponseAverages("getInfoOnDatasets", toQaReviewResponseTiming)
+            return qaReviewResponses
         }
 
         /**
@@ -126,6 +160,7 @@ class QaReviewManager
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
             logger.info("Retrieving information about pending datasets for companyName $companyName.")
+            val toQaReviewResponseTiming = ToQaReviewResponseTiming()
             val qaReviewResponses =
                 qaReviewRepository
                     .getPendingQaReviewMetadatasetsByCompany(
@@ -136,9 +171,9 @@ class QaReviewManager
                             companyName = companyName,
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
-                    ).take(MAX_PENDING_DATASETS)
-                    .map { it.toQaReviewResponse(userIsAdmin) }
+                    ).map { it.toQaReviewResponse(userIsAdmin, toQaReviewResponseTiming) }
             logger.info("Retrieved information about pending datasets for companyName $companyName.")
+            logToQaReviewResponseAverages("getInfoOnPendingDatasets", toQaReviewResponseTiming)
 
             return addPrioritiesToResponse(qaReviewResponses)
         }
@@ -413,9 +448,18 @@ class QaReviewManager
          * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET request.
          * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
          */
-        private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
-            val numberQaReports = getNumberOfQaReportsForDataId(dataId)
-            val datasetJudgements = datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId))
+        private fun QaReviewEntity.toQaReviewResponse(
+            showTriggeringUserId: Boolean = false,
+            toQaReviewResponseTiming: ToQaReviewResponseTiming? = null,
+        ): QaReviewResponse {
+            val (numberQaReports, qaReportLookupDurationNanosForDataset) = measureExecutionNanos { getNumberOfQaReportsForDataId(dataId) }
+            val (datasetJudgements, datasetJudgementLookupDurationNanosForDataset) =
+                measureExecutionNanos { datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId)) }
+            toQaReviewResponseTiming?.apply {
+                mappedCount++
+                qaReportLookupDurationNanos += qaReportLookupDurationNanosForDataset
+                datasetJudgementLookupDurationNanos += datasetJudgementLookupDurationNanosForDataset
+            }
             val latestDatasetJudgement = datasetJudgements.firstOrNull()
             return QaReviewResponse(
                 dataId = this.dataId,
