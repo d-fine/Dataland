@@ -1,6 +1,6 @@
-import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress';
+import { reader_userId } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { Configuration, NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
 
@@ -19,7 +19,7 @@ describeIf(
       const timestamp = Date.now();
       portfolioName = `E2E-Share-${timestamp}`;
 
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(
           `Company-Created-For-Share-Portfolio-Test-${timestamp}`
         );
@@ -44,7 +44,7 @@ describeIf(
     beforeEach(() => {
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.wait(['@getPortfolioNames']);
     });
@@ -90,7 +90,7 @@ describeIf(
         .should('be.visible')
         .and('contain', 'Shared with 1 user');
 
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       cy.intercept('GET', '**/users/portfolios/shared/names').as('getSharedPortfolios');
       cy.visitAndCheckAppMount('/shared-portfolios');
       cy.wait('@getSharedPortfolios');
@@ -114,7 +114,7 @@ describeIf(
     });
 
     after(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const portfolioApi = new PortfolioControllerApi(new Configuration({ accessToken: token }));
         await portfolioApi.deletePortfolio(portfolioId);
       });

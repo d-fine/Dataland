@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { type DataMetaInformation, DataTypeEnum, type StoredCompany } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -199,7 +199,7 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = 'Company-Created-In-Vsme-Blanket-Test-' + uniqueCompanyMarker;
 
-      getKeycloakToken(admin_name, admin_pw)
+      getAdminToken()
         .then((token: string) => {
           tokenForAdminUser = token;
 
@@ -218,7 +218,7 @@ describeIf(
 
     it('Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one', () => {
       cy.task('deleteFolder', Cypress.config('downloadsFolder'));
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.intercept('**/api/companies/' + storedTestCompany.companyId + '/info').as('getCompanyInformation');
       cy.visitAndCheckAppMount(
         '/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme + '/upload'

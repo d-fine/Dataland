@@ -1,7 +1,6 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
@@ -112,7 +111,7 @@ describeIf(
     let editedSecondPortfolioName: string;
 
     before(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${companyTimestamp}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
@@ -129,7 +128,7 @@ describeIf(
       secondPortfolioName = `E2E-Test-Portfolio-Second-${secondPortfolioTimestamp}`;
       editedSecondPortfolioName = `${secondPortfolioName}-Edited`;
 
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
       cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');

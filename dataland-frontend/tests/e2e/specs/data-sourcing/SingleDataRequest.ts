@@ -1,10 +1,10 @@
-import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress.ts';
+import { reader_userId } from '@e2e/utils/Cypress.ts';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
 import { type SingleRequest } from '@clients/datasourcingservice';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
@@ -63,7 +63,7 @@ describeIf(
      * Uploads a company without data
      */
     function uploadCompanyWithoutData(): void {
-      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+      getAdminToken().then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
           memberStoredCompany = storedCompany;
         });
@@ -75,7 +75,7 @@ describeIf(
      * @param reportingPeriod the year for which the data is uploaded
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
-      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+      getAdminToken().then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           testStoredCompany = storedCompany;
           return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
@@ -89,7 +89,7 @@ describeIf(
      * @param reportingPeriod the year for which the framework is uploaded
      */
     function uploadFrameworkDataForCompany(companyId: string, reportingPeriod: string): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           LksgBaseFrameworkDefinition,
           token,
@@ -104,7 +104,7 @@ describeIf(
      * Gives the memberStoredCompany Member rights.
      */
     function makeCompanyMember(): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return assignCompanyRight(token, 'Member', memberStoredCompany.companyId);
       });
     }
@@ -113,7 +113,7 @@ describeIf(
      * Makes the Data Reader a Analyst of the memberStoredCompany.
      */
     function makeReaderAnalystOfCompany(): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return assignCompanyRole(token, 'Analyst', memberStoredCompany.companyId, reader_userId);
       });
     }
@@ -128,7 +128,7 @@ describeIf(
       });
     });
     beforeEach(() => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
     });
 
     it('Navigate to the single request page via the company cockpit', () => {

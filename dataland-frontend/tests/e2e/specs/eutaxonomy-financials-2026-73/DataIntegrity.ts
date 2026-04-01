@@ -8,10 +8,9 @@ import {
   type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -35,7 +34,7 @@ before(function () {
  * Helper to get Keycloak token.
  */
 function getToken(): Cypress.Chainable<string> {
-  return getKeycloakToken(admin_name, admin_pw);
+  return getAdminToken();
 }
 
 /**
@@ -133,7 +132,7 @@ describeIf(
         cy.wrap(null, { timeout: longTimeoutInMs })
           .then(() => setupCompanyAndFramework(testCompanyName))
           .then(({ token, storedCompany, dataId }) => {
-            cy.ensureLoggedIn(admin_name, admin_pw);
+            cy.ensureLoggedInAsAdmin();
             cy.intercept({
               url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials202673}/**`,
               times: 1,

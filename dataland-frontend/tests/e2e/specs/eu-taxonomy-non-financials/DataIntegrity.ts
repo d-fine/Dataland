@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   Configuration,
@@ -89,7 +89,7 @@ function submitInEditModeAndFetchReuploadedDataset(
   dataId: string,
   testCompanyName: string
 ): Cypress.Chainable<DatasetsComparisonContext> {
-  cy.ensureLoggedIn(admin_name, admin_pw);
+  cy.ensureLoggedInAsAdmin();
   cy.intercept({
     url: `api/data/${dataType}/${dataId}`,
     times: 1,
@@ -155,7 +155,7 @@ describeIf(
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Eu-Taxo-Non-Financials-Blanket-Test-' + uniqueCompanyMarker;
 
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName);
           })

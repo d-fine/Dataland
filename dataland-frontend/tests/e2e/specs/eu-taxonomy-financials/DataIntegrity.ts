@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   Configuration,
   type DataMetaInformation,
@@ -120,7 +120,7 @@ describeIf(
   },
   function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       Cypress.expose('excludeBypassQaIntercept', true);
     });
 
@@ -130,7 +130,7 @@ describeIf(
       () => {
         const testCompanyName = 'Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company';
         const reportingPeriod = '2023';
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, reportingPeriod);
           })

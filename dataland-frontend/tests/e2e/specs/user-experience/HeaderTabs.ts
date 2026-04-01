@@ -1,6 +1,4 @@
-import { ensureLoggedIn } from '@e2e/utils/Auth.ts';
 import { describeIf } from '@e2e/support/TestUtility';
-import { reader_name, reader_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress.ts';
 import { DataTypeEnum } from '@clients/backend';
 
 describeIf(
@@ -37,7 +35,7 @@ describeIf(
     });
 
     it('shows tabs on company pages', () => {
-      ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       cy.intercept('GET', '/api/companies/meta-information', []);
       cy.intercept('GET', '/api/companies*', []);
       cy.intercept('GET', '/api/metadata*', []);
@@ -57,17 +55,17 @@ describeIf(
     });
 
     it('shows tabs on datasets pages', () => {
-      ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitPagesAndCheckTabsVisibility(['/datasets'], true);
     });
 
     it('shows tabs on portfolios pages', () => {
-      ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       visitPagesAndCheckTabsVisibility(['/portfolios'], true);
     });
 
     it('shows tabs on data requests pages', () => {
-      ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       visitPagesAndCheckTabsVisibility(['/requests'], true);
     });
   }
