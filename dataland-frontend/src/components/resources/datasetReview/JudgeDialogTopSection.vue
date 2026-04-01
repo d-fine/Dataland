@@ -3,7 +3,7 @@
     <div class="flex align-items-baseline justify-content-between gap-3" style="margin-bottom: var(--spacing-sm)">
       <h3 class="flex-1" style="margin-top: 0; margin-bottom: 0; white-space: nowrap">
         {{ title }}
-        <span v-if="navCount !== undefined && navCount > 0" class="ml-2">
+        <span v-if="showNav && navCount !== undefined && navCount > 0" class="ml-2">
           ({{ (navIndex ?? 0) + 1 }} / {{ navCount }})
         </span>
         <span
@@ -54,105 +54,24 @@
       <div class="p-datatable-wrapper">
         <table class="p-datatable-table judge-modal__datatable" :aria-label="title">
           <tbody class="p-datatable-body">
-            <tr>
-              <th scope="row" class="headers-bg">Value</th>
+            <tr v-for="row in tableRows" :key="row.label">
+              <th scope="row" class="headers-bg">{{ row.label }}</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
                   <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                    {{ data?.value || '—' }}
+                    {{ row.value || '—' }}
                   </span>
                   <PrimeButton
-                    data-test="value-overflow-icon"
-                    v-if="isOverflowing(String(data?.value || ''))"
+                    v-if="!row.noOverflow && isOverflowing(String(row.value || ''))"
+                    :data-test="`${row.label.toLowerCase()}-overflow-icon`"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
                     class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.value || ''))"
+                    @mouseenter="(e) => emit('showPopover', e, String(row.value || ''))"
                     @mouseleave="emit('hidePopover')"
-                    aria-label="Show full value"
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="headers-bg">Quality</th>
-              <td>
-                <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                    {{ data?.quality || '—' }}
-                  </span>
-                  <PrimeButton
-                    data-test="quality-overflow-icon"
-                    v-if="isOverflowing(String(data?.quality || ''))"
-                    label="+"
-                    variant="text"
-                    rounded
-                    size="small"
-                    class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.quality || ''))"
-                    @mouseleave="emit('hidePopover')"
-                    aria-label="Show full quality"
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="headers-bg">Document</th>
-              <td>
-                <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                    {{ data?.dataSource?.fileName || data?.dataSource?.fileReference || '—' }}
-                  </span>
-                  <PrimeButton
-                    data-test="document-overflow-icon"
-                    v-if="isOverflowing(String(data?.dataSource?.fileName || data?.dataSource?.fileReference || ''))"
-                    label="+"
-                    variant="text"
-                    rounded
-                    size="small"
-                    class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="
-                      (e) =>
-                        emit(
-                          'showPopover',
-                          e,
-                          String(data?.dataSource?.fileName || data?.dataSource?.fileReference || '')
-                        )
-                    "
-                    @mouseleave="emit('hidePopover')"
-                    aria-label="Show full document"
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="headers-bg">Page(s)</th>
-              <td>
-                <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                  {{ data?.dataSource?.page || '—' }}
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="headers-bg">Comment</th>
-              <td>
-                <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                    {{ data?.comment || '—' }}
-                  </span>
-                  <PrimeButton
-                    data-test="comment-overflow-icon"
-                    v-if="isOverflowing(String(data?.comment || ''))"
-                    label="+"
-                    variant="text"
-                    rounded
-                    size="small"
-                    class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(data?.comment || ''))"
-                    @mouseleave="emit('hidePopover')"
-                    aria-label="Show full comment"
+                    :aria-label="`Show full ${row.label.toLowerCase()}`"
                   />
                 </div>
               </td>
@@ -207,6 +126,14 @@ const emit = defineEmits<{
   showPopover: [event: MouseEvent, text: string];
   hidePopover: [];
 }>();
+
+const tableRows = computed(() => [
+  { label: 'Value', value: props.data?.value },
+  { label: 'Quality', value: props.data?.quality },
+  { label: 'Document', value: props.data?.dataSource?.fileName || props.data?.dataSource?.fileReference },
+  { label: 'Page(s)', value: props.data?.dataSource?.page, noOverflow: true },
+  { label: 'Comment', value: props.data?.comment },
+]);
 
 const isQaSection = computed(() => props.showNav);
 const isOriginalSection = computed(() => !props.showNav);

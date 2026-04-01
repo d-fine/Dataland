@@ -95,13 +95,15 @@
                     data-row-header="true"
                   >
                     <div class="flex justify-content-between align-items-center">
-                      <a
-                        class="table-left-label font-normal"
-                        :class="{ 'kpi-link': props.rowClickable, 'cursor-default': !props.rowClickable }"
+                      <button
+                        type="button"
+                        class="table-left-label font-normal text-left kpi-link"
+                        :class="{ 'cursor-default': !props.rowClickable }"
+                        :disabled="!props.rowClickable"
                         @click="props.rowClickable ? emit('row-click', row) : undefined"
                       >
                         {{ row.label }}
-                      </a>
+                      </button>
                       <em
                         v-if="row.explanation"
                         class="material-icons inline-flex align-items-center ml-2 cursor-help"
@@ -617,11 +619,35 @@ function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
 }
 
 .kpi-link {
+  /* Reset native button styles so it looks like a text link */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
   color: var(--main-color);
-  background: transparent;
-  border: transparent;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+
+  /* Optional: remove default button appearance in some browsers */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.kpi-link:disabled {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--p-text-color, #000);
+  cursor: default;
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* Optional: custom focus style for accessibility */
+.kpi-link:focus-visible {
+  outline: 2px solid var(--main-color);
+  outline-offset: 2px;
 }
 </style>
