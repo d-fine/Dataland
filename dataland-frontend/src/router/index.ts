@@ -38,6 +38,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
+import RegisterPage from '@/components/pages/RegisterPage.vue';
 
 const routes = [
   {
@@ -321,6 +322,14 @@ const routes = [
     component: PlatformRedirect,
     meta: {
       requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterPage,
+    meta: {
+      requiresAuthentication: false,
     },
   },
   {

@@ -38,10 +38,8 @@
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
         >{{ link.label }}</a>
-        <!-- Placeholder: actual Keycloak login URL depends on deployment -->
-        <a href="/keycloak" class="mobile-nav__link" @click="close">Login</a>
-        <!-- Placeholder: actual Keycloak registration URL depends on deployment -->
-        <a href="/keycloak" class="mobile-nav__cta" @click="close">Try it free</a>
+        <a href="/companies" class="mobile-nav__link" @click="close">Login</a>
+        <a href="/register" class="mobile-nav__cta" @click="close">Try it free</a>
       </div>
     </nav>
   </Teleport>
