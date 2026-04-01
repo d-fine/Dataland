@@ -388,7 +388,7 @@ function checkoutDataset(dataSetId: string): void {
  * @param dataSetId Id of the dataset for which we want to start the judgement
  */
 function startJudgement(dataSetId: string): void {
-  cy.intercept('POST', '**/qa/dataset-judgements/**').as('startJudgementRequest');
+  cy.intercept('POST', '**/qa/dataset-judgements/*').as('startJudgementRequest');
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
