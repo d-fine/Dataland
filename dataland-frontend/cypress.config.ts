@@ -64,6 +64,7 @@ export default defineConfig({
     baseUrl: 'https://local-dev.dataland.com',
     setupNodeEvents(on, config) {
       const executionEnvironment = config.env['EXECUTION_ENVIRONMENT'];
+      const configProcessScopedVariables: Record<string, unknown> = {};
 
       console.log(`Execution environment: ${executionEnvironment}`);
       if (executionEnvironment === 'developmentLocal') {
@@ -78,6 +79,21 @@ export default defineConfig({
       }
       require('@cypress/code-coverage/task')(on, config);
 
+      on('task', {
+        setToken(keySet: Record<string, unknown>) {
+          Object.entries(keySet).forEach(([key, value]) => {
+            configProcessScopedVariables[key] = value;
+          });
+          return null;
+        },
+        getToken(keys: string[]) {
+          const result: Record<string, unknown> = {};
+          keys.forEach((key) => {
+            result[key] = configProcessScopedVariables[key];
+          });
+          return result;
+        },
+      });
       on('task', {
         setEmail: (val: string) => {
           return (returnEmail = val);

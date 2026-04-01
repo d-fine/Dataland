@@ -2,23 +2,84 @@
 import type Bluebird from 'cypress/types/bluebird';
 
 export const reader_name = 'data_reader';
-export const reader_pw = getStringCypressEnv('KEYCLOAK_READER_PASSWORD');
 export const reader_userId = '18b67ecc-1176-4506-8414-1e81661017ca';
+
 export const uploader_name = 'data_uploader';
-export const uploader_pw = getStringCypressEnv('KEYCLOAK_UPLOADER_PASSWORD');
 export const uploader_userId = 'c5ef10b1-de23-4a01-9005-e62ea226ee83';
+
 export const reviewer_name = 'data_reviewer';
-export const reviewer_pw = getStringCypressEnv('KEYCLOAK_REVIEWER_PASSWORD');
 export const reviewer_userId = 'f7a02ff1-0dab-4e10-a908-7d775c1014ae';
+
 export const judge_name = 'data_judge';
-export const judge_pw = getStringCypressEnv('KEYCLOAK_JUDGE_PASSWORD');
 export const judge_userId = '375c4c42-fa50-4f7d-af69-450803fe0ca1';
+
 export const premium_user_name = 'data_premium_user';
-export const premium_user_pw = getStringCypressEnv('KEYCLOAK_PREMIUM_USER_PASSWORD');
 export const premium_user_userId = '68129cce-52e5-473e-bec9-90046eebc619';
+
 export const admin_name = 'data_admin';
-export const admin_pw = getStringCypressEnv('KEYCLOAK_DATALAND_ADMIN_PASSWORD');
 export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
+
+/**
+ * Checks the presence of a cypress env variable and ensures it is a string before returning it
+ * throws an error if the environment variable not a string
+ * @param variableName the name of the env variable
+ * @returns the string value of the environment variable
+ */
+export function getStringCypressEnv(variableName: string): Cypress.Chainable<string> {
+  return cy.env([variableName]).then((vars) => {
+    const v = vars as Record<string, unknown>;
+    const value = v[variableName];
+
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    throw new Error(`Cypress env ${variableName} is not a string.`);
+  });
+}
+
+/**
+ * Retrieves the password for the reader user from the cypress environment variables.
+ * @returns a cypress string chainable containing the reader password
+ */
+export function getReaderPw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_READER_PASSWORD');
+}
+/**
+ * Retrieves the password for the uploader user from the cypress environment variables.
+ * @returns a cypress string chainable containing the uploader password
+ */
+export function getUploaderPw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_UPLOADER_PASSWORD');
+}
+/**
+ * Retrieves the password for the reviewer user from the cypress environment variables.
+ * @returns a cypress string chainable containing the reviewer password
+ */
+export function getReviewerPw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_REVIEWER_PASSWORD');
+}
+/**
+ * Retrieves the password for the judge user from the cypress environment variables.
+ * @returns a cypress string chainable containing the judge password
+ */
+export function getJudgePw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_JUDGE_PASSWORD');
+}
+/**
+ * Retrieves the password for the premium user from the cypress environment variables.
+ * @returns a cypress string chainable containing the premium user password
+ */
+export function getPremiumUserPw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_PREMIUM_USER_PASSWORD');
+}
+/**
+ * Retrieves the password for the admin user from the cypress environment variables.
+ * @returns a cypress string chainable containing the admin password
+ */
+export function getAdminPw(): Cypress.Chainable<string> {
+  return getStringCypressEnv('KEYCLOAK_DATALAND_ADMIN_PASSWORD');
+}
 
 /**
  * A higher level function that operates on a list of elements (dataArray) and applys a
@@ -81,18 +142,4 @@ export function getBaseUrl(): string {
     return cypressBaseUrl;
   }
   throw new Error('Cypress baseUrl is unexpectedly null');
-}
-
-/**
- * Checks the presence of a cypress env variable and ensures it is a string before returning it
- * throws an error if the environment variable not a string
- * @param variableName the name of the env variable
- * @returns the string value of the environment variable
- */
-export function getStringCypressEnv(variableName: string): string {
-  const cypressEnv: unknown = Cypress.env(variableName);
-  if (typeof cypressEnv === 'string') {
-    return cypressEnv;
-  }
-  throw new Error(`Cypress env ${variableName} is not a string.`);
 }

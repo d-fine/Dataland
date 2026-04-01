@@ -3,10 +3,10 @@ import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from '@e2e/utils/
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type SfdrData } from '@clients/backend';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken, ensureLoggedInAsReader, ensureLoggedInAsUploader } from '@e2e/utils/Auth';
 import { convertStringToQueryParamFormat } from '@e2e/utils/Converters';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -49,7 +49,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[3];
 
   it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
-    cy.ensureLoggedIn();
+    ensureLoggedInAsReader();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
     cy.visit('/companies').wait('@companies-meta-information');
     verifySearchResultTableExists();
@@ -107,7 +107,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const demoCompanyToTestForCountryName = assertDefined(
             getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode)
           );
-          cy.ensureLoggedIn();
+          ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
@@ -144,7 +144,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           );
           expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
-          cy.ensureLoggedIn();
+          ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`
@@ -164,7 +164,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     }
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {
-    cy.ensureLoggedIn();
+    ensureLoggedInAsReader();
     cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
     cy.get("span:contains('RESET')").click();
     cy.url().should('eq', getBaseUrl() + '/companies');
@@ -173,7 +173,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     'Check that the filter dropdowns close when you scroll, especially on the resulting query when you check a box while you are not at the top of the page',
     { scrollBehavior: false },
     () => {
-      cy.ensureLoggedIn();
+      ensureLoggedInAsReader();
       cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
@@ -214,7 +214,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        ensureLoggedInAsUploader();
       });
 
       const companyNameMarker = `Data${Date.now().toString()}`;
@@ -226,7 +226,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const preFix = 'ThisCompanyHasNoDataset';
           const companyName = preFix + companyNameMarker;
           const sector = 'SectorWithNoDataset';
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.intercept({ url: '**/api/companies*', times: 1 }).as('searchCompanyInitial');
@@ -250,7 +250,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
@@ -330,7 +330,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyNameSfdrPrefix = 'CompanyWithSfdr';
           const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             const sfdrFixture = companiesWithSfdrData[0];
             void uploadCompanyAndFrameworkDataForPublicToolboxFramework(
               SfdrBaseFrameworkDefinition,
@@ -357,7 +357,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           'framework filter is set to that framework, or to several frameworks including that framework',
         () => {
           const companyName = 'CompanyWithEuFinancial' + companyNameMarker;
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadFrameworkDataForPublicToolboxFramework(

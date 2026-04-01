@@ -1,8 +1,7 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { ensureLoggedInAsReader, getUploaderToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -85,7 +84,7 @@ before(function () {
 });
 
 beforeEach(function () {
-  cy.ensureLoggedIn();
+  ensureLoggedInAsReader();
 });
 describeIf(
   'As a user, I expect the search functionality on the /companies page to show me the desired results',
@@ -144,7 +143,7 @@ describeIf(
       const placeholder = 'Search company by name or identifier (e.g. PermID, LEI, ...)';
       const inputValue = 'A company name';
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
@@ -164,7 +163,7 @@ describeIf(
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
             if (basicCompanyInformation.length < 2) {
