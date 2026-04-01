@@ -38,7 +38,7 @@
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
         >{{ link.label }}</a>
-        <a href="/companies" class="mobile-nav__link" @click="close">Login</a>
+        <a href="/login" class="mobile-nav__link" @click="close">Login</a>
         <a href="/register" class="mobile-nav__cta" @click="close">Try it free</a>
       </div>
     </nav>

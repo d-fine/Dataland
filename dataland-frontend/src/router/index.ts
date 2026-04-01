@@ -39,6 +39,7 @@ const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
 import RegisterPage from '@/components/pages/RegisterPage.vue';
+import LoginPage from '@/components/pages/LoginPage.vue';
 
 const routes = [
   {
@@ -322,6 +323,14 @@ const routes = [
     component: PlatformRedirect,
     meta: {
       requiresAuthentication: true,
+    },
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginPage,
+    meta: {
+      requiresAuthentication: false,
     },
   },
   {
