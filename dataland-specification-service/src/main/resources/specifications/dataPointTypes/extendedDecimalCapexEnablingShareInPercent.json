@@ -3,6 +3,6 @@
   "name" : "Enabling Share In Percent",
   "businessDefinition" : "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

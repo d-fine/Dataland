@@ -3,6 +3,6 @@
   "name" : "Relative Share in Percent",
   "businessDefinition" : "Relative share of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

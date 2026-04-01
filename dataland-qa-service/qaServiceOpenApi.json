@@ -827,6 +827,149 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials-2026-73/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-202673-data-qa-report-controller"
+        ],
+        "operationId": "getEutaxonomyNonFinancials202673DataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancials202673Data"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "eutaxonomy-non-financials-202673-data-qa-report-controller"
+        ],
+        "operationId": "postEutaxonomyNonFinancials202673DataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673Data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-financials/{dataId}/reports": {
       "get": {
         "tags": [
@@ -2007,6 +2150,75 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials-2026-73/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "eutaxonomy-non-financials-202673-data-qa-report-controller"
+        ],
+        "operationId": "setEutaxonomyNonFinancials202673DataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-financials/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -2244,6 +2456,7 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-financials-2026-73",
                   "eutaxonomy-non-financials",
+                  "eutaxonomy-non-financials-2026-73",
                   "nuclear-and-gas",
                   "lksg",
                   "pcaf",
@@ -2347,6 +2560,7 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-financials-2026-73",
                   "eutaxonomy-non-financials",
+                  "eutaxonomy-non-financials-2026-73",
                   "nuclear-and-gas",
                   "lksg",
                   "pcaf",
@@ -3031,6 +3245,72 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials-2026-73/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-202673-data-qa-report-controller"
+        ],
+        "operationId": "getEutaxonomyNonFinancials202673DataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancials202673Data"
                 }
               }
             }
@@ -3776,6 +4056,7 @@
               "eutaxonomy-financials",
               "eutaxonomy-financials-2026-73",
               "eutaxonomy-non-financials",
+              "eutaxonomy-non-financials-2026-73",
               "nuclear-and-gas",
               "lksg",
               "pcaf",
@@ -6843,6 +7124,627 @@
           }
         }
       },
+      "EuTaxonomyEligibleOrAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "type": "string",
+            "enum": [
+              "AcquisitionAndOwnershipOfBuildings",
+              "Afforestation",
+              "AirTransportGroundHandlingOperations",
+              "AirportInfrastructure",
+              "AnaerobicDigestionOfBioWaste",
+              "AnaerobicDigestionOfSewageSludge",
+              "CloseToMarketResearchDevelopmentAndInnovation",
+              "CogenerationOfHeatCoolAndPowerFromBioenergy",
+              "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+              "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+              "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+              "CollectionAndTransportOfHazardousWaste",
+              "CollectionAndTransportOfNonHazardousAndHazardousWaste",
+              "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+              "CompostingOfBioWaste",
+              "ComputerProgrammingConsultancyAndRelatedActivities",
+              "ConservationForestry",
+              "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
+              "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+              "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+              "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+              "ConstructionOfNewBuildings",
+              "ConsultancyForPhysicalClimateRiskManagementAndAdaptation",
+              "CreativeArtsAndEntertainmentActivities",
+              "DataDrivenSolutionsForGhgEmissionsReductions",
+              "DataProcessingHostingAndRelatedActivities",
+              "DemolitionAndWreckingOfBuildingsAndOtherStructures",
+              "DepollutionAndDismantlingOfEndOfLifeProducts",
+              "Desalination",
+              "DistrictHeatingCoolingDistribution",
+              "Education",
+              "ElectricityGenerationFromBioenergy",
+              "ElectricityGenerationFromFossilGaseousFuels",
+              "ElectricityGenerationFromGeothermalEnergy",
+              "ElectricityGenerationFromHydropower",
+              "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+              "ElectricityGenerationFromOceanEnergyTechnologies",
+              "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ElectricityGenerationFromWindPower",
+              "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+              "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+              "EmergencyServices",
+              "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+              "FloodRiskPreventionAndProtectionInfrastructure",
+              "ForestManagement",
+              "FreightRailTransport",
+              "FreightTransportServicesByRoad",
+              "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+              "HotelsHolidayCampingGroundsAndSimilarAccommodation",
+              "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+              "InfrastructureEnablingLowCarbonWaterTransport",
+              "InfrastructureEnablingRoadTransportAndPublicTransport",
+              "InfrastructureForPersonalMobilityCycleLogistics",
+              "InfrastructureForRailTransport",
+              "InfrastructureForWaterTransport",
+              "InlandFreightWaterTransport",
+              "InlandPassengerWaterTransport",
+              "InstallationAndOperationOfElectricHeatPumps",
+              "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+              "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+              "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+              "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+              "LandfillGasCaptureAndUtilisation",
+              "LeasingOfAircraft",
+              "LibrariesArchivesMuseumsAndCulturalActivities",
+              "LowCarbonAirportInfrastructure",
+              "MaintenanceOfRoadsAndMotorways",
+              "ManufactureInstallationAndAssociatedServicesForLeakageControlTechnologiesEnablingLeakageReductionAndPreventionInWaterSupplySystems",
+              "ManufactureInstallationAndServicingOfHighMediumAndLowVoltageElectricalEquipmentForElectricalTransmissionAndDistributionThatResultInOrEnableASubstantialContributionToClimateChangeMitigation",
+              "ManufactureOfActivePharmaceuticalIngredientsApiOrActiveSubstances",
+              "ManufactureOfAluminium",
+              "ManufactureOfAnhydrousAmmonia",
+              "ManufactureOfAutomotiveAndMobilityComponents",
+              "ManufactureOfBatteries",
+              "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+              "ManufactureOfCarbonBlack",
+              "ManufactureOfCement",
+              "ManufactureOfChlorine",
+              "ManufactureOfElectricalAndElectronicEquipment",
+              "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+              "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+              "ManufactureOfHydrogen",
+              "ManufactureOfIronAndSteel",
+              "ManufactureOfLowCarbonTechnologiesForTransport",
+              "ManufactureOfMedicinalProducts",
+              "ManufactureOfNitricAcid",
+              "ManufactureOfOrganicBasicChemicals",
+              "ManufactureOfOtherLowCarbonTechnologies",
+              "ManufactureOfPlasticPackagingGoods",
+              "ManufactureOfPlasticsInPrimaryForm",
+              "ManufactureOfRailRollingStockConstituents",
+              "ManufactureOfRenewableEnergyTechnologies",
+              "ManufactureOfSodaAsh",
+              "ManufacturingOfAircraft",
+              "MarketplaceForTheTradeOfSecondHandGoodsForReuse",
+              "MaterialRecoveryFromNonHazardousWaste",
+              "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
+              "NatureBasedSolutionsForFloodAndDroughtRiskPreventionAndProtection",
+              "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+              "OperationOfPersonalMobilityDevicesCycleLogistics",
+              "PassengerAndFreightAirTransport",
+              "PassengerInterurbanRailTransport",
+              "PhosphorusRecoveryFromWasteWater",
+              "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+              "PreparationForReUseOfEndOfLifeProductsAndProductComponents",
+              "ProductAsAServiceAndOtherCircularUseAndResultOrientedServiceModels",
+              "ProductionOfAlternativeWaterResourcesForPurposesOtherThanHumanConsumption",
+              "ProductionOfHeatCoolFromBioenergy",
+              "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+              "ProductionOfHeatCoolFromGeothermalEnergy",
+              "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ProductionOfHeatCoolFromSolarThermalHeating",
+              "ProductionOfHeatCoolUsingWasteHeat",
+              "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+              "ProgrammingAndBroadcastingActivities",
+              "ProvisionOfItOtDataDrivenSolutions",
+              "ProvisionOfItOtDataDrivenSolutionsForLeakageReduction",
+              "RecoveryOfBioWasteByAnaerobicDigestionOrComposting",
+              "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+              "Reinsurance",
+              "RemediationOfContaminatedSitesAndAreas",
+              "RemediationOfLegallyNonConformingLandfillsAndAbandonedOrIllegalWasteDumps",
+              "RenewalOfWasteWaterCollectionAndTreatment",
+              "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+              "RenovationOfExistingBuildings",
+              "RepairRefurbishmentAndRemanufacturing",
+              "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+              "ResidentialCareActivities",
+              "RestorationOfWetlands",
+              "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+              "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+              "SaleOfSecondHandGoods",
+              "SaleOfSpareParts",
+              "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+              "SeaAndCoastalPassengerWaterTransport",
+              "SoftwareEnablingPhysicalClimateRiskManagementAndAdaptation",
+              "SortingAndMaterialRecoveryOfNonHazardousWaste",
+              "StorageOfElectricity",
+              "StorageOfHydrogen",
+              "StorageOfThermalEnergy",
+              "SustainableUrbanDrainageSystemsSuds",
+              "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+              "TransmissionAndDistributionOfElectricity",
+              "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+              "TransportOfCo2",
+              "TreatmentOfHazardousWaste",
+              "UndergroundPermanentGeologicalStorageOfCo2",
+              "UrbanAndSuburbanTransportRoadPassengerTransport",
+              "UrbanWasteWaterTreatment",
+              "UseOfConcreteInCivilEngineering",
+              "WaterSupply"
+            ]
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "relativeEligibleShareInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number"
+          },
+          "enablingActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "transitionalActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673Capex": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonAssessedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673CapexNonAssessedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673Data": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673General"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673Revenue"
+          },
+          "capex": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673Capex"
+          },
+          "opex": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673Opex"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673General": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNa"
+          },
+          "isEuTaxonomyDataReportedOnAMandatoryBasis": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "euTaxonomyActivityLevelReporting": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/QaReportDataPointAssuranceDataPoint"
+          },
+          "numberOfEmployees": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "iloCoreLabourStandards": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673Opex": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonAssessedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673OpexNonAssessedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673Revenue": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonAssessedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueNonAssessedShare"
+          },
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
+        "type": "object",
+        "properties": {
+          "eligibleOrAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancials202673RevenueNonAssessedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "ExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyEligibleOrAlignedActivity"
+            }
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          }
+        }
+      },
       "EutaxonomyFinancialsAssetManagement": {
         "type": "object",
         "properties": {
@@ -8880,6 +9782,7 @@
               "eutaxonomy-financials",
               "eutaxonomy-financials-2026-73",
               "eutaxonomy-non-financials",
+              "eutaxonomy-non-financials-2026-73",
               "nuclear-and-gas",
               "lksg",
               "pcaf",
@@ -8954,6 +9857,21 @@
           },
           "report": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
+          }
+        }
+      },
+      "QaReportWithMetaInformationEutaxonomyNonFinancials202673Data": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673Data"
           }
         }
       },

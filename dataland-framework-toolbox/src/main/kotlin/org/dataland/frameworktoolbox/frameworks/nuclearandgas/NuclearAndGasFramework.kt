@@ -17,6 +17,6 @@ class NuclearAndGasFramework :
             "EU Taxonomy Nuclear and Gas Framework according to the Commission Delegated Regulation (EU)" +
                 " 2021/2178, Annex XII ",
         File("./dataland-framework-toolbox/inputs/nuclear-and-gas/nuclear-and-gas.xlsx"),
-        order = 5,
+        order = 6,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     )

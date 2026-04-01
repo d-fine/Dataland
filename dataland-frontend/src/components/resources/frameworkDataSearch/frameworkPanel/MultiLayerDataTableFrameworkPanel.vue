@@ -15,6 +15,7 @@
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials202673 ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials202673 ||
         frameworkIdentifier == DataTypeEnum.Sfdr ||
         frameworkIdentifier == DataTypeEnum.NuclearAndGas
       "
@@ -73,6 +74,7 @@ import {
   DataTypeEnum,
   type EutaxonomyFinancials202673Data,
   type EutaxonomyFinancialsData,
+  type EutaxonomyNonFinancials202673Data,
   type EutaxonomyNonFinancialsData,
   type NuclearAndGasData,
   type SfdrData,
@@ -121,6 +123,14 @@ const sortedReports = computed(() => {
         .map(
           (singleDataAndMetaInfo) =>
             (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
+    case DataTypeEnum.EutaxonomyNonFinancials202673: {
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyNonFinancials202673Data).general?.referencedReports
         )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
