@@ -1,5 +1,5 @@
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { getUploaderToken, getAdminToken } from '@e2e/utils/Auth.ts';
 import type { CompanyIdAndName } from '@clients/backend';
 import { fetchTestCompanies } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
@@ -15,7 +15,7 @@ const apiBaseUrl = getBaseUrl();
  * Creates a data sourcing request as uploader and returns the requestId.
  */
 function createRequest(): Cypress.Chainable<string> {
-  return getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+  return getUploaderToken().then((token) => {
     return cy
       .request({
         method: 'POST',
@@ -38,7 +38,7 @@ function createRequest(): Cypress.Chainable<string> {
  * Patches the request to 'Processed' state as admin.
  */
 function patchRequestToProcessed(requestId: string): Cypress.Chainable {
-  return getKeycloakToken(admin_name, admin_pw).then((token) => {
+  return getAdminToken().then((token) => {
     return cy.request({
       method: 'PATCH',
       url: `${apiBaseUrl}/data-sourcing/requests/${requestId}/state?requestState=Processed&adminComment=`,
@@ -51,7 +51,7 @@ function patchRequestToProcessed(requestId: string): Cypress.Chainable {
  * Patches the request to 'Processing' state as admin.
  */
 function patchRequestToProcessing(requestId: string): Cypress.Chainable {
-  return getKeycloakToken(admin_name, admin_pw).then((token) => {
+  return getAdminToken().then((token) => {
     return cy.request({
       method: 'PATCH',
       url: `${apiBaseUrl}/data-sourcing/requests/${requestId}/state?requestState=Processing&adminComment=`,
@@ -73,7 +73,7 @@ describeIf(
       });
     });
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.intercept('POST', `${apiBaseUrl}/data-sourcing/requests**`).as('resubmit');
       cy.intercept('PATCH', `${apiBaseUrl}/data-sourcing/requests/*/state?requestState=Withdrawn`).as('withdraw');
       cy.intercept('GET', `${apiBaseUrl}/data-sourcing/requests/*`).as('getRequest');
