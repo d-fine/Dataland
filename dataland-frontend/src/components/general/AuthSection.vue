@@ -6,13 +6,22 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
 
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
 const login = (): void => {
-  globalThis.location.assign('/login');
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => keycloak.login({ redirectUri: `${globalThis.location.origin}/platform-redirect` }))
+    .catch((error) => console.error(error));
 };
 
 const register = (): void => {
-  globalThis.location.assign('/register');
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => keycloak.register({ redirectUri: `${globalThis.location.origin}/platform-redirect` }))
+    .catch((error) => console.error(error));
 };
 </script>
