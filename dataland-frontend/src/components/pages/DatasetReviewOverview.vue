@@ -214,22 +214,27 @@ const assignToMe = (): void => {
 };
 
 const rejectDataset = (): void => {
-  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
-    rejectReviewMutation(undefined, {
-      onSuccess: () => {
-        isActionSuccess.value = true;
-        confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-        setTimeout(() => {
-          confirmationModal.value.visible = false;
-          isActionSuccess.value = false;
-          void goToQaPage();
-        }, 3200);
-      },
-      onError: (error) => {
-        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
-      },
-    });
-  });
+  openConfirmationModal(
+    'Reject Dataset',
+    'Are you sure you want to reject the dataset and all ' +
+      'underlying data points? This action will finish the review and cannot be undone.',
+    () => {
+      rejectReviewMutation(undefined, {
+        onSuccess: () => {
+          isActionSuccess.value = true;
+          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+          setTimeout(() => {
+            confirmationModal.value.visible = false;
+            isActionSuccess.value = false;
+            void goToQaPage();
+          }, 3200);
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to reject dataset: ' + error.message;
+        },
+      });
+    }
+  );
 };
 
 const finishReview = (): void => {
