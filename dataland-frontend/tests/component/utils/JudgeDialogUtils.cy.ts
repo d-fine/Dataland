@@ -61,7 +61,7 @@ describe('parseFormDataToDataPointJson', () => {
     });
   });
 
-  it('adds a dataSource with only page when pages are provided but no document is selected', () => {
+  it('if only pages is provided in the json and no document, the dataSource field of the parsed json also only contains the page range', () => {
     const form: CustomFormData = {
       value: '2465.12',
       quality: 'Estimated',
