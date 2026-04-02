@@ -2,7 +2,7 @@ import { useMutation, useQueryClient, type UseMutationReturnType } from '@tansta
 import { type Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { type DatasetJudgementResponse, type DatasetJudgementState } from '@clients/qaservice';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
+import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys.ts';
 import { type AxiosResponse } from 'axios';
 
 /**
@@ -29,7 +29,7 @@ export function useSetDatasetReviewStateMutation(
       return await apiClient.apiClients.datasetJudgementController.setJudgementState(id, targetState);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetJudgementId.value) });
+      await queryClient.invalidateQueries({ queryKey: datasetJudgementKeys.detail(datasetJudgementId.value) });
     },
     onError: (error) => {
       console.error('Error setting dataset judgement state:', error);

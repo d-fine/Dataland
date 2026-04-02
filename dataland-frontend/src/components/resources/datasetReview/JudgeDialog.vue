@@ -180,7 +180,7 @@ import {
   type DataPointQaReport,
 } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
-import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
+import { usePatchJudgmentDetailsForADataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 
 // ===== Props & emits =====
@@ -224,7 +224,7 @@ const {
 } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
 // ===== Accept Button mutations  =====
-const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgmentDetailsForADatapointMutation();
+const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgmentDetailsForADataPointMutation();
 
 // ===== Current data point selection =====
 
@@ -534,7 +534,7 @@ function patchCurrentDatapoint(
 ): void {
   patchJudgementDetail(
     {
-      judgmentId: props.datasetReviewId,
+      judgementId: props.datasetReviewId,
       dataPointTypeId: currentDataPointTypeId.value,
       details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint },
     },

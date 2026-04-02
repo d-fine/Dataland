@@ -1,11 +1,11 @@
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { type DatasetJudgementResponse, type JudgementDetailsPatch } from '@clients/qaservice';
 import { useMutation, type UseMutationReturnType, useQueryClient } from '@tanstack/vue-query';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
+import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys.ts';
 import { type AxiosResponse } from 'axios';
 
 export interface PatchJudgementArgs {
-  judgmentId: string;
+  judgementId: string;
   dataPointTypeId: string;
   details: JudgementDetailsPatch;
 }
@@ -13,7 +13,7 @@ export interface PatchJudgementArgs {
 /**
  * Vue Query mutation hook to patch judgement details for a specific data point type within a dataset judgement.
  */
-export function usePatchJudgmentDetailsForADatapointMutation(): UseMutationReturnType<
+export function usePatchJudgmentDetailsForADataPointMutation(): UseMutationReturnType<
   AxiosResponse<DatasetJudgementResponse>,
   Error,
   PatchJudgementArgs,
@@ -23,16 +23,16 @@ export function usePatchJudgmentDetailsForADatapointMutation(): UseMutationRetur
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ judgmentId, dataPointTypeId, details }: PatchJudgementArgs) =>
+    mutationFn: ({ judgementId, dataPointTypeId, details }: PatchJudgementArgs) =>
       apiClientProvider.apiClients.datasetJudgementController.patchJudgementDetails(
-        judgmentId,
+        judgementId,
         dataPointTypeId,
         details
       ),
 
     onSuccess: async (_data, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: datasetReviewKeys.detail(variables.judgmentId),
+        queryKey: datasetJudgementKeys.detail(variables.judgementId),
       });
     },
 

@@ -2,7 +2,7 @@ import { computed, type Ref } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import type { DatasetJudgementResponse } from '@clients/qaservice';
 import { useApiClient } from '@/utils/useApiClient';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-judgement/datasetReviewKeys.ts';
+import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys.ts';
 
 /**
  * Fetch a dataset judgement by id.
@@ -17,7 +17,7 @@ export function useDatasetReviewQuery(options: {
   const apiClientProvider = useApiClient();
 
   return useQuery<DatasetJudgementResponse | null>({
-    queryKey: computed(() => datasetReviewKeys.detail(options.datasetJudgementId.value)),
+    queryKey: computed(() => datasetJudgementKeys.detail(options.datasetJudgementId.value)),
 
     queryFn: async () => {
       const { datasetJudgementController } = apiClientProvider.apiClients;
