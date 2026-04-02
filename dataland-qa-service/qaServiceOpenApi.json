@@ -4109,8 +4109,8 @@
         "description": "The state of the dataset judgement.",
         "enum": [
           "Pending",
-          "Finished",
-          "Aborted"
+          "FinishedWithDatasetAcceptance",
+          "FinishedWithDatasetRejection"
         ]
       },
       "QaReportDataPointVerdict": {

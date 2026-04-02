@@ -58,8 +58,16 @@
                     icon="pi pi-times"
                     outlined
                     @click="rejectDataset"
+                    data-test="qaReviewPageRejectButton"
                   />
-                  <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
+                  <PrimeButton
+                    label="FINISH REVIEW"
+                    severity="success"
+                    icon="pi pi-check"
+                    :disabled="!canFinishReview || isFinishReviewMutationPending"
+                    @click="finishReview"
+                    data-test="qaReviewPageFinishButton"
+                  />
                 </div>
                 <div v-else class="text-left">
                   <PrimeButton
@@ -160,6 +168,8 @@ const dataPointsLeftToReview = computed(() => {
   return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
 });
 
+const canFinishReview = computed(() => dataPointsLeftToReview.value === 0);
+
 const isAssignedToCurrentUser = computed(() => {
   if (!datasetReview.value) return false;
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
@@ -169,12 +179,12 @@ const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDataset
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
   datasetJudgementIdRef,
-  DatasetJudgementState.Aborted
+  DatasetJudgementState.FinishedWithDatasetRejection
 );
 
 const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
   datasetJudgementIdRef,
-  DatasetJudgementState.Finished
+  DatasetJudgementState.FinishedWithDatasetAcceptance
 );
 
 const isModalActionPending = computed(
@@ -204,22 +214,27 @@ const assignToMe = (): void => {
 };
 
 const rejectDataset = (): void => {
-  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
-    rejectReviewMutation(undefined, {
-      onSuccess: () => {
-        isActionSuccess.value = true;
-        confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-        setTimeout(() => {
-          confirmationModal.value.visible = false;
-          isActionSuccess.value = false;
-          void goToQaPage();
-        }, 3200);
-      },
-      onError: (error) => {
-        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
-      },
-    });
-  });
+  openConfirmationModal(
+    'Reject Dataset',
+    'Are you sure you want to reject the dataset and all ' +
+      'underlying data points? This action will finish the review and cannot be undone.',
+    () => {
+      rejectReviewMutation(undefined, {
+        onSuccess: () => {
+          isActionSuccess.value = true;
+          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+          setTimeout(() => {
+            confirmationModal.value.visible = false;
+            isActionSuccess.value = false;
+            void goToQaPage();
+          }, 3200);
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to reject dataset: ' + error.message;
+        },
+      });
+    }
+  );
 };
 
 const finishReview = (): void => {
