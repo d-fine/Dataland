@@ -5,7 +5,7 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
 import { TESTIMONIALS } from '../data/testimonials';
 import { FRAMEWORK_CARDS } from '../data/frameworks';
 import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
-import CompanySearchBar from '../components/CompanySearchBar.vue';
+import CompanySearchBar from '../components/CompanySearchBar.astro';
 ---
 
 <Base title="Dataland — Non-profit sustainability data">
@@ -41,7 +41,7 @@ import CompanySearchBar from '../components/CompanySearchBar.vue';
   <section class="py-12 px-6 bg-[#111111] text-white" aria-label="Search sustainability data by company name or LEI">
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-6">
       <h2 class="text-2xl font-bold m-0 text-center">Search sustainability data by company name or LEI</h2>
-      <CompanySearchBar client:load />
+      <CompanySearchBar />
     </div>
   </section>
 
