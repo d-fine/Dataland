@@ -37,7 +37,7 @@ import java.util.UUID
  */
 
 @RestController
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 class MetaDataController(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
@@ -196,6 +196,11 @@ class MetaDataController(
             )
         }
         return ResponseEntity.ok(dataPoints)
+    }
+
+    override fun getContainedDataPointsForDatasets(dataIds: List<String>): ResponseEntity<Map<String, Map<String, String>>> {
+        val dataPointsByDatasetId = assembledDataManager.getDataPointIdsForDatasets(dataIds)
+        return ResponseEntity.ok(dataPointsByDatasetId)
     }
 
     override fun getAvailableDataDimensions(

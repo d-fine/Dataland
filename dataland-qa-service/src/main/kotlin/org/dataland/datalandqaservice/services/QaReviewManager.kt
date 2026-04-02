@@ -222,26 +222,16 @@ class QaReviewManager
             if (dataIds.isEmpty()) {
                 return BatchedQaReportLookupResult(emptyMap(), 0L, 0L)
             }
-            var getContainedDataPointsDurationNanos = 0L
-            val dataPointIdGroups = mutableListOf<Set<String>>()
-
-            dataIds.forEach { dataId ->
-                val dataPointIds =
-                    try {
-                        val (dataPointIdsByDimension, getContainedDataPointsDurationNanosForDataId) =
-                            measureExecutionNanos { metaDataControllerApi.getContainedDataPoints(dataId) }
-                        getContainedDataPointsDurationNanos += getContainedDataPointsDurationNanosForDataId
-                        dataPointIdsByDimension.values.toSet()
-                    } catch (clientException: ClientException) {
-                        if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                            logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
-                            emptySet()
-                        } else {
-                            throw clientException
-                        }
+            val (dataPointIdsByDataId, getContainedDataPointsDurationNanos) =
+                measureExecutionNanos { metaDataControllerApi.getContainedDataPointsForDatasets(dataIds) }
+            val dataPointIdGroups =
+                dataIds.map { dataId ->
+                    val dataPointIds = dataPointIdsByDataId[dataId]?.values?.toSet() ?: emptySet()
+                    if (dataPointIds.isEmpty()) {
+                        logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
                     }
-                dataPointIdGroups.add(dataPointIds)
-            }
+                    dataPointIds
+                }
 
             val (numberQaReportsPerGroup, countQaReportsForDataPointIdsDurationNanos) =
                 measureExecutionNanos { dataPointQaReportManager.countQaReportsForDataPointIdGroups(dataPointIdGroups) }

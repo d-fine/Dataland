@@ -83,17 +83,21 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     @Query(
         value =
             "WITH input_groups AS (" +
-                "    SELECT CAST(row_number() OVER () - 1 AS INTEGER) AS group_index, group_json " +
-                "    FROM jsonb_array_elements(CAST(:groupedDataPointIdsJson AS jsonb)) group_json" +
+                "    SELECT CAST(group_with_index.ordinality - 1 AS INTEGER) AS group_index, group_with_index.group_json " +
+                "    FROM jsonb_array_elements(CAST(:groupedDataPointIdsJson AS jsonb)) " +
+                "WITH ORDINALITY AS group_with_index(group_json, ordinality)" +
                 ")," +
-                "distinct_group_data_points AS (" +
-                "    SELECT DISTINCT ig.group_index, jsonb_array_elements_text(ig.group_json) AS data_point_id " +
-                "    FROM input_groups ig" +
+                "group_data_points AS (" +
+                "    SELECT ig.group_index, extracted_data_points.data_point_id " +
+                "    FROM input_groups ig " +
+                "    LEFT JOIN LATERAL (" +
+                "        SELECT DISTINCT jsonb_array_elements_text(ig.group_json) AS data_point_id" +
+                "    ) extracted_data_points ON TRUE" +
                 ")," +
                 "grouped_counts AS (" +
                 "    SELECT ig.group_index, COUNT(qa_report.qa_report_id) AS report_count " +
                 "    FROM input_groups ig " +
-                "    LEFT JOIN distinct_group_data_points group_data_point " +
+                "    LEFT JOIN group_data_points group_data_point " +
                 "        ON group_data_point.group_index = ig.group_index " +
                 "    LEFT JOIN data_point_qa_reports qa_report " +
                 "        ON qa_report.data_point_id = group_data_point.data_point_id " +

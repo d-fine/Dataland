@@ -318,6 +318,18 @@ class AssembledDataManager
             return dataPoints
         }
 
+        /**
+         * Retrieves mappings of contained data points for multiple datasets in one repository call.
+         */
+        @Transactional(readOnly = true)
+        fun getDataPointIdsForDatasets(datasetIds: Collection<String>): Map<String, Map<String, String>> {
+            if (datasetIds.isEmpty()) {
+                return emptyMap()
+            }
+            val datasetDatapoints = datasetDatapointRepository.findAllById(datasetIds).toList()
+            return datasetDatapoints.associate { it.datasetId to it.dataPoints }
+        }
+
         @Transactional(readOnly = true)
         override fun getDatasetData(
             dataDimensionsSet: Set<BasicDatasetDimensions>,

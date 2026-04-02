@@ -39,7 +39,7 @@ import java.util.UUID
 /**
  * Defines the restful dataland-backend API regarding meta data searches.
  */
-
+@SuppressWarnings("TooManyFunctions")
 @RequestMapping("/metadata")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
@@ -214,6 +214,30 @@ interface MetaDataApi {
         @DataIdParameterRequired
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<Map<String, String>>
+
+    /**
+     * A method to retrieve contained data points for multiple datasets in one request.
+     * @param dataIds dataset identifiers used to uniquely specify the datasets in question
+     * @return a map of dataset IDs to maps of data point types and data point ids.
+     */
+    @Operation(
+        summary = "Retrieve contained data point mappings for multiple datasets.",
+        description = "Returns a map where each key is a dataset ID and each value is the data point map for that dataset.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data point mappings."),
+        ],
+    )
+    @PostMapping(
+        value = ["/data-points/batch"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getContainedDataPointsForDatasets(
+        @RequestBody dataIds: List<String>,
+    ): ResponseEntity<Map<String, Map<String, String>>>
 
     /**
      * A method to retrieve information about the sourceability of datasets.

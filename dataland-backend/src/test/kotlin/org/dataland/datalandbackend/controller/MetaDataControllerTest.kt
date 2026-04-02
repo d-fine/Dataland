@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
@@ -12,6 +13,7 @@ import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
+import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -48,6 +50,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.random.Random
 
+@SuppressWarnings("LongParameterList")
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
@@ -58,6 +61,7 @@ internal class MetaDataControllerTest
         private val companyManager: CompanyAlterationManager,
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataPointMetaInformationManager: DataPointMetaInformationManager,
+        private val datasetDatapointRepository: DatasetDatapointRepository,
         private val metaDataController: MetaDataController,
         @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
     ) {
@@ -324,6 +328,31 @@ internal class MetaDataControllerTest
 
             val testFrameworkExpected = metaDataController.getAvailableDataDimensions(null, listOf(testFramework), null).body
             assertTrue(testFrameworkExpected == listOf(allDimensions.last()))
+        }
+
+        @Test
+        fun `check that contained data points can be retrieved in bulk`() {
+            val firstDatasetId = UUID.randomUUID().toString()
+            val secondDatasetId = UUID.randomUUID().toString()
+            datasetDatapointRepository.save(
+                DatasetDatapointEntity(
+                    datasetId = firstDatasetId,
+                    dataPoints = mapOf("dpType1" to "dpId1"),
+                ),
+            )
+            datasetDatapointRepository.save(
+                DatasetDatapointEntity(
+                    datasetId = secondDatasetId,
+                    dataPoints = mapOf("dpType2" to "dpId2"),
+                ),
+            )
+
+            val response = metaDataController.getContainedDataPointsForDatasets(listOf(firstDatasetId, secondDatasetId, "unknown")).body
+
+            assertEquals(2, response?.size)
+            assertEquals("dpId1", response?.get(firstDatasetId)?.get("dpType1"))
+            assertEquals("dpId2", response?.get(secondDatasetId)?.get("dpType2"))
+            assertFalse(response?.containsKey("unknown") == true)
         }
 
         private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
