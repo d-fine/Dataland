@@ -18,19 +18,25 @@ describe('parseFormDataToDataPointJson', () => {
     comment: '',
   };
 
+  // Realistic base example: numeric value, quality, pages, and comment
+  const baseFormValue = '123.45';
+  const baseFormQuality = 'Reported';
+  const baseFormPages = '121–125';
+  const baseFormComment = 'Taken from Annual Report 2023, pages 121–125.';
+
   const baseForm: CustomFormData = {
-    value: 'v',
-    quality: 'q',
-    document: '',
-    pages: '',
-    comment: 'c',
+    value: baseFormValue,
+    quality: baseFormQuality,
+    document: '', // no document selected in this scenario
+    pages: baseFormPages,
+    comment: baseFormComment,
   };
 
   const documentOption: DocumentOption = {
-    label: 'Annual Report',
-    value: 'annual-report',
+    label: 'Annual Report 2023',
+    value: 'annual-report-2023',
     dataSource: {
-      fileName: 'AnnualReport.pdf',
+      fileName: 'AnnualReport2023.pdf',
       fileReference: 'ref-123',
       publicationDate: '2024-01-01',
     },
@@ -41,23 +47,26 @@ describe('parseFormDataToDataPointJson', () => {
     expect(json).to.equal(DEFAULT_CUSTOM_JSON);
   });
 
-  it('builds JSON with only value/quality/comment when no dataSource info is present', () => {
+  it('builds JSON with value/quality/comment and a page-only dataSource when only pages are provided', () => {
     const json = parseFormDataToDataPointJson(baseForm, null);
     const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed).to.deep.equal({
-      value: 'v',
-      quality: 'q',
-      comment: 'c',
+      value: baseFormValue,
+      quality: baseFormQuality,
+      comment: baseFormComment,
+      dataSource: {
+        page: baseFormPages,
+      },
     });
   });
 
   it('adds a dataSource with only page when pages are provided but no document is selected', () => {
     const form: CustomFormData = {
-      value: 'v',
-      quality: '',
+      value: '2465.12',
+      quality: 'Estimated',
       document: '',
-      pages: '10-12',
+      pages: '10–12',
       comment: '',
     };
 
@@ -65,28 +74,29 @@ describe('parseFormDataToDataPointJson', () => {
     const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed).to.deep.equal({
-      value: 'v',
-      dataSource: { page: '10-12' },
+      value: '2465.12',
+      quality: 'Estimated',
+      dataSource: { page: '10–12' },
     });
   });
 
   it('merges selected document dataSource and pages into the dataSource object', () => {
     const form: CustomFormData = {
-      value: 'v',
-      quality: 'q',
+      value: '987.65',
+      quality: 'Audited',
       document: documentOption.value,
       pages: '5',
-      comment: 'c',
+      comment: 'Verified against Annual Report 2023.',
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
     const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
-    expect(parsed.value).to.equal('v');
-    expect(parsed.quality).to.equal('q');
-    expect(parsed.comment).to.equal('c');
+    expect(parsed.value).to.equal('987.65');
+    expect(parsed.quality).to.equal('Audited');
+    expect(parsed.comment).to.equal('Verified against Annual Report 2023.');
     expect(parsed.dataSource).to.deep.equal({
-      fileName: 'AnnualReport.pdf',
+      fileName: 'AnnualReport2023.pdf',
       fileReference: 'ref-123',
       publicationDate: '2024-01-01',
       page: '5',
@@ -107,7 +117,7 @@ describe('parseFormDataToDataPointJson', () => {
 
     expect(parsed).to.deep.equal({
       dataSource: {
-        fileName: 'AnnualReport.pdf',
+        fileName: 'AnnualReport2023.pdf',
         fileReference: 'ref-123',
         publicationDate: '2024-01-01',
       },
@@ -116,13 +126,13 @@ describe('parseFormDataToDataPointJson', () => {
 });
 
 describe('transformDataPointDetailToFormData', () => {
-  it('maps a full DataPointDetail to CustomFormData', () => {
+  it('maps a full ParsedSingleDataPoint to CustomFormData', () => {
     const detail: ParsedSingleDataPoint = {
-      value: 'v',
-      quality: 'q',
-      comment: 'c',
+      value: '123.45',
+      quality: 'Reported',
+      comment: 'Taken from Sustainability Report 2023, page 12.',
       dataSource: {
-        fileName: 'Report.pdf',
+        fileName: 'SustainabilityReport2023.pdf',
         fileReference: 'ref-999',
         page: '12',
       },
@@ -131,19 +141,19 @@ describe('transformDataPointDetailToFormData', () => {
     const form = transformDataPointDetailToFormData(detail);
 
     expect(form).to.deep.equal({
-      value: 'v',
-      quality: 'q',
-      document: 'Report.pdf', // fileName preferred
+      value: '123.45',
+      quality: 'Reported',
+      document: 'SustainabilityReport2023.pdf', // fileName preferred
       pages: '12',
-      comment: 'c',
+      comment: 'Taken from Sustainability Report 2023, page 12.',
     });
   });
 
   it('falls back to fileReference when fileName is not present', () => {
     const detail: ParsedSingleDataPoint = {
-      value: 'v',
-      quality: 'q',
-      comment: 'c',
+      value: '50.0',
+      quality: 'Estimated',
+      comment: 'No fileName available, only reference.',
       dataSource: {
         fileName: null,
         fileReference: 'ref-123',
@@ -180,9 +190,9 @@ describe('transformDataPointDetailToFormData', () => {
 describe('parseDataPointJsonToFormData', () => {
   it('parses valid JSON into CustomFormData', () => {
     const detail: ParsedSingleDataPoint = {
-      value: 'v',
-      quality: 'q',
-      comment: 'c',
+      value: '321.00',
+      quality: 'Audited',
+      comment: 'Verified against ParsedReport.pdf.',
       dataSource: {
         fileName: 'ParsedReport.pdf',
         page: '9',
@@ -193,11 +203,11 @@ describe('parseDataPointJsonToFormData', () => {
     const form = parseDataPointJsonToFormData(json);
 
     expect(form).to.deep.equal({
-      value: 'v',
-      quality: 'q',
+      value: '321.00',
+      quality: 'Audited',
       document: 'ParsedReport.pdf',
       pages: '9',
-      comment: 'c',
+      comment: 'Verified against ParsedReport.pdf.',
     });
   });
 
@@ -238,12 +248,12 @@ describe('toSafeDisplayString', () => {
 });
 
 describe('unwrapDataPointJson', () => {
-  it('unwraps to a plain primitive when original datapoint was a primitive and custom JSON is a DataPointDetail', () => {
+  it('unwraps to a plain primitive when original datapoint was a primitive and custom JSON is an object with value', () => {
     const rawDataPoint = JSON.stringify('2024-01-01'); // original backend value: "2024-01-01"
     const customDetail: ParsedSingleDataPoint = {
       value: '2024-01-01',
       quality: 'Audited',
-      comment: 'Some comment',
+      comment: 'Manually confirmed by reviewer.',
     };
     const customJson = JSON.stringify(customDetail);
 
@@ -261,7 +271,7 @@ describe('unwrapDataPointJson', () => {
   });
 
   it('returns original custom JSON unchanged when original datapoint is an object', () => {
-    const rawDetail: ParsedSingleDataPoint = { value: 'v', quality: 'q' };
+    const rawDetail: ParsedSingleDataPoint = { value: 'v', quality: 'Reported' };
     const rawDataPoint = JSON.stringify(rawDetail);
 
     const customDetail: ParsedSingleDataPoint = { value: 'new-v', quality: 'Audited' };
@@ -281,11 +291,11 @@ describe('unwrapDataPointJson', () => {
 });
 
 describe('wrapDataPointJson', () => {
-  it('returns a DataPointDetail object unchanged when JSON represents an object', () => {
+  it('returns a ParsedSingleDataPoint object unchanged when JSON represents an object', () => {
     const detail: ParsedSingleDataPoint = {
-      value: 'v',
-      quality: 'q',
-      comment: 'c',
+      value: '123.45',
+      quality: 'Reported',
+      comment: 'From WrappedReport.pdf, page 5.',
       dataSource: {
         fileName: 'WrappedReport.pdf',
         page: '5',
@@ -296,13 +306,13 @@ describe('wrapDataPointJson', () => {
     expect(wrapped).to.deep.equal(detail);
   });
 
-  it('wraps a primitive string JSON into a DataPointDetail with value', () => {
+  it('wraps a primitive string JSON into a ParsedSingleDataPoint with value', () => {
     const json = JSON.stringify('2024-01-01');
     const wrapped = wrapDataPointJson(json);
     expect(wrapped).to.deep.equal({ value: '2024-01-01' });
   });
 
-  it('wraps a primitive number JSON into a DataPointDetail with value', () => {
+  it('wraps a primitive number JSON into a ParsedSingleDataPoint with value', () => {
     const json = JSON.stringify(123);
     const wrapped = wrapDataPointJson(json);
     expect(wrapped).to.deep.equal({ value: 123 });
@@ -312,5 +322,11 @@ describe('wrapDataPointJson', () => {
     const invalidJson = '{ this is not valid json }';
     const wrapped = wrapDataPointJson(invalidJson);
     expect(wrapped).to.equal(null);
+  });
+
+  it('returns null when JSON value is null', () => {
+    const nullJson = JSON.stringify(null);
+    const wrapped = wrapDataPointJson(nullJson);
+    expect(wrapped).to.deep.equal({ value: null });
   });
 });
