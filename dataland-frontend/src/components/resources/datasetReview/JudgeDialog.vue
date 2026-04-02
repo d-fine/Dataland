@@ -162,8 +162,8 @@ import type {
   DocumentOption,
   NextDataPointOption,
   QaReport,
-  QaReporter,
 } from '@/types/JudgeDialogTypes.ts';
+
 import {
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
@@ -173,7 +173,12 @@ import {
   DEFAULT_CUSTOM_JSON,
 } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
-import { AcceptedDataPointSource, type DataPointJudgement, QaReportDataPointVerdict } from '@clients/qaservice';
+import {
+  AcceptedDataPointSource,
+  type DataPointJudgement,
+  QaReportDataPointVerdict,
+  type QaReporter,
+} from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
@@ -354,7 +359,7 @@ const currentQaReport = computed<QaReport | null>(() => {
 const qaReportersById = computed<Record<string, QaReporter>>(() => {
   const map: Record<string, QaReporter> = {};
   if (!datasetJudgement.value?.qaReporters) return map;
-  for (const r of datasetJudgement.value.qaReporters as QaReporter[]) {
+  for (const r of datasetJudgement.value.qaReporters) {
     map[r.reporterUserId] = r;
   }
   return map;

@@ -22,12 +22,6 @@ export interface QaReport {
   reporterUserId: string;
 }
 
-export interface QaReporter {
-  reporterUserId: string;
-  reporterUserName?: string | null;
-  reporterEmailAddress?: string | null;
-}
-
 export interface NextDataPointOption {
   label: string;
   dataPointTypeId: string;
