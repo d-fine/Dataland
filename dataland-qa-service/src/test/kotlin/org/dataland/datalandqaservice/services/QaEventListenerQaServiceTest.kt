@@ -21,6 +21,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.As
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -58,6 +59,7 @@ class QaEventListenerQaServiceTest(
 ) {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockQaReviewManager: QaReviewManager = mock<QaReviewManager>()
+    private val mockQaReviewQueryService: QaReviewQueryService = mock<QaReviewQueryService>()
     private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
     private val mockQaReportManager: QaReportManager = mock<QaReportManager>()
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
@@ -76,6 +78,7 @@ class QaEventListenerQaServiceTest(
             mockCloudEventMessageHandler,
             mockCompanyDataControllerApi,
             mockQaReviewManager,
+            mockQaReviewQueryService,
             mockDataPointQaReviewManager,
             mockQaReportManager,
             mockDataPointControllerApi,
@@ -86,6 +89,7 @@ class QaEventListenerQaServiceTest(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 mockQaReviewManager,
+                mockQaReviewQueryService,
                 mockDataPointQaReviewManager,
                 mockQaReportManager,
                 mockAssembledDataMigrationManager,

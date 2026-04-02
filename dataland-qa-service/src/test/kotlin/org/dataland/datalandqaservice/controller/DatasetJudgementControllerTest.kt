@@ -103,7 +103,7 @@ class DatasetJudgementControllerTest {
     @Test
     fun `setJudgementState delegates to service`() {
         val id = UUID.randomUUID()
-        val state = DatasetJudgementState.Finished
+        val state = DatasetJudgementState.FinishedWithDatasetAcceptance
         val serviceResponse = mock<DatasetJudgementResponse>()
 
         whenever(datasetJudgementService.setJudgementState(id, state))

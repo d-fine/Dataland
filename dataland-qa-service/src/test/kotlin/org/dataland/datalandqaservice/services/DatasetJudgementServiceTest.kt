@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -15,9 +16,12 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -41,6 +45,12 @@ class DatasetJudgementServiceTest {
     private val datasetJudgementRepository = mock<DatasetJudgementRepository>()
     private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
     private val keycloakUserService = mock<KeycloakUserService>()
+    private val datasetJudgementFinalizationService =
+        DatasetJudgementFinalizationService(
+            mock<DataPointControllerApi>(),
+            mock<DataPointQaReviewManager>(),
+            mock<QaReviewManager>(),
+        )
 
     private val creationServiceClass =
         DatasetJudgementCreationService(
@@ -53,6 +63,7 @@ class DatasetJudgementServiceTest {
             datasetJudgementRepository,
             datasetJudgementSupportService,
             creationServiceClass,
+            datasetJudgementFinalizationService,
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
@@ -185,12 +196,10 @@ class DatasetJudgementServiceTest {
 
     @Test
     fun `setJudgementState updates status when user is judge`() {
-        val newState = DatasetJudgementState.Aborted
-
-        service.setJudgementState(UUID.randomUUID(), newState)
-
+        datasetJudgementEntity.dataPoints.first().acceptedSource = AcceptedDataPointSource.Original
+        service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         val saved = captureSavedJudgement()
-        assertEquals(newState, saved.judgementState)
+        assertEquals(DatasetJudgementState.FinishedWithDatasetAcceptance, saved.judgementState)
     }
 
     @Test
@@ -202,7 +211,24 @@ class DatasetJudgementServiceTest {
         )
 
         assertThrows<InsufficientRightsApiException> {
-            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.Pending)
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
+        }
+    }
+
+    @Test
+    fun `setJudgementState throws ConflictApiException when current judgement state is Finished`() {
+        datasetJudgementEntity.judgementState = DatasetJudgementState.FinishedWithDatasetAcceptance
+
+        assertThrows<ConflictApiException> {
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
+        }
+    }
+
+    @Test
+    fun `setJudgementState throws error when finishing judgement with unreviewed datapoints`() {
+        datasetJudgementEntity.dataPoints.first().acceptedSource = null
+        assertThrows<InvalidInputApiException> {
+            service.setJudgementState(UUID.randomUUID(), DatasetJudgementState.FinishedWithDatasetAcceptance)
         }
     }
 
@@ -252,7 +278,7 @@ class DatasetJudgementServiceTest {
     }
 
     @Test
-    fun `postDatasetJudgement throws ConflictApiException when dataset judgement status is pending`() {
+    fun `postDatasetJudgement throws ConflictApiException when datasetJudgementEntity already exists`() {
         val dummyDatapointId = UUID.randomUUID().toString()
 
         doReturn(mapOf(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE to dummyDatapointId))
@@ -261,7 +287,7 @@ class DatasetJudgementServiceTest {
 
         doReturn(listOf(datasetJudgementEntity))
             .whenever(datasetJudgementRepository)
-            .findAllByDatasetIdAndJudgementState(any(), any())
+            .findAllByDatasetId(any())
 
         assertThrows<ConflictApiException> {
             service.postDatasetJudgement(UUID.randomUUID())
