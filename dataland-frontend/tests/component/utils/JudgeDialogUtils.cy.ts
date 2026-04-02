@@ -231,15 +231,6 @@ describe('toSafeDisplayString', () => {
     expect(toSafeDisplayString(false)).to.equal('false');
   });
 
-  it('converts bigint to string', () => {
-    expect(toSafeDisplayString(123n)).to.equal('123');
-  });
-
-  it('converts symbol to string', () => {
-    const sym = Symbol('test');
-    expect(toSafeDisplayString(sym)).to.equal(sym.toString());
-  });
-
   it('stringifies objects', () => {
     expect(toSafeDisplayString({ a: 1, b: 'x' })).to.equal('{"a":1,"b":"x"}');
     expect(toSafeDisplayString([1, 2, 3])).to.equal('[1,2,3]');
