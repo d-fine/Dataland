@@ -317,7 +317,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
   return sortedReports.value.flatMap((reportsForPeriod) =>
     Object.entries(reportsForPeriod ?? {}).map(([name, report]) => ({
       label: name ?? 'Unnamed_File',
-      value: name ?? report.fileName ?? report.fileReference,
+      value: report.fileName ?? report.fileReference ?? name,
       dataSource: {
         fileName: report.fileName ?? name ?? null,
         fileReference: report.fileReference,
