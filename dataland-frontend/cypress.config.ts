@@ -64,7 +64,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'https://local-dev.dataland.com',
     setupNodeEvents(on, config) {
-      const executionEnvironment = config.env['EXECUTION_ENVIRONMENT'];
+      const executionEnvironment = config.expose['EXECUTION_ENVIRONMENT'];
       const configProcessScopedVariables: Record<string, unknown> = {};
 
       console.log(`Execution environment: ${executionEnvironment}`);
