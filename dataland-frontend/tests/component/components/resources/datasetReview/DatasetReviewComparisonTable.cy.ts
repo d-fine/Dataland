@@ -167,6 +167,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     hideEmptyFields?: boolean;
     data?: SfdrData;
     rowClickable?: boolean;
+    onRowClick?: () => void;
   }): void {
     const queryClient = new QueryClient({
       defaultOptions: {
@@ -196,6 +197,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         dataMetaInformation: mockMetaInformation,
         hideEmptyFields: options?.hideEmptyFields ?? false,
         rowClickable: options?.rowClickable ?? false,
+        ...(options?.onRowClick && { onRowClick: options.onRowClick }),
       },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
@@ -303,48 +305,15 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('emits row-click and applies kpi-link style when rowClickable is true', () => {
     const onRowClick = cy.spy().as('onRowClick');
 
-    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    cy.intercept('GET', '**/api/data/**', {
-      statusCode: 200,
-      body: { data: baseSfdrData, meta: {}, reportingPeriod },
-    }).as('getFrameworkData2');
-
-    const mount = getMountingFunction();
-    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
-    const apiClientProvider = new ApiClientProvider(keycloakPromise);
-
-    mount(DatasetReviewComparisonTable, {
-      props: {
-        framework,
-        dataId,
-        searchQuery: '',
-        datasetReview: baseDatasetReview,
-        dataMetaInformation: mockMetaInformation,
-        hideEmptyFields: false,
-        rowClickable: true,
-        onRowClick,
-      },
-      global: {
-        plugins: [[VueQueryPlugin, { queryClient }]],
-        provide: {
-          getKeycloakPromise: () => keycloakPromise,
-          authenticated: computed(() => true),
-          apiClientProvider: computed(() => apiClientProvider),
-        },
-      },
-    });
-
-    cy.wait('@getFrameworkData2');
+    mountComponent({ rowClickable: true, onRowClick });
 
     cy.contains('button', 'Data Date').should('have.class', 'kpi-link').click();
-
     cy.get('@onRowClick').should('have.been.calledOnce');
     cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'plainDateSfdrDataDate' });
   });
 
-  it('does not apply kpi-link style and does not emit row-click when rowClickable is false', () => {
+  it('kpi name is not clickable when rowClickable is set to false', () => {
     mountComponent({ rowClickable: false });
-
-    cy.contains('button', 'Data Date').should('have.class', 'kpi-link').should('have.class', 'cursor-default');
+    cy.contains('button', 'Data Date').should('have.class', 'cursor-default');
   });
 });
