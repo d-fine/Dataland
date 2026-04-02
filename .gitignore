@@ -35,6 +35,10 @@ hs_err_pid*
 **/node_modules/
 **/venv/
 dataland-website/dist/
+dataland-website/.astro/content-modules.mjs
+dataland-website/.astro/content-assets.mjs
+dataland-website/.astro/data-store.json
+dataland-website/.astro/settings.json
 
 local
 

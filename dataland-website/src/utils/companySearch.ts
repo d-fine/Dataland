@@ -9,7 +9,7 @@ export async function fetchCompaniesByNameOrLei(
   resultLimit: number
 ): Promise<CompanyIdAndName[]> {
   const params = new URLSearchParams({ searchString, resultLimit: String(resultLimit) });
-  const response = await fetch(`/api/companies/names?${params}`);
+  const response = await fetch(`${window.location.origin}/api/companies/names?${params}`);
   if (!response.ok) {
     console.error(`Company search failed: ${response.status} ${response.statusText}`);
     return [];
