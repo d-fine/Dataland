@@ -23,8 +23,12 @@ tasks.register<NpmTask>("npmBuild") {
     inputs.dir("public")
     inputs.file("astro.config.mjs")
     inputs.file("package.json")
+    inputs.file("package-lock.json")
     inputs.file("tsconfig.json")
     outputs.dir("dist")
+    // Always rerun: the Gradle cache is shared across CI runs via actions/setup-java,
+    // which would otherwise skip this task even when source files have changed.
+    outputs.upToDateWhen { false }
 }
 
 tasks.register<NpmTask>("npmCheck") {
