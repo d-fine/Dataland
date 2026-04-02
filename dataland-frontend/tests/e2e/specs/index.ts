@@ -1,7 +1,8 @@
-const testGroupingDisabled = Number.isNaN(Cypress.expose('TEST_GROUP') as number);
-let cypressTestGroup = undefined;
+const testGroupingDisabled = Cypress.expose('TEST_GROUP') == null || Number.isNaN(Number(Cypress.expose('TEST_GROUP')));
+
+let cypressTestGroup: number | undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = Number.parseInt(Cypress.expose('TEST_GROUP') as string);
+  cypressTestGroup = Number.parseInt(String(Cypress.expose('TEST_GROUP')));
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.expose('SINGLE_POPULATE') === true;
