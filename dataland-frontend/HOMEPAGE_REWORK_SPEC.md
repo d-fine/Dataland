@@ -28,14 +28,14 @@ The existing **Company Search API** integration is retained as it is already imp
 
 ### Pages in Scope
 
-| Page | Route | Status |
-|------|-------|--------|
-| Landing Page | `/` | REWORK |
-| Product Page | `/product` | NEW |
-| About Page | `/about` | REWORK |
-| Newsletter Page | `/newsletter` | NEW (static layout only) |
-| Contact Page | `/contact` | NEW (static layout only) |
-| Testimonials Page | `/testimonials` | NEW |
+| Page              | Route           | Status                   |
+| ----------------- | --------------- | ------------------------ |
+| Landing Page      | `/`             | REWORK                   |
+| Product Page      | `/product`      | NEW                      |
+| About Page        | `/about`        | REWORK                   |
+| Newsletter Page   | `/newsletter`   | NEW (static layout only) |
+| Contact Page      | `/contact`      | NEW (static layout only) |
+| Testimonials Page | `/testimonials` | NEW                      |
 
 ---
 
@@ -83,9 +83,9 @@ The existing **Company Search API** integration is retained as it is already imp
 - **UX review flagged:** Conversion path fragmentation
 - **FINAL:** Standardize to **2 primary CTA patterns** across the site:
 
-| CTA | Label | Action | Style |
-|-----|-------|--------|-------|
-| Primary | `Try it free` | Keycloak register flow | PrimeVue `Button`, `rounded`, orange background |
+| CTA       | Label          | Action                                                   | Style                                                |
+| --------- | -------------- | -------------------------------------------------------- | ---------------------------------------------------- |
+| Primary   | `Try it free`  | Keycloak register flow                                   | PrimeVue `Button`, `rounded`, orange background      |
 | Secondary | `Get in touch` | Opens `ContactInquiryModal` (or navigates to `/contact`) | PrimeVue `Button`, `rounded`, `severity="secondary"` |
 
 Where context-specific CTAs are needed (e.g., "Discover platform features", "Explore the Use Cases"), they use the secondary button style and link to the relevant section/page.
@@ -250,24 +250,24 @@ The header is a sticky top navigation bar shared across all pages.
 
 **Product dropdown items:**
 
-| Label | Link |
-|-------|------|
-| How it works | `/product#how-it-works` |
-| Features | `/product#features` |
-| Frameworks | `/product#frameworks` |
-| Use Cases | `/product#use-cases` |
-| Customer Stories | `/product#customer-stories` |
+| Label                | Link                          |
+| -------------------- | ----------------------------- |
+| How it works         | `/product#how-it-works`       |
+| Features             | `/product#features`           |
+| Frameworks           | `/product#frameworks`         |
+| Use Cases            | `/product#use-cases`          |
+| Customer Stories     | `/product#customer-stories`   |
 | Membership & Pricing | `/product#membership-pricing` |
-| Documentation | `/product#documentation` |
+| Documentation        | `/product#documentation`      |
 
 **About dropdown items:**
 
-| Label | Link |
-|-------|------|
-| Company | `/about#company` |
-| Partners | `/about#partners` |
-| News and Insights | `/about#updates` |
-| Contact | `/about#contact` |
+| Label             | Link              |
+| ----------------- | ----------------- |
+| Company           | `/about#company`  |
+| Partners          | `/about#partners` |
+| News and Insights | `/about#updates`  |
+| Contact           | `/about#contact`  |
 
 **Mobile layout (< $bp-lg):**
 
@@ -332,15 +332,15 @@ The footer is shared across all pages. It has two areas: a four-column top secti
 
 **Top section (4 columns on desktop):**
 
-| Column 1: Dataland | Column 2: Product | Column 3: Company | Column 4: Resources |
-|---------------------|--------------------|--------------------|---------------------|
-| "Non-profit sustainability data platform. Source-based. Human-verified. Open source." | How it works | Why Dataland | Tutorials |
-| [Wertestiftung logo] [d-fine logo] [PwC logo] | Features | About us | Platform documentation |
-| | Frameworks | Updates and Insights | Technical Hub |
-| | Use Cases | Partners | |
-| | Customer Stories | Contact | |
-| | Testimonials | | |
-| | Membership & Pricing | | |
+| Column 1: Dataland                                                                    | Column 2: Product    | Column 3: Company    | Column 4: Resources    |
+| ------------------------------------------------------------------------------------- | -------------------- | -------------------- | ---------------------- |
+| "Non-profit sustainability data platform. Source-based. Human-verified. Open source." | How it works         | Why Dataland         | Tutorials              |
+| [Wertestiftung logo] [d-fine logo] [PwC logo]                                         | Features             | About us             | Platform documentation |
+|                                                                                       | Frameworks           | Updates and Insights | Technical Hub          |
+|                                                                                       | Use Cases            | Partners             |                        |
+|                                                                                       | Customer Stories     | Contact              |                        |
+|                                                                                       | Testimonials         |                      |                        |
+|                                                                                       | Membership & Pricing |                      |                        |
 
 **Bottom bar:**
 
@@ -422,22 +422,22 @@ The footer is shared across all pages. It has two areas: a four-column top secti
 
 **Footer link targets:**
 
-| Link | Target |
-|------|--------|
-| Product links | `/product#<anchor>` |
-| Why Dataland | `/#why-us` |
-| About us | `/about#company` |
-| Updates and Insights | `/about#updates` |
-| Partners | `/about#partners` |
-| Contact | `/about#contact` |
-| Tutorials | `/product#documentation` |
-| Platform documentation | `/product#documentation` |
-| Technical Hub | `/product#documentation` |
-| Legal | `/legal` (existing) |
-| Imprint | `/imprint` (existing) |
-| Data Privacy | `/dataprivacy` (existing) |
-| Cookie Settings | `/cookies` (existing) |
-| LinkedIn | `https://www.linkedin.com/company/dataland-gmbh` (new tab) |
+| Link                   | Target                                                     |
+| ---------------------- | ---------------------------------------------------------- |
+| Product links          | `/product#<anchor>`                                        |
+| Why Dataland           | `/#why-us`                                                 |
+| About us               | `/about#company`                                           |
+| Updates and Insights   | `/about#updates`                                           |
+| Partners               | `/about#partners`                                          |
+| Contact                | `/about#contact`                                           |
+| Tutorials              | `/product#documentation`                                   |
+| Platform documentation | `/product#documentation`                                   |
+| Technical Hub          | `/product#documentation`                                   |
+| Legal                  | `/legal` (existing)                                        |
+| Imprint                | `/imprint` (existing)                                      |
+| Data Privacy           | `/dataprivacy` (existing)                                  |
+| Cookie Settings        | `/cookies` (existing)                                      |
+| LinkedIn               | `https://www.linkedin.com/company/dataland-gmbh` (new tab) |
 
 ### 2.6 Reduced Motion Support
 
@@ -532,8 +532,8 @@ Two-column grid: 60% left (text), 40% right (illustration).
       Source-based data. Human-verified quality. On-demand sourcing. Structured for regulatory reporting.
     </p>
     <div class="intro__actions">
-      <Button label="Try it free" rounded @click="handleRegister" />
-      <Button label="Get in touch" rounded severity="secondary" @click="openModal" />
+      <button label="Try it free" rounded @click="handleRegister" />
+      <button label="Get in touch" rounded severity="secondary" @click="openModal" />
     </div>
   </div>
   <div class="intro__illustration">
@@ -579,20 +579,20 @@ Two-column grid: 60% left (text), 40% right (illustration).
 
 **Problem-solution pairs (each rendered as two columns with a central arrow):**
 
-| # | Problem | Solution |
-|---|---------|----------|
-| 1 | **Missing issuer data** — Large ESG data providers typically focus on listed companies, leaving smaller, regional, or unlisted issuers outside their standard coverage. Data consumers must then identify, source, and structure the missing data themselves. | **Data on demand** — Dataland provides the data its members actually need. If a required dataset is missing, members can request it. The data will be sourced from issuer disclosures and added to the platform, so gaps in coverage can be addressed when they arise |
-| 2 | **Poor data quality** — Many data sourcing approaches introduce errors, inconsistencies, outdated values, or unexplained gaps. Inaccurate or untraceable ESG data undermines reporting, analytics, and decision-making | **AI extraction with human verification and full source  traceability** — Dataland sources data directly from the original publisher and combines tailored AI extraction with manual verification steps. Every published data point is linked to its original source document, ensuring full traceability. This means datasets are not only structured efficiently and quality-assured by humans, but also independently verifiable at any time |
-| 3 | **Restrictive licensing terms** — Acquired datasets are often subject to restrictive usage rights, limiting how they can be applied across reporting, analysis, validation, and other internal workflows. This reduces the practical value of the data far beyond the original use case | **Unrestricted use** — Dataland data can be used freely and published freely. This allows the same dataset to support multiple teams and workflows without unnecessary licensing constraints |
-| 4 | **High prices** — Many providers offer expensive data packages that are not well aligned with the actual needs of the data consumer. Institutions often end up paying for broad coverage, bundled content, or additional functionality that is irrelevant to their use case | **Lean pricing model** — Dataland follows a shared procurement model in which pricing reflects the effort required to source a dataset. The costs of that sourcing effort are shared across the members who need the data rather than being borne by each institution individually |
+| #   | Problem                                                                                                                                                                                                                                                                                 | Solution                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Missing issuer data** — Large ESG data providers typically focus on listed companies, leaving smaller, regional, or unlisted issuers outside their standard coverage. Data consumers must then identify, source, and structure the missing data themselves.                           | **Data on demand** — Dataland provides the data its members actually need. If a required dataset is missing, members can request it. The data will be sourced from issuer disclosures and added to the platform, so gaps in coverage can be addressed when they arise                                                                                                                                                                          |
+| 2   | **Poor data quality** — Many data sourcing approaches introduce errors, inconsistencies, outdated values, or unexplained gaps. Inaccurate or untraceable ESG data undermines reporting, analytics, and decision-making                                                                  | **AI extraction with human verification and full source traceability** — Dataland sources data directly from the original publisher and combines tailored AI extraction with manual verification steps. Every published data point is linked to its original source document, ensuring full traceability. This means datasets are not only structured efficiently and quality-assured by humans, but also independently verifiable at any time |
+| 3   | **Restrictive licensing terms** — Acquired datasets are often subject to restrictive usage rights, limiting how they can be applied across reporting, analysis, validation, and other internal workflows. This reduces the practical value of the data far beyond the original use case | **Unrestricted use** — Dataland data can be used freely and published freely. This allows the same dataset to support multiple teams and workflows without unnecessary licensing constraints                                                                                                                                                                                                                                                   |
+| 4   | **High prices** — Many providers offer expensive data packages that are not well aligned with the actual needs of the data consumer. Institutions often end up paying for broad coverage, bundled content, or additional functionality that is irrelevant to their use case             | **Lean pricing model** — Dataland follows a shared procurement model in which pricing reflects the effort required to source a dataset. The costs of that sourcing effort are shared across the members who need the data rather than being borne by each institution individually                                                                                                                                                             |
 
 **CTA buttons (3 across):**
 
-| Button | Label | Link |
-|--------|-------|------|
-| 1 | Discover platform features | `/product#features` |
-| 2 | Explore use cases | `/product#use-cases` |
-| 3 | Get in touch | `/about#contact` |
+| Button | Label                      | Link                 |
+| ------ | -------------------------- | -------------------- |
+| 1      | Discover platform features | `/product#features`  |
+| 2      | Explore use cases          | `/product#use-cases` |
+| 3      | Get in touch               | `/about#contact`     |
 
 #### Problem-Solution Element Design
 
@@ -665,11 +665,11 @@ All logos link to `/product#customer-stories`.
 - **Headline:** `Customer stories`
 - **3 story cards** in a row:
 
-| # | Logo | Tag | Text | Link |
-|---|------|-----|------|------|
-| 1 | MEAG logo | Asset Manager | Filling SFDR gaps and EU Taxo template transition | `/product#meag` |
-| 2 | NORD/LB logo | Bank | Primary source of ESG data and API integration | `/product#nordlb` |
-| 3 | ÖV Braunschweig logo | Insurance | PAI lineage and source transparency for compliance | `/product#ovbraunschweig` |
+| #   | Logo                 | Tag           | Text                                               | Link                      |
+| --- | -------------------- | ------------- | -------------------------------------------------- | ------------------------- |
+| 1   | MEAG logo            | Asset Manager | Filling SFDR gaps and EU Taxo template transition  | `/product#meag`           |
+| 2   | NORD/LB logo         | Bank          | Primary source of ESG data and API integration     | `/product#nordlb`         |
+| 3   | ÖV Braunschweig logo | Insurance     | PAI lineage and source transparency for compliance | `/product#ovbraunschweig` |
 
 #### Card Design
 
@@ -708,7 +708,9 @@ All logos link to `/product#customer-stories`.
     font-weight: 600;
     color: var(--p-primary-color);
     text-decoration: none;
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 ```
@@ -734,20 +736,20 @@ All logos link to `/product#customer-stories`.
 
 **Testimonials data (12 quotes):**
 
-| # | Author | Affiliation | Quote |
-|---|--------|-------------|-------|
-| 1 | Stephen Henkel | Managing Director at VÖB-Service GmbH | "Then came Dataland with the idea that ESG data should be a common good, and I think that's excellent" |
-| 2 | Jasmina Klein | Manager at d-fine | "Dataland will help to let the data flow and this is the key to solve one of the most pressing issues of our time" |
-| 3 | Matthias Kopp | Director of Sustainable Finance at WWF Germany | "Dataland can provide the data ecosystem we all need to support our transition to stay within 1.5 degrees or within the planetary boundaries" |
-| 4 | Christian Heller | CEO of Value Balancing Alliance | "Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one" |
-| 5 | Fabian Kloss | Cloud Services Sales at T-Systems International | "Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!" |
-| 6 | Ingo Speich | Head of Sustainability & Corporate Governance at Deka Investment | "We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner" |
-| 7 | Christoph Benner | CEO of Chom Capital | "Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps" |
-| 8 | Rudolf Siebel | Managing Director at BVI German Fund Association | "Through Dataland, we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall" |
-| 9 | Dr. Annalisa Schwarz | Managing Director at Werte-Stiftung | "Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data" |
-| 10 | Daniel Sailer | Head of Sustainable Investment Office at Metzler Asset Management GmbH | "The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need" |
-| 11 | Dr. Egbert Schark | Founder and Managing Director at d-fine GmbH | "I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!" |
-| 12 | Sven Schuchert | CEO of Envoria | "Dataland is the only platform we know that is open to everyone and based on a non-profit business model" |
+| #   | Author               | Affiliation                                                            | Quote                                                                                                                                                    |
+| --- | -------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Stephen Henkel       | Managing Director at VÖB-Service GmbH                                  | "Then came Dataland with the idea that ESG data should be a common good, and I think that's excellent"                                                   |
+| 2   | Jasmina Klein        | Manager at d-fine                                                      | "Dataland will help to let the data flow and this is the key to solve one of the most pressing issues of our time"                                       |
+| 3   | Matthias Kopp        | Director of Sustainable Finance at WWF Germany                         | "Dataland can provide the data ecosystem we all need to support our transition to stay within 1.5 degrees or within the planetary boundaries"            |
+| 4   | Christian Heller     | CEO of Value Balancing Alliance                                        | "Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one"                                            |
+| 5   | Fabian Kloss         | Cloud Services Sales at T-Systems International                        | "Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!"                                         |
+| 6   | Ingo Speich          | Head of Sustainability & Corporate Governance at Deka Investment       | "We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner"                                  |
+| 7   | Christoph Benner     | CEO of Chom Capital                                                    | "Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps"                                                       |
+| 8   | Rudolf Siebel        | Managing Director at BVI German Fund Association                       | "Through Dataland, we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall" |
+| 9   | Dr. Annalisa Schwarz | Managing Director at Werte-Stiftung                                    | "Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data"                                              |
+| 10  | Daniel Sailer        | Head of Sustainable Investment Office at Metzler Asset Management GmbH | "The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need"                                                 |
+| 11  | Dr. Egbert Schark    | Founder and Managing Director at d-fine GmbH                           | "I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!"                                                                   |
+| 12  | Sven Schuchert       | CEO of Envoria                                                         | "Dataland is the only platform we know that is open to everyone and based on a non-profit business model"                                                |
 
 #### Testimonial Card Design
 
@@ -796,14 +798,14 @@ Same as TheTrustedBy (Decision 3): auto-scroll with pause control, keyboard navi
 
 **Framework cards (6):**
 
-| # | Title | Subtitle | Description |
-|---|-------|----------|-------------|
-| 1 | EU Taxonomy | Financials | The EU Taxonomy Regulation enables financial institutions to assess and report the share of environmentally sustainable economic activities within their portfolios, based on eligibility and alignment metrics |
-| 2 | EU Taxonomy | Non-Financials | The EU Taxonomy Regulation provides a framework for non-financial companies to disclose the extent to which their activities are environmentally sustainable, based on defined technical screening criteria |
-| 3 | EU Taxonomy | Nuclear and Gas | The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions |
-| 4 | SFDR | | The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level |
-| 5 | PCAF | | The PCAF standard provides a methodology for financial institutions to measure and disclose financed emissions associated with their lending and investment portfolios |
-| 6 | LkSG | | Lieferkettensorgfaltspflichtengesetz is a German law requiring companies to identify, assess, and manage human rights and environmental risks within their supply chains |
+| #   | Title       | Subtitle        | Description                                                                                                                                                                                                                                      |
+| --- | ----------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | EU Taxonomy | Financials      | The EU Taxonomy Regulation enables financial institutions to assess and report the share of environmentally sustainable economic activities within their portfolios, based on eligibility and alignment metrics                                  |
+| 2   | EU Taxonomy | Non-Financials  | The EU Taxonomy Regulation provides a framework for non-financial companies to disclose the extent to which their activities are environmentally sustainable, based on defined technical screening criteria                                      |
+| 3   | EU Taxonomy | Nuclear and Gas | The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions                                          |
+| 4   | SFDR        |                 | The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level |
+| 5   | PCAF        |                 | The PCAF standard provides a methodology for financial institutions to measure and disclose financed emissions associated with their lending and investment portfolios                                                                           |
+| 6   | LkSG        |                 | Lieferkettensorgfaltspflichtengesetz is a German law requiring companies to identify, assess, and manage human rights and environmental risks within their supply chains                                                                         |
 
 All cards link to `/product#frameworks`.
 
@@ -811,10 +813,10 @@ All cards link to `/product#frameworks`.
 
 **CTA buttons:**
 
-| Button | Label | Link |
-|--------|-------|------|
-| 1 | News & insights | `/about#updates` |
-| 2 | Subscribe to our Newsletter | `/newsletter` |
+| Button | Label                       | Link             |
+| ------ | --------------------------- | ---------------- |
+| 1      | News & insights             | `/about#updates` |
+| 2      | Subscribe to our Newsletter | `/newsletter`    |
 
 #### Framework Card Design
 
@@ -877,19 +879,19 @@ Each card has a subtle geometric orange accent in the top-right corner.
 
 **Sector tiles (11 total) in a weighted mosaic layout:**
 
-| Tile | Icon | Size |
-|------|------|------|
-| Banks | `icon_bank.svg` | XL |
-| Insurance companies | `icon_insurance.svg` | XL |
-| Asset Managers | `icon_asset_manager.svg` | XL |
-| Pension funds | `icon_pension.svg` | L |
-| Public Financial Institutions | `icon_public_fin.svg` | L |
-| Data Providers | `icon_vendors.svg` | M |
-| Financial Data Infrastructure | `icon_fin_data.svg` | S |
-| ESG solution providers | `icon_esg_software.svg` | S |
-| Industry Associations | `icon_industry.svg` | S |
-| Sustainability Initiatives | `icon_esg_org.svg` | S |
-| Academic Institutions | `icon_academy.svg` | S |
+| Tile                          | Icon                     | Size |
+| ----------------------------- | ------------------------ | ---- |
+| Banks                         | `icon_bank.svg`          | XL   |
+| Insurance companies           | `icon_insurance.svg`     | XL   |
+| Asset Managers                | `icon_asset_manager.svg` | XL   |
+| Pension funds                 | `icon_pension.svg`       | L    |
+| Public Financial Institutions | `icon_public_fin.svg`    | L    |
+| Data Providers                | `icon_vendors.svg`       | M    |
+| Financial Data Infrastructure | `icon_fin_data.svg`      | S    |
+| ESG solution providers        | `icon_esg_software.svg`  | S    |
+| Industry Associations         | `icon_industry.svg`      | S    |
+| Sustainability Initiatives    | `icon_esg_org.svg`       | S    |
+| Academic Institutions         | `icon_academy.svg`       | S    |
 
 Size factor determines the visual weight (tile dimensions) in the mosaic grid.
 
@@ -946,17 +948,17 @@ On desktop, uses CSS Grid with a 12-column base:
 
 **News items (slider, 3 visible at a time):**
 
-| # | Image | Title | Date | Link |
-|---|-------|-------|------|------|
-| 1 | `news_eu_taxo.png` | Smooth transition to the new EU Taxonomy template | March 5, 2026 | LinkedIn post |
-| 2 | `news_bvi_fok.png` | Networking at BVI FOK | February 25, 2026 | LinkedIn post |
-| 3 | `news_dmm_q12026.png` | Dataland Members' Meeting Q1 2026 | February 20, 2026 | LinkedIn post |
-| 4 | `news_2025.png` | 2025 in numbers | January 21, 2026 | LinkedIn post |
-| 5 | `news_sfdr2.png` | How SFDR 2.0 reinforces the need for shared ESG data infrastructure | December 10, 2025 | LinkedIn post |
-| 6 | `news_pcaf.png` | PCAF on Dataland | November 21, 2025 | LinkedIn post |
-| 7 | `news_sust2025.png` | Dataland @ Sustainability Kongress 2025 | November 14, 2025 | LinkedIn post |
-| 8 | `news_dmm_q42025.png` | Dataland Members' Meeting Q4 2025 | November 6, 2025 | LinkedIn post |
-| 9 | `news_erik.png` | Leadership transition: thank you, Erik Breen! | November 4, 2025 | LinkedIn post |
+| #   | Image                 | Title                                                               | Date              | Link          |
+| --- | --------------------- | ------------------------------------------------------------------- | ----------------- | ------------- |
+| 1   | `news_eu_taxo.png`    | Smooth transition to the new EU Taxonomy template                   | March 5, 2026     | LinkedIn post |
+| 2   | `news_bvi_fok.png`    | Networking at BVI FOK                                               | February 25, 2026 | LinkedIn post |
+| 3   | `news_dmm_q12026.png` | Dataland Members' Meeting Q1 2026                                   | February 20, 2026 | LinkedIn post |
+| 4   | `news_2025.png`       | 2025 in numbers                                                     | January 21, 2026  | LinkedIn post |
+| 5   | `news_sfdr2.png`      | How SFDR 2.0 reinforces the need for shared ESG data infrastructure | December 10, 2025 | LinkedIn post |
+| 6   | `news_pcaf.png`       | PCAF on Dataland                                                    | November 21, 2025 | LinkedIn post |
+| 7   | `news_sust2025.png`   | Dataland @ Sustainability Kongress 2025                             | November 14, 2025 | LinkedIn post |
+| 8   | `news_dmm_q42025.png` | Dataland Members' Meeting Q4 2025                                   | November 6, 2025  | LinkedIn post |
+| 9   | `news_erik.png`       | Leadership transition: thank you, Erik Breen!                       | November 4, 2025  | LinkedIn post |
 
 All links open in new tab (`target="_blank" rel="noopener noreferrer"`).
 
@@ -964,10 +966,10 @@ All links open in new tab (`target="_blank" rel="noopener noreferrer"`).
 
 **CTA buttons:**
 
-| Button | Label | Link |
-|--------|-------|------|
-| 1 | Follow us on LinkedIn | `https://www.linkedin.com/company/dataland-gmbh` (new tab) |
-| 2 | Subscribe to our Newsletter | `/newsletter` |
+| Button | Label                       | Link                                                       |
+| ------ | --------------------------- | ---------------------------------------------------------- |
+| 1      | Follow us on LinkedIn       | `https://www.linkedin.com/company/dataland-gmbh` (new tab) |
+| 2      | Subscribe to our Newsletter | `/newsletter`                                              |
 
 #### News Card Design
 
@@ -1085,11 +1087,11 @@ Same carousel rules as Decision 3. Navigation arrows (left/right). 3 visible on 
 
 **3 problem-solution blocks (same arrow pattern as landing page TheWhyUs):**
 
-| # | Left Title | Left Text | Right Title | Right Text |
-|---|-----------|-----------|-------------|------------|
-| 1 | Platform access | Access ESG datasets directly through the Dataland platform and download them in structured formats | Browse, search, and download | Browse companies, portfolios and datasets interactively |
-| 2 | API integration | Integrate Dataland data into your internal systems and analytics pipelines | Automated workflows | Retrieve ESG datasets programmatically through stable APIs |
-| 3 | Partner integration | Access Dataland data through software partners and ESG data platforms | Embedded data services | Partners integrate Dataland datasets into their own solutions |
+| #   | Left Title          | Left Text                                                                                          | Right Title                  | Right Text                                                    |
+| --- | ------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------- |
+| 1   | Platform access     | Access ESG datasets directly through the Dataland platform and download them in structured formats | Browse, search, and download | Browse companies, portfolios and datasets interactively       |
+| 2   | API integration     | Integrate Dataland data into your internal systems and analytics pipelines                         | Automated workflows          | Retrieve ESG datasets programmatically through stable APIs    |
+| 3   | Partner integration | Access Dataland data through software partners and ESG data platforms                              | Embedded data services       | Partners integrate Dataland datasets into their own solutions |
 
 ---
 
@@ -1102,10 +1104,10 @@ Same carousel rules as Decision 3. Navigation arrows (left/right). 3 visible on 
 
 **2 problem-solution blocks:**
 
-| # | Left Title | Left Text | Right Title | Right Text |
-|---|-----------|-----------|-------------|------------|
-| 1 | Dataset already available | Use the dataset within the platform or download it for your internal applications | No additional cost | Members can access existing datasets without any delay and free of charge |
-| 2 | Dataset not yet available | Request the dataset through the platform | Delivered within one month | Costs are shared between members requesting the same dataset |
+| #   | Left Title                | Left Text                                                                         | Right Title                | Right Text                                                                |
+| --- | ------------------------- | --------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| 1   | Dataset already available | Use the dataset within the platform or download it for your internal applications | No additional cost         | Members can access existing datasets without any delay and free of charge |
+| 2   | Dataset not yet available | Request the dataset through the platform                                          | Delivered within one month | Costs are shared between members requesting the same dataset              |
 
 ---
 
@@ -1118,14 +1120,14 @@ Same carousel rules as Decision 3. Navigation arrows (left/right). 3 visible on 
 
 **6 feature cards (3x2 grid), using framework card style:**
 
-| # | Title | Subtitle | Text |
-|---|-------|----------|------|
-| 1 | Download data | Flexible formats | Download datasets as CSV or XLSX with or without metadata |
-| 2 | Portfolio management | Create and manage portfolios | Build your own portfolios of companies and monitor ESG data availability |
-| 3 | Portfolio sharing | Collaboration | Share company portfolios with colleagues and teams |
-| 4 | Request data | On-demand sourcing | Order missing datasets directly from the platform |
-| 5 | Source transparency | Traceability | Inspect original source documents and quality comments |
-| 6 | Multi-framework export | Reporting-ready formats | Export datasets in formats suitable for different reporting frameworks |
+| #   | Title                  | Subtitle                     | Text                                                                     |
+| --- | ---------------------- | ---------------------------- | ------------------------------------------------------------------------ |
+| 1   | Download data          | Flexible formats             | Download datasets as CSV or XLSX with or without metadata                |
+| 2   | Portfolio management   | Create and manage portfolios | Build your own portfolios of companies and monitor ESG data availability |
+| 3   | Portfolio sharing      | Collaboration                | Share company portfolios with colleagues and teams                       |
+| 4   | Request data           | On-demand sourcing           | Order missing datasets directly from the platform                        |
+| 5   | Source transparency    | Traceability                 | Inspect original source documents and quality comments                   |
+| 6   | Multi-framework export | Reporting-ready formats      | Export datasets in formats suitable for different reporting frameworks   |
 
 ---
 
@@ -1138,15 +1140,15 @@ Same carousel rules as Decision 3. Navigation arrows (left/right). 3 visible on 
 
 **7 use case blocks (problem-solution arrow pattern):**
 
-| # | Title | Description |
-|---|-------|-------------|
-| 1 | Complementing Existing ESG Data Providers | Dataland complements a primary ESG data provider by closing remaining data gaps. Missing indicators or uncovered companies can be retrieved where the primary provider is incomplete. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios |
-| 2 | Independent Validation and Audit Trail | Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider — particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require |
-| 3 | Dataland as Primary ESG Data Source | Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated |
-| 4 | Continuous Coverage for Your Portfolio | Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available |
-| 5 | Targeted Sourcing of Missing Datasets | Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages |
-| 6 | Data Access via Platform and API | Access ESG datasets directly through the Dataland platform to search, retrieve, and download datasets for individual companies — suitable for ad-hoc analysis and manual workflows. For automated pipelines, integrate ESG datasets into internal IT systems (e.g. risk engines, reporting tools, data platforms) via API, supporting automated data ingestion and seamless use within existing system landscapes |
-| 7 | EU Taxonomy Template Updates and Format Continuity | Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change |
+| #   | Title                                              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Complementing Existing ESG Data Providers          | Dataland complements a primary ESG data provider by closing remaining data gaps. Missing indicators or uncovered companies can be retrieved where the primary provider is incomplete. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios |
+| 2   | Independent Validation and Audit Trail             | Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider — particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require                                                                                     |
+| 3   | Dataland as Primary ESG Data Source                | Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated                                                                                                                                                                                                                                                                          |
+| 4   | Continuous Coverage for Your Portfolio             | Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available                                                                                                                                                                                                                           |
+| 5   | Targeted Sourcing of Missing Datasets              | Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages                                                                                                                                                                                                                                                            |
+| 6   | Data Access via Platform and API                   | Access ESG datasets directly through the Dataland platform to search, retrieve, and download datasets for individual companies — suitable for ad-hoc analysis and manual workflows. For automated pipelines, integrate ESG datasets into internal IT systems (e.g. risk engines, reporting tools, data platforms) via API, supporting automated data ingestion and seamless use within existing system landscapes                                                                         |
+| 7   | EU Taxonomy Template Updates and Format Continuity | Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change                                                                                                                                                                                                                                                                               |
 
 **Note:** Use case blocks use only title + text (no right-column solution), presented as alternating left/right feature blocks with accompanying illustration placeholders.
 
@@ -1281,11 +1283,11 @@ Each card has: customer logo (left, 24% width) + story content (right, 76% width
 
 **3 value proposition blocks:**
 
-| # | Icon | Title | Text |
-|---|------|-------|------|
-| 1 | `icon_data_access` | Full data access | All datasets available on Dataland can be accessed and used for internal purposes without restrictions |
-| 2 | `icon_requesting` | On-demand data sourcing | Missing datasets can be requested and are delivered automatically through Active Portfolio Monitoring |
-| 3 | `icon_community` | Shared cost model | The cost of sourcing datasets is shared among members requesting the same data |
+| #   | Icon               | Title                   | Text                                                                                                   |
+| --- | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1   | `icon_data_access` | Full data access        | All datasets available on Dataland can be accessed and used for internal purposes without restrictions |
+| 2   | `icon_requesting`  | On-demand data sourcing | Missing datasets can be requested and are delivered automatically through Active Portfolio Monitoring  |
+| 3   | `icon_community`   | Shared cost model       | The cost of sourcing datasets is shared among members requesting the same data                         |
 
 **Pricing card (left column):**
 
@@ -1323,26 +1325,26 @@ Footer: "Credits are only used when new datasets are sourced"
 
 **Documentation links:**
 
-| Label | URL |
-|-------|-----|
+| Label                            | URL                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------- |
 | Framework documentation overview | `https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation` |
-| Backend API documentation | `https://dataland.com/api/swagger-ui/index.html` |
-| Document manager API | `https://dataland.com/documents/swagger-ui/index.html` |
-| Community manager | `https://dataland.com/community/swagger-ui/index.html` |
-| Quality assurance service | `https://dataland.com/qa/swagger-ui/index.html` |
-| Users API | `https://dataland.com/users/swagger-ui/index.html` |
-| Data sourcing API | `https://dataland.com/data-sourcing/swagger-ui/index.html` |
-| Accounting API | `https://dataland.com/accounting/swagger-ui/index.html` |
-| Specifications | `https://dataland.com/specifications/swagger-ui/index.html` |
+| Backend API documentation        | `https://dataland.com/api/swagger-ui/index.html`                       |
+| Document manager API             | `https://dataland.com/documents/swagger-ui/index.html`                 |
+| Community manager                | `https://dataland.com/community/swagger-ui/index.html`                 |
+| Quality assurance service        | `https://dataland.com/qa/swagger-ui/index.html`                        |
+| Users API                        | `https://dataland.com/users/swagger-ui/index.html`                     |
+| Data sourcing API                | `https://dataland.com/data-sourcing/swagger-ui/index.html`             |
+| Accounting API                   | `https://dataland.com/accounting/swagger-ui/index.html`                |
+| Specifications                   | `https://dataland.com/specifications/swagger-ui/index.html`            |
 
 Each link is styled as a pill-shaped text link with a hover outline effect.
 
 **CTA buttons:**
 
-| Button | Label | Link |
-|--------|-------|------|
-| 1 | Get in touch | `/about#contact` |
-| 2 | Try it free | Keycloak register |
+| Button | Label        | Link              |
+| ------ | ------------ | ----------------- |
+| 1      | Get in touch | `/about#contact`  |
+| 2      | Try it free  | Keycloak register |
 
 ---
 
@@ -1415,11 +1417,11 @@ Existing route `/about` — no change needed.
 
 **3 team member cards:**
 
-| # | Photo | Name | Role | Email | LinkedIn |
-|---|-------|------|------|-------|----------|
-| 1 | `img_team_moritz` | Moritz Kiese | Managing Director | `moritz.kiese@dataland.com` | LinkedIn profile |
-| 2 | `img_team_andreas` | Andreas Pusch | Product Owner | `andreas.hoecherl@dataland.com` | LinkedIn profile |
-| 3 | `img_team_soeren` | Soeren Vorsmann | Operations & Customer Relations | `soeren.vorsmann@dataland.com` | LinkedIn company page |
+| #   | Photo              | Name            | Role                            | Email                           | LinkedIn              |
+| --- | ------------------ | --------------- | ------------------------------- | ------------------------------- | --------------------- |
+| 1   | `img_team_moritz`  | Moritz Kiese    | Managing Director               | `moritz.kiese@dataland.com`     | LinkedIn profile      |
+| 2   | `img_team_andreas` | Andreas Pusch   | Product Owner                   | `andreas.hoecherl@dataland.com` | LinkedIn profile      |
+| 3   | `img_team_soeren`  | Soeren Vorsmann | Operations & Customer Relations | `soeren.vorsmann@dataland.com`  | LinkedIn company page |
 
 **Card design:** Dark blue background, white text, portrait photo (cover fit, 320px height), name + role + email/LinkedIn icon links.
 
@@ -1436,10 +1438,10 @@ Existing route `/about` — no change needed.
 
 **2 partner logos (side by side):**
 
-| Partner | Logo | Link |
-|---------|------|------|
-| FACT First Cloud | `logo_fact` | `https://www.fact.de/unsere-loesungen/first-cloud/` |
-| ISS (Sopra Steria) | `logo_iss` | `https://iss.soprasteria.de/` |
+| Partner            | Logo        | Link                                                |
+| ------------------ | ----------- | --------------------------------------------------- |
+| FACT First Cloud   | `logo_fact` | `https://www.fact.de/unsere-loesungen/first-cloud/` |
+| ISS (Sopra Steria) | `logo_iss`  | `https://iss.soprasteria.de/`                       |
 
 Each logo is clickable and links to the partner's website. Logo height: 120px, contain fit.
 
@@ -1570,76 +1572,76 @@ Reuses the `TheAboutContact` section component. Same layout and content as `/abo
 
 Content is stored in TypeScript files following the existing `aboutContent.ts` pattern:
 
-| File | Contents |
-|------|----------|
-| `src/components/resources/landingPage/landingContent.ts` | Testimonials array, news items array, customer story summaries, sector tiles |
+| File                                                     | Contents                                                                               |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `src/components/resources/landingPage/landingContent.ts` | Testimonials array, news items array, customer story summaries, sector tiles           |
 | `src/components/resources/productPage/productContent.ts` | Use cases, feature cards, pricing data, documentation links, detailed customer stories |
-| `src/components/resources/aboutPage/aboutContent.ts` | Team members, partner logos, company text (MODIFY existing) |
+| `src/components/resources/aboutPage/aboutContent.ts`     | Team members, partner logos, company text (MODIFY existing)                            |
 
 ### 7.2 URL Constants
 
 All external URLs used across the site:
 
-| Constant | URL |
-|----------|-----|
-| `URL_LINKEDIN_DATALAND` | `https://www.linkedin.com/company/dataland-gmbh` |
-| `URL_DFINE` | `https://www.d-fine.com` |
-| `URL_PWC` | `https://www.pwc.com` |
-| `URL_PARTNER_FACT` | `https://www.fact.de/unsere-loesungen/first-cloud/` |
-| `URL_PARTNER_ISS` | `https://iss.soprasteria.de/` |
-| `CONTACT_MORITZ_MAIL` | `mailto:moritz.kiese@dataland.com` |
-| `CONTACT_MORITZ_LINKEDIN` | `https://www.linkedin.com/in/moritz-kiese-932b104/` |
-| `CONTACT_ANDREAS_MAIL` | `mailto:andreas.hoecherl@dataland.com` |
+| Constant                   | URL                                                          |
+| -------------------------- | ------------------------------------------------------------ |
+| `URL_LINKEDIN_DATALAND`    | `https://www.linkedin.com/company/dataland-gmbh`             |
+| `URL_DFINE`                | `https://www.d-fine.com`                                     |
+| `URL_PWC`                  | `https://www.pwc.com`                                        |
+| `URL_PARTNER_FACT`         | `https://www.fact.de/unsere-loesungen/first-cloud/`          |
+| `URL_PARTNER_ISS`          | `https://iss.soprasteria.de/`                                |
+| `CONTACT_MORITZ_MAIL`      | `mailto:moritz.kiese@dataland.com`                           |
+| `CONTACT_MORITZ_LINKEDIN`  | `https://www.linkedin.com/in/moritz-kiese-932b104/`          |
+| `CONTACT_ANDREAS_MAIL`     | `mailto:andreas.hoecherl@dataland.com`                       |
 | `CONTACT_ANDREAS_LINKEDIN` | `https://www.linkedin.com/in/andreas-h%C3%B6cherl-016220b4/` |
-| `CONTACT_SOEREN_MAIL` | `mailto:soeren.vorsmann@dataland.com` |
-| `CONTACT_SOEREN_LINKEDIN` | `https://www.linkedin.com/company/dataland-gmbh` |
-| `CONTACT_PHONE` | `tel:+491622631304` |
-| `CONTACT_EMAIL` | `mailto:info@dataland.com` |
+| `CONTACT_SOEREN_MAIL`      | `mailto:soeren.vorsmann@dataland.com`                        |
+| `CONTACT_SOEREN_LINKEDIN`  | `https://www.linkedin.com/company/dataland-gmbh`             |
+| `CONTACT_PHONE`            | `tel:+491622631304`                                          |
+| `CONTACT_EMAIL`            | `mailto:info@dataland.com`                                   |
 
 News post URLs (LinkedIn):
 
-| Constant | URL |
-|----------|-----|
-| `URL_NEWS_EU_TAXO` | `https://www.linkedin.com/feed/update/urn:li:activity:7435335342439735296` |
-| `URL_NEWS_BVI_FOK` | `https://www.linkedin.com/feed/update/urn:li:activity:7432564767090905089` |
+| Constant              | URL                                                                        |
+| --------------------- | -------------------------------------------------------------------------- |
+| `URL_NEWS_EU_TAXO`    | `https://www.linkedin.com/feed/update/urn:li:activity:7435335342439735296` |
+| `URL_NEWS_BVI_FOK`    | `https://www.linkedin.com/feed/update/urn:li:activity:7432564767090905089` |
 | `URL_NEWS_DMM_Q12026` | `https://www.linkedin.com/feed/update/urn:li:activity:7430511455638118400` |
-| `URL_NEWS_2025` | `https://www.linkedin.com/feed/update/urn:li:activity:7419695872156028928` |
-| `URL_NEWS_SFDR2` | `https://www.linkedin.com/feed/update/urn:li:activity:7404533321671589890` |
-| `URL_NEWS_PCAF` | `https://www.linkedin.com/feed/update/urn:li:activity:7397576850782441472` |
-| `URL_NEWS_SUST2025` | `https://www.linkedin.com/feed/update/urn:li:activity:7395135444641947648` |
-| `URL_NEWS_DMMQ42025` | `https://www.linkedin.com/feed/update/urn:li:activity:7392146170766151680` |
-| `URL_NEWS_ERIK` | `https://www.linkedin.com/feed/update/urn:li:activity:7391407400764772352` |
+| `URL_NEWS_2025`       | `https://www.linkedin.com/feed/update/urn:li:activity:7419695872156028928` |
+| `URL_NEWS_SFDR2`      | `https://www.linkedin.com/feed/update/urn:li:activity:7404533321671589890` |
+| `URL_NEWS_PCAF`       | `https://www.linkedin.com/feed/update/urn:li:activity:7397576850782441472` |
+| `URL_NEWS_SUST2025`   | `https://www.linkedin.com/feed/update/urn:li:activity:7395135444641947648` |
+| `URL_NEWS_DMMQ42025`  | `https://www.linkedin.com/feed/update/urn:li:activity:7392146170766151680` |
+| `URL_NEWS_ERIK`       | `https://www.linkedin.com/feed/update/urn:li:activity:7391407400764772352` |
 
 API documentation URLs:
 
-| Constant | URL |
-|----------|-----|
-| `URL_DOC_FRAMEWORK` | `https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation` |
-| `URL_DOC_BACKEND_API` | `https://dataland.com/api/swagger-ui/index.html` |
-| `URL_DOC_DOCUMENT_MANAGER` | `https://dataland.com/documents/swagger-ui/index.html` |
-| `URL_DOC_COMMUNITY_MANAGER` | `https://dataland.com/community/swagger-ui/index.html` |
-| `URL_DOC_QA` | `https://dataland.com/qa/swagger-ui/index.html` |
-| `URL_DOC_USERS` | `https://dataland.com/users/swagger-ui/index.html` |
-| `URL_DOC_DATA_SOURCING` | `https://dataland.com/data-sourcing/swagger-ui/index.html` |
-| `URL_DOC_ACCOUNTING` | `https://dataland.com/accounting/swagger-ui/index.html` |
-| `URL_DOC_SPECIFICATIONS` | `https://dataland.com/specifications/swagger-ui/index.html` |
+| Constant                    | URL                                                                    |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `URL_DOC_FRAMEWORK`         | `https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation` |
+| `URL_DOC_BACKEND_API`       | `https://dataland.com/api/swagger-ui/index.html`                       |
+| `URL_DOC_DOCUMENT_MANAGER`  | `https://dataland.com/documents/swagger-ui/index.html`                 |
+| `URL_DOC_COMMUNITY_MANAGER` | `https://dataland.com/community/swagger-ui/index.html`                 |
+| `URL_DOC_QA`                | `https://dataland.com/qa/swagger-ui/index.html`                        |
+| `URL_DOC_USERS`             | `https://dataland.com/users/swagger-ui/index.html`                     |
+| `URL_DOC_DATA_SOURCING`     | `https://dataland.com/data-sourcing/swagger-ui/index.html`             |
+| `URL_DOC_ACCOUNTING`        | `https://dataland.com/accounting/swagger-ui/index.html`                |
+| `URL_DOC_SPECIFICATIONS`    | `https://dataland.com/specifications/swagger-ui/index.html`            |
 
 ### 7.3 Image Assets Required
 
 **From Valeria's spec (new assets to add):**
 
-| Asset | Path | Notes |
-|-------|------|-------|
-| Intro illustration | `/static/images/intro_art.svg` | Hero illustration |
-| Arrow (problem-solution) | `/static/images/arrow_big.svg` | Used in Why Us and Product page blocks |
-| Credits visual | `/static/images/img_credits.svg` | Pricing section diagram |
-| News images (9) | `/static/images/news_*.png` | News card thumbnails |
-| Sector icons (11) | `/static/images/icon_*.svg` | Customer Profiles section |
-| Customer logos (MEAG, NORD/LB, ÖVB) | `/static/logos/logo_meag.svg`, etc. | Customer Stories section |
-| Member logos (14+) | `/static/logos/logo_*.svg` | Trusted By carousel |
-| Partner logos (FACT, ISS) | `/static/logos/logo_fact.svg`, etc. | About Partners section |
-| Team photos (3) | `/static/images/img_team_*.jpg` | About Team section |
-| LinkedIn icon | `/static/images/icon_linkedin.svg` | Footer and team cards |
+| Asset                               | Path                                | Notes                                  |
+| ----------------------------------- | ----------------------------------- | -------------------------------------- |
+| Intro illustration                  | `/static/images/intro_art.svg`      | Hero illustration                      |
+| Arrow (problem-solution)            | `/static/images/arrow_big.svg`      | Used in Why Us and Product page blocks |
+| Credits visual                      | `/static/images/img_credits.svg`    | Pricing section diagram                |
+| News images (9)                     | `/static/images/news_*.png`         | News card thumbnails                   |
+| Sector icons (11)                   | `/static/images/icon_*.svg`         | Customer Profiles section              |
+| Customer logos (MEAG, NORD/LB, ÖVB) | `/static/logos/logo_meag.svg`, etc. | Customer Stories section               |
+| Member logos (14+)                  | `/static/logos/logo_*.svg`          | Trusted By carousel                    |
+| Partner logos (FACT, ISS)           | `/static/logos/logo_fact.svg`, etc. | About Partners section                 |
+| Team photos (3)                     | `/static/images/img_team_*.jpg`     | About Team section                     |
+| LinkedIn icon                       | `/static/images/icon_linkedin.svg`  | Footer and team cards                  |
 
 ---
 
@@ -1647,67 +1649,67 @@ API documentation URLs:
 
 ### 8.1 Files to CREATE
 
-| File | Description |
-|------|-------------|
-| `src/assets/scss/breakpoints.scss` | SCSS breakpoint variables |
-| `src/composables/useBreakpoint.ts` | Shared reactive breakpoint composable |
-| `src/components/pages/ProductPage.vue` | Product page shell |
-| `src/components/pages/NewsletterPage.vue` | Newsletter page (static layout) |
-| `src/components/pages/ContactPage.vue` | Contact page (reuses About contact section) |
-| `src/components/pages/TestimonialsPage.vue` | Testimonials page |
-| `src/components/resources/landingPage/TheFindLei.vue` | Company search section |
-| `src/components/resources/landingPage/TheWhyUs.vue` | Problem-solution section |
-| `src/components/resources/landingPage/TheTrustedBy.vue` | Logo carousel |
-| `src/components/resources/landingPage/TheCustomerStories.vue` | Story cards |
-| `src/components/resources/landingPage/TheTestimonials.vue` | Quote carousel |
-| `src/components/resources/landingPage/TheFrameworks.vue` | Framework cards |
-| `src/components/resources/landingPage/TheCustomerProfiles.vue` | Sector mosaic |
-| `src/components/resources/landingPage/TheNewsInsights.vue` | News slider |
-| `src/components/resources/landingPage/landingContent.ts` | Landing page content data |
-| `src/components/resources/productPage/ProductIntro.vue` | Product intro |
-| `src/components/resources/productPage/ProductHowItWorks.vue` | How it works |
-| `src/components/resources/productPage/ProductGettingData.vue` | Getting data |
-| `src/components/resources/productPage/ProductFeatures.vue` | Features grid |
-| `src/components/resources/productPage/ProductUseCases.vue` | Use cases |
-| `src/components/resources/productPage/ProductCustomerStories.vue` | Detailed customer stories |
-| `src/components/resources/productPage/ProductMembershipPricing.vue` | Pricing section |
-| `src/components/resources/productPage/ProductDocumentation.vue` | Documentation links |
-| `src/components/resources/productPage/productContent.ts` | Product page content data |
-| `src/components/resources/aboutPage/TheAboutCompany.vue` | Company section |
-| `src/components/resources/aboutPage/TheAboutUpdates.vue` | News grid |
-| `src/components/resources/aboutPage/TheAboutContact.vue` | Contact section |
-| `src/components/generics/ProblemSolutionBlock.vue` | Reusable problem-solution arrow component |
-| `src/components/generics/AccessibleCarousel.vue` | Reusable carousel with pause, keyboard, ARIA |
-| `src/components/generics/NewsCard.vue` | Reusable news card component |
+| File                                                                | Description                                  |
+| ------------------------------------------------------------------- | -------------------------------------------- |
+| `src/assets/scss/breakpoints.scss`                                  | SCSS breakpoint variables                    |
+| `src/composables/useBreakpoint.ts`                                  | Shared reactive breakpoint composable        |
+| `src/components/pages/ProductPage.vue`                              | Product page shell                           |
+| `src/components/pages/NewsletterPage.vue`                           | Newsletter page (static layout)              |
+| `src/components/pages/ContactPage.vue`                              | Contact page (reuses About contact section)  |
+| `src/components/pages/TestimonialsPage.vue`                         | Testimonials page                            |
+| `src/components/resources/landingPage/TheFindLei.vue`               | Company search section                       |
+| `src/components/resources/landingPage/TheWhyUs.vue`                 | Problem-solution section                     |
+| `src/components/resources/landingPage/TheTrustedBy.vue`             | Logo carousel                                |
+| `src/components/resources/landingPage/TheCustomerStories.vue`       | Story cards                                  |
+| `src/components/resources/landingPage/TheTestimonials.vue`          | Quote carousel                               |
+| `src/components/resources/landingPage/TheFrameworks.vue`            | Framework cards                              |
+| `src/components/resources/landingPage/TheCustomerProfiles.vue`      | Sector mosaic                                |
+| `src/components/resources/landingPage/TheNewsInsights.vue`          | News slider                                  |
+| `src/components/resources/landingPage/landingContent.ts`            | Landing page content data                    |
+| `src/components/resources/productPage/ProductIntro.vue`             | Product intro                                |
+| `src/components/resources/productPage/ProductHowItWorks.vue`        | How it works                                 |
+| `src/components/resources/productPage/ProductGettingData.vue`       | Getting data                                 |
+| `src/components/resources/productPage/ProductFeatures.vue`          | Features grid                                |
+| `src/components/resources/productPage/ProductUseCases.vue`          | Use cases                                    |
+| `src/components/resources/productPage/ProductCustomerStories.vue`   | Detailed customer stories                    |
+| `src/components/resources/productPage/ProductMembershipPricing.vue` | Pricing section                              |
+| `src/components/resources/productPage/ProductDocumentation.vue`     | Documentation links                          |
+| `src/components/resources/productPage/productContent.ts`            | Product page content data                    |
+| `src/components/resources/aboutPage/TheAboutCompany.vue`            | Company section                              |
+| `src/components/resources/aboutPage/TheAboutUpdates.vue`            | News grid                                    |
+| `src/components/resources/aboutPage/TheAboutContact.vue`            | Contact section                              |
+| `src/components/generics/ProblemSolutionBlock.vue`                  | Reusable problem-solution arrow component    |
+| `src/components/generics/AccessibleCarousel.vue`                    | Reusable carousel with pause, keyboard, ARIA |
+| `src/components/generics/NewsCard.vue`                              | Reusable news card component                 |
 
 ### 8.2 Files to MODIFY
 
-| File | Changes |
-|------|---------|
-| `src/components/pages/LandingPage.vue` | Complete section rewrite — new sections and order |
-| `src/components/pages/AboutPage.vue` | Update section order and imports |
-| `src/components/generics/LandingPageHeader.vue` | Add Product/About dropdowns, hamburger menu, skip-link |
-| `src/components/generics/LandingPageFooter.vue` | Redesign to 4-column layout |
-| `src/components/resources/landingPage/TheIntro.vue` | Two-column hero layout |
-| `src/components/resources/aboutPage/TheAboutTeam.vue` | Update team member data |
-| `src/components/resources/aboutPage/TheAboutPartners.vue` | Update partner list |
-| `src/components/resources/aboutPage/aboutContent.ts` | Update team and partner data |
-| `src/router/index.ts` | Add routes for /product, /newsletter, /contact, /testimonials |
+| File                                                      | Changes                                                       |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| `src/components/pages/LandingPage.vue`                    | Complete section rewrite — new sections and order             |
+| `src/components/pages/AboutPage.vue`                      | Update section order and imports                              |
+| `src/components/generics/LandingPageHeader.vue`           | Add Product/About dropdowns, hamburger menu, skip-link        |
+| `src/components/generics/LandingPageFooter.vue`           | Redesign to 4-column layout                                   |
+| `src/components/resources/landingPage/TheIntro.vue`       | Two-column hero layout                                        |
+| `src/components/resources/aboutPage/TheAboutTeam.vue`     | Update team member data                                       |
+| `src/components/resources/aboutPage/TheAboutPartners.vue` | Update partner list                                           |
+| `src/components/resources/aboutPage/aboutContent.ts`      | Update team and partner data                                  |
+| `src/router/index.ts`                                     | Add routes for /product, /newsletter, /contact, /testimonials |
 
 ### 8.3 Files to DELETE (after new components are in place)
 
-| File | Reason |
-|------|--------|
-| `src/components/resources/landingPage/TheQuotes.vue` | Replaced by TheTestimonials |
-| `src/components/resources/landingPage/TheHowItWorks.vue` | Replaced by Product page sections |
-| `src/components/resources/landingPage/TheJoinCampaign.vue` | Replaced by TheFrameworks |
-| `src/components/resources/landingPage/TheStruggle.vue` | Replaced by TheWhyUs |
-| `src/components/resources/aboutPage/TheAboutSponsors.vue` | Merged into footer / About company |
-| `src/components/resources/aboutPage/TheAboutHero.vue` | Replaced by TheAboutCompany |
-| `src/components/resources/aboutPage/TheAboutTrustPillars.vue` | Removed from About page |
-| `src/components/resources/aboutPage/TheAboutPrinciples.vue` | Removed from About page |
-| `src/components/resources/aboutPage/TheAboutEcosystem.vue` | Replaced by TheAboutPartners |
-| `src/components/resources/aboutPage/TheAboutBottomCTA.vue` | Replaced by TheAboutContact |
+| File                                                          | Reason                             |
+| ------------------------------------------------------------- | ---------------------------------- |
+| `src/components/resources/landingPage/TheQuotes.vue`          | Replaced by TheTestimonials        |
+| `src/components/resources/landingPage/TheHowItWorks.vue`      | Replaced by Product page sections  |
+| `src/components/resources/landingPage/TheJoinCampaign.vue`    | Replaced by TheFrameworks          |
+| `src/components/resources/landingPage/TheStruggle.vue`        | Replaced by TheWhyUs               |
+| `src/components/resources/aboutPage/TheAboutSponsors.vue`     | Merged into footer / About company |
+| `src/components/resources/aboutPage/TheAboutHero.vue`         | Replaced by TheAboutCompany        |
+| `src/components/resources/aboutPage/TheAboutTrustPillars.vue` | Removed from About page            |
+| `src/components/resources/aboutPage/TheAboutPrinciples.vue`   | Removed from About page            |
+| `src/components/resources/aboutPage/TheAboutEcosystem.vue`    | Replaced by TheAboutPartners       |
+| `src/components/resources/aboutPage/TheAboutBottomCTA.vue`    | Replaced by TheAboutContact        |
 
 ### 8.4 Implementation Order (Recommended)
 

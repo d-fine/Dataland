@@ -65,7 +65,7 @@ const login = (): void => {
  * Sends the user back to the platform
  */
 const backToPlatform = (): void => {
-  void router.push({ path: '/platform-redirect' });
+  router.push({ path: '/platform-redirect' }).catch((error) => console.error(error));
 };
 
 onMounted(() => {

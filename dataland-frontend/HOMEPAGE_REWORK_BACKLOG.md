@@ -30,12 +30,12 @@ These features have static layout placeholders in the main spec. Once the corres
 
 **Form fields:**
 
-| Field | Type | Label | Placeholder | Required |
-|-------|------|-------|-------------|----------|
-| name | text | Name | Full name | Yes |
-| email | email | Email address | name@company.com | Yes |
-| message | textarea | Message | Any relevant information | No |
-| consent | checkbox | "By clicking here you agree to the privacy policy" (linked to `/dataprivacy`) | — | Yes |
+| Field   | Type     | Label                                                                         | Placeholder              | Required |
+| ------- | -------- | ----------------------------------------------------------------------------- | ------------------------ | -------- |
+| name    | text     | Name                                                                          | Full name                | Yes      |
+| email   | email    | Email address                                                                 | name@company.com         | Yes      |
+| message | textarea | Message                                                                       | Any relevant information | No       |
+| consent | checkbox | "By clicking here you agree to the privacy policy" (linked to `/dataprivacy`) | —                        | Yes      |
 
 **Submit action:** POST to email service endpoint. On success: show confirmation message. On error: show error message with retry option.
 
@@ -57,12 +57,12 @@ These features have static layout placeholders in the main spec. Once the corres
 
 **Form fields:**
 
-| Field | Type | Label | Placeholder | Required |
-|-------|------|-------|-------------|----------|
-| name | text | Name | Full name | Yes |
-| email | email | Email address | name@company.com | Yes |
-| organisation | text | Organisation | Your company or institution | No |
-| consent | checkbox | "By signing up you agree to the privacy policy" (linked to `/dataprivacy`) | — | Yes |
+| Field        | Type     | Label                                                                      | Placeholder                 | Required |
+| ------------ | -------- | -------------------------------------------------------------------------- | --------------------------- | -------- |
+| name         | text     | Name                                                                       | Full name                   | Yes      |
+| email        | email    | Email address                                                              | name@company.com            | Yes      |
+| organisation | text     | Organisation                                                               | Your company or institution | No       |
+| consent      | checkbox | "By signing up you agree to the privacy policy" (linked to `/dataprivacy`) | —                           | Yes      |
 
 **Submit action:** POST to newsletter service. Trigger double opt-in confirmation email.
 
@@ -130,10 +130,10 @@ Each testimonial in the data file (`landingContent.ts`) has a `video_url` field 
 
 ## Implementation Priority (Suggested)
 
-| Priority | Feature | Effort | Impact |
-|----------|---------|--------|--------|
-| 1 | Contact form submission | Medium | High — enables lead capture |
-| 2 | Newsletter subscription | Medium | Medium — enables audience building |
-| 3 | Video testimonials | Low-Medium | Medium — social proof enhancement |
-| 4 | Platform demo video | Low | Low — visual enhancement |
-| 5 | Cookie settings page | Medium | Compliance requirement |
+| Priority | Feature                 | Effort     | Impact                             |
+| -------- | ----------------------- | ---------- | ---------------------------------- |
+| 1        | Contact form submission | Medium     | High — enables lead capture        |
+| 2        | Newsletter subscription | Medium     | Medium — enables audience building |
+| 3        | Video testimonials      | Low-Medium | Medium — social proof enhancement  |
+| 4        | Platform demo video     | Low        | Low — visual enhancement           |
+| 5        | Cookie settings page    | Medium     | Compliance requirement             |

@@ -42,11 +42,11 @@ gh run view <run-id> --log-failed   # View failed job logs
 
 **Key CI jobs that must pass:**
 
-| Job | What it checks |
-|-----|---------------|
-| `gradle-based-tests` | ESLint (`lintci`), Prettier (`formatci`), TypeScript (`typecheck`), Cypress compilation, dependency check |
-| `frontend-component-tests` | `npm run testcomponent` (30-min timeout) |
-| `e2e-tests` (groups 1-4) | Full Cypress E2E in Docker stack |
+| Job                        | What it checks                                                                                            |
+| -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `gradle-based-tests`       | ESLint (`lintci`), Prettier (`formatci`), TypeScript (`typecheck`), Cypress compilation, dependency check |
+| `frontend-component-tests` | `npm run testcomponent` (30-min timeout)                                                                  |
+| `e2e-tests` (groups 1-4)   | Full Cypress E2E in Docker stack                                                                          |
 
 ### What Breaks CI Most Often
 
@@ -59,13 +59,14 @@ gh run view <run-id> --log-failed   # View failed job logs
 
 ## Agent Roles
 
-| Role | Agent Type | Identity | Rule |
-|------|-----------|----------|------|
-| **Builder** | `frontend-developer` | Agent X | Implements all code. |
-| **Code Reviewer** | `frontend-developer` | Agent Y | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
-| **Copy Reviewer** | `copywriter` | — | Verifies every rendered string against the spec. |
+| Role              | Agent Type           | Identity | Rule                                                                                    |
+| ----------------- | -------------------- | -------- | --------------------------------------------------------------------------------------- |
+| **Builder**       | `frontend-developer` | Agent X  | Implements all code.                                                                    |
+| **Code Reviewer** | `frontend-developer` | Agent Y  | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
+| **Copy Reviewer** | `copywriter`         | —        | Verifies every rendered string against the spec.                                        |
 
 **Critical rules:**
+
 - All agents work on the **same branch** (`feature/rework-about-page`). No worktrees, no feature branches.
 - Agent Y (code reviewer) must be a **separate invocation** from Agent X (builder).
 - Review agents (Phase 3) are **read-only** — they read code and produce issue lists but do not edit files.
@@ -157,12 +158,14 @@ This is the main build phase. One agent builds everything sequentially on the sa
 ### 2.4 Navigation + Footer (spec sections 2.3–2.5)
 
 **Header** (`LandingPageHeader.vue` — MODIFY):
+
 - Skip-to-content link as first child of `<header>`
 - Product/About click-triggered dropdown menus with `role="menu"`, keyboard nav, `aria-expanded`
 - Mobile (< $bp-lg): hamburger → slide-down overlay with nav + auth
 - CTA labels: "Login" text link + "Try it free" primary button
 
 **Footer** (`LandingPageFooter.vue` — MODIFY or CREATE):
+
 - 4-column top: Dataland (desc + logos), Product (7 links), Company (5 links), Resources (3 links)
 - Bottom bar: Legal, Imprint, Data Privacy, Cookie Settings, copyright, LinkedIn
 - Responsive: 4-col → 2x2 → 1-col
@@ -170,10 +173,12 @@ This is the main build phase. One agent builds everything sequentially on the sa
 ### 2.5 Cleanup + Test Fixes
 
 **Delete old components** (verify no imports remain before deleting):
+
 - Landing: `TheQuotes.vue`, `TheHowItWorks.vue`, `TheJoinCampaign.vue`, `TheStruggle.vue`
 - About: `TheAboutSponsors.vue`, `TheAboutHero.vue`, `TheAboutTrustPillars.vue`, `TheAboutPrinciples.vue`, `TheAboutEcosystem.vue`, `TheAboutBottomCTA.vue`
 
 **Fix component tests:**
+
 - Update `tests/component/components/pages/LandingPage.cy.ts` for new section structure
 - Update `tests/component/components/resources/aboutPage/PersonCard.cy.ts` if PersonCard changed
 - Run `npm run testcomponent` and fix all failures
@@ -266,6 +271,7 @@ Launch both in a **single message**.
 1. **Fix all issues** from Phase 3a (code review) and Phase 3b (copy audit).
 
 2. **Run all locally-runnable CI checks and fix failures iteratively:**
+
    ```bash
    cd dataland-frontend
    npm run typecheck
@@ -275,6 +281,7 @@ Launch both in a **single message**.
    npm run checkcypresscompilation
    npm run testcomponent
    ```
+
    These checks mirror what `gradle-based-tests` and `frontend-component-tests` run in CI. Fix every failure locally before pushing — do not rely on remote CI to discover issues that can be caught here.
 
 3. **Commit and push** to `feature/rework-about-page`.
@@ -290,6 +297,7 @@ Launch both in a **single message**.
 ### Exit Criteria
 
 Remote CI must show **all green** on:
+
 - `gradle-based-tests` (lint, format, typecheck, deps — should already pass from local checks)
 - `frontend-component-tests` (should already pass from local `testcomponent`)
 - `e2e-tests` (all 4 groups — these are the only checks that require the Docker stack and cannot be fully validated locally)
@@ -305,12 +313,12 @@ Remote CI must show **all green** on:
 1. Start the dev stack or dev server
 2. Take screenshots at these viewports:
 
-| Viewport | Pages to Capture |
-|----------|-----------------|
-| Desktop (1440px+) | Landing page (full scroll), Product page (full scroll), About page (full scroll) |
-| Tablet (768-1024px) | Landing page, Product page, About page |
-| Mobile (< 768px) | Landing page (hamburger closed + open), Product page, About page |
-| Small mobile (< 640px) | Landing hero (CTA stacking), Product pricing section |
+| Viewport               | Pages to Capture                                                                 |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| Desktop (1440px+)      | Landing page (full scroll), Product page (full scroll), About page (full scroll) |
+| Tablet (768-1024px)    | Landing page, Product page, About page                                           |
+| Mobile (< 768px)       | Landing page (hamburger closed + open), Product page, About page                 |
+| Small mobile (< 640px) | Landing hero (CTA stacking), Product pricing section                             |
 
 ### Step 5.2 — `ux-designer` — Screenshot Visual QA
 
