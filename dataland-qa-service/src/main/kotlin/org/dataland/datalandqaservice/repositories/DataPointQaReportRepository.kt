@@ -13,6 +13,21 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, String> {
     /**
+     * Projection for grouped count results returned by [countByDataPointIdGroups].
+     */
+    interface GroupedQaReportCount {
+        /**
+         *  The index of the group as determined by the order of the input JSON array in [countByDataPointIdGroups].
+         */
+        fun getGroupIndex(): Int
+
+        /**
+         *  The count of active QA reports for the dataPointIds in the corresponding group.
+         */
+        fun getReportCount(): Long
+    }
+
+    /**
      * Returns all QA reports for a specific dataPointId. Supports filtering by reporterUserId and active status.
      * @param dataPointIds identifier used to uniquely specify data in the data store
      * @param showInactive flag to include inactive reports in the result
@@ -60,6 +75,39 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     fun countByDataPointIdIn(
         @Param("dataPointIds") dataPointIds: Set<String>,
     ): Long
+
+    /**
+     * Counts active QA reports for multiple dataPointId groups in a single database query.
+     * The parameter must be a JSON array of arrays, for example: [["dp1","dp2"],["dp3"]].
+     */
+    @Query(
+        value =
+            "WITH input_groups AS (" +
+                "    SELECT CAST(row_number() OVER () - 1 AS INTEGER) AS group_index, group_json " +
+                "    FROM jsonb_array_elements(CAST(:groupedDataPointIdsJson AS jsonb)) group_json" +
+                ")," +
+                "distinct_group_data_points AS (" +
+                "    SELECT DISTINCT ig.group_index, jsonb_array_elements_text(ig.group_json) AS data_point_id " +
+                "    FROM input_groups ig" +
+                ")," +
+                "grouped_counts AS (" +
+                "    SELECT ig.group_index, COUNT(qa_report.qa_report_id) AS report_count " +
+                "    FROM input_groups ig " +
+                "    LEFT JOIN distinct_group_data_points group_data_point " +
+                "        ON group_data_point.group_index = ig.group_index " +
+                "    LEFT JOIN data_point_qa_reports qa_report " +
+                "        ON qa_report.data_point_id = group_data_point.data_point_id " +
+                "        AND qa_report.active = TRUE " +
+                "    GROUP BY ig.group_index" +
+                ") " +
+                "SELECT grouped_count.group_index AS groupIndex, grouped_count.report_count AS reportCount " +
+                "FROM grouped_counts grouped_count " +
+                "ORDER BY grouped_count.group_index",
+        nativeQuery = true,
+    )
+    fun countByDataPointIdGroups(
+        @Param("groupedDataPointIdsJson") groupedDataPointIdsJson: String,
+    ): List<GroupedQaReportCount>
 
     /**
      * Makes testing easier

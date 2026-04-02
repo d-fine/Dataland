@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
@@ -27,6 +28,7 @@ class DataPointQaReportManager(
     @Autowired private val dataPointControllerApi: DataPointControllerApi,
     @Autowired private val qaReportRepository: DataPointQaReportRepository,
     @Autowired private val qaReportSecurityPolicy: QaReportSecurityPolicy,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -196,4 +198,21 @@ class DataPointQaReportManager(
      * @return number of matching QA reports
      */
     fun countQaReportsForDataPointIds(dataPointIds: Set<String>): Long = qaReportRepository.countByDataPointIdIn(dataPointIds)
+
+    /**
+     * Returns one count per dataPointId group in the same order as the input groups.
+     */
+    fun countQaReportsForDataPointIdGroups(dataPointIdGroups: List<Set<String>>): List<Long> {
+        if (dataPointIdGroups.isEmpty()) {
+            return emptyList()
+        }
+
+        val groupedDataPointIdsJson = objectMapper.writeValueAsString(dataPointIdGroups.map { it.toList() })
+        val countsByGroupIndex =
+            qaReportRepository
+                .countByDataPointIdGroups(groupedDataPointIdsJson)
+                .associate { groupedCount -> groupedCount.getGroupIndex() to groupedCount.getReportCount() }
+
+        return dataPointIdGroups.indices.map { groupIndex -> countsByGroupIndex[groupIndex] ?: 0L }
+    }
 }

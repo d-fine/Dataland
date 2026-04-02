@@ -137,6 +137,18 @@ class QaReviewManagerTest {
         doReturn(listOf(mockQaReviewEntity))
             .whenever(mockQaReviewRepository)
             .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+        doReturn(mapOf("first" to "dp1"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(any())
+        doReturn(1L)
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIds(any())
+        doReturn(listOf(1L))
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdGroups(any())
+        doReturn(emptyList<DatasetJudgementResponse>())
+            .whenever(mockDatasetJudgementService)
+            .getDatasetJudgementsByDatasetId(any())
     }
 
     @ParameterizedTest
@@ -305,6 +317,8 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertEquals(4, responses.first().priorityOfAssociatedDataSourcing)
+        verify(mockDataPointQaReportManager, times(1)).countQaReportsForDataPointIdGroups(any())
+        verify(mockDataPointQaReportManager, times(0)).countQaReportsForDataPointIds(any())
     }
 
     @Test
@@ -330,5 +344,7 @@ class QaReviewManagerTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertNull(responses.first().priorityOfAssociatedDataSourcing)
+        verify(mockDataPointQaReportManager, times(1)).countQaReportsForDataPointIdGroups(any())
+        verify(mockDataPointQaReportManager, times(0)).countQaReportsForDataPointIds(any())
     }
 }
