@@ -5,6 +5,8 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
@@ -84,6 +86,34 @@ object DatasetJudgementValidationHelper {
                 summary = "Only the reviewer is allowed to patch this dataset review object.",
                 message = "Please patch yourself as the reviewer before patching this object.",
             ) as Throwable
+        }
+    }
+
+    /**
+     * Ensures that all data points in the dataset judgement have an accepted source.
+     *
+     * @param dataPoints The collection of data point judgement entities to validate.
+     * @throws InvalidInputApiException If any data point has no accepted source set.
+     */
+    fun validateAllDataPointsHaveAcceptedSource(dataPoints: Collection<DataPointJudgementEntity>) {
+        val unreviewed = dataPoints.filter { it.acceptedSource == null }.map { it.dataPointType }
+        if (unreviewed.isNotEmpty()) {
+            throw InvalidInputApiException(
+                summary = "Not all data points have an accepted source.",
+                message = "The following data points are missing an accepted source: ${unreviewed.joinToString()}.",
+            )
+        }
+    }
+
+    /**
+     * Ensures the dataset judgement is in pending state.
+     */
+    fun validateDatasetJudgementIsPending(datasetJudgment: DatasetJudgementEntity) {
+        if (datasetJudgment.judgementState != DatasetJudgementState.Pending) {
+            throw ConflictApiException(
+                summary = "Dataset judgement is not in pending state.",
+                message = "Only dataset judgements in pending state can be patched.",
+            )
         }
     }
 }

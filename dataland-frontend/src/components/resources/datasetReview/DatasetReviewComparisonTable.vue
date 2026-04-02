@@ -71,6 +71,7 @@
                 v-for="(row, index) in filteredRows"
                 :key="row.type + '-' + row.label + '-' + index"
                 :class="row.type === 'section' ? 'surface-100 ' : 'border-bottom-1 surface-border'"
+                :data-test="row.type === 'cell' ? getRowDataTest(row) : undefined"
               >
                 <!-- Section header row -->
                 <template v-if="row.type === 'section'">
@@ -423,6 +424,19 @@ const filteredRows = computed<KpiRow[]>(() => {
 function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
+}
+
+/**
+ * Builds the data-test label for a KPI row using the dataPointId from the dataset review.
+ *
+ * @param {KpiRow} row - The row to build the label for.
+ * @returns {string | undefined} The data-test label or undefined when unavailable.
+ */
+function getRowDataTest(row: KpiRow): string | undefined {
+  if (row.type !== 'cell') return undefined;
+  const reviewInfo = getReviewInfo(row.dataPointTypeId);
+  const dataPointId = reviewInfo?.dataPointId;
+  return dataPointId ? `data-point-row-${dataPointId}` : undefined;
 }
 
 /**

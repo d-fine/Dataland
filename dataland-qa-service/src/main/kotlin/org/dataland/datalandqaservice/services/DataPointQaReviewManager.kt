@@ -17,6 +17,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
+import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.datalandspecificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
@@ -37,7 +38,7 @@ class DataPointQaReviewManager
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
-        private val qaReviewManager: QaReviewManager,
+        private val qaReviewRepository: QaReviewRepository,
         private val specificationClient: SpecificationControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -97,7 +98,7 @@ class DataPointQaReviewManager
             initialQaStatus: CopyQaStatusFromDataset,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val datasetQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
+            val datasetQaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(initialQaStatus.datasetId)
             if (datasetQaReviewEntity == null) {
                 logger.warn(
                     "Could not find QA review entity for dataset ${initialQaStatus.datasetId} " +

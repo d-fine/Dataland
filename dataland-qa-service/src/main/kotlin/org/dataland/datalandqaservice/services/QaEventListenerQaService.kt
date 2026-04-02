@@ -24,6 +24,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.As
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -50,6 +51,7 @@ class QaEventListenerQaService
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val objectMapper: ObjectMapper,
         private val qaReviewManager: QaReviewManager,
+        private val qaReviewQueryService: QaReviewQueryService,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
@@ -222,9 +224,9 @@ class QaEventListenerQaService
                 val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload).dataId
                 MessageQueueUtils.validateDataId(deletedDataId)
 
-                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(deletedDataId)!!
+                val qaReviewEntity = qaReviewQueryService.getMostRecentQaReviewEntity(deletedDataId)!!
                 val formerlyActiveDataId =
-                    qaReviewManager.getDataIdOfCurrentlyActiveDataset(
+                    qaReviewQueryService.getDataIdOfCurrentlyActiveDataset(
                         qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
                     )
 
@@ -232,12 +234,12 @@ class QaEventListenerQaService
                 qaReviewManager.deleteAllByDataId(deletedDataId, correlationId)
                 if (deletedDataId == formerlyActiveDataId) {
                     val newActiveDataId =
-                        qaReviewManager
+                        qaReviewQueryService
                             .getDataIdOfCurrentlyActiveDataset(
                                 qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
                             )
                     if (newActiveDataId != null) {
-                        val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)
+                        val newQaReviewEntity = qaReviewQueryService.getMostRecentQaReviewEntity(newActiveDataId)
                         qaReviewManager.sendQaStatusUpdateMessage(
                             qaReviewEntity = requireNotNull(newQaReviewEntity),
                             correlationId = correlationId,
