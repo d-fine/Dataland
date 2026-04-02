@@ -15,13 +15,6 @@ export interface ParsedSingleDataPoint {
   [key: string]: unknown;
 }
 
-export interface QaReport {
-  qaReportId: string;
-  verdict: string;
-  correctedData: string;
-  reporterUserId: string;
-}
-
 export interface NextDataPointOption {
   label: string;
   dataPointTypeId: string;

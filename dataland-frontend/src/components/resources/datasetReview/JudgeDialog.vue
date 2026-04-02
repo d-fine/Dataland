@@ -161,7 +161,6 @@ import type {
   ParsedSingleDataPoint,
   DocumentOption,
   NextDataPointOption,
-  QaReport,
 } from '@/types/JudgeDialogTypes.ts';
 
 import {
@@ -178,6 +177,7 @@ import {
   type DataPointJudgement,
   QaReportDataPointVerdict,
   type QaReporter,
+  type DataPointQaReport,
 } from '@clients/qaservice';
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgmentDetailsForADatapointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgmentDetailsForADatapointMutation.ts';
@@ -289,16 +289,16 @@ const originalData = computed<ParsedSingleDataPoint | null>(() => {
 
 // ===== QA reports =====
 
-const allQaReports = computed<QaReport[]>(() => {
+const allQaReports = computed<DataPointQaReport[]>(() => {
   const judgementMetaData = currentDatapointJudgement.value;
   if (!judgementMetaData?.qaReports) return [];
-  return judgementMetaData.qaReports as QaReport[];
+  return judgementMetaData.qaReports;
 });
 
 const verdictBadge = computed<{ label: string; background: string; color: string } | null>(() => {
   const judgementMetaData = currentDatapointJudgement.value;
   if (!judgementMetaData) return null;
-  const allReports = (judgementMetaData.qaReports as QaReport[]) ?? [];
+  const allReports = judgementMetaData.qaReports ?? [];
 
   if (allReports.length === 0) {
     return {
@@ -350,7 +350,7 @@ watch(
   }
 );
 
-const currentQaReport = computed<QaReport | null>(() => {
+const currentQaReport = computed<DataPointQaReport | null>(() => {
   const list = allQaReports.value;
   if (!list.length) return null;
   return list[currentQaReportIndex.value] ?? list[0];
