@@ -38,8 +38,16 @@
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
         >{{ link.label }}</a>
-        <a href="/companies" class="mobile-nav__link" @click="close">Login</a>
-        <a href="/register" class="mobile-nav__cta" @click="close">Try it free</a>
+        <template v-if="isLoggedIn">
+          <a href="/companies" class="mobile-nav__link mobile-nav__link--back" @click="close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            BACK TO PLATFORM
+          </a>
+        </template>
+        <template v-else>
+          <a href="/companies" class="mobile-nav__link" @click="close">Login</a>
+          <a href="/register" class="mobile-nav__cta" @click="close">Try it free</a>
+        </template>
       </div>
     </nav>
   </Teleport>
@@ -65,6 +73,7 @@ function isActive(href: string): boolean {
 }
 
 const isOpen = ref(false);
+const isLoggedIn = ref(false);
 const closeButtonRef = ref<HTMLButtonElement | null>(null);
 const navRef = ref<HTMLElement | null>(null);
 
@@ -93,14 +102,37 @@ function handleKeydown(event: KeyboardEvent): void {
   }
 }
 
+function handleAuthenticated(): void {
+  isLoggedIn.value = true;
+}
+
+function parseTokenExp(token: string): number | null {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    return typeof payload.exp === 'number' ? payload.exp : null;
+  } catch {
+    return null;
+  }
+}
+
+function checkSession(): boolean {
+  const token = sessionStorage.getItem('kc-token');
+  if (!token) return false;
+  const exp = parseTokenExp(token);
+  return exp !== null && exp * 1000 > Date.now();
+}
+
 onMounted(() => {
+  isLoggedIn.value = checkSession();
   document.addEventListener('toggle-mobile-nav', handleToggle);
   document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('keycloak-authenticated', handleAuthenticated);
 });
 
 onUnmounted(() => {
   document.removeEventListener('toggle-mobile-nav', handleToggle);
   document.removeEventListener('keydown', handleKeydown);
+  document.removeEventListener('keycloak-authenticated', handleAuthenticated);
 });
 </script>
 
@@ -196,6 +228,12 @@ onUnmounted(() => {
   .mobile-nav__cta {
     transition: background 0.15s;
   }
+}
+
+.mobile-nav__link--back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
 }
 
 .mobile-nav__cta:hover {

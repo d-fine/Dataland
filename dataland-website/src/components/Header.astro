@@ -45,7 +45,7 @@ const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--colo
     </nav>
 
     <!-- Desktop actions -->
-    <div class="hidden lg:flex items-center gap-5">
+    <div class="hidden lg:flex items-center gap-5" id="header-actions">
       <a href="/companies" class="no-underline text-[var(--color-text)] font-medium text-[0.9375rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
       <a href="/register" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
     </div>
@@ -69,10 +69,43 @@ const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--colo
   <MobileNav client:media="(max-width: 1023px)" currentPath={currentPath} />
 </header>
 
-<!-- Intentional inline script: bridges the static hamburger button to the Vue MobileNav island via a custom event -->
+<!-- Intentional inline script: bridges the static hamburger button to the Vue MobileNav island via a custom event,
+     and swaps login/register actions with "Back to platform" when a Keycloak session is detected. -->
 <script>
   const toggle = document.getElementById('mobile-menu-toggle');
   toggle?.addEventListener('click', () => {
     document.dispatchEvent(new CustomEvent('toggle-mobile-nav'));
   });
+
+  function parseTokenExp(token: string): number | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return typeof payload.exp === 'number' ? payload.exp : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function isKeycloakSessionActive(): boolean {
+    const token = sessionStorage.getItem('kc-token') ?? localStorage.getItem('kc-token');
+    if (!token) return false;
+    const exp = parseTokenExp(token);
+    return exp !== null && exp * 1000 > Date.now();
+  }
+
+  function applyLoggedInState(): void {
+    const actions = document.getElementById('header-actions');
+    if (actions && !actions.dataset.loggedIn) {
+      actions.dataset.loggedIn = '1';
+      actions.innerHTML =
+        '<a href="/companies" class="inline-flex items-center gap-2 no-underline text-[var(--color-text)] font-medium text-[0.9375rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>' +
+        'BACK TO PLATFORM</a>';
+    }
+    document.dispatchEvent(new CustomEvent('keycloak-authenticated'));
+  }
+
+  if (isKeycloakSessionActive()) {
+    applyLoggedInState();
+  }
 </script>
