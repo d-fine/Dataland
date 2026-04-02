@@ -37,14 +37,3 @@ const register = (): void => {
     .catch((error) => console.error(error));
 };
 </script>
-<style scoped lang="scss">
-@media only screen and (max-width: $bp-md) {
-  .header {
-    background-color: var(--p-pink-300);
-    padding: 16px;
-    margin: 0;
-    width: 100%;
-    border-radius: 0;
-  }
-}
-</style>
