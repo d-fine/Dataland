@@ -216,9 +216,9 @@ import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
-import { toTitleCase } from '@/utils/StringFormatter.ts';
+import { toSafeDisplayString, toTitleCase } from '@/utils/StringFormatter.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
-import { wrapDataPointJson, toSafeDisplayString } from '@/utils/JudgeDialogUtils.ts';
+import { wrapDataPointJson } from '@/utils/JudgeDialogUtils.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 

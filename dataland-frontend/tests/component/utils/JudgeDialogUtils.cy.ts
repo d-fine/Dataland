@@ -3,11 +3,11 @@ import {
   parseFormDataToDataPointJson,
   parseDataPointJsonToFormData,
   transformDataPointDetailToFormData,
-  toSafeDisplayString,
   unwrapDataPointJson,
   wrapDataPointJson,
 } from '@/utils/JudgeDialogUtils';
 import type { CustomFormData, ParsedSingleDataPoint, DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 
 describe('parseFormDataToDataPointJson', () => {
   const emptyForm: CustomFormData = {
