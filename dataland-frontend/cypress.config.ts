@@ -43,7 +43,8 @@ export default defineConfig({
     AWAIT_PREPOPULATION_RETRIES: 250,
     TEST_GROUP: process.env.CYPRESS_TEST_GROUP ? Number(process.env.CYPRESS_TEST_GROUP) : undefined,
     SINGLE_POPULATE: process.env.CYPRESS_SINGLE_POPULATE === 'true',
-    RUN_PREPOPULATION: process.env.CYPRESS_RUN_PREPOPULATION === 'true',
+    RUN_PREPOPULATION:
+      process.env.CYPRESS_RUN_PREPOPULATION == null ? true : process.env.CYPRESS_RUN_PREPOPULATION === 'true',
     EXECUTION_ENVIRONMENT: process.env.CYPRESS_EXECUTION_ENVIRONMENT ?? 'developmentLocal',
     RESET_DATABASE: process.env.CYPRESS_RESET_DATABASE,
     IGNORE_EXTERNAL_STORAGE: process.env.CYPRESS_IGNORE_EXTERNAL_STORAGE,
