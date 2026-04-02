@@ -38,6 +38,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
+import KeycloakRedirectPage from '@/components/pages/KeycloakRedirectPage.vue';
 
 const routes = [
   {
@@ -326,18 +327,18 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: PlatformRedirect,
+    component: KeycloakRedirectPage,
     meta: {
-      requiresAuthentication: true,
+      requiresAuthentication: false,
     },
   },
   {
     path: '/register',
     name: 'Register',
-    component: PlatformRedirect,
+    component: KeycloakRedirectPage,
+    props: { register: true },
     meta: {
-      requiresAuthentication: true,
-      register: true,
+      requiresAuthentication: false,
     },
   },
   {

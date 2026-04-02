@@ -14,6 +14,8 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 onMounted(async () => {
   const keycloak = await assertDefined(getKeycloakPromise)();
+  sessionStorage.removeItem('dataland_login_redirect_pending');
+  sessionStorage.removeItem('dataland_register_redirect_pending');
   if (!keycloak.authenticated) {
     router.replace({ path: '/' }).catch((error) => console.error(error));
     return;
