@@ -3,6 +3,7 @@ import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tansta
 import { useApiClient } from '@/utils/useApiClient';
 import { dataPointKeys } from '@/api-queries/backend/data-point/dataPointKeys';
 import { type UploadedDataPoint } from '@clients/backend';
+
 /**
  * Vue Query hook that fetches a data point for a given data point id.
  */
