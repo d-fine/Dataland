@@ -10,25 +10,23 @@ export const DEFAULT_CUSTOM_JSON = JSON.stringify(
  * Unwraps a datapoint JSON string for the backend.
  * If the original stored datapoint (`rawDataPoint`) was a plain primitive
  * (e.g. plainDate stored as `"2024-01-01"`), the custom value is unwrapped
- * to that same primitive format. Otherwise the value is returned unchanged.
+ * to that same primitive format. Otherwise, the value is returned unchanged.
  *
- * @param json - The custom JSON string to unwrap.
+ * @param dataPointJsonString - The custom JSON string to unwrap.
  * @param rawDataPoint - The original stored datapoint JSON, used to detect plain-primitive types.
  * @returns The unwrapped JSON string, or the original if no unwrapping is needed.
  */
-export function unwrapDataPointJson(json: string, rawDataPoint: string): string {
+export function unwrapDataPointJson(dataPointJsonString: string, rawDataPoint: string): string {
   try {
     const original = JSON.parse(rawDataPoint);
     if (typeof original !== 'object') {
-      const parsed: unknown = JSON.parse(json);
+      const parsed: unknown = JSON.parse(dataPointJsonString);
       const value =
         parsed !== null && typeof parsed === 'object' ? ((parsed as ParsedSingleDataPoint).value ?? null) : parsed;
       return JSON.stringify(value);
     }
-  } catch {
-    // return original
-  }
-  return json;
+  } catch {}
+  return dataPointJsonString;
 }
 
 /**
