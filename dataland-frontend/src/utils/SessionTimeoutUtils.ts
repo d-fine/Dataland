@@ -1,8 +1,9 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
-const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
 import type Keycloak from 'keycloak-js';
 import { useSharedSessionStateStore } from '@/stores/Stores';
+
+const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
 
 export enum SessionDialogMode {
   SessionWarning,
