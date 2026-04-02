@@ -323,7 +323,9 @@ describe('DatasetReviewOverview page details', () => {
       interceptAlias: 'rejectReview',
       triggerButtonText: 'REJECT DATASET',
       modalTitle: 'Reject Dataset',
-      modalBody: 'Are you sure you want to reject this dataset review?',
+      modalBody:
+        'Are you sure you want to reject the dataset and all ' +
+        'underlying data points? This action will finish the review and cannot be undone.',
       expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
       expectedStateParam: 'datasetJudgementState=FinishedWithDatasetRejection',
     });
