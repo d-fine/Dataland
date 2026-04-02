@@ -227,7 +227,7 @@ export default defineConfig({
           return filename;
         },
       });
-      config.env.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
+      config.expose.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
