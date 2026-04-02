@@ -50,6 +50,8 @@
   const listbox = document.getElementById('company-search-listbox') as HTMLUListElement;
   const warning = document.getElementById('company-search-warning') as HTMLParagraphElement;
 
+  if (!input || !listbox || !warning) throw new Error('CompanySearchBar: DOM elements not found');
+
   interface CompanyIdAndName {
     companyId: string;
     companyName: string;
