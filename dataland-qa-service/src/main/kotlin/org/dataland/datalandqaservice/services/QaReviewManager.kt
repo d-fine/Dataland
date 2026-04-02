@@ -61,8 +61,15 @@ class QaReviewManager
 
         private data class ToQaReviewResponseTiming(
             var mappedCount: Int = 0,
-            var qaReportLookupDurationNanos: Long = 0,
+            var getContainedDataPointsDurationNanos: Long = 0,
+            var countQaReportsForDataPointIdsDurationNanos: Long = 0,
             var datasetJudgementLookupDurationNanos: Long = 0,
+        )
+
+        private data class QaReportLookupResult(
+            val numberQaReports: Long,
+            val getContainedDataPointsDurationNanos: Long,
+            val countQaReportsForDataPointIdsDurationNanos: Long,
         )
 
         private inline fun <T> measureExecutionNanos(block: () -> T): Pair<T, Long> {
@@ -79,16 +86,20 @@ class QaReviewManager
                 logger.info("No datasets mapped in toQaReviewResponse for $context.")
                 return
             }
-            val qaReportLookupDurationMs =
-                timing.qaReportLookupDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
+            val getContainedDataPointsDurationMs =
+                timing.getContainedDataPointsDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
+            val countQaReportsForDataPointIdsDurationMs =
+                timing.countQaReportsForDataPointIdsDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
             val datasetJudgementLookupDurationMs =
                 timing.datasetJudgementLookupDurationNanos.toDouble() / timing.mappedCount / NANOSECONDS_IN_A_MILLISECOND
             logger.info(
-                "Average toQaReviewResponse call durations for {} over " +
-                    "{} datasets: getNumberOfQaReportsForDataId={} ms, getDatasetJudgementsByDatasetId={} ms.",
+                "Average toQaReviewResponse call durations for {} over {} datasets: " +
+                    "getContainedDataPoints={} ms, countQaReportsForDataPointIds={} ms, " +
+                    "getDatasetJudgementsByDatasetId={} ms.",
                 context,
                 timing.mappedCount,
-                qaReportLookupDurationMs,
+                getContainedDataPointsDurationMs,
+                countQaReportsForDataPointIdsDurationMs,
                 datasetJudgementLookupDurationMs,
             )
         }
@@ -435,14 +446,26 @@ class QaReviewManager
         /**
          * Returns the number of QA reports for all data points contained in the given dataId
          */
-        private fun getNumberOfQaReportsForDataId(dataId: String): Long =
+        private fun getNumberOfQaReportsForDataId(dataId: String): QaReportLookupResult =
             try {
-                val dataPointIds = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
-                dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds)
+                val (dataPointIdsByDimension, getContainedDataPointsDurationNanos) =
+                    measureExecutionNanos { metaDataControllerApi.getContainedDataPoints(dataId) }
+                val dataPointIds = dataPointIdsByDimension.values.toSet()
+                val (numberQaReports, countQaReportsForDataPointIdsDurationNanos) =
+                    measureExecutionNanos { dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds) }
+                QaReportLookupResult(
+                    numberQaReports = numberQaReports,
+                    getContainedDataPointsDurationNanos = getContainedDataPointsDurationNanos,
+                    countQaReportsForDataPointIdsDurationNanos = countQaReportsForDataPointIdsDurationNanos,
+                )
             } catch (clientException: ClientException) {
                 if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
                     logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
-                    0L
+                    QaReportLookupResult(
+                        numberQaReports = 0L,
+                        getContainedDataPointsDurationNanos = 0L,
+                        countQaReportsForDataPointIdsDurationNanos = 0L,
+                    )
                 } else {
                     throw clientException
                 }
@@ -456,12 +479,13 @@ class QaReviewManager
             showTriggeringUserId: Boolean = false,
             toQaReviewResponseTiming: ToQaReviewResponseTiming? = null,
         ): QaReviewResponse {
-            val (numberQaReports, qaReportLookupDurationNanosForDataset) = measureExecutionNanos { getNumberOfQaReportsForDataId(dataId) }
+            val qaReportLookupResult = getNumberOfQaReportsForDataId(dataId)
             val (datasetJudgements, datasetJudgementLookupDurationNanosForDataset) =
                 measureExecutionNanos { datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(dataId)) }
             toQaReviewResponseTiming?.apply {
                 mappedCount++
-                qaReportLookupDurationNanos += qaReportLookupDurationNanosForDataset
+                getContainedDataPointsDurationNanos += qaReportLookupResult.getContainedDataPointsDurationNanos
+                countQaReportsForDataPointIdsDurationNanos += qaReportLookupResult.countQaReportsForDataPointIdsDurationNanos
                 datasetJudgementLookupDurationNanos += datasetJudgementLookupDurationNanosForDataset
             }
             val latestDatasetJudgement = datasetJudgements.firstOrNull()
@@ -476,7 +500,7 @@ class QaReviewManager
                 qaJudgeUserId = latestDatasetJudgement?.qaJudgeUserId,
                 qaJudgeUserName = latestDatasetJudgement?.qaJudgeUserName,
                 datasetReviewId = latestDatasetJudgement?.dataSetJudgementId,
-                numberQaReports = numberQaReports,
+                numberQaReports = qaReportLookupResult.numberQaReports,
                 comment = this.comment,
                 triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
                 priorityOfAssociatedDataSourcing = null,
