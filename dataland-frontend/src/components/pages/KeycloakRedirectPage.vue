@@ -10,27 +10,25 @@ import type Keycloak from 'keycloak-js';
 const { register } = defineProps<{ register?: boolean }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
 const REDIRECT_KEY = register ? 'dataland_register_redirect_pending' : 'dataland_login_redirect_pending';
 const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
+const astroHomeUri = `${globalThis.location.origin}/`;
 
 onMounted(async () => {
   const keycloak = await assertDefined(getKeycloakPromise)();
 
   if (keycloak.authenticated) {
-    sessionStorage.removeItem(REDIRECT_KEY);
-    globalThis.location.replace('/platform-redirect');
+    globalThis.location.replace(platformRedirectUri);
     return;
   }
 
   const wasPending = sessionStorage.getItem(REDIRECT_KEY);
   if (wasPending) {
     sessionStorage.removeItem(REDIRECT_KEY);
-    globalThis.location.replace('/');
+    globalThis.location.replace(astroHomeUri);
     return;
   }
 
-  // First visit — redirect to Keycloak
   sessionStorage.setItem(REDIRECT_KEY, 'true');
   const action = register
     ? keycloak.register({ redirectUri: platformRedirectUri })

@@ -6,34 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
-/**
- * Sends the user to the keycloak login page (if not authenticated already)
- */
 const login = (): void => {
-  assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      if (keycloak.authenticated) return;
-      keycloak.login().catch((error) => console.error(error));
-    })
-    .catch((error) => console.error(error));
+  globalThis.location.assign('/login');
 };
 
-/**
- * Sends the user to the keycloak register page (if not authenticated) and logs in otherwise
- */
 const register = (): void => {
-  assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      if (keycloak.authenticated) return;
-      keycloak.register().catch((error) => console.error(error));
-    })
-    .catch((error) => console.error(error));
+  globalThis.location.assign('/register');
 };
 </script>
