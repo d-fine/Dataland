@@ -155,7 +155,7 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
-import type { CustomFormData, DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import {
   DEFAULT_CUSTOM_JSON,
   parseDataPointJsonToFormData,

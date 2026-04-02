@@ -7,7 +7,7 @@ export interface DataPointSourceInfo {
   [key: string]: unknown;
 }
 
-export interface DataPointDetail {
+export interface ParsedSingleDataPoint {
   value?: unknown;
   quality?: unknown;
   comment?: unknown;

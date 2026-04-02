@@ -55,7 +55,7 @@
 import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
 import ToggleSwitch from 'primevue/toggleswitch';
-import type { NextDataPointOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { NextDataPointOption } from '@/types/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   options: NextDataPointOption[];

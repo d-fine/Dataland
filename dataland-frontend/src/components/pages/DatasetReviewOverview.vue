@@ -133,7 +133,7 @@ import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/datas
 import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;

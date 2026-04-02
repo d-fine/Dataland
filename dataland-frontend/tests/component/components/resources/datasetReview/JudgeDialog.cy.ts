@@ -7,7 +7,7 @@ import type { DatasetJudgementResponse, DataPointJudgement } from '@clients/qase
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
-import type { DocumentOption } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';

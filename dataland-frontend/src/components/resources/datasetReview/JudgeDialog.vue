@@ -158,12 +158,12 @@ import JudgeDialogCustomSection from '@/components/resources/datasetReview/Judge
 import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
 import type {
   CustomFormData,
-  DataPointDetail,
+  ParsedSingleDataPoint,
   DocumentOption,
   NextDataPointOption,
   QaReport,
   QaReporter,
-} from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+} from '@/types/JudgeDialogTypes.ts';
 import {
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
@@ -274,7 +274,7 @@ const isOriginalLoading = computed(() => isOriginalQueryEnabled.value && isOrigi
 const isOriginalLoadingError = computed(() => isOriginalQueryEnabled.value && isOriginalError.value);
 const originalErrorValue = computed<Error | null>(() => (isOriginalLoadingError.value ? originalError.value : null));
 
-const originalData = computed<DataPointDetail | null>(() => {
+const originalData = computed<ParsedSingleDataPoint | null>(() => {
   const originalDataPointUnrefed = originalDataPoint.value;
   if (!originalDataPointUnrefed?.dataPoint) return null;
   const detail = wrapDataPointJson(originalDataPointUnrefed.dataPoint);
@@ -369,7 +369,7 @@ const currentQaReporterLabel = computed(() => {
   return report.reporterUserId;
 });
 
-const currentQaCorrectedData = computed<DataPointDetail | null>(() => {
+const currentQaCorrectedData = computed<ParsedSingleDataPoint | null>(() => {
   if (!currentQaReport.value?.correctedData) return null;
   const detail = wrapDataPointJson(currentQaReport.value.correctedData);
   if (detail === null) console.error('Failed to parse correctedData JSON');

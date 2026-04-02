@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
 import PrimeButton from 'primevue/button';
-import type { DataPointDetail } from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { ParsedSingleDataPoint } from '@/types/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { computed } from 'vue';
 
@@ -102,7 +102,7 @@ const OVERFLOW_THRESHOLD = 40;
 
 const props = defineProps<{
   title: string;
-  data: DataPointDetail | null;
+  data: ParsedSingleDataPoint | null;
   isLoading?: boolean;
   isLoadingError?: boolean;
   loadingErrorObject?: Error | null;

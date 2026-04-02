@@ -7,11 +7,7 @@ import {
   unwrapDataPointJson,
   wrapDataPointJson,
 } from '@/utils/JudgeDialogUtils';
-import type {
-  CustomFormData,
-  DataPointDetail,
-  DocumentOption,
-} from '@/components/resources/datasetReview/JudgeDialogTypes';
+import type { CustomFormData, ParsedSingleDataPoint, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 
 describe('parseFormDataToDataPointJson', () => {
   const emptyForm: CustomFormData = {
@@ -47,7 +43,7 @@ describe('parseFormDataToDataPointJson', () => {
 
   it('builds JSON with only value/quality/comment when no dataSource info is present', () => {
     const json = parseFormDataToDataPointJson(baseForm, null);
-    const parsed = JSON.parse(json) as DataPointDetail;
+    const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed).to.deep.equal({
       value: 'v',
@@ -66,7 +62,7 @@ describe('parseFormDataToDataPointJson', () => {
     };
 
     const json = parseFormDataToDataPointJson(form, null);
-    const parsed = JSON.parse(json) as DataPointDetail;
+    const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed).to.deep.equal({
       value: 'v',
@@ -84,7 +80,7 @@ describe('parseFormDataToDataPointJson', () => {
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
-    const parsed = JSON.parse(json) as DataPointDetail;
+    const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed.value).to.equal('v');
     expect(parsed.quality).to.equal('q');
@@ -107,7 +103,7 @@ describe('parseFormDataToDataPointJson', () => {
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
-    const parsed = JSON.parse(json) as DataPointDetail;
+    const parsed = JSON.parse(json) as ParsedSingleDataPoint;
 
     expect(parsed).to.deep.equal({
       dataSource: {
@@ -121,7 +117,7 @@ describe('parseFormDataToDataPointJson', () => {
 
 describe('transformDataPointDetailToFormData', () => {
   it('maps a full DataPointDetail to CustomFormData', () => {
-    const detail: DataPointDetail = {
+    const detail: ParsedSingleDataPoint = {
       value: 'v',
       quality: 'q',
       comment: 'c',
@@ -144,7 +140,7 @@ describe('transformDataPointDetailToFormData', () => {
   });
 
   it('falls back to fileReference when fileName is not present', () => {
-    const detail: DataPointDetail = {
+    const detail: ParsedSingleDataPoint = {
       value: 'v',
       quality: 'q',
       comment: 'c',
@@ -153,7 +149,7 @@ describe('transformDataPointDetailToFormData', () => {
         fileReference: 'ref-123',
         page: '7',
       },
-    } as DataPointDetail;
+    } as ParsedSingleDataPoint;
 
     const form = transformDataPointDetailToFormData(detail);
 
@@ -162,7 +158,7 @@ describe('transformDataPointDetailToFormData', () => {
   });
 
   it('returns empty strings for missing fields', () => {
-    const detail: DataPointDetail = {
+    const detail: ParsedSingleDataPoint = {
       value: null,
       quality: undefined,
       comment: undefined,
@@ -183,7 +179,7 @@ describe('transformDataPointDetailToFormData', () => {
 
 describe('parseDataPointJsonToFormData', () => {
   it('parses valid JSON into CustomFormData', () => {
-    const detail: DataPointDetail = {
+    const detail: ParsedSingleDataPoint = {
       value: 'v',
       quality: 'q',
       comment: 'c',
@@ -253,7 +249,7 @@ describe('toSafeDisplayString', () => {
 describe('unwrapDataPointJson', () => {
   it('unwraps to a plain primitive when original datapoint was a primitive and custom JSON is a DataPointDetail', () => {
     const rawDataPoint = JSON.stringify('2024-01-01'); // original backend value: "2024-01-01"
-    const customDetail: DataPointDetail = {
+    const customDetail: ParsedSingleDataPoint = {
       value: '2024-01-01',
       quality: 'Audited',
       comment: 'Some comment',
@@ -274,10 +270,10 @@ describe('unwrapDataPointJson', () => {
   });
 
   it('returns original custom JSON unchanged when original datapoint is an object', () => {
-    const rawDetail: DataPointDetail = { value: 'v', quality: 'q' };
+    const rawDetail: ParsedSingleDataPoint = { value: 'v', quality: 'q' };
     const rawDataPoint = JSON.stringify(rawDetail);
 
-    const customDetail: DataPointDetail = { value: 'new-v', quality: 'Audited' };
+    const customDetail: ParsedSingleDataPoint = { value: 'new-v', quality: 'Audited' };
     const customJson = JSON.stringify(customDetail);
 
     const result = unwrapDataPointJson(customJson, rawDataPoint);
@@ -295,7 +291,7 @@ describe('unwrapDataPointJson', () => {
 
 describe('wrapDataPointJson', () => {
   it('returns a DataPointDetail object unchanged when JSON represents an object', () => {
-    const detail: DataPointDetail = {
+    const detail: ParsedSingleDataPoint = {
       value: 'v',
       quality: 'q',
       comment: 'c',

@@ -1,8 +1,4 @@
-import type {
-  CustomFormData,
-  DataPointDetail,
-  DocumentOption,
-} from '@/components/resources/datasetReview/JudgeDialogTypes.ts';
+import type { CustomFormData, ParsedSingleDataPoint, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
@@ -26,7 +22,7 @@ export function unwrapDataPointJson(json: string, rawDataPoint: string): string 
     if (typeof original !== 'object') {
       const parsed: unknown = JSON.parse(json);
       const value =
-        parsed !== null && typeof parsed === 'object' ? ((parsed as DataPointDetail).value ?? null) : parsed;
+        parsed !== null && typeof parsed === 'object' ? ((parsed as ParsedSingleDataPoint).value ?? null) : parsed;
       return JSON.stringify(value);
     }
   } catch {
@@ -36,18 +32,18 @@ export function unwrapDataPointJson(json: string, rawDataPoint: string): string 
 }
 
 /**
- * Wraps a datapoint JSON string into a {@link DataPointDetail} object.
+ * Wraps a datapoint JSON string into a {@link ParsedSingleDataPoint} object.
  * This is the inverse of {@link unwrapDataPointJson}: if the stored JSON is a plain
  * primitive (e.g. `"2024-01-01"` for a plainDate), it is wrapped into `{ value: primitive }`
- * so it can be handled uniformly as a {@link DataPointDetail}.
+ * so it can be handled uniformly as a {@link ParsedSingleDataPoint}.
  *
  * @param json - JSON string to wrap.
- * @returns The wrapped {@link DataPointDetail}, or `null` on parse failure.
+ * @returns The wrapped {@link ParsedSingleDataPoint}, or `null` on parse failure.
  */
-export function wrapDataPointJson(json: string): DataPointDetail | null {
+export function wrapDataPointJson(json: string): ParsedSingleDataPoint | null {
   try {
     const parsed: unknown = JSON.parse(json);
-    return parsed !== null && typeof parsed === 'object' ? (parsed as DataPointDetail) : { value: parsed };
+    return parsed !== null && typeof parsed === 'object' ? (parsed as ParsedSingleDataPoint) : { value: parsed };
   } catch {
     return null;
   }
@@ -68,7 +64,7 @@ export function parseFormDataToDataPointJson(
   const { value, quality, comment, pages } = formData;
 
   const documentDataSource = selectedDocument?.dataSource ?? null;
-  let dataSource: DataPointDetail['dataSource'] | null;
+  let dataSource: ParsedSingleDataPoint['dataSource'] | null;
   if (documentDataSource) {
     dataSource = { ...documentDataSource, ...(pages ? { page: pages } : {}) };
   } else if (pages) {
@@ -77,7 +73,7 @@ export function parseFormDataToDataPointJson(
     dataSource = null;
   }
 
-  const data: DataPointDetail = {
+  const data: ParsedSingleDataPoint = {
     ...(value && { value }),
     ...(quality && { quality }),
     ...(comment && { comment }),
@@ -103,12 +99,12 @@ export function parseDataPointJsonToFormData(json: string): CustomFormData | nul
 }
 
 /**
- * Maps a {@link DataPointDetail} object directly into a {@link CustomFormData} object.
+ * Maps a {@link ParsedSingleDataPoint} object directly into a {@link CustomFormData} object.
  *
  * @param detail - The datapoint detail to map.
  * @returns The mapped {@link CustomFormData}.
  */
-export function transformDataPointDetailToFormData(detail: DataPointDetail): CustomFormData {
+export function transformDataPointDetailToFormData(detail: ParsedSingleDataPoint): CustomFormData {
   return {
     value: toSafeDisplayString(detail.value),
     quality: toSafeDisplayString(detail.quality),
