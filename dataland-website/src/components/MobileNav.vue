@@ -106,24 +106,7 @@ function handleAuthenticated(): void {
   isLoggedIn.value = true;
 }
 
-function parseTokenExp(token: string): number | null {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-    return typeof payload.exp === 'number' ? payload.exp : null;
-  } catch {
-    return null;
-  }
-}
-
-function checkSession(): boolean {
-  const token = sessionStorage.getItem('kc-token');
-  if (!token) return false;
-  const exp = parseTokenExp(token);
-  return exp !== null && exp * 1000 > Date.now();
-}
-
 onMounted(() => {
-  isLoggedIn.value = checkSession();
   document.addEventListener('toggle-mobile-nav', handleToggle);
   document.addEventListener('keydown', handleKeydown);
   document.addEventListener('keycloak-authenticated', handleAuthenticated);

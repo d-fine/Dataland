@@ -77,22 +77,6 @@ const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--colo
     document.dispatchEvent(new CustomEvent('toggle-mobile-nav'));
   });
 
-  function parseTokenExp(token: string): number | null {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return typeof payload.exp === 'number' ? payload.exp : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function isKeycloakSessionActive(): boolean {
-    const token = sessionStorage.getItem('kc-token') ?? localStorage.getItem('kc-token');
-    if (!token) return false;
-    const exp = parseTokenExp(token);
-    return exp !== null && exp * 1000 > Date.now();
-  }
-
   function applyLoggedInState(): void {
     const actions = document.getElementById('header-actions');
     if (actions && !actions.dataset.loggedIn) {
@@ -105,7 +89,11 @@ const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--colo
     document.dispatchEvent(new CustomEvent('keycloak-authenticated'));
   }
 
-  if (isKeycloakSessionActive()) {
-    applyLoggedInState();
-  }
+  // Check active Keycloak session via the userinfo endpoint — cookies are sent automatically.
+  // A 200 response means the user has a valid session; anything else means they are logged out.
+  fetch('/keycloak/realms/datalandsecurity/protocol/openid-connect/userinfo', {
+    credentials: 'include',
+  }).then((res) => {
+    if (res.ok) applyLoggedInState();
+  }).catch(() => { /* no session or network issue — stay with default buttons */ });
 </script>

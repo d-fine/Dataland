@@ -49,6 +49,13 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
+            const returnUrl = sessionStorage.getItem('auth-redirect-return-url');
+            if (returnUrl) {
+              sessionStorage.removeItem('auth-redirect-return-url');
+              globalThis.location.href = returnUrl;
+              return;
+            }
+            sessionStorage.setItem('auth-redirect-return-url', globalThis.document.referrer || '/');
             return this.register
               ? keycloak.register({ redirectUri: `${globalThis.location.origin}/platform-redirect` })
               : keycloak.login({ redirectUri: `${globalThis.location.origin}/platform-redirect` });
