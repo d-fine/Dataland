@@ -179,12 +179,10 @@ export default defineComponent({
     },
 
     /**
-     * Executed as callback when the user is logged out. It tries another logout by redirecting the user to a keycloak
-     * logout uri, where the user is instantly re-redirected back to the Welcome page with a specific query param
-     * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
+     * Executed as callback when the user is logged out. Redirects the user to the Astro website at /.
      */
     handleAuthLogout() {
-      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, '?externalLogout=true');
+      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak);
     },
 
     /**

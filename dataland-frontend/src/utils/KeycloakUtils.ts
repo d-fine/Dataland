@@ -48,34 +48,12 @@ export async function checkIfUserHasRole(
 }
 
 /**
- * Logs the user out and redirects her/him to the base url concatenated with the passed redirectPath.
+ * Logs the user out and redirects her/him to the Astro website at /.
  * @param keycloak is the keycloak adaptor used to do the logout
- * @param additionToBasePath is the addition to the base url to result in the final url that the user shall be
- * redirected to
  */
-export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: string): void {
+export function logoutAndRedirectToUri(keycloak: Keycloak): void {
   const baseUrl = globalThis.location.origin;
-  const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${additionToBasePath}` });
-  location.assign(url);
-}
-
-/**
- * Logs the user in and redirects her/him to the Dataland redirect page.
- * @param keycloak is the keycloak adaptor used to do the login
- */
-export async function loginAndRedirectToRedirectPage(keycloak: Keycloak): Promise<void> {
-  const baseUrl = globalThis.location.origin;
-  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/platform-redirect` });
-  location.assign(url);
-}
-
-/**
- * Registers and logs the user in and redirects her/him to the Dataland redirect page.
- * @param keycloak is the keycloak adaptor used to do the login
- */
-export async function registerAndRedirectToRedirectPage(keycloak: Keycloak): Promise<void> {
-  const baseUrl = globalThis.location.origin;
-  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/platform-redirect` });
+  const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}/` });
   location.assign(url);
 }
 

@@ -1,9 +1,9 @@
 <template>
   <div class="dataland-header m-0 fixed top-0 h-4rem w-full grid align-items-center">
     <div class="col-4 text-left">
-      <router-link to="/">
+      <a href="/">
         <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland" />
-      </router-link>
+      </a>
     </div>
 
     <div class="col-4">
@@ -14,7 +14,7 @@
       <UserProfileDropDown />
     </div>
     <div class="col-4 flex justify-content-end" v-else>
-      <AuthSection :is-landing-page="false" />
+      <AuthSection />
     </div>
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->

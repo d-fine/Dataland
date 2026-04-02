@@ -324,6 +324,14 @@ const routes = [
     },
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: PlatformRedirect,
+    meta: {
+      requiresAuthentication: true,
+    },
+  },
+  {
     path: '/register',
     name: 'Register',
     component: PlatformRedirect,

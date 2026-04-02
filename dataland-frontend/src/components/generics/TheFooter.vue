@@ -14,34 +14,34 @@
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">Product</h3>
-        <router-link to="/product#how-it-works" class="footer__link">How it works</router-link>
-        <router-link to="/product#features" class="footer__link">Features</router-link>
-        <router-link to="/product#frameworks" class="footer__link">Frameworks</router-link>
-        <router-link to="/product#use-cases" class="footer__link">Use Cases</router-link>
-        <router-link to="/product#customer-stories" class="footer__link">Customer Stories</router-link>
-        <router-link to="/testimonials" class="footer__link">Testimonials</router-link>
-        <router-link to="/product#membership-pricing" class="footer__link">Membership & Pricing</router-link>
+        <a href="/product#how-it-works" class="footer__link">How it works</a>
+        <a href="/product#features" class="footer__link">Features</a>
+        <a href="/product#frameworks" class="footer__link">Frameworks</a>
+        <a href="/product#use-cases" class="footer__link">Use Cases</a>
+        <a href="/product#customer-stories" class="footer__link">Customer Stories</a>
+        <a href="/testimonials" class="footer__link">Testimonials</a>
+        <a href="/product#membership-pricing" class="footer__link">Membership & Pricing</a>
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">Company</h3>
-        <router-link to="/#why-us" class="footer__link">Why Dataland</router-link>
-        <router-link to="/about#company" class="footer__link">About us</router-link>
-        <router-link to="/about#updates" class="footer__link">Updates and Insights</router-link>
-        <router-link to="/about#partners" class="footer__link">Partners</router-link>
-        <router-link to="/about#contact" class="footer__link">Contact</router-link>
+        <a href="/#why-us" class="footer__link">Why Dataland</a>
+        <a href="/about#company" class="footer__link">About us</a>
+        <a href="/about#updates" class="footer__link">Updates and Insights</a>
+        <a href="/about#partners" class="footer__link">Partners</a>
+        <a href="/about#contact" class="footer__link">Contact</a>
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">Resources</h3>
-        <router-link to="/product#documentation" class="footer__link">Tutorials</router-link>
-        <router-link to="/product#documentation" class="footer__link">Platform documentation</router-link>
-        <router-link to="/product#documentation" class="footer__link">Technical Hub</router-link>
+        <a href="/product#documentation" class="footer__link">Tutorials</a>
+        <a href="/product#documentation" class="footer__link">Platform documentation</a>
+        <a href="/product#documentation" class="footer__link">Technical Hub</a>
       </div>
     </div>
     <div class="footer__bottom">
-      <router-link to="/legal" class="footer__bottom-link">Legal</router-link>
-      <router-link to="/imprint" class="footer__bottom-link">Imprint</router-link>
-      <router-link to="/dataprivacy" class="footer__bottom-link">Data Privacy</router-link>
-      <router-link to="/cookies" class="footer__bottom-link">Cookie Settings</router-link>
+      <a href="/legal" class="footer__bottom-link">Legal</a>
+      <a href="/imprint" class="footer__bottom-link">Imprint</a>
+      <a href="/dataprivacy" class="footer__bottom-link">Data Privacy</a>
+      <a href="/cookies" class="footer__bottom-link">Cookie Settings</a>
       <span class="footer__copyright">&copy; {{ currentYear }} Dataland</span>
       <a
         href="https://www.linkedin.com/company/dataland-gmbh"
