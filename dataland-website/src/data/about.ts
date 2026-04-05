@@ -32,9 +32,9 @@ export const LEADERSHIP_TEAM: Person[] = [
     linkedIn: 'https://www.linkedin.com/in/andreas-h%C3%B6cherl-016220b4/',
   },
   {
-    name: 'Soeren Vorsmann',
+    name: 'S\u00F6ren Vorsmann',
     role: 'Operations & Customer Relations',
-    bio: 'Soeren oversees platform operations, infrastructure, and member onboarding.',
+    bio: 'S\u00F6ren oversees platform operations, infrastructure, and member onboarding.',
     imagePath: '/static/about/team-soeren-vorsmann.jpg',
     email: 'mailto:soeren.vorsmann@dataland.com',
     linkedIn: 'https://www.linkedin.com/company/dataland-gmbh',
@@ -78,7 +78,7 @@ export const CONTACT_EMAIL = 'mailto:info@dataland.com';
 export const CONTACT_EMAIL_DISPLAY = 'info@dataland.com';
 export const CONTACT_ADDRESS = {
   company: 'Dataland GmbH',
-  street: 'An der Hauptwache 7',
-  city: '60313 Frankfurt am Main',
+  street: 'Am Steinernen Stock 1',
+  city: '60320 Frankfurt am Main',
   country: 'Germany',
 };
