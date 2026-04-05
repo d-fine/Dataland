@@ -9,23 +9,34 @@ function isActive(href: string): boolean {
   return currentPath.startsWith(href);
 }
 
+const productSections = [
+    { href: '/product#how-it-works', label: 'How it works' },
+    { href: '/product#getting-data', label: 'Getting the data you need' },
+    { href: '/product#features', label: 'Platform features' },
+    { href: '/product#use-cases', label: 'Use cases' },
+    { href: '/product#customer-stories', label: 'Customer stories' },
+    { href: '/product#membership-pricing', label: 'Membership and pricing' },
+    { href: '/product#documentation', label: 'Documentation' },
+] as const;
+
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/product', label: 'Product' },
+  //{ href: '/product', label: 'Product' },
   { href: '/about', label: 'About' },
 ] as const;
 
 const baseLinkClasses = 'no-underline font-medium text-[0.9375rem] motion-safe:transition-colors duration-150';
 const inactiveClasses = 'text-[var(--color-text)] hover:text-[var(--color-primary)]';
-const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] pb-[2px]';
+//const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] pb-[2px]';
+const activeClasses = 'text-[var(--color-primary)]';
 ---
 
-<header class="sticky top-0 z-50 h-[72px] bg-[var(--color-surface-50)] border-b border-[var(--color-surface-200)]">
+<header class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[var(--color-surface-50)] border-b border-[var(--color-surface-200)]">
   <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
       <img
-        src="/static/logos/gfx_logo_dataland_orange_S.svg"
+        src="/static/logos/logo_dataland_orange_cubed.svg"
         alt="Dataland"
         class="h-7 w-auto"
         width="140"
@@ -34,15 +45,39 @@ const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--colo
     </a>
 
     <!-- Desktop navigation -->
-    <nav class="hidden lg:flex gap-8 items-center" aria-label="Main navigation">
-      {navLinks.map(({ href, label }) => (
-        <a
-          href={href}
-          class:list={[baseLinkClasses, isActive(href) ? activeClasses : inactiveClasses]}
-          aria-current={isActive(href) ? 'page' : undefined}
-        >{label}</a>
-      ))}
-    </nav>
+      <nav class="hidden lg:flex gap-8 items-center" aria-label="Main navigation">
+          {navLinks.map(({ href, label }) => (
+                  <a
+                          href={href}
+                          class:list={[baseLinkClasses, isActive(href) ? activeClasses : inactiveClasses]}
+                          aria-current={isActive(href) ? 'page' : undefined}
+                  >{label}</a>
+          ))}
+
+          <div class="relative group">
+              <a
+                      href="/product"
+                      class:list={[baseLinkClasses, isActive('/product') ? activeClasses : inactiveClasses]}
+                      aria-current={isActive('/product') ? 'page' : undefined}
+                      aria-haspopup="true"
+              >
+                  Product
+              </a>
+
+              <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
+                  <div class="min-w-[260px] rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-3 flex flex-col">
+                      {productSections.map(({ href, label }) => (
+                              <a
+                                      href={href}
+                                      class="no-underline px-3 py-2 rounded-md text-[0.9375rem] text-[var(--color-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-50)] motion-safe:transition-colors duration-150"
+                              >
+                                  {label}
+                              </a>
+                      ))}
+                  </div>
+              </div>
+          </div>
+      </nav>
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center gap-5">
