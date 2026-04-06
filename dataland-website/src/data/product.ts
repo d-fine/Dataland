@@ -263,7 +263,7 @@ export interface CustomerStoryDetail {
 export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'meag',
-    logo: '/static/logos/logo_meag.svg',
+    logo: '/static/logos/logo_Meag_2026.svg',
     tag: 'Asset Manager',
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     summary:
@@ -301,7 +301,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   },
   {
     anchor: 'ovbraunschweig',
-    logo: '/static/logos/logo_ovbraunschweig.png',
+    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
     tag: 'Insurance',
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     summary:
