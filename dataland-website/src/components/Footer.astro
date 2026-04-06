@@ -1,65 +1,136 @@
 ---
+import {
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_DISPLAY,
+  CONTACT_INQUIRY_MAILTO,
+  CONTACT_ADDRESS,
+} from '../data/about';
+import { ABOUT_SECTIONS, PRODUCT_SECTIONS } from '../data/navigation';
+
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="bg-[var(--color-surface-50)] text-[var(--color-text)]">
-  <div class="max-w-[1280px] mx-auto px-6 pt-12 pb-8 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1.2fr_0.8fr_0.8fr_1fr] lg:pt-16 lg:pb-12">
-    <!-- Column 1: Dataland brand -->
-    <div class="flex flex-col gap-4">
-      <a href="/" class="inline-flex" aria-label="Dataland home">
-        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland" width="140" height="32" loading="lazy" class="h-7 w-auto" />
-      </a>
-      <div class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-        <span>A</span>
-        <img src="/static/logos/footer_wertestiftung.png" alt="Werte-Stiftung" width="100" height="28" loading="lazy" class="h-5 w-auto object-contain" />
-        <span>Company</span>
-      </div>
-    </div>
-
-    <!-- Column 2: Tech Hub -->
-    <div>
-      <h3 class="text-sm font-bold uppercase tracking-wider m-0 mb-4 text-[var(--color-text)]">Tech Hub</h3>
-      <ul class="list-none p-0 m-0 grid grid-cols-2 gap-x-6 gap-y-2.5">
-        <li><a href="/api/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Datasets</a></li>
-        <li><a href="/users/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Users</a></li>
-        <li><a href="/documents/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Documents</a></li>
-        <li><a href="/data-sourcing/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Data Sourcing</a></li>
-        <li><a href="/community/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Community</a></li>
-        <li><a href="/accounting/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Accounting</a></li>
-        <li><a href="/qa/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Quality Assurance</a></li>
-        <li><a href="/specifications/swagger-ui/index.html" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Specifications</a></li>
-      </ul>
-    </div>
-
-    <!-- Column 3: ESG Frameworks -->
-    <div>
-      <h3 class="text-sm font-bold uppercase tracking-wider m-0 mb-4 text-[var(--color-text)]">ESG Frameworks</h3>
-      <ul class="list-none p-0 m-0 flex flex-col gap-2.5">
-        <li><a href="https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation" target="_blank" rel="noopener noreferrer" class="text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Overview</a></li>
-      </ul>
-    </div>
-
-    <!-- Column 4: Follow Dataland -->
-    <div>
-      <h3 class="text-sm font-bold uppercase tracking-wider m-0 mb-4 text-[var(--color-text)]">Follow Dataland</h3>
-      <ul class="list-none p-0 m-0 flex flex-col gap-2.5">
-        <li>
-          <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[var(--color-text-muted)] no-underline text-sm motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  <div class="border-t border-[var(--color-surface-200)]">
+    <div class="max-w-[1280px] mx-auto px-6 py-10 grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-12">
+      <div class="flex flex-col gap-6">
+        <a href="/" class="inline-flex w-full max-w-[240px]" aria-label="Dataland home">
+          <img src="/static/logos/logo_dataland_orange_cubed.svg" alt="Dataland" width="240" height="55" loading="lazy" class="w-full h-auto object-contain" />
+        </a>
+        <a
+          href="https://wertestiftung.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex w-full max-w-[240px]"
+          aria-label="Visit Werte-Stiftung"
+        >
+          <img
+            src="/static/images/a_werte-stiftung_company.svg"
+            alt="Werte-Stiftung Company"
+            width="240"
+            height="24"
+            loading="lazy"
+            class="w-full h-auto object-contain"
+          />
+        </a>
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-1">
+            <p class="text-[0.875rem] font-semibold m-0">{CONTACT_ADDRESS.company}</p>
+            <div class="flex items-start gap-2">
+              <svg width="18" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 self-center text-[var(--color-text-muted)] [transform:scaleY(1.25)] origin-center">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <div class="flex flex-col gap-1">
+                <p class="text-[0.75rem] m-0 text-[var(--color-text-muted)]">{CONTACT_ADDRESS.street}</p>
+                <p class="text-[0.75rem] m-0 text-[var(--color-text-muted)]">{CONTACT_ADDRESS.city}, {CONTACT_ADDRESS.country}</p>
+              </div>
+            </div>
+          </div>
+          <a href={CONTACT_PHONE} class="inline-flex items-center gap-2 text-[var(--color-text-muted)] no-underline text-[0.75rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
-            LinkedIn
+            {CONTACT_PHONE_DISPLAY}
           </a>
-        </li>
-      </ul>
-    </div>
+          <a href={CONTACT_EMAIL} class="inline-flex items-center gap-2 text-[var(--color-text-muted)] no-underline text-[0.75rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            {CONTACT_EMAIL_DISPLAY}
+          </a>
+        </div>
+      </div>
 
-    <!-- Column 5: Integration -->
-    <div>
-      <h3 class="text-sm font-bold uppercase tracking-wider m-0 mb-4 text-[var(--color-text)]">Integration of</h3>
-      <div class="flex items-center gap-5">
-        <img src="/static/logos/footer_gleif.svg" alt="GLEIF" width="80" height="28" loading="lazy" class="h-7 w-auto object-contain" />
-        <img src="/static/logos/footer_eurodat.svg" alt="EuroDaT" width="80" height="28" loading="lazy" class="h-7 w-auto object-contain" />
+      <div>
+        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">About</h3>
+        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
+          {ABOUT_SECTIONS.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-[var(--color-text-muted)] no-underline text-[1rem] text-left motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">Product</h3>
+        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
+          {PRODUCT_SECTIONS.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-[var(--color-text-muted)] no-underline text-[1rem] text-left motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">Connect and explore</h3>
+        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
+          <li>
+            <a href="https://www.linkedin.com/company/dataland-gmbh/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a href={CONTACT_INQUIRY_MAILTO} class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              Get in touch
+            </a>
+          </li>
+          <li>
+            <a href="/login" class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+              </svg>
+              Login
+            </a>
+          </li>
+          <li>
+            <a href="/register" class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+              Try it free
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

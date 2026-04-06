@@ -76,6 +76,8 @@ export const CONTACT_PHONE = 'tel:+491622631304';
 export const CONTACT_PHONE_DISPLAY = '+49 162 263 1304';
 export const CONTACT_EMAIL = 'mailto:info@dataland.com';
 export const CONTACT_EMAIL_DISPLAY = 'info@dataland.com';
+export const CONTACT_INQUIRY_MAILTO =
+  'mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20membership&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20Dataland%20membership.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards';
 export const CONTACT_ADDRESS = {
   company: 'Dataland GmbH',
   street: 'Am Steinernen Stock 1',

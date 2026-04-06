@@ -8,6 +8,7 @@ import {
   CONTACT_PHONE_DISPLAY,
   CONTACT_EMAIL,
   CONTACT_EMAIL_DISPLAY,
+  CONTACT_INQUIRY_MAILTO,
   CONTACT_ADDRESS,
 } from '../data/about';
 import { NEWS_ITEMS } from '../data/news';
@@ -169,7 +170,7 @@ import { NEWS_ITEMS } from '../data/news';
       </div>
       <div class="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left lg:pt-8">
         <a
-          href="mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20membership&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20Dataland%20membership.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards"
+          href={CONTACT_INQUIRY_MAILTO}
           class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap px-8 py-3.5 sm:w-[300px] bg-[var(--color-primary)] text-white font-semibold text-base rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
