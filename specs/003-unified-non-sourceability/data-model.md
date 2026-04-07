@@ -26,13 +26,13 @@ Three new domain entities introduced across Dataland microservices to support th
 | `reason` | String | NO | | Justification for non-sourceability claim |
 | `uploaderUserId` | String | NO | | Username/ID of user who created the claim |
 | `uploadTime` | ZonedDateTime | NO | | Timestamp when claim was recorded (UTC) |
-| `qaStatus` | Enum | NO | DEFAULT: PENDING | {PENDING, ACCEPTED, REJECTED} |
+| `qaStatus` | Enum | NO | DEFAULT: Pending | {Pending, Accepted, Rejected} |
 | `currentlyActive` | Boolean | NO | DEFAULT: false | Indicates if claim is actively enforced |
 | `bypassQa` | Boolean | NO | DEFAULT: false | Audit trail: whether QA was bypassed |
 
 ### Unique Constraints
 
-- **UNIQUE(companyId, dataType, reportingPeriod, qaStatus)** where qaStatus ∈ {PENDING, ACCEPTED}
+- **UNIQUE(companyId, dataType, reportingPeriod, qaStatus)** where qaStatus ∈ {Pending, Accepted}
   - Prevents duplicate active requests for the same dataset
   - Allows multiple historical records with status REJECTED
 
@@ -94,10 +94,9 @@ Three new domain entities introduced across Dataland microservices to support th
 | `reason` | String | NO | | Copy of reason from backend for context |
 | `uploaderUserId` | String | NO | | Copy of original uploader for audit trail |
 | `uploadTime` | ZonedDateTime | NO | | Copied from backend |
-| `qaStatus` | Enum | NO | DEFAULT: PENDING | {PENDING, ACCEPTED, REJECTED} |
-| `reviewerUserId` | String | YES | | Username/ID of QA reviewer (set when status != PENDING) |
+| `qaStatus` | Enum | NO | DEFAULT: Pending | {Pending, Accepted, Rejected} |
+| `reviewerUserId` | String | YES | | Username/ID of QA reviewer (set when status != Pending) |
 | `qaComment` | String | YES | | Optional comment from QA reviewer |
-| `reviewTimestamp` | ZonedDateTime | YES | | Timestamp when decision was recorded |
 
 ### Indexes
 
@@ -110,11 +109,11 @@ Three new domain entities introduced across Dataland microservices to support th
 ```
   [Non-Sourceability-Created event received]
        ↓
-  qaStatus=PENDING, reviewerUserId=null, qaComment=null
+  qaStatus=Pending, reviewerUserId=null, qaComment=null
        ↓
   [Reviewer submits decision]
        ↓
-  qaStatus=ACCEPTED/REJECTED, reviewerUserId=<id>, qaComment=<optional>
+  qaStatus=Accepted/Rejected, reviewerUserId=<id>, qaComment=<optional>
        ↓
   [Immutable; decision is recorded]
 ```
@@ -131,19 +130,18 @@ Three new domain entities introduced across Dataland microservices to support th
 
 ### State Enum Additions
 
-Existing DataSourcingState enum gains two new values:
+Existing DataSourcingState enum already includes the states needed for this feature:
 
 ```kotlin
 enum class DataSourcingState {
-    // Existing states
-    DATA_SOURCING,
-    DATA_SOURCING_DONE,
-    DOCUMENT_SOURCING,
-    DOCUMENT_SOURCING_DONE,
-    
-    // NEW: Non-sourceability lifecycle
-    NON_SOURCEABLE_VERIFICATION,  // Awaiting QA decision on non-sourceability claim
-    NON_SOURCEABLE                // Confirmed non-sourceable; no updates expected
+     Initialized,
+     DocumentSourcing,
+     DocumentSourcingDone,
+     DataExtraction,
+     DataVerification,
+     NonSourceableVerification,
+     NonSourceable,
+     Done,
 }
 ```
 
@@ -151,38 +149,38 @@ enum class DataSourcingState {
 
 ```
 Existing workflow:
-  DATA_SOURCING → DATA_SOURCING_DONE → DOCUMENT_SOURCING → DOCUMENT_SOURCING_DONE
+     Initialized → DocumentSourcing → DocumentSourcingDone → DataExtraction → DataVerification → Done
 
 NEW: Non-sourceability branch (can occur at any point):
 
-  DATA_SOURCING
+     DataExtraction
     ↓
   [Non-Sourceability-Created event, bypassQa=false]
     ↓
-  NON_SOURCEABLE_VERIFICATION
+     NonSourceableVerification
     ↓
   [QA-Accepted event]
     ↓
-  NON_SOURCEABLE (final; no further updates)
+     NonSourceable (final; no further updates)
     
   OR
   
   [QA-Rejected event]
     ↓
-  NON_SOURCEABLE_VERIFICATION (remains; manual QA-Team handling)
+     NonSourceableVerification (remains; manual QA-Team handling)
 
 Shortcut (bypassQa=true):
 
-  DATA_SOURCING
+     DataExtraction
     ↓
   [Non-Sourceability-Auto-Accepted event]
     ↓
-  NON_SOURCEABLE (direct; no QA step)
+     NonSourceable (direct; no QA step)
 ```
 
 ### Authorization for State Transitions
 
-**New Rule**: Only admins can explicitly patch to NON_SOURCEABLE or other sensitive states.
+**Existing Rule Update**: Only admins can explicitly patch to `NonSourceable` or other sensitive states.
 
 - Update `canUserPatchState()` in `DataSourcingStateSecurityService` to enforce role-based checks
 - Document in OpenAPI: `PATCH /data-sourcing/{dataSourcingId}/state`
@@ -319,7 +317,7 @@ val testQaReview = NonSourceableQaReviewInformation(
 // Data-Sourcing test fixture (state only)
 val dataSourcingObjectWithNonSourceableState = DataSourcingObject(
     // ... existing fields ...
-    state = DataSourcingState.NON_SOURCEABLE_VERIFICATION
+     state = DataSourcingState.NonSourceableVerification
 )
 ```
 
@@ -327,5 +325,5 @@ val dataSourcingObjectWithNonSourceableState = DataSourcingObject(
 
 - **test_non_sourceability_information** (isolated from production data)
 - **test_non_sourceable_qa_review_information** (isolated from production data)
-- **test_data_sourcing_objects** (with new state values)
+- **test_data_sourcing_objects** (using the existing state values needed by this workflow)
 - **test_rabbitmq_messages** (for idempotency verification)

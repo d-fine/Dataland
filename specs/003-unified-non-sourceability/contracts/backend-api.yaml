@@ -16,9 +16,9 @@ paths:
       description: |
         Create a record indicating that a dataset is non-sourceable.
         
-        - If bypassQa=false: creates with qaStatus=PENDING, publishes non-sourceability-created event
-        - If bypassQa=true (admin only): creates with qaStatus=ACCEPTED, publishes non-sourceability-auto-accepted event
-        - Duplicate detection: fails if record already exists for (companyId, dataType, reportingPeriod) with qaStatus in {PENDING, ACCEPTED}
+        - If bypassQa=false: creates with qaStatus=Pending, publishes non-sourceability-created event
+        - If bypassQa=true (admin only): creates with qaStatus=Accepted, publishes non-sourceability-auto-accepted event
+        - Duplicate detection: fails if record already exists for (companyId, dataType, reportingPeriod) with qaStatus in {Pending, Accepted}
       operationId: createNonSourceability
       requestBody:
         required: true
@@ -68,9 +68,9 @@ paths:
         - name: qaStatus
           in: query
           description: Filter by QA status
-          schema: 
+          schema:
             type: string
-            enum: [PENDING, ACCEPTED, REJECTED]
+            enum: [Pending, Accepted, Rejected]
       responses:
         '200':
           description: List of non-sourceability records
@@ -182,7 +182,7 @@ components:
           description: Timestamp when claim was created (UTC)
         qaStatus:
           type: string
-          enum: [PENDING, ACCEPTED, REJECTED]
+          enum: [Pending, Accepted, Rejected]
           description: Current QA review status
         currentlyActive:
           type: boolean

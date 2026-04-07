@@ -32,7 +32,7 @@ paths:
           in: query
           schema: 
             type: string
-            enum: [PENDING, ACCEPTED, REJECTED]
+            enum: [Pending, Accepted, Rejected]
           description: Filter by QA status
         - name: showOnlyActive
           in: query
@@ -67,7 +67,7 @@ paths:
     get:
       summary: Get pending QA review tasks (queue view)
       description: |
-        Simplified view showing only pending (qaStatus=PENDING) non-sourceability reviews.
+        Simplified view showing only pending (qaStatus=Pending) non-sourceability reviews.
         Useful for QA team dashboards and task queues.
       operationId: getPendingReviewQueue
       parameters:
@@ -178,12 +178,12 @@ components:
           description: Original upload time (UTC)
         qaStatus:
           type: string
-          enum: [PENDING, ACCEPTED, REJECTED]
+          enum: [Pending, Accepted, Rejected]
           description: Current QA decision status
         reviewerUserId:
           type: string
           nullable: true
-          description: User ID of QA reviewer (null if status is still PENDING)
+          description: User ID of QA reviewer (null if status is still Pending)
         qaComment:
           type: string
           nullable: true
@@ -196,7 +196,7 @@ components:
       properties:
         qaStatus:
           type: string
-          enum: [ACCEPTED, REJECTED]
+          enum: [Accepted, Rejected]
           description: Decision outcome
         qaComment:
           type: string

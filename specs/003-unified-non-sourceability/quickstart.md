@@ -202,7 +202,7 @@ curl -X GET 'http://localhost:8080/metadata/nonSourceable?nonSourceabilityId=123
 curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: state=NON_SOURCEABLE
+# Expected: state=NonSourceable
 ```
 
 ### Scenario 2: Create Request with QA Bypass (bypassQa=true – Admin only)
@@ -229,11 +229,11 @@ curl -X GET 'http://localhost:8081/nonSourceable?nonSourceabilityId=<ID>' \
 
 # Expected: Empty list or 404 (no review created for this request)
 
-# 3. Verify data-sourcing state is now NON_SOURCEABLE (not VERIFICATION)
+# 3. Verify data-sourcing state is now NonSourceable (not NonSourceableVerification)
 curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: state=NON_SOURCEABLE (direct transition)
+# Expected: state=NonSourceable (direct transition)
 ```
 
 ### Scenario 3: QA Rejection
@@ -268,11 +268,11 @@ curl -X GET 'http://localhost:8080/metadata/nonSourceable?nonSourceabilityId=<ID
 
 # Expected: qaStatus=REJECTED, currentlyActive=false
 
-# 4. Verify data-sourcing remains in NON_SOURCEABLE_VERIFICATION
+# 4. Verify data-sourcing remains in NonSourceableVerification
 curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: state=NON_SOURCEABLE_VERIFICATION (not transitioned)
+# Expected: state=NonSourceableVerification (not transitioned)
 ```
 
 ---
@@ -318,13 +318,13 @@ curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
 
 - **Event Listener**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/service/NonSourceableEventListener.kt`
   - Listens for all non-sourceability events
-  - Updates dataset state: NON_SOURCEABLE_VERIFICATION, NON_SOURCEABLE
+  - Updates dataset state: NonSourceableVerification, NonSourceable
 
 - **State Service**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/service/DataSourcingStateService.kt`
   - Implements state transitions with authorization checks
 
 - **State Security**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/security/DataSourcingStateSecurityService.kt`
-  - Enforces `canUserPatchState()` rule: only admins can patch to NON_SOURCEABLE
+  - Enforces `canUserPatchState()` rule: only admins can patch to NonSourceable
 
 ---
 
@@ -379,7 +379,7 @@ grep "Published non-sourceability-created" dataland-backend/logs/*.log
 grep "Received non-sourceability-created event" dataland-qa-service/logs/*.log
 
 # Data-Sourcing: Check for state transitions
-grep "State transitioned to NON_SOURCEABLE" dataland-data-sourcing-service/logs/*.log
+grep "State transitioned to NonSourceable" dataland-data-sourcing-service/logs/*.log
 ```
 
 RabbitMQ monitoring:

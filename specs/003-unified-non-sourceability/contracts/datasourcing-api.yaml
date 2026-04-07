@@ -17,8 +17,8 @@ paths:
         Patch the state of a data-sourcing object.
         
         Authorization Rules:
-        - Only admins can patch to NON_SOURCEABLE or other sensitive states
-        - Document collectors can patch from DOCUMENT_SOURCING to DOCUMENT_SOURCING_DONE
+        - Only admins can patch to NonSourceable or other sensitive states
+        - Document collectors can patch from DocumentSourcing to DocumentSourcingDone
         - Authorization is enforced in DataSourcingStateSecurityService.canUserPatchState()
         
         Note: Event-driven state transitions (from RabbitMQ messages) bypass this check,
@@ -64,18 +64,20 @@ components:
     DataSourcingState:
       type: string
       enum:
-        - DATA_SOURCING
-        - DATA_SOURCING_DONE
-        - DOCUMENT_SOURCING
-        - DOCUMENT_SOURCING_DONE
-        - NON_SOURCEABLE_VERIFICATION  # NEW: Awaiting QA decision
-        - NON_SOURCEABLE               # NEW: Confirmed non-sourceable
+        - Initialized
+        - DocumentSourcing
+        - DocumentSourcingDone
+        - DataExtraction
+        - DataVerification
+        - NonSourceableVerification
+        - NonSourceable
+        - Done
       description: |
         Enumeration of data-sourcing lifecycle states.
         
-        NEW STATES (for non-sourceability workflow):
-        - NON_SOURCEABLE_VERIFICATION: Dataset has a non-sourceability claim pending QA review
-        - NON_SOURCEABLE: Dataset confirmed as non-sourceable; no sourcing updates expected
+        Existing states used by this workflow:
+        - NonSourceableVerification: Dataset has a non-sourceability claim pending QA review
+        - NonSourceable: Dataset confirmed as non-sourceable; no sourcing updates expected
 
     DataSourcingStatePatch:
       type: object

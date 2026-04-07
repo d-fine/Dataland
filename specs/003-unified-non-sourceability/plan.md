@@ -59,6 +59,7 @@ Implement a **unified non-sourceability evaluation lifecycle** across three micr
 - E2E tests for full request->accept/reject->state-transition workflows
 - Idempotency tests: replay same event 3x, verify no duplicate records or state corruption
 - 80% line coverage floor on changed modules
+- Changed code must pass the repository linters and static checks that are part of the existing development and commit workflow
 
 **Principle V: Minimal Dependencies and Reviewable Changes** ✅
 
@@ -80,7 +81,7 @@ specs/003-unified-non-sourceability/
 │   ├── backend-api.yaml
 │   ├── qa-service-api.yaml
 │   ├── datasourcing-api.yaml
-│   └── events-schema.yaml
+│   └── EVENTS.md
 ├── checklists/
 │   └── requirements.md
 └── tasks.md             # Phase 2 (generated task list - created by /speckit.tasks)
@@ -153,12 +154,11 @@ dataland-data-sourcing-service/
 │   └── com/d_fine/dataland/datasourcing/
 │       ├── state/
 │       │   ├── model/
-│       │   │   └── DataSourcingState.kt (enum: includes NonSourceableVerification, NonSourceable)
+│       │   │   └── DataSourcingState.kt (existing enum already includes NonSourceableVerification, NonSourceable)
 │       │   ├── service/
 │       │   │   ├── DataSourcingStateService.kt (state transitions)
 │       │   │   └── NonSourceableEventListener.kt (consumes lifecycle events)
-│       │   └── security/
-│       │       └── DataSourcingStateSecurityService.kt (replaces canUserPatchState logic)
+│       └── (updates to existing services; no new package)
 │       └── ... (existing sourcing code)
 └── src/test/kotlin/
     └── com/d_fine/dataland/datasourcing/state/
@@ -186,6 +186,24 @@ dataland-data-sourcing-service/
 
 ## Phase 1: Design & Contracts
 
+### 1.0 Service Design Scope
+
+1. **Backend**:
+  - Introduce `NonSourceabilityInformationEntity` as a new entity alongside the existing `SourceabilityEntity` (no migration from old to new); update the repository and search model handling to support the new entity.
+  - Rewire `GET /metadata/nonSourceable`, `POST /metadata/nonSourceable`, and `HEAD /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}` to the new entity semantics and `currentlyActive` checks.
+  - Emit `non-sourceability-created` for standard POST requests and `non-sourceability-auto-accepted` when `bypassQa` is used.
+  - Consume QA acceptance and rejection events and update `qaStatus` and `currentlyActive` accordingly.
+
+2. **QA service**:
+  - Introduce `NonSourceableQaReviewInformation` as the persistence model for non-sourceability QA reviews.
+  - Add or rewire the non-sourceable QA endpoints: `GET /nonSourceable`, `GET /nonSourceable/queue`, and `POST /nonSourceable/{nonSourceabilityId}`.
+  - Consume the backend `non-sourceability-created` event and create the corresponding QA review row.
+  - Emit accepted and rejected QA decision events for downstream consumers.
+
+3. **Data sourcing service**:
+  - Reuse the existing `NonSourceableVerification` and `NonSourceable` states and implement listener-driven transitions from backend and QA lifecycle events.
+  - Update `SecurityUtilsService.canUserPatchState()` role checks to add admin-only enforcement for `NonSourceable` state transitions, while preserving existing document-collector permission for `DocumentSourcing -> DocumentSourcingDone`.
+
 ### 1.1 Data Model
 
 **Backend Service (dataland-backend)**
@@ -203,13 +221,13 @@ data class NonSourceabilityInformationEntity(
     val reason: String,
     val uploaderUserId: String,
     val uploadTime: ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC")),
-    val qaStatus: NonSourceabilityQaStatus = NonSourceabilityQaStatus.PENDING,
+    val qaStatus: NonSourceabilityQaStatus = NonSourceabilityQaStatus.Pending,
     val currentlyActive: Boolean = false,
     val byPassQa: Boolean = false // For audit trail
 )
 
 enum class NonSourceabilityQaStatus {
-    PENDING, ACCEPTED, REJECTED
+    Pending, Accepted, Rejected
 }
 
 // DTO: REST API response type
@@ -242,10 +260,9 @@ data class NonSourceableQaReviewInformationEntity(
     val reason: String,
     val uploaderUserId: String,
     val uploadTime: ZonedDateTime,
-    val qaStatus: NonSourceabilityQaStatus = NonSourceabilityQaStatus.PENDING,
+    val qaStatus: NonSourceabilityQaStatus = NonSourceabilityQaStatus.Pending,
     val reviewerUserId: String? = null,
-    val qaComment: String? = null,
-    val reviewTimestamp: ZonedDateTime? = null
+    val qaComment: String? = null
 )
 
 // DTO: QA review task
@@ -272,19 +289,19 @@ data class NonSourceableQaDecision(
 **Data-Sourcing Service (dataland-data-sourcing-service)**
 
 ```kotlin
-// State enum: Add new states to existing DataSourcingState
+// Existing state enum used by data-sourcing service
 enum class DataSourcingState {
-    // Existing states...
-    DATA_SOURCING,
-    DATA_SOURCING_DONE,
-    DOCUMENT_SOURCING,
-    DOCUMENT_SOURCING_DONE,
-    // NEW: Non-sourceability states
-    NON_SOURCEABLE_VERIFICATION, // Pending QA decision
-    NON_SOURCEABLE               // Confirmed non-sourceable
+  Initialized,
+  DocumentSourcing,
+  DocumentSourcingDone,
+  DataExtraction,
+  DataVerification,
+  NonSourceableVerification,
+  NonSourceable,
+  Done,
 }
 
-// Update existing DataSourcingEntity to include new state values
+// Reuse existing DataSourcingState values; no enum extension required for this feature
 ```
 
 ### 1.2 Contract Specifications
@@ -338,7 +355,7 @@ paths:
           schema: { type: string }
         - name: qaStatus
           in: query
-          schema: { type: string, enum: [PENDING, ACCEPTED, REJECTED] }
+          schema: { type: string, enum: [Pending, Accepted, Rejected] }
       responses:
         '200':
           description: List of matching records
@@ -381,7 +398,7 @@ components:
         reason: { type: string }
         uploaderUserId: { type: string }
         uploadTime: { type: string, format: date-time }
-        qaStatus: { type: string, enum: [PENDING, ACCEPTED, REJECTED] }
+        qaStatus: { type: string, enum: [Pending, Accepted, Rejected] }
         currentlyActive: { type: boolean }
 ```
 
@@ -405,7 +422,7 @@ paths:
           schema: { type: string }
         - name: qaStatus
           in: query
-          schema: { type: string, enum: [PENDING, ACCEPTED, REJECTED] }
+          schema: { type: string, enum: [Pending, Accepted, Rejected] }
         - name: showOnlyActive
           in: query
           schema: { type: boolean, default: false }
@@ -428,7 +445,7 @@ paths:
       summary: Get pending QA review tasks (queue view)
       responses:
         '200':
-          description: Pending review tasks only (qaStatus=PENDING)
+          description: Pending review tasks only (qaStatus=Pending)
   /nonSourceable/{nonSourceabilityId}:
     post:
       summary: Submit QA decision (Accept or Reject)
@@ -443,7 +460,7 @@ paths:
             schema:
               type: object
               properties:
-                qaStatus: { type: string, enum: [ACCEPTED, REJECTED] }
+                qaStatus: { type: string, enum: [Accepted, Rejected] }
                 qaComment: { type: string }
               required: [qaStatus]
       responses:
@@ -467,12 +484,12 @@ components:
         reason: { type: string }
         uploaderUserId: { type: string }
         uploadTime: { type: string, format: date-time }
-        qaStatus: { type: string, enum: [PENDING, ACCEPTED, REJECTED] }
+        qaStatus: { type: string, enum: [Pending, Accepted, Rejected] }
         reviewerUserId: { type: string, nullable: true }
         qaComment: { type: string, nullable: true }
 ```
 
-**RabbitMQ Event Schemas** (`contracts/events-schema.yaml`)
+**RabbitMQ Event Schemas** (`contracts/EVENTS.md`)
 
 ```yaml
 components:
@@ -517,7 +534,7 @@ components:
         - reportingPeriod
       description: "Published by backend when bypassQa=true; skips QA service, triggers direct data-sourcing state transition to NonSourceable"
 
-    QaAcceptedEvent:
+    QaNonSourceabilityAcceptedEvent:
       type: object
       properties:
         eventId: { type: string, format: uuid }
@@ -533,7 +550,7 @@ components:
         - qaStatus
       description: "Published by QA service when reviewer accepts; backend sets currentlyActive=true, data-sourcing transitions to NonSourceable"
 
-    QaRejectedEvent:
+    QaNonSourceabilityRejectedEvent:
       type: object
       properties:
         eventId: { type: string, format: uuid }
@@ -581,6 +598,7 @@ This plan feeds into task generation, which will create an ordered, dependency-a
 - Unit tests (all three services)
 - Integration tests (service-to-service via RabbitMQ)
 - E2E tests (full workflow)
+- Linter and static-check compliance for all changed modules
 - Documentation updates
 
 ---

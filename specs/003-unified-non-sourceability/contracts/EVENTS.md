@@ -90,8 +90,8 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 
 ### Consumer Action
 
-- **QA Service**: Create NonSourceableQaReviewInformation with nonSourceabilityId, qaStatus=PENDING
-- **Data-Sourcing Service**: Transition dataset state to NON_SOURCEABLE_VERIFICATION
+- **QA Service**: Create NonSourceableQaReviewInformation with nonSourceabilityId, qaStatus=Pending
+- **Data-Sourcing Service**: Transition dataset state to NonSourceableVerification
 
 ---
 
@@ -138,11 +138,11 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 
 ### Consumer Action
 
-- **Data-Sourcing Service**: Transition dataset state directly to NON_SOURCEABLE (skipping verification step)
+- **Data-Sourcing Service**: Transition dataset state directly to NonSourceable (skipping verification step)
 
 ---
 
-## Event: QaAcceptedEvent
+## Event: QaNonSourceabilityAcceptedEvent
 
 **Published by**: dataland-qa-service  
 **Consumers**: dataland-backend, dataland-data-sourcing-service  
@@ -157,7 +157,7 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "QaAcceptedEvent",
+  "title": "QaNonSourceabilityAcceptedEvent",
   "type": "object",
   "required": [
     "eventId",
@@ -181,7 +181,7 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
     "qaStatus": {
       "type": "string",
       "enum": ["ACCEPTED"],
-      "description": "Always ACCEPTED for this event type"
+      "description": "Always Accepted for this event type"
     },
     "reviewerUserId": {
       "type": "string",
@@ -208,12 +208,12 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 
 ### Consumer Action
 
-- **Backend**: Update NonSourceabilityInformation: set qaStatus=ACCEPTED, currentlyActive=true
-- **Data-Sourcing Service**: Transition dataset state from NON_SOURCEABLE_VERIFICATION to NON_SOURCEABLE
+- **Backend**: Update NonSourceabilityInformation: set qaStatus=Accepted, currentlyActive=true
+- **Data-Sourcing Service**: Transition dataset state from NonSourceableVerification to NonSourceable
 
 ---
 
-## Event: QaRejectedEvent
+## Event: QaNonSourceabilityRejectedEvent
 
 **Published by**: dataland-qa-service  
 **Consumers**: dataland-backend, dataland-data-sourcing-service  
@@ -226,7 +226,7 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "QaRejectedEvent",
+  "title": "QaNonSourceabilityRejectedEvent",
   "type": "object",
   "required": [
     "eventId",
@@ -242,7 +242,7 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
     "qaStatus": {
       "type": "string",
       "enum": ["REJECTED"],
-      "description": "Always REJECTED for this event type"
+      "description": "Always Rejected for this event type"
     },
     "reviewerUserId": { "type": "string" },
     "qaComment": { "type": "string", "nullable": true },
@@ -255,7 +255,7 @@ All events include `nonSourceabilityId` as the correlation ID for idempotent rep
 ### Consumer Action
 
 - **Backend**: Update NonSourceabilityInformation: set qaStatus=REJECTED (leave currentlyActive=false)
-- **Data-Sourcing Service**: Leave dataset state in NON_SOURCEABLE_VERIFICATION (manual QA-Team handling required)
+- **Data-Sourcing Service**: Leave dataset state in NonSourceableVerification (manual QA-Team handling required)
 
 ---
 
@@ -270,7 +270,7 @@ All consumers MUST implement idempotent handlers:
 Example (Kotlin):
 
 ```kotlin
-fun handleQaAcceptedEvent(event: QaAcceptedEvent) {
+fun handleQaAcceptedEvent(event: QaNonSourceabilityAcceptedEvent) {
     val existing = repository.findByNonSourceabilityId(event.nonSourceabilityId)
     if (existing?.qaStatus == QaStatus.ACCEPTED && existing.updatedTime >= event.decisionTime) {
         logger.warn("Duplicate QA-Accepted event received: $event")
@@ -324,5 +324,5 @@ Dead Letter Exchange: dataland-events-dlx (for failed message replay)
 ### Version 1.0.0 (2026-04-07)
 
 - Initial event schema definitions
-- Four event types: NonSourceabilityCreatedEvent, NonSourceabilityAutoAcceptedEvent, QaAcceptedEvent, QaRejectedEvent
+- Four event types: NonSourceabilityCreatedEvent, NonSourceabilityAutoAcceptedEvent, QaNonSourceabilityAcceptedEvent, QaNonSourceabilityRejectedEvent
 - Idempotency requirement documented
