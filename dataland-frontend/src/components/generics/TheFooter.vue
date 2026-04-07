@@ -41,7 +41,9 @@
       <a href="/legal" class="footer__bottom-link">Legal</a>
       <a href="/imprint" class="footer__bottom-link">Imprint</a>
       <a href="/dataprivacy" class="footer__bottom-link">Data Privacy</a>
-      <a href="/cookies" class="footer__bottom-link">Cookie Settings</a>
+      <button type="button" class="footer__bottom-link footer__cookie-btn" @click="showCookieSettings">
+        Cookie Settings
+      </button>
       <span class="footer__copyright">&copy; {{ currentYear }} Dataland</span>
       <a
         href="https://www.linkedin.com/company/dataland-gmbh"
@@ -64,6 +66,14 @@ defineProps<{
 }>();
 
 const currentYear = computed(() => new Date().getFullYear());
+
+/** Opens the Cookiebot consent dialog if available. */
+function showCookieSettings(): void {
+  const win = window as Window & { Cookiebot?: { show: () => void } };
+  if (typeof win.Cookiebot !== 'undefined') {
+    win.Cookiebot.show();
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -147,6 +157,14 @@ const currentYear = computed(() => new Date().getFullYear());
     &:hover {
       color: var(--p-primary-color);
     }
+  }
+
+  &__cookie-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
   }
 
   &__copyright {
