@@ -1039,10 +1039,8 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithQaAccepted });
 
-      cy.get('[data-test="corrected-datapoint-section"]').find('.qa-accepted-info-text').should('be.visible');
-      cy.get('[data-test="corrected-datapoint-section"]')
-        .find('.qa-accepted-info-text')
-        .should('contain.text', 'report 2/2 accepted');
+      cy.get('[data-test="qa-accepted-info-text"]').should('be.visible');
+      cy.get('[data-test="qa-accepted-info-text"]').should('contain.text', 'report 2/2 accepted');
       cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
       cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
       cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
