@@ -456,9 +456,9 @@ function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
   const currentIndex = ids.indexOf(startingDataPointTypeId);
   const total = ids.length;
   for (let offset = 1; offset < total; offset++) {
-    const targetId = ids[(currentIndex + offset) % total];
-    const judgementMetaData = datasetJudgement.value?.dataPoints?.[targetId];
-    if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return targetId;
+    const targetDataPointTypeId = ids[(currentIndex + offset) % total];
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[targetDataPointTypeId];
+    if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return targetDataPointTypeId;
   }
   return startingDataPointTypeId;
 }
