@@ -8,7 +8,8 @@
         </span>
         <span
           v-if="showOriginalCheckmark || showQaCheckmark"
-          class="pi pi-check text-green-500 ml-2 text-xl font-bold accepted-check"
+          class="pi pi-check text-green-500 ml-2 text-xl font-bold"
+          data-test="accepted-check"
           aria-label="Accepted"
         />
         <span

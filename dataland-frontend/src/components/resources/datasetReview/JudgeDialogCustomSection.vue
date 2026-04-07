@@ -9,7 +9,7 @@
         <span
           v-if="isAccepted"
           class="pi pi-check text-green-500 ml-2 text-xl font-bold"
-          data-test="accepted-check-custom-section"
+          data-test="accepted-check"
           aria-label="Accepted"
         />
       </div>

@@ -977,9 +977,9 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithOriginalAccepted });
 
-      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('be.visible');
-      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('be.visible');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
 
     it('shows the accepted-check on the reviewed section when acceptedSource is Qa and the reporter matches', () => {
@@ -996,9 +996,9 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithQaAccepted });
 
-      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('be.visible');
-      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('be.visible');
+      cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
 
     it('shows message indicating which qa report has been selected on the reviewed section when acceptedSource is Qa for another report and the reporter does not match', () => {
@@ -1041,9 +1041,9 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="qa-accepted-info-text"]').should('be.visible');
       cy.get('[data-test="qa-accepted-info-text"]').should('contain.text', 'report 2/2 accepted');
-      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
 
     it('shows the accepted-check on the custom section when acceptedSource is Custom', () => {
@@ -1061,17 +1061,17 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithCustomAccepted });
 
-      cy.get('[data-test="accepted-check-custom-section"]').should('be.visible');
-      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').should('be.visible');
+      cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
 
     it('shows no accepted-check on any section when there is no accepted source', () => {
       mountJudgeDialog();
 
-      cy.get('[data-test="original-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="corrected-datapoint-section"]').find('.accepted-check').should('not.exist');
-      cy.get('[data-test="custom-datapoint-section"]').find('.accepted-check').should('not.exist');
+      cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
   });
 
