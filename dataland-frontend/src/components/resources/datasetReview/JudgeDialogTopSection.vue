@@ -11,14 +11,14 @@
           class="pi pi-check text-green-500 ml-2 text-xl font-bold accepted-check"
           aria-label="Accepted"
         />
-        <span v-else-if="qaAcceptedInfoText" class="ml-2 text-sm text-green-600 font-semibold qa-accepted-info-text">
+        <span
+          v-else-if="qaAcceptedInfoText"
+          class="ml-2 text-sm text-green-600 font-semibold"
+          data-test="qa-accepted-info-text"
+        >
           ({{ qaAcceptedInfoText }})
         </span>
-        <DatalandProgressSpinner
-          v-if="isLoading && !data"
-          class="judge-modal__title-spinner ml-2"
-          fontSize="font-size-sm"
-        />
+        <DatalandProgressSpinner v-if="isLoading && !data" class="ml-2" fontSize="font-size-sm" />
         <span v-else-if="isLoadingError" class="ml-2 text-sm text-red-600">
           {{ errorMessage }}
         </span>
@@ -177,11 +177,7 @@ const errorMessage = computed(() => {
   if (!props.isLoadingError || !props.loadingErrorObject) {
     return 'Failed to load datapoint. Please try again later!';
   }
-  const err = props.loadingErrorObject;
-  if (!err) {
-    return 'Failed to load datapoint. Please try again later!';
-  }
-  const backendMessage = err.message;
+  const backendMessage = props.loadingErrorObject?.message;
   return backendMessage
     ? `Failed to load datapoint: ${backendMessage}`
     : 'Failed to load datapoint. Please try again later!';
