@@ -25,7 +25,7 @@ const reporterUserId2 = 'reporter-user-id-2';
 const overflowingCommentEntry =
   'original-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
 const correctedCommentEntry =
-  'original-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
+  'corrected-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
 const overflowingValueEntry =
   'original-value-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
 const overflowingQualityEntry =
@@ -158,6 +158,7 @@ const overflowTestCases = [
     expectedPopoverText: overflowingQualityEntry,
   },
 ] as const;
+
 // ===== Mount helper =====
 
 /**
@@ -266,6 +267,7 @@ function checkOverflowBehavior(params: {
     cy.get('[data-test="overflow-popover"]').should('not.exist');
   });
 }
+
 // ===== Tests =====
 
 describe('JudgeDialog component tests', () => {
@@ -288,7 +290,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('original-value').should('be.visible');
         cy.contains('Audited').should('be.visible');
         cy.contains('original-doc.pdf').should('be.visible');
-        cy.contains('3').should('be.visible');
+        cy.contains('tr', 'Page(s)').should('contain.text', '3');
         cy.contains(overflowingCommentEntry).should('be.visible');
       });
     });
@@ -469,18 +471,17 @@ describe('JudgeDialog component tests', () => {
         const parsed = JSON.parse(interception.request.body.customDataPoint);
         expect(parsed.value).to.eq('my-custom-value');
       });
+    });
 
-      it('advances the header to the next KPI after a successful accept', () => {
-        mountJudgeDialog();
+    it('advances the header to the next KPI after a successful accept', () => {
+      mountJudgeDialog();
 
-        cy.contains('KPI Alpha Label').should('be.visible');
+      cy.contains('KPI Alpha Label').should('be.visible');
+      cy.get('[data-test="accept-original-button"]').click();
+      cy.wait('@patchJudgementDetail');
 
-        cy.get('[data-test="accept-original-button"]').click();
-        cy.wait('@patchJudgementDetail');
-
-        cy.contains('KPI Beta Label').should('be.visible');
-        cy.contains('KPI Alpha Label').should('not.exist');
-      });
+      cy.get('[data-test="dialog-title"]').should('contain.text', 'KPI Beta Label');
+      cy.get('[data-test="dialog-title"]').should('not.contain.text', 'KPI Alpha Label');
     });
 
     it('calls PATCH with AcceptedDataPointSource.Custom and JSON content when accepting from JSON mode', () => {
@@ -595,6 +596,8 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-value-field"]').should('have.value', 'original-value');
       cy.get('[data-test="custom-pages-field"]').should('have.value', '3');
       cy.get('[data-test="custom-comment-field"]').should('have.value', overflowingCommentEntry);
+      cy.get('[data-test="custom-quality-field"]').should('contain', 'Audited');
+      cy.get('[data-test="custom-document-field"]').should('contain', 'Select Document');
     });
 
     it('copies the corrected data point into the custom form fields', () => {
@@ -605,6 +608,8 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-value-field"]').should('have.value', 'corrected-value');
       cy.get('[data-test="custom-pages-field"]').should('have.value', '7');
       cy.get('[data-test="custom-comment-field"]').should('have.value', correctedCommentEntry);
+      cy.get('[data-test="custom-quality-field"]').should('contain', 'Estimated');
+      cy.get('[data-test="custom-document-field"]').should('contain', 'Select Document');
     });
 
     it('copies the original data point into the JSON textarea when in JSON mode', () => {
@@ -615,6 +620,10 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="copy-original-to-custom"]').click();
 
       cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'original-value');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'Audited');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'original-doc.pdf');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', '3');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', overflowingCommentEntry);
     });
 
     it('copies the corrected data point into the JSON textarea when in JSON mode', () => {
@@ -624,6 +633,10 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="copy-corrected-to-custom"]').click();
 
       cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'corrected-value');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'Estimated');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'corrected-doc.pdf');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', '7');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', correctedCommentEntry);
     });
 
     it('disables the copy-original button when there is no original data point loaded yet', () => {
@@ -687,10 +700,19 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-value-field"]').should('have.value', 'previously-accepted-value');
       cy.get('[data-test="custom-pages-field"]').should('have.value', '12');
       cy.get('[data-test="custom-comment-field"]').should('have.value', 'previously-accepted-comment');
+      cy.get('[data-test="custom-quality-field"]').should('contain', 'Estimated');
+      cy.get('[data-test="custom-document-field"]').should('contain', 'Select Document');
     });
 
     it('pre-populates the custom JSON textarea in JSON mode with a previously accepted custom value', () => {
-      const previousCustomValue = { value: 'json-pre-populated-value', quality: 'Audited' };
+      const previousCustomValue = {
+        value: 'json-pre-populated-value',
+        quality: 'Audited',
+        comment: 'previously-accepted-comment',
+        dataSource: { page: '12' },
+      };
+
+      console.log(JSON.stringify(previousCustomValue, null, 2));
 
       const judgementWithPreviousCustom: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
@@ -707,6 +729,9 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="edit-mode-toggle"]').click();
       cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'json-pre-populated-value');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'Audited');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'previously-accepted-comment');
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', '12');
     });
 
     it('resets the custom form to defaults when navigating to a KPI without a previously accepted custom value', () => {
@@ -738,6 +763,10 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
       cy.get('[data-test="custom-value-field"]').should('have.value', '');
+      cy.get('[data-test="custom-quality-field"]').should('have.value', '');
+      cy.get('[data-test="custom-document-field"]').should('have.value', '');
+      cy.get('[data-test="custom-pages-field"]').should('have.value', '');
+      cy.get('[data-test="custom-comment-field"]').should('have.value', '');
     });
   });
 
@@ -789,7 +818,7 @@ describe('JudgeDialog component tests', () => {
     it('does not show an error message on initial load without any action', () => {
       mountJudgeDialog();
 
-      cy.get('[data-test="judge-modal-patch-error"]').should('not.exist');
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
 
     it('shows a popup modal when the PATCH request fails and close using confirm', () => {
@@ -806,7 +835,7 @@ describe('JudgeDialog component tests', () => {
   // ---------------------------------------------------------------------------
   describe('Corrected datapoint QA report navigation', () => {
     const secondCorrectedDataPoint = {
-      value: 'second-corrected-value',
+      value: 'value of second corrected data point',
       quality: 'Audited',
       comment: 'second-corrected-comment',
       dataSource: { fileName: 'second-corrected-doc.pdf', page: '15' },
@@ -866,7 +895,7 @@ describe('JudgeDialog component tests', () => {
         cy.get('[data-test="qa-next-button"]').click();
         cy.contains('2 / 2').should('be.visible');
         cy.contains('Reporter Two').should('be.visible');
-        cy.contains('second-corrected-value').should('be.visible');
+        cy.contains('value of second corrected data point').should('be.visible');
       });
     });
 
@@ -926,7 +955,7 @@ describe('JudgeDialog component tests', () => {
         cy.get('[data-test="qa-next-button"]').click();
         cy.contains('2 / 2').should('be.visible');
         cy.contains('Reporter Two').should('be.visible');
-        cy.contains('second-corrected-value').should('be.visible');
+        cy.contains('value of second corrected data point').should('be.visible');
       });
     });
   });
@@ -1121,7 +1150,7 @@ describe('JudgeDialog component tests', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // 11. overflow popup behavior
+  // 12. overflow popup behavior
   // ---------------------------------------------------------------------------
   describe('Overflow behavior of contents', () => {
     it('Overflow behavior for original datapoint is behaving correctly', () => {
@@ -1130,9 +1159,9 @@ describe('JudgeDialog component tests', () => {
         cy.contains('th', 'Value')
           .parent('tr')
           .within(() => {
-            cy.contains(overflowingValueEntry.substring(0, 10)).should('be.visible'); // optional
+            cy.contains(overflowingValueEntry.substring(0, 10)).should('be.visible');
             cy.get('[data-test="value-overflow-icon"]').should('be.visible');
-            cy.get('[data-test="value-overflow-icon"]').click();
+            cy.get('[data-test="value-overflow-icon"]').trigger('mouseenter');
           });
       });
     });
