@@ -98,8 +98,16 @@ const activeClasses = 'text-[var(--color-primary)]';
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center gap-5">
-      <a href="/login" class="no-underline text-[var(--color-text)] font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
-      <a href="/register" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
+      <span id="header-guest-actions" class="flex items-center gap-5">
+        <a href="/login" class="no-underline text-[var(--color-text)] font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
+        <a href="/register" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
+      </span>
+      <a id="header-back-to-platform" href="/companies" class="hidden items-center gap-2 no-underline text-[var(--color-text)] font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+        Back to platform
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
     </div>
 
     <!-- Mobile hamburger (visible < lg only) -->
@@ -131,4 +139,12 @@ const activeClasses = 'text-[var(--color-primary)]';
   // Clear Keycloak redirect flags whenever the user is on the Astro site
   sessionStorage.removeItem('dataland_login_redirect_pending');
   sessionStorage.removeItem('dataland_register_redirect_pending');
+
+  // Toggle header actions based on authentication state
+  if (localStorage.getItem('dataland_authenticated') === 'true') {
+    const guestActions = document.getElementById('header-guest-actions');
+    const backToPlatform = document.getElementById('header-back-to-platform');
+    if (guestActions) guestActions.style.display = 'none';
+    if (backToPlatform) backToPlatform.style.display = 'inline-flex';
+  }
 </script>

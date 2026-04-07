@@ -25,7 +25,6 @@ onMounted(async () => {
 
   const wasPending = sessionStorage.getItem(redirectKey);
   if (wasPending) {
-    // User hit the back button from Keycloak — clear the flag and send back to Astro homepage
     sessionStorage.removeItem(redirectKey);
     globalThis.location.replace(astroHomeUri);
     return;

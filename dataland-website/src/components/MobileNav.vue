@@ -38,8 +38,14 @@
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
         >{{ link.label }}</a>
-        <a href="/login" class="mobile-nav__link" @click="close">Login</a>
-        <a href="/register" class="mobile-nav__cta" @click="close">Try it free</a>
+        <a href="/login" v-if="!isAuthenticated" class="mobile-nav__link" @click="close">Login</a>
+        <a href="/register" v-if="!isAuthenticated" class="mobile-nav__cta" @click="close">Try it free</a>
+        <a href="/companies" v-if="isAuthenticated" class="mobile-nav__link mobile-nav__back-to-platform" @click="close">
+          Back to platform
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </nav>
   </Teleport>
@@ -67,6 +73,7 @@ function isActive(href: string): boolean {
 const isOpen = ref(false);
 const closeButtonRef = ref<HTMLButtonElement | null>(null);
 const navRef = ref<HTMLElement | null>(null);
+const isAuthenticated = ref(false);
 
 function close(): void {
   isOpen.value = false;
@@ -94,6 +101,7 @@ function handleKeydown(event: KeyboardEvent): void {
 }
 
 onMounted(() => {
+  isAuthenticated.value = localStorage.getItem('dataland_authenticated') === 'true';
   document.addEventListener('toggle-mobile-nav', handleToggle);
   document.addEventListener('keydown', handleKeydown);
 });
@@ -196,6 +204,12 @@ onUnmounted(() => {
   .mobile-nav__cta {
     transition: background 0.15s;
   }
+}
+
+.mobile-nav__back-to-platform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .mobile-nav__cta:hover {

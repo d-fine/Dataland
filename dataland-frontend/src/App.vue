@@ -161,8 +161,11 @@ export default defineComponent({
     handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
+        localStorage.setItem('dataland_authenticated', 'true');
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
         void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+      } else {
+        localStorage.removeItem('dataland_authenticated');
       }
     },
 
@@ -182,6 +185,7 @@ export default defineComponent({
      * Executed as callback when the user is logged out. Redirects the user to the Astro website at /.
      */
     handleAuthLogout() {
+      localStorage.removeItem('dataland_authenticated');
       logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak);
     },
 
