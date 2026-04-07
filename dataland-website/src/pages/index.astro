@@ -6,6 +6,8 @@ import { TESTIMONIALS } from '../data/testimonials';
 import { FRAMEWORK_CARDS } from '../data/frameworks';
 import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
 import CompanySearchBar from '../components/CompanySearchBar.astro';
+
+const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 ---
 
 <Base title="Dataland — Non-profit sustainability data">
@@ -38,7 +40,7 @@ import CompanySearchBar from '../components/CompanySearchBar.astro';
   </section>
 
   <!-- Section 2: LEI Search (dark) -->
-  <section class="py-12 px-6 bg-[#111111] text-white" aria-label="Search sustainability data by company name or LEI">
+  <section class="py-16 px-6 bg-[#2f2f2f] text-white lg:py-20" aria-label="Search sustainability data by company name or LEI">
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-6">
       <h2 class="text-2xl font-bold m-0 text-center">Search sustainability data by company name or LEI</h2>
       <CompanySearchBar />
@@ -52,18 +54,20 @@ import CompanySearchBar from '../components/CompanySearchBar.astro';
 
       <div class="flex flex-col gap-8">
         {WHY_US_PAIRS.map((pair) => (
-          <div class="grid grid-cols-1 gap-4 p-6 bg-[var(--color-surface-0)] rounded-xl lg:grid-cols-[40%_auto_40%] lg:gap-6 lg:items-start">
-            <div>
-              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-text)]">{pair.problemTitle}</h3>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
+          <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:gap-0">
+            <div class="flex flex-col gap-2.5 bg-[linear-gradient(180deg,#ffffff_0%,#f7f8fa_100%)] p-6 lg:rounded-l-[1.5rem] lg:border-r lg:border-[var(--color-surface-200)] lg:p-7">
+              <span class="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Common Problems</span>
+              <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-text)] lg:min-h-[3.25rem]">{pair.problemTitle}</h3>
+              <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
             </div>
-            <div class="hidden lg:flex items-center justify-center" aria-hidden="true">
-              <img src="/static/images/arrow_right_orange.svg" alt="" width="48" height="48" />
+            <div class="hidden lg:flex items-center justify-center bg-[linear-gradient(180deg,#fff7f1_0%,#fff_100%)] px-4" aria-hidden="true">
+              <img src="/static/images/arrow_right_orange.svg" alt="" width="42" height="42" />
             </div>
             <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
-            <div>
-              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.solutionText}</p>
+            <div class="flex flex-col gap-2.5 bg-[linear-gradient(180deg,#fff8f3_0%,#ffffff_100%)] p-6 lg:rounded-r-[1.5rem] lg:p-7">
+              <span class="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-primary)]">Dataland Solution</span>
+              <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-primary)] lg:min-h-[3.25rem]">{pair.solutionTitle}</h3>
+              <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.solutionText}</p>
             </div>
           </div>
         ))}
@@ -79,25 +83,32 @@ import CompanySearchBar from '../components/CompanySearchBar.astro';
 
   <!-- Section 4: Trusted By (white) -->
   <section class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Trusted by leading financial institutions">
-    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-8">
+    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12 lg:gap-14">
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Trusted by leading financial institutions</h2>
-      <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12">
-        {TRUSTED_BY_LOGOS.map((logo) => (
-          <img
-            src={logo.imagePath}
-            alt={logo.name}
-            class="h-8 lg:h-10 w-auto object-contain grayscale-[20%] opacity-85 motion-safe:transition-[opacity,filter] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0"
-            loading="lazy"
-            width="120"
-            height="40"
-          />
-        ))}
+      <div class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div class="trusted-by-track flex w-max items-center gap-5 lg:gap-7">
+          {trustedByCarousel.map((logo, index) => (
+            <div class="flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5">
+              <img
+                src={logo.imagePath}
+                alt={logo.name}
+                class:list={[
+                  'h-16 w-40 object-contain opacity-85 grayscale-[20%] motion-safe:transition-[opacity,filter,transform] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0 lg:h-20 lg:w-44',
+                  logo.className,
+                ]}
+                loading={index < TRUSTED_BY_LOGOS.length ? 'eager' : 'lazy'}
+                width="176"
+                height="80"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Section 5: Customer Stories (grey) -->
-  <section class="py-12 px-6 bg-[var(--color-surface-50)]" aria-label="How our members use Dataland">
+  <section id="customer-stories" class="py-12 px-6 bg-[var(--color-surface-50)]" aria-label="How our members use Dataland">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">How our members use Dataland</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -155,8 +166,36 @@ import CompanySearchBar from '../components/CompanySearchBar.astro';
           </div>
         ))}
       </div>
-      <p class="text-base m-0 text-[var(--color-text-muted)] text-center">Explore how companies and investors report under these frameworks</p>
+      <div class="flex justify-center">
+        <a href="/product#customer-stories" class="text-sm font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#e55d10]">Explore how companies and investors report under these frameworks &rarr;</a>
+      </div>
     </div>
   </section>
 
 </Base>
+
+<style>
+  .trusted-by-track {
+    animation: trusted-by-scroll 56s linear infinite;
+  }
+
+  .trusted-by-marquee:hover .trusted-by-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes trusted-by-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trusted-by-track {
+      animation: none;
+    }
+  }
+</style>
