@@ -190,11 +190,6 @@ sonar {
             "sonar.exclusions",
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
-                "dataland-frontend/src/components/pages/AboutPage.vue," +
-                "dataland-frontend/src/components/generics/TheNewHeader.vue," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
-                "dataland-frontend/src/components/resources/aboutPage/**," +
-                "dataland-frontend/src/components/resources/newLandingPage/**," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +

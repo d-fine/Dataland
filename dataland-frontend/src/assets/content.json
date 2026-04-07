@@ -199,42 +199,6 @@
       ]
     },
     {
-      "title": "About",
-      "url": "/about",
-      "sections": [
-        {
-          "title": "Our principles",
-          "text": ["Our principles"],
-          "cards": [
-            {
-              "title": "Integrity",
-              "text": "We need comparable and reliable sustainability data to create value."
-            },
-            {
-              "title": "Disclosure",
-              "text": "We seek disclosure of sustainability data from our business relations."
-            },
-            {
-              "title": "Transparency",
-              "text": "We respect and promote data sovereignty."
-            },
-            {
-              "title": "Accountability",
-              "text": "Data should be timely and easily accessible at fair cost."
-            },
-            {
-              "title": "Neutrality",
-              "text": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
-            },
-            {
-              "title": "Collaboration",
-              "text": "We work together to achieve these principles and promote their acceptance."
-            }
-          ]
-        }
-      ]
-    },
-    {
       "title": "Companies",
       "url": "/companies",
       "sections": [
