@@ -38,7 +38,7 @@
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
         >{{ link.label }}</a>
-        <a href="/login" v-if="!isAuthenticated" class="mobile-nav__link" @click="close">Login</a>
+        <a href="/login" data-test="login-dataland-button" v-if="!isAuthenticated" class="mobile-nav__link" @click="close">Login</a>
         <a href="/register" v-if="!isAuthenticated" class="mobile-nav__cta" @click="close">Try it free</a>
         <a href="/companies" v-if="isAuthenticated" class="mobile-nav__link mobile-nav__back-to-platform" @click="close">
           Back to platform

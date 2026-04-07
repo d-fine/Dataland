@@ -4,7 +4,7 @@
     <p>Whoops! Something went wrong!</p>
     <p>
       Go back to
-      <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link>
+      <a href="/" class="text-primary" title="back to landing page">Dataland</a>
     </p>
   </TheContent>
 </template>
