@@ -3,7 +3,7 @@
     v-model:visible="isVisible"
     :header="header"
     modal
-    :dismissable-mask="!isLoading"
+    :dismissable-mask="props.dismissableMask ?? !isLoading"
     :closable="true"
     @hide="handleCancel"
     data-test="confirmation-modal"
@@ -66,6 +66,7 @@ const props = defineProps<{
   errorMessage?: string;
   isLoading?: boolean;
   isSuccess?: boolean;
+  dismissableMask?: boolean;
 }>();
 
 const emit = defineEmits<{

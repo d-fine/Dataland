@@ -134,6 +134,7 @@
     :is-success="false"
     @confirm="isErrorModalVisible = false"
     @cancel="isErrorModalVisible = false"
+    :dismissable-mask="false"
   />
 </template>
 
