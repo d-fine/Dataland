@@ -170,6 +170,8 @@ parse_arguments() {
 
   if [[ "$local_frontend" = true ]]; then
     export FRONTEND_LOCATION_CONFIG="Localhost"
+  else
+    export FRONTEND_LOCATION_CONFIG="Test"
   fi
 
   if [[ "$do_stop" = true ]]; then
