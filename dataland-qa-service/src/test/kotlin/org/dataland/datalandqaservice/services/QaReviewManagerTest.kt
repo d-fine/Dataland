@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
@@ -54,6 +55,7 @@ class QaReviewManagerTest {
     private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
     private val mockDatasetJudgementService: DatasetJudgementService = mock<DatasetJudgementService>()
     private val mockDataSourcingService: DataSourcingControllerApi = mock<DataSourcingControllerApi>()
+    private val mockNonSourceableQaReviewRepository: NonSourceableQaReviewRepository = mock<NonSourceableQaReviewRepository>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -117,6 +119,7 @@ class QaReviewManagerTest {
             mockDataPointQaReportManager,
             mockDatasetJudgementService,
             mockDataSourcingService,
+            mockNonSourceableQaReviewRepository,
         )
         qaReviewManager =
             QaReviewManager(
@@ -129,6 +132,7 @@ class QaReviewManagerTest {
                 mockDataPointQaReportManager,
                 mockDatasetJudgementService,
                 mockDataSourcingService,
+                mockNonSourceableQaReviewRepository,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())

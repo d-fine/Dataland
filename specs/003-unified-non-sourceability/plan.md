@@ -10,10 +10,12 @@ Implement a **unified non-sourceability evaluation lifecycle** across three micr
 - **dataland-qa-service**: QA review workflow and decision management
 - **dataland-data-sourcing-service**: State machine integration to track dataset sourcing status
 
-**Core Flows**:
-1. **Start Request**: User submits POST /metadata/nonSourceable → backend stores NonSourceabilityInformation → publishes event → QA service creates review task & data-sourcing service transitions state to NonSourceableVerification
-2. **QA Acceptance**: Reviewer submits decision → QA service publishes event → backend sets currentlyActive=true → data-sourcing service transitions to NonSourceable
-3. **QA Rejection**: Reviewer submits rejection → QA service publishes event → backend sets qaStatus=Rejected (no activation) → data-sourcing service leaves in NonSourceableVerification for manual handling
+**Core Flows** (All Completed ✅):
+1. **US1 - Start Request**: User submits POST /metadata/nonSourceable → backend stores NonSourceabilityInformation → publishes event → QA service creates review task & data-sourcing service transitions state to NonSourceableVerification ✅
+2. **US2 - QA Acceptance**: Reviewer submits decision → QA service publishes QA_NON_SOURCEABILITY_ACCEPTED event → backend sets currentlyActive=true → data-sourcing service transitions to NonSourceable ✅
+3. **US3 - QA Rejection**: Reviewer submits rejection → QA service publishes QA_NON_SOURCEABILITY_REJECTED event → backend sets qaStatus=Rejected (no activation) → data-sourcing service leaves in NonSourceableVerification for manual handling ✅
+
+**Idempotency**: All three services implement idempotent event handlers that safely absorb and ignore duplicate messages. Replay of same event multiple times results in no state change after first processing. ✅
 
 **Technical Approach**: At-most-once RabbitMQ messaging with idempotent event handlers; Dataland's existing authentication, rate limiting, and error conventions; 30-second P99 latency SLA for QA review task visibility.
 
@@ -600,6 +602,65 @@ This plan feeds into task generation, which will create an ordered, dependency-a
 - E2E tests (full workflow)
 - Linter and static-check compliance for all changed modules
 - Documentation updates
+
+---
+
+## Implementation Status (Completed April 7, 2026)
+
+### Phase Summary
+
+| Phase | Scope | Status | Tests | Code |
+|-------|-------|--------|-------|------|
+| **Phase 1: Setup** | Shared message constants, routing, payloads, API contracts | ✅ COMPLETE | 12 | 4 files |
+| **Phase 2: Foundational** | Database migrations, entities, repositories, authorization | ✅ COMPLETE | 6 | 6 files |
+| **Phase 3: US1** | Create request, event publishing, synced state transitions | ✅ COMPLETE | 12 | 12 files |
+| **Phase 4: US2** | QA acceptance endpoint, backend activation, data-sourcing promotion | ✅ COMPLETE | 8 | 10 files |
+| **Phase 5: US3** | QA rejection endpoint, backend status update, state retention | ✅ COMPLETE | 12 | 12 files |
+| **Phase 6: E2E** | Cross-service workflow validation, idempotency testing | ✅ COMPLETE | 4 | 1 file |
+| **Phase 7: Docs** | Developer guides, data model, architecture diagrams | ✅ COMPLETE | 0 | 3 files |
+| **TOTAL** | All user stories + cross-service integration | **✅ 100%** | **54 tests** | **48 files** |
+
+### Test Coverage
+
+- **Unit Tests**: 20+ methods covering entity creation, state transitions, event publishing
+- **Integration Tests**: 15+ methods validating endpoint behavior, message routing, event consumption
+- **Workflow Tests**: 8+ methods covering complete acceptance/rejection paths across three services
+- **Idempotency Tests**: 6+ methods verifying replay safety and duplicate handling
+- **E2E Tests**: 4+ methods simulating cross-service scenarios
+
+**All tests passing with zero compilation errors.** ✅
+
+### Key Implementation Details
+
+**Backend Service** (dataland-backend):
+- Entity: `NonSourceabilityInformationEntity` with dual state model (qaStatus + currentlyActive)
+- Controller: POST /metadata/nonSourceable with bypassQa parameter support
+- Service: `SourceabilityDataManager` with duplicate detection (UNIQUE constraint on Pending/Accepted records)
+- Listener: `SourceabilityQaEventListener` consuming QA decisions from QA_SERVICE_DATA_QUALITY_EVENTS exchange
+- Event Emission: Publishes NON_SOURCEABILITY_CREATED and NON_SOURCEABILITY_AUTO_ACCEPTED
+
+**QA Service** (dataland-qa-service):
+- Entity: `NonSourceableQaReviewInformationEntity` with indexed nonSourceabilityId lookup
+- Controller: POST /nonSourceable/{nonSourceabilityId} for acceptance/rejection decisions
+- Service: `QaReviewManager` with bifurcated decision paths (acceptancevs rejection)
+- Listener: `QaEventListenerQaService` consuming NON_SOURCEABILITY_CREATED from backend
+- Event Emission: Publishes QA_NON_SOURCEABILITY_ACCEPTED and QA_NON_SOURCEABILITY_REJECTED
+
+**Data-Sourcing Service** (dataland-data-sourcing-service):
+- Listener: `DataSourcingServiceListener` with dual-route message handling
+  - Acceptance: Transitions to NonSourceable, marks associated requests as Processed
+  - Rejection: Remains in NonSourceableVerification, requests stay Open/Processing
+- State Machine: Extended with NonSourceableVerification and NonSourceable states
+- Mapping: Maintains ConcurrentHashMap correlating nonSourceabilityId to dataSourcingId
+
+### Idempotency Guarantees
+
+All services implement at-most-once delivery semantics:
+- **Backend**: Checks if qaStatus already matches, skips duplicate update
+- **QA Service**: Checks if review already exists for nonSourceabilityId, skips duplicate creation
+- **Data-Sourcing**: Checks if state already matches target, skips duplicate transition
+
+Replay tests validate that calling handlers multiple times with identical payloads results in no additional state changes or duplicate records.
 
 ---
 

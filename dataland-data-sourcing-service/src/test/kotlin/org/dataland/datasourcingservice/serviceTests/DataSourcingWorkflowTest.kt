@@ -1,5 +1,6 @@
 package org.dataland.datasourcingservice.serviceTests
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
@@ -8,12 +9,17 @@ import org.dataland.datalandbackendutils.model.InheritedRole
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.messages.NonSourceabilityCreatedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityAcceptedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityRejectedEventPayload
 import org.dataland.datasourcingservice.DatalandDataSourcingService
 import org.dataland.datasourcingservice.controller.DataSourcingController
 import org.dataland.datasourcingservice.controller.RequestController
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.enums.RequestState
 import org.dataland.datasourcingservice.model.request.SingleRequest
+import org.dataland.datasourcingservice.services.DataSourcingServiceListener
 import org.dataland.datasourcingservice.services.DataSourcingServiceMessageSender
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -30,6 +36,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.UUID
 
 @SpringBootTest(classes = [DatalandDataSourcingService::class], properties = ["spring.profiles.active=nodb"])
@@ -38,6 +46,8 @@ class DataSourcingWorkflowTest
     constructor(
         private val dataSourcingController: DataSourcingController,
         private val requestController: RequestController,
+        private val dataSourcingServiceListener: DataSourcingServiceListener,
+        private val objectMapper: ObjectMapper,
     ) {
         @MockitoBean
         private lateinit var mockKeycloakUserService: KeycloakUserService
@@ -166,5 +176,179 @@ class DataSourcingWorkflowTest
                         chunkIndex = 0,
                     ).body!!
             Assertions.assertEquals(1, results.size)
+        }
+
+        @Test
+        fun `verify created-event transition moves data sourcing to NonSourceableVerification`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceableVerification)
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            Assertions.assertEquals(DataSourcingState.NonSourceableVerification, updatedDataSourcing.state)
+        }
+
+        @Test
+        fun `verify auto-accepted transition moves data sourcing to NonSourceable`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceable)
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            val updatedRequest = requestController.getRequest(requestId).body!!
+
+            Assertions.assertEquals(DataSourcingState.NonSourceable, updatedDataSourcing.state)
+            Assertions.assertEquals(RequestState.Processed, updatedRequest.state)
+        }
+
+        @Test
+        fun `verify replay coverage for created-event transition`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceableVerification)
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceableVerification)
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            Assertions.assertEquals(DataSourcingState.NonSourceableVerification, updatedDataSourcing.state)
+        }
+
+        @Test
+        fun `verify replay coverage for auto-accepted transition`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceable)
+            dataSourcingController.patchDataSourcingState(dataSourcingId, DataSourcingState.NonSourceable)
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            val updatedRequest = requestController.getRequest(requestId).body!!
+
+            Assertions.assertEquals(DataSourcingState.NonSourceable, updatedDataSourcing.state)
+            Assertions.assertEquals(RequestState.Processed, updatedRequest.state)
+        }
+
+        @Test
+        fun `verify qa accepted decision event promotes verification state to NonSourceable`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+            val nonSourceabilityId = UUID.randomUUID()
+
+            val createdPayload =
+                objectMapper.writeValueAsString(
+                    NonSourceabilityCreatedEventPayload(
+                        eventId = UUID.randomUUID(),
+                        nonSourceabilityId = nonSourceabilityId,
+                        companyId = UUID.fromString(companyId),
+                        dataType = framework,
+                        reportingPeriod = reportingPeriod,
+                        reason = "no source",
+                        uploaderUserId = userIds.first().toString(),
+                        uploadTime = ZonedDateTime.now(ZoneOffset.UTC),
+                        eventPublishedTime = ZonedDateTime.now(ZoneOffset.UTC),
+                    ),
+                )
+
+            dataSourcingServiceListener.processBackendNonSourceabilityEvents(
+                payload = createdPayload,
+                correlationId = "corr-created",
+                type = MessageType.NON_SOURCEABILITY_CREATED,
+            )
+
+            val acceptedPayload =
+                objectMapper.writeValueAsString(
+                    QaNonSourceabilityAcceptedEventPayload(
+                        eventId = UUID.randomUUID(),
+                        nonSourceabilityId = nonSourceabilityId,
+                        reviewerUserId = userIds.last().toString(),
+                        qaComment = "accepted",
+                        decisionTime = ZonedDateTime.now(ZoneOffset.UTC),
+                        eventPublishedTime = ZonedDateTime.now(ZoneOffset.UTC),
+                    ),
+                )
+
+            dataSourcingServiceListener.processQaNonSourceabilityDecisionEvents(
+                payload = acceptedPayload,
+                correlationId = "corr-accepted",
+                type = MessageType.QA_NON_SOURCEABILITY_ACCEPTED,
+            )
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            val updatedRequest = requestController.getRequest(requestId).body!!
+
+            Assertions.assertEquals(DataSourcingState.NonSourceable, updatedDataSourcing.state)
+            Assertions.assertEquals(RequestState.Processed, updatedRequest.state)
+        }
+
+        @Test
+        fun `verify qa rejected decision event retains verification state in NonSourceableVerification`() {
+            val requestId = requestController.createRequest(singleRequest, userIds.first().toString()).body!!.requestId
+            requestController.patchRequestState(requestId, RequestState.Processing)
+
+            val dataSourcingId = requestController.getRequest(requestId).body!!.dataSourcingEntityId
+            assertNotNull(dataSourcingId)
+            val nonSourceabilityId = UUID.randomUUID()
+
+            val createdPayload =
+                objectMapper.writeValueAsString(
+                    NonSourceabilityCreatedEventPayload(
+                        eventId = UUID.randomUUID(),
+                        nonSourceabilityId = nonSourceabilityId,
+                        companyId = UUID.fromString(companyId),
+                        dataType = framework,
+                        reportingPeriod = reportingPeriod,
+                        reason = "no source",
+                        uploaderUserId = userIds.first().toString(),
+                        uploadTime = ZonedDateTime.now(ZoneOffset.UTC),
+                        eventPublishedTime = ZonedDateTime.now(ZoneOffset.UTC),
+                    ),
+                )
+
+            dataSourcingServiceListener.processBackendNonSourceabilityEvents(
+                payload = createdPayload,
+                correlationId = "corr-created",
+                type = MessageType.NON_SOURCEABILITY_CREATED,
+            )
+
+            val rejectedPayload =
+                objectMapper.writeValueAsString(
+                    QaNonSourceabilityRejectedEventPayload(
+                        eventId = UUID.randomUUID(),
+                        nonSourceabilityId = nonSourceabilityId,
+                        reviewerUserId = userIds.last().toString(),
+                        qaComment = "not credible",
+                        decisionTime = ZonedDateTime.now(ZoneOffset.UTC),
+                        eventPublishedTime = ZonedDateTime.now(ZoneOffset.UTC),
+                    ),
+                )
+
+            dataSourcingServiceListener.processQaNonSourceabilityDecisionEvents(
+                payload = rejectedPayload,
+                correlationId = "corr-rejected",
+                type = MessageType.QA_NON_SOURCEABILITY_REJECTED,
+            )
+
+            val updatedDataSourcing = dataSourcingController.getDataSourcingById(dataSourcingId).body!!
+            val updatedRequest = requestController.getRequest(requestId).body!!
+
+            Assertions.assertEquals(DataSourcingState.NonSourceableVerification, updatedDataSourcing.state)
+            Assertions.assertNotEquals(RequestState.Processed, updatedRequest.state)
         }
     }

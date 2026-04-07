@@ -13,8 +13,10 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
@@ -54,6 +56,7 @@ class QaControllerTest(
     @Autowired private val dataPointQaReviewManager: DataPointQaReviewManager,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataPointQaReviewRepository: DataPointQaReviewRepository,
+    @Autowired private val nonSourceableQaReviewRepository: NonSourceableQaReviewRepository,
 ) {
     @MockitoBean
     private lateinit var dataPointControllerApi: DataPointControllerApi
@@ -166,6 +169,27 @@ class QaControllerTest(
             ),
         )
 
+    private fun createPendingNonSourceableReview(nonSourceabilityId: UUID): NonSourceableQaReviewInformationEntity {
+        val now = System.currentTimeMillis()
+        return nonSourceableQaReviewRepository.save(
+            NonSourceableQaReviewInformationEntity(
+                id = null,
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = companyId,
+                dataType = dataPointType,
+                reportingPeriod = reportingPeriod,
+                reason = "not available",
+                uploaderUserId = "uploader-user-id",
+                uploadTime = now,
+                qaStatus = QaStatus.Pending,
+                reviewerUserId = null,
+                qaComment = null,
+                createdAt = now,
+                updatedAt = now,
+            ),
+        )
+    }
+
     private fun getReviewEntries(
         showOnlyActive: Boolean = true,
         dataType: String?,
@@ -259,5 +283,55 @@ class QaControllerTest(
             val emptyDataType = getReviewEntries(dataType = null)
             assertEquals(2, emptyDataType.size)
         }
+    }
+
+    @Test
+    fun `verify non-sourceable acceptance endpoint persists accepted review`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        createPendingNonSourceableReview(nonSourceabilityId)
+
+        UtilityFunctions.withReviewerAuthentication {
+            val response =
+                qaController.submitNonSourceableDecision(
+                    nonSourceabilityId = nonSourceabilityId,
+                    qaStatus = QaStatus.Accepted,
+                    qaComment = "accepted by QA",
+                )
+
+            assertEquals(QaStatus.Accepted, response.body?.qaStatus)
+            assertEquals("accepted by QA", response.body?.qaComment)
+            assertEquals(nonSourceabilityId, response.body?.nonSourceabilityId)
+            assertEquals("some-reviewer", response.body?.reviewerUserId)
+        }
+
+        val saved = nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+        assertEquals(QaStatus.Accepted, saved?.qaStatus)
+        assertEquals("accepted by QA", saved?.qaComment)
+        assertEquals("some-reviewer", saved?.reviewerUserId)
+    }
+
+    @Test
+    fun `verify non-sourceable rejection endpoint persists rejected review`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        createPendingNonSourceableReview(nonSourceabilityId)
+
+        UtilityFunctions.withReviewerAuthentication {
+            val response =
+                qaController.submitNonSourceableDecision(
+                    nonSourceabilityId = nonSourceabilityId,
+                    qaStatus = QaStatus.Rejected,
+                    qaComment = "rejected by QA",
+                )
+
+            assertEquals(QaStatus.Rejected, response.body?.qaStatus)
+            assertEquals("rejected by QA", response.body?.qaComment)
+            assertEquals(nonSourceabilityId, response.body?.nonSourceabilityId)
+            assertEquals("some-reviewer", response.body?.reviewerUserId)
+        }
+
+        val saved = nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+        assertEquals(QaStatus.Rejected, saved?.qaStatus)
+        assertEquals("rejected by QA", saved?.qaComment)
+        assertEquals("some-reviewer", saved?.reviewerUserId)
     }
 }

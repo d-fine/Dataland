@@ -177,7 +177,10 @@ class MetaDataController(
         val latestSourceabilityInfo =
             sourceabilityDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
 
-        if (latestSourceabilityInfo?.isNonSourceable != true) {
+        val isCurrentlyNonSourceable =
+            latestSourceabilityInfo?.currentlyActive == true || latestSourceabilityInfo?.isNonSourceable == true
+
+        if (!isCurrentlyNonSourceable) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =

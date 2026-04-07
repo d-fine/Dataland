@@ -38,38 +38,43 @@ Three new domain entities introduced across Dataland microservices to support th
 
 ### State Transitions
 
+**Flow 1: Bypass QA (Admin Only)**
 ```
-  [CREATE with bypassQa=false]
+[CREATE with bypassQa=true]
        ↓
-  qaStatus=PENDING, currentlyActive=false
+  qaStatus=Accepted, currentlyActive=true
        ↓
-  [QA-Accepted event received]
+[Event: NON_SOURCEABILITY_AUTO_ACCEPTED published]
        ↓
-  qaStatus=ACCEPTED, currentlyActive=true
-       ↓
-  [Data upload approved by admin]
-       ↓
-  currentlyActive=false (superseded by new upload)
+[Data-Sourcing transitions directly to NonSourceable]
+```
 
-  OR
-
-  [CREATE with bypassQa=true]
+**Flow 2: With QA Review (bypassQa=false)**
+```
+[CREATE with bypassQa=false]
        ↓
-  qaStatus=ACCEPTED, currentlyActive=true
+  qaStatus=Pending, currentlyActive=false
        ↓
-  [Data upload approved by admin]
+[Event: NON_SOURCEABILITY_CREATED published]
        ↓
-  currentlyActive=false
-
-  OR
-
-  [CREATE with bypassQa=false]
+[QA Service creates pending review task]
        ↓
-  qaStatus=PENDING, currentlyActive=false
-       ↓
-  [QA-Rejected event received]
-       ↓
-  qaStatus=REJECTED, currentlyActive=false
+[Data-Sourcing transitions to NonSourceableVerification]
+       ├─→ [QA Review with ACCEPTED decision]
+       │        ↓
+       │   qaStatus=Accepted, currentlyActive=true
+       │        ↓
+       │   [Event: QA_NON_SOURCEABILITY_ACCEPTED published]
+       │        ↓
+       │   [Data-Sourcing transitions to NonSourceable]
+       │
+       └─→ [QA Review with REJECTED decision]
+                ↓
+            qaStatus=Rejected, currentlyActive=false
+                ↓
+            [Event: QA_NON_SOURCEABILITY_REJECTED published]
+                ↓
+            [Data-Sourcing stays in NonSourceableVerification]
 ```
 
 ---

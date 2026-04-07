@@ -11,10 +11,10 @@
 
 **Purpose**: Align shared contracts and messaging surfaces before service implementation starts.
 
-- [ ] T001 Update shared non-sourceability message constants in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/MessageType.kt`
-- [ ] T002 [P] Update routing and queue constants for non-sourceability lifecycle events in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/RoutingKeyNames.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/QueueNames.kt`
-- [ ] T003 [P] Align shared message payloads for backend and QA event exchange in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/SourceabilityMessage.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`
-- [ ] T004 [P] Finalize feature contracts in `specs/003-unified-non-sourceability/contracts/backend-api.yaml`, `specs/003-unified-non-sourceability/contracts/qa-service-api.yaml`, `specs/003-unified-non-sourceability/contracts/datasourcing-api.yaml`, and `specs/003-unified-non-sourceability/contracts/EVENTS.md`
+- [X] T001 Update shared non-sourceability message constants in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/MessageType.kt`
+- [X] T002 [P] Update routing and queue constants for non-sourceability lifecycle events in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/RoutingKeyNames.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/constants/QueueNames.kt`
+- [X] T003 [P] Align shared message payloads for backend and QA event exchange in `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/SourceabilityMessage.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`
+- [X] T004 [P] Finalize feature contracts in `specs/003-unified-non-sourceability/contracts/backend-api.yaml`, `specs/003-unified-non-sourceability/contracts/qa-service-api.yaml`, `specs/003-unified-non-sourceability/contracts/datasourcing-api.yaml`, and `specs/003-unified-non-sourceability/contracts/EVENTS.md`
 
 ---
 
@@ -24,12 +24,12 @@
 
 **⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T005 Create backend migration for the authoritative non-sourceability table in `dataland-backend/src/main/kotlin/db/migration/V13__CreateNonSourceabilityInformationTable.kt`
-- [ ] T006 [P] Create QA-service migration for non-sourceability review persistence in `dataland-qa-service/src/main/kotlin/db/migration/V12__CreateNonSourceableQaReviewTable.kt`
-- [ ] T007 [P] Introduce `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/entities/NonSourceabilityInformationEntity.kt` alongside the existing `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/entities/SourceabilityEntity.kt`; keep `SourceabilityEntity.kt` and its table untouched to preserve existing data for a future out-of-scope migration task
-- [ ] T008 [P] Introduce backend repository support for the new entity in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/NonSourceabilityDataRepository.kt` and adapt `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/SourceabilityDataRepository.kt`
-- [ ] T009 [P] Introduce QA persistence and query scaffolding in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/entities/NonSourceableQaReviewInformationEntity.kt`, `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/repositories/NonSourceableQaReviewRepository.kt`, and `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/model/NonSourceableQaReviewInformation.kt`
-- [ ] T010 [P] Update data-sourcing patch authorization rules in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/SecurityUtilsService.kt`
+- [X] T005 Create backend migration for the authoritative non-sourceability table in `dataland-backend/src/main/kotlin/db/migration/V13__CreateNonSourceabilityInformationTable.kt`
+- [X] T006 [P] Create QA-service migration for non-sourceability review persistence in `dataland-qa-service/src/main/kotlin/db/migration/V12__CreateNonSourceableQaReviewTable.kt`
+- [X] T007 [P] Introduce `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/entities/NonSourceabilityInformationEntity.kt` alongside the existing `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/entities/SourceabilityEntity.kt`; keep `SourceabilityEntity.kt` and its table untouched to preserve existing data for a future out-of-scope migration task
+- [X] T008 [P] Introduce backend repository support for the new entity in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/NonSourceabilityDataRepository.kt` and adapt `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/SourceabilityDataRepository.kt`
+- [X] T009 [P] Introduce QA persistence and query scaffolding in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/entities/NonSourceableQaReviewInformationEntity.kt`, `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/repositories/NonSourceableQaReviewRepository.kt`, and `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/model/NonSourceableQaReviewInformation.kt`
+- [X] T010 [P] Update data-sourcing patch authorization rules in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/SecurityUtilsService.kt`
 
 **Checkpoint**: Shared message contracts, database foundations, and state-patch authorization are ready.
 
@@ -43,21 +43,21 @@
 
 ### Tests for User Story 1
 
-- [ ] T011 [P] [US1] Add backend endpoint and service tests for `GET/POST/HEAD /metadata/nonSourceable` in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/controller/MetaDataControllerTest.kt` and `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
-- [ ] T012 [P] [US1] Add QA created-event ingestion tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaServiceTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/repository/NonSourceableQaReviewRepositoryTest.kt`
-- [ ] T013 [P] [US1] Add data-sourcing state transition tests for created and auto-accepted events in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt` and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
-- [ ] T014 [P] [US1] Add cross-service idempotency coverage for start-request events in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaServiceTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
+- [X] T011 [P] [US1] Add backend endpoint and service tests for `GET/POST/HEAD /metadata/nonSourceable` in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/controller/MetaDataControllerTest.kt` and `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
+- [X] T012 [P] [US1] Add QA created-event ingestion tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaServiceTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/repository/NonSourceableQaReviewRepositoryTest.kt`
+- [X] T013 [P] [US1] Add data-sourcing state transition tests for created and auto-accepted events in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt` and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
+- [X] T014 [P] [US1] Add cross-service idempotency coverage for start-request events in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaServiceTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Rework backend request and response models to `NonSourceabilityInformation` semantics in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/metainformation/SourceabilityInfo.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/metainformation/SourceabilityInfoResponse.kt`
-- [ ] T016 [US1] Rewire backend query, create, duplicate-check, and `currentlyActive` logic in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt`
-- [ ] T017 [US1] Update metadata endpoint behavior to the new backend semantics in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/controller/MetaDataController.kt`
-- [ ] T018 [P] [US1] Update backend non-sourceability search support in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/utils/NonSourceableDataSearchFilter.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/SourceabilityDataRepository.kt`
-- [ ] T019 [P] [US1] Publish `non-sourceability-created` and `non-sourceability-auto-accepted` events from backend workflows in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt`; ensure `nonSourceabilityId` and event type are logged for traceability
-- [ ] T020 [P] [US1] Implement QA review creation on backend created-events in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaService.kt` and `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/NonSourceableQaReviewManager.kt`
-- [ ] T021 [P] [US1] Add non-sourceability review query endpoints in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt`
-- [ ] T022 [P] [US1] Implement data-sourcing transitions for created and auto-accepted events in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt` and `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingManager.kt`; if dataSourcingId is unknown, log error with correlation ID and dead-letter the message for investigation
+- [X] T015 [US1] Rework backend request and response models to `NonSourceabilityInformation` semantics in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/metainformation/SourceabilityInfo.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/metainformation/SourceabilityInfoResponse.kt`
+- [X] T016 [US1] Rewire backend query, create, duplicate-check, and `currentlyActive` logic in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt`
+- [X] T017 [US1] Update metadata endpoint behavior to the new backend semantics in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/controller/MetaDataController.kt`
+- [X] T018 [P] [US1] Update backend non-sourceability search support in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/utils/NonSourceableDataSearchFilter.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/repositories/SourceabilityDataRepository.kt`
+- [X] T019 [P] [US1] Publish `non-sourceability-created` and `non-sourceability-auto-accepted` events from backend workflows in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt`; ensure `nonSourceabilityId` and event type are logged for traceability
+- [X] T020 [P] [US1] Implement QA review creation on backend created-events in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaEventListenerQaService.kt` and `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/NonSourceableQaReviewManager.kt`
+- [X] T021 [P] [US1] Add non-sourceability review query endpoints in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt`
+- [X] T022 [P] [US1] Implement data-sourcing transitions for created and auto-accepted events in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt` and `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingManager.kt`; if dataSourcingId is unknown, log error with correlation ID and dead-letter the message for investigation
 
 **Checkpoint**: Creating a non-sourceability request works end to end, including duplicate protection, QA-review creation, bypass flow, and `NonSourceableVerification`/`NonSourceable` transitions.
 
@@ -71,17 +71,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Add QA acceptance endpoint tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/controller/QaControllerTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`
-- [ ] T024 [P] [US2] Add backend acceptance-event consumer tests in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
-- [ ] T025 [P] [US2] Add data-sourcing acceptance transition tests in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
-- [ ] T026 [P] [US2] Add idempotent acceptance replay tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`, `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
+- [X] T023 [P] [US2] Add QA acceptance endpoint tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/controller/QaControllerTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`
+- [X] T024 [P] [US2] Add backend acceptance-event consumer tests in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
+- [X] T025 [P] [US2] Add data-sourcing acceptance transition tests in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
+- [X] T026 [P] [US2] Add idempotent acceptance replay tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`, `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
 
 ### Implementation for User Story 2
 
-- [ ] T027 [US2] Introduce the controller endpoint skeleton for `POST /nonSourceable/{nonSourceabilityId}` in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt` that dispatches to acceptance or rejection handlers based on qaStatus parameter; implement accepted-review persistence and reviewer capture in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt`
-- [ ] T028 [P] [US2] Emit `QaNonSourceabilityAcceptedEvent` from QA service in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`; log `nonSourceabilityId` and event type for traceability
-- [ ] T029 [P] [US2] Consume accepted QA events in backend and set `qaStatus=Accepted` plus `currentlyActive=true` in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityQaEventListener.kt`; log `nonSourceabilityId`, event type, and state change for traceability
-- [ ] T030 [P] [US2] Consume accepted QA events in data-sourcing service and promote state to `NonSourceable` in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt`; log `nonSourceabilityId` and state transition for traceability; if dataSourcingId is unknown, log error and dead-letter
+- [X] T027 [US2] Introduce the controller endpoint skeleton for `POST /nonSourceable/{nonSourceabilityId}` in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt` that dispatches to acceptance or rejection handlers based on qaStatus parameter; implement accepted-review persistence and reviewer capture in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt`
+- [X] T028 [P] [US2] Emit `QaNonSourceabilityAcceptedEvent` from QA service in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`; log `nonSourceabilityId` and event type for traceability
+- [X] T029 [P] [US2] Consume accepted QA events in backend and set `qaStatus=Accepted` plus `currentlyActive=true` in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityQaEventListener.kt`; log `nonSourceabilityId`, event type, and state change for traceability
+- [X] T030 [P] [US2] Consume accepted QA events in data-sourcing service and promote state to `NonSourceable` in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt`; log `nonSourceabilityId` and state transition for traceability; if dataSourcingId is unknown, log error and dead-letter
 
 **Checkpoint**: QA acceptance independently works from API input through event propagation to backend activation and final data-sourcing state.
 
@@ -95,17 +95,17 @@
 
 ### Tests for User Story 3
 
-- [ ] T031 [P] [US3] Add QA rejection endpoint tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/controller/QaControllerTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`
-- [ ] T032 [P] [US3] Add backend rejection-event consumer tests in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
-- [ ] T033 [P] [US3] Add data-sourcing rejection retention tests in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
-- [ ] T034 [P] [US3] Add idempotent rejection replay tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`, `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
+- [X] T031 [P] [US3] Add QA rejection endpoint tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/controller/QaControllerTest.kt` and `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`
+- [X] T032 [P] [US3] Add backend rejection-event consumer tests in `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`
+- [X] T033 [P] [US3] Add data-sourcing rejection retention tests in `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/serviceTests/DataSourcingWorkflowTest.kt`
+- [X] T034 [P] [US3] Add idempotent rejection replay tests in `dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/QaReviewManagerQaChangeTest.kt`, `dataland-backend/src/test/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManagerTest.kt`, and `dataland-data-sourcing-service/src/test/kotlin/org/dataland/datasourcingservice/unitTests/DataSourcingManagerTest.kt`
 
 ### Implementation for User Story 3
 
-- [ ] T035 [US3] Extend the controller endpoint introduced in T027 to handle rejection path in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt`; implement rejected-review persistence and API handling in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt`
-- [ ] T036 [P] [US3] Emit `QaNonSourceabilityRejectedEvent` from QA service in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`; log `nonSourceabilityId` and event type for traceability
-- [ ] T037 [P] [US3] Consume rejected QA events in backend and persist `qaStatus=Rejected` while keeping `currentlyActive=false` in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityQaEventListener.kt`; log `nonSourceabilityId`, event type, and status update for traceability
-- [ ] T038 [P] [US3] Consume rejected QA events in data-sourcing service without promoting beyond `NonSourceableVerification` in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt`; log `nonSourceabilityId`, event type, and retained state for traceability; flag unrecognized events for investigation
+- [X] T035 [US3] Extend the controller endpoint introduced in T027 to handle rejection path in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/controller/QaController.kt`; implement rejected-review persistence and API handling in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt`
+- [X] T036 [P] [US3] Emit `QaNonSourceabilityRejectedEvent` from QA service in `dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/services/QaReviewManager.kt` and `dataland-message-queue-utils/src/main/kotlin/org/dataland/datalandmessagequeueutils/messages/QaStatusChangeMessage.kt`; log `nonSourceabilityId` and event type for traceability
+- [X] T037 [P] [US3] Consume rejected QA events in backend and persist `qaStatus=Rejected` while keeping `currentlyActive=false` in `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityDataManager.kt` and `dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/SourceabilityQaEventListener.kt`; log `nonSourceabilityId`, event type, and status update for traceability
+- [X] T038 [P] [US3] Consume rejected QA events in data-sourcing service without promoting beyond `NonSourceableVerification` in `dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/services/DataSourcingServiceListener.kt`; log `nonSourceabilityId`, event type, and retained state for traceability; flag unrecognized events for investigation
 
 **Checkpoint**: QA rejection independently works and preserves the manual follow-up state without activating the backend record.
 
@@ -115,15 +115,15 @@
 
 **Purpose**: Validate complete end-to-end workflows across all three services in coordinated scenarios.
 
-- [ ] T044 [P] Add cross-service end-to-end test scenarios in `dataland-e2etests/` covering both complete workflows: (1) start request with bypassQa=false → QA accept → backend activation → data-sourcing promotion to NonSourceable, and (2) start request with bypassQa=false → QA reject → backend status update → data-sourcing retention in NonSourceableVerification. Tests MUST verify message order, idempotency under replay, and error handling for missing/invalid records.
+- [X] T044 [P] Add cross-service end-to-end test scenarios in `dataland-e2etests/` covering both complete workflows: (1) start request with bypassQa=false → QA accept → backend activation → data-sourcing promotion to NonSourceable, and (2) start request with bypassQa=false → QA reject → backend status update → data-sourcing retention in NonSourceableVerification. Tests MUST verify message order, idempotency under replay, and error handling for missing/invalid records.
 
 **Purpose**: Final validation, documentation alignment, and repository quality gates.
 
-- [ ] T045 [P] Update developer and contract documentation in `specs/003-unified-non-sourceability/quickstart.md`, `specs/003-unified-non-sourceability/data-model.md`, and `specs/003-unified-non-sourceability/plan.md`
-- [ ] T046 Run backend tests and repository checks for changed backend files using `dataland-backend/build.gradle.kts`
-- [ ] T047 Run QA-service tests and repository checks for changed QA files using `dataland-qa-service/build.gradle.kts`
-- [ ] T048 Run data-sourcing tests and repository checks for changed data-sourcing files using `dataland-data-sourcing-service/build.gradle.kts`
-- [ ] T049 [P] Run repository linters and static checks required for commit readiness across touched modules using the existing Gradle and commit-time tooling configuration in `build.gradle.kts` and related service build files
+- [X] T045 [P] Update developer and contract documentation in `specs/003-unified-non-sourceability/quickstart.md`, `specs/003-unified-non-sourceability/data-model.md`, and `specs/003-unified-non-sourceability/plan.md`
+- [X] T046 Run backend tests and repository checks for changed backend files using `dataland-backend/build.gradle.kts`
+- [X] T047 Run QA-service tests and repository checks for changed QA files using `dataland-qa-service/build.gradle.kts`
+- [X] T048 Run data-sourcing tests and repository checks for changed data-sourcing files using `dataland-data-sourcing-service/build.gradle.kts`
+- [X] T049 [P] Run repository linters and static checks required for commit readiness across touched modules using the existing Gradle and commit-time tooling configuration in `build.gradle.kts` and related service build files
 
 ---
 

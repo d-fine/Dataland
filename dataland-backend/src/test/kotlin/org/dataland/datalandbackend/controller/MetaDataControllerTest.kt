@@ -28,6 +28,7 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -324,6 +325,56 @@ internal class MetaDataControllerTest
 
             val testFrameworkExpected = metaDataController.getAvailableDataDimensions(null, listOf(testFramework), null).body
             assertTrue(testFrameworkExpected == listOf(allDimensions.last()))
+        }
+
+        @Test
+        fun `check that non-sourceability post and get endpoints work together`() {
+            val sourceabilityInfo =
+                org.dataland.datalandbackend.model.metainformation.SourceabilityInfo(
+                    companyId = storedCompany.companyId,
+                    dataType = defaultDataType,
+                    reportingPeriod = defaultReportingPeriod,
+                    isNonSourceable = true,
+                    reason = "not available",
+                )
+
+            metaDataController.postNonSourceabilityOfADataset(sourceabilityInfo)
+
+            val response =
+                metaDataController
+                    .getInfoOnNonSourceabilityOfDatasets(
+                        companyId = storedCompany.companyId,
+                        dataType = defaultDataType,
+                        reportingPeriod = defaultReportingPeriod,
+                        nonSourceable = true,
+                    ).body
+
+            assertNotNull(response)
+            assertTrue(response!!.isNotEmpty())
+            assertEquals(storedCompany.companyId, response.first().companyId)
+            assertEquals(defaultDataType, response.first().dataType)
+            assertEquals(defaultReportingPeriod, response.first().reportingPeriod)
+            assertTrue(response.first().isNonSourceable)
+        }
+
+        @Test
+        fun `check that non-sourceability head endpoint succeeds for non-sourceable dataset`() {
+            val sourceabilityInfo =
+                org.dataland.datalandbackend.model.metainformation.SourceabilityInfo(
+                    companyId = storedCompany.companyId,
+                    dataType = defaultDataType,
+                    reportingPeriod = defaultReportingPeriod,
+                    isNonSourceable = true,
+                    reason = "not available",
+                )
+
+            metaDataController.postNonSourceabilityOfADataset(sourceabilityInfo)
+
+            metaDataController.isDataNonSourceable(
+                companyId = storedCompany.companyId,
+                dataType = defaultDataType,
+                reportingPeriod = defaultReportingPeriod,
+            )
         }
 
         private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {

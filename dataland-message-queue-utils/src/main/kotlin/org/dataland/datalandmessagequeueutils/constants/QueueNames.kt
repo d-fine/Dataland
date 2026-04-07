@@ -20,4 +20,7 @@ object QueueNames {
     const val USER_SERVICE_QA_STATUS_UPDATE_EVENT = "user-service.processMessageForAvailableDataAndUpdates"
     const val ACCOUNTING_SERVICE_REQUEST_PROCESSING = "accounting-service.requestProcessing"
     const val ACCOUNTING_SERVICE_REQUEST_WITHDRAWN = "accounting-service.requestWithdrawn"
+    const val NON_SOURCEABILITY_CREATED_QUEUE = "non-sourceability-created-queue"
+    const val NON_SOURCEABILITY_AUTO_ACCEPTED_QUEUE = "non-sourceability-auto-accepted-queue"
+    const val QA_DECISION_QUEUE = "qa-decision-queue"
 }

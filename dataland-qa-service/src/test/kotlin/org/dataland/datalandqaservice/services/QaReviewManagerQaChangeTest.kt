@@ -11,9 +11,16 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityAcceptedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityRejectedEventPayload
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.junit.jupiter.api.BeforeEach
@@ -28,6 +35,7 @@ import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.time.ZonedDateTime
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
 
@@ -38,6 +46,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaSta
 class QaReviewManagerQaChangeTest(
     @Autowired private val qaReviewManager: QaReviewManager,
     @Autowired private val qaReviewRepository: QaReviewRepository,
+    @Autowired private val nonSourceableQaReviewRepository: NonSourceableQaReviewRepository,
     @Autowired private val objectMapper: ObjectMapper,
 ) : BaseIntegrationTest() {
     @MockitoBean
@@ -188,5 +197,155 @@ class QaReviewManagerQaChangeTest(
         val message2 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
         assert(message1.isUpdate == false)
         assert(message2.isUpdate == true)
+    }
+
+    @Test
+    fun `test accepting non-sourceability review persists decision and emits accepted event`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        val now = System.currentTimeMillis()
+        nonSourceableQaReviewRepository.save(
+            NonSourceableQaReviewInformationEntity(
+                id = null,
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = companyId,
+                dataType = framework,
+                reportingPeriod = reportingPeriod,
+                reason = "missing source",
+                uploaderUserId = triggeringUserId,
+                uploadTime = now,
+                qaStatus = QaStatus.Pending,
+                reviewerUserId = null,
+                qaComment = null,
+                createdAt = now,
+                updatedAt = now,
+            ),
+        )
+
+        qaReviewManager.handleNonSourceabilityDecision(
+            nonSourceabilityId = nonSourceabilityId,
+            qaStatus = QaStatus.Accepted,
+            reviewerUserId = triggeringUserId,
+            qaComment = "accepted",
+            correlationId = correlationId,
+        )
+
+        val updated = nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+        assert(updated?.qaStatus == QaStatus.Accepted)
+        assert(updated?.reviewerUserId == triggeringUserId)
+        assert(updated?.qaComment == "accepted")
+        assert(updated?.updatedAt ?: 0 >= now)
+
+        val messageBodyCaptor = argumentCaptor<String>()
+        verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
+            messageBodyCaptor.capture(),
+            org.mockito.kotlin.eq(MessageType.QA_NON_SOURCEABILITY_ACCEPTED),
+            org.mockito.kotlin.eq(correlationId),
+            org.mockito.kotlin.eq(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS),
+            org.mockito.kotlin.eq(RoutingKeyNames.QA_DECISION_ACCEPTED),
+        )
+
+        val message = objectMapper.readValue<QaNonSourceabilityAcceptedEventPayload>(messageBodyCaptor.firstValue)
+        assert(message.nonSourceabilityId == nonSourceabilityId)
+        assert(message.reviewerUserId == triggeringUserId)
+        assert(message.qaComment == "accepted")
+        assert(message.qaStatus == QaStatus.Accepted.name)
+        assert(message.decisionTime <= ZonedDateTime.now())
+    }
+
+    @Test
+    fun `test rejecting non-sourceability review persists decision and emits rejected event`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        val now = System.currentTimeMillis()
+        nonSourceableQaReviewRepository.save(
+            NonSourceableQaReviewInformationEntity(
+                id = null,
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = companyId,
+                dataType = framework,
+                reportingPeriod = reportingPeriod,
+                reason = "missing source",
+                uploaderUserId = triggeringUserId,
+                uploadTime = now,
+                qaStatus = QaStatus.Pending,
+                reviewerUserId = null,
+                qaComment = null,
+                createdAt = now,
+                updatedAt = now,
+            ),
+        )
+
+        qaReviewManager.handleNonSourceabilityDecision(
+            nonSourceabilityId = nonSourceabilityId,
+            qaStatus = QaStatus.Rejected,
+            reviewerUserId = triggeringUserId,
+            qaComment = "rejected",
+            correlationId = correlationId,
+        )
+
+        val updated = nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+        assert(updated?.qaStatus == QaStatus.Rejected)
+        assert(updated?.reviewerUserId == triggeringUserId)
+        assert(updated?.qaComment == "rejected")
+        assert(updated?.updatedAt ?: 0 >= now)
+
+        val messageBodyCaptor = argumentCaptor<String>()
+        verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
+            messageBodyCaptor.capture(),
+            org.mockito.kotlin.eq(MessageType.QA_NON_SOURCEABILITY_REJECTED),
+            org.mockito.kotlin.eq(correlationId),
+            org.mockito.kotlin.eq(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS),
+            org.mockito.kotlin.eq(RoutingKeyNames.QA_DECISION_REJECTED),
+        )
+
+        val message = objectMapper.readValue<QaNonSourceabilityRejectedEventPayload>(messageBodyCaptor.firstValue)
+        assert(message.nonSourceabilityId == nonSourceabilityId)
+        assert(message.reviewerUserId == triggeringUserId)
+        assert(message.qaComment == "rejected")
+        assert(message.qaStatus == QaStatus.Rejected.name)
+        assert(message.decisionTime <= ZonedDateTime.now())
+    }
+
+    @Test
+    fun `test replay coverage for rejection decision keeps non-sourceability in Rejected`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        val now = System.currentTimeMillis()
+        nonSourceableQaReviewRepository.save(
+            NonSourceableQaReviewInformationEntity(
+                id = null,
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = companyId,
+                dataType = framework,
+                reportingPeriod = reportingPeriod,
+                reason = "missing source",
+                uploaderUserId = triggeringUserId,
+                uploadTime = now,
+                qaStatus = QaStatus.Pending,
+                reviewerUserId = null,
+                qaComment = null,
+                createdAt = now,
+                updatedAt = now,
+            ),
+        )
+
+        qaReviewManager.handleNonSourceabilityDecision(
+            nonSourceabilityId = nonSourceabilityId,
+            qaStatus = QaStatus.Rejected,
+            reviewerUserId = triggeringUserId,
+            qaComment = "rejected",
+            correlationId = correlationId,
+        )
+
+        // Call the handler again with identical data to simulate replay
+        qaReviewManager.handleNonSourceabilityDecision(
+            nonSourceabilityId = nonSourceabilityId,
+            qaStatus = QaStatus.Rejected,
+            reviewerUserId = triggeringUserId,
+            qaComment = "rejected",
+            correlationId = correlationId,
+        )
+
+        val updated = nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+        assert(updated?.qaStatus == QaStatus.Rejected)
+        assert(updated?.reviewerUserId == triggeringUserId)
     }
 }

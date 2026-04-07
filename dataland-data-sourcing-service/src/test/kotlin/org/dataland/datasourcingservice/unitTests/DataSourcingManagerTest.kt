@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -305,6 +306,64 @@ class DataSourcingManagerTest {
             any(),
             anyOrNull(),
         )
+    }
+
+    @Test
+    fun `verify created-event outcome sets NonSourceableVerification without processing requests`() {
+        val patched =
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceableVerification,
+            )
+
+        assertEquals(DataSourcingState.NonSourceableVerification, patched.state)
+        assertNotEquals(RequestState.Processed, newRequest.state)
+    }
+
+    @Test
+    fun `verify auto-accepted-event outcome sets NonSourceable and processes requests`() {
+        val patched =
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceable,
+            )
+
+        assertEquals(DataSourcingState.NonSourceable, patched.state)
+        assertEquals(RequestState.Processed, newRequest.state)
+    }
+
+    @Test
+    fun `verify replay coverage for accepted decision keeps data sourcing in NonSourceable`() {
+        assertDoesNotThrow {
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceable,
+            )
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceable,
+            )
+        }
+
+        assertEquals(DataSourcingState.NonSourceable, newDataSourcingEntity.state)
+        assertEquals(RequestState.Processed, newRequest.state)
+    }
+
+    @Test
+    fun `verify replay coverage for rejection decision keeps data sourcing in NonSourceableVerification`() {
+        assertDoesNotThrow {
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceableVerification,
+            )
+            dataSourcingManager.patchDataSourcingState(
+                newDataSourcingEntity.dataSourcingId,
+                DataSourcingState.NonSourceableVerification,
+            )
+        }
+
+        assertEquals(DataSourcingState.NonSourceableVerification, newDataSourcingEntity.state)
+        assertNotEquals(RequestState.Processed, newRequest.state)
     }
 
     @ParameterizedTest

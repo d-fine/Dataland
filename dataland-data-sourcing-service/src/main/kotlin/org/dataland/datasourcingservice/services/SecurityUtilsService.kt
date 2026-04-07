@@ -87,6 +87,10 @@ class SecurityUtilsService
             dataSourcingId: String,
             state: DataSourcingState,
         ): Boolean {
+            if (state == DataSourcingState.NonSourceable || state == DataSourcingState.NonSourceableVerification) {
+                return false
+            }
+
             val dataSourcing = dataSourcingManager.getStoredDataSourcing(ValidationUtils.convertToUUID(dataSourcingId))
             return state === DataSourcingState.DocumentSourcingDone &&
                 dataSourcing.state === DataSourcingState.DocumentSourcing &&

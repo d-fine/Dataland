@@ -1,10 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.entities.NonSourceabilityInformationEntity
 import org.dataland.datalandbackend.entities.SourceabilityEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.commons.QaNonSourceabilityStatus
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
+import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackend.repositories.SourceabilityDataRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
@@ -15,12 +18,19 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.NonSourceabilityAutoAcceptedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.NonSourceabilityCreatedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityAcceptedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityRejectedEventPayload
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.util.UUID
 
 /**
  * A service class for managing information about the sourceabilty of datasets.
@@ -30,6 +40,7 @@ class SourceabilityDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val sourceabilityDataRepository: SourceabilityDataRepository,
+    @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
@@ -39,22 +50,26 @@ class SourceabilityDataManager(
      * The method stores meta information to a non-sourceable dataset in the nonSourceableDataRepository
      * @param sourceabilityInfo the of the dataset
      */
-    @Transactional
     fun storeNonSourceableData(sourceabilityInfo: SourceabilityInfo): SourceabilityInfoResponse? {
-        val creationTime = Instant.now().toEpochMilli()
+        val now = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
-        val sourceabilityEntity =
-            SourceabilityEntity(
-                eventId = null,
+        val qaStatus = if (sourceabilityInfo.bypassQa) QaNonSourceabilityStatus.Accepted else QaNonSourceabilityStatus.Pending
+        val nonSourceabilityEntity =
+            NonSourceabilityInformationEntity(
+                nonSourceabilityId = null,
                 companyId = sourceabilityInfo.companyId,
                 dataType = sourceabilityInfo.dataType,
                 reportingPeriod = sourceabilityInfo.reportingPeriod,
-                isNonSourceable = sourceabilityInfo.isNonSourceable,
                 reason = sourceabilityInfo.reason,
-                creationTime = creationTime,
-                userId = userId,
+                uploaderUserId = userId,
+                uploadTime = now,
+                qaStatus = qaStatus,
+                currentlyActive = sourceabilityInfo.bypassQa,
+                bypassQa = sourceabilityInfo.bypassQa,
+                createdAt = now,
+                updatedAt = now,
             )
-        return sourceabilityDataRepository.save(sourceabilityEntity).toApiModel()
+        return nonSourceabilityDataRepository.save(nonSourceabilityEntity).toApiModel()
     }
 
     /**
@@ -63,9 +78,47 @@ class SourceabilityDataManager(
      * storing the non-sourceable data, and sending a corresponding message to a message queue.
      * @param sourceabilityInfo the SourceabilityInfo of the dataset
      */
+    @Transactional
     fun processSourceabilityDataStorageRequest(sourceabilityInfo: SourceabilityInfo) {
         val correlationId = generateCorrelationId(sourceabilityInfo.companyId, null)
         companyQueryManager.assertCompanyIdExists(sourceabilityInfo.companyId)
+
+        validateNoActiveNonSourceabilityRequest(sourceabilityInfo, correlationId)
+        validateNoAcceptedDataExists(sourceabilityInfo, correlationId)
+
+        val storedNonSourceabilityInfo = requireNotNull(storeNonSourceableData(sourceabilityInfo))
+        val eventData = buildEventData(storedNonSourceabilityInfo, sourceabilityInfo)
+
+        publishNonSourceabilityEvent(eventData, sourceabilityInfo, correlationId)
+    }
+
+    private fun validateNoActiveNonSourceabilityRequest(
+        sourceabilityInfo: SourceabilityInfo,
+        correlationId: String,
+    ) {
+        val activeRequestExists =
+            nonSourceabilityDataRepository.existsActiveNonSourceabilityRequest(
+                sourceabilityInfo.companyId,
+                sourceabilityInfo.dataType,
+                sourceabilityInfo.reportingPeriod,
+            )
+        if (activeRequestExists) {
+            logger.info(
+                "Creating a NonSourceabilityInformationEntity failed because an active request already exists " +
+                    "(correlationId: $correlationId)",
+            )
+            throw InvalidInputApiException(
+                "Active non-sourceability request already exists for the given dimensions.",
+                "Active non-sourceability request exists for companyId ${sourceabilityInfo.companyId}, " +
+                    "reporting period ${sourceabilityInfo.reportingPeriod} and dataType ${sourceabilityInfo.dataType}.",
+            )
+        }
+    }
+
+    private fun validateNoAcceptedDataExists(
+        sourceabilityInfo: SourceabilityInfo,
+        correlationId: String,
+    ) {
         val dataMetaInfo =
             dataMetaInformationManager.searchDataMetaInfo(
                 DataMetaInformationSearchFilter(
@@ -77,21 +130,123 @@ class SourceabilityDataManager(
                 ),
             )
         if (dataMetaInfo.isNotEmpty()) {
-            logger.info("Creating a NonSourceableEntity failed because the dataset exists (correlationId: $correlationId)")
+            logger.info(
+                "Creating a NonSourceabilityInformationEntity failed because an accepted dataset exists " +
+                    "(correlationId: $correlationId)",
+            )
             throw InvalidInputApiException(
-                "DataMetaInfo exists for the triple companyId, reportingPeriod and datyType. ",
+                "DataMetaInfo exists for the triple companyId, reportingPeriod and dataType.",
                 "DataMetaInfo exists for companyId ${sourceabilityInfo.companyId}, " + "reporting period " +
                     "${sourceabilityInfo.reportingPeriod} and dataType ${sourceabilityInfo.dataType}. ",
             )
         }
-        storeNonSourceableData(sourceabilityInfo)
-        logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
+    }
+
+    private data class EventData(
+        val nonSourceabilityId: UUID,
+        val eventId: UUID,
+        val companyIdAsUuid: UUID,
+        val uploadTime: ZonedDateTime,
+        val publishedTime: ZonedDateTime,
+        val uploaderUserId: String,
+    )
+
+    private fun buildEventData(
+        storedNonSourceabilityInfo: SourceabilityInfoResponse,
+        sourceabilityInfo: SourceabilityInfo,
+    ): EventData {
+        val nonSourceabilityId = storedNonSourceabilityInfo.nonSourceabilityId ?: UUID.randomUUID()
+        val eventId = UUID.randomUUID()
+        val companyIdAsUuid =
+            try {
+                UUID.fromString(sourceabilityInfo.companyId)
+            } catch (_: Exception) {
+                UUID.nameUUIDFromBytes(sourceabilityInfo.companyId.toByteArray())
+            }
+        val uploadTimeMillis = storedNonSourceabilityInfo.uploadTime ?: storedNonSourceabilityInfo.creationTime
+        val uploadTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(uploadTimeMillis), ZoneOffset.UTC)
+        val publishedTime = ZonedDateTime.now(ZoneOffset.UTC)
+        val uploaderUserId = storedNonSourceabilityInfo.uploaderUserId ?: storedNonSourceabilityInfo.userId
+
+        return EventData(
+            nonSourceabilityId = nonSourceabilityId,
+            eventId = eventId,
+            companyIdAsUuid = companyIdAsUuid,
+            uploadTime = uploadTime,
+            publishedTime = publishedTime,
+            uploaderUserId = uploaderUserId,
+        )
+    }
+
+    private fun publishNonSourceabilityEvent(
+        eventData: EventData,
+        sourceabilityInfo: SourceabilityInfo,
+        correlationId: String,
+    ) {
+        if (sourceabilityInfo.bypassQa) {
+            publishAutoAcceptedEvent(eventData, sourceabilityInfo, correlationId)
+        } else {
+            publishCreatedEvent(eventData, sourceabilityInfo, correlationId)
+        }
+    }
+
+    private fun publishAutoAcceptedEvent(
+        eventData: EventData,
+        sourceabilityInfo: SourceabilityInfo,
+        correlationId: String,
+    ) {
+        val payload =
+            NonSourceabilityAutoAcceptedEventPayload(
+                eventId = eventData.eventId,
+                nonSourceabilityId = eventData.nonSourceabilityId,
+                companyId = eventData.companyIdAsUuid,
+                dataType = sourceabilityInfo.dataType.name,
+                reportingPeriod = sourceabilityInfo.reportingPeriod,
+                reason = sourceabilityInfo.reason,
+                uploaderUserId = eventData.uploaderUserId,
+                uploadTime = eventData.uploadTime,
+                eventPublishedTime = eventData.publishedTime,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(sourceabilityInfo),
-            type = MessageType.DATA_NONSOURCEABLE,
+            body = objectMapper.writeValueAsString(payload),
+            type = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
-            routingKey = RoutingKeyNames.DATA_NONSOURCEABLE,
+            routingKey = RoutingKeyNames.NON_SOURCEABILITY_AUTO_ACCEPTED,
+        )
+        logger.info(
+            "Published event type ${MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED} for nonSourceabilityId " +
+                "${eventData.nonSourceabilityId} (correlationId: $correlationId)",
+        )
+    }
+
+    private fun publishCreatedEvent(
+        eventData: EventData,
+        sourceabilityInfo: SourceabilityInfo,
+        correlationId: String,
+    ) {
+        val payload =
+            NonSourceabilityCreatedEventPayload(
+                eventId = eventData.eventId,
+                nonSourceabilityId = eventData.nonSourceabilityId,
+                companyId = eventData.companyIdAsUuid,
+                dataType = sourceabilityInfo.dataType.name,
+                reportingPeriod = sourceabilityInfo.reportingPeriod,
+                reason = sourceabilityInfo.reason,
+                uploaderUserId = eventData.uploaderUserId,
+                uploadTime = eventData.uploadTime,
+                eventPublishedTime = eventData.publishedTime,
+            )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(payload),
+            type = MessageType.NON_SOURCEABILITY_CREATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
+            routingKey = RoutingKeyNames.NON_SOURCEABILITY_CREATED,
+        )
+        logger.info(
+            "Published event type ${MessageType.NON_SOURCEABILITY_CREATED} for nonSourceabilityId " +
+                "${eventData.nonSourceabilityId} (correlationId: $correlationId)",
         )
     }
 
@@ -110,17 +265,28 @@ class SourceabilityDataManager(
         reportingPeriod: String?,
         nonSourceable: Boolean?,
     ): List<SourceabilityInfoResponse> {
-        val sourceabilityEntities =
-            sourceabilityDataRepository
-                .searchNonSourceableData(
-                    NonSourceableDataSearchFilter(
-                        companyId,
-                        dataType,
-                        reportingPeriod,
-                        nonSourceable,
-                    ),
-                )
-        return sourceabilityEntities.map { it.toApiModel() }
+        val nonSourceabilityEntities =
+            nonSourceabilityDataRepository.findByDimensions(
+                companyId = companyId,
+                dataType = dataType,
+                reportingPeriod = reportingPeriod,
+            )
+
+        if (nonSourceabilityEntities.isNotEmpty()) {
+            val mapped = nonSourceabilityEntities.map { it.toApiModel() }
+            return if (nonSourceable == null) mapped else mapped.filter { it.isNonSourceable == nonSourceable }
+        }
+
+        val legacySourceabilityEntities =
+            sourceabilityDataRepository.searchNonSourceableData(
+                NonSourceableDataSearchFilter(
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    nonSourceable,
+                ),
+            )
+        return legacySourceabilityEntities.map { it.toApiModel() }
     }
 
     /**
@@ -135,14 +301,15 @@ class SourceabilityDataManager(
         dataType: DataType,
         reportingPeriod: String,
     ): SourceabilityInfoResponse? =
-        sourceabilityDataRepository
-            .getLatestSourceabilityInfoForDataset(
-                NonSourceableDataSearchFilter(
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                ),
-            )?.toApiModel()
+        nonSourceabilityDataRepository.findLatestByDimensions(companyId, dataType, reportingPeriod)?.toApiModel()
+            ?: sourceabilityDataRepository
+                .getLatestSourceabilityInfoForDataset(
+                    NonSourceableDataSearchFilter(
+                        companyId,
+                        dataType,
+                        reportingPeriod,
+                    ),
+                )?.toApiModel()
 
     /**
      * Stores a NonSourceableEntity in the data-sourceability table, marking the previously
@@ -159,6 +326,13 @@ class SourceabilityDataManager(
         reportingPeriod: String,
         uploaderId: String,
     ): SourceabilityInfoResponse? {
+        val activeRequest = nonSourceabilityDataRepository.findActiveRequest(companyId, dataType, reportingPeriod)
+        if (activeRequest != null && activeRequest.currentlyActive) {
+            activeRequest.currentlyActive = false
+            activeRequest.updatedAt = Instant.now().toEpochMilli()
+            nonSourceabilityDataRepository.save(activeRequest)
+        }
+
         val creationTime = Instant.now().toEpochMilli()
 
         val sourceabilityEntity =
@@ -173,5 +347,61 @@ class SourceabilityDataManager(
                 userId = uploaderId,
             )
         return sourceabilityDataRepository.save(sourceabilityEntity).toApiModel()
+    }
+
+    /**
+     * Applies an accepted QA decision event for a non-sourceability request.
+     */
+    @Transactional
+    fun processQaNonSourceabilityAcceptedEvent(
+        payload: QaNonSourceabilityAcceptedEventPayload,
+        correlationId: String,
+    ) {
+        val reviewItem = nonSourceabilityDataRepository.findById(payload.nonSourceabilityId).orElse(null)
+        if (reviewItem == null) {
+            logger.warn(
+                "Could not process QA accepted event because non-sourceability request ${payload.nonSourceabilityId} " +
+                    "was not found (correlationId: $correlationId)",
+            )
+            return
+        }
+
+        reviewItem.qaStatus = QaNonSourceabilityStatus.Accepted
+        reviewItem.currentlyActive = true
+        reviewItem.updatedAt = Instant.now().toEpochMilli()
+        nonSourceabilityDataRepository.save(reviewItem)
+
+        logger.info(
+            "Processed QA accepted event for nonSourceabilityId ${payload.nonSourceabilityId}; " +
+                "set qaStatus=${QaNonSourceabilityStatus.Accepted} and currentlyActive=true (correlationId: $correlationId)",
+        )
+    }
+
+    /**
+     * Applies a rejected QA decision event for a non-sourceability request.
+     */
+    @Transactional
+    fun processQaNonSourceabilityRejectedEvent(
+        payload: QaNonSourceabilityRejectedEventPayload,
+        correlationId: String,
+    ) {
+        val reviewItem = nonSourceabilityDataRepository.findById(payload.nonSourceabilityId).orElse(null)
+        if (reviewItem == null) {
+            logger.warn(
+                "Could not process QA rejected event because non-sourceability request ${payload.nonSourceabilityId} " +
+                    "was not found (correlationId: $correlationId)",
+            )
+            return
+        }
+
+        reviewItem.qaStatus = QaNonSourceabilityStatus.Rejected
+        reviewItem.currentlyActive = false
+        reviewItem.updatedAt = Instant.now().toEpochMilli()
+        nonSourceabilityDataRepository.save(reviewItem)
+
+        logger.info(
+            "Processed QA rejected event for nonSourceabilityId ${payload.nonSourceabilityId}; " +
+                "set qaStatus=${QaNonSourceabilityStatus.Rejected} and currentlyActive=false (correlationId: $correlationId)",
+        )
     }
 }

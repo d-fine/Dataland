@@ -205,7 +205,58 @@ curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
 # Expected: state=NonSourceable
 ```
 
-### Scenario 2: Create Request with QA Bypass (bypassQa=true – Admin only)
+### Scenario 2: QA Acceptance Detailed Flow
+
+```bash
+# 1. Create request (same as above, bypassQa=false)
+curl -X POST http://localhost:8080/metadata/nonSourceable \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{
+    "companyId": "550e8400-e29b-41d4-a716-446655440000",
+    "dataType": "sfdr",
+    "reportingPeriod": "2023",
+    "reason": "Data quality issues identified",
+    "bypassQa": false
+  }'
+
+# Response contains: nonSourceabilityId (e.g., "123e4567-e89b-12d3-a456-426614174000")
+
+# 2. Backend publishes NON_SOURCEABILITY_CREATED event via RabbitMQ
+# 3. QA Service receives event and creates a pending review task automatically
+
+# 4. QA reviewer retrieves pending reviews
+curl -X GET 'http://localhost:8081/nonSourceable' \
+  -H "Authorization: Bearer <QA_REVIEWER_TOKEN>"
+
+# Expected 200: List of pending NonSourceableQaReviewInformationEntity objects
+
+# 5. QA reviewer submits acceptance decision
+curl -X POST 'http://localhost:8081/nonSourceable/123e4567-e89b-12d3-a456-426614174000' \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <QA_REVIEWER_TOKEN>" \
+  -d '{
+    "qaStatus": "Accepted",
+    "qaComment": "Validated. Data quality issues confirmed."
+  }'
+
+# Expected 200: Review accepted, event QA_NON_SOURCEABILITY_ACCEPTED published
+
+# 6. Backend receives QA_NON_SOURCEABILITY_ACCEPTED event and updates:
+#    qaStatus=Accepted, currentlyActive=true
+curl -X GET 'http://localhost:8080/metadata/nonSourceable/123e4567-e89b-12d3-a456-426614174000' \
+  -H "Authorization: Bearer <TOKEN>"
+
+# Expected: qaStatus=Accepted, currentlyActive=true
+
+# 7. Data-Sourcing receives event and transitions to NonSourceable
+curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>' \
+  -H "Authorization: Bearer <TOKEN>"
+
+# Expected: state=NonSourceable, associated requests marked as Processed
+```
+
+### Scenario 3: Create Request with QA Bypass (bypassQa=true – Admin only)
 
 ```bash
 # 1. Create with bypass (admin user)
@@ -221,7 +272,7 @@ curl -X POST http://localhost:8080/metadata/nonSourceable \
   }'
 
 # Expected 201:
-# qaStatus=ACCEPTED, currentlyActive=true (immediately)
+# qaStatus=Accepted, currentlyActive=true (immediately, no QA needed)
 
 # 2. Verify NO QA review task was created
 curl -X GET 'http://localhost:8081/nonSourceable?nonSourceabilityId=<ID>' \
@@ -229,17 +280,19 @@ curl -X GET 'http://localhost:8081/nonSourceable?nonSourceabilityId=<ID>' \
 
 # Expected: Empty list or 404 (no review created for this request)
 
-# 3. Verify data-sourcing state is now NonSourceable (not NonSourceableVerification)
-curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
+# 3. Verify data-sourcing auto-accepts and transitions to NonSourceable
+curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: state=NonSourceable (direct transition)
+# Expected: state=NonSourceable (direct transition via auto-accept event)
 ```
 
-### Scenario 3: QA Rejection
+### Scenario 4: QA Rejection Detailed Flow
+
+QA rejection is used when the non-sourceability claim is NOT valid. The request does **not** activate, and the dataset remains in `NonSourceableVerification` state pending manual follow-up.
 
 ```bash
-# 1. Create request (with QA)
+# 1. Create request (with QA, bypassQa=false)
 curl -X POST http://localhost:8080/metadata/nonSourceable \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <TOKEN>" \
@@ -251,28 +304,60 @@ curl -X POST http://localhost:8080/metadata/nonSourceable \
     "bypassQa": false
   }'
 
-# 2. QA reviewer rejects
-curl -X POST http://localhost:8081/nonSourceable/<NONSOURCEABILITY_ID> \
+# Response contains: nonSourceabilityId
+
+# 2. Backend publishes NON_SOURCEABILITY_CREATED event
+# 3. QA Service receives event and creates a pending review task
+
+# 4. QA reviewer submits rejection decision
+curl -X POST 'http://localhost:8081/nonSourceable/550e8400-e29b-41d4-a716-426614174002' \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <QA_REVIEWER_TOKEN>" \
   -d '{
-    "qaStatus": "REJECTED",
-    "qaComment": "Data validated; no quality issues found"
+    "qaStatus": "Rejected",
+    "qaComment": "Data quality verified. No issues found. Request invalid."
   }'
 
-# Expected 200
+# Expected 200: Review rejected, event QA_NON_SOURCEABILITY_REJECTED published
 
-# 3. Verify backend status is REJECTED / currentlyActive=false
-curl -X GET 'http://localhost:8080/metadata/nonSourceable?nonSourceabilityId=<ID>' \
+# 5. Backend receives QA_NON_SOURCEABILITY_REJECTED event and updates:
+#    qaStatus=Rejected, currentlyActive=false (remains inactive)
+curl -X GET 'http://localhost:8080/metadata/nonSourceable/550e8400-e29b-41d4-a716-426614174002' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: qaStatus=REJECTED, currentlyActive=false
+# Expected: qaStatus=Rejected, currentlyActive=false
 
-# 4. Verify data-sourcing remains in NonSourceableVerification
-curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
+# 6. Data-Sourcing remains in NonSourceableVerification
+#    Associated requests are NOT marked as Processed
+#    Manual QA team follow-up required
+curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>' \
   -H "Authorization: Bearer <TOKEN>"
 
-# Expected: state=NonSourceableVerification (not transitioned)
+# Expected: state=NonSourceableVerification (unchanged)
+#           Associated requests still in Open/Processing state
+```
+
+### Scenario 5: Idempotent Message Replay
+
+Dataland's event system ensures **at-most-once delivery semantics**. If a QA decision event is replayed (due to message queue retry or manual recovery), the state remains unchanged.
+
+```bash
+# Simulate replaying the acceptance event multiple times
+# Message ID and nonSourceabilityId are identical
+# Expected: Only first delivery processes; subsequent replays are ignored
+
+# First delivery:
+#   QA_NON_SOURCEABILITY_ACCEPTED for nonSourceabilityId=XYZ
+#   Backend: qaStatus → Accepted, currentlyActive → true
+
+# Replay (same event):
+#   QA_NON_SOURCEABILITY_ACCEPTED for nonSourceabilityId=XYZ
+#   Backend: Checks if already processed, skips update;
+#            state remains Accepted, currentlyActive=true
+
+# Data-Sourcing behavior identical to backend:
+#   First delivery: state → NonSourceable
+#   Replay: Already in NonSourceable, idempotently keeps state
 ```
 
 ---
@@ -281,50 +366,56 @@ curl -X GET 'http://localhost:8082/data-sourcing/<dataSourcingId>/state' \
 
 ### Backend Service (dataland-backend)
 
-- **Controller**: `dataland-backend/src/main/kotlin/com/d_fine/dataland/backend/metadata/nonsourceable/controller/NonSourceableMetadataController.kt`
-  - POST /metadata/nonSourceable
-  - GET /metadata/nonSourceable
-  - HEAD /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}
+- **Controller**: `MetaDataController.kt`
+  - POST /metadata/nonSourceable → Create non-sourceability request
+  - GET /metadata/nonSourceable → Retrieve non-sourceability info
+  - HEAD /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod} → Check existence
 
-- **Entity**: `dataland-backend/src/main/kotlin/com/d_fine/dataland/backend/metadata/nonsourceable/entity/NonSourceabilityInformationEntity.kt`
+- **Entity**: `NonSourceabilityInformationEntity.kt`
+  - Fields: nonSourceabilityId (PK), companyId, dataType, reportingPeriod, qaStatus, currentlyActive
+  - Table: `non_sourceability_information`
 
-- **Service**: `dataland-backend/src/main/kotlin/com/d_fine/dataland/backend/metadata/nonsourceable/service/NonSourceableService.kt`
+- **Service**: `SourceabilityDataManager.kt`
   - Business logic: duplicate detection, state validation, event publishing
+  - Methods: `createNonSourceabilityRequest()`, `processQaNonSourceabilityAcceptedEvent()`, `processQaNonSourceabilityRejectedEvent()`
 
-- **Event Publisher**: `dataland-backend/src/main/kotlin/com/d_fine/dataland/backend/metadata/nonsourceable/service/NonSourceableEventPublisher.kt`
-  - Publishes non-sourceability-created and non-sourceability-auto-accepted events
-
-- **Event Listener**: `dataland-backend/src/main/kotlin/com/d_fine/dataland/backend/metadata/nonsourceable/service/QaDecisionEventListener.kt`
-  - Listens for QA decisions (accepted/rejected), updates NonSourceabilityInformation
+- **Event Listener**: `SourceabilityQaEventListener.kt`
+  - Listens on exchange: `QA_SERVICE_DATA_QUALITY_EVENTS`
+  - Routes: `qa.decision.accepted` → acceptance handler, `qa.decision.rejected` → rejection handler
 
 ### QA Service (dataland-qa-service)
 
-- **Controller**: `dataland-qa-service/src/main/kotlin/com/d_fine/dataland/qas/nonsourceable/controller/NonSourceableQaController.kt`
-  - GET /nonSourceable
-  - GET /nonSourceable/queue
-  - POST /nonSourceable/{nonSourceabilityId}
+- **Controller**: `QaController.kt`
+  - GET /nonSourceable → List non-sourceability reviews
+  - POST /nonSourceable/{nonSourceabilityId} → Submit decision (acceptance or rejection)
 
-- **Entity**: `dataland-qa-service/src/main/kotlin/com/d_fine/dataland/qas/nonsourceable/entity/NonSourceableQaReviewInformationEntity.kt`
+- **Entity**: `NonSourceableQaReviewInformationEntity.kt`
+  - Fields: id (PK), nonSourceabilityId (FK), qaStatus, reviewerUserId, qaComment, createdAt, updatedAt
+  - Indexes on nonSourceabilityId for fast lookup
+  - Table: `non_sourceable_qa_review_information`
 
-- **Service**: `dataland-qa-service/src/main/kotlin/com/d_fine/dataland/qas/nonsourceable/service/NonSourceableQaService.kt`
+- **Service**: `QaReviewManager.kt`
+  - Manages decision persistence and event emission
+  - Methods: `handleNonSourceabilityDecision()` with bifurcated acceptance/rejection paths
+  - Event methods: `sendNonSourceabilityAcceptedEvent()`, `sendNonSourceabilityRejectedEvent()`
 
-- **Event Listener**: `dataland-qa-service/src/main/kotlin/com/d_fine/dataland/qas/nonsourceable/service/NonSourceableQaEventListener.kt`
-  - Listens for non-sourceability-created events, creates review tasks
-
-- **Event Publisher**: `dataland-qa-service/src/main/kotlin/com/d_fine/dataland/qas/nonsourceable/service/NonSourceableQaEventPublisher.kt`
-  - Publishes QA decision events (accepted/rejected)
+- **Event Listener**: `QaEventListenerQaService.kt`
+  - Listens on exchange: `dataland-backend.data-quality` (or topic queue)
+  - Routes: `non-sourceability.created` → creates pending review with `qaStatus=Pending`
 
 ### Data-Sourcing Service (dataland-data-sourcing-service)
 
-- **Event Listener**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/service/NonSourceableEventListener.kt`
-  - Listens for all non-sourceability events
-  - Updates dataset state: NonSourceableVerification, NonSourceable
+- **Event Listener**: `DataSourcingServiceListener.kt`
+  - **Acceptance Path**: Listens on exchange: `QA_SERVICE_DATA_QUALITY_EVENTS`
+    - Route: `qa.decision.accepted` → lookup dataSourcingId via correlationMap → patch state to `NonSourceable`
+  - **Rejection Path**: Listens on same exchange
+    - Route: `qa.decision.rejected` → lookup dataSourcingId → log rejection, keep state in `NonSourceableVerification`
+  - Maintains in-memory map: `nonSourceabilityId → dataSourcingId` (populated during created event processing)
 
-- **State Service**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/service/DataSourcingStateService.kt`
-  - Implements state transitions with authorization checks
-
-- **State Security**: `dataland-data-sourcing-service/src/main/kotlin/com/d_fine/dataland/datasourcing/state/security/DataSourcingStateSecurityService.kt`
-  - Enforces `canUserPatchState()` rule: only admins can patch to NonSourceable
+- **State Service**: `DataSourcingManager.kt`
+  - Method: `patchDataSourcingState()` implements state transitions
+  - Enforces: Only admins can directly patch to `NonSourceable` without QA approval
+  - State machine: `Initialized → DocumentSourcing → NonSourceableVerification → NonSourceable | NonSourceableVerification (stays) | Done`
 
 ---
 

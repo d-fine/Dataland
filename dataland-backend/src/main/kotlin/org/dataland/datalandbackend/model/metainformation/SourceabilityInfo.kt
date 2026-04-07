@@ -8,12 +8,13 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
 
 /**
  * --- API model ---
- * SourceabilityInfo storing the history of whether a dataset is sourceable or not used for posting and for message queue.
+ * SourceabilityInfo for creating a non-sourceability request.
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType type of the data
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
- * @param isNonSourceable true if there is no source available
  * @param reason reason why there is no source available
+ * @param bypassQa if true, the request bypasses QA review (admin-only use)
+ * @param isNonSourceable legacy compatibility field; non-sourceability requests are treated as true
  */
 data class SourceabilityInfo(
     @field:JsonProperty(required = true)
@@ -35,13 +36,18 @@ data class SourceabilityInfo(
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
-    )
-    val isNonSourceable: Boolean,
-    @field:JsonProperty(required = true)
-    @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.REASON_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.REASON_EXAMPLE,
     )
     val reason: String,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+    )
+    val bypassQa: Boolean = false,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
+    )
+    val isNonSourceable: Boolean = true,
 )

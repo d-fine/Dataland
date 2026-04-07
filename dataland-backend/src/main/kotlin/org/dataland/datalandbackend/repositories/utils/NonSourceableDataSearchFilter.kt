@@ -11,6 +11,7 @@ data class NonSourceableDataSearchFilter(
     val dataType: DataType?,
     val reportingPeriod: String?,
     val isNonSourceable: Boolean? = null,
+    val currentlyActive: Boolean? = null,
 ) {
     val shouldFilterByCompanyId: Boolean
         get() = !companyId.isNullOrEmpty()
@@ -35,4 +36,10 @@ data class NonSourceableDataSearchFilter(
 
     val preparedIsNonSourceable: Boolean?
         get() = isNonSourceable
+
+    val shouldFilterByCurrentlyActive: Boolean
+        get() = currentlyActive != null
+
+    val preparedCurrentlyActive: Boolean?
+        get() = currentlyActive
 }

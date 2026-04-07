@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -18,9 +19,13 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityAcceptedEventPayload
+import org.dataland.datalandmessagequeueutils.messages.QaNonSourceabilityRejectedEventPayload
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -32,6 +37,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.ZonedDateTime
 import java.util.UUID
 import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
 
@@ -52,6 +58,7 @@ class QaReviewManager
         val dataPointQaReportManager: DataPointQaReportManager,
         val datasetJudgementService: DatasetJudgementService,
         val dataSourcingControllerApi: DataSourcingControllerApi,
+        val nonSourceableQaReviewRepository: NonSourceableQaReviewRepository,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -321,6 +328,120 @@ class QaReviewManager
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 messageBody, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                 RoutingKeyNames.DATA,
+            )
+        }
+
+        /**
+         * Persists a QA decision for a non-sourceability review item and emits the corresponding QA decision event.
+         */
+        @Transactional
+        fun handleNonSourceabilityDecision(
+            nonSourceabilityId: UUID,
+            qaStatus: QaStatus,
+            reviewerUserId: String,
+            qaComment: String?,
+            correlationId: String,
+        ): NonSourceableQaReviewInformation {
+            if (qaStatus != QaStatus.Accepted && qaStatus != QaStatus.Rejected) {
+                throw InvalidInputApiException(
+                    "Invalid qaStatus for non-sourceability decision.",
+                    "qaStatus must be Accepted or Rejected.",
+                )
+            }
+
+            val reviewItem =
+                nonSourceableQaReviewRepository.findByNonSourceabilityId(nonSourceabilityId)
+                    ?: throw ResourceNotFoundApiException(
+                        "Non-sourceable review item not found.",
+                        "No non-sourceable review item found for nonSourceabilityId $nonSourceabilityId",
+                    )
+
+            reviewItem.qaStatus = qaStatus
+            reviewItem.reviewerUserId = reviewerUserId
+            reviewItem.qaComment = qaComment
+            reviewItem.updatedAt = Instant.now().toEpochMilli()
+            nonSourceableQaReviewRepository.save(reviewItem)
+
+            when (qaStatus) {
+                QaStatus.Accepted ->
+                    sendNonSourceabilityAcceptedEvent(
+                        reviewItem.nonSourceabilityId,
+                        reviewerUserId,
+                        qaComment,
+                        correlationId,
+                    )
+                QaStatus.Rejected ->
+                    sendNonSourceabilityRejectedEvent(
+                        reviewItem.nonSourceabilityId,
+                        reviewerUserId,
+                        qaComment,
+                        correlationId,
+                    )
+                else -> {
+                    // no-op; guarded above
+                }
+            }
+
+            return reviewItem.toApiModel()
+        }
+
+        private fun sendNonSourceabilityAcceptedEvent(
+            nonSourceabilityId: UUID,
+            reviewerUserId: String,
+            qaComment: String?,
+            correlationId: String,
+        ) {
+            val now = ZonedDateTime.now()
+            val payload =
+                QaNonSourceabilityAcceptedEventPayload(
+                    eventId = UUID.randomUUID(),
+                    nonSourceabilityId = nonSourceabilityId,
+                    reviewerUserId = reviewerUserId,
+                    qaComment = qaComment,
+                    decisionTime = now,
+                    eventPublishedTime = now,
+                )
+
+            logger.info(
+                "Publishing ${MessageType.QA_NON_SOURCEABILITY_ACCEPTED} for nonSourceabilityId $nonSourceabilityId " +
+                    "(correlationId: $correlationId)",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(payload),
+                MessageType.QA_NON_SOURCEABILITY_ACCEPTED,
+                correlationId,
+                ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                RoutingKeyNames.QA_DECISION_ACCEPTED,
+            )
+        }
+
+        private fun sendNonSourceabilityRejectedEvent(
+            nonSourceabilityId: UUID,
+            reviewerUserId: String,
+            qaComment: String?,
+            correlationId: String,
+        ) {
+            val now = ZonedDateTime.now()
+            val payload =
+                QaNonSourceabilityRejectedEventPayload(
+                    eventId = UUID.randomUUID(),
+                    nonSourceabilityId = nonSourceabilityId,
+                    reviewerUserId = reviewerUserId,
+                    qaComment = qaComment,
+                    decisionTime = now,
+                    eventPublishedTime = now,
+                )
+
+            logger.info(
+                "Publishing ${MessageType.QA_NON_SOURCEABILITY_REJECTED} for nonSourceabilityId $nonSourceabilityId " +
+                    "(correlationId: $correlationId)",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(payload),
+                MessageType.QA_NON_SOURCEABILITY_REJECTED,
+                correlationId,
+                ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                RoutingKeyNames.QA_DECISION_REJECTED,
             )
         }
 

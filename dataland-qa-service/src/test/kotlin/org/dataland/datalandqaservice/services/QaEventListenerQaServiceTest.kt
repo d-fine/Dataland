@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.NonSourceabilityCreatedEventPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandqaservice.DatalandQaService
@@ -22,6 +23,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.datalandqaservice.services.NonSourceableQaReviewManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.ZonedDateTime
 import java.util.UUID
 
 @Transactional
@@ -58,6 +61,7 @@ class QaEventListenerQaServiceTest(
 ) {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
     private val mockQaReviewManager: QaReviewManager = mock<QaReviewManager>()
+    private val mockNonSourceableQaReviewManager: NonSourceableQaReviewManager = mock<NonSourceableQaReviewManager>()
     private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
     private val mockQaReportManager: QaReportManager = mock<QaReportManager>()
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
@@ -76,6 +80,7 @@ class QaEventListenerQaServiceTest(
             mockCloudEventMessageHandler,
             mockCompanyDataControllerApi,
             mockQaReviewManager,
+            mockNonSourceableQaReviewManager,
             mockDataPointQaReviewManager,
             mockQaReportManager,
             mockDataPointControllerApi,
@@ -86,6 +91,7 @@ class QaEventListenerQaServiceTest(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 mockQaReviewManager,
+                mockNonSourceableQaReviewManager,
                 mockDataPointQaReviewManager,
                 mockQaReportManager,
                 mockAssembledDataMigrationManager,
@@ -111,6 +117,21 @@ class QaEventListenerQaServiceTest(
         resourceId: String,
         bypassQa: Boolean,
     ): String = objectMapper.writeValueAsString(ManualQaRequestedMessage(resourceId, bypassQa))
+
+    private fun getNonSourceabilityCreatedPayload(nonSourceabilityId: UUID): String =
+        objectMapper.writeValueAsString(
+            NonSourceabilityCreatedEventPayload(
+                eventId = UUID.randomUUID(),
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = UUID.randomUUID(),
+                dataType = "sfdr",
+                reportingPeriod = "2023",
+                reason = "not available",
+                uploaderUserId = uploaderUserId,
+                uploadTime = ZonedDateTime.now(),
+                eventPublishedTime = ZonedDateTime.now(),
+            ),
+        )
 
     @Test
     fun `check that an exception is thrown in reading out message from data stored queue when dataId is empty`() {
@@ -184,6 +205,50 @@ class QaEventListenerQaServiceTest(
             exceptionThrown.message,
         )
         verify(mockQaReviewManager, times(0)).patchUploaderUserIdInQaReviewEntry(any(), any(), any())
+    }
+
+    @Test
+    fun `check that processing non-sourceability created event works`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        val mockMessage = setupMockMessage(RoutingKeyNames.NON_SOURCEABILITY_CREATED)
+        val payload = getNonSourceabilityCreatedPayload(nonSourceabilityId)
+        doNothing().whenever(mockNonSourceableQaReviewManager).createReviewItemFromCreatedEvent(any(), any())
+
+        assertDoesNotThrow {
+            qaEventListenerQaService.processBackendNonSourceabilityEvents(
+                mockMessage,
+                payload,
+                correlationId,
+                MessageType.NON_SOURCEABILITY_CREATED,
+            )
+        }
+
+        verify(mockNonSourceableQaReviewManager, times(1)).createReviewItemFromCreatedEvent(any(), correlationId)
+    }
+
+    @Test
+    fun `check replay coverage for non-sourceability created event`() {
+        val nonSourceabilityId = UUID.randomUUID()
+        val mockMessage = setupMockMessage(RoutingKeyNames.NON_SOURCEABILITY_CREATED)
+        val payload = getNonSourceabilityCreatedPayload(nonSourceabilityId)
+        doNothing().whenever(mockNonSourceableQaReviewManager).createReviewItemFromCreatedEvent(any(), any())
+
+        assertDoesNotThrow {
+            qaEventListenerQaService.processBackendNonSourceabilityEvents(
+                mockMessage,
+                payload,
+                correlationId,
+                MessageType.NON_SOURCEABILITY_CREATED,
+            )
+            qaEventListenerQaService.processBackendNonSourceabilityEvents(
+                mockMessage,
+                payload,
+                correlationId,
+                MessageType.NON_SOURCEABILITY_CREATED,
+            )
+        }
+
+        verify(mockNonSourceableQaReviewManager, times(2)).createReviewItemFromCreatedEvent(any(), correlationId)
     }
 
     @Test

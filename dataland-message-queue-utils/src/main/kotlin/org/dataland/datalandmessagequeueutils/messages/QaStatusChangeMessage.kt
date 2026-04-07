@@ -3,6 +3,8 @@ package org.dataland.datalandmessagequeueutils.messages
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import java.time.ZonedDateTime
+import java.util.UUID
 
 /**
  * Message that is sent to the data quality assured exchange after a QA status to a dataId has changed.
@@ -21,4 +23,30 @@ data class QaStatusChangeMessage(
     @get:JsonProperty(value = "isUpdate")
     @field:JsonProperty(value = "isUpdate")
     val isUpdate: Boolean,
+)
+
+/**
+ * Payload for QaNonSourceabilityAcceptedEvent - published by QA service when accepting a non-sourceability claim.
+ */
+data class QaNonSourceabilityAcceptedEventPayload(
+    val eventId: UUID,
+    val nonSourceabilityId: UUID,
+    val qaStatus: String = "Accepted",
+    val reviewerUserId: String,
+    val qaComment: String? = null,
+    val decisionTime: ZonedDateTime,
+    val eventPublishedTime: ZonedDateTime,
+)
+
+/**
+ * Payload for QaNonSourceabilityRejectedEvent - published by QA service when rejecting a non-sourceability claim.
+ */
+data class QaNonSourceabilityRejectedEventPayload(
+    val eventId: UUID,
+    val nonSourceabilityId: UUID,
+    val qaStatus: String = "Rejected",
+    val reviewerUserId: String,
+    val qaComment: String? = null,
+    val decisionTime: ZonedDateTime,
+    val eventPublishedTime: ZonedDateTime,
 )

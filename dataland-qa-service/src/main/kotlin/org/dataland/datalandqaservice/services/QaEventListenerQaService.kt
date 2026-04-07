@@ -11,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.NonSourceabilityCreatedEventPayload
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
@@ -50,6 +51,7 @@ class QaEventListenerQaService
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val objectMapper: ObjectMapper,
         private val qaReviewManager: QaReviewManager,
+        private val nonSourceableQaReviewManager: NonSourceableQaReviewManager,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
@@ -122,6 +124,56 @@ class QaEventListenerQaService
                         throw MessageQueueRejectException(
                             "Routing Key '$receivedRoutingKey' unknown. " +
                                 "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+                        )
+                    }
+                }
+            }
+        }
+
+        /**
+         * Method to retrieve non-sourceability lifecycle messages from backend and create corresponding QA review items.
+         * @param message the full amqp message
+         * @param payload the message body as a json string
+         * @param correlationId the correlation ID of the current user process
+         * @param messageType the type of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.NON_SOURCEABILITY_CREATED_QUEUE,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
+                    key = [RoutingKeyNames.NON_SOURCEABILITY_CREATED],
+                ),
+            ],
+        )
+        fun processBackendNonSourceabilityEvents(
+            message: Message,
+            @Payload payload: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) messageType: String,
+        ) {
+            val receivedRoutingKey = message.messageProperties.receivedRoutingKey
+
+            MessageQueueUtils.rejectMessageOnException {
+                when (receivedRoutingKey) {
+                    RoutingKeyNames.NON_SOURCEABILITY_CREATED -> {
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.NON_SOURCEABILITY_CREATED)
+                        val messagePayload = MessageQueueUtils.readMessagePayload<NonSourceabilityCreatedEventPayload>(payload)
+                        nonSourceableQaReviewManager.createReviewItemFromCreatedEvent(messagePayload, correlationId)
+                    }
+
+                    else -> {
+                        throw MessageQueueRejectException(
+                            "Routing Key '$receivedRoutingKey' unknown. " +
+                                "Expected Routing Key ${RoutingKeyNames.NON_SOURCEABILITY_CREATED}",
                         )
                     }
                 }
