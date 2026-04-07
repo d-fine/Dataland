@@ -248,7 +248,7 @@ describe('toSafeDisplayString', () => {
 });
 
 describe('unwrapDataPointJson', () => {
-  it('unwraps to a plain primitive when original datapoint was a primitive and custom JSON is an object with value', () => {
+  it('unwraps to a plain primitive when original data point was a primitive and custom JSON is an object with value', () => {
     const rawDataPoint = JSON.stringify('2024-01-01'); // original backend value: "2024-01-01"
     const customDetail: ParsedSingleDataPoint = {
       value: '2024-01-01',
@@ -262,7 +262,7 @@ describe('unwrapDataPointJson', () => {
     expect(result).to.equal(JSON.stringify('2024-01-01'));
   });
 
-  it('unwraps to a plain primitive when both original datapoint and custom JSON are primitives', () => {
+  it('unwraps to a plain primitive when both original data point and custom JSON are primitives', () => {
     const rawDataPoint = JSON.stringify(123); // original: 123
     const customJson = JSON.stringify(456); // custom: 456
 
@@ -270,7 +270,7 @@ describe('unwrapDataPointJson', () => {
     expect(result).to.equal(JSON.stringify(456));
   });
 
-  it('returns original custom JSON unchanged when original datapoint is an object', () => {
+  it('returns original custom JSON unchanged when original data point is an object', () => {
     const rawDetail: ParsedSingleDataPoint = { value: 'v', quality: 'Reported' };
     const rawDataPoint = JSON.stringify(rawDetail);
 

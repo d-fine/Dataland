@@ -175,12 +175,12 @@ const qaAcceptedInfoText = computed(() => {
 
 const errorMessage = computed(() => {
   if (!props.isLoadingError || !props.loadingErrorObject) {
-    return 'Failed to load datapoint. Please try again later!';
+    return 'Failed to load data point. Please try again later!';
   }
   const backendMessage = props.loadingErrorObject?.message;
   return backendMessage
-    ? `Failed to load datapoint: ${backendMessage}`
-    : 'Failed to load datapoint. Please try again later!';
+    ? `Failed to load data point: ${backendMessage}`
+    : 'Failed to load data point. Please try again later!';
 });
 
 /**

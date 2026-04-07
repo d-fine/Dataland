@@ -3,7 +3,7 @@
     data-test="next-datapoint-section"
     style="padding: var(--spacing-xs); display: flex; flex-direction: column; height: 100%"
   >
-    <h3 style="margin-top: 0; white-space: nowrap">Next datapoint</h3>
+    <h3 style="margin-top: 0; white-space: nowrap">Next data point</h3>
 
     <div style="display: flex; align-items: center; gap: var(--spacing-xs)">
       <ToggleSwitch
@@ -23,7 +23,7 @@
         option-label="label"
         option-value="dataPointTypeId"
         :filter="true"
-        placeholder="Select next datapoint"
+        placeholder="Select next data point"
         :pt="{ root: { style: { flex: '1' } } }"
         data-test="next-datapoint-select"
       >

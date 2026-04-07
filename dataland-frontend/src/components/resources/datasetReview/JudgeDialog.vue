@@ -53,7 +53,6 @@
         :show-nav="false"
         :nav-index="0"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
-        :index-of-accepted-qa-report="indexOfAcceptedQaReport"
         section-type="original"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
@@ -236,19 +235,6 @@ const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
 
 const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');
 
-watch(
-  [currentDataPointTypeId, currentDatapointJudgement, currentDataPointId],
-  ([typeId, judgementMetaData, id]) => {
-    console.log('JudgeDialog currentDataPointTypeId:', typeId);
-    console.log('JudgeDialog matching judgement:', judgementMetaData);
-    console.log('JudgeDialog currentDataPointId:', id);
-    if (datasetJudgement.value?.dataPoints) {
-      console.log('Available dataPointType keys:', Object.keys(datasetJudgement.value.dataPoints));
-    }
-  },
-  { immediate: true }
-);
-
 // ===== Original data point =====
 
 const isOriginalQueryEnabled = computed(() => !!currentDataPointId.value);
@@ -303,7 +289,7 @@ const verdictBadge = computed<{ label: string; background: string; color: string
     };
   }
 
-  if (allReports.some((r) => r.verdict === 'QaRejected')) {
+  if (allReports.some((r) => r.verdict === QaReportDataPointVerdict.QaRejected)) {
     return {
       label: 'QA REJECTED',
       background: 'var(--p-red-100)',
@@ -463,7 +449,7 @@ function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
  * and wrapping around when necessary.
  *
  * @param startingDataPointTypeId - The data point type ID to start from.
- * @returns The next unreviewed datapoint type ID, or the current one if none found.
+ * @returns The next unreviewed data point type ID, or the current one if none found.
  */
 function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
   const ids = nextDataPointOptions.value.map((row) => row.dataPointTypeId).filter(Boolean);
@@ -479,9 +465,9 @@ function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
 
 /**
  * Navigates to the given data point type, resets local state, and advances the
- * "selected next" pointer to the next unreviewed datapoint after it.
+ * "selected next" pointer to the next unreviewed data point after it.
  *
- * @param targetId - The datapoint type ID to navigate to.
+ * @param targetId - The data point type ID to navigate to.
  * @returns Nothing.
  */
 function navigateToDataPoint(targetId: string): void {
@@ -491,7 +477,7 @@ function navigateToDataPoint(targetId: string): void {
 }
 
 /**
- * Handles navigation and cleanup after a successful patch of a datapoint judgement.
+ * Handles navigation and cleanup after a successful patch of a data point judgement.
  *
  * @returns Nothing.
  */
@@ -504,7 +490,7 @@ function afterSuccessfulPatch(): void {
 }
 
 /**
- * Calls patchJudgementDetail for the current datapoint with the given details,
+ * Calls patchJudgementDetail for the current data point with the given details,
  * navigating on success and logging on error.
  *
  * @param acceptedSource - The accepted data point source.
@@ -532,7 +518,7 @@ function patchCurrentDatapoint(
       onError: (err: Error) => {
         console.error(errorLogMessage, err);
 
-        errorModalHeader.value = 'Failed to update datapoint judgement';
+        errorModalHeader.value = 'Failed to update data point judgement';
         errorModalMessage.value = 'Your decision could not be saved. Please try again.';
         errorModalDetails.value = err.message || 'Unknown error.';
 
@@ -543,10 +529,10 @@ function patchCurrentDatapoint(
 }
 
 /**
- * Central handler for accepting a datapoint from a given source
+ * Central handler for accepting a data point from a given source
  * (original / QA / custom).
  *
- * @param acceptedSource - The selected datapoint source to accept.
+ * @param acceptedSource - The selected data point source to accept.
  * @returns Nothing.
  */
 function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
@@ -564,7 +550,7 @@ function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
 }
 
 /**
- * Accepts the original datapoint as the final judgement for the current datapoint type.
+ * Accepts the original data point as the final judgement for the current data point type.
  *
  * @returns Nothing.
  */
@@ -580,7 +566,7 @@ function acceptOriginalDatapoint(): void {
 
 /**
  * Accepts the currently selected QA report as the final judgement
- * for the current datapoint type.
+ * for the current data point type.
  *
  * @returns Nothing.
  */
@@ -595,8 +581,8 @@ function acceptQaReportDatapoint(): void {
 }
 
 /**
- * Accepts the custom datapoint (either from JSON or from the structured form)
- * as the final judgement for the current datapoint type.
+ * Accepts the custom data point (either from JSON or from the structured form)
+ * as the final judgement for the current data point type.
  *
  * @returns Nothing.
  */
@@ -616,7 +602,7 @@ function acceptCustomDatapoint(): void {
 }
 
 /**
- * Resets transient state (e.g. current QA report index) for the active datapoint.
+ * Resets transient state (e.g. current QA report index) for the active data point.
  *
  * @returns Nothing.
  */
@@ -625,10 +611,10 @@ function resetStateForCurrentDataPoint(): void {
 }
 
 /**
- * Initializes the custom form / JSON for the currently selected datapoint
+ * Initializes the custom form / JSON for the currently selected data point
  * based on previously accepted custom judgement, if present.
  *
- * @param judgementMetaData - The current datapoint judgement metadata.
+ * @param judgementMetaData - The current data point judgement metadata.
  * @returns Nothing.
  */
 function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement | null): void {
@@ -640,7 +626,7 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
       customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
       return;
     }
-    console.error('Failed to parse previously accepted custom datapoint JSON');
+    console.error('Failed to parse previously accepted custom data point JSON');
   }
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };

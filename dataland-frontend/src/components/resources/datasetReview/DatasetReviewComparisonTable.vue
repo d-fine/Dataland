@@ -116,7 +116,7 @@
                     </div>
                   </td>
 
-                  <!-- Original datapoint -->
+                  <!-- Original data point -->
                   <td class="vertical-align-top">
                     <div class="flex align-items-start gap-2">
                       <MultiLayerDataTableCell
@@ -140,7 +140,7 @@
                     </div>
                   </td>
 
-                  <!-- Corrected datapoint -->
+                  <!-- Corrected data point -->
                   <td
                     v-for="qaReporter in datasetReview.qaReporters"
                     :key="qaReporter.reporterUserId"
@@ -593,7 +593,7 @@ function isRowEmpty(cellRow: CellRow): boolean {
 /**
  * Return the display text for a cell's QA report (verdict label or corrected value).
  *
- * @param {CellRow} cellRow - Table cell row describing the datapoint.
+ * @param {CellRow} cellRow - Table cell row describing the data point.
  * @param {string} reporterUserId - Reporter user id to look up the QA report.
  * @returns {string} Short label for the QA verdict or the corrected display value.
  */

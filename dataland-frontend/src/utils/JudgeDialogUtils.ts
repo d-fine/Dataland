@@ -8,13 +8,13 @@ export const DEFAULT_CUSTOM_JSON = JSON.stringify(
 );
 
 /**
- * Unwraps a datapoint JSON string for the backend.
- * If the original stored datapoint (`rawDataPoint`) was a plain primitive
+ * Unwraps a data point JSON string for the backend.
+ * If the original stored data point (`rawDataPoint`) was a plain primitive
  * (e.g. plainDate stored as `"2024-01-01"`), the custom value is unwrapped
  * to that same primitive format. Otherwise, the value is returned unchanged.
  *
  * @param dataPointJsonString - The custom JSON string to unwrap.
- * @param rawDataPoint - The original stored datapoint JSON, used to detect plain-primitive types.
+ * @param rawDataPoint - The original stored data point JSON, used to detect plain-primitive types.
  * @returns The unwrapped JSON string, or the original if no unwrapping is needed.
  */
 export function unwrapDataPointJson(dataPointJsonString: string, rawDataPoint: string): string {
@@ -31,7 +31,7 @@ export function unwrapDataPointJson(dataPointJsonString: string, rawDataPoint: s
 }
 
 /**
- * Wraps a datapoint JSON string into a {@link ParsedSingleDataPoint} object.
+ * Wraps a data point JSON string into a {@link ParsedSingleDataPoint} object.
  * This is the inverse of {@link unwrapDataPointJson}: if the stored JSON is a plain
  * primitive (e.g. `"2024-01-01"` for a plainDate), it is wrapped into `{ value: primitive }`
  * so it can be handled uniformly as a {@link ParsedSingleDataPoint}.
@@ -50,11 +50,11 @@ export function wrapDataPointJson(json: string): ParsedSingleDataPoint | null {
 
 /**
  * Converts {@link CustomFormData} into the pretty-printed JSON string expected by the backend.
- * Returns {@link DEFAULT_CUSTOM_JSON} when the resulting datapoint would be empty.
+ * Returns {@link DEFAULT_CUSTOM_JSON} when the resulting data point would be empty.
  *
  * @param formData - The form data to convert.
  * @param selectedDocument - The currently selected document option, used to resolve the data source.
- * @returns A pretty-printed JSON string representing the custom datapoint.
+ * @returns A pretty-printed JSON string representing the custom data point.
  */
 export function parseFormDataToDataPointJson(
   formData: CustomFormData,
@@ -83,7 +83,7 @@ export function parseFormDataToDataPointJson(
 }
 
 /**
- * Parses a JSON string representing a datapoint and maps it into a {@link CustomFormData} object.
+ * Parses a JSON string representing a data point and maps it into a {@link CustomFormData} object.
  * Returns `null` if the JSON is invalid or cannot be parsed.
  * If the parsed value is a plain primitive (e.g. a plainDate `"2024-01-01"`), it is treated
  * as the `value` field.
@@ -100,7 +100,7 @@ export function parseDataPointJsonToFormData(json: string): CustomFormData | nul
 /**
  * Maps a {@link ParsedSingleDataPoint} object directly into a {@link CustomFormData} object.
  *
- * @param detail - The datapoint detail to map.
+ * @param detail - The data point detail to map.
  * @returns The mapped {@link CustomFormData}.
  */
 export function transformDataPointDetailToFormData(detail: ParsedSingleDataPoint): CustomFormData {

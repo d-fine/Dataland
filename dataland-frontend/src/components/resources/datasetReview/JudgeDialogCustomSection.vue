@@ -5,7 +5,7 @@
   >
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-xs)">
       <div style="display: flex; align-items: center; gap: var(--spacing-xxs)">
-        <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom datapoint</h3>
+        <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Custom data point</h3>
         <span
           v-if="isAccepted"
           class="pi pi-check text-green-500 ml-2 text-xl font-bold"
@@ -21,7 +21,7 @@
 
     <div style="white-space: nowrap">
       <PrimeButton
-        label="Copy original datapoint"
+        label="Copy original data point"
         variant="text"
         size="small"
         @click="emit('copyOriginal')"
@@ -29,7 +29,7 @@
         data-test="copy-original-to-custom"
       />
       <PrimeButton
-        label="Copy corrected datapoint"
+        label="Copy corrected data point"
         variant="text"
         size="small"
         @click="emit('copyCorrected')"
