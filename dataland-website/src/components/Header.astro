@@ -17,12 +17,12 @@ const navLinks = [
 ] as const;
 
 const baseLinkClasses = 'no-underline font-medium text-[1rem] motion-safe:transition-colors duration-150';
-const inactiveClasses = 'text-[var(--color-text)] hover:text-[var(--color-primary)]';
+const inactiveClasses = 'text-white/88 hover:text-[var(--color-primary)]';
 //const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] pb-[2px]';
 const activeClasses = 'text-[var(--color-primary)]';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[var(--color-surface-50)] border-b border-[var(--color-surface-200)]">
+<header class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[#1c1c1f] border-b border-white/10">
   <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
@@ -53,11 +53,11 @@ const activeClasses = 'text-[var(--color-primary)]';
               </a>
 
               <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
-                  <div class="min-w-[260px] rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-3 flex flex-col">
+                  <div class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col">
                       {ABOUT_SECTIONS.map(({ href, label }) => (
                               <a
                                       href={href}
-                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-[var(--color-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-50)] motion-safe:transition-colors duration-150"
+                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
                               >
                                   {label}
                               </a>
@@ -82,11 +82,11 @@ const activeClasses = 'text-[var(--color-primary)]';
               </a>
 
               <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
-                  <div class="min-w-[260px] rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-3 flex flex-col">
+                  <div class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col">
                       {PRODUCT_SECTIONS.map(({ href, label }) => (
                               <a
                                       href={href}
-                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-[var(--color-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-50)] motion-safe:transition-colors duration-150"
+                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
                               >
                                   {label}
                               </a>
@@ -98,14 +98,14 @@ const activeClasses = 'text-[var(--color-primary)]';
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center gap-5">
-      <a href="/login" class="no-underline text-[var(--color-text)] font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
+      <a href="/login" class="no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
       <a href="/register" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
     </div>
 
     <!-- Mobile hamburger (visible < lg only) -->
     <button
       type="button"
-      class="flex lg:hidden items-center justify-center bg-transparent border-none cursor-pointer p-2 text-[var(--color-text)]"
+      class="flex lg:hidden items-center justify-center bg-transparent border-none cursor-pointer p-2 text-white"
       aria-label="Open menu"
       id="mobile-menu-toggle"
     >
