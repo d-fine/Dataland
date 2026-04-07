@@ -52,6 +52,7 @@ export async function checkIfUserHasRole(
  * @param keycloak is the keycloak adaptor used to do the logout
  */
 export function logoutAndRedirectToUri(keycloak: Keycloak): void {
+  localStorage.removeItem('dataland_authenticated');
   const baseUrl = globalThis.location.origin;
   const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}/` });
   location.assign(url);
