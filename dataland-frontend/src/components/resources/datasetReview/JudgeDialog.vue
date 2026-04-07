@@ -29,15 +29,7 @@
         </span>
       </div>
     </template>
-
-    <!-- Loading / error states for dataset review -->
-    <div v-if="isDatasetJudgementPending">Loading dataset review...</div>
-    <div v-else-if="datasetReviewError">
-      <Message severity="error"> Failed to load dataset review.</Message>
-    </div>
-
     <div
-      v-else
       style="
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -149,7 +141,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import PrimeDialog from 'primevue/dialog';
-import Message from 'primevue/message';
 import Popover from 'primevue/popover';
 
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
@@ -217,11 +208,7 @@ const availableDocuments = computed(() => props.availableDocuments ?? []);
 // ===== Dataset review =====
 
 const datasetJudgementId = computed(() => props.datasetReviewId);
-const {
-  data: datasetJudgement,
-  isPending: isDatasetJudgementPending,
-  isError: datasetReviewError,
-} = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
+const { data: datasetJudgement } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgmentDetailsForADataPointMutation();
