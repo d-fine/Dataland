@@ -4,7 +4,7 @@
     :header="header"
     modal
     :dismissable-mask="!isLoading"
-    :closable="false"
+    :closable="true"
     data-test="confirmation-modal"
     :style="{ width: '30rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"

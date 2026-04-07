@@ -59,7 +59,7 @@
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
                   <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
-                    {{ row.value || '—' }}
+                    {{ row.value ?? '—' }}
                   </span>
                   <PrimeButton
                     v-if="!row.noOverflow && isOverflowing(String(row.value || ''))"
@@ -131,7 +131,7 @@ const emit = defineEmits<{
 const tableRows = computed(() => [
   { label: 'Value', value: props.data?.value },
   { label: 'Quality', value: props.data?.quality },
-  { label: 'Document', value: props.data?.dataSource?.fileName || props.data?.dataSource?.fileReference },
+  { label: 'Document', value: props.data?.dataSource?.fileName ?? props.data?.dataSource?.fileReference },
   { label: 'Page(s)', value: props.data?.dataSource?.page, noOverflow: true },
   { label: 'Comment', value: props.data?.comment },
 ]);

@@ -132,7 +132,6 @@
     :error-message="errorModalDetails"
     :is-loading="false"
     :is-success="false"
-    :show-cancel-button="false"
     @confirm="isErrorModalVisible = false"
     @cancel="isErrorModalVisible = false"
   />
