@@ -94,15 +94,17 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {TRUSTED_BY_LOGOS.map((logo) => (
-          <div class="flex h-28 items-center justify-center rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-5 py-4 lg:h-32">
-            <img
-              src={logo.imagePath}
-              alt={logo.name}
-              class:list={['h-14 w-36 object-contain lg:h-16 lg:w-40', logo.className]}
-              loading="lazy"
-              width="160"
-              height="64"
-            />
+          <div class:list={['flex h-28 items-center justify-center rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-5 py-4 lg:h-32', logo.gridContainerClassName]}>
+            <div class:list={logo.imageFrameClassName}>
+              <img
+                src={logo.imagePath}
+                alt={logo.name}
+                class:list={['h-14 w-36 object-contain lg:h-16 lg:w-40', logo.className]}
+                loading="lazy"
+                width="160"
+                height="64"
+              />
+            </div>
           </div>
         ))}
       </div>

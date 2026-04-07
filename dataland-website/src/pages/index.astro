@@ -96,18 +96,20 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       <div class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div class="trusted-by-track flex w-max items-center gap-5 lg:gap-7">
           {trustedByCarousel.map((logo, index) => (
-            <a href="/community#trusted-organizations" class="flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5" aria-label={`See ${logo.name} on the community page`}>
-              <img
-                src={logo.imagePath}
-                alt={logo.name}
-                class:list={[
-                  'h-16 w-40 object-contain opacity-85 grayscale-[20%] motion-safe:transition-[opacity,filter,transform] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0 lg:h-20 lg:w-44',
-                  logo.className,
-                ]}
-                loading={index < TRUSTED_BY_LOGOS.length ? 'eager' : 'lazy'}
-                width="176"
-                height="80"
-              />
+            <a href="/community#trusted-organizations" class:list={['flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5', logo.carouselContainerClassName]} aria-label={`See ${logo.name} on the community page`}>
+              <div class:list={logo.imageFrameClassName}>
+                <img
+                  src={logo.imagePath}
+                  alt={logo.name}
+                  class:list={[
+                    'h-16 w-40 object-contain opacity-85 grayscale-[20%] motion-safe:transition-[opacity,filter,transform] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0 lg:h-20 lg:w-44',
+                    logo.className,
+                  ]}
+                  loading={index < TRUSTED_BY_LOGOS.length ? 'eager' : 'lazy'}
+                  width="176"
+                  height="80"
+                />
+              </div>
             </a>
           ))}
         </div>
@@ -121,20 +123,27 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">How our members use Dataland</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
         {CUSTOMER_STORY_SUMMARIES.map((story) => (
-          <a href={story.link} class="flex h-full flex-col gap-4 p-6 bg-[var(--color-surface-0)] rounded-xl no-underline text-[var(--color-text)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-            <div class="flex items-center justify-between gap-3 min-h-[3rem]">
+          <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border-[3px] border-[#EAF2F8] bg-[#EAF2F8] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+            <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
               <img
                 src={story.logo}
                 alt=""
-                class="h-10 w-auto max-w-[120px] object-contain self-start"
+                class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
                 loading="lazy"
-                width="120"
-                height="40"
+                width="220"
+                height="64"
               />
-              <span class="inline-flex shrink-0 items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.tag}</span>
             </div>
-            <p class="m-0 min-h-[3.5rem] text-[0.9375rem] leading-normal text-[var(--color-text-muted)]">{story.text}</p>
-            <span class="mt-auto text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+            <div class="flex h-full flex-col gap-4 p-6">
+              <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+                {story.secondaryTags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">{tag}</span>
+                ))}
+              </div>
+              <h3 class="m-0 min-h-[4.5rem] text-[1.05rem] font-medium leading-snug text-[var(--color-text)]">{story.title}</h3>
+              <span class="mt-auto text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+            </div>
           </a>
         ))}
       </div>

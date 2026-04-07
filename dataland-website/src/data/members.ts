@@ -4,6 +4,9 @@ export interface TrustedByLogo {
   name: string;
   imagePath: string;
   className?: string;
+  carouselContainerClassName?: string;
+  gridContainerClassName?: string;
+  imageFrameClassName?: string;
 }
 
 const MEMBER_LOGOS: TrustedByLogo[] = [
@@ -21,7 +24,7 @@ const MEMBER_LOGOS: TrustedByLogo[] = [
   { name: 'KYT', imagePath: '/static/logos/logo_KYT.svg' },
   { name: 'Laiqon', imagePath: '/static/logos/logo_laiqon.svg' },
   { name: 'Leonardo', imagePath: '/static/logos/logo_leonardo.jpg', className: 'scale-[1.22]' },
-  { name: 'MEAG', imagePath: '/static/logos/logo_Meag_2026.svg' },
+  { name: 'MEAG', imagePath: '/static/logos/logo_meag_2026.svg' },
   { name: 'Oeffentliche Versicherung Braunschweig', imagePath: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg', className: 'scale-[1.3]' },
   { name: 'Deutsche R\u00fcck', imagePath: '/static/logos/logo_deutsche_rueck.svg' },
   { name: 'Hansa-Invest', imagePath: '/static/logos/logo_hansa_invest.svg' },
@@ -35,6 +38,13 @@ const MEMBER_LOGOS: TrustedByLogo[] = [
 const PARTNER_LOGOS: TrustedByLogo[] = PARTNERS.map((partner) => ({
   name: partner.name,
   imagePath: partner.imagePath,
+  className:
+    partner.name === 'Eskua AI'
+      ? 'scale-[1.28]'
+      : partner.name === 'FACT First Cloud'
+        ? 'scale-[1.18]'
+        : undefined,
+  imageFrameClassName: partner.name === 'Keynum' ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.2rem]' : undefined,
 }));
 
 export const TRUSTED_BY_LOGOS: TrustedByLogo[] = [...MEMBER_LOGOS, ...PARTNER_LOGOS];
