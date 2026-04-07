@@ -62,6 +62,7 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/product', label: 'Product' },
   { href: '/about', label: 'About' },
+  { href: '/community', label: 'Community' },
 ];
 
 function isActive(href: string): boolean {

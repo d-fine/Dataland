@@ -15,3 +15,8 @@ export const PRODUCT_SECTIONS = [
   { href: '/product#membership-pricing', label: 'Membership and pricing' },
   { href: '/product#documentation', label: 'Documentation' },
 ] as const;
+
+export const COMMUNITY_SECTIONS = [
+  { href: '/community#trusted-organizations', label: 'Our Network' },
+  { href: '/community#partners', label: 'Partners' },
+] as const;

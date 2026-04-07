@@ -1,0 +1,47 @@
+---
+import type { Partner } from '../data/about';
+
+interface Props {
+  id?: string;
+  title?: string;
+  partners: Partner[];
+  sectionClass?: string;
+}
+
+const {
+  id = 'partners',
+  title = 'Our partners strengthen the Dataland network',
+  partners,
+  sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8',
+} = Astro.props;
+---
+
+<section id={id} class={sectionClass} aria-label={title}>
+  <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+    <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">{title}</h2>
+    <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
+      {partners.map((partner) => (
+        <a
+          href={partner.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={[
+            'flex items-center justify-center p-8 px-6 rounded-xl border no-underline min-h-[100px] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
+            partner.darkBg
+              ? 'bg-[#1a1a2e] border-[#2a2a3e]'
+              : 'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
+          ]}
+        >
+          <img
+            src={partner.imagePath}
+            alt={partner.name}
+            class="max-h-[120px] w-auto object-contain"
+            loading="lazy"
+            width="160"
+            height="60"
+          />
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

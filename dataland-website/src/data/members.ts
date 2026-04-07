@@ -1,10 +1,12 @@
+import { PARTNERS } from './about';
+
 export interface TrustedByLogo {
   name: string;
   imagePath: string;
   className?: string;
 }
 
-export const TRUSTED_BY_LOGOS: TrustedByLogo[] = [
+const MEMBER_LOGOS: TrustedByLogo[] = [
   { name: 'Atlas Metrics', imagePath: '/static/logos/logo_atlas_metrics.svg' },
   { name: 'Bantleon', imagePath: '/static/logos/logo_bantleon.svg' },
   { name: 'BayernInvest', imagePath: '/static/logos/logo_bayerninvest.svg' },
@@ -29,3 +31,10 @@ export const TRUSTED_BY_LOGOS: TrustedByLogo[] = [
   { name: 'T-Systems', imagePath: '/static/logos/logo_tsystems.svg' },
   { name: 'Werte-Stiftung', imagePath: '/static/logos/logo_wertestiftung.png' },
 ];
+
+const PARTNER_LOGOS: TrustedByLogo[] = PARTNERS.map((partner) => ({
+  name: partner.name,
+  imagePath: partner.imagePath,
+}));
+
+export const TRUSTED_BY_LOGOS: TrustedByLogo[] = [...MEMBER_LOGOS, ...PARTNER_LOGOS];

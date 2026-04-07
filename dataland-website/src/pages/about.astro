@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PartnersSection from '../components/PartnersSection.astro';
 import {
   COMPANY_COPY,
   LEADERSHIP_TEAM,
@@ -36,7 +37,7 @@ import { NEWS_ITEMS } from '../data/news';
   </section>
 
   <!-- Section 2: Team (white / special dark blue) -->
-  <section id="team" class="scroll-mt-16 py-12 px-6 bg-[#0f3a82] text-white lg:py-16 lg:px-8" aria-label="Leadership team">
+  <section id="team" class="scroll-mt-16 py-12 px-6 bg-[#2C4A6B] text-white lg:py-16 lg:px-8" aria-label="Leadership team">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       <h2 class="text-[1.75rem] font-bold m-0 text-center">Leadership team</h2>
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
@@ -73,35 +74,7 @@ import { NEWS_ITEMS } from '../data/news';
   </section>
 
   <!-- Section 3: Partners (grey) -->
-  <section id="partners" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Partners">
-    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Partners</h2>
-      <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
-        {PARTNERS.map((partner) => (
-          <a
-            href={partner.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class:list={[
-              'flex items-center justify-center p-8 px-6 rounded-xl border no-underline min-h-[100px] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
-              partner.darkBg
-                ? 'bg-[#1a1a2e] border-[#2a2a3e]'
-                : 'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
-            ]}
-          >
-            <img
-              src={partner.imagePath}
-              alt={partner.name}
-              class="max-h-[120px] w-auto object-contain"
-              loading="lazy"
-              width="160"
-              height="60"
-            />
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
+  <PartnersSection partners={PARTNERS} />
 
   <!-- Section 4: Updates (white) -->
   <section id="updates" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="News and updates">

@@ -54,9 +54,9 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 
       <div class="flex flex-col gap-8">
         {WHY_US_PAIRS.map((pair) => (
-          <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(90deg,#ffffff_0%,#fbfbfa_42%,#fff5ee_100%)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
+          <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(90deg,#eef1f4_0%,#f8f7f4_38%,#fff3ea_70%,#ffe6d6_100%)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
             <div class="px-6 pt-6 pb-2 lg:px-7 lg:pt-7 lg:pb-3 lg:row-start-1 lg:col-start-1">
-              <span class="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Common Problems</span>
+              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#5f6773]">Common Problems</span>
             </div>
             <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-1">
               <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-text)]">{pair.problemTitle}</h3>
@@ -65,11 +65,11 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
               <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
             </div>
             <div class="hidden lg:flex lg:row-span-3 lg:col-start-2 items-center justify-center px-3" aria-hidden="true">
-              <img src="/static/images/arrow_right_orange.svg" alt="" width="42" height="42" />
+              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
             </div>
             <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
             <div class="px-6 pt-6 pb-2 lg:px-7 lg:pt-7 lg:pb-3 lg:row-start-1 lg:col-start-3">
-              <span class="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-primary)]">Dataland Solution</span>
+              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#8d4b25]">Dataland Solution</span>
             </div>
             <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-3">
               <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
@@ -96,7 +96,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       <div class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div class="trusted-by-track flex w-max items-center gap-5 lg:gap-7">
           {trustedByCarousel.map((logo, index) => (
-            <div class="flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5">
+            <a href="/community#trusted-organizations" class="flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5" aria-label={`See ${logo.name} on the community page`}>
               <img
                 src={logo.imagePath}
                 alt={logo.name}
@@ -108,7 +108,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
                 width="176"
                 height="80"
               />
-            </div>
+            </a>
           ))}
         </div>
       </div>
@@ -142,7 +142,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   </section>
 
   <!-- Section 6: Testimonials (dark blue) -->
-  <section class="py-12 px-6 bg-[#0f3a82] text-white lg:py-16 lg:px-8" aria-label="What our members say">
+  <section class="py-12 px-6 bg-[#2C4A6B] text-white lg:py-16 lg:px-8" aria-label="What our members say">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-center">What our members say</h2>
       <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-color:rgba(255,255,255,0.3)_transparent] [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30">
@@ -157,7 +157,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
         ))}
       </div>
       <div class="flex justify-center">
-        <a href="/testimonials" class="inline-flex items-center px-6 py-2.5 bg-white text-[#0f3a82] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Watch member testimonials</a>
+        <a href="/testimonials" class="inline-flex items-center px-6 py-2.5 bg-white text-[#2C4A6B] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Watch member testimonials</a>
       </div>
     </div>
   </section>
