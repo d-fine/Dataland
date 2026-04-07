@@ -5,6 +5,7 @@
     modal
     :dismissable-mask="!isLoading"
     :closable="true"
+    @hide="handleCancel"
     data-test="confirmation-modal"
     :style="{ width: '30rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
