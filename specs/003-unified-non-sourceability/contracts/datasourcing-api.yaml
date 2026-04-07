@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Dataland Data-Sourcing Service - Non-Sourceability State API
+  description: API changes for data sourcing state updates related to non-sourceability workflow.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+    description: Local development
+  - url: https://dataland-data-sourcing.example.com
+    description: Production
+
+paths:
+  /data-sourcing/{dataSourcingId}/state:
+    patch:
+      summary: Update data-sourcing object state
+      description: |
+        Patch the state of a data-sourcing object.
+        
+        Authorization Rules:
+        - Only admins can patch to NON_SOURCEABLE or other sensitive states
+        - Document collectors can patch from DOCUMENT_SOURCING to DOCUMENT_SOURCING_DONE
+        - Authorization is enforced in DataSourcingStateSecurityService.canUserPatchState()
+        
+        Note: Event-driven state transitions (from RabbitMQ messages) bypass this check,
+        as events are trusted internal communication.
+      operationId: patchDataSourcingState
+      parameters:
+        - name: dataSourcingId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+          description: The data-sourcing object ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DataSourcingStatePatch' }
+      responses:
+        '200':
+          description: State updated successfully
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DataSourcingObject' }
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '403':
+          description: Forbidden (insufficient permissions for target state)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: Data-sourcing object not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    DataSourcingState:
+      type: string
+      enum:
+        - DATA_SOURCING
+        - DATA_SOURCING_DONE
+        - DOCUMENT_SOURCING
+        - DOCUMENT_SOURCING_DONE
+        - NON_SOURCEABLE_VERIFICATION  # NEW: Awaiting QA decision
+        - NON_SOURCEABLE               # NEW: Confirmed non-sourceable
+      description: |
+        Enumeration of data-sourcing lifecycle states.
+        
+        NEW STATES (for non-sourceability workflow):
+        - NON_SOURCEABLE_VERIFICATION: Dataset has a non-sourceability claim pending QA review
+        - NON_SOURCEABLE: Dataset confirmed as non-sourceable; no sourcing updates expected
+
+    DataSourcingStatePatch:
+      type: object
+      required:
+        - state
+      properties:
+        state: { $ref: '#/components/schemas/DataSourcingState' }
+
+    DataSourcingObject:
+      type: object
+      required:
+        - dataSourcingId
+        - companyId
+        - dataType
+        - reportingPeriod
+        - state
+        - lastUpdated
+      properties:
+        dataSourcingId:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        dataType:
+          type: string
+        reportingPeriod:
+          type: string
+        state: { $ref: '#/components/schemas/DataSourcingState' }
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last state change timestamp (UTC)
+        # ... other existing fields ...
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        errorCode:
+          type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication

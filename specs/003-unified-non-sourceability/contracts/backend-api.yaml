@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  title: Dataland Backend Non-Sourceability API
+  description: REST API for managing non-sourceability information at the backend (authoritative source).
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development
+  - url: https://dataland-backend.example.com
+    description: Production
+
+paths:
+  /metadata/nonSourceable:
+    post:
+      summary: Create a non-sourceability request
+      description: |
+        Create a record indicating that a dataset is non-sourceable.
+        
+        - If bypassQa=false: creates with qaStatus=PENDING, publishes non-sourceability-created event
+        - If bypassQa=true (admin only): creates with qaStatus=ACCEPTED, publishes non-sourceability-auto-accepted event
+        - Duplicate detection: fails if record already exists for (companyId, dataType, reportingPeriod) with qaStatus in {PENDING, ACCEPTED}
+      operationId: createNonSourceability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NonSourceabilityRequest' }
+      responses:
+        '201':
+          description: Non-sourceability request created successfully
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NonSourceabilityInformation' }
+        '400':
+          description: Bad request (malformed payload, missing required fields)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '403':
+          description: Forbidden (bypassQa=true without admin role)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '409':
+          description: Conflict (duplicate active request for same dataset)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+      security:
+        - BearerAuth: []
+    get:
+      summary: Query non-sourceability records
+      description: Retrieve list of non-sourceability records matching query criteria.
+      operationId: getNonSourceabilityRecords
+      parameters:
+        - name: companyId
+          in: query
+          description: Filter by company ID
+          schema: { type: string, format: uuid }
+        - name: dataType
+          in: query
+          description: Filter by data type
+          schema: { type: string }
+        - name: reportingPeriod
+          in: query
+          description: Filter by reporting period (e.g., 2024-12-31)
+          schema: { type: string }
+        - name: qaStatus
+          in: query
+          description: Filter by QA status
+          schema: 
+            type: string
+            enum: [PENDING, ACCEPTED, REJECTED]
+      responses:
+        '200':
+          description: List of non-sourceability records
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/NonSourceabilityInformation' }
+      security:
+        - BearerAuth: []
+
+  /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}:
+    head:
+      summary: Check if non-sourceability record exists and is currently active
+      description: |
+        Lightweight HEAD request to check existence and active status.
+        
+        - Returns 200 if record exists and currentlyActive=true
+        - Returns 204 if record does not exist or currentlyActive=false
+      operationId: checkNonSourceabilityActive
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          description: Company ID
+          schema: { type: string, format: uuid }
+        - name: dataType
+          in: path
+          required: true
+          description: Data type
+          schema: { type: string }
+        - name: reportingPeriod
+          in: path
+          required: true
+          description: Reporting period
+          schema: { type: string }
+      responses:
+        '200':
+          description: Record exists and is currently active
+        '204':
+          description: Record does not exist or is not currently active
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    NonSourceabilityRequest:
+      type: object
+      required:
+        - companyId
+        - dataType
+        - reportingPeriod
+        - reason
+      properties:
+        companyId:
+          type: string
+          format: uuid
+          description: Company requesting non-sourceability classification
+        dataType:
+          type: string
+          description: Type of data (e.g., sustainability-data)
+        reportingPeriod:
+          type: string
+          description: Reporting period (e.g., 2024-12-31)
+        reason:
+          type: string
+          description: Justification for non-sourceability claim
+        bypassQa:
+          type: boolean
+          default: false
+          description: Whether to skip QA review (admin only; defaults to false)
+
+    NonSourceabilityInformation:
+      type: object
+      required:
+        - nonSourceabilityId
+        - companyId
+        - dataType
+        - reportingPeriod
+        - reason
+        - uploaderUserId
+        - uploadTime
+        - qaStatus
+        - currentlyActive
+      properties:
+        nonSourceabilityId:
+          type: string
+          format: uuid
+          description: Unique identifier for this non-sourceability claim
+        companyId:
+          type: string
+          format: uuid
+          description: Company that submitted the claim
+        dataType:
+          type: string
+          description: Type of data
+        reportingPeriod:
+          type: string
+          description: Reporting period
+        reason:
+          type: string
+          description: Justification for the claim
+        uploaderUserId:
+          type: string
+          description: User ID who submitted the claim
+        uploadTime:
+          type: string
+          format: date-time
+          description: Timestamp when claim was created (UTC)
+        qaStatus:
+          type: string
+          enum: [PENDING, ACCEPTED, REJECTED]
+          description: Current QA review status
+        currentlyActive:
+          type: boolean
+          description: Whether this non-sourceability claim is currently enforced
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        message:
+          type: string
+          description: Error message
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of error (UTC)
+        errorCode:
+          type: string
+          description: Application-specific error code (optional)
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication (JWT from Keycloak)

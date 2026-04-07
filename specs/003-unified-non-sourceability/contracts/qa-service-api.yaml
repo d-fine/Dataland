@@ -1,0 +1,232 @@
+openapi: 3.0.0
+info:
+  title: Dataland QA Service Non-Sourceability API
+  description: REST API for QA review workflow of non-sourceability claims.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Local development
+  - url: https://dataland-qa-service.example.com
+    description: Production
+
+paths:
+  /nonSourceable:
+    get:
+      summary: Query non-sourceability QA reviews
+      description: Retrieve QA review records matching query criteria.
+      operationId: queryNonSourceableReviews
+      parameters:
+        - name: companyId
+          in: query
+          schema: { type: string, format: uuid }
+          description: Filter by company ID
+        - name: dataType
+          in: query
+          schema: { type: string }
+          description: Filter by data type
+        - name: reportingPeriod
+          in: query
+          schema: { type: string }
+          description: Filter by reporting period
+        - name: qaStatus
+          in: query
+          schema: 
+            type: string
+            enum: [PENDING, ACCEPTED, REJECTED]
+          description: Filter by QA status
+        - name: showOnlyActive
+          in: query
+          schema: { type: boolean, default: false }
+          description: If true, return only records linked to currently active backend entries
+        - name: chunkSize
+          in: query
+          schema: { type: integer, default: 50, minimum: 1, maximum: 500 }
+          description: Number of records per page
+        - name: chunkIndex
+          in: query
+          schema: { type: integer, default: 0, minimum: 0 }
+          description: Zero-based page index for pagination
+      responses:
+        '200':
+          description: List of QA review records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Total matching records
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/NonSourceableQaReviewInformation' }
+      security:
+        - BearerAuth: []
+
+  /nonSourceable/queue:
+    get:
+      summary: Get pending QA review tasks (queue view)
+      description: |
+        Simplified view showing only pending (qaStatus=PENDING) non-sourceability reviews.
+        Useful for QA team dashboards and task queues.
+      operationId: getPendingReviewQueue
+      parameters:
+        - name: chunkSize
+          in: query
+          schema: { type: integer, default: 50, minimum: 1, maximum: 500 }
+        - name: chunkIndex
+          in: query
+          schema: { type: integer, default: 0, minimum: 0 }
+      responses:
+        '200':
+          description: Pending review tasks (sorted by uploadTime DESC)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/NonSourceableQaReviewInformation' }
+      security:
+        - BearerAuth: []
+
+  /nonSourceable/{nonSourceabilityId}:
+    post:
+      summary: Submit QA decision (Acceptance or Rejection)
+      description: |
+        Submit a QA decision on a non-sourceability claim.
+        
+        - Only reviewers (QA role) can submit decisions
+        - Sets qaStatus to ACCEPTED or REJECTED
+        - Publishes corresponding event for backend and data-sourcing service consumption
+      operationId: submitNonSourceableDecision
+      parameters:
+        - name: nonSourceabilityId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+          description: The non-sourceability ID from backend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NonSourceableDecisionRequest' }
+      responses:
+        '200':
+          description: QA decision recorded; review record updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NonSourceableQaReviewInformation' }
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '403':
+          description: Forbidden (not a QA reviewer)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: QA review record not found for this nonSourceabilityId
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    NonSourceableQaReviewInformation:
+      type: object
+      required:
+        - nonSourceabilityId
+        - companyId
+        - dataType
+        - reportingPeriod
+        - reason
+        - uploaderUserId
+        - uploadTime
+        - qaStatus
+      properties:
+        nonSourceabilityId:
+          type: string
+          format: uuid
+          description: Correlation ID linking to backend NonSourceabilityInformation
+        companyId:
+          type: string
+          format: uuid
+          description: Company (denormalized for query optimization)
+        dataType:
+          type: string
+          description: Data type (denormalized)
+        reportingPeriod:
+          type: string
+          description: Reporting period (denormalized)
+        reason:
+          type: string
+          description: Reason for non-sourceability (copied from backend)
+        uploaderUserId:
+          type: string
+          description: Original uploader user ID (copied from backend)
+        uploadTime:
+          type: string
+          format: date-time
+          description: Original upload time (UTC)
+        qaStatus:
+          type: string
+          enum: [PENDING, ACCEPTED, REJECTED]
+          description: Current QA decision status
+        reviewerUserId:
+          type: string
+          nullable: true
+          description: User ID of QA reviewer (null if status is still PENDING)
+        qaComment:
+          type: string
+          nullable: true
+          description: Optional comment from QA reviewer
+
+    NonSourceableDecisionRequest:
+      type: object
+      required:
+        - qaStatus
+      properties:
+        qaStatus:
+          type: string
+          enum: [ACCEPTED, REJECTED]
+          description: Decision outcome
+        qaComment:
+          type: string
+          nullable: true
+          description: Optional comment explaining the decision
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        message:
+          type: string
+          description: Error message
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp (UTC)
+        errorCode:
+          type: string
+          description: Application-specific error code (optional)
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication (JWT from Keycloak)
