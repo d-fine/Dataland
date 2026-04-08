@@ -36,12 +36,12 @@ export function unwrapDataPointJson(dataPointJsonString: string, rawDataPoint: s
  * primitive (e.g. `"2024-01-01"` for a plainDate), it is wrapped into `{ value: primitive }`
  * so it can be handled uniformly as a {@link ParsedSingleDataPoint}.
  *
- * @param json - JSON string to wrap.
+ * @param dataPointJsonString - JSON string to wrap.
  * @returns The wrapped {@link ParsedSingleDataPoint}, or `null` on parse failure.
  */
-export function wrapDataPointJson(json: string): ParsedSingleDataPoint | null {
+export function wrapDataPointJson(dataPointJsonString: string): ParsedSingleDataPoint | null {
   try {
-    const parsed: unknown = JSON.parse(json);
+    const parsed: unknown = JSON.parse(dataPointJsonString);
     return parsed !== null && typeof parsed === 'object' ? (parsed as ParsedSingleDataPoint) : { value: parsed };
   } catch {
     return null;
