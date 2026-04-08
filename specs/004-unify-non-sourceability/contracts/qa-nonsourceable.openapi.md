@@ -54,3 +54,10 @@
 ## Compatibility Notes
 - New endpoints are additive and do not replace existing generic QA dataset endpoints immediately.
 - Decision event payload remains backward-compatible by additive fields and stable identifiers.
+
+## Implemented Notes (2026-04-08)
+- `GET /nonSourceable` and `GET /nonSourceable/queue` are wired to canonical `NonSourceableQaReviewInformation` persistence and support filtering by dimensions and `qaStatus`.
+- `POST /nonSourceable/{nonSourceabilityId}` accepts both `Accepted` and `Rejected` decisions, persists reviewer metadata/comment, and emits lifecycle events with:
+  - `eventType=QA_ACCEPTED` and `currentlyActive=true`
+  - `eventType=QA_REJECTED` and `currentlyActive=false`
+- CREATED lifecycle events from backend create pending QA review rows keyed by `nonSourceabilityId`.

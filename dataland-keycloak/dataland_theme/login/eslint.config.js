@@ -5,7 +5,15 @@ const eslintPluginPrettier = require("eslint-plugin-prettier");
 
 module.exports = [
   {
-    ignores: ["vite.config.mts", "**/build/", "eslint.config.js"],
+    ignores: [
+      "vite.config.mts",
+      "**/build/",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "**/*.min.js",
+      "eslint.config.js",
+    ],
   },
   {
     files: [

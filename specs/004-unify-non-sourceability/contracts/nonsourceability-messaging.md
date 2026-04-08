@@ -48,6 +48,12 @@
 - Validation: fail-fast on malformed identifiers and payload shape errors.
 - Dead-letter handling: rejected malformed events must route to dead-letter flow.
 
+## Implemented Idempotency and Validation Notes (2026-04-08)
+- Shared `EventDeduplicationService` is available in `dataland-message-queue-utils` for replay-safe processing patterns.
+- Backend QA decision consumer discards and logs malformed/unknown `nonSourceabilityId` events without persistence side effects.
+- Data-sourcing lifecycle consumer discards and logs malformed identifiers and unresolved records before attempting state patching.
+- Replayed QA decisions are state-convergent because consumers patch canonical target states (`Accepted/NonSourceable` or `Rejected/NonSourceableVerification`).
+
 ## Compatibility and Rollout
 - Message schema evolution must be additive by default.
 - Non-additive changes require coordinated producer-consumer rollout and migration notes.

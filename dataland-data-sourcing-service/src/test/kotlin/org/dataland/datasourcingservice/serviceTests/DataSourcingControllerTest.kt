@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
+import kotlin.jvm.optionals.getOrNull
 
 class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
     private val providerCompanyId: UUID = UUID.randomUUID()
@@ -103,6 +104,12 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
             ).andExpect(resultMatcher)
     }
 
+    private fun setStoredDataSourcingState(state: DataSourcingState) {
+        val entity = dataSourcingRepository.findById(dataSourcingId).getOrNull() ?: return
+        entity.state = state
+        dataSourcingRepository.saveAndFlush(entity)
+    }
+
     @Test
     fun `admins can patch documents without company roles`() {
         setMockSecurityContext(dummyAdminAuthentication)
@@ -164,6 +171,21 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
         performPatchStateAndExpect(state, status().isOk())
     }
 
+    @Test
+    fun `admin can transition non-sourceable verification to non-sourceable`() {
+        setStoredDataSourcingState(DataSourcingState.NonSourceableVerification)
+        setMockSecurityContext(dummyAdminAuthentication)
+
+        mockMvc
+            .perform(
+                patch("/data-sourcing/$dataSourcingId/state")
+                    .queryParam("state", DataSourcingState.NonSourceable.name)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isOk())
+            .andExpect(jsonPath("$.state").value(DataSourcingState.NonSourceable.name))
+    }
+
     @ParameterizedTest
     @ValueSource(strings = ["DocumentSourcingDone"])
     fun `document collectors can set allowed states`(stateName: String) {
@@ -195,6 +217,22 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
         setMockSecurityContext(dummyUserAuthentication)
         stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
         performPatchStateAndExpect(state, status().isForbidden())
+    }
+
+    @Test
+    fun `document collectors cannot patch to non-sourceable verification`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
+
+        performPatchStateAndExpect(DataSourcingState.NonSourceableVerification, status().isForbidden())
+    }
+
+    @Test
+    fun `document collectors cannot patch to non-sourceable`() {
+        setMockSecurityContext(dummyUserAuthentication)
+        stubRoleAssignments(regularUserId, documentCollectorId, listOf(memberAssignmentForDocumentCollector))
+
+        performPatchStateAndExpect(DataSourcingState.NonSourceable, status().isForbidden())
     }
 
     @ParameterizedTest

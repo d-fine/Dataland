@@ -57,6 +57,12 @@
 - Existing endpoint paths are preserved.
 - Response/request schema is additive migration from legacy sourceability payloads.
 - Runtime endpoint semantics are moved to a QA-aware `NonSourceabilityInformation` model while `SourceabilityEntity` is retained as backup-only persistence.
+- Existing `nonSourceable` filter alias remains backward-compatible and maps to canonical `qaStatus/currentlyActive` semantics.
+
+## Implemented Notes (2026-04-08)
+- `POST /metadata/nonSourceable` now rejects duplicate `(companyId, dataType, reportingPeriod)` tuples when canonical records are in `Pending` or `Accepted` state.
+- `POST /metadata/nonSourceable?bypassQa=true` enforces admin-only authorization and emits `NON_SOURCEABILITY_LIFECYCLE` with `eventType=AUTO_ACCEPTED`.
+- `HEAD /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}` is backed by canonical `currentlyActive` state from backend non-sourceability records.
 
 ## Rollout Notes
 1. Deploy backend accepting both old and new persistence mapping during migration window.

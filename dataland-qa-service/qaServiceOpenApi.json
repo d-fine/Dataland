@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Dataland QA Service API documentation",
+    "description": "QA review APIs include dataset QA workflows and the non-sourceability review lifecycle (list, queue, and decision endpoints keyed by nonSourceabilityId).",
     "version": "1.0.0"
   },
   "servers": [
@@ -17,6 +18,10 @@
         "description": "Spring Boot Actuator Web API Documentation",
         "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
       }
+    },
+    {
+      "name": "non-sourceability-qa-controller",
+      "description": "Endpoints that manage non-sourceability QA review listings, queue retrieval, and accepted/rejected decisions."
     }
   ],
   "paths": {

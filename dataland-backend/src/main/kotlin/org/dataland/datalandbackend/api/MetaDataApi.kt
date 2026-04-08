@@ -220,6 +220,7 @@ interface MetaDataApi {
      * @param companyId if set, filters the requested info by companyId
      * @param dataType if set, filters the requested info by data type.
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
+     * @param qaStatus if set, filters non-sourceability records by QA lifecycle status.
      * @param nonSourceable if set true, the method only returns meta info for datasets which are
      * non-sourceable and if set false, it returns sourceable data.
      * @return A list of SourceabilityInfoResponse matching the filters, or an empty list if none found.
@@ -251,6 +252,12 @@ interface MetaDataApi {
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+            required = false,
+        )
+        qaStatus: QaStatus? = null,
+        @RequestParam
+        @Parameter(
             description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
             required = false,
         )
@@ -259,6 +266,7 @@ interface MetaDataApi {
 
     /**
      * Adds a dataset with information on sourceability.
+     * @param bypassQa if true, request bypasses QA and requires admin privileges.
      * @param sourceabilityInfo includes the information on the sourceability of a specific dataset.
      */
     @Operation(
@@ -282,6 +290,12 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postNonSourceabilityOfADataset(
+        @RequestParam(defaultValue = "false")
+        @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+            required = false,
+        )
+        bypassQa: Boolean,
         @Valid @RequestBody
         sourceabilityInfo: SourceabilityInfo,
     )

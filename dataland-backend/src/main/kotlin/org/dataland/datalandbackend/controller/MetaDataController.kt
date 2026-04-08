@@ -153,6 +153,7 @@ class MetaDataController(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
+        qaStatus: QaStatus?,
         nonSourceable: Boolean?,
     ): ResponseEntity<List<SourceabilityInfoResponse>> =
         ResponseEntity.ok(
@@ -162,11 +163,15 @@ class MetaDataController(
                     dataType,
                     reportingPeriod,
                     nonSourceable,
+                    qaStatus,
                 ),
         )
 
-    override fun postNonSourceabilityOfADataset(sourceabilityInfo: SourceabilityInfo) {
-        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
+    override fun postNonSourceabilityOfADataset(
+        bypassQa: Boolean,
+        sourceabilityInfo: SourceabilityInfo,
+    ) {
+        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo, bypassQa)
     }
 
     override fun isDataNonSourceable(
@@ -177,7 +182,7 @@ class MetaDataController(
         val latestSourceabilityInfo =
             sourceabilityDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
 
-        if (latestSourceabilityInfo?.isNonSourceable != true) {
+        if (latestSourceabilityInfo?.currentlyActive != true) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =

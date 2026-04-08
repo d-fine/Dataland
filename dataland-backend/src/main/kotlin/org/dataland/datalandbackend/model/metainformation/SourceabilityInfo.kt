@@ -3,8 +3,11 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 
 /**
  * --- API model ---
@@ -44,4 +47,42 @@ data class SourceabilityInfo(
         example = BackendOpenApiDescriptionsAndExamples.REASON_EXAMPLE,
     )
     val reason: String,
+    @field:Schema(
+        description = "Canonical non-sourceability record id used for cross-service correlation.",
+        example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val nonSourceabilityId: String? = null,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val qaStatus: QaStatus? = null,
+    @field:Schema(
+        description = "Indicates whether the non-sourceability claim is currently active.",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val currentlyActive: Boolean? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val bypassQa: Boolean? = null,
+    @field:Schema(
+        description = "Lifecycle event type used by asynchronous non-sourceability consumers.",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val eventType: NonSourceabilityEventType? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.UPLOADER_USER_ID_EXAMPLE,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val uploaderUserId: String? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.CREATION_TIME_DESCRIPTION,
+        example = BackendOpenApiDescriptionsAndExamples.CREATION_TIME_EXAMPLE,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val uploadTime: Long? = null,
 )

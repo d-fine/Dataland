@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Dataland Data Sourcing Service API documentation",
+    "description": "Data sourcing APIs include state transitions for the non-sourceability lifecycle, including NonSourceableVerification and NonSourceable states.",
     "version": "1.0.0"
   },
   "servers": [
@@ -718,7 +719,7 @@
           "data-sourcing-controller"
         ],
         "summary": "Patch DataSourcing state",
-        "description": "Patch the state of a DataSourcing object specified by ID.",
+        "description": "Patch the state of a DataSourcing object specified by ID, including non-sourceability transitions between NonSourceableVerification and NonSourceable under role-based authorization.",
         "operationId": "patchDataSourcingState",
         "parameters": [
           {
@@ -1830,6 +1831,7 @@
       },
       "DataSourcingState": {
         "type": "string",
+        "description": "Possible states of a data sourcing object, including pending and accepted non-sourceability lifecycle states.",
         "enum": [
           "Initialized",
           "DocumentSourcing",

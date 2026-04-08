@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.repositories.utils
 
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
  * A filter class used in the searchNonSourceableData()-Method which allows
@@ -10,7 +11,9 @@ data class NonSourceableDataSearchFilter(
     val companyId: String?,
     val dataType: DataType?,
     val reportingPeriod: String?,
-    val isNonSourceable: Boolean? = null,
+    val qaStatus: QaStatus? = null,
+    val currentlyActive: Boolean? = null,
+    val nonSourceable: Boolean? = null,
 ) {
     val shouldFilterByCompanyId: Boolean
         get() = !companyId.isNullOrEmpty()
@@ -30,9 +33,25 @@ data class NonSourceableDataSearchFilter(
     val preparedReportingPeriod: String
         get() = reportingPeriod ?: ""
 
+    val shouldFilterByQaStatus: Boolean
+        get() = qaStatus != null
+
+    val preparedQaStatus: QaStatus?
+        get() = qaStatus
+
+    private val effectiveCurrentlyActive: Boolean?
+        get() = currentlyActive ?: nonSourceable
+
+    val shouldFilterByCurrentlyActive: Boolean
+        get() = effectiveCurrentlyActive != null
+
+    val preparedCurrentlyActive: Boolean?
+        get() = effectiveCurrentlyActive
+
+    // Backward-compatible aliases for legacy sourceability query usage.
     val shouldFilterByIsNonSourceable: Boolean
-        get() = isNonSourceable != null
+        get() = shouldFilterByCurrentlyActive
 
     val preparedIsNonSourceable: Boolean?
-        get() = isNonSourceable
+        get() = preparedCurrentlyActive
 }

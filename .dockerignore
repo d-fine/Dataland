@@ -24,3 +24,9 @@ dataland-loki/data/
 # Allow build/libs directories for pre-built JARs
 **/build/
 !**/build/libs/
+
+# Docker build context hygiene
+.git/
+Dockerfile*
+.dockerignore
+.env*

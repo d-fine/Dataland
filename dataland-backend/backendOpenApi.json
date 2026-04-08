@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Dataland Backend API documentation",
+    "description": "Includes unified non-sourceability lifecycle endpoints where backend persistence is the canonical source of truth and QA/data-sourcing are downstream consumers.",
     "version": "1.0.0"
   },
   "servers": [
@@ -523,8 +524,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Retrieve information about the sourceability of datasets",
-        "description": "Retrieve information about the sourceability of datasets by the filters.",
+        "summary": "Retrieve information about non-sourceability requests",
+        "description": "Retrieve backend non-sourceability records filtered by company, data type, reporting period, and sourceability state.",
         "operationId": "getInfoOnNonSourceabilityOfDatasets",
         "parameters": [
           {
@@ -559,7 +560,7 @@
           {
             "name": "nonSourceable",
             "in": "query",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
+            "description": "If true, return non-sourceable records. If false, return sourceable records for the same filter dimensions.",
             "required": false,
             "schema": {
               "type": "boolean"
@@ -614,9 +615,21 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Adds a dataset with information on sourceability.",
-        "description": "A dataset is added with information on its sourceability.",
+        "summary": "Create a non-sourceability request for a dataset.",
+        "description": "Create a backend non-sourceability record. If bypassQa is false, the request enters QA review. If bypassQa is true, the request is auto-accepted and activated.",
         "operationId": "postNonSourceabilityOfADataset",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "description": "If true, bypasses QA review and marks the created non-sourceability entry as accepted and active immediately.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8550,7 +8563,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
+            "description": "Indicates whether the request targets a non-sourceable lifecycle entry. Expected value is true for this endpoint."
           },
           "reason": {
             "type": "string",
@@ -22480,7 +22493,7 @@
           },
           "isNonSourceable": {
             "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
+            "description": "Indicates whether the returned record is currently non-sourceable."
           },
           "reason": {
             "type": "string",

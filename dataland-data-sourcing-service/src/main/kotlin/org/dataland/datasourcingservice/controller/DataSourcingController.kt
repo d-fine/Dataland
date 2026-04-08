@@ -65,17 +65,19 @@ class DataSourcingController
         override fun patchDataSourcingState(
             dataSourcingId: String,
             state: DataSourcingState,
-        ): ResponseEntity<ReducedDataSourcing> =
-            ResponseEntity
-                .ok(
-                    dataSourcingManager
-                        .patchDataSourcingState(
-                            ValidationUtils.convertToUUID(
-                                dataSourcingId,
-                            ),
-                            state,
-                        ),
-                )
+        ): ResponseEntity<ReducedDataSourcing> {
+            val parsedId = ValidationUtils.convertToUUID(dataSourcingId)
+            val patched =
+                when (state) {
+                    DataSourcingState.NonSourceable,
+                    DataSourcingState.NonSourceableVerification,
+                    -> dataSourcingManager.patchDataSourcingState(parsedId, state)
+
+                    else -> dataSourcingManager.patchDataSourcingState(parsedId, state)
+                }
+
+            return ResponseEntity.ok(patched)
+        }
 
         override fun patchDataSourcing(
             dataSourcingId: String,

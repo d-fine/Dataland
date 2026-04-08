@@ -31,6 +31,20 @@ dependencies {
     implementation(libs.spring.amqp)
     implementation(libs.json)
     implementation(project(":dataland-backend-utils"))
+    testImplementation(Spring.boot.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
+    }
 }
 
 tasks.bootJar {

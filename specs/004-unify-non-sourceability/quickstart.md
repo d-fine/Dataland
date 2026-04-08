@@ -63,3 +63,23 @@
    - `non-sourceability-auto-accepted`
    - QA accepted/rejected events
 3. Confirm additive compatibility notes are documented.
+
+## Validation Outcomes (2026-04-08)
+- Verified by targeted backend, QA, and data-sourcing integration tests:
+   - Backend canonical lifecycle endpoint/consumer behavior:
+      - `:dataland-backend:test --tests org.dataland.datalandbackend.controller.MetaDataControllerNonSourceableTest`
+      - `:dataland-backend:test --tests org.dataland.datalandbackend.services.SourceabilityDataManagerTest`
+      - `:dataland-backend:test --tests org.dataland.datalandbackend.services.NonSourceabilityQaDecisionConsumerTest`
+   - QA lifecycle ingestion and decision behavior:
+      - `:dataland-qa-service:test --tests org.dataland.datalandqaservice.services.NonSourceabilityEventListenerTest`
+      - `:dataland-qa-service:test --tests org.dataland.datalandqaservice.controller.NonSourceabilityQaControllerTest`
+   - Data-sourcing lifecycle transitions and state patch authorization:
+      - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityEventConsumerTest`
+      - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityQaAcceptedConsumerTest`
+      - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityQaRejectedConsumerTest`
+      - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.DataSourcingControllerTest`
+- Result summary:
+   - Request -> QA accepted -> backend active + data-sourcing `NonSourceable` path validated.
+   - Request -> QA rejected -> backend rejected/inactive + data-sourcing `NonSourceableVerification` path validated.
+   - Bypass authorization and duplicate-request guards validated via backend service/controller tests.
+- Operational note: full local-stack manual API walkthrough can be executed later; current implementation criteria are covered by module-level integration tests.

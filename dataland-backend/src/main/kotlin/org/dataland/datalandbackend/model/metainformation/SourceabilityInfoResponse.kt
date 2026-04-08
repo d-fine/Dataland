@@ -3,8 +3,10 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpenApiDescriptionsAndExamples
 
 /**
  * --- API model ---
@@ -19,6 +21,11 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * @param creationTime time when the info has been posted
  */
 data class SourceabilityInfoResponse(
+    @field:Schema(
+        description = "Canonical non-sourceability record id used for cross-service correlation.",
+        example = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE,
+    )
+    val nonSourceabilityId: String? = null,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
@@ -41,6 +48,21 @@ data class SourceabilityInfoResponse(
         description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
     )
     val isNonSourceable: Boolean,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val qaStatus: QaStatus? = null,
+    @field:Schema(
+        description = "Indicates whether the non-sourceability claim is currently active.",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val currentlyActive: Boolean? = null,
+    @field:Schema(
+        description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    )
+    val bypassQa: Boolean? = null,
     @field:JsonProperty(required = true)
     @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.REASON_DESCRIPTION,

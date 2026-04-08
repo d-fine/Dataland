@@ -47,3 +47,14 @@ tls.crt
 
 # local logging data
 /dataland-loki/data
+
+# Universal workspace hygiene
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+
+# Common build/runtime artifacts not yet covered globally
+**/dist/
+.env*

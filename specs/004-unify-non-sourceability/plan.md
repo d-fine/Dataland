@@ -171,3 +171,41 @@ Status after Phase 1 design: PASS
 
 - Contracts and messaging artifacts are explicitly versioned and consumer-aware.
 - No constitution gate exception required.
+
+## Implementation Progress Notes
+
+### 2026-04-08
+
+- Completed setup-time repository hygiene verification for ignore files across git, Docker, ESLint, and Prettier configurations.
+- Updated generated OpenAPI documentation entries for backend, QA service, and data-sourcing service to explicitly describe non-sourceability lifecycle semantics.
+- Added foundational backend and QA persistence artifacts for canonical non-sourceability lifecycle records, including repositories and Flyway migrations.
+- Added shared non-sourceability lifecycle event model, event type enum, in-memory idempotent deduplication utility, and correlation-id logging helper in the message-queue-utils module.
+- Added and validated unit tests for the deduplication and correlation logging helpers.
+- Added backend and data-sourcing non-sourceability listener implementations with fail-fast validation and discard-on-malformed-or-unknown-id behavior.
+- Added targeted listener tests for malformed and unresolvable `nonSourceabilityId` handling in backend and data-sourcing modules.
+- Note: migration versions were aligned to repository head versions (backend `V13__...`, QA `V12__...`) to avoid duplicate Flyway migration version conflicts.
+- Implemented US1 backend endpoint coverage for GET/POST/HEAD `/metadata/nonSourceable` behavior, including pending vs active canonical record handling.
+- Rewired backend non-sourceability runtime reads/writes from legacy `SourceabilityEntity` to canonical `NonSourceabilityInformationEntity` while preserving legacy table writes as backup-only history.
+- Added duplicate tuple rejection for `(companyId, dataType, reportingPeriod)` when canonical rows are `Pending` or `Accepted` and enforced admin-only authorization for `bypassQa=true`.
+- Updated non-sourceability filter semantics to canonical `qaStatus` and `currentlyActive` while maintaining backward-compatible nonSourceable aliasing for legacy search usage.
+- Added backend emission of lifecycle payloads (`CREATED`, `AUTO_ACCEPTED`) and introduced a dedicated lifecycle routing key/type for QA and data-sourcing consumers.
+- Implemented QA non-sourceability lifecycle consumer to ingest CREATED events and persist pending `NonSourceableQaReviewInformation` records.
+- Implemented data-sourcing lifecycle RabbitMQ consumer wiring and validated CREATED/AUTO_ACCEPTED state transitions to `NonSourceableVerification` and `NonSourceable`.
+- Added explicit backup-only guard test proving canonical runtime reads ignore legacy `SourceabilityEntity` rows.
+- Verified targeted tests passed:
+  - `:dataland-backend:test --tests org.dataland.datalandbackend.controller.MetaDataControllerNonSourceableTest --tests org.dataland.datalandbackend.services.SourceabilityDataManagerTest`
+  - `:dataland-qa-service:test --tests org.dataland.datalandqaservice.services.NonSourceabilityEventListenerTest`
+  - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityEventConsumerTest`
+- Implemented US2 QA decision/list/queue APIs and manager flow, including accepted decision event propagation and backend/data-sourcing consumer updates.
+- Implemented US3 rejection flow validation with QA rejected decision tests, backend rejected-event consumer behavior, and data-sourcing manual-handling transition tests.
+- Added explicit non-sourceability state authorization handling in `SecurityUtilsService.canUserPatchState` and explicit non-sourceability branch routing in data-sourcing PATCH state controller flow.
+- Updated feature contract docs (`contracts/*.md`) and quickstart outcomes with implemented compatibility, idempotency, and lifecycle behavior notes.
+- Verified targeted US2/US3 tests passed:
+  - `:dataland-backend:test --tests org.dataland.datalandbackend.services.NonSourceabilityQaDecisionConsumerTest`
+  - `:dataland-qa-service:test --tests org.dataland.datalandqaservice.controller.NonSourceabilityQaControllerTest`
+  - `:dataland-data-sourcing-service:test --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityQaAcceptedConsumerTest --tests org.dataland.datasourcingservice.serviceTests.NonSourceabilityQaRejectedConsumerTest --tests org.dataland.datasourcingservice.serviceTests.DataSourcingControllerTest`
+- Verified touched-module regression suites completed successfully (exit code `0`):
+  - `:dataland-message-queue-utils:test`
+  - `:dataland-backend:test`
+  - `:dataland-qa-service:test`
+  - `:dataland-data-sourcing-service:test`
