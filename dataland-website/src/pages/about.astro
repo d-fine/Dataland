@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PartnersSection from '../components/PartnersSection.astro';
+import PartnerStoryCards from '../components/PartnerStoryCards.astro';
 import {
   COMPANY_COPY,
   LEADERSHIP_TEAM,
@@ -12,6 +13,7 @@ import {
   CONTACT_INQUIRY_MAILTO,
   CONTACT_ADDRESS,
 } from '../data/about';
+import { PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
 import { NEWS_ITEMS } from '../data/news';
 ---
 
@@ -92,7 +94,11 @@ import { NEWS_ITEMS } from '../data/news';
   </section>
 
   <!-- Section 3: Partners (grey) -->
-  <PartnersSection title="Our partners" partners={PARTNERS} />
+  <PartnerStoryCards
+    title="Our partners"
+    intro="See how partners extend Dataland data into operational workflows, reporting processes, and downstream sustainability use cases."
+    stories={PARTNER_STORY_SUMMARIES}
+  />
 
   <!-- Section 4: Updates (white) -->
   <section id="updates" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="News and updates">

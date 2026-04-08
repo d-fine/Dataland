@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import { PARTNER_STORY_DETAILS, PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
+
+const featuredStory = PARTNER_STORY_DETAILS[0];
+const additionalPartners = PARTNER_STORY_SUMMARIES.filter((story) => story.slug !== featuredStory.slug);
+---
+
+<Base title="Partner Stories — Dataland" description="See how Dataland partners integrate structured sustainability data into reporting and operational workflows.">
+  <section class="bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16" aria-label="Partner stories overview">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-6">
+      <div class="max-w-[840px]">
+        <p class="m-0 mb-3 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/60">Partner stories</p>
+        <h1 class="m-0 text-[2rem] font-bold leading-[1.15] lg:text-[3rem]">How partners bring Dataland ESG data into real workflows</h1>
+        <p class="mt-4 mb-0 max-w-[720px] text-[1rem] leading-relaxed text-white/78">
+          Dataland partners integrate structured sustainability data into reporting platforms, operational processes, and downstream products. The first detailed story below covers the FACT First Cloud integration.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {PARTNER_STORY_SUMMARIES.map((story) => (
+          <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/10 text-white no-underline motion-safe:transition-colors motion-safe:duration-200 hover:bg-white/14">
+            <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
+              <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
+                <img
+                  src={story.logo}
+                  alt=""
+                  class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
+                  loading="lazy"
+                  width="220"
+                  height="64"
+                />
+              </div>
+            </div>
+            <div class="flex h-full flex-col gap-4 p-6">
+              <div class="flex flex-wrap items-start gap-2">
+                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/15 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+                {story.secondaryTags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/82">{tag}</span>
+                ))}
+              </div>
+              <h2 class="m-0 text-[1.05rem] font-medium leading-snug">{story.title}</h2>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-white/72">{story.text}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id={featuredStory.slug} class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label={featuredStory.name}>
+    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-8 lg:grid-cols-[26%_74%]">
+      <aside class="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
+        <div class="flex min-h-[8rem] items-center justify-center rounded-xl bg-white px-4 py-5 shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
+          <img
+            src={featuredStory.logo}
+            alt={featuredStory.name}
+            class:list={['h-16 w-full object-contain object-center lg:h-20', featuredStory.logoClassName]}
+            loading="lazy"
+            width="220"
+            height="80"
+          />
+        </div>
+        <div class="rounded-xl border border-[var(--color-surface-200)] bg-white p-5">
+          <p class="m-0 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[#5f6773]">Partner</p>
+          <p class="mt-2 mb-0 text-[1rem] font-semibold text-[var(--color-text)]">{featuredStory.name}</p>
+        </div>
+      </aside>
+
+      <article class="flex flex-col gap-8 rounded-[1.5rem] border border-[var(--color-surface-200)] bg-white p-6 shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:p-8">
+        <header class="flex flex-col gap-4">
+          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-primary)]">Featured story</p>
+          <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">{featuredStory.heroTitle}</h2>
+          <div class="flex flex-col gap-4">
+            {featuredStory.intro.map((paragraph) => (
+              <p class="m-0 text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{paragraph}</p>
+            ))}
+          </div>
+        </header>
+
+        <div class="flex flex-col gap-5">
+          <h3 class="m-0 text-[1.25rem] font-bold text-[var(--color-text)]">Key use cases</h3>
+          <div class="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            {featuredStory.keyUseCases.map((item) => (
+              <section class="rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-5">
+                <p class="m-0 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-primary)]">Use case</p>
+                <h4 class="mt-2 mb-2 text-[1.05rem] font-bold text-[var(--color-text)]">{item.title}</h4>
+                <p class="m-0 mb-3 text-[0.9375rem] font-medium leading-relaxed text-[var(--color-text)]">{item.summary}</p>
+                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{item.detail}</p>
+              </section>
+            ))}
+          </div>
+        </div>
+
+        <section class="flex flex-col gap-4 rounded-xl bg-[#2C4A6B] p-6 text-white">
+          <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
+          <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-white/84 lg:grid-cols-2">
+            {featuredStory.benefits.map((benefit) => (
+              <li>{benefit}</li>
+            ))}
+          </ul>
+        </section>
+      </article>
+    </div>
+  </section>
+
+  <section id="partner-directory" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Partner directory">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+      <div class="text-center">
+        <h2 class="m-0 text-[1.75rem] font-bold text-[var(--color-text)]">Partner directory</h2>
+        <p class="mx-auto mt-3 mb-0 max-w-[760px] text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">
+          Additional partner profiles are listed here. Detailed story content can be expanded as more approved source material becomes available.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {additionalPartners.map((story) => (
+          <article class="flex h-full flex-col rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6">
+            <div class="mb-5 flex min-h-[6.25rem] items-center justify-center rounded-xl bg-white px-6 py-5">
+              <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
+                <img
+                  src={story.logo}
+                  alt={story.name}
+                  class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
+                  loading="lazy"
+                  width="220"
+                  height="64"
+                />
+              </div>
+            </div>
+            <div class="flex flex-col gap-3">
+              <div class="flex flex-wrap items-start gap-2">
+                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+                {story.secondaryTags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">{tag}</span>
+                ))}
+              </div>
+              <h3 class="m-0 text-[1.05rem] font-bold text-[var(--color-text)]">{story.name}</h3>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.text}</p>
+              {story.externalUrl && (
+                <a href={story.externalUrl} target="_blank" rel="noopener noreferrer" class="mt-auto self-start text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline">
+                  Visit partner website &rarr;
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
