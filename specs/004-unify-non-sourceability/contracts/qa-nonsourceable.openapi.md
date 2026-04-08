@@ -51,6 +51,21 @@
 - Consumes `non-sourceability-created` event from backend.
 - Creates one QA review row linked by `nonSourceabilityId`.
 
+## Implementation Status
+
+All three endpoints and the event listener are implemented:
+
+| File | Role |
+|---|---|
+| `NonSourceabilityQaApi` | API interface defining 3 endpoints |
+| `NonSourceabilityQaController` | Spring `@RestController` implementation |
+| `NonSourceabilityQaReviewManager` | Decision service — emits accepted/rejected events |
+| `NonSourceabilityEventListener` | RabbitMQ listener creating QA review rows |
+| `NonSourceableQaReviewInformationEntity` | JPA entity (`non_sourceable_qa_review_information` table) |
+| `NonSourceableQaReviewRepository` | JPA repository with filter queries |
+| `V12__CreateNonSourceableQaReviewInformation` | Flyway Java migration |
+| `NonSourceableQaReviewInformation` | Response model |
+
 ## Compatibility Notes
 - New endpoints are additive and do not replace existing generic QA dataset endpoints immediately.
 - Decision event payload remains backward-compatible by additive fields and stable identifiers.

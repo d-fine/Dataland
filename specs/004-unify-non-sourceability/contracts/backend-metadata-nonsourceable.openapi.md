@@ -58,7 +58,4 @@
 - Response/request schema is additive migration from legacy sourceability payloads.
 - Runtime endpoint semantics are moved to a QA-aware `NonSourceabilityInformation` model while `SourceabilityEntity` is retained as backup-only persistence.
 
-## Rollout Notes
-1. Deploy backend accepting both old and new persistence mapping during migration window.
-2. Apply DB migration for new entity/table/columns before strict read-path cutover.
-3. Coordinate consumer deployment for dedicated bypass event before enabling bypass emission.
+## Implementation Status\n\nAll three endpoints are implemented in `MetaDataController` and `MetaDataApi` using canonical models:\n\n| File | Role |\n|---|---|\n| `NonSourceabilityInformationManager` | Core service — validation, persistence, event emission |\n| `NonSourceabilityInformationEntity` | JPA entity (`non_sourceability_information` table) |\n| `NonSourceabilityDataRepository` | JPA repository with JPQL filter queries |\n| `V13__CreateNonSourceabilityInformation` | Flyway Java migration |\n| `NonSourceabilityRequest` | POST request model |\n| `NonSourceabilityInformationResponse` | GET/POST response model |\n\n`SourceabilityEntity` is retained as backup-only persistence; the canonical read/write path uses `NonSourceabilityInformationEntity`.\n\n

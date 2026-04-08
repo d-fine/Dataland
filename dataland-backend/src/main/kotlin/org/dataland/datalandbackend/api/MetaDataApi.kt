@@ -11,8 +11,8 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
-import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
+import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
+import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -216,22 +216,19 @@ interface MetaDataApi {
     ): ResponseEntity<Map<String, String>>
 
     /**
-     * A method to retrieve information about the sourceability of datasets.
-     * @param companyId if set, filters the requested info by companyId
-     * @param dataType if set, filters the requested info by data type.
-     * @param reportingPeriod if set, the method only returns meta info with this reporting period
-     * @param nonSourceable if set true, the method only returns meta info for datasets which are
-     * non-sourceable and if set false, it returns sourceable data.
-     * @return A list of SourceabilityInfoResponse matching the filters, or an empty list if none found.
+     * Retrieves non-sourceability information records using the canonical model.
+     * @param companyId optional filter
+     * @param dataType optional filter
+     * @param reportingPeriod optional filter
+     * @param qaStatus optional filter on QA status
      */
     @Operation(
-        summary = "Retrieve information about the sourceability of datasets",
-        description =
-            "Retrieve information about the sourceability of datasets by the filters.",
+        summary = "Retrieve non-sourceability information for datasets",
+        description = "Retrieves NonSourceabilityInformation records filtered by the provided parameters.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved datasets."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved non-sourceability records."),
         ],
     )
     @GetMapping(
@@ -251,28 +248,28 @@ interface MetaDataApi {
         reportingPeriod: String? = null,
         @RequestParam
         @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
+            description = QaServiceOpenApiDescriptionsAndExamples.QA_STATUS_DESCRIPTION,
             required = false,
         )
-        nonSourceable: Boolean? = null,
-    ): ResponseEntity<List<SourceabilityInfoResponse>>
+        qaStatus: QaStatus? = null,
+    ): ResponseEntity<List<NonSourceabilityInformationResponse>>
 
     /**
-     * Adds a dataset with information on sourceability.
-     * @param sourceabilityInfo includes the information on the sourceability of a specific dataset.
+     * Submits a non-sourceability request for a dataset.
+     * When bypassQa=true the caller must hold ROLE_ADMIN; otherwise ROLE_UPLOADER is required.
+     * @param nonSourceabilityRequest request body containing dataset dimensions and bypass flag.
      */
     @Operation(
-        summary = "Adds a dataset with information on sourceability.",
-        description = "A dataset is added with information on its sourceability.",
+        summary = "Submit a non-sourceability request for a dataset.",
+        description =
+            "Creates a NonSourceabilityInformation entry. With bypassQa=false (default) the entry " +
+                "enters QA review; with bypassQa=true (admin only) it is immediately activated.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added dataset."),
-            ApiResponse(
-                responseCode = "400",
-                description = "Bad request has been submitted.",
-            ),
-            ApiResponse(responseCode = "404", description = "Invalid input parameters."),
+            ApiResponse(responseCode = "200", description = "Successfully submitted non-sourceability request."),
+            ApiResponse(responseCode = "400", description = "Duplicate or invalid request."),
+            ApiResponse(responseCode = "403", description = "Insufficient role for bypassQa."),
         ],
     )
     @PostMapping(
@@ -280,26 +277,24 @@ interface MetaDataApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER') or hasRole('ROLE_ADMIN')")
     fun postNonSourceabilityOfADataset(
         @Valid @RequestBody
-        sourceabilityInfo: SourceabilityInfo,
-    )
+        nonSourceabilityRequest: NonSourceabilityRequest,
+    ): ResponseEntity<NonSourceabilityInformationResponse>
 
     /**
-     * A method to check if a dataset is non-sourceable.
-     * @param companyId the company identifier
-     * @param dataType the data type
-     * @param reportingPeriod the reporting period
+     * Checks whether an active non-sourceability entry exists for the given tuple.
+     * Returns 200 if active, 404 otherwise.
      */
     @Operation(
-        summary = "Checks if a dataset is non-sourceable.",
-        description = "Checks if a specific dataset is non-sourceable.",
+        summary = "Checks if a dataset is currently non-sourceable.",
+        description = "Returns 200 if an active NonSourceabilityInformation entry exists for the tuple; 404 otherwise.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked that dataset is non-sourceable."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that dataset is sourceable."),
+            ApiResponse(responseCode = "200", description = "Dataset has an active non-sourceability entry."),
+            ApiResponse(responseCode = "404", description = "Dataset has no active non-sourceability entry."),
         ],
     )
     @RequestMapping(
