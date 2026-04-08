@@ -38,16 +38,21 @@ declare global {
   }
 }
 
+const ASTRO_ROUTES = ['/', '/about', '/product', '/newsletter', '/testimonials'];
 /**
  * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
  * @param endpoint the endpoint to navigate to via URL
  * @returns Cypress chainable object pointing to the `<body>` element after successful page load and checks
  */
-export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
+export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
-  cy.get('#app', { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
   closeCookieBannerIfItExists();
-  return cy.get('#app');
+
+  if (ASTRO_ROUTES.includes(endpoint)) {
+    return cy.get('main#main-content').should('exist');
+  }
+
+  return cy.get('#app', { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
 }
 
 /**
@@ -190,11 +195,10 @@ export function waitForPageLoad(options: {
 /**
  * Close the cookie banner if it exists and do nothing if it doesn't exist.
  */
-function closeCookieBannerIfItExists(): void {
-  cy.get('body').then(($body) => {
-    const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
-    if (allowCookies.length == 1) {
-      allowCookies[0].click();
+function closeCookieBannerIfItExists(): Cypress.Chainable {
+  return cy.get('body').then(($body) => {
+    if ($body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').length) {
+      cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();
     }
   });
 }
