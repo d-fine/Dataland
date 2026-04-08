@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 
 /**
  * Query-only service for dataset-level QA review metadata and projections.
@@ -82,34 +82,38 @@ class QaReviewQueryService
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
-            val entities = qaReviewRepository
-                .getPendingQaReviewMetadatasetsByCompany(
-                    QaSearchFilter(
-                        dataTypes = null,
-                        reportingPeriods = null,
-                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                        companyName = companyName,
-                        qaStatuses = setOf(QaStatus.Pending),
-                    ),
-                )
+            val entities =
+                qaReviewRepository
+                    .getPendingQaReviewMetadatasetsByCompany(
+                        QaSearchFilter(
+                            dataTypes = null,
+                            reportingPeriods = null,
+                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                            companyName = companyName,
+                            qaStatuses = setOf(QaStatus.Pending),
+                        ),
+                    )
 
             val dataIds = entities.map { it.dataId }
 
             val numberQaReportsByDataId = getNumberOfQaReportsForDataIds(dataIds)
 
             val datasetUUIDs = dataIds.map { convertToUUID(it) }
-            val latestJudgementByDataId = datasetJudgementRepository
-                .findAllByDatasetIdIn(datasetUUIDs)
-                .groupBy { it.datasetId }
-                .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
+            val latestJudgementByDataId =
+                datasetJudgementRepository
+                    .findAllByDatasetIdIn(datasetUUIDs)
+                    .groupBy { it.datasetId }
+                    .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
 
-            val qaReviewResponses = entities.map {
-                it.toQaReviewResponse(
-                    showTriggeringUserId = userIsAdmin,
-                    numberQaReports = numberQaReportsByDataId[it.dataId] ?: 0L,
-                    latestJudgement = latestJudgementByDataId[convertToUUID(it.dataId)],
-                )
-            }
+            val qaReviewResponses =
+                entities
+                    .map {
+                        it.toQaReviewResponse(
+                            showTriggeringUserId = userIsAdmin,
+                            numberQaReports = numberQaReportsByDataId[it.dataId] ?: 0L,
+                            latestJudgement = latestJudgementByDataId[convertToUUID(it.dataId)],
+                        )
+                    }
             return addPrioritiesToResponse(qaReviewResponses)
         }
 
