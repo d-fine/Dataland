@@ -17,4 +17,13 @@ interface DatasetJudgementRepository : JpaRepository<DatasetJudgementEntity, UUI
      * @return A list of DatasetReviewEntity objects associated with the datasetId.
      */
     fun findAllByDatasetId(datasetId: UUID): List<DatasetJudgementEntity>
+
+    /**
+     * Finds all DatasetJudgementEntity objects whose datasetId is in the given collection.
+     * Used for bulk (batch) lookups to avoid N individual queries.
+     *
+     * @param datasetIds The collection of dataset IDs to look up.
+     * @return A list of DatasetJudgementEntity objects associated with any of the given datasetIds.
+     */
+    fun findAllByDatasetIdIn(datasetIds: Collection<UUID>): List<DatasetJudgementEntity>
 }

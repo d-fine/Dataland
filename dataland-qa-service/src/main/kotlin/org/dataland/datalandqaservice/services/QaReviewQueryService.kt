@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 
 /**
  * Query-only service for dataset-level QA review metadata and projections.
@@ -80,17 +81,35 @@ class QaReviewQueryService
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            val qaReviewResponses =
-                qaReviewRepository
-                    .getPendingQaReviewMetadatasetsByCompany(
-                        QaSearchFilter(
-                            dataTypes = null,
-                            reportingPeriods = null,
-                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                            companyName = companyName,
-                            qaStatuses = setOf(QaStatus.Pending),
-                        ),
-                    ).map { it.toQaReviewResponse(userIsAdmin) }
+
+            val entities = qaReviewRepository
+                .getPendingQaReviewMetadatasetsByCompany(
+                    QaSearchFilter(
+                        dataTypes = null,
+                        reportingPeriods = null,
+                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                        companyName = companyName,
+                        qaStatuses = setOf(QaStatus.Pending),
+                    ),
+                )
+
+            val dataIds = entities.map { it.dataId }
+
+            val numberQaReportsByDataId = getNumberOfQaReportsForDataIds(dataIds)
+
+            val datasetUUIDs = dataIds.map { convertToUUID(it) }
+            val latestJudgementByDataId = datasetJudgementRepository
+                .findAllByDatasetIdIn(datasetUUIDs)
+                .groupBy { it.datasetId }
+                .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
+
+            val qaReviewResponses = entities.map {
+                it.toQaReviewResponse(
+                    showTriggeringUserId = userIsAdmin,
+                    numberQaReports = numberQaReportsByDataId[it.dataId] ?: 0L,
+                    latestJudgement = latestJudgementByDataId[convertToUUID(it.dataId)],
+                )
+            }
             return addPrioritiesToResponse(qaReviewResponses)
         }
 
@@ -236,6 +255,62 @@ class QaReviewQueryService
                     throw clientException
                 }
             }
+
+        /**
+         * Returns a map from dataId to the number of QA reports for all data points contained in that dataset.
+         * Fetches metadata for all dataIds in bulk (one call per dataId to the metadata API) and counts
+         * QA reports for all collected data-point IDs in a single DB query.
+         */
+        private fun getNumberOfQaReportsForDataIds(dataIds: List<String>): Map<String, Long> {
+            val dataPointIdsByDataId = mutableMapOf<String, Set<String>>()
+            for (dataId in dataIds) {
+                try {
+                    dataPointIdsByDataId[dataId] = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
+                } catch (clientException: ClientException) {
+                    if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
+                        dataPointIdsByDataId[dataId] = emptySet()
+                    } else {
+                        throw clientException
+                    }
+                }
+            }
+            val allDataPointIds = dataPointIdsByDataId.values.flatten().toSet()
+            val totalCountByDataPointId =
+                if (allDataPointIds.isEmpty()) {
+                    emptyMap()
+                } else {
+                    dataPointQaReportManager.countQaReportsForDataPointIdsBulk(allDataPointIds)
+                }
+            return dataPointIdsByDataId.mapValues { (_, dpIds) ->
+                dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
+            }
+        }
+
+        /**
+         * Converts the QaReviewEntity into a QaReviewResponse using pre-fetched data to avoid per-item I/O.
+         */
+        private fun QaReviewEntity.toQaReviewResponse(
+            showTriggeringUserId: Boolean = false,
+            numberQaReports: Long,
+            latestJudgement: DatasetJudgementResponse?,
+        ): QaReviewResponse =
+            QaReviewResponse(
+                dataId = this.dataId,
+                companyId = this.companyId,
+                companyName = this.companyName,
+                framework = this.framework,
+                reportingPeriod = this.reportingPeriod,
+                timestamp = this.timestamp,
+                qaStatus = this.qaStatus,
+                qaJudgeUserId = latestJudgement?.qaJudgeUserId,
+                qaJudgeUserName = latestJudgement?.qaJudgeUserName,
+                datasetReviewId = latestJudgement?.dataSetJudgementId,
+                numberQaReports = numberQaReports,
+                comment = this.comment,
+                triggeringUserId = if (showTriggeringUserId) this.triggeringUserId else null,
+                priorityOfAssociatedDataSourcing = null,
+            )
 
         /**
          * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET request.
