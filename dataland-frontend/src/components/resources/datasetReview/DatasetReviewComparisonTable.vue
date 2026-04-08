@@ -320,7 +320,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
       label: name ?? 'Unnamed_File',
       value: report.fileName ?? report.fileReference ?? name,
       dataSource: {
-        fileName: report.fileName ?? name ?? null,
+        fileName: report.fileName ?? null,
         fileReference: report.fileReference,
         publicationDate: report.publicationDate ?? null,
       },
