@@ -50,7 +50,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
     const currentTimestampInMs = Date.now();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
-      logoutAndRedirectToUri(keycloak);
+      logoutAndRedirectToUri(keycloak, '/');
     } else if (currentTimestampInMs >= sessionWarningTimestamp) {
       clearInterval(functionIdOfSetInterval);
       onSurpassingExpiredSessionTimestampCallback();
