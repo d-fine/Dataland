@@ -22,6 +22,7 @@ export function useGetDataPointByIdQuery(
       const response = await apiController.getDataPoint(dataPointId.value);
       return response.data;
     },
+    enabled: computed(() => !!dataPointId.value),
     ...options,
   });
 }

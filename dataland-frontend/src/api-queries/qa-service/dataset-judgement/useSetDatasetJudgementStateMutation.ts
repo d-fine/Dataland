@@ -10,7 +10,7 @@ import { type AxiosResponse } from 'axios';
  *
  * @param {Ref<string | undefined>} datasetJudgementId - Reactive id of the dataset judgement; mutation throws if undefined.
  * @param {DatasetJudgementState} targetState - State to set on the judgement.
- * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success invalidates the review detail query.
+ * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success invalidates the judgement detail query.
  */
 export function useSetDatasetJudgementStateMutation(
   datasetJudgementId: Ref<string | undefined>,
