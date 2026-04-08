@@ -15,13 +15,19 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const login = (): void => {
   assertDefined(getKeycloakPromise)()
-    .then((keycloak) => keycloak.login({ redirectUri: `${globalThis.location.origin}/platform-redirect` }))
+    .then((keycloak) => {
+      if (keycloak.authenticated) return;
+      keycloak.login().catch((error) => console.error(error));
+    })
     .catch((error) => console.error(error));
 };
 
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
-    .then((keycloak) => keycloak.register({ redirectUri: `${globalThis.location.origin}/platform-redirect` }))
+    .then((keycloak) => {
+      if (keycloak.authenticated) return;
+      keycloak.register().catch((error) => console.error(error));
+    })
     .catch((error) => console.error(error));
 };
 </script>
