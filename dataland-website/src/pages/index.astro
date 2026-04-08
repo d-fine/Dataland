@@ -20,10 +20,25 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
           The open-source platform for<br />
           <span class="text-[var(--color-primary)]">structured sustainability data</span>
         </h1>
-        <p class="text-lg text-[var(--color-text-muted)] m-0 mb-6">Non-profit. Source-based. Unrestricted use.</p>
+        <p class="text-lg text-[var(--color-text-muted)] m-0 mb-10">Non-profit. Source-based. Unrestricted use.</p>
+        <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-10 sm:gap-y-4" aria-label="Platform statistics">
+          <div class="flex flex-col gap-1.5">
+            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;1000</span>
+            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Users</span>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;3000</span>
+            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Datasets</span>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;300,000</span>
+            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Live data points</span>
+          </div>
+        </div>
         <div class="flex flex-wrap gap-3">
           <a href="/register" class="btn btn--primary">Try it free</a>
           <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+          <a href="/about" class="btn btn--outline">More about us</a>
         </div>
       </div>
       <div class="flex justify-center" style="perspective: 1500px;">
@@ -154,16 +169,37 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   <section class="py-12 px-6 bg-[#2C4A6B] text-white lg:py-16 lg:px-8" aria-label="What our members say">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-center">What our members say</h2>
-      <div class="flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-color:rgba(255,255,255,0.3)_transparent] [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30">
-        {TESTIMONIALS.map((t) => (
-          <blockquote class="shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
-            <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
-            <footer class="flex flex-col gap-0.5">
-              <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
-              <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
-            </footer>
-          </blockquote>
-        ))}
+      <div class="flex items-center gap-3 lg:gap-5">
+        <button
+          type="button"
+          class="testimonial-nav inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-35"
+          data-direction="prev"
+          aria-label="Show previous testimonials"
+        >
+          <span aria-hidden="true" class="text-xl leading-none">&larr;</span>
+        </button>
+        <div
+          class="testimonial-slider flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          data-testimonial-slider
+        >
+          {TESTIMONIALS.map((t) => (
+            <blockquote class="testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
+              <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
+              <footer class="flex flex-col gap-0.5">
+                <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
+                <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+        <button
+          type="button"
+          class="testimonial-nav inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-35"
+          data-direction="next"
+          aria-label="Show next testimonials"
+        >
+          <span aria-hidden="true" class="text-xl leading-none">&rarr;</span>
+        </button>
       </div>
       <div class="flex justify-center">
         <a href="/testimonials" class="inline-flex items-center px-6 py-2.5 bg-white text-[#2C4A6B] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Watch member testimonials</a>
@@ -192,6 +228,41 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   </section>
 
 </Base>
+
+<script>
+  const slider = document.querySelector('[data-testimonial-slider]');
+  const prevButton = document.querySelector('[data-direction="prev"]');
+  const nextButton = document.querySelector('[data-direction="next"]');
+
+  if (slider instanceof HTMLElement && prevButton instanceof HTMLButtonElement && nextButton instanceof HTMLButtonElement) {
+    const getStep = () => {
+      const firstCard = slider.querySelector('.testimonial-card');
+      if (!(firstCard instanceof HTMLElement)) return slider.clientWidth;
+
+      const gap = Number.parseFloat(window.getComputedStyle(slider).columnGap || window.getComputedStyle(slider).gap || '0');
+      return firstCard.getBoundingClientRect().width + gap;
+    };
+
+    const updateButtons = () => {
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      prevButton.disabled = slider.scrollLeft <= 4;
+      nextButton.disabled = slider.scrollLeft >= maxScrollLeft - 4;
+    };
+
+    const scrollSlider = (direction) => {
+      slider.scrollBy({
+        left: direction * getStep(),
+        behavior: 'smooth',
+      });
+    };
+
+    prevButton.addEventListener('click', () => scrollSlider(-1));
+    nextButton.addEventListener('click', () => scrollSlider(1));
+    slider.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
+  }
+</script>
 
 <style>
   .trusted-by-track {

@@ -18,20 +18,32 @@ import { NEWS_ITEMS } from '../data/news';
 <Base title="About — Dataland" description="Learn about Dataland's mission, team, and partners.">
 
   <!-- Section 1: Company (grey) -->
-  <section id="company" class="scroll-mt-16 pt-16 pb-12 px-6 bg-[var(--color-surface-50)] lg:pt-24 lg:pb-16 lg:px-8" aria-label="About Dataland">
-    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[40%_60%] lg:items-start">
-      <div class="flex flex-wrap items-center gap-8 lg:flex-col lg:items-start">
-        <img src="/static/logos/logo_dataland_orange_cubed.svg" alt="Dataland" width="180" height="56" loading="eager" class="h-10 lg:h-14 w-auto object-contain" />
-        <div class="flex flex-wrap items-center gap-8">
-          <img src="/static/logos/logo_wertestiftung.png" alt="Werte-Stiftung" width="140" height="56" loading="lazy" class="w-[120px] lg:w-[150px] h-auto object-contain" />
-          <img src="/static/logos/logo_d-fine.svg" alt="d-fine" width="100" height="56" loading="lazy" class="w-[100px] lg:w-[130px] h-auto object-contain" />
-          <img src="/static/logos/logo_pwc.svg" alt="PwC" width="80" height="56" loading="lazy" class="w-[70px] lg:w-[90px] h-auto object-contain" />
-        </div>
+  <section id="company" class="scroll-mt-16 bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16" aria-label="About Dataland">
+    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[52%_48%] lg:items-stretch">
+      <div class="flex justify-center lg:justify-start">
+        <img
+          src="/static/images/img_about_main.png"
+          alt="Dataland team and company overview"
+          width="720"
+          height="520"
+          loading="eager"
+          class="h-full w-full max-w-[680px] rounded-[1.5rem] object-contain object-left shadow-[0_20px_55px_rgba(0,0,0,0.28)] lg:max-w-none"
+        />
       </div>
-      <div class="flex flex-col gap-4">
-        <h1 class="text-[2rem] font-bold m-0 text-[var(--color-text)]">{COMPANY_COPY.title}</h1>
-        <p class="text-base leading-[1.7] m-0 text-[var(--color-text-muted)]">{COMPANY_COPY.text1}</p>
-        <p class="text-base leading-[1.7] m-0 text-[var(--color-text-muted)]">{COMPANY_COPY.text2}</p>
+      <div class="flex flex-col justify-center gap-8">
+        <div class="flex flex-col gap-5">
+          <p class="text-[1.2rem] leading-[1.8] m-0 text-white/78 lg:text-[1.42rem]">
+            {COMPANY_COPY.text1}
+          </p>
+          <p class="text-[1.2rem] leading-[1.8] m-0 text-white/78 lg:text-[1.42rem]">
+            Dataland is part of the <span class="font-bold text-[#3E6A8E]">Werte-Stiftung</span> foundation, with strategic support from <span class="font-bold text-[#3E6A8E]">d-fine</span> and <span class="font-bold text-[#3E6A8E]">PwC</span>.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-10 gap-y-6 pt-2">
+          <img src="/static/logos/logo_wertestiftung.png" alt="Werte-Stiftung" width="160" height="64" loading="lazy" class="w-[140px] lg:w-[165px] h-auto object-contain" />
+          <img src="/static/logos/logo_d-fine_RGB.svg" alt="d-fine" width="140" height="64" loading="lazy" class="w-[120px] lg:w-[145px] h-auto object-contain brightness-0 invert opacity-95" />
+          <img src="/static/logos/logo_pwc.svg" alt="PwC" width="156" height="72" loading="lazy" class="w-[132px] lg:w-[156px] h-auto object-contain" />
+        </div>
       </div>
     </div>
   </section>
@@ -42,27 +54,33 @@ import { NEWS_ITEMS } from '../data/news';
       <h2 class="text-[1.75rem] font-bold m-0 text-center">Leadership team </h2>
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
         {LEADERSHIP_TEAM.map((person) => (
-          <div class="flex flex-col items-center gap-3 text-center">
+          <div class="flex h-full flex-col items-center gap-1.5 text-center">
             <img
               src={person.imagePath}
               alt={person.name}
-              class="w-[180px] h-[180px] rounded-full object-cover object-top border-[3px] border-white/20"
+              class="h-[430px] w-full max-w-[340px] rounded-2xl object-cover object-top"
               loading="lazy"
-              width="280"
-              height="280"
+              width="340"
+              height="540"
             />
-            <h3 class="text-xl font-bold m-0">{person.name}</h3>
-            <p class="text-[0.9375rem] m-0 opacity-85">{person.role}</p>
-            <p class="text-sm leading-normal m-0 opacity-75 max-w-[320px]">{person.bio}</p>
-            <div class="flex gap-3 mt-1">
+            <div class="flex items-start justify-center">
+              <h3 class="m-0 text-[1.52rem] font-bold leading-tight">{person.name}</h3>
+            </div>
+            <div class="mt-[0.1rem] flex items-start justify-center">
+              <p class="m-0 text-[1.38rem] leading-tight opacity-85">{person.role}</p>
+            </div>
+            <div class="mt-8 flex min-h-[5.6rem] items-start justify-center max-w-[320px]">
+              <p class="m-0 text-[1.08rem] leading-[1.5] opacity-80">{person.bio}</p>
+            </div>
+            <div class="mt-0.5 flex gap-4">
               <a href={person.email} aria-label={`Email ${person.name}`} class="text-white opacity-70 inline-flex motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </svg>
               </a>
               <a href={person.linkedIn} target="_blank" rel="noopener noreferrer" aria-label={`${person.name} on LinkedIn`} class="text-white opacity-70 inline-flex motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
                 </svg>
               </a>
