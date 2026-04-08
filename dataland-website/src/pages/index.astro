@@ -14,38 +14,47 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 
   <!-- Section 1: Hero (grey) -->
   <section class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8" aria-label="The open-source platform for structured sustainability data">
-    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[60%_40%]">
+    <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[50%_50%]">
       <div>
-        <h1 class="text-[2rem] font-bold leading-[1.2] m-0 mb-4 text-[var(--color-text)] lg:text-[3rem]">
-          The open-source platform for<br />
-          <span class="text-[var(--color-primary)]">structured sustainability data</span>
+        <h1 class="m-0 mb-4 max-w-[12.5ch] text-[2rem] font-bold leading-[1.2] text-[var(--color-text)] lg:max-w-none lg:text-[2.55rem]">
+          <span class="whitespace-nowrap">The open-source platform for</span>{' '}
+          <span class="whitespace-nowrap text-[var(--color-primary)]">structured sustainability data</span>
         </h1>
         <p class="text-lg text-[var(--color-text-muted)] m-0 mb-10">Non-profit. Source-based. Unrestricted use.</p>
         <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-10 sm:gap-y-4" aria-label="Platform statistics">
           <div class="flex flex-col gap-1.5">
-            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;1000</span>
-            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Users</span>
+            <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
+              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
+              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">1000</span>
+              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Users</span>
+            </div>
           </div>
           <div class="flex flex-col gap-1.5">
-            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;3000</span>
-            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Datasets</span>
+            <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
+              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
+              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">3000</span>
+              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Datasets</span>
+            </div>
           </div>
           <div class="flex flex-col gap-1.5">
-            <span class="text-[2.9rem] font-semibold leading-none tracking-[-0.08em] text-[color:rgba(55,102,151,0.86)] lg:text-[3.5rem]">&gt;300,000</span>
-            <span class="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">Live data points</span>
+            <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
+              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
+              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">300,000</span>
+              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Live data points</span>
+            </div>
           </div>
         </div>
         <div class="flex flex-wrap gap-3">
           <a href="/register" class="btn btn--primary">Try it free</a>
-          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
           <a href="/about" class="btn btn--outline">More about us</a>
+          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
         </div>
       </div>
-      <div class="flex justify-center" style="perspective: 1500px;">
+      <div class="hero-image-wrap flex justify-center lg:justify-end" style="perspective: 1500px;">
         <img
-          src="/static/images/platform-screenshot.png"
+          src="/static/images/img_index_main_1.png"
           alt="Dataland platform showing structured ESG data for a company"
-          class="w-full max-w-[520px] h-auto rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)] motion-safe:transition-transform motion-safe:duration-400 lg:motion-safe:[transform:perspective(1500px)_rotateY(-5deg)_rotateX(2deg)]"
+          class="w-full max-w-[620px] h-auto rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)_scale(1.2)] motion-safe:transition-transform motion-safe:duration-400 lg:motion-safe:[transform:perspective(1500px)_rotateY(-5deg)_rotateX(2deg)_scale(1.2)]"
           loading="eager"
           width="600"
           height="400"
@@ -70,7 +79,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       <div class="flex flex-col gap-8">
         {WHY_US_PAIRS.map((pair) => (
           <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(90deg,#eef1f4_0%,#f8f7f4_38%,#fff3ea_70%,#ffe6d6_100%)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
-            <div class="px-6 pt-6 pb-2 lg:px-7 lg:pt-7 lg:pb-3 lg:row-start-1 lg:col-start-1">
+            <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-1">
               <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#5f6773]">Common Problems</span>
             </div>
             <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-1">
@@ -83,8 +92,8 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
               <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
             </div>
             <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
-            <div class="px-6 pt-6 pb-2 lg:px-7 lg:pt-7 lg:pb-3 lg:row-start-1 lg:col-start-3">
-              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#8d4b25]">Dataland Solution</span>
+            <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-3">
+              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#7B5D4A]">Dataland Solution</span>
             </div>
             <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-3">
               <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
@@ -265,6 +274,13 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 </script>
 
 <style>
+  .hero-image-wrap img {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
   .trusted-by-track {
     animation: trusted-by-scroll 56s linear infinite;
   }
