@@ -517,6 +517,39 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
+
+    it('closes modal once there are no more unreviewed data points', () => {
+      const singleKpiRows: CellRow[] = [kpiRows[0]];
+
+      const judgementWithSingleKpi: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: undefined,
+          },
+        },
+      };
+
+      mountJudgeDialog({
+        datasetJudgement: judgementWithSingleKpi,
+        kpiRows: singleKpiRows,
+      });
+
+      cy.get('[data-test="judge-modal"]').should('be.visible');
+      cy.get('[data-test="accept-original-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.url).to.contain(
+          `/qa/dataset-judgements/${datasetJudgementId}/data-points/${dataPointTypeId}`
+        );
+        expect(interception.request.body).to.deep.include({
+          acceptedSource: AcceptedDataPointSource.Original,
+        });
+      });
+
+      cy.get('[data-test="judge-modal"]').should('not.exist');
+    });
   });
 
   // ---------------------------------------------------------------------------

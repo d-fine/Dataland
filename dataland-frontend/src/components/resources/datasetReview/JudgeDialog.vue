@@ -219,6 +219,7 @@ const currentDataPointLabel = computed(() => {
   const row = props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value);
   return row ? row.label : currentDataPointTypeId.value;
 });
+
 watch(
   () => props.dataPointTypeId,
   (newVal) => {
@@ -432,7 +433,7 @@ const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
   return options;
 });
 
-const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
+const selectedNextDataPointTypeId = ref<string | null>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
 
 /**
  * Determines whether the given data point judgement has already been decided.
@@ -451,16 +452,19 @@ function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
  * @param startingDataPointTypeId - The data point type ID to start from.
  * @returns The next unreviewed data point type ID, or the current one if none found.
  */
-function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
+function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string | null {
   const ids = nextDataPointOptions.value.map((row) => row.dataPointTypeId).filter(Boolean);
   const currentIndex = ids.indexOf(startingDataPointTypeId);
   const total = ids.length;
+
+  if (total === 0) return null;
+
   for (let offset = 1; offset < total; offset++) {
     const targetDataPointTypeId = ids[(currentIndex + offset) % total];
     const judgementMetaData = datasetJudgement.value?.dataPoints?.[targetDataPointTypeId];
     if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return targetDataPointTypeId;
   }
-  return startingDataPointTypeId;
+  return null;
 }
 
 /**
