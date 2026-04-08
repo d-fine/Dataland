@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.api
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
 import org.springframework.http.ResponseEntity
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * API interface for non-sourceability QA review endpoints (FR-005, FR-006, FR-007).
  */
+@SecurityRequirement(name = "default-bearer-auth")
+@SecurityRequirement(name = "default-oauth")
 @RequestMapping("/nonSourceable")
 interface NonSourceabilityQaApi {
     /**
