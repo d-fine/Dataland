@@ -38,7 +38,17 @@ declare global {
   }
 }
 
-const ASTRO_ROUTES = ['/', '/about', '/product', '/newsletter', '/testimonials'];
+const ASTRO_ROUTES = [
+  '/',
+  '/about',
+  '/product',
+  '/newsletter',
+  '/testimonials',
+  '/legal',
+  '/dataprivacy',
+  '/imprint',
+  '/community',
+];
 /**
  * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
  * @param endpoint the endpoint to navigate to via URL
