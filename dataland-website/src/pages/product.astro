@@ -137,7 +137,12 @@ const CREDITS_TABLE = [
                 height="80"
               />
             </div>
-            <span class="inline-block self-start bg-[var(--color-primary)] text-white text-xs font-semibold px-3 py-1 rounded-full">{story.tag}</span>
+            <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+              <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+              {story.secondaryTags.map((tag) => (
+                <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/85">{tag}</span>
+              ))}
+            </div>
           </div>
           <div class="flex flex-col gap-4">
             <h3 class="text-xl font-bold m-0">{story.title}</h3>

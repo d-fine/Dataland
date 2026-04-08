@@ -249,7 +249,8 @@ export interface CustomerStoryDetail {
   anchor: string;
   logo: string;
   logoClassName?: string;
-  tag: string;
+  primaryTag: string;
+  secondaryTags: string[];
   title: string;
   summary: string;
   challenge: string;
@@ -265,8 +266,9 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'meag',
     logo: '/static/logos/logo_meag_2026.svg',
-    logoClassName: 'scale-[1.32]',
-    tag: 'Asset Manager',
+    logoClassName: 'scale-[1.08]',
+    primaryTag: 'Asset manager',
+    secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     summary:
       'As an asset manager with sustainability reporting obligations, MEAG requires reliable ESG indicators across a large universe of portfolio companies. The firm uses Dataland to verify data quality and close specific data gaps that arise in the datasets delivered by its primary ESG data provider, both for internal purposes and to demonstrate reasonable effort to auditors. At the same time, MEAG expects Dataland\'s EU Taxonomy template conversion capability to simplify the upcoming transition to the revised reporting template.',
@@ -285,17 +287,18 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'nordlb',
     logo: '/static/logos/logo_nordlb.svg',
-    logoClassName: 'scale-[1.42]',
-    tag: 'Bank',
-    title: 'Dataland as a Primary ESG Data Source with Automated Delivery',
+    logoClassName: 'scale-[0.96]',
+    primaryTag: 'Bank',
+    secondaryTags: ['EU Taxo', 'API integration'],
+    title: 'Primary source of EU Taxonomy data with automated delivery',
     summary:
-      'NORD/LBuses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reportingbecause it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows.',
+      'NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reporting because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows. Instead of purchasing large bundled ESG data packages, NORD/LB requests and obtains EU Taxonomy data exactly for the companies it needs. The datasets are now integrated directly into the bank\'s internal systems via API, replacing an earlier manual data retrieval process.',
     challenge:
-      'For EU Taxonomy, NORD/LB must compile sustainability indicators for a broad range of corporate counterparties. Traditional ESG data providers typically offer large data packages covering thousands of indicators and analytics. For banks that only require a limited number of specific metrics for regulatory reporting, this model often leads to high costs and unnecessary data procurement.',
+      'For EU Taxonomy, NORD/LB must compile sustainability indicators for a broad range of corporate counterparties. Traditional ESG data providers typically offer large data packages covering thousands of indicators and analytics. For banks that only require a limited number of specific metrics for regulatory reporting, this model often leads to high costs and unnecessary data procurement. When NORD/LB began using Dataland, the required datasets were initially retrieved manually from the platform and transferred into the bank\'s internal reporting systems. While this approach provided access to the necessary ESG indicators, it required manual downloads and additional handling steps during each reporting cycle. As ESG reporting requirements evolved, this manual workflow created additional operational effort for the reporting team.',
     solution:
-      'NORD/LB adopted Dataland as its primary ESG data sourcefor the Taxonomy KPIs of its counterparties that are subject to non-financial reporting, allowing the bank to obtain the specific datasets required for its regulatory reporting processes without purchasing large and expensive data bundles.',
+      'NORD/LB adopted Dataland as its primary ESG data source for the Taxonomy KPIs of its counterparties that are subject to non-financial reporting, allowing the bank to obtain the specific datasets required for its regulatory reporting processes without purchasing large and expensive data bundles. To streamline the workflow further, the bank implemented a direct API integration with the Dataland platform. Through this integration, the required ESG datasets are automatically retrieved and transferred into the bank\'s internal reporting infrastructure. This ensures that the latest available data is delivered directly to the relevant reporting processes without manual intervention.',
     value:
-      'Using Dataland allows NORD/LB to combine a targeted ESG data procurement model with automated data delivery. The bank receives disclosure-based ESG indicators with transparent lineage, pays only for the datasets needed for its reporting workflows, and integrates the data directly into internal systems through API access.',
+      'Using Dataland allows NORD/LB to combine a targeted ESG data procurement model with automated data delivery. The bank receives disclosure-based ESG indicators with transparent lineage, pays only for the datasets needed for its reporting workflows, and integrates the data directly into internal systems through API access. The transition from manual downloads to automated integration has significantly reduced operational effort for the reporting team while ensuring that ESG datasets are delivered consistently and reliably to the bank\'s regulatory reporting processes.',
     quoteText:
       'The combination of high-quality disclosure-based data, a transparent pricing model, and API integration makes Dataland a very efficient ESG data source for our reporting workflows.',
     quoteAuthor: 'Sandra Piehl',
@@ -305,8 +308,9 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'ovbraunschweig',
     logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
-    logoClassName: 'scale-[1.34]',
-    tag: 'Insurance',
+    logoClassName: 'scale-[0.9]',
+    primaryTag: 'Insurance',
+    secondaryTags: ['SFDR', 'Validation', 'Audit'],
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     summary:
       '\u00D6ffentliche Versicherung Braunschweig (\u00D6VB) must report sustainability indicators for its investment portfolios under the Sustainable Finance Disclosure Regulation (SFDR). In particular, the calculation of Principal Adverse Impact (PAI) indicators requires reliable and traceable ESG data for portfolio companies.',

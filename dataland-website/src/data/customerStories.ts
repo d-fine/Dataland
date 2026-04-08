@@ -20,10 +20,10 @@ export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
   },
   {
     logo: '/static/logos/logo_nordlb.svg',
-    title: 'Dataland as a Primary ESG Data Source with Automated Delivery',
+    title: 'Primary source of EU Taxonomy data with automated delivery',
     primaryTag: 'Bank',
     secondaryTags: ['EU Taxo', 'API integration'],
-    text: 'NORD/LBuses ESG indicators across several regulatory and internal reporting processes.',
+    text: 'Primary source of EU Taxonomy data with automated delivery',
     link: '/product#nordlb',
   },
   {
