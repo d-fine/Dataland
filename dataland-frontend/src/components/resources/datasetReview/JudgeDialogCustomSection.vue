@@ -140,9 +140,7 @@
         :disabled="acceptDisabled || !isCustomInputValid"
         data-test="accept-custom-button"
       />
-      <span v-if="editModeEnabled && !isCustomInputValid && jsonValue.trim().length > 0">
-        Custom Input must be valid.
-      </span>
+      <span v-if="editModeEnabled && !isJsonValid && jsonValue.trim().length > 0"> Custom JSON must be valid. </span>
     </div>
   </section>
 </template>
@@ -194,11 +192,14 @@ const selectedDocumentOption = computed<DocumentOption | null>(
   () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null
 );
 
+const isFormValid = computed<boolean>(() => {
+  const f = formData.value;
+  const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
+  return hasAnyContent && pagesPatternOk;
+});
+
 const isJsonValid = computed<boolean>(() => {
-  if (!editModeEnabled.value) {
-    const f = formData.value;
-    return [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
-  }
   if (!jsonValue.value.trim()) return false;
   try {
     JSON.parse(jsonValue.value);
@@ -208,17 +209,7 @@ const isJsonValid = computed<boolean>(() => {
   }
 });
 
-const isFormValid = computed<boolean>(() => {
-  const f = formData.value;
-
-  const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
-  const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
-  return hasAnyContent && pagesPatternOk;
-});
-
-const isCustomInputValid = computed<boolean>(() => {
-  return editModeEnabled.value ? isJsonValid.value : isFormValid.value;
-});
+const isCustomInputValid = computed<boolean>(() => (editModeEnabled.value ? isJsonValid.value : isFormValid.value));
 
 /**
  * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
