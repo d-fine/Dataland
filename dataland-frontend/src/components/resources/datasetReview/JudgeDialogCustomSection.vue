@@ -209,7 +209,7 @@ const isCustomJsonValid = computed<boolean>(() => {
 
 /**
  * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
- * @returns nothing, updates jsonValue in place.
+ * @returns Nothing
  */
 function formDataToJson(): void {
   jsonValue.value = parseFormDataToDataPointJson(formData.value, selectedDocumentOption.value);
@@ -217,6 +217,7 @@ function formDataToJson(): void {
 
 /**
  * Parses the JSON from jsonValue and updates the form data accordingly. If the JSON is invalid, the form data is left unchanged.
+ * @returns Nothing
  */
 function jsonToFormData(): void {
   const parsed = parseDataPointJsonToFormData(jsonValue.value);
