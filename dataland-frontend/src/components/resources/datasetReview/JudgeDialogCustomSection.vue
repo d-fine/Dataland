@@ -140,7 +140,9 @@
         :disabled="acceptDisabled || !isCustomInputValid"
         data-test="accept-custom-button"
       />
-      <span v-if="editModeEnabled && !isJsonValid && jsonValue.trim().length > 0"> Custom JSON must be valid. </span>
+      <span v-if="editModeEnabled && !isJsonValid && jsonValue.trim().length > 0">
+        Custom JSON must be valid JSON.
+      </span>
     </div>
   </section>
 </template>
