@@ -40,7 +40,7 @@
         >{{ link.label }}</a>
         <a href="/login" data-test="login-dataland-button" v-if="!isAuthenticated" class="mobile-nav__link" @click="close">Login</a>
         <a href="/register" data-test="signup-dataland-button" v-if="!isAuthenticated" class="mobile-nav__cta" @click="close">Try it free</a>
-        <a href="/companies" v-if="isAuthenticated" class="mobile-nav__link mobile-nav__back-to-platform" @click="close">
+        <a href="/companies" v-if="isAuthenticated" data-test="backToPlatformLink" class="mobile-nav__link mobile-nav__back-to-platform" @click="close">
           Back to platform
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7"/>

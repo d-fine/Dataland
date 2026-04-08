@@ -14,6 +14,18 @@ function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
   cy.get('[data-pc-section="list"]').contains(searchTerm).click();
 }
 
+/**
+ * Searches for a specified term in the companies search bar on the landing page and selects the first autocomplete suggestion
+ * @param searchTerm the term to search for
+ */
+function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void {
+  cy.contains('section', 'Search sustainability data by company name or LEI').scrollIntoView();
+  cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
+    cy.get('#company-search-input', { timeout: 10000 }).should('exist').type(searchTerm);
+    cy.contains('#company-search-listbox li[role="option"]', searchTerm, { timeout: 10000 }).click();
+  });
+}
+
 describeIf(
   'As a user, I want the navigation around the company cockpit to work as expected',
   {
@@ -36,7 +48,7 @@ describeIf(
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
-      searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
+      searchCompanyAndChooseFirstSuggestionLanding(alphaCompanyIdAndName.companyName);
       cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
         alphaCompanyIdAndName.companyName
       );

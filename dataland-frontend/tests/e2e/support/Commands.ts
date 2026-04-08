@@ -7,7 +7,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
-      closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
+      closeCookieBannerIfItExists: typeof closeCookieBannerIfShown;
       ensureLoggedIn: typeof ensureLoggedIn;
       getKeycloakToken: typeof getKeycloakToken;
       browserThen: typeof browserThen;
@@ -46,7 +46,7 @@ const ASTRO_ROUTES = ['/', '/about', '/product', '/newsletter', '/testimonials']
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
-  closeCookieBannerIfItExists();
+  closeCookieBannerIfShown();
 
   if (ASTRO_ROUTES.includes(endpoint)) {
     return cy.get('main#main-content').should('exist');
@@ -195,10 +195,15 @@ export function waitForPageLoad(options: {
 /**
  * Close the cookie banner if it exists and do nothing if it doesn't exist.
  */
-function closeCookieBannerIfItExists(): Cypress.Chainable {
+export function closeCookieBannerIfShown(): Cypress.Chainable {
   return cy.get('body').then(($body) => {
-    if ($body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').length) {
-      cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();
+    if ($body.find('#CybotCookiebotDialogBody').length) {
+      cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll', {
+        timeout: 15000,
+      })
+        .should('be.visible')
+        .click({ force: true });
+      cy.get('#CybotCookiebotDialogBody', { timeout: 10000 }).should('not.be.visible');
     }
   });
 }
