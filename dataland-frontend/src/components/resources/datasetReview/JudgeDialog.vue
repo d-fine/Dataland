@@ -135,6 +135,17 @@
     @cancel="isErrorModalVisible = false"
     :dismissable-mask="false"
   />
+  <PopupConfirmationModal
+    v-model:visible="isAllReviewedModalVisible"
+    header="All datapoints reviewed!"
+    message="Every datapoint has been reviewed at least once."
+    :error-message="undefined"
+    :is-loading="false"
+    :is-success="true"
+    @confirm="isAllReviewedModalVisible = false"
+    @cancel="isAllReviewedModalVisible = false"
+    :dismissable-mask="true"
+  />
 </template>
 
 <script setup lang="ts">
@@ -426,7 +437,28 @@ const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
   return options;
 });
 
-const selectedNextDataPointTypeId = ref<string | null>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
+const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
+
+// Track which KPI datapoint types exist in this dialog
+const relevantDataPointTypeIds = computed<string[]>(() =>
+  props.kpiRows.map((row) => row.dataPointTypeId).filter((id): id is string => !!id)
+);
+
+const hasShownAllReviewedNotice = ref(false);
+const isAllReviewedModalVisible = ref(false);
+
+/**
+ * Returns true when every relevant datapoint has an accepted source.
+ */
+const areAllDataPointsReviewed = computed<boolean>(() => {
+  const judgement = datasetJudgement.value;
+  if (!judgement?.dataPoints) return false;
+
+  return relevantDataPointTypeIds.value.every((id) => {
+    const meta = judgement.dataPoints[id];
+    return meta != null && meta.acceptedSource != null;
+  });
+});
 
 /**
  * Determines whether the given data point judgement has already been decided.
@@ -445,19 +477,17 @@ function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
  * @param startingDataPointTypeId - The data point type ID to start from.
  * @returns The next unreviewed data point type ID, or the current one if none found.
  */
-function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string | null {
+function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
   const ids = nextDataPointOptions.value.map((row) => row.dataPointTypeId).filter(Boolean);
   const currentIndex = ids.indexOf(startingDataPointTypeId);
   const total = ids.length;
-
-  if (total === 0) return null;
 
   for (let offset = 1; offset < total; offset++) {
     const targetDataPointTypeId = ids[(currentIndex + offset) % total];
     const judgementMetaData = datasetJudgement.value?.dataPoints?.[targetDataPointTypeId];
     if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return targetDataPointTypeId;
   }
-  return null;
+  return startingDataPointTypeId;
 }
 
 /**
@@ -483,7 +513,12 @@ function afterSuccessfulPatch(): void {
   if (selectedNextDataPointTypeId.value) {
     navigateToDataPoint(selectedNextDataPointTypeId.value);
   } else {
-    isOpen.value = false;
+    selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(currentDataPointTypeId.value);
+  }
+
+  if (!hasShownAllReviewedNotice.value && areAllDataPointsReviewed.value) {
+    isAllReviewedModalVisible.value = true;
+    hasShownAllReviewedNotice.value = true;
   }
 }
 
