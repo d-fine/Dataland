@@ -186,7 +186,7 @@ export default defineComponent({
      */
     handleAuthLogout() {
       localStorage.removeItem('dataland_authenticated');
-      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak);
+      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, '?externalLogout=true');
     },
 
     /**
