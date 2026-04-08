@@ -248,7 +248,9 @@ export const CREDITS_VISUAL = {
 export interface CustomerStoryDetail {
   anchor: string;
   logo: string;
-  tag: string;
+  logoClassName?: string;
+  primaryTag: string;
+  secondaryTags: string[];
   title: string;
   summary: string;
   challenge: string;
@@ -263,19 +265,21 @@ export interface CustomerStoryDetail {
 export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'meag',
-    logo: '/static/logos/logo_Meag_2026.svg',
-    tag: 'Asset Manager',
+    logo: '/static/logos/logo_meag_2026.svg',
+    logoClassName: 'scale-[1.08]',
+    primaryTag: 'Asset manager',
+    secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     summary:
-      'As an asset manager with extensive SFDR reporting obligations, MEAG requires reliable ESG indicators across a large universe of portfolio companies. The firm uses Dataland to close specific data gaps that arise in the datasets delivered by its primary ESG data provider. At the same time, MEAG expects Dataland\u2019s EU Taxonomy template conversion capability to simplify the upcoming transition to the revised reporting template.',
+      'As an asset manager with sustainability reporting obligations, MEAG requires reliable ESG indicators across a large universe of portfolio companies. The firm uses Dataland to verify data quality and close specific data gaps that arise in the datasets delivered by its primary ESG data provider, both for internal purposes and to demonstrate reasonable effort to auditors. At the same time, MEAG expects Dataland\'s EU Taxonomy template conversion capability to simplify the upcoming transition to the revised reporting template.',
     challenge:
-      'For SFDR reporting, MEAG must compile a range of sustainability indicators across a large universe of portfolio companies. While the firm\u2019s main ESG data provider covers most of the required data, some indicators needed for PAI calculations are not always included in the delivered datasets. These gaps create operational friction for the ESG reporting team. In parallel, MEAG faces another operational challenge related to the transition to the revised EU Taxonomy reporting template.',
+      'For SFDR reporting, MEAG must compile a range of sustainability indicators across a large universe of portfolio companies. While the firm\'s main ESG data provider covers most of the required data, some indicators needed for PAI calculations are not always included in the delivered datasets. In some cases, there is no data available at all for certain companies from the primary provider.',
     solution:
-      'MEAG uses Dataland as a targeted data source to close specific SFDR data gaps. When indicators required for PAI reporting are missing from the firm\u2019s primary dataset, the reporting team retrieves the relevant ESG indicators from Dataland. At the same time, Dataland\u2019s EU Taxonomy template conversion functionality will ensure that datasets are available in both template structures.',
+      'MEAG uses Dataland as a data source to close specific SFDR data gaps. When indicators required for PAI reporting are missing from the firm\'s primary dataset or there is no dataset available for that firm from the primary data provider, the reporting team retrieves the relevant ESG indicators from Dataland.',
     value:
-      'Using Dataland allows MEAG to resolve two operational challenges within its ESG reporting processes. First, the platform provides a practical way to fill SFDR data gaps. Second, the EU Taxonomy template conversion will simplify the transition to the new reporting format.',
+      'Traceable sourcing and documentation strengthen audit readiness and simplify demonstrating reasonable effort. The ability to cross-check data improves overall data quality and reduces reliance on a single provider.',
     quoteText:
-      'We initially joined Dataland to close specific SFDR data gaps in our reporting. The upcoming EU Taxonomy template conversion is another strong advantage.',
+      'Dataland provides a reliable way to close specific SFDR data gaps in our reporting and to obtain required data quickly upon request. The upcoming EU Taxonomy template conversion is a key additional benefit, as it removes the need to build and maintain our own format conversion. The platform also helps us document reasonable effort where data cannot be sourced and gives us an additional basis for validating data delivered by our primary provider.',
     quoteAuthor: 'Dr. Arnd Pauwels',
     quoteRole: 'Head of ESG Reporting',
     successStorySlug: 'meag-sfdr-data-gaps',
@@ -283,39 +287,43 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   {
     anchor: 'nordlb',
     logo: '/static/logos/logo_nordlb.svg',
-    tag: 'Bank',
-    title: 'Dataland as a Primary ESG Data Source with Automated Delivery',
+    logoClassName: 'scale-[0.96]',
+    primaryTag: 'Bank',
+    secondaryTags: ['EU Taxo', 'API integration'],
+    title: 'Primary source of EU Taxonomy data with automated delivery',
     summary:
-      'NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland as its primary ESG data source because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows.',
+      'NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reporting because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows. Instead of purchasing large bundled ESG data packages, NORD/LB requests and obtains EU Taxonomy data exactly for the companies it needs. The datasets are now integrated directly into the bank\'s internal systems via API, replacing an earlier manual data retrieval process.',
     challenge:
-      'For regulatory frameworks such as SFDR and EU Taxonomy, NORD/LB must compile sustainability indicators for a broad range of corporate counterparties. Traditional ESG data providers typically offer large data packages. When NORD/LB began using Dataland, datasets were initially retrieved manually.',
+      'For EU Taxonomy, NORD/LB must compile sustainability indicators for a broad range of corporate counterparties. Traditional ESG data providers typically offer large data packages covering thousands of indicators and analytics. For banks that only require a limited number of specific metrics for regulatory reporting, this model often leads to high costs and unnecessary data procurement. When NORD/LB began using Dataland, the required datasets were initially retrieved manually from the platform and transferred into the bank\'s internal reporting systems. While this approach provided access to the necessary ESG indicators, it required manual downloads and additional handling steps during each reporting cycle. As ESG reporting requirements evolved, this manual workflow created additional operational effort for the reporting team.',
     solution:
-      'NORD/LB adopted Dataland as its primary ESG data source. The bank implemented a direct API integration for automated retrieval.',
+      'NORD/LB adopted Dataland as its primary ESG data source for the Taxonomy KPIs of its counterparties that are subject to non-financial reporting, allowing the bank to obtain the specific datasets required for its regulatory reporting processes without purchasing large and expensive data bundles. To streamline the workflow further, the bank implemented a direct API integration with the Dataland platform. Through this integration, the required ESG datasets are automatically retrieved and transferred into the bank\'s internal reporting infrastructure. This ensures that the latest available data is delivered directly to the relevant reporting processes without manual intervention.',
     value:
-      'The bank receives disclosure-based ESG indicators with transparent lineage, pays only for needed datasets, and integrates data directly into internal systems through API access.',
+      'Using Dataland allows NORD/LB to combine a targeted ESG data procurement model with automated data delivery. The bank receives disclosure-based ESG indicators with transparent lineage, pays only for the datasets needed for its reporting workflows, and integrates the data directly into internal systems through API access. The transition from manual downloads to automated integration has significantly reduced operational effort for the reporting team while ensuring that ESG datasets are delivered consistently and reliably to the bank\'s regulatory reporting processes.',
     quoteText:
-      'The combination of high-quality disclosure-based data, a transparent pricing model, and API integration makes Dataland a very efficient ESG data source.',
-    quoteAuthor: '[Name TBD]',
-    quoteRole: '[Role TBD]',
+      'The combination of high-quality disclosure-based data, a transparent pricing model, and API integration makes Dataland a very efficient ESG data source for our reporting workflows.',
+    quoteAuthor: 'Sandra Piehl',
+    quoteRole: 'Gesamtbankreporting',
     successStorySlug: 'nordlb-primary-esg-data',
   },
   {
     anchor: 'ovbraunschweig',
     logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
-    tag: 'Insurance',
+    logoClassName: 'scale-[0.9]',
+    primaryTag: 'Insurance',
+    secondaryTags: ['SFDR', 'Validation', 'Audit'],
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     summary:
-      '\u00D6VB uses Dataland as a secondary ESG data source alongside its primary provider to strengthen the robustness of PAI indicator data for SFDR reporting and audit documentation.',
+      '\u00D6ffentliche Versicherung Braunschweig (\u00D6VB) must report sustainability indicators for its investment portfolios under the Sustainable Finance Disclosure Regulation (SFDR). In particular, the calculation of Principal Adverse Impact (PAI) indicators requires reliable and traceable ESG data for portfolio companies.',
     challenge:
-      'For SFDR reporting, insurers must demonstrate that ESG indicators used in PAI calculations are reliable and properly documented. Without clear reference to source documents, validation can be difficult during audit reviews.',
+      'For SFDR reporting, insurers must be able to demonstrate that the ESG indicators used in their PAI calculations are reliable and properly documented. In practice, this means that the values used in regulatory reporting must be traceable back to the underlying company disclosures.',
     solution:
-      '\u00D6VB uses Dataland as a complementary data source specifically for validation. Because Dataland extracts from public disclosures with transparent source references, the team can verify values used in their reporting.',
+      '\u00D6VB therefore uses Dataland as a complementary ESG data source specifically for validation purposes. For selected portfolio companies and PAI indicators, the reporting team retrieves the corresponding datasets from Dataland.',
     value:
-      'The reporting team can demonstrate to internal stakeholders and external auditors that PAI values are consistent with underlying issuer disclosures.',
+      'The reporting team can demonstrate to internal stakeholders and external auditors that the PAI values used in the calculations are consistent with the underlying issuer disclosures.',
     quoteText:
-      'Dataland provides us with a reliable way to verify that the PAI indicators used in our reporting match the issuer\u2019s disclosures.',
-    quoteAuthor: '[Name TBD]',
-    quoteRole: '[Role TBD]',
+      'Dataland provides us with a reliable way to verify that the PAI indicators used in our reporting match the issuer\'s disclosures. This makes it much easier to demonstrate the correctness of our data during audits while giving us access to high-quality ESG data in a very cost-efficient way.',
+    quoteAuthor: 'Patrick Gerling',
+    quoteRole: 'Head of Capital Investment - Risk Control and Communication',
     successStorySlug: 'oeffentliche-pai-validation',
   },
 ];
