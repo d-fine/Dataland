@@ -243,10 +243,20 @@ describe('unwrapDataPointJson', () => {
   });
 
   it('returns original custom JSON unchanged when original data point is an object', () => {
-    const rawDetail: ParsedSingleDataPoint = { value: 'v', quality: 'Reported' };
+    const rawDetail: ParsedSingleDataPoint = {
+      value: 'initial value',
+      quality: 'Reported',
+      comment: 'Some comment',
+      dataSource: { fileName: 'A file', page: '1' },
+    };
     const rawDataPoint = JSON.stringify(rawDetail);
 
-    const customDetail: ParsedSingleDataPoint = { value: 'new-v', quality: 'Audited' };
+    const customDetail: ParsedSingleDataPoint = {
+      value: 'new-v',
+      quality: 'Audited',
+      comment: 'new comment',
+      dataSource: { fileName: 'A new file', page: '2' },
+    };
     const customJson = JSON.stringify(customDetail);
 
     const result = unwrapDataPointJson(customJson, rawDataPoint);
