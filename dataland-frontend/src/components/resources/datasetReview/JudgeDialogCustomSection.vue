@@ -137,11 +137,11 @@
       <PrimeButton
         label="ACCEPT CUSTOM"
         @click="emit('accept')"
-        :disabled="acceptDisabled || !isCustomJsonValid"
+        :disabled="acceptDisabled || !isCustomInputValid"
         data-test="accept-custom-button"
       />
-      <span v-if="editModeEnabled && !isCustomJsonValid && jsonValue.trim().length > 0">
-        Custom JSON must be valid JSON.
+      <span v-if="editModeEnabled && !isCustomInputValid && jsonValue.trim().length > 0">
+        Custom Input must be valid.
       </span>
     </div>
   </section>
@@ -157,6 +157,7 @@ import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import {
+  DEFAULT_CUSTOM_FORM_DATA,
   DEFAULT_CUSTOM_JSON,
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
@@ -186,14 +187,14 @@ const jsonValue = defineModel<string>('json', {
   default: () => DEFAULT_CUSTOM_JSON,
 });
 const formData = defineModel<CustomFormData>('formData', {
-  default: () => DEFAULT_CUSTOM_JSON,
+  default: () => DEFAULT_CUSTOM_FORM_DATA,
 });
 
 const selectedDocumentOption = computed<DocumentOption | null>(
   () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null
 );
 
-const isCustomJsonValid = computed<boolean>(() => {
+const isJsonValid = computed<boolean>(() => {
   if (!editModeEnabled.value) {
     const f = formData.value;
     return [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
@@ -205,6 +206,18 @@ const isCustomJsonValid = computed<boolean>(() => {
   } catch {
     return false;
   }
+});
+
+const isFormValid = computed<boolean>(() => {
+  const f = formData.value;
+
+  const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
+  return hasAnyContent && pagesPatternOk;
+});
+
+const isCustomInputValid = computed<boolean>(() => {
+  return editModeEnabled.value ? isJsonValid.value : isFormValid.value;
 });
 
 /**

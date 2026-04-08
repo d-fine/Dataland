@@ -160,6 +160,7 @@ import {
   wrapDataPointJson,
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
+  DEFAULT_CUSTOM_FORM_DATA,
 } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import {
@@ -174,14 +175,6 @@ import { usePatchJudgmentDetailsForDataPointMutation } from '@/api-queries/qa-se
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 
 // ===== Props & emits =====
-
-const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
-  value: '',
-  quality: '',
-  document: '',
-  pages: '',
-  comment: '',
-};
 
 const props = defineProps<{
   datasetReviewId: string;
@@ -474,7 +467,8 @@ function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string | 
  * @param targetId - The data point type ID to navigate to.
  * @returns Nothing.
  */
-function navigateToDataPoint(targetId: string): void {
+function navigateToDataPoint(targetId: string | null): void {
+  if (!targetId) return;
   currentDataPointTypeId.value = targetId;
   resetStateForCurrentDataPoint();
   selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);

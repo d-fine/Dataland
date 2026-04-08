@@ -7,6 +7,14 @@ export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   2
 );
 
+export const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
+  value: '',
+  quality: '',
+  document: '',
+  pages: '',
+  comment: '',
+};
+
 /**
  * Unwraps a data point JSON string for the backend.
  * If the original stored data point (`rawDataPoint`) was a plain primitive
