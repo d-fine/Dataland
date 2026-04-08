@@ -17,7 +17,7 @@ export const URL_NEWS_ERIK = 'https://www.linkedin.com/feed/update/urn:li:activi
 
 export const NEWS_ITEMS: NewsItem[] = [
   {
-    image: '/static/images/news/news_eu_taxo.png',
+    image: '/static/images/news/news_eu_taxo_x.png',
     title: 'Smooth transition to the new EU Taxonomy template',
     date: 'March 5, 2026',
     link: URL_NEWS_EU_TAXO,
@@ -41,7 +41,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     link: URL_NEWS_2025,
   },
   {
-    image: '/static/images/news/news_sfdr2.png',
+    image: '/static/images/news/news_sfdr2_x.png',
     title: 'How SFDR 2.0 reinforces the need for shared ESG data infrastructure',
     date: 'December 10, 2025',
     link: URL_NEWS_SFDR2,
