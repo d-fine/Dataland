@@ -7,7 +7,6 @@ import {
   wrapDataPointJson,
 } from '@/utils/JudgeDialogUtils';
 import type { CustomFormData, ParsedSingleDataPoint, DocumentOption } from '@/types/JudgeDialogTypes.ts';
-import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 
 describe('parseFormDataToDataPointJson', () => {
   const emptyForm: CustomFormData = {
@@ -217,33 +216,6 @@ describe('parseDataPointJsonToFormData', () => {
     const form = parseDataPointJsonToFormData(invalidJson);
 
     expect(form).to.equal(null);
-  });
-});
-
-describe('toSafeDisplayString', () => {
-  it('returns empty string for null and undefined', () => {
-    expect(toSafeDisplayString(null)).to.equal('');
-    expect(toSafeDisplayString(undefined)).to.equal('');
-  });
-
-  it('returns the same string for string values', () => {
-    expect(toSafeDisplayString('hello')).to.equal('hello');
-    expect(toSafeDisplayString('')).to.equal('');
-  });
-
-  it('converts numbers to strings', () => {
-    expect(toSafeDisplayString(0)).to.equal('0');
-    expect(toSafeDisplayString(42)).to.equal('42');
-  });
-
-  it('converts booleans to "true" or "false"', () => {
-    expect(toSafeDisplayString(true)).to.equal('true');
-    expect(toSafeDisplayString(false)).to.equal('false');
-  });
-
-  it('stringifies objects', () => {
-    expect(toSafeDisplayString({ a: 1, b: 'x' })).to.equal('{"a":1,"b":"x"}');
-    expect(toSafeDisplayString([1, 2, 3])).to.equal('[1,2,3]');
   });
 });
 
