@@ -11,7 +11,7 @@ import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement
  * @returns {UseQueryReturnType<DatasetJudgementResponse | null, Error>} Vue Query result; `data` holds
  *   the backend response (or null). The query is disabled when `datasetJudgementId.value` is falsy.
  */
-export function useDatasetReviewQuery(options: {
+export function useDatasetJudgementQuery(options: {
   datasetJudgementId: Ref<string>;
 }): UseQueryReturnType<DatasetJudgementResponse | null, Error> {
   const apiClientProvider = useApiClient();

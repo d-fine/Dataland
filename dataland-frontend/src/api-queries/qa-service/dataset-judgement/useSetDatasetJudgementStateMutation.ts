@@ -12,7 +12,7 @@ import { type AxiosResponse } from 'axios';
  * @param {DatasetJudgementState} targetState - State to set on the judgement.
  * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success invalidates the review detail query.
  */
-export function useSetDatasetReviewStateMutation(
+export function useSetDatasetJudgementStateMutation(
   datasetJudgementId: Ref<string | undefined>,
   targetState: DatasetJudgementState
 ): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {

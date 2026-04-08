@@ -12,7 +12,7 @@ import { type AxiosResponse } from 'axios';
  * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success it
  * invalidates the corresponding dataset judgement detail query.
  */
-export function useSetDatasetReviewJudge(
+export function useSetJudgeForDatasetJudgement(
   datasetJudgementId: Ref<string | undefined>
 ): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
   const queryClient = useQueryClient();

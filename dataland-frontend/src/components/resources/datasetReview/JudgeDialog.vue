@@ -161,7 +161,7 @@ import {
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
 } from '@/utils/JudgeDialogUtils.ts';
-import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
+import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import {
   AcceptedDataPointSource,
   type DataPointJudgement,
@@ -207,7 +207,7 @@ const availableDocuments = computed(() => props.availableDocuments ?? []);
 // ===== Dataset review =====
 
 const datasetJudgementId = computed(() => props.datasetReviewId);
-const { data: datasetJudgement } = useDatasetReviewQuery({ datasetJudgementId: datasetJudgementId });
+const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgmentDetailsForDataPointMutation();

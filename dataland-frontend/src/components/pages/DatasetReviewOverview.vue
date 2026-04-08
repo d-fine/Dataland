@@ -135,10 +135,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetJudgementState } from '@clients/qaservice';
-import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetReviewQuery.ts';
+import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
-import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewStateMutation.ts';
-import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetReviewJudge.ts';
+import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
+import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
@@ -178,7 +178,7 @@ const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
-} = useDatasetReviewQuery({
+} = useDatasetJudgementQuery({
   datasetJudgementId: datasetJudgementIdRef,
 });
 
@@ -221,14 +221,15 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
   kpiRows.value = rows;
 }
 
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } =
+  useSetJudgeForDatasetJudgement(datasetJudgementIdRef);
 
-const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
+const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetJudgementStateMutation(
   datasetJudgementIdRef,
   DatasetJudgementState.FinishedWithDatasetRejection
 );
 
-const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
+const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetJudgementStateMutation(
   datasetJudgementIdRef,
   DatasetJudgementState.FinishedWithDatasetAcceptance
 );
