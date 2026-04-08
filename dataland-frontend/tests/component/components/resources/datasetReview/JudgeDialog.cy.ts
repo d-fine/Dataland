@@ -302,7 +302,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('corrected-value').should('be.visible');
         cy.contains('Estimated').should('be.visible');
         cy.contains('corrected-doc.pdf').should('be.visible');
-        cy.contains('7').should('be.visible');
+        cy.contains('tr', 'Page(s)').should('contain.text', '7');
         cy.contains(correctedCommentEntry).should('be.visible');
       });
     });
@@ -712,8 +712,6 @@ describe('JudgeDialog component tests', () => {
         dataSource: { page: '12' },
       };
 
-      console.log(JSON.stringify(previousCustomValue, null, 2));
-
       const judgementWithPreviousCustom: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
         dataPoints: {
@@ -819,6 +817,7 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog();
 
       cy.get('[data-test="confirmation-modal"]').should('not.exist');
+      cy.get('[data-test="confirmation-modal-error-message"]').should('not.exist');
     });
 
     it('shows a popup modal when the PATCH request fails and close using confirm', () => {
