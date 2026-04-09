@@ -105,11 +105,11 @@ import { NEWS_ITEMS } from '../data/news';
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {NEWS_ITEMS.map((item) => (
           <a href={item.link} target="_blank" rel="noopener noreferrer" class="flex flex-col no-underline text-[var(--color-text)] bg-[var(--color-surface-50)] rounded-xl overflow-hidden motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-            <div class="relative aspect-square overflow-hidden bg-[var(--color-surface-200)]">
+            <div class="relative h-[240px] overflow-hidden bg-[var(--color-surface-200)] sm:h-[260px]">
               <img
                 src={item.image}
                 alt=""
-                class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-50"
+                class="absolute inset-0 h-full w-full object-cover blur-2xl scale-110 opacity-50"
                 loading="lazy"
                 width="400"
                 height="400"
@@ -118,7 +118,7 @@ import { NEWS_ITEMS } from '../data/news';
               <img
                 src={item.image}
                 alt=""
-                class="relative w-full h-full object-contain"
+                class="relative h-full w-full object-cover"
                 loading="lazy"
                 width="400"
                 height="400"

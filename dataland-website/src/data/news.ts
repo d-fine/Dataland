@@ -29,13 +29,13 @@ export const NEWS_ITEMS: NewsItem[] = [
     link: URL_NEWS_BVI_FOK,
   },
   {
-    image: '/static/images/news/news_dmm_q12026.png',
+    image: '/static/images/news/news_dmm_q12026_x.png',
     title: "Dataland Members' Meeting Q1 2026",
     date: 'February 20, 2026',
     link: URL_NEWS_DMM_Q12026,
   },
   {
-    image: '/static/images/news/news_2025.png',
+    image: '/static/images/news/news_2025_x.png',
     title: '2025 in numbers',
     date: 'January 21, 2026',
     link: URL_NEWS_2025,
@@ -47,7 +47,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     link: URL_NEWS_SFDR2,
   },
   {
-    image: '/static/images/news/news_pcaf.png',
+    image: '/static/images/news/news_pcaf_x.png',
     title: 'PCAF on Dataland',
     date: 'November 21, 2025',
     link: URL_NEWS_PCAF,
@@ -59,7 +59,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     link: URL_NEWS_SUST2025,
   },
   {
-    image: '/static/images/news/news_dmm_q42025.png',
+    image: '/static/images/news/news_dmm_q42025_x.png',
     title: "Dataland Members' Meeting Q4 2025",
     date: 'November 6, 2025',
     link: URL_NEWS_DMMQ42025,
