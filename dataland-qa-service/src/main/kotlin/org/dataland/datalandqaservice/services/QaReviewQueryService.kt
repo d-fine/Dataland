@@ -94,12 +94,12 @@ class QaReviewQueryService
                         ),
                     )
 
-            val dataIds = entities.map { it.dataId }
+            val datasetIds = entities.map { it.dataId }
 
-            val numberQaReportsByDataId = getNumberOfQaReportsForDataIds(dataIds)
+            val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
 
-            val datasetUUIDs = dataIds.map { convertToUUID(it) }
-            val latestJudgementByDataId =
+            val datasetUUIDs = datasetIds.map { convertToUUID(it) }
+            val latestJudgementByDatasetId =
                 datasetJudgementRepository
                     .findAllByDatasetIdIn(datasetUUIDs)
                     .groupBy { it.datasetId }
@@ -110,8 +110,8 @@ class QaReviewQueryService
                     .map {
                         it.toQaReviewResponse(
                             showTriggeringUserId = userIsAdmin,
-                            numberQaReports = numberQaReportsByDataId[it.dataId] ?: 0L,
-                            latestJudgement = latestJudgementByDataId[convertToUUID(it.dataId)],
+                            numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
+                            latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
                         )
                     }
             return addPrioritiesToResponse(qaReviewResponses)
@@ -261,32 +261,32 @@ class QaReviewQueryService
             }
 
         /**
-         * Returns a map from dataId to the number of QA reports for all data points contained in that dataset.
-         * Fetches metadata for all dataIds in bulk (one call per dataId to the metadata API) and counts
+         * Returns a map from datasetId to the number of QA reports for all data points contained in that dataset.
+         * Fetches metadata for all datasetIds in bulk (one call per datasetId to the metadata API) and counts
          * QA reports for all collected data-point IDs in a single DB query.
          */
-        private fun getNumberOfQaReportsForDataIds(dataIds: List<String>): Map<String, Long> {
-            val dataPointIdsByDataId = mutableMapOf<String, Set<String>>()
-            for (dataId in dataIds) {
+        private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
+            val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
+            for (datasetId in datasetIds) {
                 try {
-                    dataPointIdsByDataId[dataId] = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
+                    dataPointIdsByDatasetId[datasetId] = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
                 } catch (clientException: ClientException) {
                     if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
-                        dataPointIdsByDataId[dataId] = emptySet()
+                        logger.warn("Could not find data points for dataset $datasetId, returning 0 QA reports")
+                        dataPointIdsByDatasetId[datasetId] = emptySet()
                     } else {
                         throw clientException
                     }
                 }
             }
-            val allDataPointIds = dataPointIdsByDataId.values.flatten().toSet()
+            val allDataPointIds = dataPointIdsByDatasetId.values.flatten().toSet()
             val totalCountByDataPointId =
                 if (allDataPointIds.isEmpty()) {
                     emptyMap()
                 } else {
                     dataPointQaReportManager.countQaReportsForDataPointIdsBulk(allDataPointIds)
                 }
-            return dataPointIdsByDataId.mapValues { (_, dpIds) ->
+            return dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
                 dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
             }
         }
