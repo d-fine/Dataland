@@ -5,9 +5,9 @@ import Base from '../layouts/Base.astro';
 
 <Base title="Legal — Dataland">
     <LegalPage>
-        <div class="terms-page">
+        <div class="legal-page terms-page">
             <!-- Language toggle -->
-            <div class="flex justify-content-start align-items-center">
+            <div class="flex justify-content-start align-items-center language-switch">
                 <img src="/static/icons/uk_flag.jpg" alt="English" class="flag" />
 
                 <!-- Custom toggle switch, replaces PrimeVue ToggleSwitch -->
@@ -574,7 +574,7 @@ import Base from '../layouts/Base.astro';
                         for the benefit of non-German speaking persons.
                     </p>
                 </div>
-                <div class="w-12 text-center font-bold mt-6">- End of AGB-Dataland -</div>
+                <div class="text-center font-bold mt-6">- End of AGB-Dataland -</div>
             </div>
 
             <!-- GERMAN VERSION -->
@@ -1168,7 +1168,7 @@ import Base from '../layouts/Base.astro';
                         informatorischen Zwecken zugunsten nicht deutsch sprechender Personen.
                     </p>
                 </div>
-                <div class="w-12 text-center font-bold mt-6">- Ende der AGB-Dataland -</div>
+                <div class="text-center font-bold mt-6">- Ende der AGB-Dataland -</div>
             </div>
         </div>
 
@@ -1197,9 +1197,13 @@ import Base from '../layouts/Base.astro';
         </script>
 
         <style>
-            /* Scope all styles to this page */
+
             .terms-page {
-                /* nothing special; acts as a scope root */
+
+            }
+
+            .terms-page .language-switch {
+                margin-bottom: 1.5rem;
             }
 
             .terms-page .no-numbering {
@@ -1264,7 +1268,6 @@ import Base from '../layouts/Base.astro';
                 display: none;
             }
 
-            /* Simple toggle switch styling to roughly mimic a UI toggle */
             .toggle-switch {
                 position: relative;
                 display: inline-block;
@@ -1303,7 +1306,7 @@ import Base from '../layouts/Base.astro';
             }
 
             .toggle-switch input:checked + .slider {
-                background-color: #3b82f6; /* blue-ish, adjust as needed */
+                background-color: #3b82f6;
             }
 
             .toggle-switch input:checked + .slider::before {
