@@ -34,5 +34,7 @@ interface DatasetJudgementRepository : JpaRepository<DatasetJudgementEntity, UUI
      * N+1 queries when converting entities to response objects that touch the collection.
      */
     @Query("select distinct d from DatasetJudgementEntity d left join fetch d.dataPoints where d.datasetId in :datasetIds")
-    fun findAllByDatasetIdInWithDataPoints(@Param("datasetIds") datasetIds: Collection<UUID>): List<DatasetJudgementEntity>
+    fun findAllByDatasetIdInWithDataPoints(
+        @Param("datasetIds") datasetIds: Collection<UUID>,
+    ): List<DatasetJudgementEntity>
 }
