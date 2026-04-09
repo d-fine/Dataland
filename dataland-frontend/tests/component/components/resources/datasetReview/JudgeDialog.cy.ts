@@ -130,6 +130,11 @@ const availableDocuments: DocumentOption[] = [
     value: 'sustainability-report',
     dataSource: { fileName: 'SustainabilityReport.pdf', fileReference: 'ref-456' },
   },
+  {
+    label: 'Monthly Report',
+    value: 'monthly-report',
+    dataSource: { fileName: null, fileReference: 'ref-789' },
+  },
 ];
 
 const overflowTestCases = [
@@ -692,142 +697,176 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="copy-corrected-to-custom"]').should('be.disabled');
     });
-  });
 
-  // ---------------------------------------------------------------------------
-  // 6. Previously accepted custom value is pre-populated on load
-  // ---------------------------------------------------------------------------
-  describe('Pre-population from previously accepted custom value', () => {
-    it('pre-populates the custom form with a previously accepted custom value', () => {
-      const previousCustomValue = {
-        value: 'previously-accepted-value',
-        quality: 'Estimated',
-        comment: 'previously-accepted-comment',
-        dataSource: { fileName: 'previous-doc.pdf', page: '12' },
-      };
+    // ---------------------------------------------------------------------------
+    // 6. Previously accepted custom value is pre-populated on load
+    // ---------------------------------------------------------------------------
+    describe('Pre-population from previously accepted custom value', () => {
+      it('pre-populates the custom form with a previously accepted custom value', () => {
+        const previousCustomValue = {
+          value: 'previously-accepted-value',
+          quality: 'Estimated',
+          comment: 'previously-accepted-comment',
+          dataSource: { fileName: 'previous-doc.pdf', page: '12' },
+        };
 
-      const judgementWithPreviousCustom: DatasetJudgementResponse = {
-        ...baseDatasetJudgement,
-        dataPoints: {
-          ...baseDatasetJudgement.dataPoints,
-          [dataPointTypeId]: {
-            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            acceptedSource: AcceptedDataPointSource.Custom,
-            customValue: JSON.stringify(previousCustomValue),
+        const judgementWithPreviousCustom: DatasetJudgementResponse = {
+          ...baseDatasetJudgement,
+          dataPoints: {
+            ...baseDatasetJudgement.dataPoints,
+            [dataPointTypeId]: {
+              ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+              acceptedSource: AcceptedDataPointSource.Custom,
+              customValue: JSON.stringify(previousCustomValue),
+            },
           },
-        },
-      };
-      mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom });
+        };
+        mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom });
 
-      cy.get('[data-test="custom-value-field"]').should('have.value', 'previously-accepted-value');
-      cy.get('[data-test="custom-pages-field"]').should('have.value', '12');
-      cy.get('[data-test="custom-comment-field"]').should('have.value', 'previously-accepted-comment');
-      cy.get('[data-test="custom-quality-field"]').should('contain', 'Estimated');
-      cy.get('[data-test="custom-document-field"]').should('contain', 'Select Document');
-    });
+        cy.get('[data-test="custom-value-field"]').should('have.value', 'previously-accepted-value');
+        cy.get('[data-test="custom-pages-field"]').should('have.value', '12');
+        cy.get('[data-test="custom-comment-field"]').should('have.value', 'previously-accepted-comment');
+        cy.get('[data-test="custom-quality-field"]').should('contain', 'Estimated');
+        cy.get('[data-test="custom-document-field"]').should('contain', 'Select Document');
+      });
 
-    it('pre-populates the custom JSON textarea in JSON mode with a previously accepted custom value', () => {
-      const previousCustomValue = {
-        value: 'json-pre-populated-value',
-        quality: 'Audited',
-        comment: 'previously-accepted-comment',
-        dataSource: { page: '12' },
-      };
+      it('pre-populates the custom JSON textarea in JSON mode with a previously accepted custom value', () => {
+        const previousCustomValue = {
+          value: 'json-pre-populated-value',
+          quality: 'Audited',
+          comment: 'previously-accepted-comment',
+          dataSource: { page: '12' },
+        };
 
-      const judgementWithPreviousCustom: DatasetJudgementResponse = {
-        ...baseDatasetJudgement,
-        dataPoints: {
-          ...baseDatasetJudgement.dataPoints,
-          [dataPointTypeId]: {
-            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            acceptedSource: AcceptedDataPointSource.Custom,
-            customValue: JSON.stringify(previousCustomValue),
+        const judgementWithPreviousCustom: DatasetJudgementResponse = {
+          ...baseDatasetJudgement,
+          dataPoints: {
+            ...baseDatasetJudgement.dataPoints,
+            [dataPointTypeId]: {
+              ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+              acceptedSource: AcceptedDataPointSource.Custom,
+              customValue: JSON.stringify(previousCustomValue),
+            },
           },
-        },
-      };
-      mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom });
+        };
+        mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom });
 
-      cy.get('[data-test="edit-mode-toggle"]').click();
-      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'json-pre-populated-value');
-      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'Audited');
-      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'previously-accepted-comment');
-      cy.get('[data-test="custom-json-textarea"]').should('contain.value', '12');
-    });
+        cy.get('[data-test="edit-mode-toggle"]').click();
+        cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'json-pre-populated-value');
+        cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'Audited');
+        cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'previously-accepted-comment');
+        cy.get('[data-test="custom-json-textarea"]').should('contain.value', '12');
+      });
 
-    it('resets the custom form to defaults when navigating to a KPI without a previously accepted custom value', () => {
-      const previousCustomValue = { value: 'should-not-appear', quality: 'Audited' };
+      it('resets the custom form to defaults when navigating to a KPI without a previously accepted custom value', () => {
+        const previousCustomValue = { value: 'should-not-appear', quality: 'Audited' };
 
-      const judgementWithMixedKpis: DatasetJudgementResponse = {
-        ...baseDatasetJudgement,
-        dataPoints: {
-          [dataPointTypeId]: {
-            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            acceptedSource: AcceptedDataPointSource.Custom,
-            customValue: JSON.stringify(previousCustomValue),
+        const judgementWithMixedKpis: DatasetJudgementResponse = {
+          ...baseDatasetJudgement,
+          dataPoints: {
+            [dataPointTypeId]: {
+              ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+              acceptedSource: AcceptedDataPointSource.Custom,
+              customValue: JSON.stringify(previousCustomValue),
+            },
+            [secondDataPointTypeId]: {
+              dataPointType: secondDataPointTypeId,
+              dataPointId: secondDataPointId,
+              acceptedSource: undefined,
+              qaReports: [],
+            },
           },
-          [secondDataPointTypeId]: {
-            dataPointType: secondDataPointTypeId,
-            dataPointId: secondDataPointId,
-            acceptedSource: undefined,
-            qaReports: [],
-          },
-        },
-      };
-      mountJudgeDialog({ datasetJudgement: judgementWithMixedKpis });
+        };
+        mountJudgeDialog({ datasetJudgement: judgementWithMixedKpis });
 
-      cy.get('[data-test="custom-value-field"]').should('have.value', 'should-not-appear');
+        cy.get('[data-test="custom-value-field"]').should('have.value', 'should-not-appear');
 
-      cy.get('[data-test="next-datapoint-select"]').click();
-      cy.get('.p-select-overlay').should('be.visible');
-      cy.contains('KPI Beta Label').click();
-      cy.get('[data-test="go-to-datapoint-button"]').click();
+        cy.get('[data-test="next-datapoint-select"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+        cy.contains('KPI Beta Label').click();
+        cy.get('[data-test="go-to-datapoint-button"]').click();
 
-      cy.get('[data-test="custom-value-field"]').should('have.value', '');
-      cy.get('[data-test="custom-quality-field"]').should('have.value', '');
-      cy.get('[data-test="custom-document-field"]').should('have.value', '');
-      cy.get('[data-test="custom-pages-field"]').should('have.value', '');
-      cy.get('[data-test="custom-comment-field"]').should('have.value', '');
-    });
-  });
-
-  // ---------------------------------------------------------------------------
-  // 7. Custom data point field: access to correct documents
-  // ---------------------------------------------------------------------------
-  describe('Custom data point document access', () => {
-    it('shows the available documents in the document select dropdown', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="custom-document-field"]').click();
-      cy.get('.p-select-overlay').should('be.visible');
-
-      cy.contains('Annual Report 2023').should('be.visible');
-      cy.contains('Sustainability Report').should('be.visible');
-    });
-
-    it('uses the selected document dataSource when building the custom datapoint JSON', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="custom-value-field"]').clear().type('doc-test-value');
-      cy.get('[data-test="custom-document-field"]').click();
-      cy.get('.p-select-overlay').should('be.visible');
-      cy.contains('Annual Report 2023').click();
-
-      cy.get('[data-test="accept-custom-button"]').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        const parsed = JSON.parse(interception.request.body.customDataPoint);
-        expect(parsed.dataSource.fileName).to.eq('AnnualReport2023.pdf');
+        cy.get('[data-test="custom-value-field"]').should('have.value', '');
+        cy.get('[data-test="custom-quality-field"]').should('have.value', '');
+        cy.get('[data-test="custom-document-field"]').should('have.value', '');
+        cy.get('[data-test="custom-pages-field"]').should('have.value', '');
+        cy.get('[data-test="custom-comment-field"]').should('have.value', '');
       });
     });
 
-    it('shows no documents in the dropdown when none are provided', () => {
-      mountJudgeDialog({ availableDocuments: [] });
+    // ---------------------------------------------------------------------------
+    // 7. Custom data point field: access to correct documents
+    // ---------------------------------------------------------------------------
+    describe('Custom data point document access', () => {
+      it('shows the available documents in the document select dropdown', () => {
+        mountJudgeDialog();
 
-      cy.get('[data-test="custom-document-field"]').click();
-      cy.get('.p-select-overlay').should('be.visible');
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
 
-      cy.contains('Annual Report 2023').should('not.exist');
-      cy.contains('Sustainability Report').should('not.exist');
+        cy.contains('Annual Report 2023').should('be.visible');
+        cy.contains('Sustainability Report').should('be.visible');
+        cy.contains('Monthly Report').should('be.visible');
+      });
+
+      it('uses the selected document dataSource when building the custom datapoint JSON', () => {
+        mountJudgeDialog();
+
+        cy.get('[data-test="custom-value-field"]').clear().type('doc-test-value');
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+        cy.contains('Annual Report 2023').click();
+
+        cy.get('[data-test="accept-custom-button"]').click();
+
+        cy.wait('@patchJudgementDetail').then((interception) => {
+          const parsed = JSON.parse(interception.request.body.customDataPoint);
+          expect(parsed.dataSource.fileName).to.eq('AnnualReport2023.pdf');
+        });
+      });
+
+      it('shows no documents in the dropdown when none are provided', () => {
+        mountJudgeDialog({ availableDocuments: [] });
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+
+        cy.contains('Annual Report 2023').should('not.exist');
+        cy.contains('Sustainability Report').should('not.exist');
+      });
+
+      it('pre-selects the correct document when only fileReference is present', () => {
+        const previousCustomValue = {
+          value: 'previously-accepted-value',
+          quality: 'Estimated',
+          comment: 'previously-accepted-comment',
+          dataSource: { fileName: null, fileReference: 'ref-789', page: '12' },
+        };
+
+        const judgementWithPreviousCustom: DatasetJudgementResponse = {
+          ...baseDatasetJudgement,
+          dataPoints: {
+            ...baseDatasetJudgement.dataPoints,
+            [dataPointTypeId]: {
+              ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+              acceptedSource: AcceptedDataPointSource.Custom,
+              customValue: JSON.stringify(previousCustomValue),
+            },
+          },
+        };
+
+        const docsWithReferenceOnly: DocumentOption[] = [
+          {
+            label: 'Monthly Report',
+            // value must match fileName ?? fileReference
+            value: 'ref-789',
+            dataSource: { fileName: null, fileReference: 'ref-789' },
+          },
+        ];
+
+        mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, availableDocuments: docsWithReferenceOnly });
+        cy.get('[data-test="custom-document-field"]').should('contain', 'Monthly Report');
+      });
     });
   });
 
