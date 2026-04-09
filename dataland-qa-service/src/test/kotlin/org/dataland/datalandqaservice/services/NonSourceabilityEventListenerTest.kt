@@ -39,7 +39,6 @@ class NonSourceabilityEventListenerTest {
     @Test
     fun `processCreatedEvent persists QA review record with Pending status`() {
         whenever(repository.findByNonSourceabilityId(any())).thenReturn(null)
-        whenever(repository.save(any())).thenAnswer { it.arguments[0] as NonSourceableQaReviewInformationEntity }
 
         listener.processCreatedEvent(event(), "corr-1")
 
@@ -47,7 +46,7 @@ class NonSourceabilityEventListenerTest {
     }
 
     @Test
-    fun `processCreatedEvent is idempotent – skips when review already exists`() {
+    fun `processCreatedEvent is idempotent - skips when review already exists`() {
         val existing =
             NonSourceableQaReviewInformationEntity(
                 nonSourceabilityId = "00000000-0000-0000-0000-000000000001",
