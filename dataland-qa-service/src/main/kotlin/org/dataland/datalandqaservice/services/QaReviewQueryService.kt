@@ -9,7 +9,6 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaReviewUtils
@@ -41,6 +40,14 @@ class QaReviewQueryService
         private val metaDataControllerApi: MetaDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+
+        // Lightweight container used to avoid building full DatasetJudgementResponse
+        // which accesses collections (and can trigger extra queries).
+        private data class MinimalDatasetJudgement(
+            val dataSetJudgementId: String,
+            val qaJudgeUserId: String?,
+            val qaJudgeUserName: String?,
+        )
 
         /**
          * The method returns a list of unreviewed datasets with corresponding information for the specified input params
@@ -125,7 +132,7 @@ class QaReviewQueryService
             }
 
             logger.info(
-                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} elapsedMs={}",
+                "perf|getInfoOnPendingDatasets|findAllByDatasetIdInA|datasetCount={} elapsedMs={}",
                 datasetUUIDs.size,
                 (System.nanoTime() - getJudgementsStartANs) / 1_000_000,
             )
@@ -135,9 +142,16 @@ class QaReviewQueryService
             val latestJudgementByDatasetId =
                 judgementEntities
                     .groupBy { it.datasetId }
-                    .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
+                    .mapValues { (_, judgements) ->
+                        val j = judgements.first()
+                        MinimalDatasetJudgement(
+                            dataSetJudgementId = j.dataSetJudgementId.toString(),
+                            qaJudgeUserId = j.qaJudgeUserId.toString(),
+                            qaJudgeUserName = j.qaJudgeUserName,
+                        )
+                    }
             logger.info(
-                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
+                "perf|getInfoOnPendingDatasets|findAllByDatasetIdInB|datasetCount={} judgementCount={} elapsedMs={}",
                 datasetUUIDs.size,
                 latestJudgementByDatasetId.size,
                 (System.nanoTime() - getJudgementsStartBNs) / 1_000_000,
@@ -409,7 +423,7 @@ class QaReviewQueryService
         private fun QaReviewEntity.toQaReviewResponse(
             showTriggeringUserId: Boolean = false,
             numberQaReports: Long,
-            latestJudgement: DatasetJudgementResponse?,
+            latestJudgement: MinimalDatasetJudgement?,
         ): QaReviewResponse =
             QaReviewResponse(
                 dataId = this.dataId,
