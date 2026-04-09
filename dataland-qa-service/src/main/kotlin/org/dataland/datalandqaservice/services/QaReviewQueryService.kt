@@ -114,7 +114,7 @@ class QaReviewQueryService
 
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
             // Time the dataset judgement fetch
-            val getJudgementsStartNs = System.nanoTime()
+            val getJudgementsStartANs = System.nanoTime()
             // Use a fetch-join query to load dataPoints together and avoid N+1
             val judgementEntities = try {
                 datasetJudgementRepository.findAllByDatasetIdInWithDataPoints(datasetUUIDs)
@@ -124,6 +124,14 @@ class QaReviewQueryService
                 datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
             }
 
+            logger.info(
+                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
+                datasetUUIDs.size,
+                (System.nanoTime() - getJudgementsStartANs) / 1_000_000,
+            )
+
+            val getJudgementsStartBNs = System.nanoTime()
+
             val latestJudgementByDatasetId =
                 judgementEntities
                     .groupBy { it.datasetId }
@@ -132,7 +140,7 @@ class QaReviewQueryService
                 "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
                 datasetUUIDs.size,
                 latestJudgementByDatasetId.size,
-                (System.nanoTime() - getJudgementsStartNs) / 1_000_000,
+                (System.nanoTime() - getJudgementsStartBNs) / 1_000_000,
             )
 
             // Time the creation of QaReviewResponse objects (mapping)
