@@ -18,15 +18,12 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -39,15 +36,16 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @DefaultMocks
+@MockitoBean(types = [CloudEventMessageHandler::class])
 class NonSourceabilityInformationManagerTest(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
     private lateinit var manager: NonSourceabilityInformationManager
     private lateinit var companyId: String
-    private val mockMq: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
     private val uploaderRoles = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
@@ -55,12 +53,11 @@ class NonSourceabilityInformationManagerTest(
 
     @BeforeEach
     fun setUp() {
-        doNothing().whenever(mockMq).buildCEMessageAndSendToQueue(any(), any(), any(), any(), any())
         manager =
             NonSourceabilityInformationManager(
                 nonSourceabilityDataRepository = nonSourceabilityDataRepository,
                 companyQueryManager = companyQueryManager,
-                cloudEventMessageHandler = mockMq,
+                cloudEventMessageHandler = cloudEventMessageHandler,
                 objectMapper = objectMapper,
             )
         nonSourceabilityDataRepository.deleteAll()
