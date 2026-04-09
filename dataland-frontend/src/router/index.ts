@@ -39,10 +39,6 @@ import KeycloakRedirect from '@/components/pages/KeycloakRedirect.vue';
 
 const routes = [
   {
-    path: '/',
-    redirect: '/companies',
-  },
-  {
     path: '/companies/choose',
     name: 'Choose Company',
     component: ChooseCompanyForFrameworkDataUpload,
