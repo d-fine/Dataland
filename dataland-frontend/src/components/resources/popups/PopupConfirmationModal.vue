@@ -4,7 +4,7 @@
     :header="header"
     modal
     :dismissable-mask="props.dismissableMask ?? !isLoading"
-    :closable="true"
+    :closable="false"
     @hide="handleCancel"
     data-test="confirmation-modal"
     :style="{ width: '30rem' }"
