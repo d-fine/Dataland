@@ -136,57 +136,95 @@ import { NEWS_ITEMS } from '../data/news';
   </section>
 
   <!-- Section 5: Contact (dark) -->
-  <section id="contact" class="scroll-mt-16 py-12 px-6 bg-[#111111] text-white lg:py-16 lg:px-8" aria-label="Contact us">
-    <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-8 lg:flex-row lg:justify-between lg:items-start">
-      <div class="flex flex-col gap-6 lg:max-w-[50%]">
-        <h2 class="text-[1.75rem] font-bold m-0">Get in touch</h2>
-        <p class="text-[0.9375rem] leading-relaxed m-0 opacity-80">Interested in becoming a Dataland member or learning more about the platform? Reach out to us directly.</p>
-        <div class="flex flex-col gap-1">
-          <p class="text-base font-semibold m-0">{CONTACT_ADDRESS.company}</p>
-          <p class="text-[0.9375rem] m-0 opacity-75">{CONTACT_ADDRESS.street}</p>
-          <p class="text-[0.9375rem] m-0 opacity-75">{CONTACT_ADDRESS.city}</p>
-          <p class="text-[0.9375rem] m-0 opacity-75">{CONTACT_ADDRESS.country}</p>
+  <section
+    id="contact"
+    class="scroll-mt-16 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-14 text-white lg:px-8 lg:py-18"
+    aria-label="Contact us"
+  >
+    <div class="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
+      <div class="flex flex-col justify-between gap-8 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9">
+        <div class="flex flex-col gap-5">
+          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Contact</p>
+          <h2 class="m-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[3rem]">Bring sustainability data into your workflow.</h2>
+          <p class="m-0 max-w-[42rem] text-[1.02rem] leading-relaxed text-white/78 lg:text-[1.12rem]">
+            Whether you are exploring membership, a partnership, or a product deep dive, we can point you to the right next step.
+          </p>
         </div>
-        <div class="flex flex-col gap-3">
-          <a href={CONTACT_PHONE} class="inline-flex items-center gap-2 text-white no-underline text-[0.9375rem] opacity-85 motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
-            {CONTACT_PHONE_DISPLAY}
-          </a>
-          <a href={CONTACT_EMAIL} class="inline-flex items-center gap-2 text-white no-underline text-[0.9375rem] opacity-85 motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+        <div class="grid grid-cols-1 gap-7 md:grid-cols-2">
+          <div class="flex flex-col gap-2.5">
+            <p class="m-0 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-white/48">Office</p>
+            <div class="flex flex-col gap-1">
+              <p class="m-0 text-base font-semibold text-white">{CONTACT_ADDRESS.company}</p>
+              <p class="m-0 text-[0.95rem] text-white/72">{CONTACT_ADDRESS.street}</p>
+              <p class="m-0 text-[0.95rem] text-white/72">{CONTACT_ADDRESS.city}</p>
+              <p class="m-0 text-[0.95rem] text-white/72">{CONTACT_ADDRESS.country}</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <p class="m-0 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-white/48">Direct</p>
+            <a href={CONTACT_PHONE} class="inline-flex items-center gap-2.5 text-white no-underline text-[0.98rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              {CONTACT_PHONE_DISPLAY}
+            </a>
+            <a href={CONTACT_EMAIL} class="inline-flex items-center gap-2.5 text-white no-underline text-[0.98rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              {CONTACT_EMAIL_DISPLAY}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9">
+        <div class="flex flex-col gap-4">
+          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Start here</p>
+          <h3 class="m-0 text-[1.55rem] font-bold leading-tight lg:text-[2rem]">Pick the path that fits what you want to do next.</h3>
+          <p class="m-0 text-[0.98rem] leading-relaxed text-white/74">
+            Reach out directly, stay up to date, or start exploring the platform on your own.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <a
+            href={CONTACT_INQUIRY_MAILTO}
+            class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-[var(--color-primary)] px-8 py-4 text-base font-semibold text-white no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
             </svg>
-            {CONTACT_EMAIL_DISPLAY}
+            Get in touch
+          </a>
+          <a
+            href="/newsletter"
+            class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-4 text-base font-semibold text-[#111111] no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <path d="M14 3v6h6"></path>
+              <path d="M8 13h8"></path>
+              <path d="M8 17h8"></path>
+              <path d="M8 9h2"></path>
+            </svg>
+            Subscribe to newsletter
+          </a>
+          <a
+            href="/register"
+            class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white/8 px-8 py-4 text-base font-semibold text-white no-underline motion-safe:transition-colors duration-150 hover:bg-white/12"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
+            Try it yourself - for free
           </a>
         </div>
-      </div>
-      <div class="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left lg:pt-8">
-        <a
-          href={CONTACT_INQUIRY_MAILTO}
-          class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap px-8 py-3.5 sm:w-[300px] bg-[var(--color-primary)] text-white font-semibold text-base rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-          </svg>
-          Get in touch
-        </a>
-        <a
-          href="/newsletter"
-          class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap px-8 py-3.5 sm:w-[300px] bg-white text-[#111111] font-semibold text-base rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-            <path d="M14 3v6h6"></path>
-            <path d="M8 13h8"></path>
-            <path d="M8 17h8"></path>
-            <path d="M8 9h2"></path>
-          </svg>
-          Subscribe to newsletter
-        </a>
       </div>
     </div>
   </section>
