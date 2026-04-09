@@ -17,6 +17,8 @@ import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DataAccessException
+import jakarta.persistence.PersistenceException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -88,7 +90,9 @@ class QaReviewQueryService
          * which are still pending review (qaStatus = Pending).
          */
         @Transactional(readOnly = true)
-        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
+        fun getInfoOnPendingDatasets(
+            companyName: String?,
+        ): List<QaReviewResponse> {
             val getInfoOnPendingDatasetsStartNs = System.nanoTime()
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
@@ -128,8 +132,12 @@ class QaReviewQueryService
             val judgementEntities =
                 try {
                     datasetJudgementRepository.findAllByDatasetIdInWithDataPoints(datasetUUIDs)
-                } catch (ex: Exception) {
-                    // If custom query fails for any reason (e.g., JPA provider), fall back to original method
+                } catch (ex: PersistenceException) {
+                    // If custom query fails for any reason related to persistence provider, fall back to original method
+                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error: {}", ex.message)
+                    datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+                } catch (ex: DataAccessException) {
+                    // If Spring data access layer throws an error, fall back to original method
                     logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error: {}", ex.message)
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
                 }
