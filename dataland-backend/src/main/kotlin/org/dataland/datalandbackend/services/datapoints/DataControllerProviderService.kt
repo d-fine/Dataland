@@ -35,7 +35,7 @@ class DataControllerProviderService
             dataTypeClass: Class<out Any>,
             dataManager: DatasetStorageService,
         ): DataController<Any> =
-            DataController(
+            DataController<Any>(
                 dataManager,
                 metaDataManager,
                 dataExportService,
