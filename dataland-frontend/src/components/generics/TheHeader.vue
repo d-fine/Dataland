@@ -19,7 +19,7 @@
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
-  <DatasetsTabMenu />
+  <DatasetsTabMenu v-if="authenticated || (!authenticated && $route.path !== '/nocontent')" />
 </template>
 
 <script lang="ts">
