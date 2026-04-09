@@ -83,6 +83,8 @@ class QaReviewQueryService
             val getInfoOnPendingDatasetsStartNs = System.nanoTime()
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
+            // Add timing around fetching pending metadata
+            val getPendingStartNs = System.nanoTime()
             val entities =
                 qaReviewRepository
                     .getPendingQaReviewMetadatasetsByCompany(
@@ -94,6 +96,11 @@ class QaReviewQueryService
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
                     )
+            logger.info(
+                "perf|getInfoOnPendingDatasets|getPendingQaReviewMetadatasetsByCompany|datasetCount={} elapsedMs={}",
+                entities.size,
+                (System.nanoTime() - getPendingStartNs) / 1_000_000,
+            )
 
             val datasetIds = entities.map { it.dataId }
 
@@ -106,28 +113,53 @@ class QaReviewQueryService
             )
 
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
-            val latestJudgementByDatasetId =
-                datasetJudgementRepository
-                    .findAllByDatasetIdIn(datasetUUIDs)
-                    .groupBy { it.datasetId }
-                    .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
-
-            val qaReviewResponses =
-                entities
-                    .map {
-                        it.toQaReviewResponse(
-                            showTriggeringUserId = userIsAdmin,
-                            numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
-                            latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
-                        )
-                    }
+            // Time the dataset judgement fetch
+            val getJudgementsStartNs = System.nanoTime()
+             val latestJudgementByDatasetId =
+                 datasetJudgementRepository
+                     .findAllByDatasetIdIn(datasetUUIDs)
+                     .groupBy { it.datasetId }
+                     .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
             logger.info(
-                "perf|getInfoOnPendingDatasets|datasetCount={} responseCount={} elapsedMs={}",
+                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
+                datasetUUIDs.size,
+                latestJudgementByDatasetId.size,
+                (System.nanoTime() - getJudgementsStartNs) / 1_000_000,
+            )
+
+            // Time the creation of QaReviewResponse objects (mapping)
+            val mapResponsesStartNs = System.nanoTime()
+             val qaReviewResponses =
+                 entities
+                     .map {
+                         it.toQaReviewResponse(
+                             showTriggeringUserId = userIsAdmin,
+                             numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
+                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
+                         )
+                     }
+            logger.info(
+                "perf|getInfoOnPendingDatasets|mapQaReviewResponses|datasetCount={} responseCount={} elapsedMs={}",
                 datasetIds.size,
                 qaReviewResponses.size,
-                (System.nanoTime() - getInfoOnPendingDatasetsStartNs) / 1_000_000,
+                (System.nanoTime() - mapResponsesStartNs) / 1_000_000,
             )
-            return addPrioritiesToResponse(qaReviewResponses)
+             logger.info(
+                 "perf|getInfoOnPendingDatasets|datasetCount={} responseCount={} elapsedMs={}",
+                 datasetIds.size,
+                 qaReviewResponses.size,
+                 (System.nanoTime() - getInfoOnPendingDatasetsStartNs) / 1_000_000,
+             )
+            // Time adding priorities (calls external data sourcing service)
+            val addPrioritiesStartNs = System.nanoTime()
+            val withPriorities = addPrioritiesToResponse(qaReviewResponses)
+            logger.info(
+                "perf|getInfoOnPendingDatasets|addPrioritiesToResponse|datasetCount={} responseCount={} elapsedMs={}",
+                datasetIds.size,
+                withPriorities.size,
+                (System.nanoTime() - addPrioritiesStartNs) / 1_000_000,
+            )
+            return withPriorities
         }
 
         /**
@@ -145,15 +177,38 @@ class QaReviewQueryService
                     DsBasicDataDimensions(it.companyId, it.framework, it.reportingPeriod)
                 }
 
+            // Time the external data sourcing call
+            val dataSourcingStartNs = System.nanoTime()
             val prioritiesOfAssociatedDataSourcing =
                 try {
-                    dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
+                    val res = dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
+                    logger.info(
+                        "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} notFound=false elapsedMs={}",
+                        dsDimensions.size,
+                        (System.nanoTime() - dataSourcingStartNs) / 1_000_000,
+                    )
+                    res
                 } catch (ex: ClientException) {
-                    if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) null else throw ex
+                    val elapsed = (System.nanoTime() - dataSourcingStartNs) / 1_000_000
+                    if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        logger.info(
+                            "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} notFound=true elapsedMs={}",
+                            dsDimensions.size,
+                            elapsed,
+                        )
+                        null
+                    } else {
+                        logger.info(
+                            "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} error=true elapsedMs={}",
+                            dsDimensions.size,
+                            elapsed,
+                        )
+                        throw ex
+                    }
                 }
 
-            return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
-        }
+             return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
+         }
 
         /**
          * This method returns the number of unreviewed datasets for a specific set of filters
