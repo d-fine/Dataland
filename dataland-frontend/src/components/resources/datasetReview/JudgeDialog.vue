@@ -172,6 +172,7 @@ import {
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
   DEFAULT_CUSTOM_FORM_DATA,
+  type JudgementErrorResponse,
 } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import {
@@ -184,6 +185,7 @@ import {
 import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
 import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import { type AxiosError } from 'axios';
 
 // ===== Props & emits =====
 
@@ -551,9 +553,37 @@ function patchCurrentDatapoint(
       onError: (err: Error) => {
         console.error(errorLogMessage, err);
 
+        const axiosErr = err as AxiosError<JudgementErrorResponse>;
+        const apiErrors = axiosErr.response?.data?.errors;
+        const firstError = Array.isArray(apiErrors) && apiErrors.length > 0 ? apiErrors[0] : undefined;
+
+        const errorType = firstError?.errorType;
+        const httpStatusFromBody = firstError?.httpStatus;
+        const httpStatusFromResponse = axiosErr.response?.status;
+        const httpStatus = httpStatusFromBody ?? httpStatusFromResponse;
+
+        const summary = firstError?.summary;
+        const backendMessage = firstError?.message;
+
+        const detailsParts: string[] = [];
+
+        if (summary) {
+          detailsParts.push(summary);
+        }
+        if (backendMessage) {
+          detailsParts.push(backendMessage);
+        }
+        if (errorType || httpStatus) {
+          const typePart = errorType ?? 'unknown-error';
+          const statusPart = httpStatus ? `HTTP ${httpStatus}` : 'HTTP status unknown';
+          detailsParts.push(`(${typePart} – ${statusPart})`);
+        }
+
+        const finalDetails = detailsParts.length > 0 ? detailsParts.join('\n') : err.message || 'Unknown error.';
+
         errorModalHeader.value = 'Failed to update data point judgement';
-        errorModalMessage.value = 'Your decision could not be saved. Please try again.';
-        errorModalDetails.value = err.message || 'Unknown error.';
+        errorModalMessage.value = 'Your decision could not be saved. Please review your custom datapoint.';
+        errorModalDetails.value = finalDetails;
 
         isErrorModalVisible.value = true;
       },

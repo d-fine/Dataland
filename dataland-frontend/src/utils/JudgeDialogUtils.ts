@@ -15,6 +15,17 @@ export const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
   comment: '',
 };
 
+type JudgementErrorItem = {
+  errorType?: string;
+  summary?: string;
+  message?: string;
+  httpStatus?: number;
+};
+
+export type JudgementErrorResponse = {
+  errors?: JudgementErrorItem[];
+};
+
 /**
  * Unwraps a data point JSON string for the backend.
  * If the original stored data point (`rawDataPoint`) was a plain primitive
