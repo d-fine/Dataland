@@ -517,6 +517,28 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
+
+    it('shows popup confirmation when there are no more unreviewed datapoints', () => {
+      const judgementAllReviewed: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+          [secondDataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[secondDataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement: judgementAllReviewed });
+      cy.get('[data-test="accept-original-button"]').should('be.visible');
+      cy.get('[data-test="accept-original-button"]').click();
+      cy.get('[data-test="confirmation-modal"]').should('be.visible').should('contain.text', 'All datapoints reviewed');
+      cy.get('[data-test="judge-modal"]').should('exist');
+    });
   });
 
   // ---------------------------------------------------------------------------
