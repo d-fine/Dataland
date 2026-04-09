@@ -134,6 +134,8 @@
     @confirm="isErrorModalVisible = false"
     @cancel="isErrorModalVisible = false"
     :dismissable-mask="false"
+    :show-cancel-button="false"
+    confirm-label="OK"
   />
   <PopupConfirmationModal
     v-model:visible="isAllReviewedModalVisible"
@@ -145,6 +147,8 @@
     @confirm="isAllReviewedModalVisible = false"
     @cancel="isAllReviewedModalVisible = false"
     :dismissable-mask="true"
+    :show-cancel-button="false"
+    confirm-label="OK"
   />
 </template>
 

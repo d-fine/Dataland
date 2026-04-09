@@ -4,7 +4,7 @@
     :header="header"
     modal
     :dismissable-mask="props.dismissableMask ?? !isLoading"
-    :closable="false"
+    :closable="!isLoading"
     @hide="handleCancel"
     data-test="confirmation-modal"
     :style="{ width: '30rem' }"
@@ -32,9 +32,12 @@
       </Message>
     </div>
 
+    <!-- Footer only for non-success state -->
     <template #footer v-if="!isSuccess">
       <div class="flex justify-content-end gap-2 w-full mt-2">
+        <!-- Cancel is optional -->
         <PrimeButton
+          v-if="showCancelButton"
           label="CANCEL"
           @click="handleCancel"
           severity="secondary"
@@ -43,7 +46,7 @@
           data-test="cancel-confirmation-modal-button"
         />
         <PrimeButton
-          label="CONFIRM"
+          :label="confirmLabel"
           @click="handleConfirm"
           :loading="isLoading"
           data-test="ok-confirmation-modal-button"
@@ -67,6 +70,8 @@ const props = defineProps<{
   isLoading?: boolean;
   isSuccess?: boolean;
   dismissableMask?: boolean;
+  showCancelButton?: boolean;
+  confirmLabel?: string;
 }>();
 
 const emit = defineEmits<{
@@ -79,6 +84,9 @@ const isVisible = computed({
   get: () => props.visible,
   set: (val) => emit('update:visible', val),
 });
+
+const showCancelButton = computed(() => props.showCancelButton ?? true);
+const confirmLabel = computed(() => props.confirmLabel ?? 'CONFIRM');
 
 const handleConfirm = (): void => {
   emit('confirm');
