@@ -23,6 +23,7 @@ const stateLabelMap: Partial<Record<DataSourcingState | RequestState, string>> =
   [DataSourcingState.DocumentSourcingDone]: 'Document Verification',
   [DataSourcingState.DataExtraction]: 'Data Extraction',
   [DataSourcingState.DataVerification]: 'Data Verification',
+  [DataSourcingState.NonSourceableVerification]: 'Non-Sourceable Verification',
   [DataSourcingState.NonSourceable]: 'Non-Sourceable',
   [DataSourcingState.Done]: 'Done',
 };
@@ -35,6 +36,7 @@ const displayedStateLabelMap: Record<DisplayedState, string> = {
   [DisplayedState.DocumentVerification]: 'Document Verification',
   [DisplayedState.DataExtraction]: 'Data Extraction',
   [DisplayedState.DataVerification]: 'Data Verification',
+  [DisplayedState.NonSourceableVerification]: 'Non-Sourceable Verification',
   [DisplayedState.NonSourceable]: 'Non-Sourceable',
   [DisplayedState.Done]: 'Done',
 };
@@ -45,6 +47,7 @@ const dataSourcingStateLabelMap: Record<DataSourcingState, string> = {
   [DataSourcingState.DocumentSourcingDone]: 'Document Sourcing Done',
   [DataSourcingState.DataExtraction]: 'Data Extraction',
   [DataSourcingState.DataVerification]: 'Data Verification',
+  [DataSourcingState.NonSourceableVerification]: 'Non-Sourceable Verification',
   [DataSourcingState.NonSourceable]: 'Non-Sourceable',
   [DataSourcingState.Done]: 'Done',
 };
@@ -56,6 +59,7 @@ const displayedStates: (DataSourcingState | RequestState)[] = [
   DataSourcingState.DocumentSourcingDone,
   DataSourcingState.DataExtraction,
   DataSourcingState.DataVerification,
+  DataSourcingState.NonSourceableVerification,
   DataSourcingState.Done,
   DataSourcingState.NonSourceable,
   RequestState.Withdrawn,
@@ -68,9 +72,10 @@ const sortOrderRequestState: { [key: string]: number } = {
   [DataSourcingState.DocumentSourcingDone]: 3,
   [DataSourcingState.DataExtraction]: 4,
   [DataSourcingState.DataVerification]: 5,
-  [DataSourcingState.Done]: 6,
-  [DataSourcingState.NonSourceable]: 7,
-  [RequestState.Withdrawn]: 8,
+  [DataSourcingState.NonSourceableVerification]: 6,
+  [DataSourcingState.Done]: 7,
+  [DataSourcingState.NonSourceable]: 8,
+  [RequestState.Withdrawn]: 9,
 };
 
 /**
