@@ -4,10 +4,12 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
 import org.dataland.datalandqaservice.services.NonSourceabilityQaReviewManager
+import org.dataland.datalandqaservice.utils.UtilityFunctions.withReviewerAuthentication
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -45,11 +47,13 @@ class NonSourceabilityQaControllerTest {
         val accepted = review(qaStatus = QaStatus.Accepted)
         whenever(manager.postDecision(any(), any(), any(), any(), any())).thenReturn(accepted)
 
-        val result = controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Accepted, null)
+        withReviewerAuthentication {
+            val result = controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Accepted, null)
 
-        assertEquals(HttpStatus.OK, result.statusCode)
-        assertEquals(QaStatus.Accepted, result.body?.qaStatus)
-        verify(manager).postDecision(any(), any(), any(), any(), any())
+            assertEquals(HttpStatus.OK, result.statusCode)
+            assertEquals(QaStatus.Accepted, result.body?.qaStatus)
+            verify(manager).postDecision(any(), any(), any(), any(), any())
+        }
     }
 
     @Test
@@ -57,10 +61,13 @@ class NonSourceabilityQaControllerTest {
         val rejected = review(qaStatus = QaStatus.Rejected)
         whenever(manager.postDecision(any(), any(), any(), any(), any())).thenReturn(rejected)
 
-        val result = controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Rejected, "Not applicable")
+        withReviewerAuthentication {
+            val result =
+                controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Rejected, "Not applicable")
 
-        assertEquals(HttpStatus.OK, result.statusCode)
-        assertEquals(QaStatus.Rejected, result.body?.qaStatus)
+            assertEquals(HttpStatus.OK, result.statusCode)
+            assertEquals(QaStatus.Rejected, result.body?.qaStatus)
+        }
     }
 
     @Test
@@ -68,8 +75,10 @@ class NonSourceabilityQaControllerTest {
         whenever(manager.postDecision(any(), any(), any(), any(), any()))
             .thenThrow(ResourceNotFoundApiException("Non-sourceability review not found", "No review exists"))
 
-        assertThrows<ResourceNotFoundApiException> {
-            controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000099", QaStatus.Accepted, null)
+        withReviewerAuthentication {
+            assertThrows<ResourceNotFoundApiException> {
+                controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000099", QaStatus.Accepted, null)
+            }
         }
     }
 
@@ -78,7 +87,7 @@ class NonSourceabilityQaControllerTest {
     @Test
     fun `getNonSourceableReviews delegates to manager and returns matching entries`() {
         val reviews = listOf(review("id-1", QaStatus.Accepted), review("id-2", QaStatus.Pending))
-        whenever(manager.getReviews(any(), any(), any(), any(), any(), any())).thenReturn(reviews)
+        whenever(manager.getReviews(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any())).thenReturn(reviews)
 
         val result = controller.getNonSourceableReviews(null, null, null, null, 10, 0)
 

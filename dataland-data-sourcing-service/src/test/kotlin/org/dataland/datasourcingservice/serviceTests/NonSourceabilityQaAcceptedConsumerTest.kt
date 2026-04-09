@@ -11,6 +11,7 @@ import org.dataland.datasourcingservice.services.NonSourceabilityQaDecisionListe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -52,7 +53,8 @@ class NonSourceabilityQaAcceptedConsumerTest {
     @Test
     fun `accepted event transitions sourcing to NonSourceable`() {
         val stored = stubSourcing(DataSourcingState.NonSourceableVerification)
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any())).thenReturn(listOf(stored))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
+            .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
         listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-1")
@@ -63,7 +65,8 @@ class NonSourceabilityQaAcceptedConsumerTest {
     @Test
     fun `accepted event is idempotent when sourcing already NonSourceable`() {
         val stored = stubSourcing(DataSourcingState.NonSourceable)
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any())).thenReturn(listOf(stored))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
+            .thenReturn(listOf(stored))
 
         listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-2")
 
@@ -71,9 +74,10 @@ class NonSourceabilityQaAcceptedConsumerTest {
     }
 
     @Test
-    fun `rejected event keeps sourcing in NonSourceableVerification – no patch performed`() {
+    fun `rejected event keeps sourcing in NonSourceableVerification - no patch performed`() {
         val stored = stubSourcing(DataSourcingState.NonSourceableVerification)
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any())).thenReturn(listOf(stored))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
+            .thenReturn(listOf(stored))
 
         listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED), "corr-3")
 
@@ -82,7 +86,8 @@ class NonSourceabilityQaAcceptedConsumerTest {
 
     @Test
     fun `graceful skip when no matching sourcing found`() {
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any())).thenReturn(emptyList())
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
+            .thenReturn(emptyList())
 
         listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-4")
 

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -72,7 +73,7 @@ class NonSourceabilityEventConsumerTest {
     fun `transitionToVerification patches sourcing to NonSourceableVerification when Active`() {
         val stored = stubStoredSourcing(DataSourcingState.Initialized)
         val event = buildEvent()
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
@@ -85,7 +86,7 @@ class NonSourceabilityEventConsumerTest {
     fun `transitionToVerification is idempotent when already in NonSourceableVerification`() {
         val stored = stubStoredSourcing(DataSourcingState.NonSourceableVerification)
         val event = buildEvent()
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 
         listener.transitionToVerification(event, "corr-2")
@@ -96,7 +97,7 @@ class NonSourceabilityEventConsumerTest {
     @Test
     fun `transitionToVerification skips gracefully when no matching sourcing is found`() {
         val event = buildEvent()
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(emptyList())
 
         listener.transitionToVerification(event, "corr-3")
@@ -108,7 +109,7 @@ class NonSourceabilityEventConsumerTest {
     fun `transitionToNonSourceable patches sourcing to NonSourceable state`() {
         val stored = stubStoredSourcing(DataSourcingState.NonSourceableVerification)
         val event = buildEvent(eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED)
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
@@ -121,7 +122,7 @@ class NonSourceabilityEventConsumerTest {
     fun `transitionToNonSourceable is idempotent when already NonSourceable`() {
         val stored = stubStoredSourcing(DataSourcingState.NonSourceable)
         val event = buildEvent(eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED)
-        whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
+        whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 
         listener.transitionToNonSourceable(event, "corr-5")
