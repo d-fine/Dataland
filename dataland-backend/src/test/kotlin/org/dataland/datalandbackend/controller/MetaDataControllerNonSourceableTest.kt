@@ -22,7 +22,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.transaction.annotation.Transactional
 
@@ -47,8 +46,7 @@ class MetaDataControllerNonSourceableTest
         @BeforeEach
         fun setup() {
             nonSourceabilityDataRepository.deleteAll()
-            val securityContext = AuthenticationMock.mockJwtAuthentication("uploader", "uploaderId", uploaderRoles)
-            SecurityContextHolder.setContext(securityContext)
+            AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
             val companyInfo =
                 CompanyInformation(
                     companyName = "TestCo",
@@ -59,10 +57,8 @@ class MetaDataControllerNonSourceableTest
                     companyLegalForm = null,
                     sector = null,
                     website = null,
-                    isTeaser = false,
                     identifiers = emptyMap(),
                     companyAlternativeNames = null,
-                    companyDescription = null,
                     isTeaserCompany = false,
                     parentCompanyLei = null,
                 )
@@ -86,8 +82,7 @@ class MetaDataControllerNonSourceableTest
 
         @Test
         fun `POST nonSourceable creates entry with qaStatus Accepted when bypassQa is true and caller is admin`() {
-            val adminContext = AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles)
-            SecurityContextHolder.setContext(adminContext)
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
 
             val request =
                 NonSourceabilityRequest(
@@ -119,8 +114,7 @@ class MetaDataControllerNonSourceableTest
 
         @Test
         fun `GET nonSourceable returns entries filtered by qaStatus`() {
-            val adminContext = AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles)
-            SecurityContextHolder.setContext(adminContext)
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
             metaDataController.postNonSourceabilityOfADataset(
                 NonSourceabilityRequest(
                     companyId = storedCompany.companyId,
@@ -145,8 +139,7 @@ class MetaDataControllerNonSourceableTest
 
         @Test
         fun `HEAD nonSourceable returns 200 for active entry`() {
-            val adminContext = AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles)
-            SecurityContextHolder.setContext(adminContext)
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
             metaDataController.postNonSourceabilityOfADataset(
                 NonSourceabilityRequest(
                     companyId = storedCompany.companyId,

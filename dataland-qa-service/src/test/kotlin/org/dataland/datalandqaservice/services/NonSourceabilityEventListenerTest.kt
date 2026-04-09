@@ -42,7 +42,7 @@ class NonSourceabilityEventListenerTest {
 
         listener.processCreatedEvent(event(), "corr-1")
 
-        verify(repository).save(any())
+        verify(repository).save(any<NonSourceableQaReviewInformationEntity>())
     }
 
     @Test

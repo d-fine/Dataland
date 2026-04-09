@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.transaction.annotation.Transactional
 
@@ -63,9 +62,7 @@ class NonSourceabilityInformationManagerTest(
                 objectMapper = objectMapper,
             )
         nonSourceabilityDataRepository.deleteAll()
-        SecurityContextHolder.setContext(
-            AuthenticationMock.mockJwtAuthentication("uploader", "uploaderId", uploaderRoles),
-        )
+        AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
         companyQueryManager.assertCompanyIdExists(companyId)
     }
 
@@ -87,7 +84,7 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `creates accepted active entry when bypassQa is true`() {
-        SecurityContextHolder.setContext(AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles))
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         val response = manager.processNonSourceabilityRequest(request(bypassQa = true))
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertTrue(response.currentlyActive)
@@ -101,7 +98,7 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `duplicate request for Accepted entry throws InvalidInputApiException`() {
-        SecurityContextHolder.setContext(AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles))
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         assertThrows<InvalidInputApiException> { manager.processNonSourceabilityRequest(request(bypassQa = true)) }
     }
@@ -124,14 +121,14 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `isCurrentlyActive returns true after admin-bypass entry`() {
-        SecurityContextHolder.setContext(AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles))
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         assertTrue(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
     }
 
     @Test
     fun `SC-005 guard – NonSourceabilityDataRepository is canonical runtime source, not SourceabilityDataRepository`() {
-        SecurityContextHolder.setContext(AuthenticationMock.mockJwtAuthentication("admin", "adminId", adminRoles))
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
         assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source (SC-005)")
