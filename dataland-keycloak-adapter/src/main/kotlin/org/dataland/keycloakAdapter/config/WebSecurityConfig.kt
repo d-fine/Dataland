@@ -26,7 +26,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
  */
 @Configuration
 @Profile("!unprotected")
-@EnableMethodSecurity()
+@EnableMethodSecurity
 class WebSecurityConfig(
     private val jwtDecoder: JwtDecoder,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
