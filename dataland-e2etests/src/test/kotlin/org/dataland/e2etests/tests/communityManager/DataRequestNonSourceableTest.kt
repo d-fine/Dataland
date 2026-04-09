@@ -4,8 +4,8 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfoResponse
+import org.dataland.datalandbackend.openApiClient.model.NonSourceabilityInformationResponse
+import org.dataland.datalandbackend.openApiClient.model.NonSourceabilityRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -59,12 +59,12 @@ class DataRequestNonSourceableTest {
         )
 
     private val sourceabilityInfoRequest2023 =
-        SourceabilityInfo(
+        NonSourceabilityRequest(
             companyId = dummyCompanyId,
             dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
             reportingPeriod = "2023",
-            isNonSourceable = true,
             reason = "This dataset is non-sourceable.",
+            bypassQa = false,
         )
 
     private fun postTwoDataRequestForSameUserAndReturnRequestIds(): Pair<UUID, UUID> {
@@ -100,11 +100,9 @@ class DataRequestNonSourceableTest {
         return requestIdSecondUserRequest2023
     }
 
-    private fun postSourceabilityInfo(sourceabilityInfo: SourceabilityInfo) {
+    private fun postSourceabilityInfo(sourceabilityInfo: NonSourceabilityRequest) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
-            sourceabilityInfo = sourceabilityInfo,
-        )
+        apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(sourceabilityInfo)
     }
 
     @Test
@@ -139,7 +137,7 @@ class DataRequestNonSourceableTest {
     @Test
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
         postSourceabilityInfo(sourceabilityInfoRequest2023)
-        var receivedSourceabilityInfoList = listOf<SourceabilityInfoResponse>()
+        var receivedSourceabilityInfoList = listOf<NonSourceabilityInformationResponse>()
 
         awaitUntilAsserted {
             receivedSourceabilityInfoList =
@@ -156,7 +154,6 @@ class DataRequestNonSourceableTest {
         assertEquals(sourceabilityInfoRequest2023.companyId, receivedSourceabilityInfo.companyId)
         assertEquals(sourceabilityInfoRequest2023.dataType, receivedSourceabilityInfo.dataType)
         assertEquals(sourceabilityInfoRequest2023.reportingPeriod, receivedSourceabilityInfo.reportingPeriod)
-        assertEquals(sourceabilityInfoRequest2023.isNonSourceable, receivedSourceabilityInfo.isNonSourceable)
         assertEquals(sourceabilityInfoRequest2023.reason, receivedSourceabilityInfo.reason)
     }
 }

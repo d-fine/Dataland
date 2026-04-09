@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -180,13 +178,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val sourceabilityInfo = MessageQueueUtils.readMessagePayload<SourceabilityInfo>(payload)
-        val sourceabilityMessage =
-            SourceabilityMessage(
-                BasicDataDimensions(sourceabilityInfo.companyId, sourceabilityInfo.dataType.value, sourceabilityInfo.reportingPeriod),
-                sourceabilityInfo.isNonSourceable,
-                sourceabilityInfo.reason,
-            )
+        val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
@@ -199,7 +191,7 @@ class CommunityManagerListener(
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)
+            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityMessage, correlationId)
         }
     }
 }

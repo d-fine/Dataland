@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -15,6 +14,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -390,7 +390,7 @@ class DataRequestUpdateManager
          */
         @Transactional
         fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfo: SourceabilityInfo,
+            sourceabilityInfo: SourceabilityMessage,
             correlationId: String,
         ) {
             require(sourceabilityInfo.isNonSourceable) {
@@ -398,12 +398,18 @@ class DataRequestUpdateManager
                     "are patched if a dataset is reported as sourceable until the dataset is uploaded."
             }
 
+            val dataType =
+                DataTypeEnum.decode(sourceabilityInfo.basicDataDimensions.dataType)
+                    ?: throw IllegalArgumentException(
+                        "Unsupported data type '${sourceabilityInfo.basicDataDimensions.dataType}' in non-sourceability message.",
+                    )
+
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
-                        dataType = setOf(sourceabilityInfo.dataType),
-                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
-                        reportingPeriods = setOf(sourceabilityInfo.reportingPeriod),
+                        dataType = setOf(dataType),
+                        datalandCompanyIds = setOf(sourceabilityInfo.basicDataDimensions.companyId),
+                        reportingPeriods = setOf(sourceabilityInfo.basicDataDimensions.reportingPeriod),
                         requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
                     ),
                 )

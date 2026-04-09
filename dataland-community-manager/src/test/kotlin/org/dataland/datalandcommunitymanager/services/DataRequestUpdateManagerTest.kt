@@ -137,9 +137,9 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = dummyNonSourceableInfo.companyId,
-                dataType = dummyNonSourceableInfo.dataType.toString(),
-                reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
+                datalandCompanyId = dummyNonSourceableInfo.basicDataDimensions.companyId,
+                dataType = dummyNonSourceableInfo.basicDataDimensions.dataType,
+                reportingPeriod = dummyNonSourceableInfo.basicDataDimensions.reportingPeriod,
             )
     }
 

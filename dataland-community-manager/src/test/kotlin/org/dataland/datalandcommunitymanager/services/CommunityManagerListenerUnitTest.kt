@@ -1,8 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -153,12 +151,10 @@ class CommunityManagerListenerUnitTest {
     @Test
     fun `valid nonsourceable message should be processed successfully`() {
         val sourceabilityInfoValid =
-            SourceabilityInfo(
-                "exampleCompany",
-                DataTypeEnum.sfdr,
-                "2023",
-                true,
-                "test",
+            SourceabilityMessage(
+                basicDataDimensions = BasicDataDimensions("exampleCompany", "sfdr", "2023"),
+                isNonSourceable = true,
+                reason = "test",
             )
         communityManagerListener.processMessageForDataReportedAsNonSourceable(
             jacksonObjectMapper.writeValueAsString(sourceabilityInfoValid), typeNonSourceable, correlationId,
