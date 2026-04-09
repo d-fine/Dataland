@@ -115,11 +115,19 @@ class QaReviewQueryService
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
             // Time the dataset judgement fetch
             val getJudgementsStartNs = System.nanoTime()
-             val latestJudgementByDatasetId =
-                 datasetJudgementRepository
-                     .findAllByDatasetIdIn(datasetUUIDs)
-                     .groupBy { it.datasetId }
-                     .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
+            // Use a fetch-join query to load dataPoints together and avoid N+1
+            val judgementEntities = try {
+                datasetJudgementRepository.findAllByDatasetIdInWithDataPoints(datasetUUIDs)
+            } catch (ex: Exception) {
+                // If custom query fails for any reason (e.g., JPA provider), fall back to original method
+                logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error: {}", ex.message)
+                datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+            }
+
+            val latestJudgementByDatasetId =
+                judgementEntities
+                    .groupBy { it.datasetId }
+                    .mapValues { (_, judgements) -> judgements.first().toDatasetJudgementResponse() }
             logger.info(
                 "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
                 datasetUUIDs.size,

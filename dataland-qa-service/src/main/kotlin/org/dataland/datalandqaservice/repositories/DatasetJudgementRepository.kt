@@ -2,6 +2,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositori
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -26,4 +28,11 @@ interface DatasetJudgementRepository : JpaRepository<DatasetJudgementEntity, UUI
      * @return A list of DatasetJudgementEntity objects associated with any of the given datasetIds.
      */
     fun findAllByDatasetIdIn(datasetIds: Collection<UUID>): List<DatasetJudgementEntity>
+
+    /**
+     * Fetches dataset judgements together with their associated dataPoints in a single query to avoid
+     * N+1 queries when converting entities to response objects that touch the collection.
+     */
+    @Query("select distinct d from DatasetJudgementEntity d left join fetch d.dataPoints where d.datasetId in :datasetIds")
+    fun findAllByDatasetIdInWithDataPoints(@Param("datasetIds") datasetIds: Collection<UUID>): List<DatasetJudgementEntity>
 }
