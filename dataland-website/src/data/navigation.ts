@@ -1,7 +1,7 @@
 export const ABOUT_SECTIONS = [
   { href: '/about#company', label: 'Company' },
   { href: '/about#team', label: 'Leadership team' },
-  { href: '/about#partners', label: 'Partners' },
+  { href: '/about#partners', label: 'Integration partners' },
   { href: '/about#updates', label: 'News and updates' },
   { href: '/about#contact', label: 'Get in touch' },
 ] as const;

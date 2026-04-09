@@ -21,25 +21,25 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
           <span class="whitespace-nowrap text-[var(--color-primary)]">structured sustainability data</span>
         </h1>
         <p class="text-lg text-[var(--color-text-muted)] m-0 mb-10">Non-profit. Source-based. Unrestricted use.</p>
-        <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-start sm:gap-x-10 sm:gap-y-4" aria-label="Platform statistics">
+        <div class="mb-8 flex flex-row flex-nowrap items-start gap-x-6 gap-y-4 sm:gap-x-8 lg:gap-x-10" aria-label="Platform statistics">
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
-              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">1000</span>
+              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
+              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">1,000</span>
               <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Users</span>
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
-              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">3000</span>
+              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
+              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">3,000</span>
               <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Datasets</span>
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[2rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.45rem]">&gt;</span>
-              <span class="block text-[2.95rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.55rem]">300,000</span>
+              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
+              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">300,000</span>
               <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Live data points</span>
             </div>
           </div>
@@ -116,7 +116,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   <!-- Section 4: Trusted By (white) -->
   <section class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Trusted by leading financial institutions">
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12 lg:gap-14">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">They trust us</h2>
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Trusted by</h2>
       <div class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div class="trusted-by-track flex w-max items-center gap-5 lg:gap-7">
           {trustedByCarousel.map((logo, index) => (
@@ -314,7 +314,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   }
 
   .trusted-by-track {
-    animation: trusted-by-scroll 56s linear infinite;
+    animation: trusted-by-scroll 84s linear infinite;
   }
 
   .trusted-by-marquee:hover .trusted-by-track {

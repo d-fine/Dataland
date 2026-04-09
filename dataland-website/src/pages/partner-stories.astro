@@ -1,0 +1,282 @@
+---
+import Base from '../layouts/Base.astro';
+import UseCaseIcon from '../components/UseCaseIcon.astro';
+import { PARTNER_STORY_DETAILS, PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
+
+const integrationMattersSection = PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.extraSections?.find(
+  (section) => section.title === 'Why Partner Integration Matters',
+);
+---
+
+<Base title={"Partner Stories \u2014 Dataland"} description="See how Dataland integration partners embed structured sustainability data into established platforms and workflows.">
+  <section class="bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16" aria-label="Integration partner stories overview">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-6">
+      <div class="max-w-[840px]">
+        <p class="m-0 mb-3 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/60">Use cases</p>
+        <h1 class="m-0 text-[2rem] font-bold leading-[1.15] lg:text-[3rem]">Integration partners</h1>
+        <p class="mt-4 mb-0 max-w-[720px] text-[1rem] leading-relaxed text-white/78">
+          Dataland data is made available within established partner platforms, so Members can work through familiar interfaces, research flows, and reporting processes.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {PARTNER_STORY_SUMMARIES.map((story) => (
+          <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/10 text-white no-underline motion-safe:transition-colors motion-safe:duration-200 hover:bg-white/14">
+            <div class="flex min-h-[8rem] items-center justify-center overflow-hidden bg-white px-4 py-5">
+              <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
+                <img
+                  src={story.logo}
+                  alt=""
+                  class:list={['h-20 w-full object-contain object-center', story.logoClassName]}
+                  loading="lazy"
+                  width="320"
+                  height="120"
+                />
+              </div>
+            </div>
+            <div class="flex h-full flex-col gap-4 p-6">
+              <h2 class="m-0 text-[1.05rem] font-medium leading-snug">{story.title}</h2>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-white/72">{story.text}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Integration partner details">
+    <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
+      {PARTNER_STORY_DETAILS.map((story) => (
+        <article id={story.slug} class="scroll-mt-24">
+          {story.slug === 'fact-first-cloud' ? (
+            <div class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] bg-[#3E6A8E] px-5 py-6 text-white lg:px-7 lg:py-7">
+              <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
+                <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-white px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                  <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2' : 'flex w-full items-center justify-center'}>
+                    <img
+                      src={story.logo}
+                      alt={story.name}
+                      class:list={['h-20 w-full object-contain object-center lg:h-24', story.logoClassName]}
+                      loading="lazy"
+                      width="360"
+                      height="160"
+                    />
+                  </div>
+                </div>
+                <div class="flex flex-col gap-4 lg:pl-2">
+                  <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                    <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+                    {story.secondaryTags.map((tag) => (
+                      <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/82">{tag}</span>
+                    ))}
+                  </div>
+                  <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-white lg:text-[2.3rem]">{story.heroTitle}</h2>
+                  {story.externalUrl && (
+                    <a
+                      href={story.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    >
+                      {story.closingCtaLabel ?? 'Visit the website'}
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  )}
+                </div>
+              </header>
+
+              <div class="flex flex-col gap-4">
+                {story.intro.map((paragraph) => (
+                  <p class="m-0 text-[1rem] leading-relaxed text-white/80">{paragraph}</p>
+                ))}
+              </div>
+
+              <section class="flex flex-col gap-5">
+                <h3 class="m-0 text-[1.25rem] font-bold text-white">Key use cases</h3>
+                <div class="flex flex-col gap-8">
+                  {story.keyUseCases.map((item) => (
+                    <section class="grid grid-cols-1 gap-5 border-b border-white/10 pb-8 last:border-b-0 last:pb-0 lg:grid-cols-[70%_30%] lg:items-center">
+                      <div class="flex flex-col gap-3">
+                        <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
+                        <div class="flex flex-col gap-2.5">
+                          {item.lines.map((line) => (
+                            <p class="m-0 text-[0.9375rem] leading-relaxed text-white/80">{line}</p>
+                          ))}
+                        </div>
+                      </div>
+                      <div class="flex items-center justify-center text-white/35">
+                        <UseCaseIcon icon={item.icon} />
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              </section>
+
+              <section class="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/10 p-6 text-white">
+                <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
+                <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-white/84 lg:grid-cols-2">
+                  {story.benefits.map((benefit) => (
+                    <li>{benefit}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <div class="flex flex-col items-start gap-5 pt-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-x-8">
+                <a
+                  href={story.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                >
+                  Visit the website
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+                <a
+                  href="/product#use-cases"
+                  class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                >
+                  Explore further use cases
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+                <a
+                  href="/contact"
+                  class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-[0.95rem] font-semibold text-[#3E6A8E] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/90"
+                >
+                  Get in touch
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] bg-[#3E6A8E] px-5 py-6 text-white lg:px-7 lg:py-7">
+              <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
+                <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-white px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                  <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2' : 'flex w-full items-center justify-center'}>
+                    <img
+                      src={story.logo}
+                      alt={story.name}
+                      class:list={['h-20 w-full object-contain object-center lg:h-24', story.logoClassName]}
+                      loading="lazy"
+                      width="360"
+                      height="160"
+                    />
+                  </div>
+                </div>
+                <div class="flex flex-col gap-4 lg:pl-2">
+                  <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                    <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
+                    {story.secondaryTags.map((tag) => (
+                      <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/82">{tag}</span>
+                    ))}
+                  </div>
+                  <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-white lg:text-[2.3rem]">{story.heroTitle}</h2>
+                  {story.externalUrl && (
+                    <a
+                      href={story.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    >
+                      Visit the website
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  )}
+                </div>
+              </header>
+
+              <div class="flex flex-col gap-4">
+                {story.intro.map((paragraph) => (
+                  <p class="m-0 text-[1rem] leading-relaxed text-white/80">{paragraph}</p>
+                ))}
+              </div>
+
+              <section class="flex flex-col gap-5">
+                <h3 class="m-0 text-[1.25rem] font-bold text-white">Key use cases</h3>
+                <div class="flex flex-col gap-8">
+                  {story.keyUseCases.map((item) => (
+                    <section class="grid grid-cols-1 gap-5 border-b border-white/10 pb-8 last:border-b-0 last:pb-0 lg:grid-cols-[70%_30%] lg:items-center">
+                      <div class="flex flex-col gap-3">
+                        <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
+                        <div class="flex flex-col gap-2.5">
+                          {item.lines.map((line) => (
+                            <p class="m-0 text-[0.9375rem] leading-relaxed text-white/80">{line}</p>
+                          ))}
+                        </div>
+                      </div>
+                      <div class="flex items-center justify-center text-white/35">
+                        <UseCaseIcon icon={item.icon} />
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              </section>
+
+              <section class="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/10 p-6 text-white">
+                <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
+                <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-white/84 lg:grid-cols-2">
+                  {story.benefits.map((benefit) => (
+                    <li>{benefit}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <div class="flex flex-col items-start gap-5 pt-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-x-8">
+                <a
+                  href={story.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                >
+                  Visit the website
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+                <a
+                  href="/product#use-cases"
+                  class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                >
+                  Explore further use cases
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+                <a
+                  href="/contact"
+                  class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-[0.95rem] font-semibold text-[#3E6A8E] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/90"
+                >
+                  Get in touch
+                </a>
+              </div>
+            </div>
+          )}
+        </article>
+      ))}
+
+    </div>
+  </section>
+
+  {integrationMattersSection && (
+    <section class="bg-[linear-gradient(90deg,#1f3143_0%,#29435a_52%,#355572_100%)] px-6 py-14 text-white lg:px-8 lg:py-16" aria-label="Why partner integration matters">
+      <div class="mx-auto flex max-w-[1200px] flex-col items-center gap-10">
+        <h2 class="m-0 text-center text-[1.75rem] font-bold leading-tight text-white lg:text-[2.2rem]">{integrationMattersSection.title}</h2>
+
+        <div class="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
+          {integrationMattersSection.items.map((item) => (
+            <section class="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/8 p-6 text-center">
+              <h3 class="m-0 text-[1.08rem] font-bold text-white">{item.title}</h3>
+              <p class="m-0 text-[0.98rem] leading-relaxed text-white/82">{item.text}</p>
+            </section>
+          ))}
+        </div>
+
+        {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt && (
+          <p class="m-0 max-w-[880px] text-center text-[1.05rem] leading-relaxed text-white/90 lg:text-[1.15rem]">
+            {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt}
+          </p>
+        )}
+
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-6 py-3 text-[0.98rem] font-semibold text-white no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-[#ff8b47]"
+        >
+          Get in touch
+        </a>
+      </div>
+    </section>
+  )}
+</Base>
