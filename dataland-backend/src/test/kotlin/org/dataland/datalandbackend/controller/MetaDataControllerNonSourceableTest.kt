@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @DefaultMocks
+@MockitoBean(types = [CloudEventMessageHandler::class])
 class MetaDataControllerNonSourceableTest
     @Autowired
     constructor(
@@ -126,11 +129,21 @@ class MetaDataControllerNonSourceableTest
             )
 
             val allResults =
-                metaDataController.getInfoOnNonSourceabilityOfDatasets(null, null, null, null)
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, dataType, reportingPeriod, null)
             val acceptedResults =
-                metaDataController.getInfoOnNonSourceabilityOfDatasets(null, null, null, QaStatus.Accepted)
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(
+                    storedCompany.companyId,
+                    dataType,
+                    reportingPeriod,
+                    QaStatus.Accepted,
+                )
             val pendingResults =
-                metaDataController.getInfoOnNonSourceabilityOfDatasets(null, null, null, QaStatus.Pending)
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(
+                    storedCompany.companyId,
+                    dataType,
+                    reportingPeriod,
+                    QaStatus.Pending,
+                )
 
             assertEquals(1, allResults.body?.size)
             assertEquals(1, acceptedResults.body?.size)

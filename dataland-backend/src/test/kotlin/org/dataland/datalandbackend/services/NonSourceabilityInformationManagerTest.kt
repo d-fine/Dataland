@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -41,11 +42,12 @@ import org.springframework.transaction.annotation.Transactional
 class NonSourceabilityInformationManagerTest(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     private lateinit var manager: NonSourceabilityInformationManager
+    private lateinit var companyId: String
     private val mockMq: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    private val companyId = "existingCompanyId"
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
     private val uploaderRoles = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
@@ -63,7 +65,23 @@ class NonSourceabilityInformationManagerTest(
             )
         nonSourceabilityDataRepository.deleteAll()
         AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
-        companyQueryManager.assertCompanyIdExists(companyId)
+        val companyInfo =
+            CompanyInformation(
+                companyName = "TestCo",
+                headquarters = "DE",
+                headquartersPostalCode = "10115",
+                countryCode = "DE",
+                companyContactDetails = emptyList(),
+                companyLegalForm = null,
+                sector = null,
+                website = null,
+                identifiers = emptyMap(),
+                companyAlternativeNames = null,
+                isTeaserCompany = false,
+                parentCompanyLei = null,
+            )
+        val storedCompany = companyAlterationManager.addCompany(companyInfo)
+        companyId = storedCompany.companyId
     }
 
     private fun request(bypassQa: Boolean = false) =
