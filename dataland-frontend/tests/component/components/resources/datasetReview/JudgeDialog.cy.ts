@@ -175,6 +175,7 @@ function mountJudgeDialog(options?: {
   originalDataPointBody?: object;
   originalDataPointStatusCode?: number;
   patchStatusCode?: number;
+  patchErrorResponse?: object;
   dataPointTypeId?: string;
   kpiRows?: CellRow[];
   availableDocuments?: DocumentOption[];
@@ -203,10 +204,17 @@ function mountJudgeDialog(options?: {
   }).as('getSecondDataPoint');
 
   cy.intercept('PATCH', `**/qa/dataset-judgements/${datasetJudgementId}/data-points/**`, (req) => {
-    req.reply({
-      statusCode: options?.patchStatusCode ?? 200,
-      body: judgement,
-    });
+    if (options?.patchErrorResponse) {
+      req.reply({
+        statusCode: options?.patchStatusCode ?? 400,
+        body: options?.patchErrorResponse,
+      });
+    } else {
+      req.reply({
+        statusCode: options?.patchStatusCode ?? 200,
+        body: judgement,
+      });
+    }
   }).as('patchJudgementDetail');
 
   const queryClient = new QueryClient({
@@ -885,6 +893,38 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog({ patchStatusCode: 500 });
       cy.get('[data-test="accept-original-button"]').click();
       cy.get('[data-test="confirmation-modal-error-message"]').should('contain', '500');
+      cy.get('[data-test="ok-confirmation-modal-button"]').click();
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
+    });
+
+    it('shows backend validation details when the PATCH request fails with invalid-input', () => {
+      const patchErrorResponse = {
+        errors: [
+          {
+            errorType: 'invalid-input',
+            summary: 'Custom datapoint not valid.',
+            message:
+              'Custom datapoint given does not match the specification of extendedDecimalScope1GhgEmissionsInTonnes.',
+            httpStatus: 400,
+          },
+        ],
+      };
+
+      mountJudgeDialog({ patchStatusCode: 400, patchErrorResponse });
+
+      cy.get('[data-test="custom-value-field"]').clear().type('invalid-custom-value');
+      cy.get('[data-test="accept-custom-button"]').click();
+      cy.get('[data-test="confirmation-modal"]').should('be.visible');
+
+      cy.get('[data-test="confirmation-modal-error-message"]')
+        .should('contain.text', 'Custom datapoint not valid.')
+        .and(
+          'contain.text',
+          'Custom datapoint given does not match the specification of extendedDecimalScope1GhgEmissionsInTonnes.'
+        )
+        .and('contain.text', 'invalid-input')
+        .and('contain.text', 'HTTP 400');
+
       cy.get('[data-test="ok-confirmation-modal-button"]').click();
       cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
