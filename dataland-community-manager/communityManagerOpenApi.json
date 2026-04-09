@@ -952,6 +952,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-financials-2026-73",
@@ -1212,6 +1213,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-financials-2026-73",
@@ -1395,6 +1397,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-financials-2026-73",
@@ -1980,6 +1983,7 @@
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
+              "integrationTesting",
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-financials-2026-73",
@@ -2112,6 +2116,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "integrationTesting",
                 "sfdr",
                 "eutaxonomy-financials",
                 "eutaxonomy-financials-2026-73",
@@ -2657,6 +2662,7 @@
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
             "enum": [
+              "integrationTesting",
               "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-financials-2026-73",
