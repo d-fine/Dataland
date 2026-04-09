@@ -42,6 +42,8 @@ const ASTRO_ROUTES = [
   '/',
   '/about',
   '/product',
+  '/partner-stories',
+  '/community',
   '/newsletter',
   '/testimonials',
   '/legal',
