@@ -23,38 +23,30 @@ const {
       {intro && <p class="mx-auto max-w-[760px] text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{intro}</p>}
     </div>
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {stories.map((story) => (
-        <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border-[3px] border-[#EAF2F8] bg-[#EAF2F8] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-          <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
+        <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border border-[#9FB2C3] bg-[#C8D5E0] text-[var(--color-text)] no-underline shadow-[0_8px_24px_rgba(15,23,42,0.06)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_14px_30px_rgba(15,23,42,0.1)]">
+          <div class="flex min-h-[8.75rem] items-center justify-center overflow-hidden bg-[var(--color-surface-50)] px-4 py-5">
             <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
               <img
                 src={story.logo}
                 alt=""
-                class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
+                class:list={['h-20 w-full object-contain object-center lg:h-24', story.logoClassName]}
                 loading="lazy"
-                width="220"
-                height="64"
+                width="320"
+                height="120"
               />
             </div>
           </div>
-          <div class="flex h-full flex-col gap-4 p-6">
-            <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-              <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
-              {story.secondaryTags.map((tag) => (
-                <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">{tag}</span>
-              ))}
+          <div class="flex h-full flex-col justify-between gap-5 bg-[#C8D5E0] p-6 lg:p-8">
+            <div class="flex flex-col gap-3">
+              <h3 class="m-0 text-[1.2rem] font-bold leading-tight text-[var(--color-text)]">{story.title}</h3>
+              <p class="m-0 text-[0.98rem] leading-relaxed text-[var(--color-text-muted)]">{story.text}</p>
             </div>
-            <h3 class="m-0 min-h-[4.5rem] text-[1.05rem] font-medium leading-snug text-[var(--color-text)]">{story.title}</h3>
-            <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.text}</p>
-            <span class="mt-auto text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+            <span class="text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
           </div>
         </a>
       ))}
-    </div>
-
-    <div class="flex justify-center">
-      <a href="/partner-stories" class="btn btn--outline">See all partner stories</a>
     </div>
   </div>
 </section>
