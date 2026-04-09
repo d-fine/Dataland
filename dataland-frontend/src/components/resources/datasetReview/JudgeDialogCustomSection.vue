@@ -140,7 +140,7 @@
         :disabled="acceptDisabled || !isCustomInputValid"
         data-test="accept-custom-button"
       />
-      <span v-if="editModeEnabled && !isJsonValid && jsonValue.trim().length > 0">
+      <span v-if="editModeEnabled && !isJsonValid && jsonValue.trim().length > 0" class="error-message">
         Custom JSON must be valid JSON.
       </span>
     </div>
@@ -268,5 +268,9 @@ watch(editModeEnabled, (newVal) => {
       overflow: hidden;
     }
   }
+}
+
+.error-message {
+  color: var(--red);
 }
 </style>
