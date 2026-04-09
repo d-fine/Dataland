@@ -18,6 +18,7 @@ import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@s
 
 const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+
 /**
  * Fills all the required fields of the eu-taxonomy upload form for non-financial companies to enable submit button
  */

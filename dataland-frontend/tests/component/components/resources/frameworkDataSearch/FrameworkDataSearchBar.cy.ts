@@ -4,7 +4,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { faker } from '@faker-js/faker';
 
-const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 let modifiedMockDataSearchResponse: Array<BasicCompanyInformation>;
 const highlightedSubString = 'this_is_expected_to_be_highlighted';

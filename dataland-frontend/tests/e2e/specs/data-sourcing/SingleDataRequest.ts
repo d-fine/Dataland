@@ -15,7 +15,7 @@ import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefiniti
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils.ts';
 import { assignCompanyRight } from '@e2e/utils/CompanyRightsUtils.ts';
 
-const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Checks if all expected human-readable labels are visible in the dropdown options

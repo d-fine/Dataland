@@ -24,6 +24,8 @@ const longTimeoutInMs = Number(
   (Cypress.expose() as { long_timeout_in_ms?: number | string }).long_timeout_in_ms ?? 100000
 );
 
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+
 /**
  * Uploads data for a given company for specified years using a generic framework.
  *

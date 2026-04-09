@@ -4,7 +4,7 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion

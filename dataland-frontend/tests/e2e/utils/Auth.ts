@@ -14,8 +14,8 @@ import {
   getAdminPw,
 } from '@e2e/utils/Cypress';
 
-const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked

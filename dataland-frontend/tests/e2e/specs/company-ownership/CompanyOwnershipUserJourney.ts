@@ -8,7 +8,7 @@ import { CompanyRole } from '@clients/communitymanager';
 import { type StoredCompany } from '@clients/backend';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-const longTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * This method verifies that the summary panel for each framework is presented as expected

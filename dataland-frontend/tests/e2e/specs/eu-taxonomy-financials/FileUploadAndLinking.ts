@@ -8,7 +8,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
-const shortTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
