@@ -125,7 +125,7 @@ class QaReviewQueryService
             }
 
             logger.info(
-                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} judgementCount={} elapsedMs={}",
+                "perf|getInfoOnPendingDatasets|findAllByDatasetIdIn|datasetCount={} elapsedMs={}",
                 datasetUUIDs.size,
                 (System.nanoTime() - getJudgementsStartANs) / 1_000_000,
             )
