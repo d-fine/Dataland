@@ -20,10 +20,6 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
-const longTimeoutInMs = Number(
-  (Cypress.expose() as { long_timeout_in_ms?: number | string }).long_timeout_in_ms ?? 100000
-);
-
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
