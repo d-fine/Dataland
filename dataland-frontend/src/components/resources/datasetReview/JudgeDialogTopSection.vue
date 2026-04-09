@@ -63,14 +63,14 @@
                     {{ row.value ?? '—' }}
                   </span>
                   <PrimeButton
-                    v-if="!row.noOverflow && isOverflowing(String(row.value || ''))"
+                    v-if="!row.noOverflow && isOverflowing(String(row.value ?? ''))"
                     :data-test="`${row.label.toLowerCase()}-overflow-icon`"
                     label="+"
                     variant="text"
                     rounded
                     size="small"
                     class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(row.value || ''))"
+                    @mouseenter="(e) => emit('showPopover', e, String(row.value ?? ''))"
                     @mouseleave="emit('hidePopover')"
                     :aria-label="`Show full ${row.label.toLowerCase()}`"
                   />
