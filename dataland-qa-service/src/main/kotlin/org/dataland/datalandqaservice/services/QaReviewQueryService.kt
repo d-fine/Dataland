@@ -80,6 +80,7 @@ class QaReviewQueryService
          */
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
+            val getInfoOnPendingDatasetsStartNs = System.nanoTime()
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
             val entities =
@@ -96,7 +97,13 @@ class QaReviewQueryService
 
             val datasetIds = entities.map { it.dataId }
 
+            val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
+            logger.info(
+                "perf|getInfoOnPendingDatasets|getNumberOfQaReportsForDatasetIds|datasetCount={} elapsedMs={}",
+                datasetIds.size,
+                (System.nanoTime() - getNumberOfQaReportsForDatasetIdsStartNs) / 1_000_000,
+            )
 
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
             val latestJudgementByDatasetId =
@@ -114,6 +121,12 @@ class QaReviewQueryService
                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
                         )
                     }
+            logger.info(
+                "perf|getInfoOnPendingDatasets|datasetCount={} responseCount={} elapsedMs={}",
+                datasetIds.size,
+                qaReviewResponses.size,
+                (System.nanoTime() - getInfoOnPendingDatasetsStartNs) / 1_000_000,
+            )
             return addPrioritiesToResponse(qaReviewResponses)
         }
 
@@ -245,15 +258,15 @@ class QaReviewQueryService
         ): String? = getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod).firstOrNull()?.dataId
 
         /**
-         * Returns the number of QA reports for all data points contained in the given dataId
+         * Returns the number of QA reports for all data points contained in the given datasetId
          */
-        private fun getNumberOfQaReportsForDataId(dataId: String): Long =
+        private fun getNumberOfQaReportsForDatasetId(datasetId: String): Long =
             try {
-                val dataPointIds = metaDataControllerApi.getContainedDataPoints(dataId).values.toSet()
+                val dataPointIds = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
                 dataPointQaReportManager.countQaReportsForDataPointIds(dataPointIds)
             } catch (clientException: ClientException) {
                 if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                    logger.warn("Could not find data points for dataset $dataId, returning 0 QA reports")
+                    logger.warn("Could not find data points for dataset $datasetId, returning 0 QA reports")
                     0L
                 } else {
                     throw clientException
@@ -266,13 +279,27 @@ class QaReviewQueryService
          * QA reports for all collected data-point IDs in a single DB query.
          */
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
+            val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
             val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
             for (datasetId in datasetIds) {
+                val getContainedDataPointsStartNs = System.nanoTime()
                 try {
-                    dataPointIdsByDatasetId[datasetId] = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
+                    val containedDataPoints = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
+                    dataPointIdsByDatasetId[datasetId] = containedDataPoints
+                    logger.info(
+                        "perf|getInfoOnPendingDatasets|getContainedDataPoints|datasetId={} dataPointCount={} elapsedMs={}",
+                        datasetId,
+                        containedDataPoints.size,
+                        (System.nanoTime() - getContainedDataPointsStartNs) / 1_000_000,
+                    )
                 } catch (clientException: ClientException) {
                     if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
                         logger.warn("Could not find data points for dataset $datasetId, returning 0 QA reports")
+                        logger.info(
+                            "perf|getInfoOnPendingDatasets|getContainedDataPoints|datasetId={} dataPointCount=0 notFound=true elapsedMs={}",
+                            datasetId,
+                            (System.nanoTime() - getContainedDataPointsStartNs) / 1_000_000,
+                        )
                         dataPointIdsByDatasetId[datasetId] = emptySet()
                     } else {
                         throw clientException
@@ -280,15 +307,29 @@ class QaReviewQueryService
                 }
             }
             val allDataPointIds = dataPointIdsByDatasetId.values.flatten().toSet()
+            val countQaReportsForDataPointIdsBulkStartNs = System.nanoTime()
             val totalCountByDataPointId =
                 if (allDataPointIds.isEmpty()) {
                     emptyMap()
                 } else {
                     dataPointQaReportManager.countQaReportsForDataPointIdsBulk(allDataPointIds)
                 }
-            return dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
-                dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
-            }
+            logger.info(
+                "perf|getInfoOnPendingDatasets|countQaReportsForDataPointIdsBulk|dataPointCount={} elapsedMs={}",
+                allDataPointIds.size,
+                (System.nanoTime() - countQaReportsForDataPointIdsBulkStartNs) / 1_000_000,
+            )
+            val qaReportsByDatasetId =
+                dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
+                    dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
+                }
+            logger.info(
+                "perf|getInfoOnPendingDatasets|getNumberOfQaReportsForDatasetIds|datasetCount={} uniqueDataPointCount={} elapsedMs={}",
+                datasetIds.size,
+                allDataPointIds.size,
+                (System.nanoTime() - getNumberOfQaReportsForDatasetIdsStartNs) / 1_000_000,
+            )
+            return qaReportsByDatasetId
         }
 
         /**
@@ -321,7 +362,7 @@ class QaReviewQueryService
          * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
-            val numberQaReports = getNumberOfQaReportsForDataId(dataId)
+            val numberQaReports = getNumberOfQaReportsForDatasetId(dataId)
             val datasetJudgements =
                 datasetJudgementRepository.findAllByDatasetId(convertToUUID(dataId)).map {
                     it.toDatasetJudgementResponse()
