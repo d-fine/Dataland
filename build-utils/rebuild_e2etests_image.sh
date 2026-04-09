@@ -20,4 +20,5 @@ set +o allexport
        ./dataland-backend/backendOpenApi.json  ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
        ./dataland-document-manager/documentManagerOpenApi.json  ./dataland-qa-service/qaServiceOpenApi.json \
        ./dataland-community-manager/communityManagerOpenApi.json ./dataland-user-service/userServiceOpenApi.json \
+       ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json ./dataland-accounting-service/accountingServiceOpenApi.json \
        ./environments/.env.uncritical $gradle_dependencies

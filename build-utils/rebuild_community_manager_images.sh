@@ -3,7 +3,7 @@ set -euxo pipefail
 
 gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
 dependencies="./dataland-community-manager/ ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-message-queue-utils/ $gradle_dependencies"
-dependencies+=" ./dataland-backend/backendOpenApi.json"
+dependencies+=" ./dataland-backend/backendOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json"
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_community_manager_base ./dataland-community-manager/DockerfileBase "dataland-community-manager:assemble" $dependencies
 

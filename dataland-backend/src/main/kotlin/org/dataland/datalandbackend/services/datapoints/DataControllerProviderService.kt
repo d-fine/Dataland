@@ -29,10 +29,10 @@ class DataControllerProviderService
         private val metaDataManager: DataMetaInformationManager,
         private val companyQueryManager: CompanyQueryManager,
     ) {
-        private val dataTypeClassCache = ConcurrentHashMap<DataType, Class<*>>()
+        private val dataTypeClassCache = ConcurrentHashMap<DataType, Class<out Any>>()
 
         private fun getDataController(
-            dataTypeClass: Class<*>,
+            dataTypeClass: Class<out Any>,
             dataManager: DatasetStorageService,
         ): DataController<Any> =
             DataController(
@@ -41,8 +41,7 @@ class DataControllerProviderService
                 dataExportService,
                 dataExportStore,
                 companyQueryManager,
-                dataTypeClass as? Class<Any>
-                    ?: throw IllegalArgumentException("Class type for data type is not compatible."),
+                dataTypeClass,
             )
 
         /**
@@ -64,7 +63,7 @@ class DataControllerProviderService
         /**
          * Get the class for a data type
          */
-        fun getClassForDataType(dataType: DataType): Class<*> {
+        fun getClassForDataType(dataType: DataType): Class<out Any> {
             val valueFromCache = dataTypeClassCache[dataType]
             if (valueFromCache != null) {
                 return valueFromCache
@@ -74,7 +73,7 @@ class DataControllerProviderService
             val modelBeans = provider.findCandidateComponents("org.dataland.datalandbackend")
             val matchingClass =
                 modelBeans
-                    .map { Class.forName(it.beanClassName) }
+                    .map { Class.forName(it.beanClassName).asSubclass(Any::class.java) }
                     .firstOrNull { it.getAnnotation(org.dataland.datalandbackend.annotations.DataType::class.java).name == dataType.name }
                     ?: throw IllegalArgumentException("No class found for data type ${dataType.name}")
             dataTypeClassCache[dataType] = matchingClass

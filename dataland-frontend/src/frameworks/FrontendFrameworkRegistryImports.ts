@@ -3,6 +3,7 @@ import eutaxonomyFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxo
 import eutaxonomyFinancials202673FrontendFrameworkDefinition from '@/frameworks/eutaxonomy-financials-2026-73/FrontendFrameworkDefinition';
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition';
 import eutaxonomyNonFinancials202673FrontendFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials-2026-73/FrontendFrameworkDefinition';
+import integrationtestingFrontendFrameworkDefinition from '@/frameworks/integrationTesting/FrontendFrameworkDefinition';
 import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFrameworkDefinition';
 import nuclearAndGasFrontendFrameworkDefinition from '@/frameworks/nuclear-and-gas/FrontendFrameworkDefinition';
 import pcafFrontendFrameworkDefinition from '@/frameworks/pcaf/FrontendFrameworkDefinition';
@@ -16,6 +17,7 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   eutaxonomyFinancials202673: eutaxonomyFinancials202673FrontendFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
   eutaxonomyNonFinancials202673: eutaxonomyNonFinancials202673FrontendFrameworkDefinition,
+  integrationtesting: integrationtestingFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   nuclearAndGas: nuclearAndGasFrontendFrameworkDefinition,
   pcaf: pcafFrontendFrameworkDefinition,
