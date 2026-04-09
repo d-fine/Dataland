@@ -13,7 +13,7 @@ export interface PatchJudgementArgs {
 /**
  * Vue Query mutation hook to patch judgement details for a specific data point type within a dataset judgement.
  */
-export function usePatchJudgmentDetailsForDataPointMutation(): UseMutationReturnType<
+export function usePatchJudgementDetailsForDataPointMutation(): UseMutationReturnType<
   AxiosResponse<DatasetJudgementResponse>,
   Error,
   PatchJudgementArgs,
