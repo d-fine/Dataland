@@ -30,16 +30,21 @@ import { NEWS_ITEMS } from '../data/news';
           class="h-full w-full max-w-[680px] rounded-[1.5rem] object-contain object-left shadow-[0_20px_55px_rgba(0,0,0,0.28)] lg:max-w-none"
         />
       </div>
-      <div class="flex flex-col justify-center gap-8">
-        <div class="flex flex-col gap-5">
-          <p class="text-[1.2rem] leading-[1.8] m-0 text-white/78 lg:text-[1.42rem]">
-            {COMPANY_COPY.text1}
-          </p>
-          <p class="text-[1.2rem] leading-[1.8] m-0 text-white/78 lg:text-[1.42rem]">
-            Dataland is part of the <span class="font-bold text-[#3E6A8E]">Werte-Stiftung</span> foundation, with strategic support from <span class="font-bold text-[#3E6A8E]">d-fine</span> and <span class="font-bold text-[#3E6A8E]">PwC</span>.
-          </p>
+      <div class="flex h-full flex-col justify-between gap-7 lg:pt-1">
+        <div class="flex flex-col gap-4">
+          <h1 class="m-0 text-[1.9rem] font-bold leading-[1.04] text-white lg:text-[2.3rem]">
+            Built for Europe, in Europe
+          </h1>
+          <div class="flex flex-1 flex-col justify-center gap-4 pt-4 lg:pt-8">
+            <p class="m-0 text-[1.06rem] leading-[1.6] text-white/78 lg:text-[1.18rem]">
+              {COMPANY_COPY.text1}
+            </p>
+            <p class="m-0 text-[1rem] leading-[1.56] text-white/78 lg:text-[1.08rem]">
+              Dataland is part of the <span class="font-bold text-[#3E6A8E]">Werte-Stiftung</span> foundation, with strategic support from <span class="font-bold text-[#3E6A8E]">d-fine</span> and <span class="font-bold text-[#3E6A8E]">PwC</span>.
+            </p>
+          </div>
         </div>
-        <div class="flex flex-wrap items-center gap-x-10 gap-y-6 pt-2">
+        <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 pt-2 lg:flex-nowrap">
           <img src="/static/logos/logo_wertestiftung.png" alt="Werte-Stiftung" width="160" height="64" loading="lazy" class="w-[140px] lg:w-[165px] h-auto object-contain" />
           <img src="/static/logos/logo_d-fine_RGB.svg" alt="d-fine" width="140" height="64" loading="lazy" class="w-[120px] lg:w-[145px] h-auto object-contain brightness-0 invert opacity-95" />
           <img src="/static/logos/logo_pwc.svg" alt="PwC" width="156" height="72" loading="lazy" class="w-[132px] lg:w-[156px] h-auto object-contain" />
@@ -145,7 +150,7 @@ import { NEWS_ITEMS } from '../data/news';
       <div class="flex flex-col justify-between gap-8 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9">
         <div class="flex flex-col gap-5">
           <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Contact</p>
-          <h2 class="m-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[3rem]">Bring sustainability data into your workflow.</h2>
+          <h2 class="m-0 max-w-[12ch] text-[1.9rem] font-bold leading-[1.05] lg:text-[2.3rem]">Bring sustainability data into your workflow.</h2>
           <p class="m-0 max-w-[42rem] text-[1.02rem] leading-relaxed text-white/78 lg:text-[1.12rem]">
             Whether you are exploring membership, a partnership, or a product deep dive, we can point you to the right next step.
           </p>
