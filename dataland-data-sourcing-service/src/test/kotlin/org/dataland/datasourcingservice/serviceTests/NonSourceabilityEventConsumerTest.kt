@@ -44,7 +44,7 @@ class NonSourceabilityEventConsumerTest {
             eventType = eventType,
         )
 
-    private fun stubStoredSourcing(state: DataSourcingState = DataSourcingState.Open): StoredDataSourcing =
+    private fun stubStoredSourcing(state: DataSourcingState = DataSourcingState.Initialized): StoredDataSourcing =
         mock<StoredDataSourcing>().also {
             whenever(it.dataSourcingId).thenReturn(UUID.randomUUID().toString())
             whenever(it.state).thenReturn(state)
@@ -70,7 +70,7 @@ class NonSourceabilityEventConsumerTest {
 
     @Test
     fun `transitionToVerification patches sourcing to NonSourceableVerification when Active`() {
-        val stored = stubStoredSourcing(DataSourcingState.Open)
+        val stored = stubStoredSourcing(DataSourcingState.Initialized)
         val event = buildEvent()
         whenever(queryManager.searchDataSourcings(any(), any(), any(), any(), any(), any()))
             .thenReturn(listOf(stored))

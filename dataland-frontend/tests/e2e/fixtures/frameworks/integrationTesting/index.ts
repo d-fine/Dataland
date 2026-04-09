@@ -10,12 +10,12 @@ import { FAKE_FIXTURES_PER_FRAMEWORK } from '@e2e/fixtures/GenerateFakeFixtures'
 function exportFixturesIntegrationtesting(): void {
   const companyInformationWithIntegrationtestingData = generateIntegrationtestingFixtures(FAKE_FIXTURES_PER_FRAMEWORK);
   fs.writeFileSync(
-    '../testing/data/CompanyInformationWithIntegrationtestingData.json',
+    '../testing/data/CompanyInformationWithIntegrationTestingData.json',
     JSON.stringify(companyInformationWithIntegrationtestingData, null, '\t')
   );
   const preparedFixtureIntegrationtestingData = generateIntegrationtestingPreparedFixtures();
   fs.writeFileSync(
-    '../testing/data/CompanyInformationWithIntegrationtestingPreparedFixtures.json',
+    '../testing/data/CompanyInformationWithIntegrationTestingPreparedFixtures.json',
     JSON.stringify(preparedFixtureIntegrationtestingData, null, '\t')
   );
 }
