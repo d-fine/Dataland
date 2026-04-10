@@ -1,4 +1,7 @@
 {
+	"integrationTesting": {
+		"numberOfProvidedReportingPeriods": 24
+	},
 	"sfdr": {
 		"numberOfProvidedReportingPeriods": 6
 	},
