@@ -8,7 +8,6 @@ class DataTypesExtractorTest {
     fun `check if extracting data types works as expected`() {
         val expectedTypes =
             setOf(
-                "integrationTesting",
                 "eutaxonomy-financials",
                 "eutaxonomy-financials-2026-73",
                 "eutaxonomy-non-financials",
