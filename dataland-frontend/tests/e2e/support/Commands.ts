@@ -38,7 +38,7 @@ declare global {
   }
 }
 
-const ASTRO_ROUTES = [
+const ASTRO_ROUTES = new Set([
   '/',
   '/about',
   '/product',
@@ -50,7 +50,7 @@ const ASTRO_ROUTES = [
   '/dataprivacy',
   '/imprint',
   '/community',
-];
+]);
 /**
  * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
  * @param endpoint the endpoint to navigate to via URL
@@ -60,7 +60,7 @@ export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
   closeCookieBannerIfShown();
 
-  if (ASTRO_ROUTES.includes(endpoint)) {
+  if (ASTRO_ROUTES.has(endpoint)) {
     return cy.get('main#main-content').should('exist');
   }
 
