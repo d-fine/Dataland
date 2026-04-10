@@ -19,7 +19,7 @@
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->
   <div class="h-4rem" />
-  <DatasetsTabMenu v-if="authenticated || (!authenticated && $route.path !== '/nocontent')" />
+  <DatasetsTabMenu v-if="authenticated || (!authenticated && !hideDatasetsTabMenuPages.has($route.path))" />
 </template>
 
 <script lang="ts">
@@ -32,8 +32,10 @@ export default defineComponent({
   name: 'TheHeader',
   components: { AuthSection, UserProfileDropDown, DatasetsTabMenu },
   setup() {
+    const hideDatasetsTabMenuPages = new Set(['/nocontent', '/login', '/register']);
     return {
       authenticated: inject<boolean>('authenticated'),
+      hideDatasetsTabMenuPages,
     };
   },
 });
