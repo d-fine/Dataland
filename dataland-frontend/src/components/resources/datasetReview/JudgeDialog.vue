@@ -139,8 +139,8 @@
   />
   <PopupConfirmationModal
     v-model:visible="isAllReviewedModalVisible"
-    header="All datapoints reviewed!"
-    message="Every datapoint has been reviewed at least once."
+    header="All data points reviewed!"
+    message="Every data point has been reviewed at least once."
     :error-message="undefined"
     :is-loading="false"
     :is-success="true"
@@ -445,7 +445,7 @@ const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
 
 const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
 
-// Track which KPI datapoint types exist in this dialog
+// Track which KPI data point types exist in this dialog
 const relevantDataPointTypeIds = computed<string[]>(() =>
   props.kpiRows.map((row) => row.dataPointTypeId).filter((id): id is string => !!id)
 );
@@ -454,7 +454,7 @@ const hasShownAllReviewedNotice = ref(false);
 const isAllReviewedModalVisible = ref(false);
 
 /**
- * Returns true when every relevant datapoint has an accepted source.
+ * Returns true when every relevant data point has an accepted source.
  */
 const areAllDataPointsReviewed = computed<boolean>(() => {
   const judgement = datasetJudgement.value;
@@ -586,7 +586,7 @@ function patchCurrentDatapoint(
         const finalDetails = detailsParts.length > 0 ? detailsParts.join('\n') : err.message || 'Unknown error.';
 
         errorModalHeader.value = 'Failed to update data point judgement';
-        errorModalMessage.value = 'Your decision could not be saved. Please review your custom datapoint.';
+        errorModalMessage.value = 'Your decision could not be saved. Please review your custom data point.';
         errorModalDetails.value = finalDetails;
 
         isErrorModalVisible.value = true;
@@ -627,7 +627,7 @@ function acceptOriginalDatapoint(): void {
     AcceptedDataPointSource.Original,
     undefined,
     undefined,
-    `Error in patching datasetJudgement object for datapointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
+    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
   );
 }
 
@@ -643,7 +643,7 @@ function acceptQaReportDatapoint(): void {
     AcceptedDataPointSource.Qa,
     currentQaReport.value.reporterUserId,
     undefined,
-    `Error in patching datasetJudgement object for datapointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
+    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
   );
 }
 
@@ -664,7 +664,7 @@ function acceptCustomDatapoint(): void {
     AcceptedDataPointSource.Custom,
     undefined,
     customDataPointJson,
-    `Error in patching datasetJudgement object for datapointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
+    `Error in patching datasetJudgement object for dataPointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
   );
 }
 
