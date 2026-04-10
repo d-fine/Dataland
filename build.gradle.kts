@@ -24,9 +24,12 @@ subprojects {
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-            jvmTarget = jvmVersion.majorVersion
+        compilerOptions {
+            freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn"))
+            jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget
+                    .fromTarget(jvmVersion.majorVersion),
+            )
         }
     }
     sonar {
@@ -79,7 +82,8 @@ val normalizeFeCoverageForSonar by tasks.registering {
         val feCoverageDir = projectDir.resolve("fe-coverage")
         if (!feCoverageDir.isDirectory) return@doLast
 
-        feCoverageDir.listFiles { file -> file.name.endsWith(".info") }
+        feCoverageDir
+            .listFiles { file -> file.name.endsWith(".info") }
             ?.forEach { reportFile ->
                 val content = reportFile.readText()
                 val normalized =
