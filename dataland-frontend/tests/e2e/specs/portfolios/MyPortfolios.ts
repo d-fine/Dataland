@@ -4,9 +4,7 @@ import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
-const mediumTimeoutInMs = Number(
-  (Cypress.expose() as { medium_timeout_in_ms?: number | string }).medium_timeout_in_ms ?? 30000
-);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Adds a portfolio via the UI.

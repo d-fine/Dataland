@@ -14,7 +14,7 @@ describe('As a developer, I want to ensure that the deployment is okay', () => {
   });
 
   it('retrieve info endpoint and check commit', () => {
-    const commitId = (Cypress.config('expose') as Record<string, unknown>).commit_id as string;
+    const commitId = Cypress.expose('commit_id') as string;
     cy.request(`${getBaseUrl()}/gitinfo`)
       .should('have.a.property', 'body')
       .should('have.a.property', 'commit')

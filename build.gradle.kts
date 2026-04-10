@@ -1,7 +1,5 @@
 // main
 
-import java.nio.file.Files
-
 val jacocoVersion: String by project
 val ktlintVersion: String by project
 val githubUser: String by project
@@ -78,21 +76,18 @@ plugins {
 
 val normalizeFeCoverageForSonar by tasks.registering {
     doLast {
-        val feCoverageDir = projectDir.toPath().resolve("fe-coverage")
-        if (!Files.isDirectory(feCoverageDir)) return@doLast
+        val feCoverageDir = projectDir.resolve("fe-coverage")
+        if (!feCoverageDir.isDirectory) return@doLast
 
-        Files.list(feCoverageDir).use { reportStream ->
-            reportStream
-                .filter { Files.isRegularFile(it) && it.fileName.toString().endsWith(".info") }
-                .forEach { reportPath ->
-                    val content = Files.readString(reportPath)
-                    val normalized =
-                        content
-                            .replace(Regex("""SF:/app/dataland-frontend/"""), "SF:dataland-frontend/")
-                            .replace(Regex("""SF:.*/Dataland/"""), "SF:")
-                    Files.writeString(reportPath, normalized)
-                }
-        }
+        feCoverageDir.listFiles { file -> file.name.endsWith(".info") }
+            ?.forEach { reportFile ->
+                val content = reportFile.readText()
+                val normalized =
+                    content
+                        .replace(Regex("""SF:/app/dataland-frontend/"""), "SF:dataland-frontend/")
+                        .replace(Regex("""SF:.*/Dataland/"""), "SF:")
+                reportFile.writeText(normalized)
+            }
     }
 }
 
@@ -109,11 +104,7 @@ sonar {
                 .asFile,
         )
         property("sonar.qualitygate.wait", true)
-        val frontendLcovFiles =
-            fileTree("$projectDir/fe-coverage") {
-                include("*.info")
-            }.files
-        property("sonar.javascript.lcov.reportPaths", frontendLcovFiles.joinToString(",") { file -> file.path })
+        property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
         property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage").files)
         property(
             "sonar.coverage.exclusions",
