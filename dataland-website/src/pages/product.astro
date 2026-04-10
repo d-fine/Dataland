@@ -316,27 +316,41 @@ const CREDITS_TABLE = [
   </section>
 
   <!-- Section 8: Documentation (dark) -->
-  <section id="documentation" class="scroll-mt-16 py-16 px-6 bg-[#111111] text-white lg:py-20 lg:px-8" aria-label="Documentation and API references">
+  <section
+    id="documentation"
+    class="scroll-mt-16 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-16 text-white lg:px-8 lg:py-20"
+    aria-label="Documentation and API references"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12">
       <h2 class="text-[1.75rem] font-bold m-0 text-center">Documentation</h2>
 
-      <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-[1fr_1.5fr]">
+      <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-[1fr_1.5fr] md:items-stretch">
         <!-- Left card: Framework Guide -->
-        <div class="flex flex-col gap-4 p-6 rounded-xl border border-white/10 bg-white/[0.04]">
+        <div class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9">
           <h3 class="text-lg font-bold m-0 text-white">Framework Guide</h3>
-          <p class="text-[0.9375rem] leading-relaxed m-0 text-white/70">{FRAMEWORK_DOC.description}</p>
-          <a href={FRAMEWORK_DOC.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[var(--color-primary)] text-sm font-semibold no-underline self-start hover:underline">
+          <p class="text-[0.98rem] leading-relaxed m-0 text-white/74">{FRAMEWORK_DOC.description}</p>
+          <a
+            href={FRAMEWORK_DOC.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-[var(--color-primary)] px-8 py-4 text-base font-semibold text-white no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
+          >
             View on GitHub &rarr;
           </a>
         </div>
 
         <!-- Right card: API Reference -->
-        <div class="flex flex-col gap-4 p-6 rounded-xl border border-white/10 bg-white/[0.04]">
+        <div class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9">
           <h3 class="text-lg font-bold m-0 text-white">API Reference</h3>
-          <p class="text-[0.9375rem] leading-relaxed m-0 text-white/70">Interactive Swagger documentation for every Dataland service.</p>
-          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <p class="text-[0.98rem] leading-relaxed m-0 text-white/74">Interactive Swagger documentation for every Dataland service.</p>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {API_DOC_LINKS.map((doc) => (
-              <a href={doc.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.06] text-white/90 text-sm font-medium no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/[0.12] hover:text-white">
+              <a
+                href={doc.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/8 px-4 py-3 text-sm font-medium text-white/90 no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/12 hover:text-white"
+              >
                 <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shrink-0" aria-hidden="true"></span>
                 {doc.label}
               </a>
@@ -349,8 +363,8 @@ const CREDITS_TABLE = [
       <div class="flex flex-col items-center gap-5 pt-4 border-t border-white/10 w-full">
         <p class="text-[0.9375rem] text-white/50 m-0">Ready to get started?</p>
         <div class="flex flex-wrap gap-3 justify-center">
-          <a href="/about#contact" class="inline-flex items-center px-6 py-2.5 bg-[var(--color-primary)] text-white font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]">Get in touch</a>
-          <a href="/register" class="inline-flex items-center px-6 py-2.5 bg-white text-[#111111] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Try it free</a>
+          <a href="/about#contact" class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]">Get in touch</a>
+          <a href="/register" class="inline-flex items-center px-8 py-4 bg-white text-[#111111] font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Try it free</a>
         </div>
       </div>
     </div>
