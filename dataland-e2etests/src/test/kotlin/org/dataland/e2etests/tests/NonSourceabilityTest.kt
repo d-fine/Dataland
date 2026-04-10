@@ -1,5 +1,8 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.dataSourcingService.openApiClient.model.DataSourcingState
+import org.dataland.dataSourcingService.openApiClient.model.RequestState
+import org.dataland.dataSourcingService.openApiClient.model.SingleRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceabilityRequest
 import org.dataland.e2etests.auth.GlobalAuth
@@ -17,17 +20,22 @@ import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQ
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NonSourceabilityTest {
     private val apiAccessor = ApiAccessor()
-
     private val testReportingPeriod = "2026"
+
+    private data class Ctx(
+        val companyId: String,
+        val dataType: DataTypeEnum,
+        val reportingPeriod: String,
+        val dataSourcingId: String? = null,
+    )
+
+    private fun <T> asAdmin(block: () -> T): T = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) { block() }
 
     @Test
     fun `POST metadata nonSourceable followed by GET returns the correct triple`() {
-        val companyId =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
+        val companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId }
 
-        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+        asAdmin {
             apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
                 NonSourceabilityRequest(
                     companyId = companyId,
@@ -40,7 +48,7 @@ class NonSourceabilityTest {
         }
 
         val results =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            asAdmin {
                 apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
                     companyId = companyId,
                     dataType = DataTypeEnum.sfdr,
@@ -57,26 +65,69 @@ class NonSourceabilityTest {
 
     @Test
     fun `POST nonSourceable with bypassQa false triggers full QA lifecycle and currentlyActive becomes true after acceptance`() {
-        val companyId =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-            }
+        var ctx =
+            Ctx(
+                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = testReportingPeriod,
+            )
+        ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
 
-        val nonSourceabilityId = postNonSourceableAndAssertPending(companyId)
-        assertBackendEntryIsPending(companyId)
-        assertQaReviewRowAppears(companyId)
-        acceptInQaServiceAndAssert(nonSourceabilityId)
-        assertBackendEntryIsAcceptedAndActive(companyId)
+        val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
+        assertBackendEntryIsPending(ctx)
+        assertQaReviewRowAppears(ctx)
+        assertDsStateIsNonSourceableVerification(ctx)
+        postQaDecision(nonSourceabilityId, QaServiceQaStatus.Accepted)
+        assertQaReviewIsAccepted(ctx)
+        assertBackendEntryIsAcceptedAndActive(ctx)
+        assertDsStateIsNonSourceable(ctx)
     }
 
-    private fun postNonSourceableAndAssertPending(companyId: String): String {
+    @Test
+    fun `POST nonSourceable with bypassQa false and QA Rejected keeps backend inactive and DS state unchanged`() {
+        var ctx =
+            Ctx(
+                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = testReportingPeriod,
+            )
+        ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
+
+        val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
+        assertBackendEntryIsPending(ctx)
+        assertQaReviewRowAppears(ctx)
+        assertDsStateIsNonSourceableVerification(ctx)
+        postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
+        assertQaReviewIsRejected(ctx)
+        assertBackendEntryIsRejectedAndInactive(ctx)
+        assertDsStateIsUnchanged(ctx, DataSourcingState.NonSourceableVerification)
+    }
+
+    @Test
+    fun `POST nonSourceable with bypassQa true immediately accepts entry and transitions DS to NonSourceable`() {
+        var ctx =
+            Ctx(
+                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = testReportingPeriod,
+            )
+        ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
+
+        assertDsStateIsNonSourceableVerification(ctx)
+        postNonSourceableWithBypassQa(ctx)
+        assertNoQaReviewRowExists(ctx)
+        assertBackendEntryIsAcceptedAndActive(ctx)
+        assertDsStateIsNonSourceable(ctx)
+    }
+
+    private fun postNonSourceableAndAssertPending(ctx: Ctx): String {
         val createdEntry =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            asAdmin {
                 apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
                     NonSourceabilityRequest(
-                        companyId = companyId,
-                        dataType = DataTypeEnum.sfdr,
-                        reportingPeriod = testReportingPeriod,
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
                         reason = "No public source available",
                         bypassQa = false,
                     ),
@@ -87,32 +138,28 @@ class NonSourceabilityTest {
         return createdEntry.nonSourceabilityId
     }
 
-    private fun assertBackendEntryIsPending(companyId: String) {
+    private fun assertBackendEntryIsPending(ctx: Ctx) {
         val entries =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            asAdmin {
                 apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                    companyId = companyId,
-                    dataType = DataTypeEnum.sfdr,
-                    reportingPeriod = testReportingPeriod,
+                    companyId = ctx.companyId,
+                    dataType = ctx.dataType,
+                    reportingPeriod = ctx.reportingPeriod,
                 )
             }
         assertEquals(1, entries.size, "Expected exactly one entry for the posted triple")
-        val entry = entries.first()
-        assertEquals(companyId, entry.companyId)
-        assertEquals(DataTypeEnum.sfdr, entry.dataType)
-        assertEquals(testReportingPeriod, entry.reportingPeriod)
-        assertEquals(BackendQaStatus.Pending, entry.qaStatus)
-        assertFalse(entry.currentlyActive)
+        assertEquals(BackendQaStatus.Pending, entries.first().qaStatus)
+        assertFalse(entries.first().currentlyActive)
     }
 
-    private fun assertQaReviewRowAppears(companyId: String) {
+    private fun assertQaReviewRowAppears(ctx: Ctx) {
         awaitUntilAsserted {
             val qaReviews =
-                GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                asAdmin {
                     apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
-                        companyId = companyId,
-                        dataType = DataTypeEnum.sfdr.value,
-                        reportingPeriod = testReportingPeriod,
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType.value,
+                        reportingPeriod = ctx.reportingPeriod,
                     )
                 }
             assertTrue(qaReviews.isNotEmpty(), "QA review row must appear after backend emits non-sourceability-created event")
@@ -120,25 +167,40 @@ class NonSourceabilityTest {
         }
     }
 
-    private fun acceptInQaServiceAndAssert(nonSourceabilityId: String) {
+    private fun postQaDecision(
+        nonSourceabilityId: String,
+        qaStatus: QaServiceQaStatus,
+    ) {
         val qaDecision =
-            GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            asAdmin {
                 apiAccessor.nonSourceabilityQaControllerApi.postNonSourceabilityDecision(
                     nonSourceabilityId = nonSourceabilityId,
-                    qaStatus = QaServiceQaStatus.Accepted,
+                    qaStatus = qaStatus,
                 )
             }
-        assertEquals(QaServiceQaStatus.Accepted, qaDecision.qaStatus, "POST decision response must reflect Accepted status")
+        assertEquals(qaStatus, qaDecision.qaStatus, "POST decision response must reflect requested status")
     }
 
-    private fun assertBackendEntryIsAcceptedAndActive(companyId: String) {
+    private fun assertQaReviewIsAccepted(ctx: Ctx) {
+        val qaReviews =
+            asAdmin {
+                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                    companyId = ctx.companyId,
+                    dataType = ctx.dataType.value,
+                    reportingPeriod = ctx.reportingPeriod,
+                )
+            }
+        assertEquals(QaServiceQaStatus.Accepted, qaReviews.first().qaStatus, "QA service must persist Accepted status after decision")
+    }
+
+    private fun assertBackendEntryIsAcceptedAndActive(ctx: Ctx) {
         awaitUntilAsserted {
             val entries =
-                GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+                asAdmin {
                     apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                        companyId = companyId,
-                        dataType = DataTypeEnum.sfdr,
-                        reportingPeriod = testReportingPeriod,
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
                     )
                 }
             assertEquals(1, entries.size)
@@ -146,5 +208,109 @@ class NonSourceabilityTest {
             assertEquals(BackendQaStatus.Accepted, entry.qaStatus, "Backend entry must be Accepted after QA acceptance event")
             assertTrue(entry.currentlyActive, "currentlyActive must be true after QA acceptance")
         }
+    }
+
+    private fun initializeDataSourcing(companyId: String): String {
+        val requestId =
+            asAdmin {
+                apiAccessor.dataSourcingRequestControllerApi
+                    .createRequest(
+                        SingleRequest(
+                            companyIdentifier = companyId,
+                            dataType = DataTypeEnum.sfdr.value,
+                            reportingPeriod = testReportingPeriod,
+                            memberComment = null,
+                        ),
+                    ).requestId
+            }
+        val storedRequest =
+            asAdmin {
+                apiAccessor.dataSourcingRequestControllerApi.patchRequestState(requestId, RequestState.Processing)
+            }
+        return storedRequest.dataSourcingEntityId!!
+    }
+
+    private fun assertDsStateIsNonSourceableVerification(ctx: Ctx) {
+        awaitUntilAsserted {
+            val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
+            assertEquals(
+                DataSourcingState.NonSourceableVerification,
+                ds.state,
+                "DS state must be NonSourceableVerification after non-sourceability posted",
+            )
+        }
+    }
+
+    private fun assertDsStateIsNonSourceable(ctx: Ctx) {
+        awaitUntilAsserted {
+            val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
+            assertEquals(DataSourcingState.NonSourceable, ds.state, "DS state must be NonSourceable after QA acceptance")
+        }
+    }
+
+    private fun assertQaReviewIsRejected(ctx: Ctx) {
+        val qaReviews =
+            asAdmin {
+                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                    companyId = ctx.companyId,
+                    dataType = ctx.dataType.value,
+                    reportingPeriod = ctx.reportingPeriod,
+                )
+            }
+        assertEquals(QaServiceQaStatus.Rejected, qaReviews.first().qaStatus, "QA service must persist Rejected status after decision")
+    }
+
+    private fun assertBackendEntryIsRejectedAndInactive(ctx: Ctx) {
+        awaitUntilAsserted {
+            val entries =
+                asAdmin {
+                    apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertEquals(1, entries.size)
+            val entry = entries.first()
+            assertEquals(BackendQaStatus.Rejected, entry.qaStatus, "Backend entry must be Rejected after QA rejection event")
+            assertFalse(entry.currentlyActive, "currentlyActive must be false after QA rejection")
+        }
+    }
+
+    private fun assertDsStateIsUnchanged(
+        ctx: Ctx,
+        expected: DataSourcingState,
+    ) {
+        val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
+        assertEquals(expected, ds.state, "DS state must remain $expected after QA rejection")
+    }
+
+    private fun postNonSourceableWithBypassQa(ctx: Ctx) {
+        val createdEntry =
+            asAdmin {
+                apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
+                    NonSourceabilityRequest(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
+                        reason = "No public source available",
+                        bypassQa = true,
+                    ),
+                )
+            }
+        assertEquals(BackendQaStatus.Accepted, createdEntry.qaStatus, "Entry must be immediately Accepted when bypassQa=true")
+        assertTrue(createdEntry.currentlyActive, "Entry must be immediately active when bypassQa=true")
+    }
+
+    private fun assertNoQaReviewRowExists(ctx: Ctx) {
+        val qaReviews =
+            asAdmin {
+                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                    companyId = ctx.companyId,
+                    dataType = ctx.dataType.value,
+                    reportingPeriod = ctx.reportingPeriod,
+                )
+            }
+        assertTrue(qaReviews.isEmpty(), "QA service must have no review rows when bypassQa=true")
     }
 }
