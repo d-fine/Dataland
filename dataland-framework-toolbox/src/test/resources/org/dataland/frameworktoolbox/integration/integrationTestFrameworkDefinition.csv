@@ -1,0 +1,14 @@
+Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
+test-string,Section,Subsection,Test String,This is a string for testing,String,,,,,,
+test-number,Section,Subsection,Test Number,This is a number for testing,Number,,,,,,
+test-yes-no,Section,Subsection,Test Yes or No,This is Yes or No for testing,Yes/No,,,,,,
+test-yes-no-na,Section,Subsection,Test Yes or No or Na,This is Yes or No or N/A for testing,Yes/No/NA,,,,,,
+test-date,Section,Subsection,Test Date,This is a date for testing,Date,,,,,,
+test-percentage,Section,Subsection,Test Percentage,This is a percentage for testing,Percentage,,,,,,
+test-dependency,Section,Subsection,Test Field With Dependency,This is a field with a dependency,String,,,,test-yes-no,Yes,
+test-required,Section,Subsection,Mandatory Field,This field is mandatory,String,,,,,,Yes
+no-subsection,Section,,No Subsection,This field does not have a subsection,String,,,,,,
+no-section,,,No Section,This field has no section or subsection,String,,,,,,
+simple-datapoint,Section,Subsection,Simple Datapoint,This is a datapoint with simple document support,Yes/No,,,Simple,,,
+extended-datapoint,Section,Subsection,Extended Datapoint,This is a datapoint with extended document support,Yes/No,,,Extended,,,
+required-extended-datapoint,Section,Subsection,Extended Datapoint Required,This is a required datapoint with extended document support,String,,,Extended,,,Yes
