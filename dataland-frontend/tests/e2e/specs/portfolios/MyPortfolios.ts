@@ -144,6 +144,7 @@ describeIf(
       addPortfolio(secondPortfolioName, permIdOfExistingCompany);
       cy.get(`[data-test="portfolio-${secondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.get('[data-test="${editedSecondPortfolioName}"]', { timeout: mediumTimeoutInMs }).click();
       cy.get(`[data-test="portfolio-${secondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 1);
 
       // Edit the second portfolio and verify it is displayed afterward
@@ -166,6 +167,7 @@ describeIf(
       });
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.get('[data-test="${editedSecondPortfolioName}"]', { timeout: mediumTimeoutInMs }).click();
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
@@ -179,6 +181,7 @@ describeIf(
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.get('[data-test="${editedSecondPortfolioName}"]', { timeout: mediumTimeoutInMs }).click();
 
       deletePortfolio(editedSecondPortfolioName);
       deletePortfolio(portfolioName);
