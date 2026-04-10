@@ -168,10 +168,8 @@ export function getKeycloakToken(
  * Logs in as the reader user via the keycloak login form.
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function loginAsReader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<string> {
-  return getReaderPw().then((pw) => {
-    login(reader_name, pw, otpGenerator);
-  });
+export function loginAsReader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<void> {
+  return getReaderPw().then((pw) => login(reader_name, pw, otpGenerator));
 }
 
 /**
