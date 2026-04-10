@@ -168,7 +168,7 @@ export function getKeycloakToken(
  * Logs in as the reader user via the keycloak login form.
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function loginAsReader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<string> {
+export function loginAsReader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<void> {
   return getReaderPw().then((pw) => {
     login(reader_name, pw, otpGenerator);
   });
@@ -177,7 +177,7 @@ export function loginAsReader(otpGenerator?: () => string | Promise<string>): Cy
 /**
  * Ensures the reader user is logged in, using a cached session if available.
  */
-export function ensureLoggedInAsReader(): Cypress.Chainable<string> {
+export function ensureLoggedInAsReader(): Cypress.Chainable<void> {
   return getReaderPw().then((pw) => {
     ensureLoggedIn(reader_name, pw);
   });
@@ -198,7 +198,7 @@ export function getReaderToken(client_id = 'dataland-public'): Cypress.Chainable
  * Logs in as the reviewer user via the keycloak login form.
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function loginAsReviewer(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<string> {
+export function loginAsReviewer(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<void> {
   return getReviewerPw().then((pw) => {
     login(reviewer_name, pw, otpGenerator);
   });
@@ -207,7 +207,7 @@ export function loginAsReviewer(otpGenerator?: () => string | Promise<string>): 
 /**
  * Ensures the reviewer user is logged in, using a cached session if available.
  */
-export function ensureLoggedInAsReviewer(): Cypress.Chainable<string> {
+export function ensureLoggedInAsReviewer(): Cypress.Chainable<void> {
   return getReviewerPw().then((pw) => {
     ensureLoggedIn(reviewer_name, pw);
   });
@@ -228,7 +228,7 @@ export function getReviewerToken(client_id = 'dataland-public'): Cypress.Chainab
  * Logs in as the uploader user via the keycloak login form.
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function loginAsUploader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<string> {
+export function loginAsUploader(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<void> {
   return getUploaderPw().then((pw) => {
     login(uploader_name, pw, otpGenerator);
   });
@@ -237,7 +237,7 @@ export function loginAsUploader(otpGenerator?: () => string | Promise<string>): 
 /**
  * Ensures the uploader user is logged in, using a cached session if available.
  */
-export function ensureLoggedInAsUploader(): Cypress.Chainable<string> {
+export function ensureLoggedInAsUploader(): Cypress.Chainable<void> {
   return getUploaderPw().then((pw) => {
     ensureLoggedIn(uploader_name, pw);
   });
@@ -258,7 +258,7 @@ export function getUploaderToken(client_id = 'dataland-public'): Cypress.Chainab
  * Logs in as the judge user via the keycloak login form.
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
-export function loginAsJudge(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<string> {
+export function loginAsJudge(otpGenerator?: () => string | Promise<string>): Cypress.Chainable<void> {
   return getJudgePw().then((pw) => {
     login(judge_name, pw, otpGenerator);
   });
@@ -267,7 +267,7 @@ export function loginAsJudge(otpGenerator?: () => string | Promise<string>): Cyp
 /**
  * Ensures the judge user is logged in, using a cached session if available.
  */
-export function ensureLoggedInAsJudge(): Cypress.Chainable<string> {
+export function ensureLoggedInAsJudge(): Cypress.Chainable<void> {
   return getJudgePw().then((pw) => {
     ensureLoggedIn(judge_name, pw);
   });
@@ -287,7 +287,7 @@ export function getJudgeToken(client_id = 'dataland-public'): Cypress.Chainable<
 /**
  * Logs in as the admin user via the keycloak login form.
  */
-export function loginAsAdmin(): Cypress.Chainable<string> {
+export function loginAsAdmin(): Cypress.Chainable<void> {
   return getAdminPw().then((pw) => {
     login(admin_name, pw);
   });
@@ -296,7 +296,7 @@ export function loginAsAdmin(): Cypress.Chainable<string> {
 /**
  * Ensures the admin user is logged in, using a cached session if available.
  */
-export function ensureLoggedInAsAdmin(): Cypress.Chainable<string> {
+export function ensureLoggedInAsAdmin(): Cypress.Chainable<void> {
   return getAdminPw().then((pw) => {
     ensureLoggedIn(admin_name, pw);
   });

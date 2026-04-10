@@ -20,7 +20,7 @@ export const admin_name = 'data_admin';
 export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
 
 /**
- * Checks the presence of a cypress env variable and ensures it is a string before returning it
+ * Checks the presence of a Cypress env variable and ensures it is a string before returning it
  * throws an error if the environment variable not a string
  * @param variableName the name of the env variable
  * @returns the string value of the environment variable
@@ -39,43 +39,43 @@ export function getStringCypressEnv(variableName: string): Cypress.Chainable<str
 }
 
 /**
- * Retrieves the password for the reader user from the cypress environment variables.
- * @returns a cypress string chainable containing the reader password
+ * Retrieves the password for the reader user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the reader password
  */
 export function getReaderPw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_READER_PASSWORD');
 }
 /**
- * Retrieves the password for the uploader user from the cypress environment variables.
- * @returns a cypress string chainable containing the uploader password
+ * Retrieves the password for the uploader user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the uploader password
  */
 export function getUploaderPw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_UPLOADER_PASSWORD');
 }
 /**
- * Retrieves the password for the reviewer user from the cypress environment variables.
- * @returns a cypress string chainable containing the reviewer password
+ * Retrieves the password for the reviewer user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the reviewer password
  */
 export function getReviewerPw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_REVIEWER_PASSWORD');
 }
 /**
- * Retrieves the password for the judge user from the cypress environment variables.
- * @returns a cypress string chainable containing the judge password
+ * Retrieves the password for the judge user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the judge password
  */
 export function getJudgePw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_JUDGE_PASSWORD');
 }
 /**
- * Retrieves the password for the premium user from the cypress environment variables.
- * @returns a cypress string chainable containing the premium user password
+ * Retrieves the password for the premium user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the premium user password
  */
 export function getPremiumUserPw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_PREMIUM_USER_PASSWORD');
 }
 /**
- * Retrieves the password for the admin user from the cypress environment variables.
- * @returns a cypress string chainable containing the admin password
+ * Retrieves the password for the admin user from the Cypress environment variables.
+ * @returns a Cypress string chainable containing the admin password
  */
 export function getAdminPw(): Cypress.Chainable<string> {
   return getStringCypressEnv('KEYCLOAK_DATALAND_ADMIN_PASSWORD');
@@ -84,11 +84,11 @@ export function getAdminPw(): Cypress.Chainable<string> {
 /**
  * A higher level function that operates on a list of elements (dataArray) and applys a
  * potentially time-intensive operation (processor) to each element. These operations are completed in chunks
- * of chunkSize. The resulting promise is entered into the cypress chain
+ * of chunkSize. The resulting promise is entered into the Cypress chain
  * @param dataArray the list of data elements to operate on
  * @param chunkSize the maximum number of operations that should be queued at the same time
  * @param processor a function performing some operation on a single element from the data array
- * @returns the cypress chainable after queueing all operations
+ * @returns the Cypress chainable after queueing all operations
  */
 export function doThingsInChunks<T>(
   dataArray: Array<T>,
@@ -108,9 +108,9 @@ export function doThingsInChunks<T>(
 }
 
 /**
- * Wraps a browser promise to a cypress promise
+ * Wraps a browser promise to a Cypress promise
  * @param promise the browser promise
- * @returns the converted cypress (Bluebird) promise
+ * @returns the converted Cypress (Bluebird) promise
  */
 export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T> {
   return new Cypress.Promise((resolve, reject): void => {
@@ -124,17 +124,17 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
 }
 
 /**
- * Wraps a browser promise to a cypress promise and enters it into the cypress execution queue
- * @param promise the browser promise to execute in the cypress chain
- * @returns a cypress chainable
+ * Wraps a browser promise to a Cypress promise and enters it into the Cypress execution queue
+ * @param promise the browser promise to execute in the Cypress chain
+ * @returns a Cypress chainable
  */
 export function browserThen<T>(promise: Promise<T>): Cypress.Chainable<T> {
   return cy.then((): Bluebird<T> => wrapPromiseToCypressPromise(promise));
 }
 
 /**
- * Returns the base url from the cypress configuration
- * @returns the cypress baseUrl
+ * Returns the base url from the Cypress configuration
+ * @returns the Cypress baseUrl
  */
 export function getBaseUrl(): string {
   const cypressBaseUrl = Cypress.config('baseUrl');

@@ -12,7 +12,6 @@ let returnTotpKey: string;
 export default defineConfig({
   allowCypressEnv: false,
   env: {
-    commit_id: require('git-commit-id')({ cwd: '../' }),
     KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
     KEYCLOAK_REVIEWER_PASSWORD: process.env.KEYCLOAK_REVIEWER_PASSWORD,
     KEYCLOAK_JUDGE_PASSWORD: process.env.KEYCLOAK_JUDGE_PASSWORD,
@@ -32,6 +31,7 @@ export default defineConfig({
     GRAFANA_PASSWORD: process.env.GRAFANA_PASSWORD,
   },
   expose: {
+    commit_id: require('git-commit-id')({ cwd: '../' }),
     mobile_device_viewport_height: 667,
     mobile_device_viewport_width: 300,
     prepopulate_timeout_s: 180,
@@ -75,7 +75,7 @@ export default defineConfig({
       console.log(`Execution environment: ${executionEnvironment}`);
       if (executionEnvironment === 'developmentLocal') {
         console.log(
-          'Detected local development run. Running all tests per default. In order to run a specific test run npm run cypress run --spec <./.../specific_test.ts>'
+          'Detected local development run. Running all tests per default. In order to run a specific test run npm run Cypress run --spec <./.../specific_test.ts>'
         );
         config.specPattern = ['tests/e2e/specs'];
         config.defaultCommandTimeout = 22000;

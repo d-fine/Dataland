@@ -14,11 +14,10 @@ describe('As a developer, I want to ensure that the deployment is okay', () => {
   });
 
   it('retrieve info endpoint and check commit', () => {
-    getStringCypressEnv('commit_id').then((commitId) => {
-      cy.request(`${getBaseUrl()}/gitinfo`)
-        .should('have.a.property', 'body')
-        .should('have.a.property', 'commit')
-        .should('eq', commitId);
-    });
+    const commitId = (Cypress.config('expose') as Record<string, unknown>).commit_id as string;
+    cy.request(`${getBaseUrl()}/gitinfo`)
+      .should('have.a.property', 'body')
+      .should('have.a.property', 'commit')
+      .should('eq', commitId);
   });
 });
