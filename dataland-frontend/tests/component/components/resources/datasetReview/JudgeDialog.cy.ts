@@ -549,7 +549,9 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog({ datasetJudgement: judgementAllReviewed });
       cy.get('[data-test="accept-original-button"]').should('be.visible');
       cy.get('[data-test="accept-original-button"]').click();
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').should('contain.text', 'All datapoints reviewed');
+      cy.get('[data-test="confirmation-modal"]')
+        .should('be.visible')
+        .should('contain.text', 'All data points reviewed');
       cy.get('[data-test="judge-modal"]').should('exist');
     });
   });
