@@ -586,7 +586,7 @@ function patchCurrentDatapoint(
         const finalDetails = detailsParts.length > 0 ? detailsParts.join('\n') : err.message || 'Unknown error.';
 
         errorModalHeader.value = 'Failed to update data point judgement';
-        errorModalMessage.value = 'Your decision could not be saved. Please review your custom data point.';
+        errorModalMessage.value = 'Your decision could not be saved. Please review the data point.';
         errorModalDetails.value = finalDetails;
 
         isErrorModalVisible.value = true;
