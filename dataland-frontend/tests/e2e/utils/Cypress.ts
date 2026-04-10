@@ -23,7 +23,7 @@ export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
  * Checks the presence of a Cypress env variable and ensures it is a string before returning it
  * throws an error if the environment variable not a string
  * @param variableName the name of the env variable
- * @returns the string value of the environment variable
+ * @returns Cypress.Chainable<string> the string value of the environment variable
  */
 export function getStringCypressEnv(variableName: string): Cypress.Chainable<string> {
   return cy.env([variableName]).then((vars) => {

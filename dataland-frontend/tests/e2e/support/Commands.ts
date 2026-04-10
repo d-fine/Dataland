@@ -1,5 +1,4 @@
 import {
-  ensureLoggedIn,
   ensureLoggedInAsAdmin,
   ensureLoggedInAsJudge,
   ensureLoggedInAsReader,
@@ -20,7 +19,6 @@ declare global {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
       closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
-      ensureLoggedIn: typeof ensureLoggedIn;
       ensureLoggedInAsReader: typeof ensureLoggedInAsReader;
       ensureLoggedInAsUploader: typeof ensureLoggedInAsUploader;
       ensureLoggedInAsReviewer: typeof ensureLoggedInAsReviewer;
@@ -58,9 +56,13 @@ declare global {
 }
 
 /**
- * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
- * @param endpoint the endpoint to navigate to via URL
- * @returns Cypress chainable object pointing to the `<body>` element after successful page load and checks
+ * Visits the supplied endpoint, waits for the application root element (`#app`) to be present,
+ * attempts to close the cookie consent banner if it exists, and then returns a Cypress
+ * chainable that yields the `#app` element for further interactions.
+ *
+ * @param endpoint URL or path to visit (e.g. `/admin` or full external URL)
+ * @return Cypress.Chainable<JQuery> a chainable that yields the `#app` element after mount and optional cookie-banner handling
+ * @throws Error if the `#app` element does not appear within `longTimeoutInMs`, causing the Cypress assertion to fail
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
   cy.visit(endpoint);
@@ -221,7 +223,6 @@ function closeCookieBannerIfItExists(): void {
 Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
 Cypress.Commands.add('visitAndCheckExternalAdminPage', visitAndCheckExternalAdminPage);
 Cypress.Commands.add('waitForPageLoad', waitForPageLoad);
-Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
 Cypress.Commands.add('ensureLoggedInAsReader', ensureLoggedInAsReader);
 Cypress.Commands.add('ensureLoggedInAsUploader', ensureLoggedInAsUploader);
 Cypress.Commands.add('ensureLoggedInAsReviewer', ensureLoggedInAsReviewer);
