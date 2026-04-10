@@ -74,7 +74,9 @@ class NonSourceabilityQaControllerTest {
     @Test
     fun `postNonSourceabilityDecision propagates not-found exception from manager`() {
         val exception = ResourceNotFoundApiException("Non-sourceability review not found", "No review exists")
-        doThrow(exception).whenever(manager).postDecision(any(), any(), anyOrNull(), any(), any())
+        doThrow(exception)
+            .whenever(manager)
+            .postDecision(any(), any(), anyOrNull(), any(), any())
 
         withReviewerAuthentication {
             assertThrows<ResourceNotFoundApiException> {

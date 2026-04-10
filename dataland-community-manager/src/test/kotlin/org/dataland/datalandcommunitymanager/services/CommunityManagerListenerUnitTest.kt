@@ -168,20 +168,20 @@ class CommunityManagerListenerUnitTest {
     @ParameterizedTest
     @CsvSource(
         value = [
-            "\"\",\"2023\"",
-            "\"exampleCompany\",\"\"",
+            ",2023",
+            "exampleCompany,",
         ],
     )
     fun `should throw exception for incomplete data in nonsourceable message`(
-        companyId: String,
-        reportingPeriod: String,
+        companyId: String?,
+        reportingPeriod: String?,
     ) {
         val sourceabilityMessageIncomplete =
             SourceabilityMessage(
                 BasicDataDimensions(
-                    companyId,
+                    companyId.orEmpty(),
                     "sdfr",
-                    reportingPeriod,
+                    reportingPeriod.orEmpty(),
                 ),
                 true,
                 "test",
