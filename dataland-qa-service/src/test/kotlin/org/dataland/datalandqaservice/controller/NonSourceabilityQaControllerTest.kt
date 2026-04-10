@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -72,8 +73,8 @@ class NonSourceabilityQaControllerTest {
 
     @Test
     fun `postNonSourceabilityDecision propagates not-found exception from manager`() {
-        whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any()))
-            .thenThrow(ResourceNotFoundApiException("Non-sourceability review not found", "No review exists"))
+        val exception = ResourceNotFoundApiException("Non-sourceability review not found", "No review exists")
+        doThrow(exception).whenever(manager).postDecision(any(), any(), anyOrNull(), any(), any())
 
         withReviewerAuthentication {
             assertThrows<ResourceNotFoundApiException> {
