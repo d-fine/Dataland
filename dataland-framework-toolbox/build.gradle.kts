@@ -29,6 +29,14 @@ tasks.test {
     }
 }
 
+tasks.register("integrationTest", JavaExec::class) {
+    description = "Task to execute the integration tests."
+    group = "verification"
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass = "org.dataland.frameworktoolbox.integration.IntegrationTestMainKt"
+    workingDir = rootDir
+}
+
 tasks.register("runCoverage", JavaExec::class) {
     doNotTrackState("Application should always run.")
     description = "Execute the main class with jacoco coverage reporting."
@@ -56,6 +64,7 @@ tasks.register("runCreateFrameworkList", JavaExec::class) {
 
 jacoco {
     toolVersion = jacocoVersion
+    this.applyTo(tasks.named<JavaExec>("integrationTest").get())
     this.applyTo(tasks.named<JavaExec>("runCoverage").get())
     this.applyTo(tasks.named<JavaExec>("runCreateFrameworkList").get())
 }
