@@ -1,4 +1,5 @@
 import { ActuatorApi } from '@clients/backend';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 
 interface HealthResponse {
   status: string;
