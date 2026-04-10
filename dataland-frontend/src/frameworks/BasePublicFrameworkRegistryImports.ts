@@ -4,7 +4,6 @@ import eutaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 import eutaxonomyFinancials202673BaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials-2026-73/BaseFrameworkDefinition';
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 import eutaxonomyNonFinancials202673BaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials-2026-73/BaseFrameworkDefinition';
-import integrationtestingBaseFrameworkDefinition from '@/frameworks/integrationTesting/BaseFrameworkDefinition';
 import lksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import nuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
 import pcafBaseFrameworkDefinition from '@/frameworks/pcaf/BaseFrameworkDefinition';
@@ -15,7 +14,6 @@ export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefin
   eutaxonomyFinancials202673: eutaxonomyFinancials202673BaseFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   eutaxonomyNonFinancials202673: eutaxonomyNonFinancials202673BaseFrameworkDefinition,
-  integrationtesting: integrationtestingBaseFrameworkDefinition,
   lksg: lksgBaseFrameworkDefinition,
   nuclearAndGas: nuclearAndGasBaseFrameworkDefinition,
   pcaf: pcafBaseFrameworkDefinition,
