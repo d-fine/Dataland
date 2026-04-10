@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned",
+  "name" : "Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Fossil Gas Activities",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ]
+}

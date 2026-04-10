@@ -3,6 +3,6 @@
   "name" : "ILO Core Labour Standards",
   "businessDefinition" : "Does the company abide by the ILO Core Labour Standards?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials", "sfdr" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73", "sfdr" ],
   "constraints" : null
 }

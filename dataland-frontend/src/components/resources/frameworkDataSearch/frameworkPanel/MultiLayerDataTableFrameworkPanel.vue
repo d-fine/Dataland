@@ -13,7 +13,9 @@
       data-test="multipleReportsBanner"
       v-if="
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials202673 ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials202673 ||
         frameworkIdentifier == DataTypeEnum.Sfdr ||
         frameworkIdentifier == DataTypeEnum.NuclearAndGas
       "
@@ -70,7 +72,9 @@ import {
   type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
+  type EutaxonomyFinancials202673Data,
   type EutaxonomyFinancialsData,
+  type EutaxonomyNonFinancials202673Data,
   type EutaxonomyNonFinancialsData,
   type NuclearAndGasData,
   type SfdrData,
@@ -122,11 +126,27 @@ const sortedReports = computed(() => {
         )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
+    case DataTypeEnum.EutaxonomyNonFinancials202673: {
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyNonFinancials202673Data).general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
     case DataTypeEnum.EutaxonomyFinancials: {
       return sortedDataAndMetaInfo.value
         .map(
           (singleDataAndMetaInfo) =>
             (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
+    case DataTypeEnum.EutaxonomyFinancials202673: {
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyFinancials202673Data).general?.general?.referencedReports
         )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }

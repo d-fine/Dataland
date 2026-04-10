@@ -19,7 +19,7 @@ describeIf(
       // At the moment, VSME prepopulation is broken.
       prepopulatedDataTypes = dataTypesWithToolboxSupport.filter((element) => element !== 'vsme');
       const fixtures = prepopulatedDataTypes.map((dataType) =>
-        `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace('-', '')
+        `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replaceAll('-', '')
       );
       for (const fixtureFile of fixtures) {
         cy.fixture(fixtureFile).then(function (companies: []) {

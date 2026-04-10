@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, type RouteComponent } from 'vue-router';
+import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
 
@@ -34,6 +34,7 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
+const DatasetReviewOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetReviewOverview.vue');
 import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
 import KeycloakRedirect from '@/components/pages/KeycloakRedirect.vue';
 
@@ -160,6 +161,17 @@ const routes = [
     component: QualityAssurance,
     meta: {
       initialTabId: 'qa',
+      requiresAuthentication: true,
+    },
+  },
+  {
+    path: `/qualityassurance/review/:datasetJudgementId`,
+    name: 'DatasetReviewOverview',
+    component: DatasetReviewOverview,
+    props: (route: RouteLocationNormalized): { datasetJudgementId: string } => ({
+      datasetJudgementId: route.params.datasetJudgementId as string,
+    }),
+    meta: {
       requiresAuthentication: true,
     },
   },

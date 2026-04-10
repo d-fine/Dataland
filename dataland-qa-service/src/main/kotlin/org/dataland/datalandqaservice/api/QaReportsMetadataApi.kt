@@ -53,8 +53,8 @@ interface QaReportsMetadataApi {
     fun getQaReportsMetadata(
         @RequestParam
         @Parameter(
-            description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-            example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_LIST_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_LIST_EXAMPLE,
             required = false,
         )
         uploaderUserIds: Set<UUID>? = null,

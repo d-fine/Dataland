@@ -54,6 +54,15 @@
             />
 
             <PrimeButton
+              v-if="isJudgeableByCurrentUser && !!singleDataMetaInfoToDisplay"
+              :disabled="!datasetJudgementId"
+              label="REVIEW PAGE"
+              data-test="qaReviewPageButton"
+              icon="pi pi-angle-double-right"
+              @click="visitJudgementPage"
+            />
+
+            <PrimeButton
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
@@ -70,19 +79,6 @@
               title="Enter Edit Mode to modify data points inline"
             />
             <PrimeButton
-              v-if="isEditableByCurrentUser"
-              @click="editDataset"
-              data-test="editDatasetButton"
-              label="EDIT DATASET"
-              :icon="
-                availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay
-                  ? 'pi pi-chevron-down'
-                  : 'pi pi-database'
-              "
-              :icon-pos="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay ? 'right' : 'left'"
-              title="Upload a dataset prefilled with data from the chosen reporting period"
-            />
-            <PrimeButton
               v-if="hasUserUploaderRights"
               icon="pi pi-plus"
               label="NEW DATASET"
@@ -91,12 +87,6 @@
               title="Upload a new dataset for any framework"
             />
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SimpleReportingPeriodSelectorDialog
-              :reporting-periods="availableReportingPeriods"
-              @selected-reporting-period="goToUpdateFormByReportingPeriod"
-            />
-          </OverlayPanel>
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
@@ -112,7 +102,6 @@ import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 
-import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
@@ -126,7 +115,12 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_JUDGE,
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+} from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -141,7 +135,6 @@ import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
-import OverlayPanel from 'primevue/overlaypanel';
 import { computed, inject, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { forceFileDownload, groupReportingPeriodsPerFrameworkForCompany } from '@/utils/FileDownloadUtils.ts';
@@ -169,11 +162,12 @@ const hideEmptyFields = ref(true);
 const hasUserUploaderRights = ref(false);
 const hasUserReviewerRights = ref(false);
 const dataId = ref(route.params.dataId);
-const reportingPeriodsOverlayPanel = ref();
 const isDownloading = ref(false);
 const downloadErrors = ref('');
 const editModeIsOn = ref(false);
 const hasUserAdminRights = ref(false);
+const hasUserJudgeRights = ref(false);
+const datasetJudgementId = ref<string | undefined>(undefined);
 
 const mapOfReportingPeriodToActiveDataset = computed(() => {
   const map = new Map<string, DataMetaInformation>();
@@ -187,18 +181,12 @@ provide('hideEmptyFields', hideEmptyFields);
 provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 provide('editModeIsOn', editModeIsOn);
 
-const availableReportingPeriods = computed(() => {
-  const set = new Set<string>();
-  for (const item of activeDataForCurrentCompanyAndFramework.value) {
-    if (item.metaInfo.dataType === chosenDataTypeInDropdown.value) {
-      set.add(item.metaInfo.reportingPeriod);
-    }
-  }
-  return Array.from(set).sort();
-});
-
 const isReviewableByCurrentUser = computed(
   () => hasUserReviewerRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
+);
+
+const isJudgeableByCurrentUser = computed(
+  () => hasUserJudgeRights.value && props.singleDataMetaInfoToDisplay?.qaStatus === 'Pending'
 );
 
 const isEditableByCurrentUser = computed(
@@ -260,6 +248,7 @@ onMounted(async () => {
   if (dataId.value) {
     await getMetaData();
     setActiveDataForCurrentCompanyAndFramework();
+    await getDatasetJudgementId();
   } else {
     await getMetaData();
     await getAllActiveDataForCurrentCompanyAndFramework();
@@ -361,6 +350,7 @@ function setActiveDataForCurrentCompanyAndFramework(): void {
  */
 async function setViewPageAttributesForUser(): Promise<void> {
   hasUserReviewerRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, getKeycloakPromise);
+  hasUserJudgeRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise);
   hasUserUploaderRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
   hasUserAdminRights.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 
@@ -373,40 +363,6 @@ async function setViewPageAttributesForUser(): Promise<void> {
   }
 
   hideEmptyFields.value = !hasUserReviewerRights.value;
-}
-
-/**
- * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
- * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
- * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
- * @param event event
- */
-async function editDataset(event: Event): Promise<void> {
-  if (props.singleDataMetaInfoToDisplay) {
-    await goToUpdateFormByDataId(props.singleDataMetaInfoToDisplay.dataId);
-  } else if (availableReportingPeriods.value.length > 1) {
-    reportingPeriodsOverlayPanel.value?.toggle(event);
-  } else if (availableReportingPeriods.value.length === 1 && availableReportingPeriods.value[0]) {
-    await goToUpdateFormByReportingPeriod(availableReportingPeriods.value[0]);
-  }
-}
-
-/**
- * Navigates to the data update form by using templateDataId
- * @param dataId dataId
- */
-async function goToUpdateFormByDataId(dataId: string): Promise<void> {
-  await router.push(`/companies/${props.companyID}/frameworks/${props.dataType}/upload?templateDataId=${dataId}`);
-}
-
-/**
- * Navigates to the data update form by using reportingPeriod
- * @param reportingPeriod reporting period
- */
-async function goToUpdateFormByReportingPeriod(reportingPeriod: string): Promise<void> {
-  await router.push(
-    `/companies/${props.companyID}/frameworks/${props.dataType}/upload?reportingPeriod=${reportingPeriod}`
-  );
 }
 
 /**
@@ -488,6 +444,36 @@ async function handleDatasetDownload(
  */
 function handleFetchedCompanyInformation(info: CompanyInformation): void {
   fetchedCompanyInformation.value = info;
+}
+
+/**
+ * Retrieves the dataset judgement id for the dataset in review and saves it in the datasetJudgementId ref.
+ * This is needed to navigate to the review page for the dataset in review, which requires the dataset judgement id in the url.
+ */
+async function getDatasetJudgementId(): Promise<void> {
+  try {
+    const routeDataId = route.params.dataId as string | undefined;
+    if (routeDataId) {
+      const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+      const response =
+        await apiClientProvider.apiClients.datasetJudgementController.getDatasetJudgementsByDatasetId(routeDataId);
+      datasetJudgementId.value = response.data[0]?.dataSetJudgementId;
+    }
+  } catch (error) {
+    console.error('Error getting dataset judgement id:', error);
+    return;
+  }
+}
+
+/**
+ * Navigates to the judgement page for the dataset in judgement.
+ */
+async function visitJudgementPage(): Promise<void> {
+  try {
+    await router.push(`/qualityassurance/review/${datasetJudgementId.value}`);
+  } catch (error) {
+    console.error('Error navigating to judgement page:', error);
+  }
 }
 
 /**

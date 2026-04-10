@@ -158,7 +158,7 @@ describe(
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
         (config) => getBasePublicFrameworkDefinition(framework)!.getPublicFrameworkApiClient(config),
-        `CompanyInformationWith${dataTypeInPascalCase}Data`.replace('-', '')
+        `CompanyInformationWith${dataTypeInPascalCase}Data`.replaceAll('-', '')
       );
     }
 

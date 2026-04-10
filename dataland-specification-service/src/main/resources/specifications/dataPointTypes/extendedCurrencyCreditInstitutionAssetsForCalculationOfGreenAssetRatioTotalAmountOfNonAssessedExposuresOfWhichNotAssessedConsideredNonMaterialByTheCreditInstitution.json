@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution",
+  "name" : "Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution",
+  "businessDefinition" : "Total amount of assets of which Not Assessed Considered Non-Material by the Credit Institution",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "min:0" ]
+}
