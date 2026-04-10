@@ -173,24 +173,21 @@ export const HOW_IT_WORKS_BLOCKS: HowItWorksBlock[] = [
 // ---- Getting Data blocks (spec section 4.6) ----
 
 export interface GettingDataBlock {
-  leftTitle: string;
-  leftText: string;
-  rightTitle: string;
-  rightText: string;
+  title: string;
+  text: string;
+  highlights: string[];
 }
 
 export const GETTING_DATA_BLOCKS: GettingDataBlock[] = [
   {
-    leftTitle: 'Dataset already available',
-    leftText: 'Use the dataset within the platform or download it for your internal applications',
-    rightTitle: 'No additional cost',
-    rightText: 'Members can access existing datasets without any delay and free of charge',
+    title: 'Dataset already available',
+    text: 'Use the dataset within the platform or download it for your internal applications',
+    highlights: ['Free of charge', 'Data available for immediate use'],
   },
   {
-    leftTitle: 'Dataset not yet available',
-    leftText: 'Request the dataset through the platform',
-    rightTitle: 'Delivered within one month',
-    rightText: 'Costs are shared between members requesting the same dataset',
+    title: 'Dataset not yet available',
+    text: 'Request the dataset from your account on the platform',
+    highlights: ['Delivery within a month', 'Shared costs for members requesting the same dataset'],
   },
 ];
 

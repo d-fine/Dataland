@@ -115,17 +115,25 @@ const CREDITS_TABLE = [
         </p>
       </div>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {GETTING_DATA_BLOCKS.map((block) => (
-          <article class="relative flex h-full flex-col gap-5 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] p-6 overflow-hidden">
-            <div class="absolute top-0 right-0 w-12 h-12 bg-[var(--color-primary)] [clip-path:polygon(100%_0,0_0,100%_100%)]" aria-hidden="true"></div>
-            <div>
-              <h3 class="text-[1.0625rem] font-bold m-0 mb-2 text-[var(--color-text)]">{block.leftTitle}</h3>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.leftText}</p>
+        {GETTING_DATA_BLOCKS.map((block, index) => (
+          <article
+            class:list={[
+              'grid h-full grid-rows-[2.6rem_4rem_3.7rem_3rem_3rem] rounded-[1.25rem] p-6 shadow-[0_10px_24px_rgba(15,23,42,0.22)]',
+              index === 0
+                ? 'border-[#223b50] bg-[linear-gradient(180deg,#0f1c29_0%,#1a3042_40%,#274862_76%,#3c6788_100%)]'
+                : 'border-[#4a6c86] bg-[linear-gradient(180deg,#2b455c_0%,#456783_40%,#6288a3_76%,#7ca0b8_100%)]',
+            ]}
+          >
+            <h3 class="m-0 text-[1.08rem] font-bold leading-[1.2] text-white text-center self-start">{block.title}</h3>
+            <div class="flex items-start justify-center leading-none self-start -mt-10" aria-hidden="true">
+              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="34" height="34" class="rotate-90" />
             </div>
-            <div class="mt-auto border-t border-[var(--color-surface-200)] pt-5">
-              <h3 class="text-[1rem] font-bold m-0 mb-2 text-[var(--color-primary)]">{block.rightTitle}</h3>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{block.rightText}</p>
-            </div>
+            <p class="m-0 text-[1rem] leading-relaxed text-white/82 text-center self-start">{block.text}</p>
+            {block.highlights.map((highlight) => (
+              <span class="flex items-center justify-center self-center w-full rounded-md bg-white/14 px-3 py-2 text-center text-[0.78rem] font-semibold uppercase tracking-[0.08em] leading-[1.3] text-white/86">
+                {highlight}
+              </span>
+            ))}
           </article>
         ))}
       </div>
@@ -138,11 +146,13 @@ const CREDITS_TABLE = [
       <h2 class="text-[1.75rem] font-bold m-0 text-center">Platform features</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURE_CARDS.map((card) => (
-          <div class="relative rounded-xl border border-white/10 bg-white/10 p-6 overflow-hidden flex flex-col gap-2">
-            <div class="absolute top-0 right-0 w-12 h-12 bg-[var(--color-primary)] [clip-path:polygon(100%_0,0_0,100%_100%)]" aria-hidden="true"></div>
-            <h3 class="text-lg font-bold m-0 text-white">{card.title}</h3>
-            <p class="text-sm font-medium m-0 text-white/72">{card.subtitle}</p>
-            <p class="text-[0.9375rem] leading-relaxed m-0 text-white/78">{card.text}</p>
+          <div class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
+            <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></div>
+            <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{card.title}</h3>
+            <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{card.text}</p>
+            <span class="mt-4 inline-flex w-full items-center justify-center rounded-md bg-white/14 px-3 py-2 text-center text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-white/86">
+              {card.subtitle}
+            </span>
           </div>
         ))}
       </div>
