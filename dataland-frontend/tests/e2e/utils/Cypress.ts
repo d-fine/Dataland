@@ -5,15 +5,12 @@ export const reader_name = 'data_reader';
 export const reader_userId = '18b67ecc-1176-4506-8414-1e81661017ca';
 
 export const uploader_name = 'data_uploader';
-export const uploader_userId = 'c5ef10b1-de23-4a01-9005-e62ea226ee83';
 
 export const reviewer_name = 'data_reviewer';
 export const reviewer_userId = 'f7a02ff1-0dab-4e10-a908-7d775c1014ae';
 
 export const judge_name = 'data_judge';
-export const judge_userId = '375c4c42-fa50-4f7d-af69-450803fe0ca1';
 
-export const premium_user_name = 'data_premium_user';
 export const premium_user_userId = '68129cce-52e5-473e-bec9-90046eebc619';
 
 export const admin_name = 'data_admin';
@@ -23,7 +20,7 @@ export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
  * Checks the presence of a Cypress env variable and ensures it is a string before returning it
  * throws an error if the environment variable not a string
  * @param variableName the name of the env variable
- * @returns Cypress.Chainable<string> the string value of the environment variable
+ * @returns a Cypress chainable resolving to the string value of the environment variable
  */
 export function getStringCypressEnv(variableName: string): Cypress.Chainable<string> {
   return cy.env([variableName]).then((vars) => {
