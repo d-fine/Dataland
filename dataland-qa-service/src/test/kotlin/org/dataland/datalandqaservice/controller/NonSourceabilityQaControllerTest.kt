@@ -45,21 +45,21 @@ class NonSourceabilityQaControllerTest {
     @Test
     fun `postNonSourceabilityDecision returns 200 with accepted review`() {
         val accepted = review(qaStatus = QaStatus.Accepted)
-        whenever(manager.postDecision(any(), any(), any(), any(), any())).thenReturn(accepted)
+        whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any())).thenReturn(accepted)
 
         withReviewerAuthentication {
             val result = controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Accepted, null)
 
             assertEquals(HttpStatus.OK, result.statusCode)
             assertEquals(QaStatus.Accepted, result.body?.qaStatus)
-            verify(manager).postDecision(any(), any(), any(), any(), any())
+            verify(manager).postDecision(any(), any(), anyOrNull(), any(), any())
         }
     }
 
     @Test
     fun `postNonSourceabilityDecision returns 200 with rejected review and comment`() {
         val rejected = review(qaStatus = QaStatus.Rejected)
-        whenever(manager.postDecision(any(), any(), any(), any(), any())).thenReturn(rejected)
+        whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any())).thenReturn(rejected)
 
         withReviewerAuthentication {
             val result =
@@ -72,7 +72,7 @@ class NonSourceabilityQaControllerTest {
 
     @Test
     fun `postNonSourceabilityDecision propagates not-found exception from manager`() {
-        whenever(manager.postDecision(any(), any(), any(), any(), any()))
+        whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any()))
             .thenThrow(ResourceNotFoundApiException("Non-sourceability review not found", "No review exists"))
 
         withReviewerAuthentication {
