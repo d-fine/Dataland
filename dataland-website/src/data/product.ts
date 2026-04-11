@@ -57,45 +57,54 @@ export const DOCUMENTATION_LINKS: DocumentationLink[] = [
 // ---- Use Cases (spec section 4.8) ----
 
 export interface UseCase {
+  tags: string[];
   title: string;
+  titleLines?: [string, string];
   description: string;
 }
 
 export const USE_CASES: UseCase[] = [
   {
-    title: 'Complementing Existing ESG Data Providers',
-    description:
-      'Dataland complements a primary ESG data provider by closing remaining data gaps. Missing indicators or uncovered companies can be retrieved where the primary provider is incomplete. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios',
-  },
-  {
-    title: 'Independent Validation and Audit Trail',
-    description:
-      'Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider \u2014 particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require',
-  },
-  {
+    tags: ['Primary provider', 'Core workflows'],
     title: 'Dataland as primary ESG data source',
+    titleLines: ['Dataland as primary', 'ESG data source'],
     description:
-      'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated',
+      'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated.',
   },
   {
+    tags: ['Provider complement', 'SME coverage'],
+    title: 'Dataland complementing primary data provider',
+    titleLines: ['Dataland complementing', 'primary data provider'],
+    description:
+      'Dataland complements a primary ESG data provider by closing remaining data gaps. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios.',
+  },
+  {
+    tags: ['Cross-checking', 'Auditability'],
+    title: 'Independent Validation and Audit Trail',
+    titleLines: ['Independent Validation', 'and Audit Trail'],
+    description:
+      'Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider \u2014 particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require.',
+  },
+  {
+    tags: ['Portfolio coverage', 'Ongoing updates'],
     title: 'Continuous Coverage for Your Portfolio',
+    titleLines: ['Continuous Coverage', 'for Your Portfolio'],
     description:
-      'Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available',
+      'Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available.',
   },
   {
+    tags: ['On-demand sourcing', 'Specific gaps'],
     title: 'Targeted Sourcing of Missing Datasets',
+    titleLines: ['Targeted Sourcing of', 'Missing Datasets'],
     description:
-      'Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages',
+      'Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages.',
   },
   {
-    title: 'Data Access via Platform and API',
-    description:
-      'Access ESG datasets directly through the Dataland platform to search, retrieve, and download datasets for individual companies \u2014 suitable for ad-hoc analysis and manual workflows. For automated pipelines, integrate ESG datasets into internal IT systems (e.g. risk engines, reporting tools, data platforms) via API, supporting automated data ingestion and seamless use within existing system landscapes',
-  },
-  {
+    tags: ['EU Taxonomy', 'Template continuity'],
     title: 'EU Taxonomy Template Updates and Format Continuity',
+    titleLines: ['EU Taxonomy Template Updates', 'and Format Continuity'],
     description:
-      'Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change',
+      'Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change.',
   },
 ];
 

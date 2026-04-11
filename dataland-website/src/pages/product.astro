@@ -163,16 +163,51 @@ const CREDITS_TABLE = [
   <section id="use-cases" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Use cases">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Use cases</h2>
-      <div class="flex flex-col gap-6">
-        {USE_CASES.map((uc, idx) => (
-          <div class="flex gap-5 items-start p-6 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)]">
-            <span class="text-2xl font-bold text-[var(--color-primary)] leading-none shrink-0">{String(idx + 1).padStart(2, '0')}</span>
-            <div class="flex flex-col gap-2">
-              <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)]">{uc.title}</h3>
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[49.5rem_minmax(0,1fr)] lg:items-stretch">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {USE_CASES.map((uc, idx) => (
+            <div class="grid h-full grid-rows-[3rem_4.2rem_1fr_2.75rem] items-start justify-items-start gap-2 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+              <div class="w-12 h-12 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0 text-[var(--color-primary)]">
+                <span class="text-lg font-bold leading-none">{String(idx + 1).padStart(2, '0')}</span>
+              </div>
+              <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)] leading-[1.22]">
+                {(uc.titleLines ?? [uc.title]).map((line) => (
+                  <span class="block">{line}</span>
+                ))}
+              </h3>
               <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {uc.tags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="overflow-hidden border border-[var(--color-surface-200)] shadow-[0_10px_28px_rgba(15,23,42,0.08)] bg-[linear-gradient(180deg,#27435d_0%,#345877_54%,#3E6A8E_100%)] p-6 text-white">
+          <div class="flex h-full min-h-[32rem] flex-col justify-between py-6">
+            <div class="flex h-[6.9rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.14)_50%,rgba(255,255,255,0.06)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Regulatory reporting</span>
+            </div>
+            <div class="flex h-[6.8rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0.13)_52%,rgba(255,255,255,0.06)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Investment analysis</span>
+            </div>
+            <div class="flex h-[6.7rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.12)_54%,rgba(255,255,255,0.05)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Risk management</span>
+            </div>
+            <div class="flex h-[7.1rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.11)_56%,rgba(255,255,255,0.05)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Portfolio management</span>
+            </div>
+            <div class="flex h-[7.2rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.1)_58%,rgba(255,255,255,0.04)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Performance management</span>
+            </div>
+            <div class="flex h-[6.5rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.09)_60%,rgba(255,255,255,0.04)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
+              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Client advisory</span>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   </section>
@@ -327,22 +362,21 @@ const CREDITS_TABLE = [
       <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-[1fr_1.5fr] md:items-stretch">
         <!-- Left card: Framework Guide -->
         <div class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9">
-          <h3 class="text-lg font-bold m-0 text-white">Framework Guide</h3>
-          <p class="text-[0.98rem] leading-relaxed m-0 text-white/74">{FRAMEWORK_DOC.description}</p>
-          <a
-            href={FRAMEWORK_DOC.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-[var(--color-primary)] px-8 py-4 text-base font-semibold text-white no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
-          >
+          <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-bold m-0 text-white">Framework Guide</h3>
+            <p class="min-h-[3.25rem] text-[0.98rem] leading-relaxed m-0 text-white/74">{FRAMEWORK_DOC.description}</p>
+          </div>
+          <a href={FRAMEWORK_DOC.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[var(--color-primary)] text-sm font-semibold no-underline self-start hover:underline">
             View on GitHub &rarr;
           </a>
         </div>
 
         <!-- Right card: API Reference -->
         <div class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9">
-          <h3 class="text-lg font-bold m-0 text-white">API Reference</h3>
-          <p class="text-[0.98rem] leading-relaxed m-0 text-white/74">Interactive Swagger documentation for every Dataland service.</p>
+          <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-bold m-0 text-white">API Reference</h3>
+            <p class="min-h-[3.25rem] text-[0.98rem] leading-relaxed m-0 text-white/74">Interactive Swagger documentation for every Dataland service.</p>
+          </div>
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {API_DOC_LINKS.map((doc) => (
               <a
