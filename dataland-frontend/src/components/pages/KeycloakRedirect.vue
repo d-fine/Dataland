@@ -1,5 +1,13 @@
 <template>
-  <div>Redirecting...</div>
+  <div
+    style="
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      margin: var(--spacing-xxl) var(--spacing-none);
+    "
+  >
+    Redirecting...
+  </div>
 </template>
 
 <script setup lang="ts">

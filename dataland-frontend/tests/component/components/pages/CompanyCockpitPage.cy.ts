@@ -51,7 +51,9 @@ describe('Component test for the company cockpit', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
+    DataTypeEnum.EutaxonomyFinancials202673,
     DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.EutaxonomyNonFinancials202673,
     DataTypeEnum.NuclearAndGas,
     DataTypeEnum.Sfdr,
   ]);
@@ -98,6 +100,11 @@ describe('Component test for the company cockpit', () => {
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
+    const frameworksWithoutProvideDataButton = new Set([
+      'lksg',
+      'eutaxonomy-financials-2026-73',
+      'eutaxonomy-non-financials-2026-73',
+    ]);
     for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
       const frameworkDataSummary = new Map(Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary)).get(
@@ -122,7 +129,7 @@ describe('Component test for the company cockpit', () => {
         return;
       }
       if (isProvideDataButtonExpected) {
-        if (frameworkName != 'lksg') {
+        if (!frameworksWithoutProvideDataButton.has(frameworkName)) {
           cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
         }
       } else {
@@ -148,7 +155,7 @@ describe('Component test for the company cockpit', () => {
       initiallyDisplayedFrameworks,
       isCompanyOwner
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
     validateDisplayedFrameworkSummaryPanels(
       isProvideDataButtonExpected,
@@ -163,7 +170,7 @@ describe('Component test for the company cockpit', () => {
       initiallyDisplayedFrameworks,
       isCompanyOwner
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
   }
 
   it('Checks the latest documents', () => {

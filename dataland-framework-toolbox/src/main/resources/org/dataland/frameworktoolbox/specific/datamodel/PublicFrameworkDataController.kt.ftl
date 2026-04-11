@@ -92,14 +92,14 @@ class ${frameworkDataType.shortenedQualifier}Controller
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>> {
-        return super
+        ): ResponseEntity<List<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>> =
+        super
             .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
 
     @Operation(operationId = "getLatestAvailableCompanyAssociated${frameworkDataType.shortenedQualifier}")
     override fun getLatestAvailableCompanyAssociatedData(
-    identifier: String
-    ): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>>
-        = super.getLatestAvailableCompanyAssociatedData(identifier)
+        identifier: String,
+    ): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> =
+        super
+            .getLatestAvailableCompanyAssociatedData(identifier)
 }

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyInsuranceReinsuranceAssetUnderManagementAssetsCoveredByTheKpiMonetaryAmount",
+  "name" : "Assets covered by the KPI - monetary amount",
+  "businessDefinition" : "The value of all direct and indirect investments and exposures, covered under Article 7(6) of Regulation (EU) 2026/73, including investments in collective investment undertakings and participations, loans and mortgages - monetary amount.",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "min:0" ]
+}

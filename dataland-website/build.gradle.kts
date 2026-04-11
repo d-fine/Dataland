@@ -1,6 +1,8 @@
 import com.github.gradle.node.npm.task.NpmTask
 
-val sonarSources by extra(emptyList<File>())
+val sources = fileTree(projectDir)
+sources.include("src/**", "public/**", "tests/**")
+val sonarSources by extra(sources.files.map { it })
 val jacocoSources by extra(emptyList<File>())
 val jacocoClasses by extra(emptyList<File>())
 

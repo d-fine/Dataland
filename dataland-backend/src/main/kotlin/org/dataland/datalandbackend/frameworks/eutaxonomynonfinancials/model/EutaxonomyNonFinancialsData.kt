@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.val
  * The root data-model for the Eutaxonomy-non-financials Framework
  */
 @Suppress("MagicNumber", "MaxLineLength")
-@DataType("eutaxonomy-non-financials", 3)
+@DataType("eutaxonomy-non-financials", 4)
 @ReferencedReportsListValidator()
 data class EutaxonomyNonFinancialsData(
     @field:Valid()

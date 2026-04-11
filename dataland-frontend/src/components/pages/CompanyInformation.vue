@@ -25,7 +25,7 @@
         </div>
         <div class="right-elements">
           <PrimeButton
-            v-if="authenticated"
+            v-if="authenticated && showAddToPortfolioButton"
             icon="pi pi-plus"
             label="ADD TO PORTFOLIO"
             @click="openPortfolioModal"
@@ -154,6 +154,11 @@ const props = defineProps({
   showSingleDataRequestButton: {
     type: Boolean,
     default: false,
+  },
+  showAddToPortfolioButton: {
+    type: Boolean,
+    default: true,
+    required: false,
   },
 });
 

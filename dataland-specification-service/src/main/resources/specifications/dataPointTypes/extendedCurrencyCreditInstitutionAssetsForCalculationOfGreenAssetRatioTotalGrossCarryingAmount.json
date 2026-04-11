@@ -3,6 +3,6 @@
   "name" : "Total (gross) Carrying Amount",
   "businessDefinition" : "Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.",
   "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "min:0" ]
 }

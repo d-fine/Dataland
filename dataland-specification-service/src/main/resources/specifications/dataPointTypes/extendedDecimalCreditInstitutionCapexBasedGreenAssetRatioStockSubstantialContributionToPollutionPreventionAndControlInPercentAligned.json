@@ -3,6 +3,6 @@
   "name" : "Substantial Contribution to Pollution Prevention and Control in Percent - Aligned",
   "businessDefinition" : "Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Pollution Prevention and Control",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }

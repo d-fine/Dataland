@@ -3,6 +3,6 @@
   "name" : "Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned",
   "businessDefinition" : "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "between:0,100" ]
 }
