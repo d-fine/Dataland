@@ -57,6 +57,7 @@ export const DOCUMENTATION_LINKS: DocumentationLink[] = [
 // ---- Use Cases (spec section 4.8) ----
 
 export interface UseCase {
+  icon: string;
   tags: string[];
   title: string;
   titleLines?: [string, string];
@@ -65,6 +66,7 @@ export interface UseCase {
 
 export const USE_CASES: UseCase[] = [
   {
+    icon: '/static/images/use_cases/img_use_case_primary.png',
     tags: ['Primary provider', 'Core workflows'],
     title: 'Dataland as primary ESG data source',
     titleLines: ['Dataland as primary', 'ESG data source'],
@@ -72,6 +74,7 @@ export const USE_CASES: UseCase[] = [
       'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated.',
   },
   {
+    icon: '/static/images/use_cases/img_use_case_complement.png',
     tags: ['Provider complement', 'SME coverage'],
     title: 'Dataland complementing primary data provider',
     titleLines: ['Dataland complementing', 'primary data provider'],
@@ -79,6 +82,7 @@ export const USE_CASES: UseCase[] = [
       'Dataland complements a primary ESG data provider by closing remaining data gaps. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios.',
   },
   {
+    icon: '/static/images/use_cases/img_use_case_validation.png',
     tags: ['Cross-checking', 'Auditability'],
     title: 'Independent Validation and Audit Trail',
     titleLines: ['Independent Validation', 'and Audit Trail'],
@@ -86,6 +90,7 @@ export const USE_CASES: UseCase[] = [
       'Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider \u2014 particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require.',
   },
   {
+    icon: '/static/images/use_cases/img_use_case_portfolio_monitoring.png',
     tags: ['Portfolio coverage', 'Ongoing updates'],
     title: 'Continuous Coverage for Your Portfolio',
     titleLines: ['Continuous Coverage', 'for Your Portfolio'],
@@ -93,6 +98,7 @@ export const USE_CASES: UseCase[] = [
       'Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available.',
   },
   {
+    icon: '/static/images/use_cases/img_use_case_gap_filling.png',
     tags: ['On-demand sourcing', 'Specific gaps'],
     title: 'Targeted Sourcing of Missing Datasets',
     titleLines: ['Targeted Sourcing of', 'Missing Datasets'],
@@ -100,6 +106,7 @@ export const USE_CASES: UseCase[] = [
       'Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages.',
   },
   {
+    icon: '/static/images/use_cases/img_use_case_format_update.png',
     tags: ['EU Taxonomy', 'Template continuity'],
     title: 'EU Taxonomy Template Updates and Format Continuity',
     titleLines: ['EU Taxonomy Template Updates', 'and Format Continuity'],

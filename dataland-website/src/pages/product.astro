@@ -170,16 +170,29 @@ const CREDITS_TABLE = [
       </div>
       <div class="flex flex-col gap-8">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {USE_CASES.map((uc, idx) => (
-            <div class="grid h-full grid-rows-[3rem_4.2rem_1fr_2.75rem] items-start justify-items-start gap-2 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-              <div class="w-12 h-12 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0 text-[var(--color-primary)]">
-                <span class="text-lg font-bold leading-none">{String(idx + 1).padStart(2, '0')}</span>
+          {USE_CASES.map((uc) => (
+            <div class="grid h-full grid-rows-[4.5rem_1fr_2.75rem] items-start justify-items-start gap-1.5 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+              <div class="grid w-full grid-cols-[5.25rem_1fr] items-center gap-3">
+                <img
+                  src={uc.icon}
+                  alt=""
+                  aria-hidden="true"
+                  width="88"
+                  height="88"
+                  loading="lazy"
+                  class:list={[
+                    'h-[5.25rem] w-[5.25rem] object-contain [filter:brightness(0)_saturate(100%)_invert(35%)_sepia(18%)_saturate(1059%)_hue-rotate(167deg)_brightness(90%)_contrast(91%)]',
+                    uc.icon === '/static/images/use_cases/img_use_case_portfolio_monitoring.png' && 'scale-[1.68]',
+                    uc.icon === '/static/images/use_cases/img_use_case_complement.png' && 'scale-[1.42]',
+                    uc.icon === '/static/images/use_cases/img_use_case_format_update.png' && 'scale-[1.28]',
+                  ]}
+                />
+                <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)] leading-[1.18]">
+                  {(uc.titleLines ?? [uc.title]).map((line) => (
+                    <span class="block">{line}</span>
+                  ))}
+                </h3>
               </div>
-              <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)] leading-[1.22]">
-                {(uc.titleLines ?? [uc.title]).map((line) => (
-                  <span class="block">{line}</span>
-                ))}
-              </h3>
               <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
               <div class="flex flex-wrap gap-2">
                 {uc.tags.map((tag) => (
