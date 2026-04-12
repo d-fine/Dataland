@@ -162,9 +162,14 @@ const CREDITS_TABLE = [
   <!-- Section 5: Use Cases (grey) -->
   <section id="use-cases" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Use cases">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Use cases</h2>
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[49.5rem_minmax(0,1fr)] lg:items-stretch">
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
+        <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">Use cases</h2>
+        <p class="m-0 text-[1.06rem] leading-relaxed text-[var(--color-text-muted)] lg:text-[1.12rem]">
+          Dataland supports different ESG data use cases across reporting, analysis, and portfolio workflows.
+        </p>
+      </div>
+      <div class="flex flex-col gap-8">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {USE_CASES.map((uc, idx) => (
             <div class="grid h-full grid-rows-[3rem_4.2rem_1fr_2.75rem] items-start justify-items-start gap-2 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
               <div class="w-12 h-12 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0 text-[var(--color-primary)]">
@@ -186,25 +191,34 @@ const CREDITS_TABLE = [
             </div>
           ))}
         </div>
-        <div class="overflow-hidden border border-[var(--color-surface-200)] shadow-[0_10px_28px_rgba(15,23,42,0.08)] bg-[linear-gradient(180deg,#27435d_0%,#345877_54%,#3E6A8E_100%)] p-6 text-white">
-          <div class="flex h-full min-h-[32rem] flex-col justify-between py-6">
-            <div class="flex h-[6.9rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.14)_50%,rgba(255,255,255,0.06)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Regulatory reporting</span>
+        <div class="flex flex-col gap-5 pt-2">
+          <p class="mx-auto max-w-[760px] text-center text-[0.98rem] leading-relaxed m-0 text-[var(--color-text-muted)]">
+            These use cases support different business areas across the company.
+          </p>
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Regulatory reporting</span>
             </div>
-            <div class="flex h-[6.8rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0.13)_52%,rgba(255,255,255,0.06)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Investment analysis</span>
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Investment analysis</span>
             </div>
-            <div class="flex h-[6.7rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.12)_54%,rgba(255,255,255,0.05)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Risk management</span>
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Risk management</span>
             </div>
-            <div class="flex h-[7.1rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.11)_56%,rgba(255,255,255,0.05)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Portfolio management</span>
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Portfolio management</span>
             </div>
-            <div class="flex h-[7.2rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.1)_58%,rgba(255,255,255,0.04)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Performance management</span>
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Performance management</span>
             </div>
-            <div class="flex h-[6.5rem] w-full items-center justify-center border border-white/14 bg-[linear-gradient(90deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.09)_60%,rgba(255,255,255,0.04)_100%)] px-6 py-4 text-center shadow-[0_12px_24px_rgba(0,0,0,0.12)]">
-              <span class="text-[1.15rem] font-semibold leading-[1.1] text-white">Client advisory</span>
+            <div class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold">✓</span>
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Client advisory</span>
             </div>
           </div>
         </div>
