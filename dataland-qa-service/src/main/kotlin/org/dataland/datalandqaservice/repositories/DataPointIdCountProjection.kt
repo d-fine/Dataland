@@ -8,4 +8,3 @@ interface DataPointIdCountProjection {
     val dataPointId: String
     val activeQaReportCount: Long
 }
-

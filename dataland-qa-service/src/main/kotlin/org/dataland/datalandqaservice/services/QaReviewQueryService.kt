@@ -90,9 +90,7 @@ class QaReviewQueryService
          * which are still pending review (qaStatus = Pending).
          */
         @Transactional(readOnly = true)
-        fun getInfoOnPendingDatasets(
-            companyName: String?,
-        ): List<QaReviewResponse> {
+        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val getInfoOnPendingDatasetsStartNs = System.nanoTime()
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
@@ -133,10 +131,18 @@ class QaReviewQueryService
                 try {
                     datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
                 } catch (ex: PersistenceException) {
-                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}", ex::class.simpleName, ex.message)
+                    logger.warn(
+                        "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                        ex::class.simpleName,
+                        ex.message,
+                    )
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
                 } catch (ex: DataAccessException) {
-                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}", ex::class.simpleName, ex.message)
+                    logger.warn(
+                        "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                        ex::class.simpleName,
+                        ex.message,
+                    )
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
                 }
 
