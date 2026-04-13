@@ -131,7 +131,7 @@ class QaReviewQueryService
             // Use a fetch-join query to load dataPoints together and avoid N+1
             val judgementEntities =
                 try {
-                    datasetJudgementRepository.findAllByDatasetIdInWithDataPoints(datasetUUIDs)
+                    datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
                 } catch (ex: PersistenceException) {
                     logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}", ex::class.simpleName, ex.message)
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
