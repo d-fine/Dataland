@@ -6,9 +6,6 @@ import {
   FEATURE_CARDS,
   USE_CASES,
   CUSTOMER_STORIES_DETAILED,
-  VALUE_PROPOSITIONS,
-  PRICING_CARD,
-  CREDITS_VISUAL,
   FRAMEWORK_DOC,
   API_DOC_LINKS,
 } from '../data/product';
@@ -73,7 +70,7 @@ const CREDITS_TABLE = [
       </div>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {HOW_IT_WORKS_BLOCKS.map((block, index) => (
-          <article class="grid h-full grid-rows-[9.6rem_minmax(6.1rem,auto)_3rem_minmax(6.1rem,auto)] rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[linear-gradient(180deg,#eef1f4_0%,#f8f7f4_42%,#fff3ea_72%,#ffe6d6_100%)] px-6 py-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+          <article class="grid h-full grid-rows-[9.6rem_minmax(6.1rem,auto)_1.1rem_minmax(6.1rem,auto)] rounded-[1.25rem] border border-[#d7e3ec] bg-[#eef3f7] px-6 py-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
             <div class="flex items-center justify-center">
               <img
                 src={index === 0 ? '/static/images/img_icon_desktop.png' : index === 1 ? '/static/images/img_icon_api.png' : '/static/images/img_icon_partner.png'}
@@ -92,8 +89,8 @@ const CREDITS_TABLE = [
               <h3 class="m-0 text-[1.02rem] font-bold leading-[1.22] text-[var(--color-text)]">{block.leftTitle}</h3>
               <p class="m-0 text-[1.02rem] leading-[1.38] text-[var(--color-text-muted)]">{block.leftText}</p>
             </div>
-            <div class="flex items-start justify-center leading-none self-start -mt-10" aria-hidden="true">
-              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="34" height="34" class="rotate-90" />
+            <div class="flex items-center justify-center self-center" aria-hidden="true">
+              <div class="h-[3px] w-14 rounded-full bg-[var(--color-primary)]"></div>
             </div>
             <div class="flex flex-col items-center gap-1 self-start text-center pt-2">
               <h3 class="m-0 text-[1.02rem] font-bold leading-[1.22] text-[var(--color-primary)]">{block.rightTitle}</h3>
@@ -118,19 +115,18 @@ const CREDITS_TABLE = [
         {GETTING_DATA_BLOCKS.map((block, index) => (
           <article
             class:list={[
-              'grid h-full grid-rows-[2.6rem_4rem_3.7rem_3rem_3rem] rounded-[1.25rem] p-6 shadow-[0_10px_24px_rgba(15,23,42,0.22)]',
-              index === 0
-                ? 'border-[#223b50] bg-[linear-gradient(180deg,#0f1c29_0%,#1a3042_40%,#274862_76%,#3c6788_100%)]'
-                : 'border-[#4a6c86] bg-[linear-gradient(180deg,#2b455c_0%,#456783_40%,#6288a3_76%,#7ca0b8_100%)]',
+              'grid h-full grid-rows-[3.4rem_0.7rem_1fr_2.5rem_2.5rem] rounded-xl border border-[var(--color-surface-200)] p-6 shadow-[0_8px_24px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_12px_28px_rgba(15,23,42,0.12)]',
+              index === 0 ? 'bg-[#f6f3ee]' : 'bg-[#eef3f7]',
             ]}
           >
-            <h3 class="m-0 text-[1.08rem] font-bold leading-[1.2] text-white text-center self-start">{block.title}</h3>
-            <div class="flex items-start justify-center leading-none self-start -mt-10" aria-hidden="true">
-              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="34" height="34" class="rotate-90" />
+            <h3 class="m-0 self-start text-left text-[1.4rem] font-bold leading-[1.12] text-[var(--color-text)]">{block.title}</h3>
+            <div class="flex items-start justify-start self-start -mt-1" aria-hidden="true">
+              <div class="h-[3px] w-14 rounded-full bg-[var(--color-primary)]"></div>
             </div>
-            <p class="m-0 text-[1rem] leading-relaxed text-white/82 text-center self-start">{block.text}</p>
+            <p class="m-0 self-start text-left text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{block.text}</p>
             {block.highlights.map((highlight) => (
-              <span class="flex items-center justify-center self-center w-full rounded-md bg-white/14 px-3 py-2 text-center text-[0.78rem] font-semibold uppercase tracking-[0.08em] leading-[1.3] text-white/86">
+              <span class="inline-flex w-full items-center justify-start gap-1.5 self-center text-left text-[1rem] font-semibold leading-[1.3] text-[var(--color-text-muted)]">
+                <span class="inline-flex shrink-0 items-center justify-center text-[1.5rem] leading-none text-[var(--color-primary)]">✓</span>
                 {highlight}
               </span>
             ))}
@@ -143,16 +139,25 @@ const CREDITS_TABLE = [
   <!-- Section 4: Features (white) -->
   <section id="features" class="scroll-mt-16 py-12 px-6 bg-[#2C4A6B] text-white lg:py-16 lg:px-8" aria-label="Platform features">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-      <h2 class="text-[1.75rem] font-bold m-0 text-center">Platform features</h2>
+      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
+        <h2 class="text-[1.75rem] font-bold m-0 text-center">Platform features</h2>
+        <p class="m-0 text-[1.06rem] leading-relaxed text-white/72 lg:text-[1.12rem]">
+          Core platform capabilities for accessing, managing, and exporting Dataland data in daily workflows.
+        </p>
+      </div>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURE_CARDS.map((card) => (
           <div class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
             <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></div>
             <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{card.title}</h3>
             <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{card.text}</p>
-            <span class="mt-4 inline-flex w-full items-center justify-center rounded-md bg-white/14 px-3 py-2 text-center text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-white/86">
-              {card.subtitle}
-            </span>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {card.tags.map((tag) => (
+                <span class="inline-flex items-center rounded-md bg-white/14 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-white/86">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         ))}
       </div>
@@ -184,7 +189,7 @@ const CREDITS_TABLE = [
                     'h-[5.25rem] w-[5.25rem] object-contain [filter:brightness(0)_saturate(100%)_invert(35%)_sepia(18%)_saturate(1059%)_hue-rotate(167deg)_brightness(90%)_contrast(91%)]',
                     uc.icon === '/static/images/use_cases/img_use_case_portfolio_monitoring.png' && 'scale-[1.68]',
                     uc.icon === '/static/images/use_cases/img_use_case_complement.png' && 'scale-[1.42]',
-                    uc.icon === '/static/images/use_cases/img_use_case_format_update.png' && 'scale-[1.28]',
+                    uc.icon === '/static/images/use_cases/img_use_case_format_update.png' && 'translate-x-3 scale-[1.36]',
                   ]}
                 />
                 <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)] leading-[1.18]">
@@ -298,79 +303,119 @@ const CREDITS_TABLE = [
   <!-- Section 7: Membership & Pricing (grey) -->
   <section id="membership-pricing" class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8" aria-label="Membership and pricing">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
-
-      <!-- Header with subtitle -->
       <div class="flex flex-col items-center gap-2 text-center">
         <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">Membership and pricing</h2>
-        <p class="text-[0.9375rem] m-0 text-[var(--color-text-muted)] max-w-[640px]">One membership. Full platform access. The more members request the same company, the lower the cost per dataset.</p>
+        <p class="text-[1.06rem] leading-relaxed m-0 text-[var(--color-text-muted)] max-w-[640px] lg:text-[1.12rem]">A straightforward membership model with transparent pricing and shared sourcing costs.</p>
       </div>
 
-      <!-- 3 value proposition cards with top accent -->
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {VALUE_PROPOSITIONS.map((vp) => (
-          <div class="flex flex-col items-center gap-4 text-center p-6 pt-8 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-            <div class="w-12 h-12 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
-              <img src={vp.icon} alt="" aria-hidden="true" width="28" height="28" loading="lazy" />
+      <div class="flex flex-col gap-4">
+        <section aria-label="Simple membership model">
+          <article class="rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_12px_30px_rgba(15,23,42,0.06)] lg:px-10 lg:py-10">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div class="flex h-full flex-col gap-5">
+                <h3 class="m-0 text-[1.85rem] font-bold leading-tight">Annual membership</h3>
+                <span class="text-[3.4rem] font-bold leading-none lg:text-[4.6rem]">5,000 EUR</span>
+                <div class="flex flex-1 items-center justify-center pt-2" aria-hidden="true">
+                  <div class="flex h-[15rem] w-full max-w-[24rem] items-center justify-center gap-8">
+                  <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="30" height="45" class="h-full w-auto opacity-65 saturate-[0.45]" />
+                  <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="30" height="45" class="h-full w-auto opacity-82 saturate-[0.72]" />
+                  <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="30" height="45" class="h-full w-auto" />
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col gap-6">
+                <p class="m-0 text-[1.08rem] leading-relaxed text-white/90">
+                  For this fee, everything already available on the platform is free for all Members:
+                </p>
+                <div class="flex flex-col gap-5">
+                  <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                    <h3 class="m-0 text-[1rem] font-bold text-white">Free unrestricted data use</h3>
+                    <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">All datasets available on Dataland can be accessed and used for internal purposes without restrictions.</p>
+                  </div>
+                  <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                    <h3 class="m-0 text-[1rem] font-bold text-white">Free use of all features</h3>
+                    <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">Current features, from download to template conversion, as well as all future features we will develop, are free for all members.</p>
+                  </div>
+                  <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                    <h3 class="m-0 text-[1rem] font-bold text-white">On-demand sourcing</h3>
+                    <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">Missing datasets can be requested and automatically delivered through Active Portfolio Monitoring.</p>
+                  </div>
+                  <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                    <h3 class="m-0 text-[1rem] font-bold text-white">100 credits</h3>
+                    <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">for requesting missing datasets.</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)]">{vp.title}</h3>
-            <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{vp.text}</p>
-          </div>
-        ))}
+          </article>
+        </section>
+
+        <section aria-label="Shared cost approach">
+          <article class="rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_12px_30px_rgba(15,23,42,0.06)] lg:px-10 lg:py-10">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+              <div class="flex h-full flex-col gap-5">
+                <div class="flex flex-col gap-5">
+                  <h3 class="m-0 text-[1.85rem] font-bold leading-tight">Shared cost approach</h3>
+                  <p class="m-0 text-[1.08rem] leading-relaxed text-white/90">
+                    The cost of sourcing datasets is shared among members requesting the same data.
+                  </p>
+                  <div class="flex flex-col gap-5">
+                    <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                      <h3 class="m-0 text-[1rem] font-bold text-white">Additional credits</h3>
+                      <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">Members can use the credits received with their annual subscription and purchase additional credits for EUR 50 per credit.</p>
+                    </div>
+                    <div class="flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4">
+                      <h3 class="m-0 text-[1rem] font-bold text-white">Pay only for new data</h3>
+                      <p class="m-0 text-[0.95rem] leading-relaxed text-white/74">Credits are only used when new data is sourced. All datasets already on the platform are included at no additional cost.</p>
+                    </div>
+                  </div>
+                </div>
+                <p class="m-0 pt-1 text-[0.8rem] leading-relaxed text-white/58">
+                  Dataset = 1 company, 1 framework, 1 reporting period.
+                </p>
+              </div>
+              <div class="flex h-full flex-col gap-5">
+                <div class="invisible text-[1.85rem] font-bold leading-tight" aria-hidden="true">Shared cost approach</div>
+                <div class="flex items-center justify-center rounded-[1.25rem] bg-white/6 px-6 pt-4 pb-0.5">
+                  <div class="max-w-[24rem]">
+                  <table class="w-full border-collapse text-sm">
+                    <thead>
+                      <tr class="border-b-2 border-white">
+                        <th class="px-8 py-1 text-center text-[0.86rem] font-bold uppercase tracking-[0.04em] text-white"># of Members</th>
+                        <th class="px-8 py-1 text-center text-[0.86rem] font-bold uppercase tracking-[0.04em] text-white">Cost (Credits)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {CREDITS_TABLE.map((row, idx) => (
+                        <tr class:list={['border-b border-[var(--color-surface-200)]', idx === CREDITS_TABLE.length - 1 && 'border-b-0']}>
+                          <td class="px-8 py-1 text-center text-[1.02rem] font-bold text-white">
+                            {row.members}
+                          </td>
+                          <td class="px-8 py-1 text-center text-[1.02rem] font-bold text-white">
+                            {row.cost}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p class="m-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]">
+                    The more members request the same company, the lower the cost per dataset.
+                  </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
       </div>
 
-      <!-- Pricing + Credits unified card -->
-      <div class="bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] shadow-[0_2px_16px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col">
-        <div class="grid grid-cols-1 lg:grid-cols-2">
-          <!-- Left: Pricing -->
-          <div>
-            <div class="bg-[#2C4A6B] px-8 py-4 flex items-center min-h-[60px]">
-              <h3 class="text-lg font-bold m-0 text-white">{PRICING_CARD.title}</h3>
-            </div>
-            <div class="px-8 py-6 flex flex-col gap-4">
-              <ul class="list-none pl-0 m-0 flex flex-col gap-3.5">
-                {PRICING_CARD.items.map((item) => (
-                  <li class="flex items-start gap-3 text-[0.9375rem] text-[var(--color-text)]">
-                    <span class="mt-1.5 w-2 h-2 shrink-0 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <!-- Right: Credits table -->
-          <div class="border-t border-[var(--color-surface-200)] lg:border-t-0 lg:border-l flex flex-col">
-            <div class="px-8 py-4 bg-[var(--color-surface-50)] flex items-center min-h-[60px]">
-              <h3 class="text-[0.9375rem] font-bold m-0 text-[var(--color-text)]">{CREDITS_VISUAL.title}</h3>
-            </div>
-            <div class="px-8 py-6 flex flex-col gap-4 flex-1">
-              <table class="w-full text-sm border-collapse">
-                <thead>
-                  <tr class="border-b-2 border-[#2C4A6B]">
-                    <th class="py-2.5 pr-4 text-left font-semibold text-[#2C4A6B] text-xs uppercase tracking-wide"># of Members</th>
-                    <th class="py-2.5 pr-4 text-left font-semibold text-[#2C4A6B] text-xs uppercase tracking-wide">Cost (Credits)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {CREDITS_TABLE.map((row, idx) => (
-                    <tr class:list={['border-b border-[var(--color-surface-200)]', idx === CREDITS_TABLE.length - 1 && 'border-b-0']}>
-                      <td class="py-2.5 pr-4 text-[var(--color-text)]">{row.members}</td>
-                      <td class="py-2.5 pr-4 text-[var(--color-text)] font-semibold">{row.cost}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p class="text-[0.8125rem] text-[var(--color-text-muted)] m-0 mt-auto">{CREDITS_VISUAL.caption}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom note integrated as card footer -->
-        <div class="border-t border-[var(--color-surface-200)] bg-[#2C4A6B]/[0.04] px-8 py-4 flex items-start gap-3">
-          <svg class="w-5 h-5 shrink-0 mt-0.5 text-[#2C4A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01"></path>
-          </svg>
-          <p class="text-[0.875rem] text-[var(--color-text)] m-0 leading-relaxed font-medium">{PRICING_CARD.footer}</p>
+      <div class="flex flex-col gap-6 pt-7 lg:flex-row lg:items-center lg:justify-between">
+        <p class="m-0 max-w-[46rem] text-[1.45rem] font-semibold leading-relaxed text-[var(--color-primary)]">
+          Join now to access high-quality ESG data and be part of building a non-profit European data infrastructure.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+          <a href="/register" class="btn btn--primary">Try it free</a>
         </div>
       </div>
 
@@ -422,7 +467,7 @@ const CREDITS_TABLE = [
 
       <!-- CTAs -->
       <div class="flex flex-col items-center gap-5 pt-4 border-t border-white/10 w-full">
-        <p class="text-[0.9375rem] text-white/50 m-0">Ready to get started?</p>
+        <p class="m-0 text-[1.45rem] font-semibold leading-relaxed text-white">Ready to get started?</p>
         <div class="flex flex-wrap gap-3 justify-center">
           <a href="/about#contact" class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]">Get in touch</a>
           <a href="/register" class="inline-flex items-center px-8 py-4 bg-white text-[#111111] font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Try it free</a>

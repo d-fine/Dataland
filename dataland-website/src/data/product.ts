@@ -108,8 +108,8 @@ export const USE_CASES: UseCase[] = [
   {
     icon: '/static/images/use_cases/img_use_case_format_update.png',
     tags: ['EU Taxonomy', 'Template continuity'],
-    title: 'EU Taxonomy Template Updates and Format Continuity',
-    titleLines: ['EU Taxonomy Template Updates', 'and Format Continuity'],
+    title: 'EU Taxonomy Format Continuity',
+    titleLines: ['EU Taxonomy Format', 'Continuity'],
     description:
       'Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change.',
   },
@@ -119,39 +119,39 @@ export const USE_CASES: UseCase[] = [
 
 export interface FeatureCard {
   title: string;
-  subtitle: string;
+  tags: string[];
   text: string;
 }
 
 export const FEATURE_CARDS: FeatureCard[] = [
   {
     title: 'Download data',
-    subtitle: 'Flexible formats',
+    tags: ['Flexible formats', 'Internal use'],
     text: 'Download datasets as CSV or XLSX with or without metadata',
   },
   {
     title: 'Portfolio management',
-    subtitle: 'Create and manage portfolios',
+    tags: ['Portfolio setup', 'Monitoring'],
     text: 'Build your own portfolios of companies and monitor ESG data availability',
   },
   {
     title: 'Portfolio sharing',
-    subtitle: 'Collaboration',
+    tags: ['Collaboration', 'Team access'],
     text: 'Share company portfolios with colleagues and teams',
   },
   {
     title: 'Request data',
-    subtitle: 'On-demand sourcing',
+    tags: ['On-demand sourcing', 'Missing data'],
     text: 'Order missing datasets directly from the platform',
   },
   {
     title: 'Source transparency',
-    subtitle: 'Traceability',
+    tags: ['Traceability', 'Quality comments'],
     text: 'Inspect original source documents and quality comments',
   },
   {
     title: 'Multi-framework export',
-    subtitle: 'Reporting-ready formats',
+    tags: ['Reporting-ready formats', 'Framework coverage'],
     text: 'Export datasets in formats suitable for different reporting frameworks',
   },
 ];
