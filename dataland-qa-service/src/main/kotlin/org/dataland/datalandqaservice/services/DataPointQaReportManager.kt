@@ -206,5 +206,5 @@ class DataPointQaReportManager(
     fun countQaReportsForDataPointIdsBulk(dataPointIds: Set<String>): Map<String, Long> =
         qaReportRepository
             .countByDataPointIdInGrouped(dataPointIds)
-            .associate { it.dataPointId to it.activeQaReportCount }
+            .associate { row -> row[0] as String to row[1] as Long }
 }
