@@ -55,7 +55,7 @@ class NonSourceabilityQaDecisionListener(
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
+                exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS),
                 key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED, RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED],
             ),
         ],
