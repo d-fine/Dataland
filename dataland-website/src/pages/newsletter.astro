@@ -121,18 +121,21 @@ import Base from '../layouts/Base.astro';
   </style>
 
   <script>
-    const form = document.getElementById('newsletter-form');
-    const submitButton = document.getElementById('submit-button');
-    const messageEl = document.getElementById('form-message');
+    const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+    const submitButton = document.getElementById('submit-button') as HTMLButtonElement | null;
+    const messageEl = document.getElementById('form-message') as HTMLElement | null;
 
-    const firstNameInput = document.getElementById('firstName');
-    const lastNameInput = document.getElementById('lastName');
-    const companyInput = document.getElementById('company');
-    const emailInput = document.getElementById('email');
+    const firstNameInput = document.getElementById('firstName') as HTMLInputElement | null;
+    const lastNameInput = document.getElementById('lastName') as HTMLInputElement | null;
+    const companyInput = document.getElementById('company') as HTMLInputElement | null;
+    const emailInput = document.getElementById('email') as HTMLInputElement | null;
 
-    const requiredInputs = [firstNameInput, lastNameInput, companyInput, emailInput];
+    const requiredInputs = [firstNameInput, lastNameInput, companyInput, emailInput].filter(
+      (input): input is HTMLInputElement => input !== null
+    );
 
-    function setMessage(text, type = '') {
+    function setMessage(text: string, type = ''): void {
+      if (!messageEl) return;
       messageEl.textContent = text;
       messageEl.classList.remove('is-error', 'is-success');
       if (type) {
@@ -140,23 +143,24 @@ import Base from '../layouts/Base.astro';
       }
     }
 
-    function clearAllErrors() {
+    function clearAllErrors(): void {
       requiredInputs.forEach((input) => input.classList.remove('is-error'));
     }
 
-    function isEmailValid(value) {
+    function isEmailValid(value: string): boolean {
       return value.includes('@');
     }
 
-    function areAllFieldsFilled() {
+    function areAllFieldsFilled(): boolean {
       return requiredInputs.every((input) => input.value.trim() !== '');
     }
 
-    function isFormReady() {
-      return areAllFieldsFilled() && isEmailValid(emailInput.value.trim());
+    function isFormReady(): boolean {
+      return areAllFieldsFilled() && isEmailValid(emailInput?.value.trim() ?? '');
     }
 
-    function updateSubmitState() {
+    function updateSubmitState(): void {
+      if (!submitButton) return;
       const enabled = isFormReady();
       submitButton.disabled = !enabled;
       submitButton.classList.toggle('is-enabled', enabled);
@@ -167,13 +171,13 @@ import Base from '../layouts/Base.astro';
 
       input.addEventListener('focus', () => {
         input.classList.remove('is-error');
-        if (messageEl.classList.contains('is-error')) {
+        if (messageEl?.classList.contains('is-error')) {
           setMessage('');
         }
       });
     });
 
-    form.addEventListener('submit', (event) => {
+    form?.addEventListener('submit', (event) => {
       event.preventDefault();
 
       clearAllErrors();
@@ -188,7 +192,7 @@ import Base from '../layouts/Base.astro';
         return;
       }
 
-      if (!isEmailValid(emailInput.value.trim())) {
+      if (emailInput && !isEmailValid(emailInput.value.trim())) {
         emailInput.classList.add('is-error');
         setMessage('The email address is not valid.', 'is-error');
         updateSubmitState();

@@ -31,6 +31,7 @@ export interface PartnerStoryDetail {
   name: string;
   logo: string;
   logoClassName?: string;
+  darkLogoFrame?: boolean;
   heroTitle: string;
   primaryTag: string;
   secondaryTags: string[];

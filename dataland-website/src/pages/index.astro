@@ -380,7 +380,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       nextButton.disabled = slider.scrollLeft >= maxScrollLeft - 4;
     };
 
-    const scrollSlider = (direction) => {
+    const scrollSlider = (direction: number) => {
       slider.scrollBy({
         left: direction * getStep(),
         behavior: 'smooth',
