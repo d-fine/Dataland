@@ -14,7 +14,6 @@ type TrustedByLogoMetadata = Omit<TrustedByLogo, 'imagePath'> & { imagePath?: st
 
 const PUBLIC_LOGOS_DIRECTORY = path.join(process.cwd(), 'public', 'static', 'logos');
 
-
 const LOGO_METADATA_BY_FILENAME: Record<string, TrustedByLogoMetadata> = {
   'logo_atlas_metrics.svg': { name: 'Atlas Metrics' },
   'logo_bantleon.svg': { name: 'Bantleon' },
