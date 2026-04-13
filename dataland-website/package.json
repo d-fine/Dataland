@@ -26,6 +26,16 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.4",
-    "tailwindcss": "^4.1.4"
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.58.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "eslint": "^10.2.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "eslint-plugin-cypress": "^6.3.0",
+    "eslint-plugin-vue": "^10.8.0",
+    "prettier": "^3.8.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "tailwindcss": "^4.1.4",
+    "vue-eslint-parser": "^10.4.0"
   }
 }
