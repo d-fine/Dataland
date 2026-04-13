@@ -72,6 +72,102 @@ class QaReviewQueryServiceTest {
             dataPoints = mutableListOf(),
         )
 
+    private val dataId1: String = UUID.randomUUID().toString()
+    private val dataId2: String = UUID.randomUUID().toString()
+
+    private val judgementId1: UUID = UUID.randomUUID()
+    private val judgementId2: UUID = UUID.randomUUID()
+    private val judgeId1: UUID = UUID.randomUUID()
+    private val judgeId2: UUID = UUID.randomUUID()
+
+    private val qaReviewEntity1 =
+        QaReviewEntity(
+            dataId = dataId1,
+            companyId = "company-a",
+            companyName = "Company A",
+            framework = "sfdr",
+            reportingPeriod = "2024",
+            timestamp = 1000L,
+            qaStatus = QaStatus.Pending,
+            triggeringUserId = "trigger-user-a",
+            comment = "first",
+        )
+    private val qaReviewEntity2 =
+        QaReviewEntity(
+            dataId = dataId2,
+            companyId = "company-b",
+            companyName = "Company B",
+            framework = "sfdr",
+            reportingPeriod = "2023",
+            timestamp = 2000L,
+            qaStatus = QaStatus.Pending,
+            triggeringUserId = "trigger-user-b",
+            comment = "second",
+        )
+
+    private val datasetJudgementEntity1 =
+        DatasetJudgementEntity(
+            dataSetJudgementId = judgementId1,
+            datasetId = UUID.fromString(dataId1),
+            companyId = UUID.randomUUID(),
+            dataType = DataTypeEnum.sfdr,
+            reportingPeriod = "2024",
+            judgementState = DatasetJudgementState.Pending,
+            qaJudgeUserId = judgeId1,
+            qaJudgeUserName = "Judge A",
+            qaReporters = mutableListOf(),
+            dataPoints = mutableListOf(),
+        )
+    private val datasetJudgementEntity2 =
+        DatasetJudgementEntity(
+            dataSetJudgementId = judgementId2,
+            datasetId = UUID.fromString(dataId2),
+            companyId = UUID.randomUUID(),
+            dataType = DataTypeEnum.sfdr,
+            reportingPeriod = "2023",
+            judgementState = DatasetJudgementState.Pending,
+            qaJudgeUserId = judgeId2,
+            qaJudgeUserName = "Judge B",
+            qaReporters = mutableListOf(),
+            dataPoints = mutableListOf(),
+        )
+
+    private val expected =
+        listOf(
+            QaReviewResponse(
+                dataId = dataId2,
+                companyId = "company-b",
+                companyName = "Company B",
+                framework = "sfdr",
+                reportingPeriod = "2023",
+                timestamp = 2000L,
+                qaStatus = QaStatus.Pending,
+                qaJudgeUserId = judgeId2.toString(),
+                qaJudgeUserName = "Judge B",
+                datasetReviewId = judgementId2.toString(),
+                numberQaReports = 5L,
+                comment = "second",
+                triggeringUserId = null,
+                priorityOfAssociatedDataSourcing = 9,
+            ),
+            QaReviewResponse(
+                dataId = dataId1,
+                companyId = "company-a",
+                companyName = "Company A",
+                framework = "sfdr",
+                reportingPeriod = "2024",
+                timestamp = 1000L,
+                qaStatus = QaStatus.Pending,
+                qaJudgeUserId = judgeId1.toString(),
+                qaJudgeUserName = "Judge A",
+                datasetReviewId = judgementId1.toString(),
+                numberQaReports = 3L,
+                comment = "first",
+                triggeringUserId = null,
+                priorityOfAssociatedDataSourcing = 4,
+            ),
+        )
+
     private lateinit var qaReviewQueryService: QaReviewQueryService
 
     @BeforeEach
@@ -194,66 +290,6 @@ class QaReviewQueryServiceTest {
 
     @Test
     fun `check that getInfoOnPendingDatasets returns stable content and order`() {
-        val dataId1 = UUID.randomUUID().toString()
-        val dataId2 = UUID.randomUUID().toString()
-
-        val qaReviewEntity1 =
-            QaReviewEntity(
-                dataId = dataId1,
-                companyId = "company-a",
-                companyName = "Company A",
-                framework = "sfdr",
-                reportingPeriod = "2024",
-                timestamp = 1000L,
-                qaStatus = QaStatus.Pending,
-                triggeringUserId = "trigger-user-a",
-                comment = "first",
-            )
-        val qaReviewEntity2 =
-            QaReviewEntity(
-                dataId = dataId2,
-                companyId = "company-b",
-                companyName = "Company B",
-                framework = "sfdr",
-                reportingPeriod = "2023",
-                timestamp = 2000L,
-                qaStatus = QaStatus.Pending,
-                triggeringUserId = "trigger-user-b",
-                comment = "second",
-            )
-
-        val judgementId1 = UUID.randomUUID()
-        val judgementId2 = UUID.randomUUID()
-        val judgeId1 = UUID.randomUUID()
-        val judgeId2 = UUID.randomUUID()
-
-        val datasetJudgementEntity1 =
-            DatasetJudgementEntity(
-                dataSetJudgementId = judgementId1,
-                datasetId = UUID.fromString(dataId1),
-                companyId = UUID.randomUUID(),
-                dataType = DataTypeEnum.sfdr,
-                reportingPeriod = "2024",
-                judgementState = DatasetJudgementState.Pending,
-                qaJudgeUserId = judgeId1,
-                qaJudgeUserName = "Judge A",
-                qaReporters = mutableListOf(),
-                dataPoints = mutableListOf(),
-            )
-        val datasetJudgementEntity2 =
-            DatasetJudgementEntity(
-                dataSetJudgementId = judgementId2,
-                datasetId = UUID.fromString(dataId2),
-                companyId = UUID.randomUUID(),
-                dataType = DataTypeEnum.sfdr,
-                reportingPeriod = "2023",
-                judgementState = DatasetJudgementState.Pending,
-                qaJudgeUserId = judgeId2,
-                qaJudgeUserName = "Judge B",
-                qaReporters = mutableListOf(),
-                dataPoints = mutableListOf(),
-            )
-
         doReturn(listOf(qaReviewEntity2, qaReviewEntity1))
             .whenever(mockQaReviewRepository)
             .getPendingQaReviewMetadatasetsByCompany(any())
@@ -294,42 +330,6 @@ class QaReviewQueryServiceTest {
             ) {
                 qaReviewQueryService.getInfoOnPendingDatasets(companyName = null)
             }
-
-        val expected =
-            listOf(
-                QaReviewResponse(
-                    dataId = dataId2,
-                    companyId = "company-b",
-                    companyName = "Company B",
-                    framework = "sfdr",
-                    reportingPeriod = "2023",
-                    timestamp = 2000L,
-                    qaStatus = QaStatus.Pending,
-                    qaJudgeUserId = judgeId2.toString(),
-                    qaJudgeUserName = "Judge B",
-                    datasetReviewId = judgementId2.toString(),
-                    numberQaReports = 5L,
-                    comment = "second",
-                    triggeringUserId = null,
-                    priorityOfAssociatedDataSourcing = 9,
-                ),
-                QaReviewResponse(
-                    dataId = dataId1,
-                    companyId = "company-a",
-                    companyName = "Company A",
-                    framework = "sfdr",
-                    reportingPeriod = "2024",
-                    timestamp = 1000L,
-                    qaStatus = QaStatus.Pending,
-                    qaJudgeUserId = judgeId1.toString(),
-                    qaJudgeUserName = "Judge A",
-                    datasetReviewId = judgementId1.toString(),
-                    numberQaReports = 3L,
-                    comment = "first",
-                    triggeringUserId = null,
-                    priorityOfAssociatedDataSourcing = 4,
-                ),
-            )
 
         Assertions.assertEquals(expected, actual)
     }

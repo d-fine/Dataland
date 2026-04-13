@@ -136,7 +136,7 @@ class QaReviewQueryService
             // Time the dataset judgement fetch
             val getJudgementsStartANs = System.nanoTime()
             // Use a fetch-join query to load dataPoints together and avoid N+1
-                val judgementEntities =
+            val judgementEntities =
                 try {
                     datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
                 } catch (ex: PersistenceException) {
