@@ -130,20 +130,17 @@ class QaReviewQueryService
             val judgementEntities =
                 try {
                     datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
-                } catch (ex: PersistenceException) {
-                    logger.warn(
-                        "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
-                        ex::class.simpleName,
-                        ex.message,
-                    )
-                    datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
-                } catch (ex: DataAccessException) {
-                    logger.warn(
-                        "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
-                        ex::class.simpleName,
-                        ex.message,
-                    )
-                    datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+                } catch (ex: Exception) {
+                    if (ex is PersistenceException || ex is DataAccessException) {
+                        logger.warn(
+                            "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                            ex::class.simpleName,
+                            ex.message,
+                        )
+                        datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+                    } else {
+                        throw ex
+                    }
                 }
 
             logger.info(
