@@ -75,7 +75,7 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     )
     fun countByDataPointIdInGrouped(
         @Param("dataPointIds") dataPointIds: Set<String>,
-    ): List<Array<Any>>
+    ): List<DataPointIdCountProjection>
 
     /**
      * Makes testing easier
