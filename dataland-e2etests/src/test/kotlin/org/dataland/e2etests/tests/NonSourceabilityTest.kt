@@ -120,6 +120,24 @@ class NonSourceabilityTest {
         assertDsStateIsNonSourceable(ctx)
     }
 
+    @Test
+    fun `currentlyActive becomes false after QA approves a dataset for the same triple`() {
+        val ctx =
+            Ctx(
+                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = testReportingPeriod,
+            )
+
+        postNonSourceableWithBypassQa(ctx)
+        assertBackendEntryIsAcceptedAndActive(ctx)
+
+        val dataId = uploadDatasetForTriple(ctx)
+        asAdmin { apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, QaServiceQaStatus.Accepted) }
+
+        assertNonSourceabilityIsInactive(ctx)
+    }
+
     private fun postNonSourceableAndAssertPending(ctx: Ctx): String {
         val createdEntry =
             asAdmin {
@@ -312,5 +330,33 @@ class NonSourceabilityTest {
                 )
             }
         assertTrue(qaReviews.isEmpty(), "QA service must have no review rows when bypassQa=true")
+    }
+
+    private fun uploadDatasetForTriple(ctx: Ctx): String =
+        asAdmin {
+            apiAccessor
+                .uploadDummyFrameworkDataset(
+                    companyId = ctx.companyId,
+                    dataType = ctx.dataType,
+                    reportingPeriod = ctx.reportingPeriod,
+                    bypassQa = false,
+                ).dataId
+        }
+
+    private fun assertNonSourceabilityIsInactive(ctx: Ctx) {
+        awaitUntilAsserted {
+            val entries =
+                asAdmin {
+                    apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertFalse(
+                entries.first().currentlyActive,
+                "currentlyActive must be false after QA accepts a dataset for the same triple",
+            )
+        }
     }
 }
