@@ -3969,6 +3969,7 @@
           "dataPointId",
           "dataPointType",
           "qaReportId",
+          "reporterUserId",
           "uploadTime",
           "verdict"
         ],
