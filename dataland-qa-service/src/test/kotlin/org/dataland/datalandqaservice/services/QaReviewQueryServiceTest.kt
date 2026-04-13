@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
@@ -189,5 +190,147 @@ class QaReviewQueryServiceTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertNull(responses.first().priorityOfAssociatedDataSourcing)
+    }
+
+    @Test
+    fun `check that getInfoOnPendingDatasets returns stable content and order`() {
+        val dataId1 = UUID.randomUUID().toString()
+        val dataId2 = UUID.randomUUID().toString()
+
+        val qaReviewEntity1 =
+            QaReviewEntity(
+                dataId = dataId1,
+                companyId = "company-a",
+                companyName = "Company A",
+                framework = "sfdr",
+                reportingPeriod = "2024",
+                timestamp = 1000L,
+                qaStatus = QaStatus.Pending,
+                triggeringUserId = "trigger-user-a",
+                comment = "first",
+            )
+        val qaReviewEntity2 =
+            QaReviewEntity(
+                dataId = dataId2,
+                companyId = "company-b",
+                companyName = "Company B",
+                framework = "sfdr",
+                reportingPeriod = "2023",
+                timestamp = 2000L,
+                qaStatus = QaStatus.Pending,
+                triggeringUserId = "trigger-user-b",
+                comment = "second",
+            )
+
+        val judgementId1 = UUID.randomUUID()
+        val judgementId2 = UUID.randomUUID()
+        val judgeId1 = UUID.randomUUID()
+        val judgeId2 = UUID.randomUUID()
+
+        val datasetJudgementEntity1 =
+            DatasetJudgementEntity(
+                dataSetJudgementId = judgementId1,
+                datasetId = UUID.fromString(dataId1),
+                companyId = UUID.randomUUID(),
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = "2024",
+                judgementState = DatasetJudgementState.Pending,
+                qaJudgeUserId = judgeId1,
+                qaJudgeUserName = "Judge A",
+                qaReporters = mutableListOf(),
+                dataPoints = mutableListOf(),
+            )
+        val datasetJudgementEntity2 =
+            DatasetJudgementEntity(
+                dataSetJudgementId = judgementId2,
+                datasetId = UUID.fromString(dataId2),
+                companyId = UUID.randomUUID(),
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = "2023",
+                judgementState = DatasetJudgementState.Pending,
+                qaJudgeUserId = judgeId2,
+                qaJudgeUserName = "Judge B",
+                qaReporters = mutableListOf(),
+                dataPoints = mutableListOf(),
+            )
+
+        doReturn(listOf(qaReviewEntity2, qaReviewEntity1))
+            .whenever(mockQaReviewRepository)
+            .getPendingQaReviewMetadatasetsByCompany(any())
+        doReturn(listOf(datasetJudgementEntity1, datasetJudgementEntity2))
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
+        doReturn(mapOf("x" to "dp-1", "y" to "dp-2"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId1))
+        doReturn(mapOf("x" to "dp-3"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId2))
+        doReturn(mapOf("dp-1" to 1L, "dp-2" to 2L, "dp-3" to 5L))
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+        doReturn(
+            listOf(
+                DataSourcingPriorityByDataDimensions(
+                    dataType = "sfdr",
+                    reportingPeriod = "2023",
+                    companyId = "company-b",
+                    priority = 9,
+                ),
+                DataSourcingPriorityByDataDimensions(
+                    dataType = "sfdr",
+                    reportingPeriod = "2024",
+                    companyId = "company-a",
+                    priority = 4,
+                ),
+            ),
+        ).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
+
+        val actual =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = "dummy-user",
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewQueryService.getInfoOnPendingDatasets(companyName = null)
+            }
+
+        val expected =
+            listOf(
+                QaReviewResponse(
+                    dataId = dataId2,
+                    companyId = "company-b",
+                    companyName = "Company B",
+                    framework = "sfdr",
+                    reportingPeriod = "2023",
+                    timestamp = 2000L,
+                    qaStatus = QaStatus.Pending,
+                    qaJudgeUserId = judgeId2.toString(),
+                    qaJudgeUserName = "Judge B",
+                    datasetReviewId = judgementId2.toString(),
+                    numberQaReports = 5L,
+                    comment = "second",
+                    triggeringUserId = null,
+                    priorityOfAssociatedDataSourcing = 9,
+                ),
+                QaReviewResponse(
+                    dataId = dataId1,
+                    companyId = "company-a",
+                    companyName = "Company A",
+                    framework = "sfdr",
+                    reportingPeriod = "2024",
+                    timestamp = 1000L,
+                    qaStatus = QaStatus.Pending,
+                    qaJudgeUserId = judgeId1.toString(),
+                    qaJudgeUserName = "Judge A",
+                    datasetReviewId = judgementId1.toString(),
+                    numberQaReports = 3L,
+                    comment = "first",
+                    triggeringUserId = null,
+                    priorityOfAssociatedDataSourcing = 4,
+                ),
+            )
+
+        Assertions.assertEquals(expected, actual)
     }
 }

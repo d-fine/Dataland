@@ -158,11 +158,11 @@ class QaReviewQueryService
                 judgementEntities
                     .groupBy { it.datasetId }
                     .mapValues { (_, judgements) ->
-                        val j = judgements.first()
+                        val firstJudgement = judgements.first()
                         MinimalDatasetJudgement(
-                            dataSetJudgementId = j.dataSetJudgementId.toString(),
-                            qaJudgeUserId = j.qaJudgeUserId.toString(),
-                            qaJudgeUserName = j.qaJudgeUserName,
+                            dataSetJudgementId = firstJudgement.dataSetJudgementId.toString(),
+                            qaJudgeUserId = firstJudgement.qaJudgeUserId.toString(),
+                            qaJudgeUserName = firstJudgement.qaJudgeUserName,
                         )
                     }
             logger.info(
