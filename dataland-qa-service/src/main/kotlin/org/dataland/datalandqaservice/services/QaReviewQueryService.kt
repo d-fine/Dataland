@@ -90,7 +90,6 @@ class QaReviewQueryService
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-
             val entities =
                 qaReviewRepository
                     .getPendingQaReviewMetadatasetsByCompany(
@@ -102,9 +101,7 @@ class QaReviewQueryService
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
                     )
-
             val datasetIds = entities.map { it.dataId }.distinct()
-
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
 
             fun fallbackToNonFetch(datasetUUIDs: Collection<UUID>, ex: Throwable) = run {
@@ -118,7 +115,6 @@ class QaReviewQueryService
 
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
 
-            // Use a fetch-join query to load dataPoints together and avoid N+1
             val judgementEntities =
                 try {
                     datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
@@ -127,7 +123,6 @@ class QaReviewQueryService
                 } catch (ex: DataAccessException) {
                     fallbackToNonFetch(datasetUUIDs, ex)
                 }
-
             val latestJudgementByDatasetId =
                 judgementEntities
                     .groupBy { it.datasetId }
@@ -139,7 +134,6 @@ class QaReviewQueryService
                             qaJudgeUserName = firstJudgement.qaJudgeUserName,
                         )
                     }
-
             val qaReviewResponses =
                 entities
                     .map {
