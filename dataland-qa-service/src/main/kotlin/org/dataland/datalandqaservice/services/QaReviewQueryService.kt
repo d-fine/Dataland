@@ -123,24 +123,26 @@ class QaReviewQueryService
                 (System.nanoTime() - getNumberOfQaReportsForDatasetIdsStartNs) / NS_IN_MS,
             )
 
+            fun fallbackToNonFetch(datasetUUIDs: Collection<UUID>, ex: Throwable) = run {
+                logger.warn(
+                    "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                    ex::class.simpleName,
+                    ex.message,
+                )
+                datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+            }
+
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
             // Time the dataset judgement fetch
             val getJudgementsStartANs = System.nanoTime()
             // Use a fetch-join query to load dataPoints together and avoid N+1
-            val judgementEntities =
+                val judgementEntities =
                 try {
                     datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
-                } catch (ex: Exception) {
-                    if (ex is PersistenceException || ex is DataAccessException) {
-                        logger.warn(
-                            "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
-                            ex::class.simpleName,
-                            ex.message,
-                        )
-                        datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
-                    } else {
-                        throw ex
-                    }
+                } catch (ex: PersistenceException) {
+                    fallbackToNonFetch(datasetUUIDs, ex)
+                } catch (ex: DataAccessException) {
+                    fallbackToNonFetch(datasetUUIDs, ex)
                 }
 
             logger.info(
