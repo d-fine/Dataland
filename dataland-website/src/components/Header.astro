@@ -26,115 +26,160 @@ const activeClasses = 'text-[var(--color-primary)]';
   <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
-      <img
-        src="/static/logos/logo_dataland_orange.svg"
-        alt="Dataland"
-        class="h-7 w-auto"
-        width="140"
-        height="32"
-      />
+      <img src="/static/logos/logo_dataland_orange.svg" alt="Dataland" class="h-7 w-auto" width="140" height="32" />
     </a>
 
     <!-- Desktop navigation -->
-      <nav class="hidden lg:flex gap-12 items-center" aria-label="Main navigation">
-          <div class="relative group">
-              <a
-                      href="/about"
-                      class:list={[baseLinkClasses, isActive('/about') ? activeClasses : inactiveClasses]}
-                      aria-current={isActive('/about') ? 'page' : undefined}
-                      aria-haspopup="true"
-              >
-                  <span class="flex items-center gap-1">
-                      About
-                      <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                  </span>
-              </a>
+    <nav class="hidden lg:flex gap-12 items-center" aria-label="Main navigation">
+      <div class="relative group">
+        <a
+          href="/about"
+          class:list={[baseLinkClasses, isActive('/about') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/about') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            About
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
 
-              <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
-                  <div class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col">
-                      {ABOUT_SECTIONS.map(({ href, label }) => (
-                              <a
-                                      href={href}
-                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
-                              >
-                                  {label}
-                              </a>
-                      ))}
-                  </div>
-              </div>
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              ABOUT_SECTIONS.map(({ href, label }) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
           </div>
+        </div>
+      </div>
 
-          <div class="relative group">
-              <a
-                      href="/product"
-                      class:list={[baseLinkClasses, isActive('/product') ? activeClasses : inactiveClasses]}
-                      aria-current={isActive('/product') ? 'page' : undefined}
-                      aria-haspopup="true"
-              >
-                  <span class="flex items-center gap-1">
-                      Product
-                      <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                  </span>
-              </a>
+      <div class="relative group">
+        <a
+          href="/product"
+          class:list={[baseLinkClasses, isActive('/product') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/product') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            Product
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
 
-              <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
-                  <div class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col">
-                      {PRODUCT_SECTIONS.map(({ href, label }) => (
-                              <a
-                                      href={href}
-                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
-                              >
-                                  {label}
-                              </a>
-                      ))}
-                  </div>
-              </div>
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              PRODUCT_SECTIONS.map(({ href, label }) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
           </div>
+        </div>
+      </div>
 
-          <div class="relative group">
-              <a
-                      href="/community"
-                      class:list={[baseLinkClasses, isActive('/community') ? activeClasses : inactiveClasses]}
-                      aria-current={isActive('/community') ? 'page' : undefined}
-                      aria-haspopup="true"
-              >
-                  <span class="flex items-center gap-1">
-                      Community
-                      <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                  </span>
-              </a>
+      <div class="relative group">
+        <a
+          href="/community"
+          class:list={[baseLinkClasses, isActive('/community') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/community') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            Community
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
 
-              <div class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150">
-                  <div class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col">
-                      {COMMUNITY_SECTIONS.map(({ href, label }) => (
-                              <a
-                                      href={href}
-                                      class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
-                              >
-                                  {label}
-                              </a>
-                      ))}
-                  </div>
-              </div>
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              COMMUNITY_SECTIONS.map(({ href, label }) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
           </div>
-      </nav>
+        </div>
+      </div>
+    </nav>
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center gap-5">
       <span id="header-guest-actions" class="flex items-center gap-5">
-        <a href="/login" data-test="login-dataland-button" class="no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">Login</a>
-        <a href="/register" data-test="signup-dataland-button" class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]">Try it free</a>
+        <a
+          href="/login"
+          data-test="login-dataland-button"
+          class="no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          >Login</a
+        >
+        <a
+          href="/register"
+          data-test="signup-dataland-button"
+          class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]"
+          >Try it free</a
+        >
       </span>
-      <a id="header-back-to-platform" href="/platform-redirect" data-test="backToPlatformLink" class="hidden items-center gap-2 no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]">
+      <a
+        id="header-back-to-platform"
+        href="/platform-redirect"
+        data-test="backToPlatformLink"
+        class="hidden items-center gap-2 no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+      >
         Back to platform
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </a>
     </div>
@@ -146,10 +191,19 @@ const activeClasses = 'text-[var(--color-primary)]';
       aria-label="Open menu"
       id="mobile-menu-toggle"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
   </div>

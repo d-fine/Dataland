@@ -17,17 +17,20 @@ const { videoId, title } = Astro.props;
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
         loading="lazy"
-        class="absolute inset-0 w-full h-full border-0"
-      ></iframe>
+        class="absolute inset-0 w-full h-full border-0"></iframe>
     </div>
   </div>
 
   <!-- Show consent message when marketing cookies are not accepted -->
   <div class="cookieconsent-optout-marketing">
-    <div class="w-full aspect-video rounded-lg bg-[var(--color-surface-50)] border border-[var(--color-surface-200)] flex items-center justify-center p-6">
+    <div
+      class="w-full aspect-video rounded-lg bg-[var(--color-surface-50)] border border-[var(--color-surface-200)] flex items-center justify-center p-6"
+    >
       <p class="text-sm text-[var(--color-text-muted)] text-center m-0 leading-normal">
         This content is hosted by YouTube. To watch this video, please accept marketing cookies in your
-        <a href="javascript:void(0)" onclick="Cookiebot.renew()" class="text-[var(--color-primary)] underline">cookie settings</a>.
+        <a href="javascript:void(0)" onclick="Cookiebot.renew()" class="text-[var(--color-primary)] underline"
+          >cookie settings</a
+        >.
       </p>
     </div>
   </div>

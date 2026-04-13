@@ -11,36 +11,70 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 ---
 
 <Base title="Dataland — Non-profit sustainability data">
-
   <!-- Section 1: Hero (grey) -->
-  <section class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8" aria-label="The open-source platform for structured sustainability data">
+  <section
+    class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8"
+    aria-label="The open-source platform for structured sustainability data"
+  >
     <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[50%_50%]">
       <div>
-        <h1 class="m-0 mb-4 max-w-[12.5ch] text-[2rem] font-bold leading-[1.2] text-[var(--color-text)] lg:max-w-none lg:text-[2.55rem]">
+        <h1
+          class="m-0 mb-4 max-w-[12.5ch] text-[2rem] font-bold leading-[1.2] text-[var(--color-text)] lg:max-w-none lg:text-[2.55rem]"
+        >
           <span class="whitespace-nowrap">The open-source platform for</span>{' '}
           <span class="whitespace-nowrap text-[var(--color-primary)]">structured sustainability data</span>
         </h1>
         <p class="text-lg text-[var(--color-text-muted)] m-0 mb-10">Non-profit. Source-based. Unrestricted use.</p>
-        <div class="mb-8 flex flex-row flex-nowrap items-start gap-x-6 gap-y-4 sm:gap-x-8 lg:gap-x-10" aria-label="Platform statistics">
+        <div
+          class="mb-8 flex flex-row flex-nowrap items-start gap-x-6 gap-y-4 sm:gap-x-8 lg:gap-x-10"
+          aria-label="Platform statistics"
+        >
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
-              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">1,000</span>
-              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Users</span>
+              <span
+                class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]"
+                >&gt;</span
+              >
+              <span
+                class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]"
+                >1,000</span
+              >
+              <span
+                class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]"
+                >Users</span
+              >
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
-              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">3,000</span>
-              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Datasets</span>
+              <span
+                class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]"
+                >&gt;</span
+              >
+              <span
+                class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]"
+                >3,000</span
+              >
+              <span
+                class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]"
+                >Datasets</span
+              >
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
             <div class="relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]">
-              <span class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]">&gt;</span>
-              <span class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]">300,000</span>
-              <span class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]">Live data points</span>
+              <span
+                class="absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]"
+                >&gt;</span
+              >
+              <span
+                class="block whitespace-nowrap text-[2.55rem] font-normal leading-none tracking-[-0.05em] lg:text-[3.1rem]"
+                >300,000</span
+              >
+              <span
+                class="block text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)]"
+                >Live data points</span
+              >
             </div>
           </div>
         </div>
@@ -64,45 +98,65 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   </section>
 
   <!-- Section 2: LEI Search (dark) -->
-  <section class="px-6 bg-[#2f2f2f] text-white py-14 lg:py-16" aria-label="Search sustainability data by company name or LEI">
+  <section
+    class="px-6 bg-[#2f2f2f] text-white py-14 lg:py-16"
+    aria-label="Search sustainability data by company name or LEI"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col items-center justify-center gap-4">
-      <h2 class="relative -top-6 text-2xl font-bold m-0 text-center">Search sustainability data by company name or LEI</h2>
+      <h2 class="relative -top-6 text-2xl font-bold m-0 text-center">
+        Search sustainability data by company name or LEI
+      </h2>
       <CompanySearchBar />
     </div>
   </section>
 
   <!-- Section 3: Why Us (grey) -->
-  <section id="why-us" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Why financial institutions choose Dataland">
+  <section
+    id="why-us"
+    class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8"
+    aria-label="Why financial institutions choose Dataland"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Why financial institutions choose Dataland</h2>
+      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">
+        Why financial institutions choose Dataland
+      </h2>
 
       <div class="flex flex-col gap-8">
-        {WHY_US_PAIRS.map((pair) => (
-          <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(90deg,#eef1f4_0%,#f8f7f4_38%,#fff3ea_70%,#ffe6d6_100%)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
-            <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-1">
-              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#5f6773]">Common Problems</span>
+        {
+          WHY_US_PAIRS.map((pair) => (
+            <div class="grid grid-cols-1 gap-4 overflow-hidden rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(90deg,#eef1f4_0%,#f8f7f4_38%,#fff3ea_70%,#ffe6d6_100%)] shadow-[0_12px_32px_rgba(15,23,42,0.06)] lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
+              <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-1">
+                <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#5f6773]">
+                  Common Problems
+                </span>
+              </div>
+              <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-1">
+                <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-text)]">{pair.problemTitle}</h3>
+              </div>
+              <div class="px-6 pb-6 lg:px-7 lg:pb-7 lg:row-start-3 lg:col-start-1">
+                <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
+              </div>
+              <div
+                class="hidden lg:flex lg:row-span-3 lg:col-start-2 items-center justify-center px-3"
+                aria-hidden="true"
+              >
+                <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
+              </div>
+              <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true" />
+              <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-3">
+                <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#7B5D4A]">
+                  Dataland Solution
+                </span>
+              </div>
+              <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-3">
+                <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
+              </div>
+              <div class="px-6 pb-6 lg:px-7 lg:pb-7 lg:row-start-3 lg:col-start-3">
+                <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.solutionText}</p>
+              </div>
             </div>
-            <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-1">
-              <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-text)]">{pair.problemTitle}</h3>
-            </div>
-            <div class="px-6 pb-6 lg:px-7 lg:pb-7 lg:row-start-3 lg:col-start-1">
-              <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.problemText}</p>
-            </div>
-            <div class="hidden lg:flex lg:row-span-3 lg:col-start-2 items-center justify-center px-3" aria-hidden="true">
-              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
-            </div>
-            <div class="h-px bg-[var(--color-surface-200)] lg:hidden" aria-hidden="true"></div>
-            <div class="px-6 pt-6 pb-0.5 lg:px-7 lg:pt-7 lg:pb-1 lg:row-start-1 lg:col-start-3">
-              <span class="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#7B5D4A]">Dataland Solution</span>
-            </div>
-            <div class="px-6 pb-3 lg:px-7 lg:pb-4 lg:row-start-2 lg:col-start-3">
-              <h3 class="text-[1.125rem] font-bold m-0 text-[var(--color-primary)]">{pair.solutionTitle}</h3>
-            </div>
-            <div class="px-6 pb-6 lg:px-7 lg:pb-7 lg:row-start-3 lg:col-start-3">
-              <p class="text-[1rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{pair.solutionText}</p>
-            </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
 
       <div class="flex flex-wrap gap-3 justify-center">
@@ -114,62 +168,91 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   </section>
 
   <!-- Section 4: Trusted By (white) -->
-  <section class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8" aria-label="Trusted by leading financial institutions">
+  <section
+    class="py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8"
+    aria-label="Trusted by leading financial institutions"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12 lg:gap-14">
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Trusted by</h2>
-      <div class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+      <div
+        class="trusted-by-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+      >
         <div class="trusted-by-track flex w-max items-center gap-5 lg:gap-7">
-          {trustedByCarousel.map((logo, index) => (
-            <a href="/community#trusted-organizations" class:list={['flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5', logo.carouselContainerClassName]} aria-label={`See ${logo.name} on the community page`}>
-              <div class:list={logo.imageFrameClassName}>
-                <img
-                  src={logo.imagePath}
-                  alt={logo.name}
-                  class:list={[
-                    'h-16 w-40 object-contain opacity-85 grayscale-[20%] motion-safe:transition-[opacity,filter,transform] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0 lg:h-20 lg:w-44',
-                    logo.className,
-                  ]}
-                  loading={index < TRUSTED_BY_LOGOS.length ? 'eager' : 'lazy'}
-                  width="176"
-                  height="80"
-                />
-              </div>
-            </a>
-          ))}
+          {
+            trustedByCarousel.map((logo, index) => (
+              <a
+                href="/community#trusted-organizations"
+                class:list={[
+                  'flex h-28 w-52 shrink-0 items-center justify-center px-4 py-3 lg:h-32 lg:w-60 lg:px-5',
+                  logo.carouselContainerClassName,
+                ]}
+                aria-label={`See ${logo.name} on the community page`}
+              >
+                <div class:list={logo.imageFrameClassName}>
+                  <img
+                    src={logo.imagePath}
+                    alt={logo.name}
+                    class:list={[
+                      'h-16 w-40 object-contain opacity-85 grayscale-[20%] motion-safe:transition-[opacity,filter,transform] motion-safe:duration-200 hover:opacity-100 hover:grayscale-0 lg:h-20 lg:w-44',
+                      logo.className,
+                    ]}
+                    loading={index < TRUSTED_BY_LOGOS.length ? 'eager' : 'lazy'}
+                    width="176"
+                    height="80"
+                  />
+                </div>
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>
   </section>
 
   <!-- Section 5: Customer Stories (grey) -->
-  <section id="customer-stories" class="py-12 px-6 bg-[var(--color-surface-50)]" aria-label="How our members use Dataland">
+  <section
+    id="customer-stories"
+    class="py-12 px-6 bg-[var(--color-surface-50)]"
+    aria-label="How our members use Dataland"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">How our members use Dataland</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {CUSTOMER_STORY_SUMMARIES.map((story) => (
-          <a href={story.link} class="flex h-full flex-col overflow-hidden rounded-xl border-[3px] border-[#EAF2F8] bg-[#EAF2F8] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-            <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
-              <img
-                src={story.logo}
-                alt=""
-                class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
-                loading="lazy"
-                width="220"
-                height="64"
-              />
-            </div>
-            <div class="flex h-full flex-col gap-4 p-6">
-              <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{story.primaryTag}</span>
-                {story.secondaryTags.map((tag) => (
-                  <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">{tag}</span>
-                ))}
+        {
+          CUSTOMER_STORY_SUMMARIES.map((story) => (
+            <a
+              href={story.link}
+              class="flex h-full flex-col overflow-hidden rounded-xl border-[3px] border-[#EAF2F8] bg-[#EAF2F8] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+            >
+              <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
+                <img
+                  src={story.logo}
+                  alt=""
+                  class:list={['h-16 w-full object-contain object-center', story.logoClassName]}
+                  loading="lazy"
+                  width="220"
+                  height="64"
+                />
               </div>
-              <h3 class="m-0 min-h-[4.5rem] text-[1.05rem] font-medium leading-snug text-[var(--color-text)]">{story.title}</h3>
-              <span class="mt-auto text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
-            </div>
-          </a>
-        ))}
+              <div class="flex h-full flex-col gap-4 p-6">
+                <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                  <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
+                    {story.primaryTag}
+                  </span>
+                  {story.secondaryTags.map((tag) => (
+                    <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 class="m-0 min-h-[4.5rem] text-[1.05rem] font-medium leading-snug text-[var(--color-text)]">
+                  {story.title}
+                </h3>
+                <span class="mt-auto text-sm font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+              </div>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -191,15 +274,17 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
           class="testimonial-slider flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           data-testimonial-slider
         >
-          {TESTIMONIALS.map((t) => (
-            <blockquote class="testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
-              <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
-              <footer class="flex flex-col gap-0.5">
-                <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
-                <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
-              </footer>
-            </blockquote>
-          ))}
+          {
+            TESTIMONIALS.map((t) => (
+              <blockquote class="testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
+                <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
+                <footer class="flex flex-col gap-0.5">
+                  <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
+                  <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
+                </footer>
+              </blockquote>
+            ))
+          }
         </div>
         <button
           type="button"
@@ -211,44 +296,62 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
         </button>
       </div>
       <div class="flex justify-center">
-        <a href="/testimonials" class="inline-flex items-center px-6 py-2.5 bg-white text-[#2C4A6B] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90">Watch member testimonials</a>
+        <a
+          href="/testimonials"
+          class="inline-flex items-center px-6 py-2.5 bg-white text-[#2C4A6B] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
+          >Watch member testimonials</a
+        >
       </div>
     </div>
   </section>
 
   <!-- Section 7: Frameworks (grey) -->
-  <section id="frameworks" class="py-12 px-6 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] text-white lg:py-16 lg:px-8" aria-label="Frameworks on Dataland">
+  <section
+    id="frameworks"
+    class="py-12 px-6 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] text-white lg:py-16 lg:px-8"
+    aria-label="Frameworks on Dataland"
+  >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <h2 class="text-[1.75rem] font-bold m-0 text-center">Frameworks on Dataland</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {FRAMEWORK_CARDS.map((fw) => (
-          <div class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
-            <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></div>
-            <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{fw.title}</h3>
-            {fw.subtitle && <p class="mt-3 mb-0 text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-white/72">{fw.subtitle}</p>}
-            <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{fw.description}</p>
-          </div>
-        ))}
+        {
+          FRAMEWORK_CARDS.map((fw) => (
+            <div class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
+              <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true" />
+              <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{fw.title}</h3>
+              {fw.subtitle && (
+                <p class="mt-3 mb-0 text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-white/72">
+                  {fw.subtitle}
+                </p>
+              )}
+              <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{fw.description}</p>
+            </div>
+          ))
+        }
       </div>
       <div class="flex justify-center">
-        <a href="/product#customer-stories" class="text-sm font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#e55d10]">Explore how companies and investors report under these frameworks &rarr;</a>
+        <a
+          href="/product#customer-stories"
+          class="text-sm font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#e55d10]"
+          >Explore how companies and investors report under these frameworks &rarr;</a
+        >
       </div>
     </div>
   </section>
 
-    <!-- Simple logout modal -->
-    <div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-lg text-[var(--color-text)]">
-            <h2 class="text-lg font-bold mb-3">You’ve been logged out</h2>
-            <p class="mb-6 text-sm text-[var(--color-text-muted)]">
-                Your session has been closed due to inactivity. Login to start a new session.
-            </p>
-            <div class="flex justify-end gap-3">
-                <button type="button" id="logout-modal-close" class="btn btn--outline">Close</button>
-                <a href="/login" id="login_again_on_session_modal" class="btn btn--primary">Log in again</a>
-            </div>
-        </div>
+  <!-- Simple logout modal -->
+  <div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-lg text-[var(--color-text)]">
+      <h2 class="text-lg font-bold mb-3">You’ve been logged out</h2>
+      <p class="mb-6 text-sm text-[var(--color-text-muted)]">
+        Your session has been closed due to inactivity. Login to start a new session.
+      </p>
+      <div class="flex justify-end gap-3">
+        <button type="button" id="logout-modal-close" class="btn btn--outline">Close</button>
+        <a href="/login" id="login_again_on_session_modal" class="btn btn--primary">Log in again</a>
+      </div>
     </div>
+  </div>
 </Base>
 
 <script>
@@ -256,12 +359,18 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   const prevButton = document.querySelector('[data-direction="prev"]');
   const nextButton = document.querySelector('[data-direction="next"]');
 
-  if (slider instanceof HTMLElement && prevButton instanceof HTMLButtonElement && nextButton instanceof HTMLButtonElement) {
+  if (
+    slider instanceof HTMLElement &&
+    prevButton instanceof HTMLButtonElement &&
+    nextButton instanceof HTMLButtonElement
+  ) {
     const getStep = () => {
       const firstCard = slider.querySelector('.testimonial-card');
       if (!(firstCard instanceof HTMLElement)) return slider.clientWidth;
 
-      const gap = Number.parseFloat(window.getComputedStyle(slider).columnGap || window.getComputedStyle(slider).gap || '0');
+      const gap = Number.parseFloat(
+        window.getComputedStyle(slider).columnGap || window.getComputedStyle(slider).gap || '0'
+      );
       return firstCard.getBoundingClientRect().width + gap;
     };
 
@@ -287,28 +396,72 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
 
   const params = new URLSearchParams(window.location.search);
   if (params.get('externalLogout') === 'true') {
-      const modal = document.getElementById('logout-modal');
-      const closeBtn = document.getElementById('logout-modal-close');
+    const modal = document.getElementById('logout-modal');
+    const closeBtn = document.getElementById('logout-modal-close');
 
-      if (modal) {
-          modal.classList.remove('hidden');
-      }
+    if (modal) {
+      modal.classList.remove('hidden');
+    }
 
-      if (closeBtn && modal) {
-          closeBtn.addEventListener('click', () => {
-              modal.classList.add('hidden');
-              const url = new URL(window.location.href);
-              url.searchParams.delete('externalLogout');
-              window.history.replaceState({}, '', url.toString());
-          });
-      }
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        const url = new URL(window.location.href);
+        url.searchParams.delete('externalLogout');
+        window.history.replaceState({}, '', url.toString());
+      });
+    }
   }
 </script>
 
 <style>
   .hero-image-wrap img {
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, rgba(0, 0, 0, 0.88) 22%, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 1) 68%, rgba(0, 0, 0, 0.88) 78%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
+    -webkit-mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      );
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      );
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }

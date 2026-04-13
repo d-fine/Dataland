@@ -126,7 +126,7 @@ function resolveLogoImagePath(filename: string): string {
 
   throw new Error(
     `Trusted logo "${filename}" could not be resolved. ` +
-      `Expected a file in public/static/logos or an explicit imagePath override.`,
+      `Expected a file in public/static/logos or an explicit imagePath override.`
   );
 }
 

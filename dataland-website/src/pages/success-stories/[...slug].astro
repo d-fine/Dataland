@@ -32,11 +32,15 @@ const storyTags: Record<string, { primary: string; secondary: string[] }> = {
 const tags = storyTags[story.data.slug];
 ---
 
-<Base title={`${companyName} — Success Story — Dataland`} description={`Read how ${companyName} uses Dataland for ESG data.`}>
-
-  <article class="pt-16 pb-12 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:pb-16 lg:px-8" aria-label={`${companyName} success story`}>
+<Base
+  title={`${companyName} — Success Story — Dataland`}
+  description={`Read how ${companyName} uses Dataland for ESG data.`}
+>
+  <article
+    class="pt-16 pb-12 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:pb-16 lg:px-8"
+    aria-label={`${companyName} success story`}
+  >
     <div class="max-w-[800px] mx-auto flex flex-col gap-10">
-
       <!-- Header -->
       <div class="flex flex-col gap-4">
         <div class="flex min-h-[7rem] items-center justify-center rounded-xl bg-white px-4 py-5">
@@ -50,10 +54,17 @@ const tags = storyTags[story.data.slug];
           />
         </div>
         <div class="flex flex-wrap items-start gap-2">
-          <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">{tags?.primary ?? companyType}</span>
-          {tags?.secondary.map((tag) => (
-            <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">{tag}</span>
-          ))}
+          <span
+            class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]"
+            >{tags?.primary ?? companyType}</span
+          >
+          {
+            tags?.secondary.map((tag) => (
+              <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
+                {tag}
+              </span>
+            ))
+          }
         </div>
         <h1 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] leading-snug lg:text-[2.25rem]">{title}</h1>
       </div>
@@ -64,7 +75,9 @@ const tags = storyTags[story.data.slug];
       </div>
 
       <!-- Quote -->
-      <blockquote class="bg-[var(--color-surface-50)] border-l-4 border-[var(--color-primary)] py-6 px-8 rounded-r-xl m-0">
+      <blockquote
+        class="bg-[var(--color-surface-50)] border-l-4 border-[var(--color-primary)] py-6 px-8 rounded-r-xl m-0"
+      >
         <p class="italic text-base leading-[1.7] m-0 mb-4 text-[var(--color-text)]">&ldquo;{quoteText}&rdquo;</p>
         <footer class="flex flex-col gap-0.5">
           <cite class="not-italic font-bold text-[0.9375rem] text-[var(--color-text)]">{quoteAuthor}</cite>
@@ -76,10 +89,8 @@ const tags = storyTags[story.data.slug];
       <div class="flex">
         <a href="/product#customer-stories" class="btn btn--outline">&larr; Back to customer stories</a>
       </div>
-
     </div>
   </article>
-
 </Base>
 
 <style>

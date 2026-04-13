@@ -1,28 +1,20 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="isOpen"
-      class="mobile-nav-overlay"
-      @click="close"
-    />
-    <nav
-      v-show="isOpen"
-      ref="navRef"
-      class="mobile-nav"
-      aria-label="Mobile navigation"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div v-if="isOpen" class="mobile-nav-overlay" @click="close" />
+    <nav v-show="isOpen" ref="navRef" class="mobile-nav" aria-label="Mobile navigation" role="dialog" aria-modal="true">
       <div class="mobile-nav__header">
         <span class="mobile-nav__title">Menu</span>
-        <button
-          ref="closeButtonRef"
-          type="button"
-          class="mobile-nav__close"
-          aria-label="Close menu"
-          @click="close"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button ref="closeButtonRef" type="button" class="mobile-nav__close" aria-label="Close menu" @click="close">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -37,13 +29,43 @@
           :class="['mobile-nav__link', { 'mobile-nav__link--active': isActive(link.href) }]"
           :aria-current="isActive(link.href) ? 'page' : undefined"
           @click="close"
-        >{{ link.label }}</a>
-        <a href="/login" data-test="login-dataland-button" v-if="!isAuthenticated" class="mobile-nav__link" @click="close">Login</a>
-        <a href="/register" data-test="signup-dataland-button" v-if="!isAuthenticated" class="mobile-nav__cta" @click="close">Try it free</a>
-        <a href="/platform-redirect" v-if="isAuthenticated" data-test="backToPlatformLink" class="mobile-nav__link mobile-nav__back-to-platform" @click="close">
+          >{{ link.label }}</a
+        >
+        <a
+          href="/login"
+          data-test="login-dataland-button"
+          v-if="!isAuthenticated"
+          class="mobile-nav__link"
+          @click="close"
+          >Login</a
+        >
+        <a
+          href="/register"
+          data-test="signup-dataland-button"
+          v-if="!isAuthenticated"
+          class="mobile-nav__cta"
+          @click="close"
+          >Try it free</a
+        >
+        <a
+          href="/platform-redirect"
+          v-if="isAuthenticated"
+          data-test="backToPlatformLink"
+          class="mobile-nav__link mobile-nav__back-to-platform"
+          @click="close"
+        >
           Back to platform
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </a>
       </div>

@@ -70,37 +70,43 @@ dataland-website/
 ## Key Design Decisions
 
 ### 1. Inline sections, not component-per-section
+
 Each page file contains its sections directly as HTML+Tailwind. Extract a component only when it's reused across pages (Header, Footer, YouTubeEmbed) or needs client-side JS (MobileNav, CompanySearch).
 
 ### 2. Data files copied from Vue codebase
+
 Content arrays are copied verbatim from `dataland-frontend/src/components/resources/` into `src/data/*.ts`. Remove Vue-specific imports, keep types and data. Astro imports at build time.
 
 ### 3. Only two Vue islands
+
 - **MobileNav.vue** — hamburger + drawer (`client:media="(max-width: 1023px)"`)
 - **CompanySearch.vue** — LEI search with API call (`client:visible`)
 
 Everything else is static HTML. Total shipped JS: ~5–10 kB.
 
 ### 4. CSS scroll-snap replaces JS carousels
+
 Testimonials use `overflow-x: auto` + `scroll-snap-type: x mandatory`. Trusted-by and news sections use static grids. No carousel JS, no pause buttons, no ARIA live regions.
 
 ### 5. No nav dropdowns
+
 Header has plain links for Product and About (2 items don't justify dropdown complexity).
 
 ### 6. Legal pages stay in SPA
+
 Footer links to `/terms`, `/imprint`, `/dataprivacy` point to the existing Vue app.
 
 ## LoC Estimate
 
-| Area | Current (Vue) | Target (Astro) | Reduction |
-|------|--------------|----------------|-----------|
-| Page components (5 pages) | ~840 | ~600 | ~30% |
-| Section components (~30) | ~2,870 | 0 (inlined) | 100% |
-| Layout + nav + footer | ~725 | ~250 | ~65% |
-| Content/data files | ~790 | ~600 | ~25% |
-| Styling (SCSS) | ~3,500 | ~0 (Tailwind utilities) | ~100% |
-| Vue islands | 0 | ~150 | new |
-| **Total** | **~8,725** | **~1,600** | **~80%** |
+| Area                      | Current (Vue) | Target (Astro)          | Reduction |
+| ------------------------- | ------------- | ----------------------- | --------- |
+| Page components (5 pages) | ~840          | ~600                    | ~30%      |
+| Section components (~30)  | ~2,870        | 0 (inlined)             | 100%      |
+| Layout + nav + footer     | ~725          | ~250                    | ~65%      |
+| Content/data files        | ~790          | ~600                    | ~25%      |
+| Styling (SCSS)            | ~3,500        | ~0 (Tailwind utilities) | ~100%     |
+| Vue islands               | 0             | ~150                    | new       |
+| **Total**                 | **~8,725**    | **~1,600**              | **~80%**  |
 
 ---
 
@@ -140,11 +146,11 @@ npm run testcomponent      # Cypress component tests
 
 ## Agent Roles
 
-| Role | Agent Type | Identity | Rule |
-|---|---|---|---|
-| **Builder** | `frontend-developer` | Agent X | Implements all code in both codebases. |
-| **Code Reviewer** | `frontend-developer` | Agent Y | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
-| **Copy Reviewer** | `copywriter` | — | Verifies every rendered string against the spec and Vue source content files. |
+| Role              | Agent Type           | Identity | Rule                                                                                    |
+| ----------------- | -------------------- | -------- | --------------------------------------------------------------------------------------- |
+| **Builder**       | `frontend-developer` | Agent X  | Implements all code in both codebases.                                                  |
+| **Code Reviewer** | `frontend-developer` | Agent Y  | Fresh agent, independent from Agent X. Reads spec + finished code. Never saw the build. |
+| **Copy Reviewer** | `copywriter`         | —        | Verifies every rendered string against the spec and Vue source content files.           |
 
 **Critical rules:**
 
@@ -336,12 +342,14 @@ Launch both in a **single message**.
 > You are auditing every user-facing string in a new Astro website to verify it matches the source content. Read these two sets of files:
 >
 > **Source of truth (Vue content files):**
+>
 > - `dataland-frontend/src/components/resources/landingPage/landingContent.ts`
 > - `dataland-frontend/src/components/resources/productPage/productContent.ts`
 > - `dataland-frontend/src/components/resources/aboutPage/aboutContent.ts`
 > - `dataland-frontend/src/components/resources/successStories/successStoryContent.ts`
 >
 > **Astro files to audit:**
+>
 > - `dataland-website/src/data/*.ts` (all data files)
 > - `dataland-website/src/pages/*.astro` (all page templates — check inline headlines, CTAs, labels)
 > - `dataland-website/src/components/Header.astro`, `Footer.astro`
@@ -377,11 +385,13 @@ Launch both in a **single message**.
 1. **Fix all issues** from Phase 2a (code review) and Phase 2b (copy audit).
 
 2. **Run Astro CI checks:**
+
    ```bash
    cd dataland-website
    npm run build
    npx astro check
    ```
+
    Fix any failures iteratively.
 
 3. **Verify all routes render:**
@@ -403,18 +413,19 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 
 **Delete page components** (these are now served by Astro):
 
-| File to delete | Replaced by |
-|---|---|
-| `src/components/pages/LandingPage.vue` | `dataland-website/src/pages/index.astro` |
-| `src/components/pages/AboutPage.vue` | `dataland-website/src/pages/about.astro` |
-| `src/components/pages/ProductPage.vue` | `dataland-website/src/pages/product.astro` |
+| File to delete                              | Replaced by                                     |
+| ------------------------------------------- | ----------------------------------------------- |
+| `src/components/pages/LandingPage.vue`      | `dataland-website/src/pages/index.astro`        |
+| `src/components/pages/AboutPage.vue`        | `dataland-website/src/pages/about.astro`        |
+| `src/components/pages/ProductPage.vue`      | `dataland-website/src/pages/product.astro`      |
 | `src/components/pages/TestimonialsPage.vue` | `dataland-website/src/pages/testimonials.astro` |
-| `src/components/pages/NewsletterPage.vue` | Removed (was static placeholder) |
-| `src/components/pages/ContactPage.vue` | Merged into `/about#contact` |
+| `src/components/pages/NewsletterPage.vue`   | Removed (was static placeholder)                |
+| `src/components/pages/ContactPage.vue`      | Merged into `/about#contact`                    |
 
 ### 4.2 Remove Migrated Section Components
 
 **Delete all landing page section components:**
+
 - `src/components/resources/landingPage/TheIntro.vue`
 - `src/components/resources/landingPage/TheFindLei.vue`
 - `src/components/resources/landingPage/TheWhyUs.vue`
@@ -427,12 +438,14 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 - `src/components/resources/landingPage/landingContent.ts`
 
 **Delete old landing page components** (if not already removed by rework):
+
 - `src/components/resources/landingPage/TheQuotes.vue`
 - `src/components/resources/landingPage/TheHowItWorks.vue`
 - `src/components/resources/landingPage/TheJoinCampaign.vue`
 - `src/components/resources/landingPage/TheStruggle.vue`
 
 **Delete all product page section components:**
+
 - `src/components/resources/productPage/ProductIntro.vue`
 - `src/components/resources/productPage/ProductHowItWorks.vue`
 - `src/components/resources/productPage/ProductGettingData.vue`
@@ -444,6 +457,7 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 - `src/components/resources/productPage/productContent.ts`
 
 **Delete all about page section components:**
+
 - `src/components/resources/aboutPage/TheAboutCompany.vue`
 - `src/components/resources/aboutPage/TheAboutTeam.vue`
 - `src/components/resources/aboutPage/TheAboutPartners.vue`
@@ -452,6 +466,7 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 - `src/components/resources/aboutPage/aboutContent.ts`
 
 **Delete old about page components** (if not already removed):
+
 - `src/components/resources/aboutPage/TheAboutSponsors.vue`
 - `src/components/resources/aboutPage/TheAboutHero.vue`
 - `src/components/resources/aboutPage/TheAboutTrustPillars.vue`
@@ -460,10 +475,12 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 - `src/components/resources/aboutPage/TheAboutBottomCTA.vue`
 
 **Delete success story components:**
+
 - `src/components/resources/successStories/successStoryContent.ts`
 - Any `SuccessStory*.vue` components
 
 **Delete shared components only used by migrated pages** (verify no other imports first):
+
 - `src/components/generics/ProblemSolutionBlock.vue`
 - `src/components/generics/AccessibleCarousel.vue`
 - `src/components/generics/NewsCard.vue`
@@ -473,6 +490,7 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 ### 4.3 Update Router
 
 **Modify `src/router/index.ts`:**
+
 - Remove routes: `/`, `/about`, `/product`, `/testimonials`, `/newsletter`, `/contact`, `/success-stories/*`
 - These routes are now handled by nginx → Astro before reaching the SPA
 - Keep all platform routes (`/companies/*`, `/dataprivacy`, `/terms`, `/imprint`, `/pricing`, etc.)
@@ -480,6 +498,7 @@ This phase removes all migrated marketing page code from `dataland-frontend`. Th
 ### 4.4 Remove Unused Dependencies
 
 After deleting components, check for:
+
 - Unused imports in remaining files (grep for deleted component names)
 - Composables only used by deleted components (e.g. `useContactModal.ts` if only used in marketing pages)
 - SCSS files only imported by deleted components
@@ -496,6 +515,7 @@ npm run testcomponent      # Must pass — update/remove tests for deleted compo
 ```
 
 **Fix component tests:**
+
 - Delete tests for removed components (e.g. `LandingPage.cy.ts`, `AboutPage.cy.ts`, `PersonCard.cy.ts`)
 - Update any remaining tests that imported or referenced deleted components
 - Run `npm run testcomponent` and fix all failures
@@ -552,12 +572,12 @@ grep -r "TheIntro\|TheFindLei\|TheWhyUs\|TheTrustedBy\|TheCustomerStories\|TheTe
 
 Start the dev stack and take screenshots at these viewports:
 
-| Viewport | Pages to capture |
-|---|---|
-| Desktop (1440px+) | Landing (full scroll), Product (full scroll), About (full scroll), Testimonials |
-| Tablet (768–1024px) | Landing, Product, About |
-| Mobile (< 768px) | Landing (hamburger closed + open), Product, About |
-| Small mobile (< 640px) | Landing hero (CTA stacking), Product pricing section |
+| Viewport               | Pages to capture                                                                |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| Desktop (1440px+)      | Landing (full scroll), Product (full scroll), About (full scroll), Testimonials |
+| Tablet (768–1024px)    | Landing, Product, About                                                         |
+| Mobile (< 768px)       | Landing (hamburger closed + open), Product, About                               |
+| Small mobile (< 640px) | Landing hero (CTA stacking), Product pricing section                            |
 
 ### Step 6.2 — `ux-designer` — Screenshot Visual QA
 
@@ -583,6 +603,7 @@ Start the dev stack and take screenshots at these viewports:
 ### Tasks
 
 1. **Both codebases must build:**
+
    ```bash
    cd dataland-website && npm run build && npx astro check
    cd dataland-frontend && npm run typecheck && npm run lintci && npm run formatci && npm run checkdependencies && npm run testcomponent
@@ -644,6 +665,7 @@ Phase 7  [Final CI + Commit]           ██                1 agent (X), serial
 This is the complete list. **Before deleting each file, grep to confirm no remaining imports.**
 
 ### Page Components
+
 - [ ] `src/components/pages/LandingPage.vue`
 - [ ] `src/components/pages/AboutPage.vue`
 - [ ] `src/components/pages/ProductPage.vue`
@@ -652,6 +674,7 @@ This is the complete list. **Before deleting each file, grep to confirm no remai
 - [ ] `src/components/pages/ContactPage.vue`
 
 ### Landing Page Resources
+
 - [ ] `src/components/resources/landingPage/TheIntro.vue`
 - [ ] `src/components/resources/landingPage/TheFindLei.vue`
 - [ ] `src/components/resources/landingPage/TheWhyUs.vue`
@@ -668,6 +691,7 @@ This is the complete list. **Before deleting each file, grep to confirm no remai
 - [ ] `src/components/resources/landingPage/TheStruggle.vue`
 
 ### Product Page Resources
+
 - [ ] `src/components/resources/productPage/ProductIntro.vue`
 - [ ] `src/components/resources/productPage/ProductHowItWorks.vue`
 - [ ] `src/components/resources/productPage/ProductGettingData.vue`
@@ -679,6 +703,7 @@ This is the complete list. **Before deleting each file, grep to confirm no remai
 - [ ] `src/components/resources/productPage/productContent.ts`
 
 ### About Page Resources
+
 - [ ] `src/components/resources/aboutPage/TheAboutCompany.vue`
 - [ ] `src/components/resources/aboutPage/TheAboutTeam.vue`
 - [ ] `src/components/resources/aboutPage/TheAboutPartners.vue`
@@ -693,10 +718,12 @@ This is the complete list. **Before deleting each file, grep to confirm no remai
 - [ ] `src/components/resources/aboutPage/TheAboutBottomCTA.vue`
 
 ### Success Stories
+
 - [ ] `src/components/resources/successStories/successStoryContent.ts`
 - [ ] Any `SuccessStory*.vue` components
 
 ### Shared Components (delete only if unused after above removal)
+
 - [ ] `src/components/generics/ProblemSolutionBlock.vue`
 - [ ] `src/components/generics/AccessibleCarousel.vue`
 - [ ] `src/components/generics/NewsCard.vue`
@@ -704,11 +731,13 @@ This is the complete list. **Before deleting each file, grep to confirm no remai
 - [ ] `src/components/generics/LandingPageFooter.vue`
 
 ### Tests for Deleted Components
+
 - [ ] `tests/component/components/pages/LandingPage.cy.ts`
 - [ ] `tests/component/components/pages/AboutPage.cy.ts`
 - [ ] Any other test files referencing deleted components
 
 ### Router Routes to Remove
+
 - [ ] `/` (landing)
 - [ ] `/about`
 - [ ] `/product`
