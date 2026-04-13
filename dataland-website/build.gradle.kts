@@ -32,10 +32,3 @@ tasks.register<NpmTask>("npmBuild") {
     // which would otherwise skip this task even when source files have changed.
     outputs.upToDateWhen { false }
 }
-
-tasks.register<NpmTask>("npmCheck") {
-    description = "Runs Astro type checking."
-    group = "verification"
-    args.set(listOf("run", "check"))
-    dependsOn("npmInstall")
-}
