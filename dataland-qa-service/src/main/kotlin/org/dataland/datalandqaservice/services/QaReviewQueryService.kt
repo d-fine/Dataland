@@ -26,8 +26,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import org.dataland.dataSourcingService.openApiClient.model.BasicDataDimensions as DsBasicDataDimensions
 
-const val NS_IN_MS = 1_000_000
-
 /**
  * Query-only service for dataset-level QA review metadata and projections.
  */
@@ -91,11 +89,8 @@ class QaReviewQueryService
          */
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
-            val getInfoOnPendingDatasetsStartNs = System.nanoTime()
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
-            // Add timing around fetching pending metadata
-            val getPendingStartNs = System.nanoTime()
             val entities =
                 qaReviewRepository
                     .getPendingQaReviewMetadatasetsByCompany(
@@ -107,21 +102,10 @@ class QaReviewQueryService
                             qaStatuses = setOf(QaStatus.Pending),
                         ),
                     )
-            logger.info(
-                "perf|getInfoOnPendingDatasets|getPendingQaReviewMetadatasetsByCompany|datasetCount={} elapsedMs={}",
-                entities.size,
-                (System.nanoTime() - getPendingStartNs) / NS_IN_MS,
-            )
 
             val datasetIds = entities.map { it.dataId }.distinct()
 
-            val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
-            logger.info(
-                "perf|getInfoOnPendingDatasets|getNumberOfQaReportsForDatasetIds|datasetCount={} elapsedMs={}",
-                datasetIds.size,
-                (System.nanoTime() - getNumberOfQaReportsForDatasetIdsStartNs) / NS_IN_MS,
-            )
 
             fun fallbackToNonFetch(datasetUUIDs: Collection<UUID>, ex: Throwable) = run {
                 logger.warn(
@@ -133,8 +117,7 @@ class QaReviewQueryService
             }
 
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
-            // Time the dataset judgement fetch
-            val getJudgementsStartANs = System.nanoTime()
+
             // Use a fetch-join query to load dataPoints together and avoid N+1
             val judgementEntities =
                 try {
@@ -144,14 +127,6 @@ class QaReviewQueryService
                 } catch (ex: DataAccessException) {
                     fallbackToNonFetch(datasetUUIDs, ex)
                 }
-
-            logger.info(
-                "perf|getInfoOnPendingDatasets|findAllByDatasetIdInA|datasetCount={} elapsedMs={}",
-                datasetUUIDs.size,
-                (System.nanoTime() - getJudgementsStartANs) / NS_IN_MS,
-            )
-
-            val getJudgementsStartBNs = System.nanoTime()
 
             val latestJudgementByDatasetId =
                 judgementEntities
@@ -164,15 +139,7 @@ class QaReviewQueryService
                             qaJudgeUserName = firstJudgement.qaJudgeUserName,
                         )
                     }
-            logger.info(
-                "perf|getInfoOnPendingDatasets|findAllByDatasetIdInB|datasetCount={} judgementCount={} elapsedMs={}",
-                datasetUUIDs.size,
-                latestJudgementByDatasetId.size,
-                (System.nanoTime() - getJudgementsStartBNs) / NS_IN_MS,
-            )
 
-            // Time the creation of QaReviewResponse objects (mapping)
-            val mapResponsesStartNs = System.nanoTime()
             val qaReviewResponses =
                 entities
                     .map {
@@ -182,27 +149,9 @@ class QaReviewQueryService
                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
                         )
                     }
-            logger.info(
-                "perf|getInfoOnPendingDatasets|mapQaReviewResponses|datasetCount={} responseCount={} elapsedMs={}",
-                datasetIds.size,
-                qaReviewResponses.size,
-                (System.nanoTime() - mapResponsesStartNs) / NS_IN_MS,
-            )
-            logger.info(
-                "perf|getInfoOnPendingDatasets|datasetCount={} responseCount={} elapsedMs={}",
-                datasetIds.size,
-                qaReviewResponses.size,
-                (System.nanoTime() - getInfoOnPendingDatasetsStartNs) / NS_IN_MS,
-            )
-            // Time adding priorities (calls external data sourcing service)
-            val addPrioritiesStartNs = System.nanoTime()
+
             val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
-            logger.info(
-                "perf|getInfoOnPendingDatasets|addPrioritiesToResponse|datasetCount={} responseCount={} elapsedMs={}",
-                datasetIds.size,
-                qaReviewResponsesWithPriorities.size,
-                (System.nanoTime() - addPrioritiesStartNs) / NS_IN_MS,
-            )
+
             return qaReviewResponsesWithPriorities
         }
 
@@ -221,32 +170,13 @@ class QaReviewQueryService
                     DsBasicDataDimensions(it.companyId, it.framework, it.reportingPeriod)
                 }
 
-            // Time the external data sourcing call
-            val dataSourcingStartNs = System.nanoTime()
             val prioritiesOfAssociatedDataSourcing =
                 try {
-                    val res = dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
-                    logger.info(
-                        "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} notFound=false elapsedMs={}",
-                        dsDimensions.size,
-                        (System.nanoTime() - dataSourcingStartNs) / NS_IN_MS,
-                    )
-                    res
+                    dataSourcingControllerApi.getDataSourcingPriorities(dsDimensions)
                 } catch (ex: ClientException) {
-                    val elapsed = (System.nanoTime() - dataSourcingStartNs) / NS_IN_MS
                     if ((ex.response as? ClientError<*>)?.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.info(
-                            "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} notFound=true elapsedMs={}",
-                            dsDimensions.size,
-                            elapsed,
-                        )
                         null
                     } else {
-                        logger.info(
-                            "perf|addPrioritiesToResponse|getDataSourcingPriorities|dsCount={} error=true elapsedMs={}",
-                            dsDimensions.size,
-                            elapsed,
-                        )
                         throw ex
                     }
                 }
@@ -378,27 +308,14 @@ class QaReviewQueryService
          * QA reports for all collected data point IDs in a single DB query.
          */
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
-            val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
             val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
             for (datasetId in datasetIds) {
-                val getContainedDataPointsStartNs = System.nanoTime()
                 try {
                     val containedDataPoints = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
                     dataPointIdsByDatasetId[datasetId] = containedDataPoints
-                    logger.info(
-                        "perf|getInfoOnPendingDatasets|getContainedDataPoints|datasetId={} dataPointCount={} elapsedMs={}",
-                        datasetId,
-                        containedDataPoints.size,
-                        (System.nanoTime() - getContainedDataPointsStartNs) / NS_IN_MS,
-                    )
                 } catch (clientException: ClientException) {
                     if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
                         logger.warn("Could not find data points for dataset $datasetId, returning 0 QA reports")
-                        logger.info(
-                            "perf|getInfoOnPendingDatasets|getContainedDataPoints|datasetId={} dataPointCount=0 notFound=true elapsedMs={}",
-                            datasetId,
-                            (System.nanoTime() - getContainedDataPointsStartNs) / NS_IN_MS,
-                        )
                         dataPointIdsByDatasetId[datasetId] = emptySet()
                     } else {
                         throw clientException
@@ -406,28 +323,16 @@ class QaReviewQueryService
                 }
             }
             val allDataPointIds = dataPointIdsByDatasetId.values.flatten().toSet()
-            val countQaReportsForDataPointIdsBulkStartNs = System.nanoTime()
             val totalCountByDataPointId =
                 if (allDataPointIds.isEmpty()) {
                     emptyMap()
                 } else {
                     dataPointQaReportManager.countQaReportsForDataPointIdsBulk(allDataPointIds)
                 }
-            logger.info(
-                "perf|getInfoOnPendingDatasets|countQaReportsForDataPointIdsBulk|dataPointCount={} elapsedMs={}",
-                allDataPointIds.size,
-                (System.nanoTime() - countQaReportsForDataPointIdsBulkStartNs) / NS_IN_MS,
-            )
             val qaReportsByDatasetId =
                 dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
                     dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
                 }
-            logger.info(
-                "perf|getInfoOnPendingDatasets|getNumberOfQaReportsForDatasetIds|datasetCount={} uniqueDataPointCount={} elapsedMs={}",
-                datasetIds.size,
-                allDataPointIds.size,
-                (System.nanoTime() - getNumberOfQaReportsForDatasetIdsStartNs) / NS_IN_MS,
-            )
             return qaReportsByDatasetId
         }
 
