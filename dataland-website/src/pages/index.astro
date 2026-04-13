@@ -217,16 +217,16 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
   </section>
 
   <!-- Section 7: Frameworks (grey) -->
-  <section id="frameworks" class="py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8" aria-label="Frameworks on Dataland">
+  <section id="frameworks" class="py-12 px-6 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] text-white lg:py-16 lg:px-8" aria-label="Frameworks on Dataland">
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">Frameworks on Dataland</h2>
+      <h2 class="text-[1.75rem] font-bold m-0 text-center">Frameworks on Dataland</h2>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FRAMEWORK_CARDS.map((fw) => (
-          <div class="relative bg-[var(--color-surface-0)] border border-[var(--color-surface-200)] rounded-xl p-6 overflow-hidden flex flex-col gap-2">
-            <div class="absolute top-0 right-0 w-12 h-12 bg-[var(--color-primary)] [clip-path:polygon(100%_0,0_0,100%_100%)]" aria-hidden="true"></div>
-            <h3 class="text-lg font-bold m-0 text-[var(--color-text)]">{fw.title}</h3>
-            {fw.subtitle && <p class="text-sm font-medium m-0 text-[var(--color-text-muted)]">{fw.subtitle}</p>}
-            <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{fw.description}</p>
+          <div class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
+            <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></div>
+            <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{fw.title}</h3>
+            {fw.subtitle && <p class="mt-3 mb-0 text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-white/72">{fw.subtitle}</p>}
+            <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{fw.description}</p>
           </div>
         ))}
       </div>

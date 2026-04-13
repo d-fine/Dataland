@@ -151,13 +151,6 @@ const CREDITS_TABLE = [
             <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></div>
             <h3 class="mt-0 mb-0 text-[1.1rem] font-bold leading-[1.22] text-white">{card.title}</h3>
             <p class="mt-4 mb-0 text-[0.95rem] leading-relaxed text-white/82">{card.text}</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              {card.tags.map((tag) => (
-                <span class="inline-flex items-center rounded-md bg-white/14 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-white/86">
-                  {tag}
-                </span>
-              ))}
-            </div>
           </div>
         ))}
       </div>
@@ -176,7 +169,7 @@ const CREDITS_TABLE = [
       <div class="flex flex-col gap-8">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {USE_CASES.map((uc) => (
-            <div class="grid h-full grid-rows-[4.5rem_1fr_2.75rem] items-start justify-items-start gap-1.5 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+            <div class="grid h-full grid-rows-[4.5rem_1fr] items-start justify-items-start gap-1.5 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
               <div class="grid w-full grid-cols-[5.25rem_1fr] items-center gap-3">
                 <img
                   src={uc.icon}
@@ -199,13 +192,6 @@ const CREDITS_TABLE = [
                 </h3>
               </div>
               <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
-              <div class="flex flex-wrap gap-2">
-                {uc.tags.map((tag) => (
-                  <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
-                    {tag}
-                  </span>
-                ))}
-              </div>
             </div>
           ))}
         </div>
