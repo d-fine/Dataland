@@ -49,8 +49,8 @@ class QaReviewQueryService
         // which accesses collections (and can trigger extra queries).
         private data class MinimalDatasetJudgement(
             val dataSetJudgementId: String,
-            val qaJudgeUserId: String?,
-            val qaJudgeUserName: String?,
+            val qaJudgeUserId: String,
+            val qaJudgeUserName: String,
         )
 
         /**
