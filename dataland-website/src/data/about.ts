@@ -11,6 +11,7 @@ export interface Partner {
   name: string;
   imagePath: string;
   url: string;
+  scale?: number;
   darkBg?: boolean;
 }
 
@@ -44,22 +45,25 @@ export const LEADERSHIP_TEAM: Person[] = [
 export const PARTNERS: Partner[] = [
   {
     name: 'FACT First Cloud',
-    imagePath: '/static/about/logo-fact-first-cloud.svg',
+    imagePath: '/static/logos/logo_fact_Salbei.svg',
     url: 'https://www.fact.de/unsere-loesungen/first-cloud/',
+    scale: 1.62,
   },
   {
     name: 'ISS (Sopra Steria)',
-    imagePath: '/static/about/logo-sopra-steria.png',
+    imagePath: '/static/logos/logo_iss-soprasteria.png',
     url: 'https://iss.soprasteria.de/',
+    scale: 0.92,
   },
   {
     name: 'Eskua AI',
-    imagePath: '/static/about/logo-eskua-ai.png',
+    imagePath: '/static/logos/logo_eskua_salbei.svg',
     url: 'https://www.eskua.ai/',
+    scale: 0.94,
   },
   {
     name: 'Keynum',
-    imagePath: '/static/about/logo-keynum.webp',
+    imagePath: '/static/logos/logo_keynum.webp',
     url: 'https://www.keynum.com/',
     darkBg: true,
   },

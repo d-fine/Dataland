@@ -4,6 +4,7 @@ import path from 'node:path';
 export interface TrustedByLogo {
   name: string;
   imagePath: string;
+  scale?: number;
   className?: string;
   carouselContainerClassName?: string;
   gridContainerClassName?: string;
@@ -17,38 +18,36 @@ const PUBLIC_LOGOS_DIRECTORY = path.join(process.cwd(), 'public', 'static', 'log
 const LOGO_METADATA_BY_FILENAME: Record<string, TrustedByLogoMetadata> = {
   'logo_atlas_metrics.svg': { name: 'Atlas Metrics' },
   'logo_bantleon.svg': { name: 'Bantleon' },
-  'logo_bayerninvest.svg': { name: 'BayernInvest' },
-  'logo_bayernlb_gross.svg': { name: 'BayernLB', className: 'scale-[1.0]' },
+  'logo_bayerninvest.svg': { name: 'BayernInvest', scale: 1.12, className: 'translate-x-[0.08rem]' },
+  'logo_bayernlb_gross.svg': { name: 'BayernLB', scale: 1.0 },
   'logo_bvi.png': { name: 'BVI' },
-  'logo_ChomCapital.png': { name: 'Chom Capital', className: 'scale-[1.24]' },
-  'logo_deka_x.png': { name: 'Deka', className: 'scale-[1.15]' },
+  'logo_ChomCapital.png': { name: 'Chom Capital', scale: 1.12 },
+  'logo_deka_x.png': { name: 'Deka', scale: 1.08 },
   'logo_deutsche_rueck.svg': { name: 'Deutsche Rueck' },
   'logo_d-fine.svg': { name: 'd-fine' },
-  'logo_DYDONAI_x.png': { name: 'DYDONAI', className: 'scale-[1.26]' },
+  'logo_DYDONAI_x.png': { name: 'DYDONAI', scale: 1.12 },
   'logo_Envoria.png': { name: 'Envoria' },
   'logo_eurodat.svg': { name: 'EuroDat' },
-  'logo_fmf.png': { name: 'FMF', className: 'scale-[1.12]' },
+  'logo_fmf.png': { name: 'FMF', scale: 1.34 },
   'logo_gleif_new.svg': { name: 'GLEIF' },
   'logo_hansa_invest.svg': { name: 'Hansa-Invest' },
   'logo_impact_cubed.svg': { name: 'Impact Cubed' },
   'logo_KYT.svg': { name: 'KYT' },
   'logo_laiqon.svg': { name: 'Laiqon' },
-  'logo_leonardo.jpg': { name: 'Leonardo', className: 'scale-[1.22]' },
   'logo_meag_big.svg': { name: 'MEAG' },
   'logo_nordlb.svg': { name: 'NORD/LB' },
-  'logo_ovb.png': { name: 'OVB', className: 'scale-[1.08]' },
-  'logo_pwc.svg': { name: 'PwC', className: 'scale-[1.28]' },
-  'logo_sustaind.svg': { name: 'Sustaind', className: 'scale-[2.05]' },
+  'logo_ovb.png': { name: 'OVB', scale: 1.04 },
+  'logo_pwc.svg': { name: 'PwC', scale: 1.12 },
+  'logo_sustaind.svg': { name: 'Sustaind', scale: 1.4 },
   'logo_tsystems.svg': { name: 'T-Systems' },
-  'logo_vgh.svg': { name: 'VGH', className: 'scale-[1.08]' },
-  'logo_vkb.svg': { name: 'VKB', className: 'scale-[1.08]' },
+  'logo_vgh.svg': { name: 'VGH', scale: 1.04 },
+  'logo_vkb.svg': { name: 'VKB', scale: 1.04 },
   'logo_wertestiftung.png': { name: 'Werte-Stiftung' },
   'logo_iss-soprasteria.png': { name: 'ISS (Sopra Steria)' },
-  'logo_fact_Salbei.svg': { name: 'FACT First Cloud', className: 'scale-[1.18]' },
-  'logo-eskua-ai.png': { name: 'Eskua AI', imagePath: '/static/about/logo-eskua-ai.png', className: 'scale-[1.28]' },
-  'logo-keynum.webp': {
+  'logo_fact_Salbei.svg': { name: 'FACT First Cloud', scale: 1.36 },
+  'logo_eskua_salbei.svg': { name: 'Eskua AI', scale: 0.88 },
+  'logo_keynum.webp': {
     name: 'Keynum',
-    imagePath: '/static/about/logo-keynum.webp',
     imageFrameClassName: 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.2rem]',
   },
 };
@@ -86,6 +85,7 @@ function createTrustedByLogo(filename: string): TrustedByLogo {
   return {
     name: metadata?.name ?? humanizeFilename(filename),
     imagePath: resolveLogoImagePath(filename),
+    scale: metadata?.scale,
     className: metadata?.className,
     carouselContainerClassName: metadata?.carouselContainerClassName,
     gridContainerClassName: metadata?.gridContainerClassName,

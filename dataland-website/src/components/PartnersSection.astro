@@ -31,19 +31,23 @@ const {
               'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
             ]}
           >
-            <div class:list={partner.darkBg ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
-              <img
-                src={partner.imagePath}
-                alt={partner.name}
+            <div class="flex h-[3.9rem] w-full max-w-[10.5rem] items-center justify-center lg:h-[4.4rem] lg:max-w-[11.25rem]">
+              <div
                 class:list={[
-                  partner.name === 'FACT First Cloud'
-                    ? 'block w-[220px] max-w-full h-auto object-contain'
-                    : 'max-h-[120px] w-auto object-contain',
+                  'flex h-full w-full items-center justify-center',
+                  partner.darkBg ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined,
                 ]}
-                loading="lazy"
-                width={partner.name === 'FACT First Cloud' ? '220' : '160'}
-                height="60"
-              />
+              >
+                <img
+                  src={partner.imagePath}
+                  alt={partner.name}
+                  class="block max-h-full max-w-full object-contain"
+                  style={`transform: scale(${partner.scale ?? 1}); transform-origin: center;`}
+                  loading="lazy"
+                  width="180"
+                  height="70"
+                />
+              </div>
             </div>
           </a>
         ))
