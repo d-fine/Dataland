@@ -62,7 +62,7 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     ): Long
 
     /**
-     * Returns per-data-point active QA report counts for all data-point IDs in the given set.
+     * Returns per data point active QA report counts for all data point IDs in the given set.
      * Each element of the returned list is an array [dataPointId, count].
      * @param dataPointIds set of dataPointId values to filter by
      * @return list of (dataPointId, count) pairs

@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import jakarta.persistence.PersistenceException
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
@@ -17,9 +18,8 @@ import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
-import org.springframework.dao.DataAccessException
-import jakarta.persistence.PersistenceException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -115,7 +115,7 @@ class QaReviewQueryService
                 (System.nanoTime() - getPendingStartNs) / NS_IN_MS,
             )
 
-            val datasetIds = entities.map { it.dataId }
+            val datasetIds = entities.map { it.dataId }.distinct()
 
             val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
@@ -133,12 +133,10 @@ class QaReviewQueryService
                 try {
                     datasetJudgementRepository.findAllByDatasetIdInWithDataPoints(datasetUUIDs)
                 } catch (ex: PersistenceException) {
-                    // If custom query fails for any reason related to persistence provider, fall back to original method
-                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error: {}", ex.message)
+                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}", ex::class.simpleName, ex.message)
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
                 } catch (ex: DataAccessException) {
-                    // If Spring data access layer throws an error, fall back to original method
-                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error: {}", ex.message)
+                    logger.warn("Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}", ex::class.simpleName, ex.message)
                     datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
                 }
 
@@ -173,7 +171,7 @@ class QaReviewQueryService
             val qaReviewResponses =
                 entities
                     .map {
-                        it.toQaReviewResponse(
+                        it.toQaReviewResponseWithPrecomputedData(
                             showTriggeringUserId = userIsAdmin,
                             numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
@@ -193,14 +191,14 @@ class QaReviewQueryService
             )
             // Time adding priorities (calls external data sourcing service)
             val addPrioritiesStartNs = System.nanoTime()
-            val withPriorities = addPrioritiesToResponse(qaReviewResponses)
+            val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
             logger.info(
                 "perf|getInfoOnPendingDatasets|addPrioritiesToResponse|datasetCount={} responseCount={} elapsedMs={}",
                 datasetIds.size,
-                withPriorities.size,
+                qaReviewResponsesWithPriorities.size,
                 (System.nanoTime() - addPrioritiesStartNs) / NS_IN_MS,
             )
-            return withPriorities
+            return qaReviewResponsesWithPriorities
         }
 
         /**
@@ -372,7 +370,7 @@ class QaReviewQueryService
         /**
          * Returns a map from datasetId to the number of QA reports for all data points contained in that dataset.
          * Fetches metadata for all datasetIds in bulk (one call per datasetId to the metadata API) and counts
-         * QA reports for all collected data-point IDs in a single DB query.
+         * QA reports for all collected data point IDs in a single DB query.
          */
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
             val getNumberOfQaReportsForDatasetIdsStartNs = System.nanoTime()
@@ -431,7 +429,7 @@ class QaReviewQueryService
         /**
          * Converts the QaReviewEntity into a QaReviewResponse using pre-fetched data to avoid per-item I/O.
          */
-        private fun QaReviewEntity.toQaReviewResponse(
+        private fun QaReviewEntity.toQaReviewResponseWithPrecomputedData(
             showTriggeringUserId: Boolean = false,
             numberQaReports: Long,
             latestJudgement: MinimalDatasetJudgement?,

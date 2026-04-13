@@ -198,8 +198,8 @@ class DataPointQaReportManager(
     fun countQaReportsForDataPointIds(dataPointIds: Set<String>): Long = qaReportRepository.countByDataPointIdIn(dataPointIds)
 
     /**
-     * Returns a map from dataPointId to the number of active QA reports for each data-point ID in the given set.
-     * Uses a single grouped DB query instead of one query per data-point.
+     * Returns a map from dataPointId to the number of active QA reports for each data point ID in the given set.
+     * Uses a single grouped DB query instead of one query per data point.
      * @param dataPointIds set of dataPointId values to count QA reports for
      * @return map of dataPointId to count
      */
