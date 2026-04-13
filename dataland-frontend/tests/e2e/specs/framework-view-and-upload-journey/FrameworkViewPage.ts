@@ -457,7 +457,7 @@ describeIf(
 
     it(
       'Check that using the reporting period in URL still yields data for assembled datasets',
-      { defaultCommandTimeout: Cypress.env('long_timeout_in_ms') as number },
+      { defaultCommandTimeout: Cypress.env('short_timeout_in_ms') as number },
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}/reportingPeriods/2019`);
