@@ -123,6 +123,28 @@ class NonSourceabilityInformationManager(
             .findActiveForTuple(companyId, dataType, reportingPeriod)
             .isNotEmpty()
 
+    /**
+     * Sets currentlyActive = false on every active non-sourceability entry for the given triple.
+     * Called when a real dataset is QA-accepted for the same (companyId, dataType, reportingPeriod),
+     * meaning data now exists and the non-sourceability is no longer valid.
+     */
+    @Transactional
+    fun deactivateForTriple(
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+    ) {
+        val active = nonSourceabilityDataRepository.findActiveForTuple(companyId, dataType, reportingPeriod)
+        if (active.isNotEmpty()) {
+            active.forEach { it.currentlyActive = false }
+            nonSourceabilityDataRepository.saveAll(active)
+            logger.info(
+                "Deactivated ${active.size} non-sourceability entries for " +
+                    "companyId=$companyId, dataType=$dataType, reportingPeriod=$reportingPeriod",
+            )
+        }
+    }
+
     private fun emitLifecycleEvent(
         entity: NonSourceabilityInformationEntity,
         bypassQa: Boolean,
