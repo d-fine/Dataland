@@ -50,13 +50,14 @@ class QaReviewQueryService
         )
 
         private fun fetchPendingEntities(companyName: String?): List<QaReviewEntity> {
-            val filter = QaSearchFilter(
-                dataTypes = null,
-                reportingPeriods = null,
-                companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                companyName = companyName,
-                qaStatuses = setOf(QaStatus.Pending),
-            )
+            val filter =
+                QaSearchFilter(
+                    dataTypes = null,
+                    reportingPeriods = null,
+                    companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                    companyName = companyName,
+                    qaStatuses = setOf(QaStatus.Pending),
+                )
 
             return qaReviewRepository.getPendingQaReviewMetadatasetsByCompany(filter)
         }
