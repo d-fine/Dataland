@@ -4,11 +4,22 @@
   --color-primary: #ff6813;
   --color-primary-hover: #e55d10;
   --color-secondary: #013d48;
+  --color-brand-blue: #21384b;
+  --color-brand-blue-light: #3e6a8e;
+  --color-dark-panel: #1c1c1f;
+  --color-dark-panel-elevated: #252529;
   --color-surface-0: #ffffff;
   --color-surface-50: #f7f7f5;
   --color-surface-200: #e6e6e6;
+  --color-surface-cool: #eef3f7;
+  --color-surface-cool-strong: #eaf2f8;
+  --color-surface-warm: #f6f3ee;
+  --color-border-cool: #d7e3ec;
   --color-text: #1a1a1a;
   --color-text-muted: #6b7280;
+  --color-text-subtle: #4f5965;
+  --color-label-muted: #7b8692;
+  --color-label-warm: #c98c64;
   --header-height: 72px;
   --font-family: 'IBM Plex Sans', sans-serif;
 }

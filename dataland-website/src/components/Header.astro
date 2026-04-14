@@ -22,7 +22,7 @@ const inactiveClasses = 'text-white/88 hover:text-[var(--color-primary)]';
 const activeClasses = 'text-[var(--color-primary)]';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[#1c1c1f] border-b border-white/10">
+<header class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[var(--color-dark-panel)] border-b border-white/10">
   <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
@@ -53,7 +53,7 @@ const activeClasses = 'text-[var(--color-primary)]';
           class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
         >
           <div
-            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[var(--color-dark-panel-elevated)] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
           >
             {
               ABOUT_SECTIONS.map(({ href, label }) => (

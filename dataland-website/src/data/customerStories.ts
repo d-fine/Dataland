@@ -11,7 +11,7 @@ export interface CustomerStorySummary {
 export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
   {
     logo: '/static/logos/logo_meag_2026.svg',
-    logoClassName: 'scale-[1.28]',
+    logoClassName: 'scale-[1.18]',
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     primaryTag: 'Asset manager',
     secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
