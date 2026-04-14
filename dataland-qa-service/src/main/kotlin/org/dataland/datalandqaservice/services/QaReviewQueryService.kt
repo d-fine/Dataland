@@ -104,7 +104,10 @@ class QaReviewQueryService
             val datasetIds = entities.map { it.dataId }.distinct()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
 
-            fun fallbackToNonFetch(datasetUUIDs: Collection<UUID>, ex: Throwable) = run {
+            fun fallbackToNonFetch(
+                datasetUUIDs: Collection<UUID>,
+                ex: Throwable,
+            ) = run {
                 logger.warn(
                     "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
                     ex::class.simpleName,
@@ -143,9 +146,7 @@ class QaReviewQueryService
                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
                         )
                     }
-
             val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
-
             return qaReviewResponsesWithPriorities
         }
 
