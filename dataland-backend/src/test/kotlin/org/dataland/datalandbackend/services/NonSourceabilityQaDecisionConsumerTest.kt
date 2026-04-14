@@ -61,7 +61,7 @@ class NonSourceabilityQaDecisionConsumerTest(
     // ─── T044: fail-fast validation ────────────────────────────────────────
 
     @Test
-    fun `QA decision listener discards event with malformed (non-UUID) nonSourceabilityId and throws reject exception`() {
+    fun `qa decision listener discards event with malformed nonUUID nonSourceabilityId and throws reject exception`() {
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent("not-a-uuid", NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED)
         assertThrows(MessageQueueRejectException::class.java) {
@@ -70,7 +70,7 @@ class NonSourceabilityQaDecisionConsumerTest(
     }
 
     @Test
-    fun `QA decision listener discards event with unresolvable nonSourceabilityId and throws reject exception`() {
+    fun `qa decision listener discards event with unresolvable nonSourceabilityId and throws reject exception`() {
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event =
             buildEvent(
@@ -85,7 +85,7 @@ class NonSourceabilityQaDecisionConsumerTest(
     // ─── T027: accepted/rejected state application ─────────────────────────
 
     @Test
-    fun `QA decision listener sets qaStatus Accepted and currentlyActive true on accepted event`() {
+    fun `qa decision listener sets qaStatus Accepted and currentlyActive true on accepted event`() {
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
@@ -99,7 +99,7 @@ class NonSourceabilityQaDecisionConsumerTest(
     }
 
     @Test
-    fun `QA decision listener sets qaStatus Rejected and currentlyActive false on rejected event`() {
+    fun `qa decision listener sets qaStatus Rejected and currentlyActive false on rejected event`() {
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
@@ -113,7 +113,7 @@ class NonSourceabilityQaDecisionConsumerTest(
     }
 
     @Test
-    fun `QA decision listener throws reject exception for unexpected event type`() {
+    fun `qa decision listener throws reject exception for unexpected event type`() {
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)

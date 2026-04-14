@@ -54,14 +54,14 @@ class NonSourceabilityEventConsumerTest {
     // ----- T045: fail-fast validation -----
 
     @Test
-    fun `data-sourcing listener discards event with malformed nonSourceabilityId and throws reject exception`() {
+    fun `data sourcing listener discards event with malformed nonSourceabilityId and throws reject exception`() {
         assertThrows(MessageQueueRejectException::class.java) {
             listener.validateNonSourceabilityId("!!invalid-id!!")
         }
     }
 
     @Test
-    fun `data-sourcing listener discards event with blank nonSourceabilityId and throws reject exception`() {
+    fun `data sourcing listener discards event with blank nonSourceabilityId and throws reject exception`() {
         assertThrows(MessageQueueRejectException::class.java) {
             listener.validateNonSourceabilityId("")
         }

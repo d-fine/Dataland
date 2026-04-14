@@ -119,7 +119,7 @@ class NonSourceabilityInformationManagerTest(
     }
 
     @Test
-    fun `new request allowed after Rejected entry – FR-013 edge case`() {
+    fun `new request allowed after Rejected entry FR013 edge case`() {
         manager.processNonSourceabilityRequest(request())
         val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
         entity.qaStatus = QaStatus.Rejected
@@ -135,14 +135,14 @@ class NonSourceabilityInformationManagerTest(
     }
 
     @Test
-    fun `isCurrentlyActive returns true after admin-bypass entry`() {
+    fun `isCurrentlyActive returns true after admin bypass entry`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         assertTrue(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
     }
 
     @Test
-    fun `SC-005 guard – NonSourceabilityDataRepository is canonical runtime source, not SourceabilityDataRepository`() {
+    fun `SC005 guard NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)

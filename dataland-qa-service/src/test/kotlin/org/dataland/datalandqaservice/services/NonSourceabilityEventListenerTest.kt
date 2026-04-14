@@ -46,7 +46,7 @@ class NonSourceabilityEventListenerTest {
     }
 
     @Test
-    fun `processCreatedEvent is idempotent - skips when review already exists`() {
+    fun `processCreatedEvent is idempotent skips when review already exists`() {
         val existing =
             NonSourceableQaReviewInformationEntity(
                 nonSourceabilityId = "00000000-0000-0000-0000-000000000001",

@@ -22,11 +22,15 @@ import org.springframework.http.HttpStatus
  * - T049: QA controller tests for GET /nonSourceable and GET /nonSourceable/queue
  */
 class NonSourceabilityQaControllerTest {
+    companion object {
+        private const val DEFAULT_NON_SOURCEABILITY_ID = "00000000-0000-0000-0000-000000000001"
+    }
+
     private val manager: NonSourceabilityQaReviewManager = mock()
     private val controller = NonSourceabilityQaController(manager)
 
     private fun review(
-        nonSourceabilityId: String = "00000000-0000-0000-0000-000000000001",
+        nonSourceabilityId: String = DEFAULT_NON_SOURCEABILITY_ID,
         qaStatus: QaStatus = QaStatus.Pending,
     ) = NonSourceableQaReviewInformation(
         nonSourceabilityId = nonSourceabilityId,
@@ -49,7 +53,7 @@ class NonSourceabilityQaControllerTest {
         whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any())).thenReturn(accepted)
 
         withReviewerAuthentication {
-            val result = controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Accepted, null)
+            val result = controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, QaStatus.Accepted, null)
 
             assertEquals(HttpStatus.OK, result.statusCode)
             assertEquals(QaStatus.Accepted, result.body?.qaStatus)
@@ -64,7 +68,7 @@ class NonSourceabilityQaControllerTest {
 
         withReviewerAuthentication {
             val result =
-                controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000001", QaStatus.Rejected, "Not applicable")
+                controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, QaStatus.Rejected, "Not applicable")
 
             assertEquals(HttpStatus.OK, result.statusCode)
             assertEquals(QaStatus.Rejected, result.body?.qaStatus)
@@ -72,7 +76,7 @@ class NonSourceabilityQaControllerTest {
     }
 
     @Test
-    fun `postNonSourceabilityDecision propagates not-found exception from manager`() {
+    fun `postNonSourceabilityDecision propagates not found exception from manager`() {
         val exception = ResourceNotFoundApiException("Non-sourceability review not found", "No review exists")
         doThrow(exception)
             .whenever(manager)

@@ -74,7 +74,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
     }
 
     @Test
-    fun `rejected event keeps sourcing in NonSourceableVerification - no patch performed`() {
+    fun `rejected event keeps sourcing in NonSourceableVerification no patch performed`() {
         val stored = stubSourcing(DataSourcingState.NonSourceableVerification)
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))

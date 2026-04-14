@@ -48,9 +48,10 @@ class NonSourceabilityQaReviewManager
             repository
                 .findByQaStatusFilter(qaStatus)
                 .filter { entity ->
-                    (companyId == null || entity.companyId == companyId) &&
-                        (dataType == null || entity.dataType == dataType) &&
-                        (reportingPeriod == null || entity.reportingPeriod == reportingPeriod)
+                    val companyMatches = companyId == null || entity.companyId == companyId
+                    val dataTypeMatches = dataType == null || entity.dataType == dataType
+                    val reportingPeriodMatches = reportingPeriod == null || entity.reportingPeriod == reportingPeriod
+                    companyMatches && dataTypeMatches && reportingPeriodMatches
                 }.drop(chunkIndex * chunkSize)
                 .take(chunkSize)
                 .map { it.toResponse() }
@@ -81,26 +82,41 @@ class NonSourceabilityQaReviewManager
             require(qaStatus == QaStatus.Accepted || qaStatus == QaStatus.Rejected) {
                 "QA decision must be Accepted or Rejected, got $qaStatus"
             }
+            val entity = updateReviewEntity(nonSourceabilityId, qaStatus, qaComment, reviewerUserId)
+            sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+            return entity.toResponse()
+        }
 
+        private fun updateReviewEntity(
+            nonSourceabilityId: String,
+            qaStatus: QaStatus,
+            qaComment: String?,
+            reviewerUserId: String,
+        ): NonSourceableQaReviewInformationEntity {
             val entity =
                 repository.findByNonSourceabilityId(nonSourceabilityId)
                     ?: throw ResourceNotFoundApiException(
                         "Non-sourceability review not found",
                         "No QA review record exists for nonSourceabilityId=$nonSourceabilityId",
                     )
-
             entity.qaStatus = qaStatus
             entity.reviewerUserId = reviewerUserId
             entity.qaComment = qaComment
-            val saved = repository.save(entity)
+            return repository.save(entity)
+        }
 
+        private fun sendQaDecisionEvent(
+            entity: NonSourceableQaReviewInformationEntity,
+            qaStatus: QaStatus,
+            correlationId: String,
+            nonSourceabilityId: String,
+        ) {
             val eventType =
                 if (qaStatus == QaStatus.Accepted) {
                     NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED
                 } else {
                     NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED
                 }
-
             val event =
                 NonSourceabilityLifecycleEvent(
                     nonSourceabilityId = nonSourceabilityId,
@@ -121,7 +137,6 @@ class NonSourceabilityQaReviewManager
                 } else {
                     RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED
                 }
-
             val payload = objectMapper.writeValueAsString(event)
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 payload,
@@ -133,8 +148,6 @@ class NonSourceabilityQaReviewManager
             logger.info(
                 "Emitted $eventType for nonSourceabilityId=$nonSourceabilityId (correlationId=$correlationId)",
             )
-
-            return saved.toResponse()
         }
 
         private fun NonSourceableQaReviewInformationEntity.toResponse() =

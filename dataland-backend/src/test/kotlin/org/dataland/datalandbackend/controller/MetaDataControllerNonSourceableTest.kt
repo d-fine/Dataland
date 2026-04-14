@@ -69,7 +69,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `POST nonSourceable creates entry with qaStatus Pending when bypassQa is false`() {
+        fun `post nonSourceable creates entry with qaStatus Pending when bypassQa is false`() {
             val request =
                 NonSourceabilityRequest(
                     companyId = storedCompany.companyId,
@@ -84,7 +84,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `POST nonSourceable creates entry with qaStatus Accepted when bypassQa is true and caller is admin`() {
+        fun `post nonSourceable creates entry with qaStatus Accepted when bypassQa is true and caller is admin`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
 
             val request =
@@ -101,7 +101,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `POST nonSourceable with bypassQa true throws AccessDeniedException for non-admin`() {
+        fun `post nonSourceable with bypassQa true throws AccessDeniedException for non-admin`() {
             val request =
                 NonSourceabilityRequest(
                     companyId = storedCompany.companyId,
@@ -116,7 +116,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `GET nonSourceable returns entries filtered by qaStatus`() {
+        fun `get nonSourceable returns entries filtered by qaStatus`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
             metaDataController.postNonSourceabilityOfADataset(
                 NonSourceabilityRequest(
@@ -151,7 +151,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `HEAD nonSourceable returns 200 for active entry`() {
+        fun `head nonSourceable returns 200 for active entry`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
             metaDataController.postNonSourceabilityOfADataset(
                 NonSourceabilityRequest(

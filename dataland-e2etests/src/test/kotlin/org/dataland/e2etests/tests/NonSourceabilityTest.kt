@@ -22,6 +22,10 @@ class NonSourceabilityTest {
     private val apiAccessor = ApiAccessor()
     private val testReportingPeriod = "2026"
 
+    private companion object {
+        private const val NO_PUBLIC_SOURCE_REASON = "No public source available"
+    }
+
     private data class Ctx(
         val companyId: String,
         val dataType: DataTypeEnum,
@@ -32,7 +36,7 @@ class NonSourceabilityTest {
     private fun <T> asAdmin(block: () -> T): T = GlobalAuth.withTechnicalUser(TechnicalUser.Admin) { block() }
 
     @Test
-    fun `POST metadata nonSourceable followed by GET returns the correct triple`() {
+    fun `post metadata nonSourceable followed by get returns the correct triple`() {
         val companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId }
 
         asAdmin {
@@ -41,7 +45,7 @@ class NonSourceabilityTest {
                     companyId = companyId,
                     dataType = DataTypeEnum.sfdr,
                     reportingPeriod = testReportingPeriod,
-                    reason = "No public source available",
+                    reason = NO_PUBLIC_SOURCE_REASON,
                     bypassQa = true,
                 ),
             )
@@ -64,7 +68,7 @@ class NonSourceabilityTest {
     }
 
     @Test
-    fun `POST nonSourceable with bypassQa false triggers full QA lifecycle and currentlyActive becomes true after acceptance`() {
+    fun `post nonSourceable with bypassQa false triggers full qa lifecycle and currentlyActive becomes true after acceptance`() {
         var ctx =
             Ctx(
                 companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
@@ -84,7 +88,7 @@ class NonSourceabilityTest {
     }
 
     @Test
-    fun `POST nonSourceable with bypassQa false and QA Rejected keeps backend inactive and DS state unchanged`() {
+    fun `post nonSourceable with bypassQa false and qa Rejected keeps backend inactive and DS state unchanged`() {
         var ctx =
             Ctx(
                 companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
@@ -104,7 +108,7 @@ class NonSourceabilityTest {
     }
 
     @Test
-    fun `POST nonSourceable with bypassQa true immediately accepts entry and transitions DS to NonSourceable`() {
+    fun `post nonSourceable with bypassQa true immediately accepts entry and transitions ds to NonSourceable`() {
         var ctx =
             Ctx(
                 companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
@@ -145,7 +149,7 @@ class NonSourceabilityTest {
                         companyId = ctx.companyId,
                         dataType = ctx.dataType,
                         reportingPeriod = ctx.reportingPeriod,
-                        reason = "No public source available",
+                        reason = NO_PUBLIC_SOURCE_REASON,
                         bypassQa = false,
                     ),
                 )
@@ -202,7 +206,7 @@ class NonSourceabilityTest {
                     qaStatus = qaStatus,
                 )
             }
-        assertEquals(qaStatus, qaDecision.qaStatus, "POST decision response must reflect requested status")
+        assertEquals(qaStatus, qaDecision.qaStatus, "post decision response must reflect requested status")
     }
 
     private fun assertQaReviewIsAccepted(ctx: Ctx) {
@@ -337,7 +341,7 @@ class NonSourceabilityTest {
                         companyId = ctx.companyId,
                         dataType = ctx.dataType,
                         reportingPeriod = ctx.reportingPeriod,
-                        reason = "No public source available",
+                        reason = NO_PUBLIC_SOURCE_REASON,
                         bypassQa = true,
                     ),
                 )
