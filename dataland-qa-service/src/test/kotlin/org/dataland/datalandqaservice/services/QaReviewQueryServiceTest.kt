@@ -22,10 +22,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import jakarta.persistence.PersistenceException
+import org.springframework.dao.DataAccessException
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -293,18 +297,23 @@ class QaReviewQueryServiceTest {
         doReturn(listOf(qaReviewEntity2, qaReviewEntity1))
             .whenever(mockQaReviewRepository)
             .getPendingQaReviewMetadatasetsByCompany(any())
+
         doReturn(listOf(datasetJudgementEntity1, datasetJudgementEntity2))
             .whenever(mockDatasetJudgementRepository)
             .findAllWithDataPointsByDatasetIdIn(any())
+
         doReturn(mapOf("x" to "dp-1", "y" to "dp-2"))
             .whenever(mockMetaDataControllerApi)
             .getContainedDataPoints(eq(dataId1))
+
         doReturn(mapOf("x" to "dp-3"))
             .whenever(mockMetaDataControllerApi)
             .getContainedDataPoints(eq(dataId2))
+
         doReturn(mapOf("dp-1" to 1L, "dp-2" to 2L, "dp-3" to 5L))
             .whenever(mockDataPointQaReportManager)
             .countQaReportsForDataPointIdsBulk(any())
+
         doReturn(
             listOf(
                 DataSourcingPriorityByDataDimensions(
@@ -332,5 +341,102 @@ class QaReviewQueryServiceTest {
             }
 
         Assertions.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `fallback to findAllByDatasetIdIn when fetch-join throws PersistenceException or DataAccessException`() {
+
+        val exceptions: List<Throwable> = listOf(
+            PersistenceException(),
+            object : DataAccessException("db failure") {},
+        )
+
+        for (ex in exceptions) {
+            doReturn(null)
+                .whenever(mockDataSourcingService)
+                .getDataSourcingPriorities(any())
+
+            doReturn(listOf(qaReviewEntity))
+                .whenever(mockQaReviewRepository)
+                .getPendingQaReviewMetadatasetsByCompany(any())
+
+            doThrow(ex)
+                .whenever(mockDatasetJudgementRepository)
+                .findAllWithDataPointsByDatasetIdIn(any())
+
+            doReturn(listOf(datasetJudgementEntity))
+                .whenever(mockDatasetJudgementRepository)
+                .findAllByDatasetIdIn(any())
+
+            val responses =
+                AuthenticationMock.withAuthenticationMock(
+                    username = "user",
+                    userId = uploaderId,
+                    roles = setOf(DatalandRealmRole.ROLE_USER),
+                ) {
+                    qaReviewQueryService.getInfoOnPendingDatasets(
+                        companyName = null,
+                    )
+                }
+
+            Assertions.assertEquals(1, responses.size)
+            Assertions.assertEquals(dummyUserId.toString(), responses.first().qaJudgeUserId)
+            Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
+
+            verify(mockDatasetJudgementRepository).findAllWithDataPointsByDatasetIdIn(any())
+            verify(mockDatasetJudgementRepository).findAllByDatasetIdIn(any())
+
+            reset(mockDatasetJudgementRepository)
+        }
+    }
+
+    @Test
+    fun `dataset without any judgement still returned with null judgement fields`() {
+
+        doReturn(
+            listOf(
+                DataSourcingPriorityByDataDimensions(
+                    dataType = framework,
+                    reportingPeriod = reportingPeriod,
+                    companyId = companyId,
+                    priority = 7,
+                ),
+            ),
+        ).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
+
+        doReturn(listOf(qaReviewEntity))
+            .whenever(mockQaReviewRepository)
+            .getPendingQaReviewMetadatasetsByCompany(any())
+
+        doReturn(emptyList<DatasetJudgementEntity>())
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
+
+        doReturn(mapOf("x" to "dp-1", "y" to "dp-2"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId))
+
+        doReturn(mapOf("dp-1" to 3L, "dp-2" to 2L))
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+
+        val responses =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = uploaderId,
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewQueryService.getInfoOnPendingDatasets(
+                    companyName = null,
+                )
+            }
+
+        Assertions.assertEquals(1, responses.size)
+        val resp = responses.first()
+        Assertions.assertNull(resp.qaJudgeUserId)
+        Assertions.assertNull(resp.qaJudgeUserName)
+        Assertions.assertNull(resp.datasetReviewId)
+        Assertions.assertEquals(5L, resp.numberQaReports)
+        Assertions.assertEquals(7, resp.priorityOfAssociatedDataSourcing)
     }
 }
