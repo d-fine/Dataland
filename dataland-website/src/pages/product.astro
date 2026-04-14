@@ -32,7 +32,7 @@ const CREDITS_TABLE = [
     <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[48%_52%] lg:items-stretch">
       <div class="flex h-full flex-col lg:pr-4 lg:pt-1">
         <div class="flex flex-1 flex-col">
-          <h1 class="m-0 text-[1.95rem] font-bold leading-[1.05] text-white lg:text-[2.35rem]">
+          <h1 class="m-0 text-[2rem] font-bold leading-[1.05] text-white lg:text-[2.35rem]">
             Structured, source-based sustainability data
             <br />
             <span class="text-[var(--color-primary)]">for regulatory reporting and investment analysis.</span>
@@ -92,7 +92,7 @@ const CREDITS_TABLE = [
       <div class="max-w-[860px] mx-auto flex flex-col gap-3 text-center">
         <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">How it works</h2>
         <p class="text-[1.06rem] leading-relaxed m-0 text-[var(--color-text-muted)] lg:text-[1.12rem]">
-          Access and use Dataland in the way that fits your team
+          Access and use Dataland in the way that fits your team.
         </p>
       </div>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -120,17 +120,17 @@ const CREDITS_TABLE = [
                 />
               </div>
               <div class="flex flex-col items-center gap-1 self-start text-center">
-                <h3 class="m-0 text-[1.02rem] font-bold leading-[1.22] text-[var(--color-text)]">{block.leftTitle}</h3>
-                <p class="m-0 text-[1.02rem] leading-[1.38] text-[var(--color-text-muted)]">{block.leftText}</p>
+                <h3 class="m-0 text-[0.95rem] font-bold leading-[1.22] text-[var(--color-text)]">{block.leftTitle}</h3>
+                <p class="m-0 text-[0.95rem] leading-[1.38] text-[var(--color-text-muted)]">{block.leftText}</p>
               </div>
               <div class="flex items-center justify-center self-center" aria-hidden="true">
                 <div class="h-[3px] w-14 rounded-full bg-[var(--color-primary)]" />
               </div>
               <div class="flex flex-col items-center gap-1 self-start text-center pt-2">
-                <h3 class="m-0 text-[1.02rem] font-bold leading-[1.22] text-[var(--color-primary)]">
+                <h3 class="m-0 text-[0.95rem] font-bold leading-[1.22] text-[var(--color-primary)]">
                   {block.rightTitle}
                 </h3>
-                <p class="m-0 text-[1.02rem] leading-[1.38] text-[var(--color-text-muted)]">{block.rightText}</p>
+                <p class="m-0 text-[0.95rem] leading-[1.38] text-[var(--color-text-muted)]">{block.rightText}</p>
               </div>
             </article>
           ))
@@ -161,7 +161,7 @@ const CREDITS_TABLE = [
                 index === 0 ? 'bg-[var(--color-surface-warm)]' : 'bg-[var(--color-surface-cool-soft)]',
               ]}
             >
-              <h3 class="m-0 self-start text-left text-[1.4rem] font-bold leading-[1.12] text-[var(--color-text)]">
+              <h3 class="m-0 self-start text-left text-[1.45rem] font-bold leading-[1.12] text-[var(--color-text)]">
                 {block.title}
               </h3>
               <div class="flex items-start justify-start self-start -mt-1" aria-hidden="true">
@@ -246,20 +246,20 @@ const CREDITS_TABLE = [
                         'translate-x-3 scale-[1.36]',
                     ]}
                   />
-                  <h3 class="text-[1.0625rem] font-bold m-0 text-[var(--color-text)] leading-[1.18]">
+                  <h3 class="text-[1.14rem] font-bold m-0 text-[var(--color-text)] leading-[1.18]">
                     {(uc.titleLines ?? [uc.title]).map((line) => (
                       <span class="block">{line}</span>
                     ))}
                   </h3>
                 </div>
-                <p class="text-[0.9375rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
+                <p class="text-[0.95rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{uc.description}</p>
               </div>
             ))
           }
         </div>
         <div class="flex flex-col gap-5 pt-2">
           <p
-            class="mx-auto max-w-[760px] text-center text-[0.98rem] leading-relaxed m-0 text-[var(--color-text-muted)]"
+            class="mx-auto max-w-[760px] text-center text-[1.06rem] font-bold leading-relaxed m-0 text-[var(--color-text-muted)] lg:text-[1.12rem]"
           >
             These use cases support different business areas across the company.
           </p>
@@ -276,7 +276,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Regulatory<br />reporting</span>
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Regulatory<br />reporting</span>
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -290,7 +290,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Investment<br />analysis</span>
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Investment<br />analysis</span>
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -304,7 +304,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Risk<br />management</span>
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Risk<br />management</span>
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -318,7 +318,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Portfolio<br />management</span>
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Portfolio<br />management</span>
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -332,7 +332,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Performance<br />management</span
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Performance<br />management</span
               >
             </div>
             <div
@@ -347,7 +347,7 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Client<br />advisory</span>
+              <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Client<br />advisory</span>
             </div>
           </div>
         </div>
@@ -398,31 +398,31 @@ const CREDITS_TABLE = [
               </div>
               <div class="flex flex-col gap-4">
                 <h3 class="m-0 text-xl font-bold text-[var(--color-text)]">{story.title}</h3>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.summary}</p>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{story.summary}</p>
 
                 <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Challenge</h4>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.challenge}</p>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{story.challenge}</p>
 
                 <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Solution</h4>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.solution}</p>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{story.solution}</p>
 
                 <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Value</h4>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.value}</p>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{story.value}</p>
 
                 <blockquote class="m-0 rounded-r-xl border-l-4 border-[var(--color-primary)] bg-[var(--color-surface-50)] px-6 py-5">
-                  <p class="m-0 mb-3 text-[0.9375rem] italic leading-relaxed text-[var(--color-text)]">
+                  <p class="m-0 mb-3 text-[0.95rem] italic leading-relaxed text-[var(--color-text)]">
                     &ldquo;{story.quoteText}&rdquo;
                   </p>
                   <footer class="flex flex-col gap-0.5">
                     <cite class="text-sm font-bold not-italic text-[var(--color-text)]">{story.quoteAuthor}</cite>
-                    <span class="text-[0.8125rem] text-[var(--color-text-muted)]">{story.quoteRole}</span>
+                    <span class="text-[0.82rem] text-[var(--color-text-muted)]">{story.quoteRole}</span>
                   </footer>
                 </blockquote>
 
               {story.successStorySlug && (
                 <a
                   href={`/success-stories/${story.successStorySlug}`}
-                  class="text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline self-start hover:underline"
+                  class="text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline self-start hover:underline"
                 >
                   Read full story &rarr;
                 </a>
@@ -455,7 +455,7 @@ const CREDITS_TABLE = [
           >
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div class="flex h-full flex-col gap-5">
-                <h3 class="m-0 text-[1.85rem] font-bold leading-tight">Annual membership</h3>
+                <h3 class="m-0 text-[1.75rem] font-bold leading-tight">Annual membership</h3>
                 <span class="text-[3.4rem] font-bold leading-none lg:text-[4.6rem]">5,000 EUR</span>
                 <div class="flex flex-1 items-center justify-center pt-2" aria-hidden="true">
                   <div class="flex h-[15rem] w-full max-w-[24rem] items-center justify-center gap-8">
@@ -484,7 +484,7 @@ const CREDITS_TABLE = [
                 </div>
               </div>
               <div class="flex flex-col gap-6">
-                <p class="m-0 text-[1.08rem] leading-relaxed text-white/90">
+                <p class="m-0 text-[1.14rem] leading-relaxed text-white/90">
                   For this fee, everything already available on the platform is free for all Members:
                 </p>
                 <div class="flex flex-col gap-5">
@@ -525,8 +525,8 @@ const CREDITS_TABLE = [
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
               <div class="flex h-full flex-col gap-5">
                 <div class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.85rem] font-bold leading-tight">Shared cost approach</h3>
-                  <p class="m-0 text-[1.08rem] leading-relaxed text-white/90">
+                  <h3 class="m-0 text-[1.75rem] font-bold leading-tight">Shared cost approach</h3>
+                  <p class="m-0 text-[1.14rem] leading-relaxed text-white/90">
                     The cost of sourcing datasets is shared among members requesting the same data.
                   </p>
                   <div class="flex flex-col gap-5">
@@ -546,12 +546,12 @@ const CREDITS_TABLE = [
                     </div>
                   </div>
                 </div>
-                <p class="m-0 pt-1 text-[0.8rem] leading-relaxed text-white/58">
+                <p class="m-0 pt-1 text-[0.82rem] leading-relaxed text-white/58">
                   Dataset = 1 company, 1 framework, 1 reporting period.
                 </p>
               </div>
               <div class="grid h-full grid-rows-[auto_1fr] gap-5">
-                <div class="invisible text-[1.85rem] font-bold leading-tight" aria-hidden="true">
+                <div class="invisible text-[1.75rem] font-bold leading-tight" aria-hidden="true">
                   Shared cost approach
                 </div>
                 <div class="flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4">
@@ -560,11 +560,11 @@ const CREDITS_TABLE = [
                       <thead>
                         <tr class="border-b-2 border-white">
                           <th
-                            class="px-8 py-1 text-center text-[0.86rem] font-bold uppercase tracking-[0.04em] text-white"
+                            class="px-8 py-1 text-center text-[0.82rem] font-bold uppercase tracking-[0.04em] text-white"
                             ># of Members</th
                           >
                           <th
-                            class="px-8 py-1 text-center text-[0.86rem] font-bold uppercase tracking-[0.04em] text-white"
+                            class="px-8 py-1 text-center text-[0.82rem] font-bold uppercase tracking-[0.04em] text-white"
                             >Cost (Credits)</th
                           >
                         </tr>
@@ -578,8 +578,8 @@ const CREDITS_TABLE = [
                                 idx === CREDITS_TABLE.length - 1 && 'border-b-0',
                               ]}
                             >
-                              <td class="px-8 py-1 text-center text-[1.02rem] font-bold text-white">{row.members}</td>
-                              <td class="px-8 py-1 text-center text-[1.02rem] font-bold text-white">{row.cost}</td>
+                              <td class="px-8 py-1 text-center text-[0.95rem] font-bold text-white">{row.members}</td>
+                              <td class="px-8 py-1 text-center text-[0.95rem] font-bold text-white">{row.cost}</td>
                             </tr>
                           ))
                         }
@@ -645,7 +645,7 @@ const CREDITS_TABLE = [
             href={FRAMEWORK_DOC.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 text-[var(--color-primary)] text-sm font-semibold no-underline self-start hover:underline"
+            class="inline-flex items-center gap-1.5 text-[var(--color-primary)] text-[1.06rem] font-semibold no-underline self-start hover:underline"
           >
             View on GitHub &rarr;
           </a>

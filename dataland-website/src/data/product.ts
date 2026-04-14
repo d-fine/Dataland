@@ -128,32 +128,32 @@ export const FEATURE_CARDS: FeatureCard[] = [
   {
     title: 'Download data',
     tags: ['Flexible formats', 'Internal use'],
-    text: 'Download datasets as CSV or XLSX with or without metadata',
+    text: 'Download datasets as CSV or XLSX with or without metadata.',
   },
   {
     title: 'Portfolio management',
     tags: ['Portfolio setup', 'Monitoring'],
-    text: 'Build your own portfolios of companies and monitor ESG data availability',
+    text: 'Build your own portfolios of companies and monitor ESG data availability.',
   },
   {
     title: 'Portfolio sharing',
     tags: ['Collaboration', 'Team access'],
-    text: 'Share company portfolios with colleagues and teams',
+    text: 'Share company portfolios with colleagues and teams.',
   },
   {
     title: 'Request data',
     tags: ['On-demand sourcing', 'Missing data'],
-    text: 'Order missing datasets directly from the platform',
+    text: 'Order missing datasets directly from the platform.',
   },
   {
     title: 'Source transparency',
     tags: ['Traceability', 'Quality comments'],
-    text: 'Inspect original source documents and quality comments',
+    text: 'Inspect original source documents and quality comments.',
   },
   {
     title: 'Multi-framework export',
     tags: ['Reporting-ready formats', 'Framework coverage'],
-    text: 'Export datasets in formats suitable for different reporting frameworks',
+    text: 'Export datasets in formats suitable for different reporting frameworks.',
   },
 ];
 
@@ -322,7 +322,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
   },
   {
     anchor: 'ovbraunschweig',
-    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
+    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.png',
     logoClassName: 'scale-[0.9]',
     primaryTag: 'Insurance',
     secondaryTags: ['SFDR', 'Validation', 'Audit', 'Efficiency', 'Quality'],

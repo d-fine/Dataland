@@ -35,7 +35,7 @@ import { NEWS_ITEMS } from '../data/news';
       </div>
       <div class="flex h-full flex-col justify-between gap-7 lg:pt-1">
         <div class="flex flex-col gap-4">
-          <h1 class="m-0 text-[1.9rem] font-bold leading-[1.04] text-white lg:text-[2.3rem]">
+          <h1 class="m-0 text-[2rem] font-bold leading-[1.04] text-white lg:text-[2.3rem]">
             Built for Europe, in Europe
           </h1>
           <div class="flex flex-1 flex-col justify-center gap-4 pt-4 lg:pt-8">
@@ -108,13 +108,13 @@ import { NEWS_ITEMS } from '../data/news';
                 height="540"
               />
               <div class="flex items-start justify-center">
-                <h3 class="m-0 text-[1.52rem] font-bold leading-tight">{person.name}</h3>
+                <h3 class="m-0 text-[1.45rem] font-bold leading-tight">{person.name}</h3>
               </div>
               <div class="mt-[0.1rem] flex items-start justify-center">
-                <p class="m-0 text-[1.38rem] leading-tight opacity-85">{person.role}</p>
+                <p class="m-0 text-[1.14rem] leading-tight opacity-85">{person.role}</p>
               </div>
               <div class="mt-8 flex min-h-[5.6rem] items-start justify-center max-w-[320px]">
-                <p class="m-0 text-[1.08rem] leading-[1.5] opacity-80">{person.bio}</p>
+                <p class="m-0 text-[1.14rem] leading-[1.5] opacity-80">{person.bio}</p>
               </div>
               <div class="mt-0.5 flex gap-4">
                 <a
@@ -204,10 +204,10 @@ import { NEWS_ITEMS } from '../data/news';
                   height="400"
                 />
               </div>
-              <div class="p-4 px-5 pb-5 flex flex-col gap-1.5">
-                <h3 class="text-base font-bold m-0 leading-snug">{item.title}</h3>
-                <time class="text-[0.8125rem] text-[var(--color-text-muted)]">{item.date}</time>
-                <span class="text-sm font-semibold text-[var(--color-primary)] mt-1">Read more &rarr;</span>
+              <div class="grid flex-1 grid-rows-[3.6rem_auto_auto] px-5 pt-4 pb-5">
+                <h3 class="m-0 text-base font-bold leading-snug">{item.title}</h3>
+                <time class="mt-1 text-[0.8125rem] text-[var(--color-text-muted)]">{item.date}</time>
+                <span class="mt-2 text-[1.06rem] font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
               </div>
             </a>
           ))
@@ -228,10 +228,10 @@ import { NEWS_ITEMS } from '../data/news';
       >
         <div class="flex flex-col gap-5">
           <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Contact</p>
-          <h2 class="m-0 max-w-[12ch] text-[1.9rem] font-bold leading-[1.05] lg:text-[2.3rem]">
+          <h2 class="m-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[2.3rem]">
             Bring sustainability data into your workflow.
           </h2>
-          <p class="m-0 max-w-[42rem] text-[1.02rem] leading-relaxed text-white/78 lg:text-[1.12rem]">
+          <p class="m-0 max-w-[42rem] text-[1.06rem] leading-relaxed text-white/78 lg:text-[1.12rem]">
             Whether you are exploring membership, a partnership, or a product deep dive, we can point you to the right
             next step.
           </p>
@@ -300,10 +300,10 @@ import { NEWS_ITEMS } from '../data/news';
       >
         <div class="flex flex-col gap-4">
           <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Start here</p>
-          <h3 class="m-0 text-[1.55rem] font-bold leading-tight lg:text-[2rem]">
+          <h3 class="m-0 text-[1.45rem] font-bold leading-tight lg:text-[2rem]">
             Pick the path that fits what you want to do next.
           </h3>
-          <p class="m-0 text-[0.98rem] leading-relaxed text-white/74">
+          <p class="m-0 text-[1.06rem] leading-relaxed text-white/74 lg:text-[1.12rem]">
             Reach out directly, stay up to date, or start exploring the platform on your own.
           </p>
         </div>
@@ -331,7 +331,7 @@ import { NEWS_ITEMS } from '../data/news';
           </a>
           <a
             href="/product#documentation"
-            class="inline-flex min-h-[3.52rem] w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-[0.82rem] text-[0.9375rem] font-semibold text-[#111111] no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
+            class="inline-flex min-h-[3.52rem] w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-[0.82rem] text-[0.95rem] font-semibold text-[#111111] no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
           >
             <svg
               width="20"

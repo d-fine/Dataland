@@ -56,8 +56,8 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 </div>
               </div>
               <div class="flex h-full flex-col gap-4 p-6">
-                <h2 class="m-0 text-[1.05rem] font-medium leading-snug">{story.title}</h2>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-white/72">{story.text}</p>
+                <h2 class="m-0 text-[1.14rem] font-medium leading-snug">{story.title}</h2>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-white/72">{story.text}</p>
               </div>
             </a>
           ))
@@ -109,7 +109,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                         </span>
                       ))}
                     </div>
-                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
+                    <h2 class="m-0 text-[1.75rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
                       {story.heroTitle}
                     </h2>
                     {story.externalUrl && (
@@ -117,7 +117,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                         href={story.externalUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                        class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                       >
                         {story.closingCtaLabel ?? 'Visit the website'}
                         <span aria-hidden="true">&rarr;</span>
@@ -133,7 +133,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 </div>
 
                 <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.25rem] font-bold text-[var(--color-text)]">Key use cases</h3>
+                  <h3 class="m-0 text-[1.14rem] font-bold text-[var(--color-text)]">Key use cases</h3>
                   <div class="flex flex-col gap-8">
                     {story.keyUseCases.map((item) => (
                       <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
@@ -149,10 +149,10 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                           />
                         </div>
                         <div class="flex flex-col gap-3">
-                          <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
+                          <h4 class="m-0 text-[1.14rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
                           <div class="flex flex-col gap-2.5">
                             {item.lines.map((line) => (
-                              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
+                              <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
                             ))}
                           </div>
                         </div>
@@ -162,8 +162,8 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 </section>
 
                 <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
-                  <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
+                  <h3 class="m-0 text-[1.14rem] font-bold">Integration benefits</h3>
+                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
                     {story.benefits.map((benefit) => (
                       <li>{benefit}</li>
                     ))}
@@ -175,14 +175,14 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                     href={story.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                   >
                     Visit the website
                     <span aria-hidden="true">&rarr;</span>
                   </a>
                   <a
                     href="/product#use-cases"
-                    class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                   >
                     Explore further use cases
                     <span aria-hidden="true">&rarr;</span>
@@ -230,7 +230,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                         </span>
                       ))}
                     </div>
-                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
+                    <h2 class="m-0 text-[1.75rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
                       {story.heroTitle}
                     </h2>
                     {story.externalUrl && (
@@ -238,7 +238,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                         href={story.externalUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                        class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                       >
                         Visit the website
                         <span aria-hidden="true">&rarr;</span>
@@ -254,7 +254,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 </div>
 
                 <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.25rem] font-bold text-[var(--color-text)]">Key use cases</h3>
+                  <h3 class="m-0 text-[1.14rem] font-bold text-[var(--color-text)]">Key use cases</h3>
                   <div class="flex flex-col gap-8">
                     {story.keyUseCases.map((item) => (
                       <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
@@ -270,10 +270,10 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                           />
                         </div>
                         <div class="flex flex-col gap-3">
-                          <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
+                          <h4 class="m-0 text-[1.14rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
                           <div class="flex flex-col gap-2.5">
                             {item.lines.map((line) => (
-                              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
+                              <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
                             ))}
                           </div>
                         </div>
@@ -283,8 +283,8 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 </section>
 
                 <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
-                  <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
+                  <h3 class="m-0 text-[1.14rem] font-bold">Integration benefits</h3>
+                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
                     {story.benefits.map((benefit) => (
                       <li>{benefit}</li>
                     ))}
@@ -296,14 +296,14 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                     href={story.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                   >
                     Visit the website
                     <span aria-hidden="true">&rarr;</span>
                   </a>
                   <a
                     href="/product#use-cases"
-                    class="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
                   >
                     Explore further use cases
                     <span aria-hidden="true">&rarr;</span>
@@ -337,14 +337,14 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
           <div class="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
             {integrationMattersSection.items.map((item) => (
               <section class="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/8 p-6 text-center">
-                <h3 class="m-0 text-[1.08rem] font-bold text-white">{item.title}</h3>
-                <p class="m-0 text-[0.98rem] leading-relaxed text-white/82">{item.text}</p>
+                <h3 class="m-0 text-[1.14rem] font-bold text-white">{item.title}</h3>
+                <p class="m-0 text-[0.95rem] leading-relaxed text-white/82">{item.text}</p>
               </section>
             ))}
           </div>
 
           {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt && (
-            <p class="m-0 max-w-[880px] text-center text-[1.05rem] leading-relaxed text-white/90 lg:text-[1.15rem]">
+            <p class="m-0 max-w-[880px] text-center text-[1.14rem] leading-relaxed text-white/90">
               {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt}
             </p>
           )}

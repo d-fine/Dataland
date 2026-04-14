@@ -27,7 +27,7 @@ export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
     link: '/product#nordlb',
   },
   {
-    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
+    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.png',
     logoClassName: 'scale-[1.3]',
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     primaryTag: 'Insurance',

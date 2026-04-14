@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   partners: Partner[];
   sectionClass?: string;
+  showTopAccent?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   title = 'Our partners strengthen the Dataland network',
   partners,
   sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8',
+  showTopAccent = true,
 } = Astro.props;
 ---
 
@@ -31,7 +33,7 @@ const {
               'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
             ]}
           >
-            <span class="absolute inset-x-0 top-0 h-1 bg-[var(--color-primary)]" aria-hidden="true"></span>
+            {showTopAccent && <span class="absolute inset-x-0 top-0 h-1 bg-[var(--color-primary)]" aria-hidden="true"></span>}
             <div class="flex h-[3.9rem] w-full max-w-[10.5rem] items-center justify-center lg:h-[4.4rem] lg:max-w-[11.25rem]">
               <div
                 class:list={[
