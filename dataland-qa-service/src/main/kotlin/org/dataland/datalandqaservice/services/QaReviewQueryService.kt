@@ -43,8 +43,6 @@ class QaReviewQueryService
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
-        // Lightweight container used to avoid building full DatasetJudgementResponse
-        // which accesses collections (and can trigger extra queries).
         private data class MinimalDatasetJudgement(
             val dataSetJudgementId: String,
             val qaJudgeUserId: String,
