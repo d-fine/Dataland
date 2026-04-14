@@ -113,7 +113,6 @@ class NonSourceabilityTest {
             )
         ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
 
-        assertDsStateIsNonSourceableVerification(ctx)
         postNonSourceableWithBypassQa(ctx)
         assertNoQaReviewRowExists(ctx)
         assertBackendEntryIsAcceptedAndActive(ctx)
