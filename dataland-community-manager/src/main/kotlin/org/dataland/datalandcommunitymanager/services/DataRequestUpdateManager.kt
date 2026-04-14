@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackend.openApiClient.model.NonSourceabilityInformationResponse
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -15,6 +15,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -390,7 +391,7 @@ class DataRequestUpdateManager
          */
         @Transactional
         fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfo: SourceabilityInfo,
+            sourceabilityInfo: SourceabilityMessage,
             correlationId: String,
         ) {
             require(sourceabilityInfo.isNonSourceable) {
@@ -398,12 +399,47 @@ class DataRequestUpdateManager
                     "are patched if a dataset is reported as sourceable until the dataset is uploaded."
             }
 
+            patchAllNonWithdrawnRequestsToStatusNonSourceable(
+                companyId = sourceabilityInfo.basicDataDimensions.companyId,
+                dataTypeAsString = sourceabilityInfo.basicDataDimensions.dataType,
+                reportingPeriod = sourceabilityInfo.basicDataDimensions.reportingPeriod,
+                correlationId = correlationId,
+                requestStatusChangeReason = sourceabilityInfo.reason,
+            )
+        }
+
+        /**
+         * Method to patch all non-withdrawn data requests corresponding to a dataset to status non-sourceable.
+         * This entrypoint is used for lifecycle events where no reason is present in the MQ payload.
+         */
+        @Transactional
+        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId: String,
+            dataTypeAsString: String,
+            reportingPeriod: String,
+            correlationId: String,
+            requestStatusChangeReason: String? = null,
+        ) {
+            val dataType =
+                DataTypeEnum.decode(dataTypeAsString)
+                    ?: throw IllegalArgumentException(
+                        "Unsupported data type '$dataTypeAsString' in non-sourceability message.",
+                    )
+
+            val resolvedReason =
+                requestStatusChangeReason
+                    ?: getLatestActiveNonSourceabilityReason(
+                        companyId = companyId,
+                        dataType = dataType,
+                        reportingPeriod = reportingPeriod,
+                    )
+
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
-                        dataType = setOf(sourceabilityInfo.dataType),
-                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
-                        reportingPeriods = setOf(sourceabilityInfo.reportingPeriod),
+                        dataType = setOf(dataType),
+                        datalandCompanyIds = setOf(companyId),
+                        reportingPeriods = setOf(reportingPeriod),
                         requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
                     ),
                 )
@@ -414,10 +450,28 @@ class DataRequestUpdateManager
                     dataRequestPatch =
                         DataRequestPatch(
                             requestStatus = RequestStatus.NonSourceable,
-                            requestStatusChangeReason = sourceabilityInfo.reason,
+                            requestStatusChangeReason = resolvedReason,
                         ),
                     correlationId = correlationId,
                 )
             }
+        }
+
+        private fun getLatestActiveNonSourceabilityReason(
+            companyId: String,
+            dataType: DataTypeEnum,
+            reportingPeriod: String,
+        ): String? {
+            val entries =
+                metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                )
+            return entries
+                .asSequence()
+                .filter(NonSourceabilityInformationResponse::currentlyActive)
+                .maxByOrNull(NonSourceabilityInformationResponse::uploadTime)
+                ?.reason
         }
     }

@@ -5,13 +5,14 @@ import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
-import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
+import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
+import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.NonSourceabilityInformationManager
 import org.dataland.datalandbackend.services.SourceabilityDataManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.utils.DataPointUtils
@@ -21,6 +22,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -43,6 +45,7 @@ class MetaDataController(
     @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val sourceabilityDataManager: SourceabilityDataManager,
+    @Autowired val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
     @Autowired val assembledDataManager: AssembledDataManager,
     @Autowired val dataPointUtils: DataPointUtils,
     @Autowired val dataAvailabilityChecker: DataAvailabilityChecker,
@@ -153,20 +156,25 @@ class MetaDataController(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
-        nonSourceable: Boolean?,
-    ): ResponseEntity<List<SourceabilityInfoResponse>> =
+        qaStatus: QaStatus?,
+    ): ResponseEntity<List<NonSourceabilityInformationResponse>> =
         ResponseEntity.ok(
-            sourceabilityDataManager
-                .getSourceabilityDataByFilters(
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                    nonSourceable,
-                ),
+            nonSourceabilityInformationManager.getByFilters(
+                companyId,
+                dataType,
+                reportingPeriod,
+                qaStatus,
+            ),
         )
 
-    override fun postNonSourceabilityOfADataset(sourceabilityInfo: SourceabilityInfo) {
-        sourceabilityDataManager.processSourceabilityDataStorageRequest(sourceabilityInfo)
+    override fun postNonSourceabilityOfADataset(
+        nonSourceabilityRequest: NonSourceabilityRequest,
+    ): ResponseEntity<NonSourceabilityInformationResponse> {
+        val authentication = DatalandAuthentication.fromContext()
+        if (nonSourceabilityRequest.bypassQa && !authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)) {
+            throw AccessDeniedException("bypassQa=true requires ROLE_ADMIN.")
+        }
+        return ResponseEntity.ok(nonSourceabilityInformationManager.processNonSourceabilityRequest(nonSourceabilityRequest))
     }
 
     override fun isDataNonSourceable(
@@ -174,15 +182,13 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val latestSourceabilityInfo =
-            sourceabilityDataManager.getLatestSourceabilityInfoForDataset(companyId, dataType, reportingPeriod)
-
-        if (latestSourceabilityInfo?.isNonSourceable != true) {
+        val isActive = nonSourceabilityInformationManager.isCurrentlyActive(companyId, dataType, reportingPeriod)
+        if (!isActive) {
             throw ResourceNotFoundApiException(
-                summary = "Dataset is sourceable or not found.",
+                summary = "Dataset has no active non-sourceability entry.",
                 message =
-                    "No non-sourceable dataset found for company $companyId, dataType $dataType, " +
-                        "and reportingPeriod $reportingPeriod.",
+                    "No active non-sourceability entry found for company $companyId, " +
+                        "dataType $dataType, reportingPeriod $reportingPeriod.",
             )
         }
     }

@@ -1,0 +1,153 @@
+package org.dataland.datalandqaservice.services
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
+import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
+import org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
+import org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+/**
+ * Manages QA review decisions for non-sourceability entries.
+ *
+ * Accepts or rejects a pending non-sourceability review and emits the corresponding
+ * lifecycle event consumed by backend and data-sourcing-service.
+ */
+@Service
+class NonSourceabilityQaReviewManager
+    @Autowired
+    constructor(
+        private val repository: NonSourceableQaReviewRepository,
+        private val cloudEventMessageHandler: CloudEventMessageHandler,
+        private val objectMapper: ObjectMapper,
+    ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
+        /**
+         * Returns all QA review records matching the given optional filters.
+         */
+        @Transactional(readOnly = true)
+        fun getReviews(
+            companyId: String?,
+            dataType: String?,
+            reportingPeriod: String?,
+            qaStatus: QaStatus?,
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): List<NonSourceableQaReviewInformation> =
+            repository
+                .findByQaStatusFilter(qaStatus)
+                .filter { entity ->
+                    (companyId == null || entity.companyId == companyId) &&
+                        (dataType == null || entity.dataType == dataType) &&
+                        (reportingPeriod == null || entity.reportingPeriod == reportingPeriod)
+                }.drop(chunkIndex * chunkSize)
+                .take(chunkSize)
+                .map { it.toResponse() }
+
+        /**
+         * Returns all pending QA review records.
+         */
+        @Transactional(readOnly = true)
+        fun getQueue(): List<NonSourceableQaReviewInformation> = repository.findByQaStatusFilter(QaStatus.Pending).map { it.toResponse() }
+
+        /**
+         * Applies a QA decision ([QaStatus.Accepted] or [QaStatus.Rejected]) to the given [nonSourceabilityId].
+         *
+         * Emits a [NonSourceabilityLifecycleEvent] to [ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS]
+         * so that backend and data-sourcing-service can apply the transition.
+         *
+         * @throws ResourceNotFoundApiException if no pending review record exists for [nonSourceabilityId].
+         * @throws IllegalArgumentException if [qaStatus] is not Accepted or Rejected.
+         */
+        @Transactional
+        fun postDecision(
+            nonSourceabilityId: String,
+            qaStatus: QaStatus,
+            qaComment: String?,
+            reviewerUserId: String,
+            correlationId: String,
+        ): NonSourceableQaReviewInformation {
+            require(qaStatus == QaStatus.Accepted || qaStatus == QaStatus.Rejected) {
+                "QA decision must be Accepted or Rejected, got $qaStatus"
+            }
+
+            val entity =
+                repository.findByNonSourceabilityId(nonSourceabilityId)
+                    ?: throw ResourceNotFoundApiException(
+                        "Non-sourceability review not found",
+                        "No QA review record exists for nonSourceabilityId=$nonSourceabilityId",
+                    )
+
+            entity.qaStatus = qaStatus
+            entity.reviewerUserId = reviewerUserId
+            entity.qaComment = qaComment
+            val saved = repository.save(entity)
+
+            val eventType =
+                if (qaStatus == QaStatus.Accepted) {
+                    NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED
+                } else {
+                    NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED
+                }
+
+            val event =
+                NonSourceabilityLifecycleEvent(
+                    nonSourceabilityId = nonSourceabilityId,
+                    companyId = entity.companyId,
+                    dataType = entity.dataType,
+                    reportingPeriod = entity.reportingPeriod,
+                    eventType = eventType,
+                )
+            val messageType =
+                if (qaStatus == QaStatus.Accepted) {
+                    MessageType.NON_SOURCEABILITY_QA_ACCEPTED
+                } else {
+                    MessageType.NON_SOURCEABILITY_QA_REJECTED
+                }
+            val routingKey =
+                if (qaStatus == QaStatus.Accepted) {
+                    RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED
+                } else {
+                    RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED
+                }
+
+            val payload = objectMapper.writeValueAsString(event)
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                payload,
+                messageType,
+                correlationId,
+                ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS,
+                routingKey,
+            )
+            logger.info(
+                "Emitted $eventType for nonSourceabilityId=$nonSourceabilityId (correlationId=$correlationId)",
+            )
+
+            return saved.toResponse()
+        }
+
+        private fun NonSourceableQaReviewInformationEntity.toResponse() =
+            NonSourceableQaReviewInformation(
+                nonSourceabilityId = nonSourceabilityId,
+                companyId = companyId,
+                dataType = dataType,
+                reportingPeriod = reportingPeriod,
+                qaStatus = qaStatus,
+                reason = reason,
+                uploaderUserId = uploaderUserId,
+                uploadTime = uploadTime,
+                reviewerUserId = reviewerUserId,
+                qaComment = qaComment,
+            )
+    }

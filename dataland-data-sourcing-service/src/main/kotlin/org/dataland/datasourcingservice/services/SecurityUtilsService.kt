@@ -79,6 +79,11 @@ class SecurityUtilsService
         /**
          * Checks whether the logged-in user can patch the state of the specified data sourcing
          * to the specified state.
+         *
+         * Non-sourceability states ([DataSourcingState.NonSourceableVerification] and
+         * [DataSourcingState.NonSourceable]) are managed exclusively via the automated
+         * non-sourceability lifecycle and cannot be patched manually by non-admins.
+         *
          * @param dataSourcingId of the data sourcing in question
          * @param state to which the data sourcing state should be patched
          * @return true if the user can patch the state, false otherwise
@@ -87,6 +92,9 @@ class SecurityUtilsService
             dataSourcingId: String,
             state: DataSourcingState,
         ): Boolean {
+            if (state == DataSourcingState.NonSourceableVerification || state == DataSourcingState.NonSourceable) {
+                return false
+            }
             val dataSourcing = dataSourcingManager.getStoredDataSourcing(ValidationUtils.convertToUUID(dataSourcingId))
             return state === DataSourcingState.DocumentSourcingDone &&
                 dataSourcing.state === DataSourcingState.DocumentSourcing &&
