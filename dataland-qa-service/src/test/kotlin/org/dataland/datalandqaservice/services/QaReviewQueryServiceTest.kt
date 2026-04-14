@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import jakarta.persistence.PersistenceException
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingPriorityByDataDimensions
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -28,7 +29,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import jakarta.persistence.PersistenceException
 import org.springframework.dao.DataAccessException
 import java.util.UUID
 
@@ -162,39 +162,41 @@ class QaReviewQueryServiceTest {
         return TestSetResult(qaReview, datasetJudgement, response, dataSourcingPriority)
     }
 
-    private val testSet1 = buildTestSet(
-        dataId = dataId1,
-        companyId = "company-a",
-        companyName = "Company A",
-        reportingPeriod = "2024",
-        timestamp = 1000L,
-        triggeringUserId = "trigger-user-a",
-        comment = "first",
-        judgementId = judgementId1,
-        qaJudgeUserId = judgeId1,
-        qaJudgeUserName = "Judge A",
-        numberQaReports = 3L,
-        priority = 4,
-    )
+    private val testSet1 =
+        buildTestSet(
+            dataId = dataId1,
+            companyId = "company-a",
+            companyName = "Company A",
+            reportingPeriod = "2024",
+            timestamp = 1000L,
+            triggeringUserId = "trigger-user-a",
+            comment = "first",
+            judgementId = judgementId1,
+            qaJudgeUserId = judgeId1,
+            qaJudgeUserName = "Judge A",
+            numberQaReports = 3L,
+            priority = 4,
+        )
 
     private val qaReviewEntity1 = testSet1.qaReview
     private val datasetJudgementEntity1 = testSet1.datasetJudgement
     private val expected1 = testSet1.response
 
-    private val testSet2 = buildTestSet(
-        dataId = dataId2,
-        companyId = "company-b",
-        companyName = "Company B",
-        reportingPeriod = "2023",
-        timestamp = 2000L,
-        triggeringUserId = "trigger-user-b",
-        comment = "second",
-        judgementId = judgementId2,
-        qaJudgeUserId = judgeId2,
-        qaJudgeUserName = "Judge B",
-        numberQaReports = 5L,
-        priority = 9,
-    )
+    private val testSet2 =
+        buildTestSet(
+            dataId = dataId2,
+            companyId = "company-b",
+            companyName = "Company B",
+            reportingPeriod = "2023",
+            timestamp = 2000L,
+            triggeringUserId = "trigger-user-b",
+            comment = "second",
+            judgementId = judgementId2,
+            qaJudgeUserId = judgeId2,
+            qaJudgeUserName = "Judge B",
+            numberQaReports = 5L,
+            priority = 9,
+        )
     private val qaReviewEntity2 = testSet2.qaReview
     private val datasetJudgementEntity2 = testSet2.datasetJudgement
     private val expected2 = testSet2.response
@@ -225,7 +227,9 @@ class QaReviewQueryServiceTest {
                 mockMetaDataControllerApi,
             )
 
-        doReturn(emptySet<String>()).whenever(mockBackendAccessor).getCompanyIdsForCompanyName(any())
+        doReturn(emptySet<String>())
+            .whenever(mockBackendAccessor)
+            .getCompanyIdsForCompanyName(any())
 
         doReturn(emptyMap<String, String>())
             .whenever(mockMetaDataControllerApi)
@@ -372,12 +376,12 @@ class QaReviewQueryServiceTest {
     }
 
     @Test
-    fun `fallback to findAllByDatasetIdIn when fetch-join throws PersistenceException or DataAccessException`() {
-
-        val exceptions: List<Throwable> = listOf(
-            PersistenceException(),
-            object : DataAccessException("db failure") {},
-        )
+    fun `fallback to findAllByDatasetIdIn when fetch join throws PersistenceException or DataAccessException`() {
+        val exceptions: List<Throwable> =
+            listOf(
+                PersistenceException(),
+                object : DataAccessException("db failure") {},
+            )
 
         for (ex in exceptions) {
             doReturn(null)
@@ -420,7 +424,6 @@ class QaReviewQueryServiceTest {
 
     @Test
     fun `dataset without any judgement still returned with null judgement fields`() {
-
         doReturn(
             listOf(
                 DataSourcingPriorityByDataDimensions(

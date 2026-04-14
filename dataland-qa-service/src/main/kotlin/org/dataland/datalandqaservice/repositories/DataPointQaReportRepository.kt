@@ -93,6 +93,6 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
  */
 interface DataPointCount {
     fun getDataPointId(): String
+
     fun getCount(): Long
 }
-

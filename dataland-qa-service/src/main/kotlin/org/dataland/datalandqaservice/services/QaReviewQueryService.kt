@@ -51,6 +51,18 @@ class QaReviewQueryService
             val qaJudgeUserName: String,
         )
 
+    private fun fetchPendingEntities(companyName: String?): List<QaReviewEntity> {
+        val filter = QaSearchFilter(
+            dataTypes = null,
+            reportingPeriods = null,
+            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+            companyName = companyName,
+            qaStatuses = setOf(QaStatus.Pending),
+        )
+
+        return qaReviewRepository.getPendingQaReviewMetadatasetsByCompany(filter)
+    }
+
         /**
          * The method returns a list of unreviewed datasets with corresponding information for the specified input params
          * @param dataTypes the datatype of the dataset
@@ -90,17 +102,8 @@ class QaReviewQueryService
         @Transactional(readOnly = true)
         fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            val entities =
-                qaReviewRepository
-                    .getPendingQaReviewMetadatasetsByCompany(
-                        QaSearchFilter(
-                            dataTypes = null,
-                            reportingPeriods = null,
-                            companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                            companyName = companyName,
-                            qaStatuses = setOf(QaStatus.Pending),
-                        ),
-                    )
+
+            val entities = fetchPendingEntities(companyName)
             val datasetIds = entities.map { it.dataId }.distinct()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
@@ -113,10 +116,16 @@ class QaReviewQueryService
                 } catch (ex: DataAccessException) {
                     fallbackToNonFetch(datasetUUIDs, ex)
                 }
+
             val latestJudgementByDatasetId =
                 judgementEntities
                     .groupBy { it.datasetId }
-                    .mapValues { (_, judgements) ->
+                    .mapValues { (datasetIdKey, judgements) ->
+                        if (judgements.size != 1) {
+                            throw IllegalStateException(
+                                "Expected exactly one DatasetJudgement for datasetId=$datasetIdKey but found ${judgements.size}",
+                            )
+                        }
                         val firstJudgement = judgements.first()
                         MinimalDatasetJudgement(
                             dataSetJudgementId = firstJudgement.dataSetJudgementId.toString(),
@@ -124,6 +133,7 @@ class QaReviewQueryService
                             qaJudgeUserName = firstJudgement.qaJudgeUserName,
                         )
                     }
+
             val qaReviewResponses =
                 entities
                     .map {
@@ -133,6 +143,7 @@ class QaReviewQueryService
                             latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
                         )
                     }
+
             val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
             return qaReviewResponsesWithPriorities
         }
@@ -166,17 +177,17 @@ class QaReviewQueryService
             return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
         }
 
-    private fun fallbackToNonFetch(
+        private fun fallbackToNonFetch(
             datasetUUIDs: Collection<UUID>,
             ex: Throwable,
-            ) = run {
-                logger.warn(
-                    "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
-                    ex::class.simpleName,
-                    ex.message,
-                )
-                datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
-            }
+        ) = run {
+            logger.warn(
+                "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                ex::class.simpleName,
+                ex.message,
+            )
+            datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+        }
 
         /**
          * This method returns the number of unreviewed datasets for a specific set of filters
