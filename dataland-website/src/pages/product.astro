@@ -277,7 +277,13 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
+<<<<<<< HEAD
               <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Regulatory<br />reporting</span>
+=======
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]"
+                >Regulatory<br />reporting</span
+              >
+>>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -291,7 +297,13 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
+<<<<<<< HEAD
               <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Investment<br />analysis</span>
+=======
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]"
+                >Investment<br />analysis</span
+              >
+>>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -319,7 +331,13 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
+<<<<<<< HEAD
               <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Portfolio<br />management</span>
+=======
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]"
+                >Portfolio<br />management</span
+              >
+>>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
             </div>
             <div
               class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
@@ -333,7 +351,12 @@ const CREDITS_TABLE = [
                 class="h-14 w-14 object-contain"
                 loading="lazy"
               />
+<<<<<<< HEAD
               <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">Performance<br />management</span
+=======
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]"
+                >Performance<br />management</span
+>>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
               >
             </div>
             <div
@@ -386,17 +409,17 @@ const CREDITS_TABLE = [
                   height="80"
                 />
               </div>
-                <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-                  <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
-                    {story.primaryTag}
+              <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
+                  {story.primaryTag}
+                </span>
+                {story.secondaryTags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
+                    {tag}
                   </span>
-                  {story.secondaryTags.map((tag) => (
-                    <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                ))}
               </div>
+<<<<<<< HEAD
               <div class="flex flex-col gap-4">
                 <h3 class="m-0 text-xl font-bold text-[var(--color-text)]">{story.title}</h3>
                 <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{story.summary}</p>
@@ -419,6 +442,31 @@ const CREDITS_TABLE = [
                     <span class="text-[0.82rem] text-[var(--color-text-muted)]">{story.quoteRole}</span>
                   </footer>
                 </blockquote>
+=======
+            </div>
+            <div class="flex flex-col gap-4">
+              <h3 class="m-0 text-xl font-bold text-[var(--color-text)]">{story.title}</h3>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.summary}</p>
+
+              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Challenge</h4>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.challenge}</p>
+
+              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Solution</h4>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.solution}</p>
+
+              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Value</h4>
+              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.value}</p>
+
+              <blockquote class="m-0 rounded-r-xl border-l-4 border-[var(--color-primary)] bg-[var(--color-surface-50)] px-6 py-5">
+                <p class="m-0 mb-3 text-[0.9375rem] italic leading-relaxed text-[var(--color-text)]">
+                  &ldquo;{story.quoteText}&rdquo;
+                </p>
+                <footer class="flex flex-col gap-0.5">
+                  <cite class="text-sm font-bold not-italic text-[var(--color-text)]">{story.quoteAuthor}</cite>
+                  <span class="text-[0.8125rem] text-[var(--color-text-muted)]">{story.quoteRole}</span>
+                </footer>
+              </blockquote>
+>>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
 
               {story.successStorySlug && (
                 <a
@@ -679,7 +727,6 @@ const CREDITS_TABLE = [
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -691,16 +738,8 @@ const CREDITS_TABLE = [
       <div class="flex flex-col items-center gap-10 text-center">
         <p class="m-0 text-[1.45rem] font-semibold leading-relaxed text-white">Ready to get started?</p>
         <div class="flex flex-wrap justify-center gap-3">
-          <a
-            href="/about#contact"
-            class="btn btn--outline"
-            >Get in touch</a
-          >
-          <a
-            href="/register"
-            class="btn btn--primary"
-            >Try it free</a
-          >
+          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+          <a href="/register" class="btn btn--primary">Try it free</a>
         </div>
       </div>
     </div>
