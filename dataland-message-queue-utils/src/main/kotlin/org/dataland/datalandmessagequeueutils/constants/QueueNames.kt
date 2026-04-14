@@ -23,6 +23,8 @@ object QueueNames {
     const val QA_SERVICE_NON_SOURCEABILITY_CREATED = "qa-service.processNonSourceabilityCreated"
     const val DATA_SOURCING_SERVICE_NON_SOURCEABILITY_CREATED = "data-sourcing-service.processNonSourceabilityCreated"
     const val DATA_SOURCING_SERVICE_NON_SOURCEABILITY_AUTO_ACCEPTED = "data-sourcing-service.processNonSourceabilityAutoAccepted"
+    const val COMMUNITY_MANAGER_NON_SOURCEABILITY_AUTO_ACCEPTED = "community-manager.processNonSourceabilityAutoAccepted"
     const val BACKEND_NON_SOURCEABILITY_QA_DECISION = "backend.processNonSourceabilityQaDecision"
     const val DATA_SOURCING_SERVICE_NON_SOURCEABILITY_QA_DECISION = "data-sourcing-service.processNonSourceabilityQaDecision"
+    const val COMMUNITY_MANAGER_NON_SOURCEABILITY_QA_ACCEPTED = "community-manager.processNonSourceabilityQaAccepted"
 }

@@ -64,7 +64,7 @@ class DataRequestNonSourceableTest {
             dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
             reportingPeriod = "2023",
             reason = "This dataset is non-sourceable.",
-            bypassQa = false,
+            bypassQa = true,
         )
 
     private fun postTwoDataRequestForSameUserAndReturnRequestIds(): Pair<UUID, UUID> {
@@ -101,7 +101,7 @@ class DataRequestNonSourceableTest {
     }
 
     private fun postSourceabilityInfo(sourceabilityInfo: NonSourceabilityRequest) {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(sourceabilityInfo)
     }
 
@@ -136,24 +136,33 @@ class DataRequestNonSourceableTest {
 
     @Test
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
-        postSourceabilityInfo(sourceabilityInfoRequest2023)
+        val sourceabilityInfoRequest2024 =
+            NonSourceabilityRequest(
+                companyId = dummyCompanyId,
+                dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+                reportingPeriod = "2024",
+                reason = "This dataset is non-sourceable.",
+                bypassQa = true,
+            )
+
+        postSourceabilityInfo(sourceabilityInfoRequest2024)
         var receivedSourceabilityInfoList = listOf<NonSourceabilityInformationResponse>()
 
         awaitUntilAsserted {
             receivedSourceabilityInfoList =
                 apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                    companyId = sourceabilityInfoRequest2023.companyId,
-                    dataType = sourceabilityInfoRequest2023.dataType,
-                    reportingPeriod = sourceabilityInfoRequest2023.reportingPeriod,
+                    companyId = sourceabilityInfoRequest2024.companyId,
+                    dataType = sourceabilityInfoRequest2024.dataType,
+                    reportingPeriod = sourceabilityInfoRequest2024.reportingPeriod,
                 )
             assertEquals(1, receivedSourceabilityInfoList.size)
         }
 
         val receivedSourceabilityInfo = receivedSourceabilityInfoList[0]
 
-        assertEquals(sourceabilityInfoRequest2023.companyId, receivedSourceabilityInfo.companyId)
-        assertEquals(sourceabilityInfoRequest2023.dataType, receivedSourceabilityInfo.dataType)
-        assertEquals(sourceabilityInfoRequest2023.reportingPeriod, receivedSourceabilityInfo.reportingPeriod)
-        assertEquals(sourceabilityInfoRequest2023.reason, receivedSourceabilityInfo.reason)
+        assertEquals(sourceabilityInfoRequest2024.companyId, receivedSourceabilityInfo.companyId)
+        assertEquals(sourceabilityInfoRequest2024.dataType, receivedSourceabilityInfo.dataType)
+        assertEquals(sourceabilityInfoRequest2024.reportingPeriod, receivedSourceabilityInfo.reportingPeriod)
+        assertEquals(sourceabilityInfoRequest2024.reason, receivedSourceabilityInfo.reason)
     }
 }

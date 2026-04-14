@@ -151,7 +151,11 @@ class NonSourceabilityTest {
                     ),
                 )
             }
-        assertEquals(BackendQaStatus.Pending, createdEntry.qaStatus, "Entry must be Pending after POST with bypassQa=false")
+        assertEquals(
+            BackendQaStatus.Pending,
+            createdEntry.qaStatus,
+            "Entry must be Pending after POST with bypassQa=false",
+        )
         assertFalse(createdEntry.currentlyActive, "Entry must be inactive until QA accepts it")
         return createdEntry.nonSourceabilityId
     }
@@ -180,7 +184,10 @@ class NonSourceabilityTest {
                         reportingPeriod = ctx.reportingPeriod,
                     )
                 }
-            assertTrue(qaReviews.isNotEmpty(), "QA review row must appear after backend emits non-sourceability-created event")
+            assertTrue(
+                qaReviews.isNotEmpty(),
+                "QA review row must appear after backend emits non-sourceability-created event",
+            )
             assertEquals(QaServiceQaStatus.Pending, qaReviews.first().qaStatus)
         }
     }
@@ -208,7 +215,11 @@ class NonSourceabilityTest {
                     reportingPeriod = ctx.reportingPeriod,
                 )
             }
-        assertEquals(QaServiceQaStatus.Accepted, qaReviews.first().qaStatus, "QA service must persist Accepted status after decision")
+        assertEquals(
+            QaServiceQaStatus.Accepted,
+            qaReviews.first().qaStatus,
+            "QA service must persist Accepted status after decision",
+        )
     }
 
     private fun assertBackendEntryIsAcceptedAndActive(ctx: Ctx) {
@@ -223,7 +234,11 @@ class NonSourceabilityTest {
                 }
             assertEquals(1, entries.size)
             val entry = entries.first()
-            assertEquals(BackendQaStatus.Accepted, entry.qaStatus, "Backend entry must be Accepted after QA acceptance event")
+            assertEquals(
+                BackendQaStatus.Accepted,
+                entry.qaStatus,
+                "Backend entry must be Accepted after QA acceptance event",
+            )
             assertTrue(entry.currentlyActive, "currentlyActive must be true after QA acceptance")
         }
     }
@@ -262,7 +277,11 @@ class NonSourceabilityTest {
     private fun assertDsStateIsNonSourceable(ctx: Ctx) {
         awaitUntilAsserted {
             val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
-            assertEquals(DataSourcingState.NonSourceable, ds.state, "DS state must be NonSourceable after QA acceptance")
+            assertEquals(
+                DataSourcingState.NonSourceable,
+                ds.state,
+                "DS state must be NonSourceable after QA acceptance",
+            )
         }
     }
 
@@ -275,7 +294,11 @@ class NonSourceabilityTest {
                     reportingPeriod = ctx.reportingPeriod,
                 )
             }
-        assertEquals(QaServiceQaStatus.Rejected, qaReviews.first().qaStatus, "QA service must persist Rejected status after decision")
+        assertEquals(
+            QaServiceQaStatus.Rejected,
+            qaReviews.first().qaStatus,
+            "QA service must persist Rejected status after decision",
+        )
     }
 
     private fun assertBackendEntryIsRejectedAndInactive(ctx: Ctx) {
@@ -290,7 +313,11 @@ class NonSourceabilityTest {
                 }
             assertEquals(1, entries.size)
             val entry = entries.first()
-            assertEquals(BackendQaStatus.Rejected, entry.qaStatus, "Backend entry must be Rejected after QA rejection event")
+            assertEquals(
+                BackendQaStatus.Rejected,
+                entry.qaStatus,
+                "Backend entry must be Rejected after QA rejection event",
+            )
             assertFalse(entry.currentlyActive, "currentlyActive must be false after QA rejection")
         }
     }
@@ -316,7 +343,11 @@ class NonSourceabilityTest {
                     ),
                 )
             }
-        assertEquals(BackendQaStatus.Accepted, createdEntry.qaStatus, "Entry must be immediately Accepted when bypassQa=true")
+        assertEquals(
+            BackendQaStatus.Accepted,
+            createdEntry.qaStatus,
+            "Entry must be immediately Accepted when bypassQa=true",
+        )
         assertTrue(createdEntry.currentlyActive, "Entry must be immediately active when bypassQa=true")
     }
 

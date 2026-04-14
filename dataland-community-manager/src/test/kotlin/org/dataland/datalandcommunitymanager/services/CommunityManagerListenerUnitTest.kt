@@ -9,6 +9,8 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -39,6 +41,8 @@ class CommunityManagerListenerUnitTest {
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
     private val typeNonSourceable = MessageType.DATA_NONSOURCEABLE
+    private val typeNonSourceabilityAutoAccepted = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
+    private val typeNonSourceabilityQaAccepted = MessageType.NON_SOURCEABILITY_QA_ACCEPTED
 
     @BeforeEach
     fun setUp() {
@@ -162,6 +166,56 @@ class CommunityManagerListenerUnitTest {
         verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
             sourceabilityInfoValid,
             correlationId,
+        )
+    }
+
+    @Test
+    fun `valid non-sourceability auto-accepted lifecycle event should be processed successfully`() {
+        val event =
+            NonSourceabilityLifecycleEvent(
+                nonSourceabilityId = UUID.randomUUID().toString(),
+                companyId = "exampleCompany",
+                dataType = "sfdr",
+                reportingPeriod = "2023",
+                eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED,
+            )
+
+        communityManagerListener.processNonSourceabilityAutoAcceptedEvent(
+            jacksonObjectMapper.writeValueAsString(event),
+            typeNonSourceabilityAutoAccepted,
+            correlationId,
+        )
+
+        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId = event.companyId,
+            dataTypeAsString = event.dataType,
+            reportingPeriod = event.reportingPeriod,
+            correlationId = correlationId,
+        )
+    }
+
+    @Test
+    fun `valid non-sourceability QA-accepted lifecycle event should be processed successfully`() {
+        val event =
+            NonSourceabilityLifecycleEvent(
+                nonSourceabilityId = UUID.randomUUID().toString(),
+                companyId = "exampleCompany",
+                dataType = "sfdr",
+                reportingPeriod = "2023",
+                eventType = NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED,
+            )
+
+        communityManagerListener.processNonSourceabilityQaAcceptedEvent(
+            jacksonObjectMapper.writeValueAsString(event),
+            typeNonSourceabilityQaAccepted,
+            correlationId,
+        )
+
+        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId = event.companyId,
+            dataTypeAsString = event.dataType,
+            reportingPeriod = event.reportingPeriod,
+            correlationId = correlationId,
         )
     }
 

@@ -4,11 +4,14 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
+import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -148,6 +151,12 @@ class CommunityManagerListener(
         }
     }
 
+    private fun validateLifecycleEvent(event: NonSourceabilityLifecycleEvent) {
+        if (event.companyId.isBlank() || event.reportingPeriod.isBlank()) {
+            throw MessageQueueRejectException("Both companyId and reportingPeriod must be provided.")
+        }
+    }
+
     /**
      * Listens for message that specifies a dataset as non-sourceable
      * and patches all requests corresponding to this dataset to the request status non-sourceable.
@@ -192,6 +201,88 @@ class CommunityManagerListener(
 
         MessageQueueUtils.rejectMessageOnException {
             dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityMessage, correlationId)
+        }
+    }
+
+    /**
+     * Handles bypassQa=true activations and patches matching requests to non-sourceable.
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_AUTO_ACCEPTED,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
+                key = [RoutingKeyNames.NON_SOURCEABILITY_AUTO_ACCEPTED],
+            ),
+        ],
+    )
+    fun processNonSourceabilityAutoAcceptedEvent(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED)
+        val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
+        validateLifecycleEvent(event)
+        if (event.eventType != NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED) {
+            throw MessageQueueRejectException("Unexpected eventType ${event.eventType} for auto-accepted listener.")
+        }
+        MessageQueueUtils.rejectMessageOnException {
+            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+                companyId = event.companyId,
+                dataTypeAsString = event.dataType,
+                reportingPeriod = event.reportingPeriod,
+                correlationId = correlationId,
+            )
+        }
+    }
+
+    /**
+     * Handles QA accepted activations and patches matching requests to non-sourceable.
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_QA_ACCEPTED,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
+                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED],
+            ),
+        ],
+    )
+    fun processNonSourceabilityQaAcceptedEvent(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
+        val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
+        validateLifecycleEvent(event)
+        if (event.eventType != NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED) {
+            throw MessageQueueRejectException("Unexpected eventType ${event.eventType} for QA-accepted listener.")
+        }
+        MessageQueueUtils.rejectMessageOnException {
+            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+                companyId = event.companyId,
+                dataTypeAsString = event.dataType,
+                reportingPeriod = event.reportingPeriod,
+                correlationId = correlationId,
+            )
         }
     }
 }
