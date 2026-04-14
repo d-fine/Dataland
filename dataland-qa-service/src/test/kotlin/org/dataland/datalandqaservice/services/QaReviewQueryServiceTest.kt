@@ -84,93 +84,124 @@ class QaReviewQueryServiceTest {
     private val judgeId1: UUID = UUID.randomUUID()
     private val judgeId2: UUID = UUID.randomUUID()
 
-    private val qaReviewEntity1 =
-        QaReviewEntity(
-            dataId = dataId1,
-            companyId = "company-a",
-            companyName = "Company A",
-            framework = "sfdr",
-            reportingPeriod = "2024",
-            timestamp = 1000L,
-            qaStatus = QaStatus.Pending,
-            triggeringUserId = "trigger-user-a",
-            comment = "first",
-        )
-    private val qaReviewEntity2 =
-        QaReviewEntity(
-            dataId = dataId2,
-            companyId = "company-b",
-            companyName = "Company B",
-            framework = "sfdr",
-            reportingPeriod = "2023",
-            timestamp = 2000L,
-            qaStatus = QaStatus.Pending,
-            triggeringUserId = "trigger-user-b",
-            comment = "second",
-        )
+    data class TestSetResult(
+        val qaReview: QaReviewEntity,
+        val datasetJudgement: DatasetJudgementEntity,
+        val response: QaReviewResponse,
+        val dataSourcingPriority: DataSourcingPriorityByDataDimensions,
+    )
 
-    private val datasetJudgementEntity1 =
-        DatasetJudgementEntity(
-            dataSetJudgementId = judgementId1,
-            datasetId = UUID.fromString(dataId1),
-            companyId = UUID.randomUUID(),
-            dataType = DataTypeEnum.sfdr,
-            reportingPeriod = "2024",
-            judgementState = DatasetJudgementState.Pending,
-            qaJudgeUserId = judgeId1,
-            qaJudgeUserName = "Judge A",
-            qaReporters = mutableListOf(),
-            dataPoints = mutableListOf(),
-        )
-    private val datasetJudgementEntity2 =
-        DatasetJudgementEntity(
-            dataSetJudgementId = judgementId2,
-            datasetId = UUID.fromString(dataId2),
-            companyId = UUID.randomUUID(),
-            dataType = DataTypeEnum.sfdr,
-            reportingPeriod = "2023",
-            judgementState = DatasetJudgementState.Pending,
-            qaJudgeUserId = judgeId2,
-            qaJudgeUserName = "Judge B",
-            qaReporters = mutableListOf(),
-            dataPoints = mutableListOf(),
-        )
+    private fun buildTestSet(
+        dataId: String,
+        companyId: String,
+        companyName: String,
+        reportingPeriod: String,
+        timestamp: Long,
+        triggeringUserId: String,
+        comment: String,
+        judgementId: UUID,
+        qaJudgeUserId: UUID,
+        qaJudgeUserName: String,
+        numberQaReports: Long,
+        priority: Int,
+    ): TestSetResult {
+        val framework = "sfdr"
+        val qaReview =
+            QaReviewEntity(
+                dataId = dataId,
+                companyId = companyId,
+                companyName = companyName,
+                framework = framework,
+                reportingPeriod = reportingPeriod,
+                timestamp = timestamp,
+                qaStatus = QaStatus.Pending,
+                triggeringUserId = triggeringUserId,
+                comment = comment,
+            )
 
-    private val expected =
-        listOf(
+        val datasetJudgement =
+            DatasetJudgementEntity(
+                dataSetJudgementId = judgementId,
+                datasetId = UUID.fromString(dataId),
+                companyId = UUID.randomUUID(),
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = reportingPeriod,
+                judgementState = DatasetJudgementState.Pending,
+                qaJudgeUserId = qaJudgeUserId,
+                qaJudgeUserName = qaJudgeUserName,
+                qaReporters = mutableListOf(),
+                dataPoints = mutableListOf(),
+            )
+
+        val response =
             QaReviewResponse(
-                dataId = dataId2,
-                companyId = "company-b",
-                companyName = "Company B",
-                framework = "sfdr",
-                reportingPeriod = "2023",
-                timestamp = 2000L,
+                dataId = dataId,
+                companyId = companyId,
+                companyName = companyName,
+                framework = framework,
+                reportingPeriod = reportingPeriod,
+                timestamp = timestamp,
                 qaStatus = QaStatus.Pending,
-                qaJudgeUserId = judgeId2.toString(),
-                qaJudgeUserName = "Judge B",
-                datasetReviewId = judgementId2.toString(),
-                numberQaReports = 5L,
-                comment = "second",
+                qaJudgeUserId = qaJudgeUserId.toString(),
+                qaJudgeUserName = qaJudgeUserName,
+                datasetReviewId = judgementId.toString(),
+                numberQaReports = numberQaReports,
+                comment = comment,
                 triggeringUserId = null,
-                priorityOfAssociatedDataSourcing = 9,
-            ),
-            QaReviewResponse(
-                dataId = dataId1,
-                companyId = "company-a",
-                companyName = "Company A",
-                framework = "sfdr",
-                reportingPeriod = "2024",
-                timestamp = 1000L,
-                qaStatus = QaStatus.Pending,
-                qaJudgeUserId = judgeId1.toString(),
-                qaJudgeUserName = "Judge A",
-                datasetReviewId = judgementId1.toString(),
-                numberQaReports = 3L,
-                comment = "first",
-                triggeringUserId = null,
-                priorityOfAssociatedDataSourcing = 4,
-            ),
-        )
+                priorityOfAssociatedDataSourcing = priority,
+            )
+
+        val dataSourcingPriority =
+            DataSourcingPriorityByDataDimensions(
+                dataType = framework,
+                reportingPeriod = reportingPeriod,
+                companyId = companyId,
+                priority = priority,
+            )
+
+        return TestSetResult(qaReview, datasetJudgement, response, dataSourcingPriority)
+    }
+
+    private val testSet1 = buildTestSet(
+        dataId = dataId1,
+        companyId = "company-a",
+        companyName = "Company A",
+        reportingPeriod = "2024",
+        timestamp = 1000L,
+        triggeringUserId = "trigger-user-a",
+        comment = "first",
+        judgementId = judgementId1,
+        qaJudgeUserId = judgeId1,
+        qaJudgeUserName = "Judge A",
+        numberQaReports = 3L,
+        priority = 4,
+    )
+
+    private val qaReviewEntity1 = testSet1.qaReview
+    private val datasetJudgementEntity1 = testSet1.datasetJudgement
+    private val expected1 = testSet1.response
+
+    private val testSet2 = buildTestSet(
+        dataId = dataId2,
+        companyId = "company-b",
+        companyName = "Company B",
+        reportingPeriod = "2023",
+        timestamp = 2000L,
+        triggeringUserId = "trigger-user-b",
+        comment = "second",
+        judgementId = judgementId2,
+        qaJudgeUserId = judgeId2,
+        qaJudgeUserName = "Judge B",
+        numberQaReports = 5L,
+        priority = 9,
+    )
+    private val qaReviewEntity2 = testSet2.qaReview
+    private val datasetJudgementEntity2 = testSet2.datasetJudgement
+    private val expected2 = testSet2.response
+
+    private val expected = listOf(expected2, expected1)
+
+    private val dataSourcingPriorities = listOf(testSet2.dataSourcingPriority, testSet1.dataSourcingPriority)
 
     private lateinit var qaReviewQueryService: QaReviewQueryService
 
@@ -326,22 +357,7 @@ class QaReviewQueryServiceTest {
             .whenever(mockDataPointQaReportManager)
             .countQaReportsForDataPointIdsBulk(any())
 
-        doReturn(
-            listOf(
-                DataSourcingPriorityByDataDimensions(
-                    dataType = "sfdr",
-                    reportingPeriod = "2023",
-                    companyId = "company-b",
-                    priority = 9,
-                ),
-                DataSourcingPriorityByDataDimensions(
-                    dataType = "sfdr",
-                    reportingPeriod = "2024",
-                    companyId = "company-a",
-                    priority = 4,
-                ),
-            ),
-        ).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
+        doReturn(dataSourcingPriorities).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
 
         val actual =
             AuthenticationMock.withAuthenticationMock(
