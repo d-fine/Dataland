@@ -1,5 +1,7 @@
 ---
 import type { Partner } from '../data/about';
+import SectionHeader from './SectionHeader.astro';
+import LogoCard from './LogoCard.astro';
 
 interface Props {
   id?: string;
@@ -20,39 +22,23 @@ const {
 
 <section id={id} class={sectionClass} aria-label={title}>
   <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-    <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">{title}</h2>
+    <SectionHeader title={title} />
     <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
       {
         partners.map((partner) => (
-          <a
+          <LogoCard
+            as="a"
             href={partner.url}
             target="_blank"
             rel="noopener noreferrer"
-            class:list={[
-              'relative flex items-center justify-center overflow-hidden p-8 px-6 rounded-xl border no-underline min-h-[100px] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
-              'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
-            ]}
-          >
-            {showTopAccent && <span class="absolute inset-x-0 top-0 h-1 bg-[var(--color-primary)]" aria-hidden="true"></span>}
-            <div class="flex h-[3.9rem] w-full max-w-[10.5rem] items-center justify-center lg:h-[4.4rem] lg:max-w-[11.25rem]">
-              <div
-                class:list={[
-                  'flex h-full w-full items-center justify-center',
-                  partner.darkBg ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined,
-                ]}
-              >
-                <img
-                  src={partner.imagePath}
-                  alt={partner.name}
-                  class="block max-h-full max-w-full object-contain"
-                  style={`transform: scale(${partner.scale ?? 1}); transform-origin: center;`}
-                  loading="lazy"
-                  width="180"
-                  height="70"
-                />
-              </div>
-            </div>
-          </a>
+            tone="light"
+            accentTop={showTopAccent}
+            class="motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+            logoFrameClass={partner.darkBg ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}
+            logoSrc={partner.imagePath}
+            logoAlt={partner.name}
+            scale={partner.scale ?? 1}
+          />
         ))
       }
     </div>

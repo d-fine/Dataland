@@ -120,6 +120,143 @@ main {
   transform: translateY(-1px);
 }
 
+.page-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.section-intro {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.14rem;
+  font-weight: 700;
+  line-height: 1.22;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.06rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .arrow-link {
+    transition: color 0.15s;
+  }
+}
+
+.arrow-link:hover {
+  color: #ff8b47;
+}
+
+.surface-card {
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.surface-card--light {
+  border: 1px solid var(--color-surface-200);
+  background: var(--color-surface-0);
+}
+
+.surface-card--warm {
+  border: 1px solid var(--color-surface-200);
+  background: var(--color-surface-warm);
+}
+
+.surface-card--cool {
+  border: 1px solid var(--color-surface-200);
+  background: var(--color-surface-cool-soft);
+}
+
+.surface-card--dark {
+  color: #fff;
+  background: linear-gradient(135deg, #091119 0%, #172635 72%, #21384b 100%);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
+}
+
+.surface-card--glass {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(2px);
+}
+
+.surface-card--accent-top {
+  border-top-width: 4px;
+  border-top-color: var(--color-primary);
+}
+
+.cta-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  text-align: center;
+}
+
+.cta-band__title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-header--center {
+  align-items: center;
+  text-align: center;
+}
+
+.section-header--light .section-title,
+.section-header--light .section-intro {
+  color: #fff;
+}
+
+.section-header--light .section-intro {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (min-width: 1024px) {
+  .page-title {
+    font-size: 2.55rem;
+  }
+
+  .section-intro,
+  .arrow-link {
+    font-size: 1.12rem;
+  }
+}
+
 /* Generic typography for all legal pages (AGB, Imprint, Dataprivacy) */
 
 .legal-page {

@@ -1,0 +1,41 @@
+---
+import type { NewsItem } from '../data/news';
+
+interface Props {
+  item: NewsItem;
+}
+
+const { item } = Astro.props;
+---
+
+<a
+  href={item.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="flex flex-col overflow-hidden rounded-xl bg-[var(--color-surface-50)] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+>
+  <div class="relative h-[240px] overflow-hidden bg-[var(--color-surface-200)] sm:h-[260px]">
+    <img
+      src={item.image}
+      alt=""
+      class="absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-2xl"
+      loading="lazy"
+      width="400"
+      height="400"
+      aria-hidden="true"
+    />
+    <img
+      src={item.image}
+      alt=""
+      class="relative h-full w-full object-cover"
+      loading="lazy"
+      width="400"
+      height="400"
+    />
+  </div>
+  <div class="grid flex-1 grid-rows-[3.6rem_auto_auto] px-5 pt-4 pb-5">
+    <h3 class="m-0 text-[1.14rem] font-bold leading-snug">{item.title}</h3>
+    <time class="mt-1 text-[0.82rem] text-[var(--color-text-muted)]">{item.date}</time>
+    <span class="arrow-link mt-2">Read more &rarr;</span>
+  </div>
+</a>

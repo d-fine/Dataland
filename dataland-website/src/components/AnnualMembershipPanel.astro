@@ -1,0 +1,59 @@
+---
+import CardShell from './CardShell.astro';
+import PricingFeatureItem from './PricingFeatureItem.astro';
+
+interface PricingItem {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  items: readonly PricingItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section aria-label="Simple membership model">
+  <CardShell as="article" variant="dark" class="rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div class="flex h-full flex-col gap-5">
+        <h3 class="m-0 text-[1.75rem] font-bold leading-tight">Annual membership</h3>
+        <span class="text-[3.4rem] font-bold leading-none lg:text-[4.6rem]">5,000 EUR</span>
+        <div class="flex flex-1 items-center justify-center pt-2" aria-hidden="true">
+          <div class="flex h-[15rem] w-full max-w-[24rem] items-center justify-center gap-8">
+            <img
+              src="/static/images/arrow_right_orange_simple.svg"
+              alt=""
+              width="30"
+              height="45"
+              class="h-full w-auto opacity-65 saturate-[0.45]"
+            />
+            <img
+              src="/static/images/arrow_right_orange_simple.svg"
+              alt=""
+              width="30"
+              height="45"
+              class="h-full w-auto opacity-82 saturate-[0.72]"
+            />
+            <img
+              src="/static/images/arrow_right_orange_simple.svg"
+              alt=""
+              width="30"
+              height="45"
+              class="h-full w-auto"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-6">
+        <p class="section-intro text-white/90">
+          For this fee, everything already available on the platform is free for all Members:
+        </p>
+        <div class="flex flex-col gap-5">
+          {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
+        </div>
+      </div>
+    </div>
+  </CardShell>
+</section>

@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
+import ArrowLink from '../../components/ArrowLink.astro';
+import QuotePanel from '../../components/QuotePanel.astro';
 
 export async function getStaticPaths() {
   const stories = await getCollection('success-stories');
@@ -75,23 +77,17 @@ const tags = storyTags[story.data.slug];
       </div>
 
       <!-- Quote -->
-      <blockquote
-        class="bg-[var(--color-surface-50)] border-l-4 border-[var(--color-primary)] py-6 px-8 rounded-r-xl m-0"
-      >
-        <p class="italic text-base leading-[1.7] m-0 mb-4 text-[var(--color-text)]">&ldquo;{quoteText}&rdquo;</p>
-        <footer class="flex flex-col gap-0.5">
-          <cite class="not-italic font-bold text-[0.95rem] text-[var(--color-text)]">{quoteAuthor}</cite>
-          <span class="text-[0.82rem] text-[var(--color-text-muted)]">{quoteRole}</span>
-        </footer>
-      </blockquote>
+      <QuotePanel
+        quote={quoteText}
+        author={quoteAuthor}
+        role={quoteRole}
+        class="px-8 py-6"
+        quoteClass="mb-4 text-base leading-[1.7]"
+      />
 
       <!-- CTA -->
       <div class="flex">
-        <a
-          href="/product#customer-stories"
-          class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-          >&larr; Back to customer stories</a
-        >
+        <ArrowLink href="/product#customer-stories">&larr; Back to customer stories</ArrowLink>
       </div>
     </div>
   </article>

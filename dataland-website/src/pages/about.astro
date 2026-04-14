@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import AboutStartPanel from '../components/AboutStartPanel.astro';
 import PartnerStoryCards from '../components/PartnerStoryCards.astro';
+import NewsCard from '../components/NewsCard.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import {
   COMPANY_COPY,
   LEADERSHIP_TEAM,
@@ -89,12 +92,12 @@ import { NEWS_ITEMS } from '../data/news';
     aria-label="Leadership team"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
-      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
-        <h2 class="text-[1.75rem] font-bold m-0 text-center">Leadership team</h2>
-        <p class="m-0 text-[1.06rem] leading-relaxed text-white/72 lg:text-[1.12rem]">
-          The leadership team combines expertise in data, technology, and financial services.
-        </p>
-      </div>
+      <SectionHeader
+        title="Leadership team"
+        intro="The leadership team combines expertise in data, technology, and financial services."
+        tone="light"
+        class="mx-auto max-w-[860px]"
+      />
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
         {
           LEADERSHIP_TEAM.map((person) => (
@@ -170,47 +173,14 @@ import { NEWS_ITEMS } from '../data/news';
     aria-label="News and updates"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
-        <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)] text-center">News and updates</h2>
-        <p class="m-0 text-[1.06rem] leading-relaxed text-[var(--color-text-muted)] lg:text-[1.12rem]">
-          Recent updates, announcements, and insights reflect Dataland&apos;s ongoing development.
-        </p>
-      </div>
+      <SectionHeader
+        title="News and updates"
+        intro="Recent updates, announcements, and insights reflect Dataland&apos;s ongoing development."
+        class="mx-auto max-w-[860px]"
+      />
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
-          NEWS_ITEMS.map((item) => (
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex flex-col no-underline text-[var(--color-text)] bg-[var(--color-surface-50)] rounded-xl overflow-hidden motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
-            >
-              <div class="relative h-[240px] overflow-hidden bg-[var(--color-surface-200)] sm:h-[260px]">
-                <img
-                  src={item.image}
-                  alt=""
-                  class="absolute inset-0 h-full w-full object-cover blur-2xl scale-110 opacity-50"
-                  loading="lazy"
-                  width="400"
-                  height="400"
-                  aria-hidden="true"
-                />
-                <img
-                  src={item.image}
-                  alt=""
-                  class="relative h-full w-full object-cover"
-                  loading="lazy"
-                  width="400"
-                  height="400"
-                />
-              </div>
-              <div class="grid flex-1 grid-rows-[3.6rem_auto_auto] px-5 pt-4 pb-5">
-                <h3 class="m-0 text-base font-bold leading-snug">{item.title}</h3>
-                <time class="mt-1 text-[0.8125rem] text-[var(--color-text-muted)]">{item.date}</time>
-                <span class="mt-2 text-[1.06rem] font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
-              </div>
-            </a>
-          ))
+          NEWS_ITEMS.map((item) => <NewsCard item={item} />)
         }
       </div>
     </div>
@@ -239,7 +209,7 @@ import { NEWS_ITEMS } from '../data/news';
 
         <div class="grid grid-cols-1 gap-7 md:grid-cols-2">
           <div class="flex flex-col gap-2.5">
-            <p class="m-0 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-white/48">Office</p>
+            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">Office</p>
             <div class="flex flex-col gap-1">
               <p class="m-0 text-base font-semibold text-white">{CONTACT_ADDRESS.company}</p>
               <p class="m-0 text-[0.95rem] text-white/72">{CONTACT_ADDRESS.street}</p>
@@ -249,10 +219,10 @@ import { NEWS_ITEMS } from '../data/news';
           </div>
 
           <div class="flex flex-col gap-3">
-            <p class="m-0 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-white/48">Direct</p>
+            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">Direct</p>
             <a
               href={CONTACT_PHONE}
-              class="inline-flex items-center gap-2.5 text-white no-underline text-[0.98rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84"
+              class="inline-flex items-center gap-2.5 text-white no-underline text-[0.95rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84"
             >
               <svg
                 width="18"
@@ -273,7 +243,7 @@ import { NEWS_ITEMS } from '../data/news';
             </a>
             <a
               href={CONTACT_EMAIL}
-              class="inline-flex items-center gap-2.5 text-white no-underline text-[0.98rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84"
+              class="inline-flex items-center gap-2.5 text-white no-underline text-[0.95rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84"
             >
               <svg
                 width="18"
@@ -295,79 +265,7 @@ import { NEWS_ITEMS } from '../data/news';
         </div>
       </div>
 
-      <div
-        class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9"
-      >
-        <div class="flex flex-col gap-4">
-          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Start here</p>
-          <h3 class="m-0 text-[1.45rem] font-bold leading-tight lg:text-[2rem]">
-            Pick the path that fits what you want to do next.
-          </h3>
-          <p class="m-0 text-[1.06rem] leading-relaxed text-white/74 lg:text-[1.12rem]">
-            Reach out directly, stay up to date, or start exploring the platform on your own.
-          </p>
-        </div>
-
-        <div class="flex flex-col gap-4">
-          <a href={CONTACT_INQUIRY_MAILTO} class="btn btn--outline min-h-[3.52rem] w-full gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-            </svg>
-            Get in touch
-          </a>
-          <a
-            href="/product#documentation"
-            class="inline-flex min-h-[3.52rem] w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-[0.82rem] text-[0.95rem] font-semibold text-[#111111] no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-              <path d="M14 3v6h6"></path>
-              <path d="M8 13h8"></path>
-              <path d="M8 17h8"></path>
-              <path d="M8 9h2"></path>
-            </svg>
-            View documentation
-          </a>
-          <a href="/register" class="btn btn--primary min-h-[3.52rem] w-full gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M12 5v14"></path>
-              <path d="M5 12h14"></path>
-            </svg>
-            Try it free
-          </a>
-        </div>
-      </div>
+      <AboutStartPanel inquiryMailto={CONTACT_INQUIRY_MAILTO} />
     </div>
   </section>
 </Base>

@@ -4,6 +4,9 @@ import PartnersSection from '../components/PartnersSection.astro';
 import { COMMUNITY_GRID_ITEMS } from '../data/communityGrid';
 import { PARTNERS } from '../data/about';
 import { TRUSTED_BY_LOGOS } from '../data/members';
+import SectionHeader from '../components/SectionHeader.astro';
+import CardShell from '../components/CardShell.astro';
+import CtaBand from '../components/CtaBand.astro';
 ---
 
 <Base
@@ -25,7 +28,7 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {
           COMMUNITY_GRID_ITEMS.map((item) => (
-            <article class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
+            <CardShell variant="glass" class="flex h-full flex-col px-6 py-5">
               <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true" />
               <div class="mb-4 flex items-center gap-4 text-white/76">
                 {item.icon === 'sectors' && (
@@ -146,10 +149,10 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 )}
-                <h2 class="m-0 text-[1.08rem] font-bold text-white">{item.title}</h2>
+                <h2 class="m-0 text-[1.14rem] font-bold text-white">{item.title}</h2>
               </div>
-              <p class="m-0 text-[0.98rem] leading-relaxed text-white/82">{item.text}</p>
-            </article>
+              <p class="m-0 text-[0.95rem] leading-relaxed text-white/82">{item.text}</p>
+            </CardShell>
           ))
         }
       </div>
@@ -168,11 +171,11 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
     aria-label="Trusted organizations"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
-      <div class="max-w-[760px] mx-auto text-center">
-        <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">
-          A community of institutions from different industries, sizes, and operating models.
-        </h2>
-      </div>
+      <SectionHeader
+        title="Trusted organizations."
+        intro="A community of institutions from different industries, sizes, and operating models."
+        class="mx-auto max-w-[760px]"
+      />
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {
@@ -210,17 +213,14 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
     aria-label="Community call to action"
   >
     <div class="max-w-[1200px] mx-auto">
-      <div class="flex flex-col items-center gap-10 text-center">
-        <div class="flex flex-col items-center gap-4">
-          <h2 class="m-0 text-[1.45rem] font-semibold leading-relaxed text-white lg:text-[1.7rem]">Interested in joining us?</h2>
-          <p class="m-0 max-w-[42rem] text-[1.06rem] leading-relaxed text-white/76 lg:text-[1.12rem]">
-            Talk to us about membership, partnerships, and how Dataland can support your organization.
-          </p>
-        </div>
+      <CtaBand title="Interested in joining us?" titleClass="text-white">
+        <p class="section-intro m-0 max-w-[42rem] text-white/76">
+          Talk to us about membership, partnerships, and how Dataland can support your organization.
+        </p>
         <div class="flex flex-wrap justify-center gap-3">
           <a href="/about#contact" class="btn btn--primary">Get in touch</a>
         </div>
-      </div>
+      </CtaBand>
     </div>
   </section>
 </Base>

@@ -1,5 +1,7 @@
 ---
 import type { PartnerStorySummary } from '../data/partnerStories';
+import SectionHeader from './SectionHeader.astro';
+import StoryCard from './StoryCard.astro';
 
 interface Props {
   stories: PartnerStorySummary[];
@@ -18,25 +20,19 @@ const {
 
 <section id="partners" class={sectionClass} aria-label={title}>
   <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
-    <div class="flex flex-col gap-3 text-center">
-      <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">{title}</h2>
-      {
-        intro && (
-          <p class="mx-auto max-w-[760px] text-[1.06rem] leading-relaxed m-0 text-[var(--color-text-muted)] lg:text-[1.12rem]">
-            {intro}
-          </p>
-        )
-      }
-    </div>
+    <SectionHeader title={title} intro={intro} class="mx-auto max-w-[760px]" />
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
         stories.map((story) => (
-          <a
+          <StoryCard
+            as="a"
             href={story.link}
-            class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[#ecece7] text-[var(--color-text)] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
+            title={story.title}
+            text={story.text}
+            class="bg-[#ecece7] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
           >
-            <div class="flex min-h-[6.25rem] items-center justify-center overflow-hidden bg-white px-6 py-5">
+            <div slot="media" class="flex min-h-[6.25rem] items-center justify-center overflow-hidden bg-white px-6 py-5">
               <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
                 <img
                   src={story.logo}
@@ -48,16 +44,8 @@ const {
                 />
               </div>
             </div>
-            <div class="flex h-full flex-col gap-4 p-6">
-              <div class="flex flex-col gap-1.5">
-                <h3 class="m-0 min-h-[2.35rem] text-[1.14rem] font-medium leading-snug text-[var(--color-text)]">
-                  {story.title}
-                </h3>
-                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.text}</p>
-              </div>
-              <span class="mt-auto text-[1.06rem] font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
-            </div>
-          </a>
+            <span class="mt-auto text-[1.06rem] font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
+          </StoryCard>
         ))
       }
     </div>

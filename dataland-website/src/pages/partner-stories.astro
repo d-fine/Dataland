@@ -1,21 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
 import { PARTNER_STORY_DETAILS, PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
+import CardShell from '../components/CardShell.astro';
+import PartnerDetailCard from '../components/PartnerDetailCard.astro';
 
 const integrationMattersSection = PARTNER_STORY_DETAILS.find(
   (story) => story.slug === 'iss-sopra-steria'
 )?.extraSections?.find((section) => section.title === 'Why Partner Integration Matters');
 
-const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
-  '1. Regulatory Reporting Integration': '/static/images/img_icon_badge.svg',
-  '2. ESG Data Processing & KPI Calculation': '/static/images/img_icon_gears.svg',
-  '3. PCAF-based Emissions Calculation': '/static/images/img_icon_smoke.svg',
-  '4. Automated ESG Data Integration': '/static/images/img_icon_server.svg',
-  '5. Data Transparency & Traceability': '/static/images/img_icon_look.svg',
-  'Investment Research Enhancement': '/static/images/img_icon_invest.svg',
-  'Proxy Voting Support': '/static/images/img_icon_cardboard_check.svg',
-  'Sustainable Fund Management': '/static/images/img_icon_leaf.svg',
-  'Compliance Verification': '/static/images/img_icon_gavel.svg',
+const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
+  report: '/static/images/img_icon_badge.svg',
+  kpi: '/static/images/img_icon_gears.svg',
+  emissions: '/static/images/img_icon_smoke.svg',
+  integration: '/static/images/img_icon_server.svg',
+  traceability: '/static/images/img_icon_look.svg',
+  research: '/static/images/img_icon_invest.svg',
+  voting: '/static/images/img_icon_cardboard_check.svg',
+  fund: '/static/images/img_icon_leaf.svg',
+  compliance: '/static/images/img_icon_gavel.svg',
 };
 ---
 
@@ -39,9 +41,12 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {
           PARTNER_STORY_SUMMARIES.map((story) => (
-            <a
+            <CardShell
+              as="a"
               href={story.link}
-              class="flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/10 text-white no-underline motion-safe:transition-colors motion-safe:duration-200 hover:bg-white/14"
+              variant="glass"
+              accentTop={true}
+              class="flex h-full flex-col overflow-hidden text-white no-underline motion-safe:transition-colors motion-safe:duration-200 hover:bg-white/14"
             >
               <div class="flex min-h-[8rem] items-center justify-center overflow-hidden bg-white px-4 py-5">
                 <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
@@ -59,7 +64,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
                 <h2 class="m-0 text-[1.14rem] font-medium leading-snug">{story.title}</h2>
                 <p class="m-0 text-[0.95rem] leading-relaxed text-white/72">{story.text}</p>
               </div>
-            </a>
+            </CardShell>
           ))
         }
       </div>
@@ -74,243 +79,7 @@ const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
       {
         PARTNER_STORY_DETAILS.map((story) => (
           <article id={story.slug} class="scroll-mt-24">
-            {story.slug === 'fact-first-cloud' ? (
-              <div
-                class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] border border-t-4 border-[var(--color-surface-200)] bg-[var(--color-surface-0)] px-5 py-6 text-[var(--color-text)] shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:px-7 lg:py-7"
-                style="border-top-color: var(--color-primary);"
-              >
-                <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
-                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-6 py-7 shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
-                    <div
-                      class:list={
-                        story.darkLogoFrame
-                          ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2'
-                          : 'flex w-full items-center justify-center'
-                      }
-                    >
-                      <img
-                        src={story.logo}
-                        alt={story.name}
-                        class:list={['h-20 w-full object-contain object-center lg:h-24', story.logoClassName]}
-                        loading="lazy"
-                        width="360"
-                        height="160"
-                      />
-                    </div>
-                  </div>
-                  <div class="flex flex-col gap-4 lg:pl-2">
-                    <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-                      <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
-                        {story.primaryTag}
-                      </span>
-                      {story.secondaryTags.map((tag) => (
-                        <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h2 class="m-0 text-[1.75rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
-                      {story.heroTitle}
-                    </h2>
-                    {story.externalUrl && (
-                      <a
-                        href={story.externalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                      >
-                        {story.closingCtaLabel ?? 'Visit the website'}
-                        <span aria-hidden="true">&rarr;</span>
-                      </a>
-                    )}
-                  </div>
-                </header>
-
-                <div class="flex flex-col gap-4">
-                  {story.intro.map((paragraph) => (
-                    <p class="m-0 text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{paragraph}</p>
-                  ))}
-                </div>
-
-                <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.14rem] font-bold text-[var(--color-text)]">Key use cases</h3>
-                  <div class="flex flex-col gap-8">
-                    {story.keyUseCases.map((item) => (
-                      <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
-                        <div class="flex items-center justify-center">
-                          <img
-                            src={PARTNER_USE_CASE_ICON_BY_TITLE[item.title]}
-                            alt=""
-                            aria-hidden="true"
-                            width="112"
-                            height="112"
-                            class="h-24 w-24 object-contain"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="flex flex-col gap-3">
-                          <h4 class="m-0 text-[1.14rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
-                          <div class="flex flex-col gap-2.5">
-                            {item.lines.map((line) => (
-                              <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
-                            ))}
-                          </div>
-                        </div>
-                      </section>
-                    ))}
-                  </div>
-                </section>
-
-                <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
-                  <h3 class="m-0 text-[1.14rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
-                    {story.benefits.map((benefit) => (
-                      <li>{benefit}</li>
-                    ))}
-                  </ul>
-                </section>
-
-                <div class="flex flex-col items-start gap-5 pt-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-x-8">
-                  <a
-                    href={story.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                  >
-                    Visit the website
-                    <span aria-hidden="true">&rarr;</span>
-                  </a>
-                  <a
-                    href="/product#use-cases"
-                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                  >
-                    Explore further use cases
-                    <span aria-hidden="true">&rarr;</span>
-                  </a>
-                  <a href="/contact" class="btn btn--primary">
-                    Get in touch
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <div
-                class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] border border-t-4 border-[var(--color-surface-200)] bg-[var(--color-surface-0)] px-5 py-6 text-[var(--color-text)] shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:px-7 lg:py-7"
-                style="border-top-color: var(--color-primary);"
-              >
-                <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
-                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-6 py-7 shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
-                    <div
-                      class:list={
-                        story.darkLogoFrame
-                          ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2'
-                          : 'flex w-full items-center justify-center'
-                      }
-                    >
-                      <img
-                        src={story.logo}
-                        alt={story.name}
-                        class:list={['h-20 w-full object-contain object-center lg:h-24', story.logoClassName]}
-                        loading="lazy"
-                        width="360"
-                        height="160"
-                      />
-                    </div>
-                  </div>
-                  <div class="flex flex-col gap-4 lg:pl-2">
-                    <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-                      <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
-                        {story.primaryTag}
-                      </span>
-                      {story.secondaryTags.map((tag) => (
-                        <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h2 class="m-0 text-[1.75rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
-                      {story.heroTitle}
-                    </h2>
-                    {story.externalUrl && (
-                      <a
-                        href={story.externalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                      >
-                        Visit the website
-                        <span aria-hidden="true">&rarr;</span>
-                      </a>
-                    )}
-                  </div>
-                </header>
-
-                <div class="flex flex-col gap-4">
-                  {story.intro.map((paragraph) => (
-                    <p class="m-0 text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{paragraph}</p>
-                  ))}
-                </div>
-
-                <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.14rem] font-bold text-[var(--color-text)]">Key use cases</h3>
-                  <div class="flex flex-col gap-8">
-                    {story.keyUseCases.map((item) => (
-                      <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
-                        <div class="flex items-center justify-center">
-                          <img
-                            src={PARTNER_USE_CASE_ICON_BY_TITLE[item.title]}
-                            alt=""
-                            aria-hidden="true"
-                            width="112"
-                            height="112"
-                            class="h-24 w-24 object-contain"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="flex flex-col gap-3">
-                          <h4 class="m-0 text-[1.14rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
-                          <div class="flex flex-col gap-2.5">
-                            {item.lines.map((line) => (
-                              <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
-                            ))}
-                          </div>
-                        </div>
-                      </section>
-                    ))}
-                  </div>
-                </section>
-
-                <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
-                  <h3 class="m-0 text-[1.14rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
-                    {story.benefits.map((benefit) => (
-                      <li>{benefit}</li>
-                    ))}
-                  </ul>
-                </section>
-
-                <div class="flex flex-col items-start gap-5 pt-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-x-8">
-                  <a
-                    href={story.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                  >
-                    Visit the website
-                    <span aria-hidden="true">&rarr;</span>
-                  </a>
-                  <a
-                    href="/product#use-cases"
-                    class="inline-flex items-center gap-2 text-[1.06rem] font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
-                  >
-                    Explore further use cases
-                    <span aria-hidden="true">&rarr;</span>
-                  </a>
-                  <a href="/contact" class="btn btn--primary">
-                    Get in touch
-                  </a>
-                </div>
-              </div>
-            )}
+            <PartnerDetailCard story={story} useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY} />
           </article>
         ))
       }
