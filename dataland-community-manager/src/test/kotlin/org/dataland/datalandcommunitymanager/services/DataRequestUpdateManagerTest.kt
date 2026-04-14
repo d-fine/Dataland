@@ -191,6 +191,14 @@ class DataRequestUpdateManagerTest {
     }
 
     private fun setupDataRequestUpdateManager() {
+        val dataRequestNonSourceabilityManager =
+            DataRequestNonSourceabilityManager(
+                dataRequestRepository = mockDataRequestRepository,
+                metaDataControllerApi = mockMetaDataControllerApi,
+                requestEmailManager = mockRequestEmailManager,
+                dataRequestSummaryNotificationService = mockDataRequestSummaryNotificationService,
+                dataRequestUpdateUtils = mockDataRequestUpdateUtils,
+            )
         dataRequestUpdateManager =
             DataRequestUpdateManager(
                 dataRequestRepository = mockDataRequestRepository,
@@ -200,6 +208,7 @@ class DataRequestUpdateManagerTest {
                 metaDataControllerApi = mockMetaDataControllerApi,
                 dataRequestUpdateUtils = mockDataRequestUpdateUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
+                dataRequestNonSourceabilityManager = dataRequestNonSourceabilityManager,
             )
     }
 

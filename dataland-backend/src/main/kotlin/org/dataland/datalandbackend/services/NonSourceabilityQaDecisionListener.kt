@@ -110,6 +110,7 @@ class NonSourceabilityQaDecisionListener(
                         "nonSourceabilityId=${entity.nonSourceabilityId} (correlationId=$correlationId)",
                 )
             }
+
             NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED -> {
                 entity.qaStatus = QaStatus.Rejected
                 entity.currentlyActive = false
@@ -118,6 +119,7 @@ class NonSourceabilityQaDecisionListener(
                         "nonSourceabilityId=${entity.nonSourceabilityId} (correlationId=$correlationId)",
                 )
             }
+
             else -> {
                 logger.error(
                     "Unexpected event type ${event.eventType} received in NonSourceabilityQaDecisionListener " +
