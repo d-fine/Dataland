@@ -242,7 +242,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
           CUSTOMER_STORY_SUMMARIES.map((story) => (
             <a
               href={story.link}
-              class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-surface-200)] bg-[#ecece7] text-[var(--color-text)] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
+              class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[#ecece7] text-[var(--color-text)] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
             >
               <div class="flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5">
                 <img
@@ -323,8 +323,8 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
       <div class="flex justify-center">
         <a
           href="/testimonials"
-          class="inline-flex items-center px-6 py-2.5 bg-white text-[var(--color-brand-blue)] font-semibold text-sm rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
-          >Watch member testimonials</a
+          class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:text-[#ff8b47]"
+          >Watch member testimonials <span aria-hidden="true">&rarr;</span></a
         >
       </div>
     </div>
@@ -376,12 +376,12 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
         <div class="flex flex-wrap justify-center gap-3">
           <a
             href="/about#contact"
-            class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
+            class="btn btn--outline"
             >Get in touch</a
           >
           <a
             href="/register"
-            class="inline-flex items-center px-8 py-4 bg-white text-[#111111] font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
+            class="btn btn--primary"
             >Try it free</a
           >
         </div>

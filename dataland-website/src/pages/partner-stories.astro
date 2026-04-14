@@ -1,11 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
-import UseCaseIcon from '../components/UseCaseIcon.astro';
 import { PARTNER_STORY_DETAILS, PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
 
 const integrationMattersSection = PARTNER_STORY_DETAILS.find(
   (story) => story.slug === 'iss-sopra-steria'
 )?.extraSections?.find((section) => section.title === 'Why Partner Integration Matters');
+
+const PARTNER_USE_CASE_ICON_BY_TITLE: Record<string, string> = {
+  '1. Regulatory Reporting Integration': '/static/images/img_icon_badge.svg',
+  '2. ESG Data Processing & KPI Calculation': '/static/images/img_icon_gears.svg',
+  '3. PCAF-based Emissions Calculation': '/static/images/img_icon_smoke.svg',
+  '4. Automated ESG Data Integration': '/static/images/img_icon_server.svg',
+  '5. Data Transparency & Traceability': '/static/images/img_icon_look.svg',
+  'Investment Research Enhancement': '/static/images/img_icon_invest.svg',
+  'Proxy Voting Support': '/static/images/img_icon_cardboard_check.svg',
+  'Sustainable Fund Management': '/static/images/img_icon_leaf.svg',
+  'Compliance Verification': '/static/images/img_icon_gavel.svg',
+};
 ---
 
 <Base
@@ -64,9 +75,12 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
         PARTNER_STORY_DETAILS.map((story) => (
           <article id={story.slug} class="scroll-mt-24">
             {story.slug === 'fact-first-cloud' ? (
-              <div class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] bg-[#3E6A8E] px-5 py-6 text-white lg:px-7 lg:py-7">
+              <div
+                class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] border border-t-4 border-[var(--color-surface-200)] bg-[var(--color-surface-0)] px-5 py-6 text-[var(--color-text)] shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:px-7 lg:py-7"
+                style="border-top-color: var(--color-primary);"
+              >
                 <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
-                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-white px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-6 py-7 shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
                     <div
                       class:list={
                         story.darkLogoFrame
@@ -90,12 +104,12 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
                         {story.primaryTag}
                       </span>
                       {story.secondaryTags.map((tag) => (
-                        <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/82">
+                        <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-white lg:text-[2.3rem]">
+                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
                       {story.heroTitle}
                     </h2>
                     {story.externalUrl && (
@@ -114,34 +128,42 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
 
                 <div class="flex flex-col gap-4">
                   {story.intro.map((paragraph) => (
-                    <p class="m-0 text-[1rem] leading-relaxed text-white/80">{paragraph}</p>
+                    <p class="m-0 text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{paragraph}</p>
                   ))}
                 </div>
 
                 <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.25rem] font-bold text-white">Key use cases</h3>
+                  <h3 class="m-0 text-[1.25rem] font-bold text-[var(--color-text)]">Key use cases</h3>
                   <div class="flex flex-col gap-8">
                     {story.keyUseCases.map((item) => (
-                      <section class="grid grid-cols-1 gap-5 border-b border-white/10 pb-8 last:border-b-0 last:pb-0 lg:grid-cols-[70%_30%] lg:items-center">
+                      <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
+                        <div class="flex items-center justify-center">
+                          <img
+                            src={PARTNER_USE_CASE_ICON_BY_TITLE[item.title]}
+                            alt=""
+                            aria-hidden="true"
+                            width="112"
+                            height="112"
+                            class="h-24 w-24 object-contain"
+                            loading="lazy"
+                          />
+                        </div>
                         <div class="flex flex-col gap-3">
                           <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
                           <div class="flex flex-col gap-2.5">
                             {item.lines.map((line) => (
-                              <p class="m-0 text-[0.9375rem] leading-relaxed text-white/80">{line}</p>
+                              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
                             ))}
                           </div>
-                        </div>
-                        <div class="flex items-center justify-center text-white/35">
-                          <UseCaseIcon icon={item.icon} />
                         </div>
                       </section>
                     ))}
                   </div>
                 </section>
 
-                <section class="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/10 p-6 text-white">
+                <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
                   <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-white/84 lg:grid-cols-2">
+                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
                     {story.benefits.map((benefit) => (
                       <li>{benefit}</li>
                     ))}
@@ -167,16 +189,19 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
                   </a>
                   <a
                     href="/contact"
-                    class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-[0.95rem] font-semibold text-[#3E6A8E] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/90"
+                    class="btn btn--primary"
                   >
                     Get in touch
                   </a>
                 </div>
               </div>
             ) : (
-              <div class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] bg-[#3E6A8E] px-5 py-6 text-white lg:px-7 lg:py-7">
+              <div
+                class="mx-auto flex max-w-[980px] flex-col gap-8 rounded-[1.5rem] border border-t-4 border-[var(--color-surface-200)] bg-[var(--color-surface-0)] px-5 py-6 text-[var(--color-text)] shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:px-7 lg:py-7"
+                style="border-top-color: var(--color-primary);"
+              >
                 <header class="grid grid-cols-1 gap-6 lg:grid-cols-[32%_68%] lg:items-center">
-                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-white px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
+                  <div class="flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-6 py-7 shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
                     <div
                       class:list={
                         story.darkLogoFrame
@@ -200,12 +225,12 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
                         {story.primaryTag}
                       </span>
                       {story.secondaryTags.map((tag) => (
-                        <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/82">
+                        <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-white lg:text-[2.3rem]">
+                    <h2 class="m-0 text-[1.8rem] font-bold leading-tight text-[var(--color-text)] lg:text-[2.3rem]">
                       {story.heroTitle}
                     </h2>
                     {story.externalUrl && (
@@ -224,34 +249,42 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
 
                 <div class="flex flex-col gap-4">
                   {story.intro.map((paragraph) => (
-                    <p class="m-0 text-[1rem] leading-relaxed text-white/80">{paragraph}</p>
+                    <p class="m-0 text-[1rem] leading-relaxed text-[var(--color-text-muted)]">{paragraph}</p>
                   ))}
                 </div>
 
                 <section class="flex flex-col gap-5">
-                  <h3 class="m-0 text-[1.25rem] font-bold text-white">Key use cases</h3>
+                  <h3 class="m-0 text-[1.25rem] font-bold text-[var(--color-text)]">Key use cases</h3>
                   <div class="flex flex-col gap-8">
                     {story.keyUseCases.map((item) => (
-                      <section class="grid grid-cols-1 gap-5 border-b border-white/10 pb-8 last:border-b-0 last:pb-0 lg:grid-cols-[70%_30%] lg:items-center">
+                      <section class="grid grid-cols-1 gap-4 pb-6 last:pb-0 lg:grid-cols-[17%_83%] lg:items-center">
+                        <div class="flex items-center justify-center">
+                          <img
+                            src={PARTNER_USE_CASE_ICON_BY_TITLE[item.title]}
+                            alt=""
+                            aria-hidden="true"
+                            width="112"
+                            height="112"
+                            class="h-24 w-24 object-contain"
+                            loading="lazy"
+                          />
+                        </div>
                         <div class="flex flex-col gap-3">
                           <h4 class="m-0 text-[1.05rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
                           <div class="flex flex-col gap-2.5">
                             {item.lines.map((line) => (
-                              <p class="m-0 text-[0.9375rem] leading-relaxed text-white/80">{line}</p>
+                              <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
                             ))}
                           </div>
-                        </div>
-                        <div class="flex items-center justify-center text-white/35">
-                          <UseCaseIcon icon={item.icon} />
                         </div>
                       </section>
                     ))}
                   </div>
                 </section>
 
-                <section class="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/10 p-6 text-white">
+                <section class="flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]">
                   <h3 class="m-0 text-[1.2rem] font-bold">Integration benefits</h3>
-                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-white/84 lg:grid-cols-2">
+                  <ul class="m-0 grid list-disc gap-3 pl-5 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)] lg:grid-cols-2">
                     {story.benefits.map((benefit) => (
                       <li>{benefit}</li>
                     ))}
@@ -277,7 +310,7 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
                   </a>
                   <a
                     href="/contact"
-                    class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-[0.95rem] font-semibold text-[#3E6A8E] no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/90"
+                    class="btn btn--primary"
                   >
                     Get in touch
                   </a>
@@ -318,7 +351,7 @@ const integrationMattersSection = PARTNER_STORY_DETAILS.find(
 
           <a
             href="/contact"
-            class="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-6 py-3 text-[0.98rem] font-semibold text-white no-underline motion-safe:transition-colors motion-safe:duration-150 hover:bg-[#ff8b47]"
+            class="btn btn--primary"
           >
             Get in touch
           </a>

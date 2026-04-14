@@ -34,7 +34,7 @@ const {
         stories.map((story) => (
           <a
             href={story.link}
-            class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-surface-200)] bg-[#ecece7] text-[var(--color-text)] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
+            class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[#ecece7] text-[var(--color-text)] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
           >
             <div class="flex min-h-[6.25rem] items-center justify-center overflow-hidden bg-white px-6 py-5">
               <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>

@@ -13,6 +13,7 @@
   --color-surface-200: #e6e6e6;
   --color-surface-cool: #eef3f7;
   --color-surface-cool-strong: #eaf2f8;
+  --color-surface-cool-soft: #f1f4f7;
   --color-surface-warm: #f6f3ee;
   --color-border-cool: #d7e3ec;
   --color-text: #1a1a1a;
@@ -107,13 +108,13 @@ main {
 }
 
 .btn--outline {
-  background: rgba(255, 255, 255, 0.72);
+  background: #fff;
   color: var(--color-secondary);
   border-color: rgba(1, 61, 72, 0.14);
 }
 
 .btn--outline:hover {
-  background: rgba(255, 255, 255, 0.94);
+  background: #f7f7f5;
   border-color: rgba(1, 61, 72, 0.22);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
   transform: translateY(-1px);

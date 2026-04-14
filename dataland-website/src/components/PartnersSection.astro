@@ -27,10 +27,11 @@ const {
             target="_blank"
             rel="noopener noreferrer"
             class:list={[
-              'flex items-center justify-center p-8 px-6 rounded-xl border no-underline min-h-[100px] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
+              'relative flex items-center justify-center overflow-hidden p-8 px-6 rounded-xl border no-underline min-h-[100px] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
               'bg-[var(--color-surface-0)] border-[var(--color-surface-200)]',
             ]}
           >
+            <span class="absolute inset-x-0 top-0 h-1 bg-[var(--color-primary)]" aria-hidden="true"></span>
             <div class="flex h-[3.9rem] w-full max-w-[10.5rem] items-center justify-center lg:h-[4.4rem] lg:max-w-[11.25rem]">
               <div
                 class:list={[

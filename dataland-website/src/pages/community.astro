@@ -11,12 +11,12 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
   description="See how Dataland supports ESG data needs across sectors, use cases, and reporting requirements."
 >
   <section
-    class="pt-16 pb-12 px-6 bg-[var(--color-surface-50)] lg:pt-24 lg:pb-16 lg:px-8"
+    class="px-6 pt-16 pb-12 text-white bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] lg:px-8 lg:pt-24 lg:pb-16"
     aria-label="Community overview"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       <div class="max-w-[900px] mx-auto text-center">
-        <h1 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">
+        <h1 class="m-0 text-[1.75rem] font-bold text-white">
           Dataland combines flexibility and breadth to support ESG data needs for different institution types,
           operational models, and reporting requirements
         </h1>
@@ -25,8 +25,9 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {
           COMMUNITY_GRID_ITEMS.map((item) => (
-            <article class="rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(180deg,#ffffff_0%,#f8f7f4_100%)] p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
-              <div class="mb-4 flex items-center gap-4 text-[#2C4A6B]">
+            <article class="flex h-full flex-col rounded-[1.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.06)_100%)] px-6 py-5 shadow-[0_10px_24px_rgba(0,0,0,0.12)] backdrop-blur-[2px]">
+              <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true" />
+              <div class="mb-4 flex items-center gap-4 text-white/76">
                 {item.icon === 'sectors' && (
                   <svg
                     width="42"
@@ -145,9 +146,9 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 )}
-                <h2 class="text-[1.08rem] font-bold m-0 text-[#2C4A6B]">{item.title}</h2>
+                <h2 class="m-0 text-[1.08rem] font-bold text-white">{item.title}</h2>
               </div>
-              <p class="text-[0.98rem] leading-relaxed m-0 text-[var(--color-text-muted)]">{item.text}</p>
+              <p class="m-0 text-[0.98rem] leading-relaxed text-white/82">{item.text}</p>
             </article>
           ))
         }
@@ -218,7 +219,7 @@ import { TRUSTED_BY_LOGOS } from '../data/members';
         <div class="flex flex-wrap justify-center gap-3">
           <a
             href="/about#contact"
-            class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
+            class="btn btn--primary"
             >Get in touch</a
           >
         </div>

@@ -98,7 +98,7 @@ const CREDITS_TABLE = [
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {
           HOW_IT_WORKS_BLOCKS.map((block, index) => (
-            <article class="grid h-full grid-rows-[9.6rem_minmax(6.1rem,auto)_1.1rem_minmax(6.1rem,auto)] rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-warm)] px-6 py-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+            <article class="grid h-full grid-rows-[9.6rem_minmax(6.1rem,auto)_1.1rem_minmax(6.1rem,auto)] rounded-[1.25rem] border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[var(--color-surface-warm)] px-6 py-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
               <div class="flex items-center justify-center">
                 <img
                   src={
@@ -158,7 +158,7 @@ const CREDITS_TABLE = [
             <article
               class:list={[
                 'grid h-full grid-rows-[3.4rem_0.7rem_1fr_2.5rem_2.5rem] rounded-xl border border-[var(--color-surface-200)] p-6 shadow-[0_8px_24px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_12px_28px_rgba(15,23,42,0.12)]',
-                index === 0 ? 'bg-[var(--color-surface-warm)]' : 'bg-[var(--color-surface-50)]',
+                index === 0 ? 'bg-[var(--color-surface-warm)]' : 'bg-[var(--color-surface-cool-soft)]',
               ]}
             >
               <h3 class="m-0 self-start text-left text-[1.4rem] font-bold leading-[1.12] text-[var(--color-text)]">
@@ -229,7 +229,7 @@ const CREDITS_TABLE = [
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {
             USE_CASES.map((uc) => (
-              <div class="grid h-full grid-rows-[4.5rem_1fr] items-start justify-items-start gap-1.5 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-8 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+              <div class="grid h-full grid-rows-[4.5rem_1fr] items-start justify-items-start gap-1.5 bg-[var(--color-surface-0)] rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] p-6 pt-3 text-left shadow-[0_1px_4px_rgba(0,0,0,0.04)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
                 <div class="grid w-full grid-cols-[5.25rem_1fr] items-center gap-3">
                   <img
                     src={uc.icon}
@@ -265,59 +265,89 @@ const CREDITS_TABLE = [
           </p>
           <div class="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Regulatory reporting</span>
+              <img
+                src="/static/images/img_icon_badge.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Regulatory<br />reporting</span>
             </div>
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Investment analysis</span>
+              <img
+                src="/static/images/img_icon_invest.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Investment<br />analysis</span>
             </div>
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Risk management</span>
+              <img
+                src="/static/images/img_icon_gauge.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Risk<br />management</span>
             </div>
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Portfolio management</span>
+              <img
+                src="/static/images/img_icon_portfolio.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Portfolio<br />management</span>
             </div>
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Performance management</span
+              <img
+                src="/static/images/img_icon_bars_some.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Performance<br />management</span
               >
             </div>
             <div
-              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#d7e3ec] bg-white px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
+              class="flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]"
             >
-              <span
-                class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)]/12 text-[var(--color-primary)] text-[1.3rem] font-bold"
-                >✓</span
-              >
-              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#27435d]">Client advisory</span>
+              <img
+                src="/static/images/img_icon_contact.svg"
+                alt=""
+                aria-hidden="true"
+                width="56"
+                height="56"
+                class="h-14 w-14 object-contain"
+                loading="lazy"
+              />
+              <span class="mt-4 text-[1.05rem] font-semibold leading-[1.15] text-[#1f3143]">Client<br />advisory</span>
             </div>
           </div>
         </div>
@@ -342,7 +372,7 @@ const CREDITS_TABLE = [
         CUSTOMER_STORIES_DETAILED.map((story) => (
           <article
             id={story.anchor}
-            class="grid grid-cols-1 gap-6 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] p-6 scroll-mt-24 shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:grid-cols-[24%_76%] lg:p-8"
+            class="grid grid-cols-1 gap-6 rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[var(--color-surface-0)] p-6 scroll-mt-24 shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:grid-cols-[24%_76%] lg:p-8"
           >
             <div class="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
               <div class="flex min-h-[8rem] items-center justify-center rounded-xl bg-[var(--color-surface-50)] px-4 py-5">
@@ -421,7 +451,7 @@ const CREDITS_TABLE = [
       <div class="flex flex-col gap-4">
         <section aria-label="Simple membership model">
           <article
-            class="rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_12px_30px_rgba(15,23,42,0.06)] lg:px-10 lg:py-10"
+            class="rounded-[1.5rem] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_16px_36px_rgba(15,23,42,0.14)] lg:px-10 lg:py-10"
           >
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div class="flex h-full flex-col gap-5">
@@ -490,7 +520,7 @@ const CREDITS_TABLE = [
 
         <section aria-label="Shared cost approach">
           <article
-            class="rounded-[1.5rem] border border-[var(--color-surface-200)] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_12px_30px_rgba(15,23,42,0.06)] lg:px-10 lg:py-10"
+            class="rounded-[1.5rem] bg-[linear-gradient(135deg,#091119_0%,#172635_72%,#21384b_100%)] px-8 py-8 text-white shadow-[0_16px_36px_rgba(15,23,42,0.14)] lg:px-10 lg:py-10"
           >
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
               <div class="flex h-full flex-col gap-5">
@@ -520,11 +550,11 @@ const CREDITS_TABLE = [
                   Dataset = 1 company, 1 framework, 1 reporting period.
                 </p>
               </div>
-              <div class="flex h-full flex-col gap-5">
+              <div class="grid h-full grid-rows-[auto_1fr] gap-5">
                 <div class="invisible text-[1.85rem] font-bold leading-tight" aria-hidden="true">
                   Shared cost approach
                 </div>
-                <div class="flex items-center justify-center rounded-[1.25rem] bg-white/6 px-6 pt-4 pb-0.5">
+                <div class="flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4">
                   <div class="max-w-[24rem]">
                     <table class="w-full border-collapse text-sm">
                       <thead>
@@ -573,8 +603,8 @@ const CREDITS_TABLE = [
           Join now to access high-quality ESG data and be part of building a non-profit European data infrastructure.
         </p>
         <div class="flex flex-wrap justify-center gap-3">
-          <a href="/about#contact" class="btn btn--primary">Get in touch</a>
-          <a href="/register" class="btn btn--outline">Try it free</a>
+          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+          <a href="/register" class="btn btn--primary">Try it free</a>
         </div>
       </div>
     </div>
@@ -662,12 +692,12 @@ const CREDITS_TABLE = [
         <div class="flex flex-wrap justify-center gap-3">
           <a
             href="/about#contact"
-            class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"
+            class="btn btn--outline"
             >Get in touch</a
           >
           <a
             href="/register"
-            class="inline-flex items-center px-8 py-4 bg-white text-[#111111] font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
+            class="btn btn--primary"
             >Try it free</a
           >
         </div>
