@@ -24,13 +24,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
           <span class="block lg:inline lg:whitespace-nowrap">Open-source platform for</span>{' '}
           <span class="block text-[var(--color-primary)] lg:inline lg:whitespace-nowrap">structured sustainability data</span>
         </h1>
-<<<<<<< HEAD
         <p class="m-0 mb-10 text-[1.14rem] font-normal text-[var(--color-text-subtle)]">Non-profit. Source-based. Unrestricted use.</p>
-=======
-        <p class="m-0 mb-10 text-[1.16rem] font-normal text-[var(--color-text-subtle)] lg:text-[1.3rem]">
-          Non-profit. Source-based. Unrestricted use.
-        </p>
->>>>>>> dc36629159c100088737a9fc782431452ca3ff1f
         <div
           class="mb-8 flex flex-row flex-nowrap items-start gap-x-6 gap-y-4 sm:gap-x-8 lg:gap-x-10"
           aria-label="Platform statistics"
@@ -258,8 +252,8 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
                   height="64"
                 />
               </div>
-              <div class="flex h-full flex-col gap-4 p-6">
-                <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+              <div class="grid h-full grid-rows-[3.2rem_4.5rem_auto] gap-4 p-6">
+                <div class="flex min-h-[3.2rem] flex-wrap items-start gap-2">
                   <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
                     {story.primaryTag}
                   </span>
@@ -269,7 +263,7 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
                     </span>
                   ))}
                 </div>
-                <h3 class="m-0 min-h-[4.5rem] text-[1.14rem] font-medium leading-snug text-[var(--color-text)]">
+                <h3 class="m-0 text-[1.14rem] font-medium leading-snug text-[var(--color-text)]">
                   {story.title}
                 </h3>
                 <span class="mt-auto text-[1.06rem] font-semibold text-[var(--color-primary)]">Read more &rarr;</span>
