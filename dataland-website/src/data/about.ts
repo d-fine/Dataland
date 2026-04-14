@@ -20,7 +20,7 @@ export const LEADERSHIP_TEAM: Person[] = [
     name: 'Moritz Kiese',
     role: 'Managing Director',
     bio: 'Moritz leads Dataland with a focus on open-source sustainability infrastructure and European ESG data standards.',
-    imagePath: '/static/images/Moritz_Kiese.jpg',
+    imagePath: '/static/about/team_Moritz_Kiese.jpg',
     email: 'mailto:moritz.kiese@dataland.com',
     linkedIn: 'https://www.linkedin.com/in/moritz-kiese-932b104/',
   },
