@@ -35,7 +35,7 @@ export const LEADERSHIP_TEAM: Person[] = [
   {
     name: 'S\u00F6ren Vorsmann',
     role: 'Operations & Customer Relations',
-    bio: 'S\u00F6ren oversees platform operations, infrastructure, and member onboarding.',
+    bio: 'S\u00F6ren oversees platform operations, infrastructure, and member onboarding, ensuring a smooth platform experience.',
     imagePath: '/static/about/team-soeren-vorsmann.jpg',
     email: 'mailto:soeren.vorsmann@dataland.com',
     linkedIn: 'https://www.linkedin.com/company/dataland-gmbh',

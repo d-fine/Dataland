@@ -328,19 +328,24 @@ const CREDITS_TABLE = [
   <!-- Section 6: Customer Stories (dark blue) -->
   <section
     id="customer-stories"
-    class="scroll-mt-16 py-12 px-6 bg-[#2C4A6B] text-white lg:py-16 lg:px-8"
+    class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] text-[var(--color-text)] lg:py-16 lg:px-8"
     aria-label="Customer stories"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
-      <h2 class="text-[1.75rem] font-bold m-0 text-center">Customer stories</h2>
+      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
+        <h2 class="text-[1.75rem] font-bold m-0 text-center text-[var(--color-text)]">Customer stories</h2>
+        <p class="m-0 text-[1.06rem] leading-relaxed text-[var(--color-text-muted)] lg:text-[1.12rem]">
+          Real-world experiences illustrate how ESG data challenges are addressed in practice.
+        </p>
+      </div>
       {
         CUSTOMER_STORIES_DETAILED.map((story) => (
           <article
             id={story.anchor}
-            class="grid grid-cols-1 gap-6 p-6 bg-white/10 rounded-xl scroll-mt-24 lg:grid-cols-[24%_76%] lg:p-8"
+            class="grid grid-cols-1 gap-6 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-0)] p-6 scroll-mt-24 shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:grid-cols-[24%_76%] lg:p-8"
           >
             <div class="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
-              <div class="flex min-h-[8rem] items-center justify-center rounded-xl bg-white px-4 py-5">
+              <div class="flex min-h-[8rem] items-center justify-center rounded-xl bg-[var(--color-surface-50)] px-4 py-5">
                 <img
                   src={story.logo}
                   alt={`${story.anchor.toUpperCase()} logo`}
@@ -350,39 +355,39 @@ const CREDITS_TABLE = [
                   height="80"
                 />
               </div>
-              <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
-                <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
-                  {story.primaryTag}
-                </span>
-                {story.secondaryTags.map((tag) => (
-                  <span class="inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-white/85">
-                    {tag}
+                <div class="flex min-h-[2.75rem] flex-wrap items-start gap-2">
+                  <span class="inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]">
+                    {story.primaryTag}
                   </span>
-                ))}
+                  {story.secondaryTags.map((tag) => (
+                    <span class="inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div class="flex flex-col gap-4">
-              <h3 class="text-xl font-bold m-0">{story.title}</h3>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.summary}</p>
+              <div class="flex flex-col gap-4">
+                <h3 class="m-0 text-xl font-bold text-[var(--color-text)]">{story.title}</h3>
+                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.summary}</p>
 
-              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Challenge</h4>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.challenge}</p>
+                <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Challenge</h4>
+                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.challenge}</p>
 
-              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Solution</h4>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.solution}</p>
+                <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Solution</h4>
+                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.solution}</p>
 
-              <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Value</h4>
-              <p class="text-[0.9375rem] leading-relaxed m-0 text-white/80">{story.value}</p>
+                <h4 class="text-base font-bold m-0 text-[var(--color-primary)]">Value</h4>
+                <p class="m-0 text-[0.9375rem] leading-relaxed text-[var(--color-text-muted)]">{story.value}</p>
 
-              <blockquote class="bg-white/10 border-l-4 border-[var(--color-primary)] py-5 px-6 rounded-r-lg m-0">
-                <p class="italic text-[0.9375rem] leading-relaxed m-0 mb-3 text-white/90">
-                  &ldquo;{story.quoteText}&rdquo;
-                </p>
-                <footer class="flex flex-col gap-0.5">
-                  <cite class="not-italic font-bold text-sm text-white">{story.quoteAuthor}</cite>
-                  <span class="text-[0.8125rem] text-white/70">{story.quoteRole}</span>
-                </footer>
-              </blockquote>
+                <blockquote class="m-0 rounded-r-xl border-l-4 border-[var(--color-primary)] bg-[var(--color-surface-50)] px-6 py-5">
+                  <p class="m-0 mb-3 text-[0.9375rem] italic leading-relaxed text-[var(--color-text)]">
+                    &ldquo;{story.quoteText}&rdquo;
+                  </p>
+                  <footer class="flex flex-col gap-0.5">
+                    <cite class="text-sm font-bold not-italic text-[var(--color-text)]">{story.quoteAuthor}</cite>
+                    <span class="text-[0.8125rem] text-[var(--color-text-muted)]">{story.quoteRole}</span>
+                  </footer>
+                </blockquote>
 
               {story.successStorySlug && (
                 <a
@@ -402,13 +407,13 @@ const CREDITS_TABLE = [
   <!-- Section 7: Membership & Pricing (grey) -->
   <section
     id="membership-pricing"
-    class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8"
+    class="scroll-mt-16 py-12 px-6 bg-[#2C4A6B] lg:py-20 lg:px-8"
     aria-label="Membership and pricing"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
       <div class="flex flex-col items-center gap-2 text-center">
-        <h2 class="text-[1.75rem] font-bold m-0 text-[var(--color-text)]">Membership and pricing</h2>
-        <p class="text-[1.06rem] leading-relaxed m-0 text-[var(--color-text-muted)] max-w-[640px] lg:text-[1.12rem]">
+        <h2 class="text-[1.75rem] font-bold m-0 text-white">Membership and pricing</h2>
+        <p class="m-0 max-w-[640px] text-[1.06rem] leading-relaxed text-white/72 lg:text-[1.12rem]">
           A straightforward membership model with transparent pricing and shared sourcing costs.
         </p>
       </div>
@@ -563,13 +568,13 @@ const CREDITS_TABLE = [
         </section>
       </div>
 
-      <div class="flex flex-col gap-6 pt-7 lg:flex-row lg:items-center lg:justify-between">
-        <p class="m-0 max-w-[46rem] text-[1.45rem] font-semibold leading-relaxed text-[var(--color-primary)]">
+      <div class="flex flex-col items-center gap-6 pt-7 text-center">
+        <p class="m-0 max-w-[46rem] text-[1.45rem] font-semibold leading-relaxed text-white">
           Join now to access high-quality ESG data and be part of building a non-profit European data infrastructure.
         </p>
-        <div class="flex flex-wrap gap-3">
-          <a href="/about#contact" class="btn btn--outline">Get in touch</a>
-          <a href="/register" class="btn btn--primary">Try it free</a>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="/about#contact" class="btn btn--primary">Get in touch</a>
+          <a href="/register" class="btn btn--outline">Try it free</a>
         </div>
       </div>
     </div>
@@ -582,17 +587,30 @@ const CREDITS_TABLE = [
     aria-label="Documentation and API references"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col items-center gap-12">
-      <h2 class="text-[1.75rem] font-bold m-0 text-center">Documentation</h2>
+      <div class="mx-auto flex max-w-[860px] flex-col gap-3 text-center">
+        <h2 class="text-[1.75rem] font-bold m-0 text-center">Documentation</h2>
+        <p class="m-0 text-[1.06rem] leading-relaxed text-white/72 lg:text-[1.12rem]">
+          Technical documentation enables seamless integration and efficient use of the platform.
+        </p>
+      </div>
 
       <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-[1fr_1.5fr] md:items-stretch">
         <!-- Left card: Framework Guide -->
         <div
-          class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9"
+          class="relative flex flex-col justify-between gap-6 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9"
         >
           <div class="flex flex-col gap-4">
             <h3 class="text-lg font-bold m-0 text-white">Framework Guide</h3>
             <p class="min-h-[3.25rem] text-[0.98rem] leading-relaxed m-0 text-white/74">{FRAMEWORK_DOC.description}</p>
           </div>
+          <img
+            src="/static/logos/logo_other_GitHub_Invertocat_White.png"
+            alt=""
+            aria-hidden="true"
+            width="200"
+            height="200"
+            class="pointer-events-none absolute right-8 top-[9.8rem] h-34 w-34 object-contain opacity-92 lg:right-10 lg:top-[10.8rem] lg:h-48 lg:w-48"
+          />
           <a
             href={FRAMEWORK_DOC.url}
             target="_blank"
@@ -631,10 +649,17 @@ const CREDITS_TABLE = [
         </div>
       </div>
 
-      <!-- CTAs -->
-      <div class="flex flex-col items-center gap-5 pt-4 border-t border-white/10 w-full">
+    </div>
+  </section>
+
+  <section
+    class="bg-[#1c1c1f] px-6 pb-10 text-white lg:px-8 lg:pb-12"
+    aria-label="Documentation call to action"
+  >
+    <div class="max-w-[1200px] mx-auto border-t border-white/10 pt-8">
+      <div class="flex flex-col items-center gap-10 text-center">
         <p class="m-0 text-[1.45rem] font-semibold leading-relaxed text-white">Ready to get started?</p>
-        <div class="flex flex-wrap gap-3 justify-center">
+        <div class="flex flex-wrap justify-center gap-3">
           <a
             href="/about#contact"
             class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-semibold text-base rounded-xl no-underline motion-safe:transition-colors duration-150 hover:bg-[#e55d10]"

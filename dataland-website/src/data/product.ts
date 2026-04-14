@@ -283,7 +283,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
     logo: '/static/logos/logo_meag_2026.svg',
     logoClassName: 'scale-[1.08]',
     primaryTag: 'Asset manager',
-    secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
+    secondaryTags: ['SFDR', 'EU Taxo', 'Audit', 'Compliance', 'Quality'],
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     summary:
       "As an asset manager with sustainability reporting obligations, MEAG requires reliable ESG indicators across a large universe of portfolio companies. The firm uses Dataland to verify data quality and close specific data gaps that arise in the datasets delivered by its primary ESG data provider, both for internal purposes and to demonstrate reasonable effort to auditors. At the same time, MEAG expects Dataland's EU Taxonomy template conversion capability to simplify the upcoming transition to the revised reporting template.",
@@ -304,7 +304,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
     logo: '/static/logos/logo_nordlb.svg',
     logoClassName: 'scale-[0.96]',
     primaryTag: 'Bank',
-    secondaryTags: ['EU Taxo', 'API integration'],
+    secondaryTags: ['EU Taxo', 'API integration', 'Lean model', 'Efficiency'],
     title: 'Primary source of EU Taxonomy data with automated delivery',
     summary:
       "NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reporting because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows. Instead of purchasing large bundled ESG data packages, NORD/LB requests and obtains EU Taxonomy data exactly for the companies it needs. The datasets are now integrated directly into the bank's internal systems via API, replacing an earlier manual data retrieval process.",
@@ -325,7 +325,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
     logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.jpg',
     logoClassName: 'scale-[0.9]',
     primaryTag: 'Insurance',
-    secondaryTags: ['SFDR', 'Validation', 'Audit'],
+    secondaryTags: ['SFDR', 'Validation', 'Audit', 'Efficiency', 'Quality'],
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     summary:
       '\u00D6ffentliche Versicherung Braunschweig (\u00D6VB) must report sustainability indicators for its investment portfolios under the Sustainable Finance Disclosure Regulation (SFDR). In particular, the calculation of Principal Adverse Impact (PAI) indicators requires reliable and traceable ESG data for portfolio companies.',
