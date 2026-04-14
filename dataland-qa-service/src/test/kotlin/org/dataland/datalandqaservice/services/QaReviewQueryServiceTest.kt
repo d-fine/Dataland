@@ -195,6 +195,18 @@ class QaReviewQueryServiceTest {
             )
 
         doReturn(emptySet<String>()).whenever(mockBackendAccessor).getCompanyIdsForCompanyName(any())
+
+        doReturn(emptyMap<String, String>())
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(any())
+
+        doReturn(emptyMap<String, Long>())
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+
+        doReturn(listOf(datasetJudgementEntity))
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
     }
 
     @Test
