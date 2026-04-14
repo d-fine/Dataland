@@ -106,7 +106,7 @@ class QaReviewQueryServiceTest {
         val priority: Int = 0,
     )
 
-    private fun buildTestSet( args: BuildTestSetArgs): TestSetResult {
+    private fun buildTestSet(args: BuildTestSetArgs): TestSetResult {
         val framework = "sfdr"
         val qaReview =
             QaReviewEntity(
@@ -179,7 +179,7 @@ class QaReviewQueryServiceTest {
                 qaJudgeUserName = "Judge A",
                 numberQaReports = 3L,
                 priority = 4,
-            )
+            ),
         )
 
     private val qaReviewEntity1 = testSet1.qaReview
@@ -201,7 +201,7 @@ class QaReviewQueryServiceTest {
                 qaJudgeUserName = "Judge B",
                 numberQaReports = 5L,
                 priority = 9,
-            )
+            ),
         )
     private val qaReviewEntity2 = testSet2.qaReview
     private val datasetJudgementEntity2 = testSet2.datasetJudgement
