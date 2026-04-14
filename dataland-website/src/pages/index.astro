@@ -19,10 +19,10 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
     <div class="max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[50%_50%]">
       <div>
         <h1
-          class="m-0 mb-4 max-w-[12.5ch] text-[2rem] font-bold leading-[1.2] text-[var(--color-text)] lg:max-w-none lg:text-[2.55rem]"
+          class="m-0 mb-4 max-w-[11.5ch] text-[1.75rem] font-bold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:max-w-[12.5ch] sm:text-[1.9rem] lg:max-w-none lg:text-[2.55rem] lg:leading-[1.2] lg:tracking-normal"
         >
-          <span class="whitespace-nowrap">Open-source platform for</span>{' '}
-          <span class="whitespace-nowrap text-[var(--color-primary)]">structured sustainability data</span>
+          <span class="block lg:inline lg:whitespace-nowrap">Open-source platform for</span>{' '}
+          <span class="block text-[var(--color-primary)] lg:inline lg:whitespace-nowrap">structured sustainability data</span>
         </h1>
         <p class="m-0 mb-10 text-[1.14rem] font-normal text-[var(--color-text-subtle)]">Non-profit. Source-based. Unrestricted use.</p>
         <div
@@ -301,11 +301,11 @@ const trustedByCarousel = [...TRUSTED_BY_LOGOS, ...TRUSTED_BY_LOGOS];
         >
           {
             TESTIMONIALS.map((t) => (
-              <blockquote class="testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-6 m-0 flex flex-col gap-4">
-                <p class="italic text-[0.9375rem] leading-relaxed m-0 text-white/90 flex-1">&ldquo;{t.quote}&rdquo;</p>
+              <blockquote class="testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-5 m-0 flex flex-col gap-3.5 sm:p-6 sm:gap-4">
+                <p class="m-0 flex-1 text-[1.02rem] italic leading-[1.62] text-white/90 sm:text-[1.06rem]">&ldquo;{t.quote}&rdquo;</p>
                 <footer class="flex flex-col gap-0.5">
-                  <cite class="not-italic font-bold text-sm text-white">{t.author}</cite>
-                  <span class="text-[0.8125rem] text-white/70">{t.affiliation}</span>
+                  <cite class="not-italic text-[0.95rem] font-bold text-white">{t.author}</cite>
+                  <span class="text-[0.82rem] text-white/70">{t.affiliation}</span>
                 </footer>
               </blockquote>
             ))
