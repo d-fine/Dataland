@@ -92,7 +92,13 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
  * Projection interface for data point id / count pairs returned by queries.
  */
 interface DataPointCount {
+    /**
+     * Return dataPointId
+     */
     fun getDataPointId(): String
 
+    /**
+     * Return count
+     */
     fun getCount(): Long
 }

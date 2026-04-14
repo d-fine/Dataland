@@ -91,72 +91,74 @@ class QaReviewQueryServiceTest {
         val dataSourcingPriority: DataSourcingPriorityByDataDimensions,
     )
 
-    private fun buildTestSet(
-        dataId: String,
-        companyId: String,
-        companyName: String,
-        reportingPeriod: String,
-        timestamp: Long,
-        triggeringUserId: String,
-        comment: String,
-        judgementId: UUID,
-        qaJudgeUserId: UUID,
-        qaJudgeUserName: String,
-        numberQaReports: Long,
-        priority: Int,
-    ): TestSetResult {
+    data class BuildTestSetArgs(
+        val dataId: String,
+        val companyId: String,
+        val companyName: String,
+        val reportingPeriod: String,
+        val timestamp: Long = 0L,
+        val triggeringUserId: String = "",
+        val comment: String? = null,
+        val judgementId: UUID,
+        val qaJudgeUserId: UUID,
+        val qaJudgeUserName: String,
+        val numberQaReports: Long = 0L,
+        val priority: Int = 0,
+    )
+
+    private fun buildTestSet( args: BuildTestSetArgs): TestSetResult {
         val framework = "sfdr"
         val qaReview =
             QaReviewEntity(
-                dataId = dataId,
-                companyId = companyId,
-                companyName = companyName,
+                dataId = args.dataId,
+                companyId = args.companyId,
+                companyName = args.companyName,
                 framework = framework,
-                reportingPeriod = reportingPeriod,
-                timestamp = timestamp,
+                reportingPeriod = args.reportingPeriod,
+                timestamp = args.timestamp,
                 qaStatus = QaStatus.Pending,
-                triggeringUserId = triggeringUserId,
-                comment = comment,
+                triggeringUserId = args.triggeringUserId,
+                comment = args.comment,
             )
 
         val datasetJudgement =
             DatasetJudgementEntity(
-                dataSetJudgementId = judgementId,
-                datasetId = UUID.fromString(dataId),
+                dataSetJudgementId = args.judgementId,
+                datasetId = UUID.fromString(args.dataId),
                 companyId = UUID.randomUUID(),
                 dataType = DataTypeEnum.sfdr,
-                reportingPeriod = reportingPeriod,
+                reportingPeriod = args.reportingPeriod,
                 judgementState = DatasetJudgementState.Pending,
-                qaJudgeUserId = qaJudgeUserId,
-                qaJudgeUserName = qaJudgeUserName,
+                qaJudgeUserId = args.qaJudgeUserId,
+                qaJudgeUserName = args.qaJudgeUserName,
                 qaReporters = mutableListOf(),
                 dataPoints = mutableListOf(),
             )
 
         val response =
             QaReviewResponse(
-                dataId = dataId,
-                companyId = companyId,
-                companyName = companyName,
+                dataId = args.dataId,
+                companyId = args.companyId,
+                companyName = args.companyName,
                 framework = framework,
-                reportingPeriod = reportingPeriod,
-                timestamp = timestamp,
+                reportingPeriod = args.reportingPeriod,
+                timestamp = args.timestamp,
                 qaStatus = QaStatus.Pending,
-                qaJudgeUserId = qaJudgeUserId.toString(),
-                qaJudgeUserName = qaJudgeUserName,
-                datasetReviewId = judgementId.toString(),
-                numberQaReports = numberQaReports,
-                comment = comment,
+                qaJudgeUserId = args.qaJudgeUserId.toString(),
+                qaJudgeUserName = args.qaJudgeUserName,
+                datasetReviewId = args.judgementId.toString(),
+                numberQaReports = args.numberQaReports,
+                comment = args.comment,
                 triggeringUserId = null,
-                priorityOfAssociatedDataSourcing = priority,
+                priorityOfAssociatedDataSourcing = args.priority,
             )
 
         val dataSourcingPriority =
             DataSourcingPriorityByDataDimensions(
                 dataType = framework,
-                reportingPeriod = reportingPeriod,
-                companyId = companyId,
-                priority = priority,
+                reportingPeriod = args.reportingPeriod,
+                companyId = args.companyId,
+                priority = args.priority,
             )
 
         return TestSetResult(qaReview, datasetJudgement, response, dataSourcingPriority)
@@ -164,18 +166,20 @@ class QaReviewQueryServiceTest {
 
     private val testSet1 =
         buildTestSet(
-            dataId = dataId1,
-            companyId = "company-a",
-            companyName = "Company A",
-            reportingPeriod = "2024",
-            timestamp = 1000L,
-            triggeringUserId = "trigger-user-a",
-            comment = "first",
-            judgementId = judgementId1,
-            qaJudgeUserId = judgeId1,
-            qaJudgeUserName = "Judge A",
-            numberQaReports = 3L,
-            priority = 4,
+            BuildTestSetArgs(
+                dataId = dataId1,
+                companyId = "company-a",
+                companyName = "Company A",
+                reportingPeriod = "2024",
+                timestamp = 1000L,
+                triggeringUserId = "trigger-user-a",
+                comment = "first",
+                judgementId = judgementId1,
+                qaJudgeUserId = judgeId1,
+                qaJudgeUserName = "Judge A",
+                numberQaReports = 3L,
+                priority = 4,
+            )
         )
 
     private val qaReviewEntity1 = testSet1.qaReview
@@ -184,18 +188,20 @@ class QaReviewQueryServiceTest {
 
     private val testSet2 =
         buildTestSet(
-            dataId = dataId2,
-            companyId = "company-b",
-            companyName = "Company B",
-            reportingPeriod = "2023",
-            timestamp = 2000L,
-            triggeringUserId = "trigger-user-b",
-            comment = "second",
-            judgementId = judgementId2,
-            qaJudgeUserId = judgeId2,
-            qaJudgeUserName = "Judge B",
-            numberQaReports = 5L,
-            priority = 9,
+            BuildTestSetArgs(
+                dataId = dataId2,
+                companyId = "company-b",
+                companyName = "Company B",
+                reportingPeriod = "2023",
+                timestamp = 2000L,
+                triggeringUserId = "trigger-user-b",
+                comment = "second",
+                judgementId = judgementId2,
+                qaJudgeUserId = judgeId2,
+                qaJudgeUserName = "Judge B",
+                numberQaReports = 5L,
+                priority = 9,
+            )
         )
     private val qaReviewEntity2 = testSet2.qaReview
     private val datasetJudgementEntity2 = testSet2.datasetJudgement
