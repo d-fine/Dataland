@@ -33,7 +33,7 @@ interface DatasetJudgementRepository : JpaRepository<DatasetJudgementEntity, UUI
      * Fetches dataset judgements together with their associated data points in a single query to avoid
      * N+1 queries when converting entities to response objects that touch the collection.
      */
-    @Query("select distinct d from DatasetJudgementEntity d left join fetch d.dataPoints where d.datasetId in :datasetIds")
+    @Query("SELECT DISTINCT d FROM DatasetJudgementEntity d LEFT JOIN FETCH d.dataPoints WHERE d.datasetId IN :datasetIds")
     fun findAllWithDataPointsByDatasetIdIn(
         @Param("datasetIds") datasetIds: Collection<UUID>,
     ): List<DatasetJudgementEntity>

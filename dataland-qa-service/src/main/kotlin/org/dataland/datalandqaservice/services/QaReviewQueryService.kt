@@ -103,19 +103,6 @@ class QaReviewQueryService
                     )
             val datasetIds = entities.map { it.dataId }.distinct()
             val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
-
-            fun fallbackToNonFetch(
-                datasetUUIDs: Collection<UUID>,
-                ex: Throwable,
-            ) = run {
-                logger.warn(
-                    "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
-                    ex::class.simpleName,
-                    ex.message,
-                )
-                datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
-            }
-
             val datasetUUIDs = datasetIds.map { convertToUUID(it) }
 
             val judgementEntities =
@@ -178,6 +165,18 @@ class QaReviewQueryService
 
             return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
         }
+
+    private fun fallbackToNonFetch(
+            datasetUUIDs: Collection<UUID>,
+            ex: Throwable,
+            ) = run {
+                logger.warn(
+                    "Could not use fetch-join query for dataset judgements, falling back to default. Error [{}]: {}",
+                    ex::class.simpleName,
+                    ex.message,
+                )
+                datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
+            }
 
         /**
          * This method returns the number of unreviewed datasets for a specific set of filters
