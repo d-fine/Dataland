@@ -7,15 +7,29 @@ import {
   CONTACT_INQUIRY_MAILTO,
   CONTACT_ADDRESS,
 } from '../data/about';
-import { ABOUT_SECTIONS, PRODUCT_SECTIONS } from '../data/navigation';
+import { DOCUMENTATION_LINKS } from '../data/product';
 
 const currentYear = new Date().getFullYear();
+const documentationColumns = [
+  {
+    title: 'Documentation',
+    links: [DOCUMENTATION_LINKS[1], DOCUMENTATION_LINKS[3], DOCUMENTATION_LINKS[5], DOCUMENTATION_LINKS[7]],
+  },
+  {
+    title: undefined,
+    links: [DOCUMENTATION_LINKS[2], DOCUMENTATION_LINKS[4], DOCUMENTATION_LINKS[6], DOCUMENTATION_LINKS[8]],
+  },
+  {
+    title: 'Framework Guide',
+    links: [{ label: 'Overview', url: DOCUMENTATION_LINKS[0].url }],
+  },
+];
 ---
 
-<footer class="bg-[var(--color-surface-50)] text-[var(--color-text)]">
-  <div class="border-t border-[var(--color-surface-200)]">
+<footer class="bg-[var(--color-dark-panel)] text-white">
+  <div class="border-t border-white/10">
     <div
-      class="max-w-[1280px] mx-auto px-6 py-10 grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr_1fr] lg:py-12"
+      class="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 px-6 py-10 md:grid-cols-2 xl:grid-cols-[1.35fr_0.9fr_0.9fr_0.9fr_1fr] lg:py-12"
     >
       <div class="flex flex-col gap-4">
         <a href="/" class="inline-flex w-full max-w-[192px]" aria-label="Dataland home">
@@ -25,7 +39,7 @@ const currentYear = new Date().getFullYear();
             width="240"
             height="55"
             loading="lazy"
-            class="w-full h-auto object-contain"
+            class="h-auto w-full object-contain"
           />
         </a>
         <a
@@ -41,12 +55,12 @@ const currentYear = new Date().getFullYear();
             width="240"
             height="24"
             loading="lazy"
-            class="w-full h-auto object-contain"
+            class="h-auto w-full object-contain opacity-72"
           />
         </a>
         <div class="flex flex-col gap-3">
           <div class="flex flex-col gap-1">
-            <p class="text-[0.95rem] font-semibold m-0">{CONTACT_ADDRESS.company}</p>
+            <p class="m-0 text-[0.95rem] font-semibold text-white">{CONTACT_ADDRESS.company}</p>
             <div class="flex items-start gap-2">
               <svg
                 width="18"
@@ -58,14 +72,14 @@ const currentYear = new Date().getFullYear();
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 aria-hidden="true"
-                class="mt-1.5 shrink-0 self-start text-[var(--color-text-muted)]"
+                class="mt-1.5 shrink-0 self-start text-white/60"
               >
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
               <div class="mt-0.5 flex flex-col gap-1">
-                <p class="text-[0.82rem] m-0 text-[var(--color-text-muted)]">{CONTACT_ADDRESS.street}</p>
-                <p class="text-[0.82rem] m-0 text-[var(--color-text-muted)]">
+                <p class="m-0 text-[0.82rem] text-white/60">{CONTACT_ADDRESS.street}</p>
+                <p class="m-0 text-[0.82rem] text-white/60">
                   {CONTACT_ADDRESS.city}, {CONTACT_ADDRESS.country}
                 </p>
               </div>
@@ -73,7 +87,7 @@ const currentYear = new Date().getFullYear();
           </div>
           <a
             href={CONTACT_PHONE}
-            class="inline-flex items-center gap-2 text-[var(--color-text-muted)] no-underline text-[0.82rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+            class="inline-flex items-center gap-2 text-[0.82rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >
             <svg
               width="18"
@@ -94,7 +108,7 @@ const currentYear = new Date().getFullYear();
           </a>
           <a
             href={CONTACT_EMAIL}
-            class="inline-flex items-center gap-2 text-[var(--color-text-muted)] no-underline text-[0.82rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+            class="inline-flex items-center gap-2 text-[0.82rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >
             <svg
               width="18"
@@ -115,53 +129,43 @@ const currentYear = new Date().getFullYear();
         </div>
       </div>
 
-      <div>
-        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">About</h3>
-        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
-          {
-            ABOUT_SECTIONS.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-[var(--color-text-muted)] no-underline text-[1rem] text-left motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      {
+        documentationColumns.map((column, index) => (
+          <div>
+            {column.title ? (
+              <h3 class="m-0 mb-4 text-[0.95rem] font-bold uppercase tracking-[0.16em] text-white">
+                {column.title}
+              </h3>
+            ) : (
+              <div class="mb-4 h-[1.14rem]" aria-hidden="true"></div>
+            )}
+            <ul class="m-0 flex list-none flex-col items-start gap-2.5 p-0">
+              {column.links.map(({ url, label }) => (
+                <li>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-left text-[1rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
 
       <div>
-        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">Product</h3>
-        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
-          {
-            PRODUCT_SECTIONS.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-[var(--color-text-muted)] no-underline text-[1rem] text-left motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div>
-        <h3 class="text-[0.95rem] font-bold uppercase tracking-[0.16em] m-0 mb-4 text-[var(--color-text)]">
-          Connect and explore
-        </h3>
-        <ul class="list-none p-0 m-0 flex flex-col items-start gap-2.5">
+        <h3 class="m-0 mb-4 text-[0.95rem] font-bold uppercase tracking-[0.16em] text-white">Connect and explore</h3>
+        <ul class="m-0 flex list-none flex-col items-start gap-2.5 p-0">
           <li>
             <a
               href="https://www.linkedin.com/company/dataland-gmbh/"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+              class="inline-flex items-center gap-2.5 text-[1rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
@@ -174,7 +178,7 @@ const currentYear = new Date().getFullYear();
           <li>
             <a
               href={CONTACT_INQUIRY_MAILTO}
-              class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+              class="inline-flex items-center gap-2.5 text-[1rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
             >
               <svg
                 width="16"
@@ -195,8 +199,8 @@ const currentYear = new Date().getFullYear();
           </li>
           <li>
             <a
-              href="/login"
-              class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+              href="/partner-stories"
+              class="inline-flex items-center gap-2.5 text-[1rem] text-white/68 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
             >
               <svg
                 width="16"
@@ -209,33 +213,15 @@ const currentYear = new Date().getFullYear();
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                <polyline points="10 17 15 12 10 7"></polyline>
-                <line x1="15" y1="12" x2="3" y2="12"></line>
+                <path d="M3 21h18" />
+                <path d="M5 21V8l4-3 4 3v13" />
+                <path d="M13 21V5l3-2 3 2v16" />
+                <path d="M8 11h.01" />
+                <path d="M8 15h.01" />
+                <path d="M16 9h.01" />
+                <path d="M16 13h.01" />
               </svg>
-              Login
-            </a>
-          </li>
-          <li>
-            <a
-              href="/register"
-              class="inline-flex items-center gap-2.5 text-[var(--color-text-muted)] no-underline text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 5v14"></path>
-                <path d="M5 12h14"></path>
-              </svg>
-              Try it free
+              Integration partners
             </a>
           </li>
         </ul>
@@ -243,33 +229,32 @@ const currentYear = new Date().getFullYear();
     </div>
   </div>
 
-  <!-- Bottom bar -->
-  <div class="border-t border-[var(--color-surface-200)]">
-    <div class="max-w-[1280px] mx-auto px-6 py-5 flex flex-col gap-4 items-center lg:flex-row lg:justify-between">
-      <div class="flex flex-wrap gap-5 items-center pl-16">
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-[1280px] flex-col items-center gap-4 px-6 py-5 lg:flex-row lg:justify-between">
+      <div class="flex flex-wrap items-center gap-5">
         <a
           href="/legal"
-          class="text-[var(--color-text-muted)] no-underline text-[0.8125rem] min-h-[44px] min-w-[44px] inline-flex items-center motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center text-[0.8125rem] text-white/60 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >Legal</a
         >
         <a
           href="/imprint"
-          class="text-[var(--color-text-muted)] no-underline text-[0.8125rem] min-h-[44px] min-w-[44px] inline-flex items-center motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center text-[0.8125rem] text-white/60 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >Imprint</a
         >
         <a
           href="/dataprivacy"
-          class="text-[var(--color-text-muted)] no-underline text-[0.8125rem] min-h-[44px] min-w-[44px] inline-flex items-center motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center text-[0.8125rem] text-white/60 no-underline motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >Data Privacy</a
         >
         <button
           type="button"
           onclick="if(typeof Cookiebot !== 'undefined') Cookiebot.show()"
-          class="text-[var(--color-text-muted)] text-[0.8125rem] bg-transparent border-none cursor-pointer p-0 font-[inherit] min-h-[44px] min-w-[44px] inline-flex items-center motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          class="inline-flex min-h-[44px] min-w-[44px] items-center border-none bg-transparent p-0 text-[0.8125rem] text-white/60 cursor-pointer font-[inherit] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
           >Cookie Settings</button
         >
       </div>
-      <div class="flex items-center gap-4 text-[0.8125rem] text-[var(--color-text-muted)]">
+      <div class="flex items-center gap-4 text-[0.8125rem] text-white/60">
         <span>&copy; {currentYear} Dataland</span>
       </div>
     </div>

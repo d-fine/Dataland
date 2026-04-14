@@ -1,18 +1,21 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import FooterFrontend from '../components/FooterFrontend.astro';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  footerVariant?: 'default' | 'frontend';
 }
 
 const {
   title,
   description = 'Dataland is the non-profit open-source platform for standardised ESG data.',
   ogImage = '/static/images/og-default.png',
+  footerVariant = 'default',
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland.com');
@@ -62,6 +65,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland
     <main id="main-content" class="pt-[var(--header-height)]">
       <slot />
     </main>
-    <Footer />
+    {footerVariant === 'frontend' ? <FooterFrontend /> : <Footer />}
   </body>
 </html>
