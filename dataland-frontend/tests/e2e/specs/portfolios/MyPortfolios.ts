@@ -155,8 +155,11 @@ describeIf(
       cy.get('.p-dialog').within(() => {
         cy.get('.p-dialog-header').contains('Edit Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
-          cy.get('[data-test="portfolio-name-input"]').clear();
+          cy.get('[data-test="portfolio-name-input"]:visible').click();
+          cy.get('[data-test="portfolio-name-input"]:visible').type('{selectAll}{backspace}');
+          cy.get('[data-test="portfolio-name-input"]:visible').should('have.value', '');
           cy.get('[data-test="portfolio-name-input"]:visible').type(editedSecondPortfolioName);
+          cy.get('[data-test="portfolio-name-input"]:visible').should('have.value', editedSecondPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
           cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
