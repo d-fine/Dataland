@@ -120,7 +120,7 @@ class QaReviewQueryService
                 judgementEntities
                     .groupBy { it.datasetId }
                     .mapValues { (datasetIdKey, judgements) ->
-                        check (judgements.size == 1) {
+                        check(judgements.size == 1) {
                             "Expected exactly one DatasetJudgement for datasetId=$datasetIdKey but found ${judgements.size}"
                         }
                         val firstJudgement = judgements.first()

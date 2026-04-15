@@ -82,7 +82,7 @@ class QaReviewQueryServiceTest {
     private val judgementId2: UUID = UUID.randomUUID()
     private val judgeId1: UUID = UUID.randomUUID()
     private val judgeId2: UUID = UUID.randomUUID()
-    
+
     private val testSet1 =
         buildTestSet(
             BuildTestSetArgs(
