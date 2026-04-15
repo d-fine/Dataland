@@ -32,6 +32,18 @@ data class BuildTestSetArgs(
     val framework: String = "sfdr",
 )
 
+private fun buildDataSourcingPriority(args: BuildTestSetArgs): DataSourcingPriorityByDataDimensions {
+    val dataSourcingPriority =
+        DataSourcingPriorityByDataDimensions(
+            dataType = args.framework,
+            reportingPeriod = args.reportingPeriod,
+            companyId = args.companyId,
+            priority = args.priority,
+        )
+
+    return dataSourcingPriority
+}
+
 /**
  * Build a reusable test fixture bundle for QA review tests.
  *
@@ -94,13 +106,7 @@ internal fun buildTestSet(args: BuildTestSetArgs): TestSetResult {
             priorityOfAssociatedDataSourcing = args.priority,
         )
 
-    val dataSourcingPriority =
-        DataSourcingPriorityByDataDimensions(
-            dataType = args.framework,
-            reportingPeriod = args.reportingPeriod,
-            companyId = args.companyId,
-            priority = args.priority,
-        )
+    val dataSourcingPriority = buildDataSourcingPriority(args)
 
     return TestSetResult(qaReview, datasetJudgement, response, dataSourcingPriority)
 }
