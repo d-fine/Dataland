@@ -266,7 +266,6 @@ class QaReviewQueryService
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
             val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
             for (datasetId in datasetIds) {
-                logger.info("Debug: counting QA reports for datasetId={}", datasetId)
                 try {
                     val containedDataPoints = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
                     dataPointIdsByDatasetId[datasetId] = containedDataPoints
