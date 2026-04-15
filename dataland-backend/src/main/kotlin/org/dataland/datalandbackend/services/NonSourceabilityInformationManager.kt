@@ -25,8 +25,7 @@ import java.time.Instant
 /**
  * Manages the canonical non-sourceability lifecycle in the backend.
  *
- * [SourceabilityDataManager] is retained as backup-only. This service is the single source of
- * truth for non-sourceability state (FR-011, SC-005).
+ * This service is the single source of truth for non-sourceability state (FR-011, SC-005).
  */
 @Service
 class NonSourceabilityInformationManager(
