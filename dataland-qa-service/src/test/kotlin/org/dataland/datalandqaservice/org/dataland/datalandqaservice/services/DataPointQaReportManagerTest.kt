@@ -38,8 +38,7 @@ class DataPointQaReportManagerTest {
     fun `splits into batches and aggregates results`() {
         // read the (private) MAX_DATA_POINT_IDS_PER_BATCH from the manager via reflection
         // and create a set that is one larger so the implementation must split it into batches
-        val maxField = DataPointQaReportManager::class.java.getDeclaredField("MAX_DATA_POINT_IDS_PER_BATCH").apply { isAccessible = true }
-        val max = maxField.getInt(null)
+        val max = DataPointQaReportManager.MAX_DATA_POINT_IDS_PER_BATCH
         val manyIds: Set<String> = (0..max).map { "id-$it" }.toSet()
         // sanity-check for readers: manyIds size is max + 1 (e.g. 50001 when max == 50000)
         assertEquals(max + 1, manyIds.size)

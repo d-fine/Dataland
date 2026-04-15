@@ -30,8 +30,8 @@ class DataPointQaReportManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private companion object {
-        private const val MAX_DATA_POINT_IDS_PER_BATCH = 50_000
+    companion object {
+        const val MAX_DATA_POINT_IDS_PER_BATCH = 50_000
     }
 
     private fun ensureDatalandDataPointExists(dataPointId: String): DataPointMetaInformation {
