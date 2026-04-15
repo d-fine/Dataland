@@ -191,30 +191,20 @@ class DataRequestUpdateManager
             correlationId: String,
             requestStatusChangeReason: String? = null,
         ) {
-            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            accessStatus = AccessStatus.Pending,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            } else {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            }
+            val isVsmeWithoutAccess =
+                dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
+                    dataRequestEntity.accessStatus != AccessStatus.Granted
+            patchDataRequest(
+                dataRequestId = dataRequestEntity.dataRequestId,
+                dataRequestPatch =
+                    DataRequestPatch(
+                        requestStatus = RequestStatus.Answered,
+                        accessStatus = if (isVsmeWithoutAccess) AccessStatus.Pending else null,
+                        requestStatusChangeReason = requestStatusChangeReason,
+                    ),
+                correlationId = correlationId,
+                answeringDataId = answeringDataId,
+            )
         }
 
         /**
@@ -338,12 +328,9 @@ class DataRequestUpdateManager
             val requestsToProcess = answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
             for (dataRequestEntity in requestsToProcess) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                    val accessStatusIsOkay =
-                        listOf(
-                            dataRequestEntity.accessStatus != AccessStatus.Declined,
-                            dataRequestEntity.accessStatus != AccessStatus.Revoked,
-                        ).all { it }
-                    if (accessStatusIsOkay) {
+                    if (dataRequestEntity.accessStatus != AccessStatus.Declined &&
+                        dataRequestEntity.accessStatus != AccessStatus.Revoked
+                    ) {
                         requestEmailManager.sendDataUpdatedEmail(
                             dataRequestEntity,
                             correlationId,
