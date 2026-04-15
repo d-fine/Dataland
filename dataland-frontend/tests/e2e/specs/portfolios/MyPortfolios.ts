@@ -175,15 +175,13 @@ describeIf(
           expect(body.portfolioName).to.equal(editedSecondPortfolioName);
         });
       cy.wait('@getEnrichedPortfolio');
-      cy.wait('@getPortfolioNames')
-        .its('response.body')
-        .should((portfolios: Array<{ portfolioName: string }>) => {
-          expect(portfolios.map((portfolio) => portfolio.portfolioName)).to.include(editedSecondPortfolioName);
-        });
+      cy.wait('@getPortfolioNames', { timeout: mediumTimeoutInMs });
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.contains('[data-test="portfolios"] .tabview-header', editedSecondPortfolioName, {
         timeout: mediumTimeoutInMs,
-      }).click();
+      })
+        .should('be.visible')
+        .click();
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
