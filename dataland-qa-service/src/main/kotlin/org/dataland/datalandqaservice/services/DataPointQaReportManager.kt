@@ -215,8 +215,8 @@ class DataPointQaReportManager(
             val batchResult = qaReportRepository.countByDataPointIdInGrouped(batch.toSet())
             batchResult.forEach { row ->
                 val id = row.getDataPointId()
-                val count = row.getCount()
-                result[id] = (result[id] ?: 0L) + count
+                val qaReportCount = row.getQaReportCount()
+                result[id] = (result[id] ?: 0L) + qaReportCount
             }
         }
 

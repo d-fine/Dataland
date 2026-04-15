@@ -79,7 +79,7 @@ internal fun buildTestSet(args: BuildTestSetArgs): TestSetResult {
             dataSetJudgementId = args.judgementId,
             datasetId = UUID.fromString(args.dataId),
             companyId = UUID.randomUUID(),
-            dataType = DataTypeEnum.sfdr,
+            dataType = DataTypeEnum.decode(args.framework) ?: DataTypeEnum.sfdr,
             reportingPeriod = args.reportingPeriod,
             judgementState = DatasetJudgementState.Pending,
             qaJudgeUserId = args.qaJudgeUserId,
