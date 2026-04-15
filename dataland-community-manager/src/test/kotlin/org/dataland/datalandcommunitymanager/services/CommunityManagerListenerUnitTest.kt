@@ -195,7 +195,7 @@ class CommunityManagerListenerUnitTest {
     }
 
     @Test
-    fun `valid non sourceability QA-accepted lifecycle event should be processed successfully`() {
+    fun `valid non sourceability QA accepted lifecycle event should be processed successfully`() {
         val event =
             NonSourceabilityLifecycleEvent(
                 nonSourceabilityId = UUID.randomUUID().toString(),

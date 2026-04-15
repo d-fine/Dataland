@@ -142,7 +142,7 @@ class NonSourceabilityInformationManagerTest(
     }
 
     @Test
-    fun `SC005 guard NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
+    fun `sc005 guard NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)

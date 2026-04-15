@@ -101,7 +101,7 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
-        fun `post nonSourceable with bypassQa true throws AccessDeniedException for non-admin`() {
+        fun `post nonSourceable with bypassQa true throws AccessDeniedException for non admin`() {
             val request =
                 NonSourceabilityRequest(
                     companyId = storedCompany.companyId,
