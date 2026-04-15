@@ -1,0 +1,96 @@
+---
+import type { CustomerStoryDetail } from '../../data/product';
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+import TagGroup from '../TagGroup.astro';
+import LogoPanel from '../LogoPanel.astro';
+import QuotePanel from '../QuotePanel.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  readFullStory: string;
+  labels: {
+    challenge: string;
+    solution: string;
+    value: string;
+  };
+}
+
+interface Props {
+  content: Content;
+  stories: CustomerStoryDetail[];
+}
+
+const { content, stories } = Astro.props;
+
+const sectionClass =
+  'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] text-[var(--color-text)] lg:py-16 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-12';
+
+const sectionHeaderClass = 'mx-auto max-w-[860px]';
+
+const storyArticleClass =
+  'grid grid-cols-1 gap-6 rounded-xl border border-[var(--color-surface-200)] border-t-4 border-t-[var(--color-primary)] bg-[var(--color-surface-0)] p-6 scroll-mt-24 shadow-[0_4px_16px_rgba(0,0,0,0.06)] lg:grid-cols-[24%_76%] lg:p-8';
+
+const logoColumnClass = 'flex flex-col gap-4 lg:self-start';
+
+const storyBodyClass = 'flex flex-col gap-4';
+
+const logoPanelClass = 'min-h-[8rem] border-0 px-4 py-5 shadow-none';
+
+const logoImageClass = 'h-16 w-full object-contain object-center lg:h-20';
+
+const storyTitleClass = 'card-title text-[var(--color-text)]';
+
+const storyTextClass = 'card-text text-[var(--color-text-muted)]';
+
+const sectionLabelClass = 'card-title text-[var(--color-primary)]';
+
+const storyLinkClass = 'self-start';
+---
+
+<section id="customer-stories" class={sectionClass} aria-label="Customer stories">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
+    {
+      stories.map((story) => (
+        <article id={story.anchor} class={storyArticleClass}>
+          <div class={logoColumnClass}>
+            <LogoPanel
+              logo={story.logo}
+              name={`${story.anchor.toUpperCase()} logo`}
+              logoClassName={story.logoClassName}
+              class={logoPanelClass}
+              imageClass={logoImageClass}
+              width={220}
+              height={80}
+            />
+            <TagGroup primaryTag={story.primaryTag} secondaryTags={story.secondaryTags} />
+          </div>
+          <div class={storyBodyClass}>
+            <h3 class={storyTitleClass}>{story.title}</h3>
+            <p class={storyTextClass}>{story.summary}</p>
+            <h4 class={sectionLabelClass}>{content.labels.challenge}</h4>
+            <p class={storyTextClass}>{story.challenge}</p>
+
+            <h4 class={sectionLabelClass}>{content.labels.solution}</h4>
+            <p class={storyTextClass}>{story.solution}</p>
+
+            <h4 class={sectionLabelClass}>{content.labels.value}</h4>
+            <p class={storyTextClass}>{story.value}</p>
+
+            <QuotePanel quote={story.quoteText} author={story.quoteAuthor} role={story.quoteRole} />
+
+            {story.successStorySlug && (
+              <ArrowLink href={`/success-stories/${story.successStorySlug}`} class={storyLinkClass}>
+                {content.readFullStory} &rarr;
+              </ArrowLink>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

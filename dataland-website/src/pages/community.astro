@@ -4,14 +4,15 @@ import PartnersSection from '../components/PartnersSection.astro';
 import { COMMUNITY_GRID_ITEMS, type CommunityGridItem } from '../data/communityGrid';
 import { PARTNERS, type Partner } from '../data/about';
 import { TRUSTED_BY_LOGOS, type TrustedByLogo } from '../data/members';
+import { COMMUNITY_PAGE_CONTENT } from '../data/pageContent';
 import SectionHeader from '../components/SectionHeader.astro';
 import CardShell from '../components/CardShell.astro';
 import CtaBand from '../components/CtaBand.astro';
 ---
 
 <Base
-  title="Community - Dataland"
-  description="See how Dataland supports ESG data needs across sectors, use cases, and reporting requirements."
+  title={COMMUNITY_PAGE_CONTENT.meta.title}
+  description={COMMUNITY_PAGE_CONTENT.meta.description}
 >
   <section
     class="px-6 pt-16 pb-12 text-white bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] lg:px-8 lg:pt-24 lg:pb-16"
@@ -20,8 +21,7 @@ import CtaBand from '../components/CtaBand.astro';
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       <div class="max-w-[900px] mx-auto text-center">
         <h1 class="m-0 text-[1.75rem] font-bold text-white">
-          Dataland combines flexibility and breadth to support ESG data needs for different institution types,
-          operational models, and reporting requirements.
+          {COMMUNITY_PAGE_CONTENT.hero.title}
         </h1>
       </div>
 
@@ -158,9 +158,9 @@ import CtaBand from '../components/CtaBand.astro';
       </div>
 
       <div class="flex flex-wrap justify-center gap-3">
-        <a href="/product#customer-stories" class="btn btn--primary">Read Customer Stories</a>
-        <a href="/product#use-cases" class="btn btn--outline">Explore Use Cases</a>
-        <a href="/about#contact" class="btn btn--outline">Get in touch</a>
+        <a href="/product#customer-stories" class="btn btn--primary">{COMMUNITY_PAGE_CONTENT.hero.buttons.stories}</a>
+        <a href="/product#use-cases" class="btn btn--outline">{COMMUNITY_PAGE_CONTENT.hero.buttons.useCases}</a>
+        <a href="/about#contact" class="btn btn--outline">{COMMUNITY_PAGE_CONTENT.hero.buttons.contact}</a>
       </div>
     </div>
   </section>
@@ -172,8 +172,8 @@ import CtaBand from '../components/CtaBand.astro';
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       <SectionHeader
-        title="Trusted organizations."
-        intro="A community of institutions from different industries, sizes, and operating models."
+        title={COMMUNITY_PAGE_CONTENT.trustedOrganizations.title}
+        intro={COMMUNITY_PAGE_CONTENT.trustedOrganizations.intro}
         class="mx-auto max-w-[760px]"
       />
 
@@ -208,7 +208,7 @@ import CtaBand from '../components/CtaBand.astro';
 
   <PartnersSection
     partners={PARTNERS as Partner[]}
-    title="Our partners strengthen the Dataland network."
+    title={COMMUNITY_PAGE_CONTENT.partners.title}
     showTopAccent={false}
   />
 
@@ -217,12 +217,12 @@ import CtaBand from '../components/CtaBand.astro';
     aria-label="Community call to action"
   >
     <div class="max-w-[1200px] mx-auto">
-      <CtaBand title="Interested in joining us?" titleClass="text-white">
+      <CtaBand title={COMMUNITY_PAGE_CONTENT.cta.title} titleClass="text-white">
         <p class="section-intro m-0 max-w-[42rem] text-white/76">
-          Talk to us about membership, partnerships, and how Dataland can support your organization.
+          {COMMUNITY_PAGE_CONTENT.cta.intro}
         </p>
         <div class="flex flex-wrap justify-center gap-3">
-          <a href="/about#contact" class="btn btn--primary">Get in touch</a>
+          <a href="/about#contact" class="btn btn--primary">{COMMUNITY_PAGE_CONTENT.cta.contact}</a>
         </div>
       </CtaBand>
     </div>

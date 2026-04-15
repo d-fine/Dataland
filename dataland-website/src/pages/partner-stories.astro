@@ -7,6 +7,7 @@ import {
   type PartnerStorySummary,
   type PartnerStoryExtraSection,
 } from '../data/partnerStories';
+import { PARTNER_STORIES_PAGE_CONTENT } from '../data/pageContent';
 import CardShell from '../components/CardShell.astro';
 import PartnerDetailCard from '../components/PartnerDetailCard.astro';
 
@@ -27,21 +28,17 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
 };
 ---
 
-<Base
-  title={'Partner Stories \u2014 Dataland'}
-  description="See how Dataland integration partners embed structured sustainability data into established platforms and workflows."
->
+<Base title={PARTNER_STORIES_PAGE_CONTENT.meta.title} description={PARTNER_STORIES_PAGE_CONTENT.meta.description}>
   <section
     class="bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16"
     aria-label="Integration partner stories overview"
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-6">
       <div class="max-w-[840px]">
-        <p class="m-0 mb-3 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/60">Use cases</p>
-        <h1 class="m-0 text-[2rem] font-bold leading-[1.15] lg:text-[3rem]">Integration partners</h1>
+        <p class="m-0 mb-3 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/60">{PARTNER_STORIES_PAGE_CONTENT.hero.eyebrow}</p>
+        <h1 class="m-0 text-[2rem] font-bold leading-[1.15] lg:text-[3rem]">{PARTNER_STORIES_PAGE_CONTENT.hero.title}</h1>
         <p class="mt-4 mb-0 max-w-[720px] text-[1rem] leading-relaxed text-white/78">
-          Dataland data is made available within established partner platforms, so Members can work through familiar
-          interfaces, research flows, and reporting processes.
+          {PARTNER_STORIES_PAGE_CONTENT.hero.intro}
         </p>
       </div>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -79,7 +76,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
 
   <section
     class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8"
-    aria-label="Integration partner details"
+    aria-label={PARTNER_STORIES_PAGE_CONTENT.sections.detailsAriaLabel}
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       {
@@ -96,7 +93,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
     integrationMattersSection && (
       <section
         class="bg-[linear-gradient(90deg,#1f3143_0%,#29435a_52%,#355572_100%)] px-6 py-14 text-white lg:px-8 lg:py-16"
-        aria-label="Why partner integration matters"
+        aria-label={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
       >
         <div class="mx-auto flex max-w-[1200px] flex-col items-center gap-10">
           <h2 class="m-0 text-center text-[1.75rem] font-bold leading-tight text-white lg:text-[2.2rem]">
@@ -122,9 +119,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
             </p>
           )}
 
-          <a href="/contact" class="btn btn--primary">
-            Get in touch
-          </a>
+          <a href="/contact" class="btn btn--primary">{PARTNER_STORIES_PAGE_CONTENT.cta.contact}</a>
         </div>
       </section>
     )

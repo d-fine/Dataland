@@ -1,0 +1,87 @@
+---
+import type { Testimonial } from '../../data/testimonials';
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  watch: string;
+}
+
+interface Props {
+  content: Content;
+  testimonials: Testimonial[];
+}
+
+const { content, testimonials } = Astro.props;
+
+const sectionClass = 'py-12 px-6 bg-[var(--color-brand-blue)] text-white lg:py-16 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-8';
+
+const sectionHeaderClass = 'mx-auto max-w-[860px]';
+
+const sliderRowClass = 'flex items-center gap-3 lg:gap-5';
+
+const navButtonClass =
+  'testimonial-nav inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-35';
+
+const navIconClass = 'text-xl leading-none';
+
+const sliderClass =
+  'testimonial-slider flex gap-5 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
+
+const cardClass =
+  'testimonial-card shrink-0 min-w-[280px] max-w-[340px] snap-start bg-white/10 rounded-xl p-5 m-0 flex flex-col gap-3.5 sm:p-6 sm:gap-4';
+
+const quoteClass = 'm-0 flex-1 text-[1.06rem] italic leading-[1.62] text-white/90';
+
+const authorClass = 'not-italic text-[0.95rem] font-bold text-white';
+
+const affiliationClass = 'text-[0.82rem] text-white/70';
+
+const footerClass = 'flex flex-col gap-0.5';
+
+const linkWrapClass = 'flex justify-center';
+---
+
+<section class={sectionClass} aria-label="What our members say">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} tone="light" class={sectionHeaderClass} />
+    <div class={sliderRowClass}>
+      <button
+        type="button"
+        class={navButtonClass}
+        data-direction="prev"
+        aria-label="Show previous testimonials"
+      >
+        <span aria-hidden="true" class={navIconClass}>&larr;</span>
+      </button>
+      <div class={sliderClass} data-testimonial-slider>
+        {
+          testimonials.map((t) => (
+            <blockquote class={cardClass}>
+              <p class={quoteClass}>&ldquo;{t.quote}&rdquo;</p>
+              <footer class={footerClass}>
+                <cite class={authorClass}>{t.author}</cite>
+                <span class={affiliationClass}>{t.affiliation}</span>
+              </footer>
+            </blockquote>
+          ))
+        }
+      </div>
+      <button
+        type="button"
+        class={navButtonClass}
+        data-direction="next"
+        aria-label="Show next testimonials"
+      >
+        <span aria-hidden="true" class={navIconClass}>&rarr;</span>
+      </button>
+    </div>
+    <div class={linkWrapClass}>
+      <ArrowLink href="/testimonials">{content.watch} <span aria-hidden="true">&rarr;</span></ArrowLink>
+    </div>
+  </div>
+</section>
