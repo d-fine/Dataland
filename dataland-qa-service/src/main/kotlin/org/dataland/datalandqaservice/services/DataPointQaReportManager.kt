@@ -30,6 +30,10 @@ class DataPointQaReportManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private companion object {
+        private const val MAX_DATA_POINT_IDS_PER_BATCH = 50_000
+    }
+
     private fun ensureDatalandDataPointExists(dataPointId: String): DataPointMetaInformation {
         try {
             return dataPointControllerApi.getDataPointMetaInfo(dataPointId)
@@ -199,12 +203,23 @@ class DataPointQaReportManager(
 
     /**
      * Returns a map from dataPointId to the number of active QA reports for each data point ID in the given set.
-     * Uses a single grouped DB query instead of one query per data point.
-     * @param dataPointIds set of dataPointId values to count QA reports for
-     * @return map of dataPointId to count
+     * Uses one or more grouped DB queries; if the set is very large, it is split into batches to avoid exceeding
+     * PostgreSQL's maximum number of bind parameters per statement.
      */
-    fun countQaReportsForDataPointIdsBulk(dataPointIds: Set<String>): Map<String, Long> =
-        qaReportRepository
-            .countByDataPointIdInGrouped(dataPointIds)
-            .associate { row -> row.getDataPointId() to row.getCount() }
+    fun countQaReportsForDataPointIdsBulk(dataPointIds: Set<String>): Map<String, Long> {
+        if (dataPointIds.isEmpty()) return emptyMap()
+
+        val result = mutableMapOf<String, Long>()
+
+        dataPointIds.chunked(MAX_DATA_POINT_IDS_PER_BATCH).forEach { batch ->
+            val batchResult = qaReportRepository.countByDataPointIdInGrouped(batch.toSet())
+            batchResult.forEach { row ->
+                val id = row.getDataPointId()
+                val count = row.getCount()
+                result[id] = (result[id] ?: 0L) + count
+            }
+        }
+
+        return result
+    }
 }
