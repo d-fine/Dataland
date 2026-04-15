@@ -1,3 +1,8 @@
+export interface NavigationSection {
+  href: string;
+  label: string;
+}
+
 export const ABOUT_SECTIONS = [
   { href: '/about#company', label: 'Company' },
   { href: '/about#team', label: 'Leadership team' },

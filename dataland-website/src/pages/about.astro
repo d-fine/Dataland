@@ -13,9 +13,10 @@ import {
   CONTACT_EMAIL_DISPLAY,
   CONTACT_INQUIRY_MAILTO,
   CONTACT_ADDRESS,
+  type Person,
 } from '../data/about';
-import { PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
-import { NEWS_ITEMS } from '../data/news';
+import { PARTNER_STORY_SUMMARIES, type PartnerStorySummary } from '../data/partnerStories';
+import { NEWS_ITEMS, type NewsItem } from '../data/news';
 ---
 
 <Base title="About — Dataland" description="Learn about Dataland's mission, team, and partners.">
@@ -100,7 +101,7 @@ import { NEWS_ITEMS } from '../data/news';
       />
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
         {
-          LEADERSHIP_TEAM.map((person) => (
+          LEADERSHIP_TEAM.map((person: Person) => (
             <div class="flex h-full flex-col items-center gap-1.5 text-center">
               <img
                 src={person.imagePath}
@@ -163,7 +164,7 @@ import { NEWS_ITEMS } from '../data/news';
   <PartnerStoryCards
     title="Integration partners"
     intro="Dataland data is embedded into partner platforms, enabling Members to seamlessly access sustainability data through familiar interfaces and workflows."
-    stories={PARTNER_STORY_SUMMARIES}
+    stories={PARTNER_STORY_SUMMARIES as PartnerStorySummary[]}
   />
 
   <!-- Section 4: Updates (white) -->
@@ -175,13 +176,11 @@ import { NEWS_ITEMS } from '../data/news';
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <SectionHeader
         title="News and updates"
-        intro="Recent updates, announcements, and insights reflect Dataland&apos;s ongoing development."
+        intro="Recent updates, announcements, and insights reflect Dataland's ongoing development."
         class="mx-auto max-w-[860px]"
       />
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {
-          NEWS_ITEMS.map((item) => <NewsCard item={item} />)
-        }
+        {NEWS_ITEMS.map((item: NewsItem) => <NewsCard item={item} />)}
       </div>
     </div>
   </section>
