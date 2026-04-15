@@ -40,6 +40,7 @@ class DataPointQaReportManagerTest {
     fun `splits into batches and aggregates results`() {
         // read the (private) MAX_DATA_POINT_IDS_PER_BATCH from the manager via reflection
         // and create a set that is one larger so the implementation must split it into batches
+        val dataPointId = "shared-id"
         val max = DataPointQaReportManager.MAX_DATA_POINT_IDS_PER_BATCH
         val manyIds: Set<String> = (0..max).map { "id-$it" }.toSet()
         // sanity-check for readers: manyIds size is max + 1 (e.g. 50001 when max == 50000)
@@ -49,7 +50,7 @@ class DataPointQaReportManagerTest {
             .thenAnswer {
                 listOf(
                     object : DataPointCount {
-                        override fun getDataPointId(): String = "shared-id"
+                        override fun getDataPointId(): String = dataPointId
 
                         override fun getQaReportCount(): Long = 1L
                     },
@@ -57,7 +58,7 @@ class DataPointQaReportManagerTest {
             }.thenAnswer {
                 listOf(
                     object : DataPointCount {
-                        override fun getDataPointId(): String = "shared-id"
+                        override fun getDataPointId(): String = dataPointId
 
                         override fun getQaReportCount(): Long = 1L
                     },
@@ -67,7 +68,7 @@ class DataPointQaReportManagerTest {
         val result = dataPointQaReportManager.countQaReportsForDataPointIdsBulk(manyIds)
 
         Assertions.assertEquals(1, result.size)
-        Assertions.assertEquals(2L, result.getValue("shared-id"))
+        Assertions.assertEquals(2L, result.getValue(dataPointId))
 
         verify(mockRepo, times(2)).countByDataPointIdInGrouped(any())
     }
