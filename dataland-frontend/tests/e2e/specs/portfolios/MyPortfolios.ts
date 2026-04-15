@@ -159,16 +159,28 @@ describeIf(
           cy.get('[data-test="portfolio-name-input"]:visible').type(editedSecondPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
+          cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
           cy.get('#existing-company-identifiers li').should('have.length', 2);
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
             timeout: mediumTimeoutInMs,
           });
         });
       });
-      cy.wait('@replacePortfolio');
-      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
+      cy.wait('@replacePortfolio')
+        .its('request.body')
+        .should((body) => {
+          expect(body.portfolioName).to.equal(editedSecondPortfolioName);
+        });
+      cy.wait('@getEnrichedPortfolio');
+      cy.wait('@getPortfolioNames')
+        .its('response.body')
+        .should((portfolios: Array<{ portfolioName: string }>) => {
+          expect(portfolios.map((portfolio) => portfolio.portfolioName)).to.include(editedSecondPortfolioName);
+        });
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
-      cy.get(`[data-test="${editedSecondPortfolioName}"]`, { timeout: mediumTimeoutInMs }).click();
+      cy.contains('[data-test="portfolios"] .tabview-header', editedSecondPortfolioName, {
+        timeout: mediumTimeoutInMs,
+      }).click();
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
