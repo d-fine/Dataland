@@ -43,11 +43,151 @@ class QaReviewQueryService
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        // --- Internal DTOs -------------------------------------------------------
+
         private data class MinimalDatasetJudgement(
             val dataSetJudgementId: String,
             val qaJudgeUserId: String,
             val qaJudgeUserName: String,
         )
+
+        // --- Public query APIs: overview endpoints --------------------------------
+
+        /**
+         * Returns a paged list of datasets (for the given filters) with QA metadata.
+         * Used for the “Datasets” tab.
+         */
+        @Transactional(readOnly = true)
+        fun getInfoOnDatasets(
+            dataTypes: Set<DataTypeEnum>?,
+            reportingPeriods: Set<String>?,
+            companyName: String?,
+            qaStatus: QaStatus = QaStatus.Pending,
+            chunkSize: Int,
+            chunkIndex: Int,
+        ): List<QaReviewResponse> {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+
+            val entities =
+                qaReviewRepository.getSortedAndFilteredQaReviewMetadataset(
+                    QaSearchFilter(
+                        dataTypes = dataTypes,
+                        reportingPeriods = reportingPeriods,
+                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                        companyName = companyName,
+                        qaStatuses = setOf(qaStatus),
+                    ),
+                    resultOffset = chunkIndex * chunkSize,
+                    resultLimit = chunkSize,
+                )
+
+            return buildResponsesWithAggregates(entities, userIsAdmin)
+        }
+
+        /**
+         * Returns a list of pending datasets (qaStatus = Pending) for the given company.
+         * Used for the QA “queue” view.
+         */
+        @Transactional(readOnly = true)
+        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+
+            val entities = fetchPendingEntities(companyName)
+            val enriched = buildResponsesWithAggregates(entities, userIsAdmin)
+
+            return addPrioritiesToResponse(enriched)
+        }
+
+        /**
+         * Returns the number of unreviewed datasets for the given filters.
+         */
+        @Transactional
+        fun getNumberOfPendingDatasets(
+            dataTypes: Set<DataTypeEnum>?,
+            reportingPeriods: Set<String>?,
+            companyName: String?,
+        ): Int =
+            qaReviewRepository.getNumberOfFilteredQaReviews(
+                QaSearchFilter(
+                    dataTypes = dataTypes,
+                    companyName = companyName,
+                    reportingPeriods = reportingPeriods,
+                    companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
+                    qaStatuses = setOf(QaStatus.Pending),
+                ),
+            )
+
+        // --- Public query APIs: single dataset / accepted metadata ---------------
+
+        /**
+         * Returns the most recent QA review entity for the given dataId, or null.
+         */
+        @Transactional
+        fun getMostRecentQaReviewEntity(dataId: String): QaReviewEntity? = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
+
+        /**
+         * Retrieves a QA review response by dataId (single dataset view).
+         */
+        @Transactional(readOnly = true)
+        fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
+            val userIsAdmin = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN)
+            return getMostRecentQaReviewEntity(dataId.toString())?.toQaReviewResponse(userIsAdmin ?: false)
+        }
+
+        /**
+         * Returns true if any QA review is known for the given dataId.
+         */
+        @Transactional
+        fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = getMostRecentQaReviewEntity(dataId) != null
+
+        /**
+         * Asserts that at least one QA review is known for the given dataId.
+         */
+        @Transactional
+        fun assertQaServiceKnowsDataId(dataId: String) {
+            if (!checkIfQaServiceKnowsDataId(dataId)) {
+                throw ResourceNotFoundApiException(
+                    "Data ID not known to QA service",
+                    "Dataland does not know the data id $dataId",
+                )
+            }
+        }
+
+        /**
+         * Retrieves all QA review entities with status Accepted for a given triple
+         * ([companyId], [dataType], [reportingPeriod]), sorted by timestamp descending.
+         */
+        fun getAcceptedReviewMetadataSorted(
+            companyId: String,
+            dataType: String,
+            reportingPeriod: String,
+        ): List<QaReviewEntity> {
+            logger.info(
+                "Retrieving accepted QA review entities sorted by timestamp for companyId $companyId, " +
+                    "dataType $dataType, reportingPeriod $reportingPeriod.",
+            )
+            val searchFilter =
+                QaSearchFilter(
+                    dataTypes = DataTypeEnum.decode(dataType)?.let { setOf(it) },
+                    companyIds = setOf(companyId),
+                    reportingPeriods = setOf(reportingPeriod),
+                    qaStatuses = setOf(QaStatus.Accepted),
+                    companyName = null,
+                )
+            return qaReviewRepository.getSortedAndFilteredQaReviewMetadataset(searchFilter)
+        }
+
+        /**
+         * Returns the dataId of the currently active dataset for ([companyId], [dataType], [reportingPeriod]),
+         * or null if none exists.
+         */
+        fun getDataIdOfCurrentlyActiveDataset(
+            companyId: String,
+            dataType: String,
+            reportingPeriod: String,
+        ): String? = getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod).firstOrNull()?.dataId
+
+        // --- Internal helpers: fetching entities & priorities --------------------
 
         private fun fetchPendingEntities(companyName: String?): List<QaReviewEntity> {
             val filter =
@@ -63,96 +203,10 @@ class QaReviewQueryService
         }
 
         /**
-         * The method returns a list of unreviewed datasets with corresponding information for the specified input params
-         * @param dataTypes the datatype of the dataset
-         * @param reportingPeriods the reportingPeriod of the dataset
-         * @param companyName the company name connected to the dataset
-         * @param chunkIndex the chunkIndex of the request
-         * @param chunkSize the chunkSize of the request
-         */
-        @Transactional(readOnly = true)
-        fun getInfoOnDatasets(
-            dataTypes: Set<DataTypeEnum>?,
-            reportingPeriods: Set<String>?,
-            companyName: String?,
-            qaStatus: QaStatus = QaStatus.Pending,
-            chunkSize: Int,
-            chunkIndex: Int,
-        ): List<QaReviewResponse> {
-            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            return qaReviewRepository
-                .getSortedAndFilteredQaReviewMetadataset(
-                    QaSearchFilter(
-                        dataTypes = dataTypes,
-                        reportingPeriods = reportingPeriods,
-                        companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                        companyName = companyName,
-                        qaStatuses = setOf(qaStatus),
-                    ),
-                    resultOffset = chunkIndex * chunkSize,
-                    resultLimit = chunkSize,
-                ).map { it.toQaReviewResponse(userIsAdmin) }
-        }
-
-        /**
-         * The method returns a list of unreviewed datasets with corresponding information for the specified company name,
-         * which are still pending review (qaStatus = Pending).
-         */
-        @Transactional(readOnly = true)
-        fun getInfoOnPendingDatasets(companyName: String?): List<QaReviewResponse> {
-            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-
-            val entities = fetchPendingEntities(companyName)
-            val datasetIds = entities.map { it.dataId }.distinct()
-            val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
-            val datasetUUIDs = datasetIds.map { convertToUUID(it) }
-
-            val judgementEntities =
-                try {
-                    datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
-                } catch (ex: PersistenceException) {
-                    fallbackToNonFetch(datasetUUIDs, ex)
-                } catch (ex: DataAccessException) {
-                    fallbackToNonFetch(datasetUUIDs, ex)
-                }
-
-            val latestJudgementByDatasetId =
-                judgementEntities
-                    .groupBy { it.datasetId }
-                    .mapValues { (datasetIdKey, judgements) ->
-                        check(judgements.size == 1) {
-                            "Expected exactly one DatasetJudgement for datasetId=$datasetIdKey but found ${judgements.size}"
-                        }
-                        val firstJudgement = judgements.first()
-                        MinimalDatasetJudgement(
-                            dataSetJudgementId = firstJudgement.dataSetJudgementId.toString(),
-                            qaJudgeUserId = firstJudgement.qaJudgeUserId.toString(),
-                            qaJudgeUserName = firstJudgement.qaJudgeUserName,
-                        )
-                    }
-
-            val qaReviewResponses =
-                entities
-                    .map {
-                        it.toQaReviewResponseWithPrecomputedData(
-                            showTriggeringUserId = userIsAdmin,
-                            numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
-                            latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
-                        )
-                    }
-
-            val qaReviewResponsesWithPriorities = addPrioritiesToResponse(qaReviewResponses)
-            return qaReviewResponsesWithPriorities
-        }
-
-        /**
          * Adds data sourcing priorities to the given QA review responses if available.
          *
-         * If the data sourcing service returns 404, priorities are assumed missing and set to null. Other errors are rethrown.
-         * Since the service may return priorities in a different order, a map from dimensions to priority is used.
-         *
-         * @param qaReviewResponses list of QA review responses to enrich with priority
-         * @return list of QA review responses with priorities added or null if unavailable
+         * If the data sourcing service returns 404, priorities are assumed missing and set to null.
+         * Other errors are rethrown.
          */
         private fun addPrioritiesToResponse(qaReviewResponses: List<QaReviewResponse>): List<QaReviewResponse> {
             val dsDimensions =
@@ -186,110 +240,11 @@ class QaReviewQueryService
             datasetJudgementRepository.findAllByDatasetIdIn(datasetUUIDs)
         }
 
-        /**
-         * This method returns the number of unreviewed datasets for a specific set of filters
-         * @param dataTypes the set of datatypes for which should be filtered
-         * @param reportingPeriods the set of reportingPeriods for which should be filtered
-         * @param companyName the companyName for which should be filtered
-         */
-        @Transactional
-        fun getNumberOfPendingDatasets(
-            dataTypes: Set<DataTypeEnum>?,
-            reportingPeriods: Set<String>?,
-            companyName: String?,
-        ): Int =
-            qaReviewRepository.getNumberOfFilteredQaReviews(
-                QaSearchFilter(
-                    dataTypes = dataTypes,
-                    companyName = companyName,
-                    reportingPeriods = reportingPeriods,
-                    companyIds = datalandBackendAccessor.getCompanyIdsForCompanyName(companyName),
-                    qaStatuses = setOf(QaStatus.Pending),
-                ),
-            )
+        // --- Internal helpers: QA report counting --------------------------------
 
         /**
-         * Return the most recent Qa review entity for a particular data ID
-         * @param dataId the data ID for which the information is retrieved
-         */
-        @Transactional
-        fun getMostRecentQaReviewEntity(dataId: String): QaReviewEntity? = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
-
-        /**
-         * Retrieves from database a QaReviewEntity by its dataId
-         * @param dataId: dataID
-         */
-        @Transactional(readOnly = true)
-        fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
-            val userIsAdmin = DatalandAuthentication.fromContextOrNull()?.roles?.contains(DatalandRealmRole.ROLE_ADMIN)
-            return getMostRecentQaReviewEntity(dataId.toString())?.toQaReviewResponse(userIsAdmin ?: false)
-        }
-
-        /**
-         * Checks if the QA service knows the dataId
-         */
-        @Transactional
-        fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = getMostRecentQaReviewEntity(dataId) != null
-
-        /**
-         * Asserts that the QA service knows the dataId
-         */
-        @Transactional
-        fun assertQaServiceKnowsDataId(dataId: String) {
-            if (!checkIfQaServiceKnowsDataId(dataId)) {
-                throw ResourceNotFoundApiException(
-                    "Data ID not known to QA service",
-                    "Dataland does not know the data id $dataId",
-                )
-            }
-        }
-
-        /**
-         * Retrieves all QA review entities with status Accepted for a given ([companyId], [dataType], [reportingPeriod])
-         * triple, sorted by timestamp in descending order.
-         *
-         * @param companyId the ID of the company
-         * @param dataType the dataType of the dataset
-         * @param reportingPeriod the reportingPeriod of the dataset
-         * @return a list of accepted [QaReviewEntity] objects sorted by timestamp descending
-         */
-        fun getAcceptedReviewMetadataSorted(
-            companyId: String,
-            dataType: String,
-            reportingPeriod: String,
-        ): List<QaReviewEntity> {
-            logger.info(
-                "Retrieving accepted QA review entities sorted by timestamp for companyId $companyId, " +
-                    "dataType $dataType, reportingPeriod $reportingPeriod.",
-            )
-            val searchFilter =
-                QaSearchFilter(
-                    dataTypes = DataTypeEnum.decode(dataType)?.let { setOf(it) },
-                    companyIds = setOf(companyId),
-                    reportingPeriods = setOf(reportingPeriod),
-                    qaStatuses = setOf(QaStatus.Accepted),
-                    companyName = null,
-                )
-            return qaReviewRepository
-                .getSortedAndFilteredQaReviewMetadataset(searchFilter)
-        }
-
-        /**
-         * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
-         *
-         * @param companyId the ID of the company
-         * @param dataType the dataType of the dataset
-         * @param reportingPeriod the reportingPeriod of the dataset
-         * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
-         */
-        fun getDataIdOfCurrentlyActiveDataset(
-            companyId: String,
-            dataType: String,
-            reportingPeriod: String,
-        ): String? = getAcceptedReviewMetadataSorted(companyId, dataType, reportingPeriod).firstOrNull()?.dataId
-
-        /**
-         * Returns the number of QA reports for all data points contained in the given datasetId
+         * Returns the number of QA reports for all data points in a single dataset.
+         * Used only in the single-dataset path (getQaReviewResponseByDataId).
          */
         private fun getNumberOfQaReportsForDatasetId(datasetId: String): Long =
             try {
@@ -305,9 +260,8 @@ class QaReviewQueryService
             }
 
         /**
-         * Returns a map from datasetId to the number of QA reports for all data points contained in that dataset.
-         * Fetches metadata for all datasetIds in bulk (one call per datasetId to the metadata API) and counts
-         * QA reports for all collected data point IDs in a single DB query.
+         * Returns a map from datasetId to the number of QA reports for all data points in that dataset,
+         * using a single bulk query for all data point IDs.
          */
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
             val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
@@ -324,6 +278,7 @@ class QaReviewQueryService
                     }
                 }
             }
+
             val allDataPointIds = dataPointIdsByDatasetId.values.flatten().toSet()
             val totalCountByDataPointId =
                 if (allDataPointIds.isEmpty()) {
@@ -331,15 +286,84 @@ class QaReviewQueryService
                 } else {
                     dataPointQaReportManager.countQaReportsForDataPointIdsBulk(allDataPointIds)
                 }
-            val qaReportsByDatasetId =
-                dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
-                    dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
+
+            return dataPointIdsByDatasetId.mapValues { (_, dpIds) ->
+                dpIds.sumOf { totalCountByDataPointId[it] ?: 0L }
+            }
+        }
+
+        // --- Internal helpers: mapping ------------------------------------------
+
+        /**
+         * Builds enriched QA review responses for a list of QA review metadata entities.
+         *
+         * For the given [entities], this method:
+         *  - Collects all distinct dataset IDs.
+         *  - Fetches the contained data points for each dataset and counts active QA reports
+         *    in bulk via [DataPointQaReportManager.countQaReportsForDataPointIdsBulk].
+         *  - Loads all DatasetJudgementEntity rows for those datasets in a single query
+         *    (using a fetch-join if possible, or falling back to a non-fetch query).
+         *  - Maps at most one [MinimalDatasetJudgement] per dataset (enforcing the
+         *    “one judgement per dataset” invariant).
+         *  - Builds [QaReviewResponse] objects using the precomputed QA report counts and
+         *    optional judgement information.
+         *
+         * This centralizes the performance-sensitive aggregation logic and is used by both
+         * [getInfoOnDatasets] and [getInfoOnPendingDatasets] to avoid N+1 queries.
+         *
+         * If a dataset has no judgement yet, the corresponding judge fields in the response
+         * ([QaReviewResponse.qaJudgeUserId], [QaReviewResponse.qaJudgeUserName],
+         * [QaReviewResponse.datasetReviewId]) will be null.
+         *
+         * @param entities The list of [QaReviewEntity] rows to enrich.
+         * @param userIsAdmin Whether the current user has the admin role. Controls whether
+         *        the [QaReviewResponse.triggeringUserId] is included or hidden.
+         * @return A list of [QaReviewResponse] in the same order as [entities].
+         */
+        private fun buildResponsesWithAggregates(
+            entities: List<QaReviewEntity>,
+            userIsAdmin: Boolean,
+        ): List<QaReviewResponse> {
+            val datasetIds = entities.map { it.dataId }.distinct()
+            val numberQaReportsByDatasetId = getNumberOfQaReportsForDatasetIds(datasetIds)
+            val datasetUUIDs = datasetIds.map { convertToUUID(it) }
+
+            val judgementEntities =
+                try {
+                    datasetJudgementRepository.findAllWithDataPointsByDatasetIdIn(datasetUUIDs)
+                } catch (ex: PersistenceException) {
+                    fallbackToNonFetch(datasetUUIDs, ex)
+                } catch (ex: DataAccessException) {
+                    fallbackToNonFetch(datasetUUIDs, ex)
                 }
-            return qaReportsByDatasetId
+
+            val latestJudgementByDatasetId =
+                judgementEntities
+                    .groupBy { it.datasetId }
+                    .mapValues { (_, judgements) ->
+                        check(judgements.size == 1) {
+                            "Expected exactly one DatasetJudgement for" +
+                                " datasetId=${judgements.first().datasetId} but found ${judgements.size}"
+                        }
+                        val j = judgements.first()
+                        MinimalDatasetJudgement(
+                            dataSetJudgementId = j.dataSetJudgementId.toString(),
+                            qaJudgeUserId = j.qaJudgeUserId.toString(),
+                            qaJudgeUserName = j.qaJudgeUserName,
+                        )
+                    }
+
+            return entities.map {
+                it.toQaReviewResponseWithPrecomputedData(
+                    showTriggeringUserId = userIsAdmin,
+                    numberQaReports = numberQaReportsByDatasetId[it.dataId] ?: 0L,
+                    latestJudgement = latestJudgementByDatasetId[convertToUUID(it.dataId)],
+                )
+            }
         }
 
         /**
-         * Converts the QaReviewEntity into a QaReviewResponse using pre-fetched data to avoid per-item I/O.
+         * Mapping for overview endpoints using precomputed aggregates.
          */
         private fun QaReviewEntity.toQaReviewResponseWithPrecomputedData(
             showTriggeringUserId: Boolean = false,
@@ -364,8 +388,7 @@ class QaReviewQueryService
             )
 
         /**
-         * Converts the QaReviewEntity into a QaReviewResponse which is used in a response for a GET request.
-         * The QaReviewResponse can optionally hide the triggeringUserId by setting showTriggeringUserId to false.
+         * Legacy mapping for the single-dataset detail endpoint.
          */
         private fun QaReviewEntity.toQaReviewResponse(showTriggeringUserId: Boolean = false): QaReviewResponse {
             val numberQaReports = getNumberOfQaReportsForDatasetId(dataId)
