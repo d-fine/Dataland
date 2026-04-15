@@ -1,6 +1,7 @@
 /**
- * As a user, I want the landing page to behave as I expect and contain all relevant information
+ * As a user, I want the website to behave as I expect and contain all relevant information
  */
-describe('Landing Page Tests', () => {
+describe('Website Tests', () => {
   require('./CookieBanner');
+  require('./Website');
 });
