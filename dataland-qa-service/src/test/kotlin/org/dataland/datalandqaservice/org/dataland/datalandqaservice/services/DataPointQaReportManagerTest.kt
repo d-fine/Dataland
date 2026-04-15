@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -19,7 +19,7 @@ class DataPointQaReportManagerTest {
     private val mockRepo: DataPointQaReportRepository = mock()
     private val mockSecurityPolicy: QaReportSecurityPolicy = mock()
 
-    private val manager =
+    private val dataPointQaReportManager =
         DataPointQaReportManager(
             mockDataPointControllerApi,
             mockRepo,
@@ -28,7 +28,7 @@ class DataPointQaReportManagerTest {
 
     @Test
     fun `returns empty map for empty input`() {
-        val result = manager.countQaReportsForDataPointIdsBulk(emptySet())
+        val result = dataPointQaReportManager.countQaReportsForDataPointIdsBulk(emptySet())
 
         assertEquals(emptyMap<String, Long>(), result)
         verify(mockRepo, never()).countByDataPointIdInGrouped(any())
@@ -36,23 +36,38 @@ class DataPointQaReportManagerTest {
 
     @Test
     fun `splits into batches and aggregates results`() {
-        val manyIds: Set<String> = (0..50000).map { "id-$it" }.toSet()
+        // read the (private) MAX_DATA_POINT_IDS_PER_BATCH from the manager via reflection
+        // and create a set that is one larger so the implementation must split it into batches
+        val maxField = DataPointQaReportManager::class.java.getDeclaredField("MAX_DATA_POINT_IDS_PER_BATCH").apply { isAccessible = true }
+        val max = maxField.getInt(null)
+        val manyIds: Set<String> = (0..max).map { "id-$it" }.toSet()
+        // sanity-check for readers: manyIds size is max + 1 (e.g. 50001 when max == 50000)
+        assertEquals(max + 1, manyIds.size)
 
-        whenever(mockRepo.countByDataPointIdInGrouped(any())).doAnswer { invocation ->
-            val batch = invocation.arguments[0] as Set<*>
-            val first = batch.first() as String
-            listOf(
-                object : DataPointCount {
-                    override fun getDataPointId(): String = first
+        whenever(mockRepo.countByDataPointIdInGrouped(any()))
+            .thenAnswer {
+                listOf(
+                    object : DataPointCount {
+                        override fun getDataPointId(): String = "shared-id"
 
-                    override fun getQaReportCount(): Long = 1L
-                })
-        }
+                        override fun getQaReportCount(): Long = 1L
+                    },
+                )
+            }.thenAnswer {
+                listOf(
+                    object : DataPointCount {
+                        override fun getDataPointId(): String = "shared-id"
 
-        val result = manager.countQaReportsForDataPointIdsBulk(manyIds)
+                        override fun getQaReportCount(): Long = 1L
+                    },
+                )
+            }
 
-        assertEquals(2, result.size)
+        val result = dataPointQaReportManager.countQaReportsForDataPointIdsBulk(manyIds)
 
-        result.values.forEach { count -> assertEquals(1L, count) }
+        assertEquals(1, result.size)
+        assertEquals(2L, result.getValue("shared-id"))
+
+        verify(mockRepo, times(2)).countByDataPointIdInGrouped(any())
     }
 }
