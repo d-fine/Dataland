@@ -1,9 +1,11 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
+package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointCount
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.kotlin.any
@@ -30,7 +32,7 @@ class DataPointQaReportManagerTest {
     fun `returns empty map for empty input`() {
         val result = dataPointQaReportManager.countQaReportsForDataPointIdsBulk(emptySet())
 
-        assertEquals(emptyMap<String, Long>(), result)
+        Assertions.assertEquals(emptyMap<String, Long>(), result)
         verify(mockRepo, never()).countByDataPointIdInGrouped(any())
     }
 
@@ -41,7 +43,7 @@ class DataPointQaReportManagerTest {
         val max = DataPointQaReportManager.MAX_DATA_POINT_IDS_PER_BATCH
         val manyIds: Set<String> = (0..max).map { "id-$it" }.toSet()
         // sanity-check for readers: manyIds size is max + 1 (e.g. 50001 when max == 50000)
-        assertEquals(max + 1, manyIds.size)
+        Assertions.assertEquals(max + 1, manyIds.size)
 
         whenever(mockRepo.countByDataPointIdInGrouped(any()))
             .thenAnswer {
@@ -64,8 +66,8 @@ class DataPointQaReportManagerTest {
 
         val result = dataPointQaReportManager.countQaReportsForDataPointIdsBulk(manyIds)
 
-        assertEquals(1, result.size)
-        assertEquals(2L, result.getValue("shared-id"))
+        Assertions.assertEquals(1, result.size)
+        Assertions.assertEquals(2L, result.getValue("shared-id"))
 
         verify(mockRepo, times(2)).countByDataPointIdInGrouped(any())
     }
