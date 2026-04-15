@@ -1,11 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
-import { PARTNER_STORY_DETAILS, PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
+import {
+  PARTNER_STORY_DETAILS,
+  PARTNER_STORY_SUMMARIES,
+  type PartnerStoryDetail,
+  type PartnerStorySummary,
+  type PartnerStoryExtraSection,
+} from '../data/partnerStories';
 import CardShell from '../components/CardShell.astro';
 import PartnerDetailCard from '../components/PartnerDetailCard.astro';
 
-const integrationMattersSection = PARTNER_STORY_DETAILS.find(
-  (story) => story.slug === 'iss-sopra-steria'
+const integrationMattersSection: PartnerStoryExtraSection | undefined = PARTNER_STORY_DETAILS.find(
+  (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'
 )?.extraSections?.find((section) => section.title === 'Why Partner Integration Matters');
 
 const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
@@ -40,7 +46,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
       </div>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {
-          PARTNER_STORY_SUMMARIES.map((story) => (
+          PARTNER_STORY_SUMMARIES.map((story: PartnerStorySummary) => (
             <CardShell
               as="a"
               href={story.link}
@@ -77,7 +83,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       {
-        PARTNER_STORY_DETAILS.map((story) => (
+        PARTNER_STORY_DETAILS.map((story: PartnerStoryDetail) => (
           <article id={story.slug} class="scroll-mt-24">
             <PartnerDetailCard story={story} useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY} />
           </article>
@@ -98,7 +104,7 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
           </h2>
 
           <div class="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
-            {integrationMattersSection.items.map((item) => (
+            {integrationMattersSection.items.map((item: { title: string; text: string }) => (
               <section class="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/8 p-6 text-center">
                 <h3 class="m-0 text-[1.14rem] font-bold text-white">{item.title}</h3>
                 <p class="m-0 text-[0.95rem] leading-relaxed text-white/82">{item.text}</p>
@@ -106,9 +112,13 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
             ))}
           </div>
 
-          {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt && (
+          {PARTNER_STORY_DETAILS.find((story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria')
+            ?.closingPrompt && (
             <p class="m-0 max-w-[880px] text-center text-[1.14rem] leading-relaxed text-white/90">
-              {PARTNER_STORY_DETAILS.find((story) => story.slug === 'iss-sopra-steria')?.closingPrompt}
+              {
+                PARTNER_STORY_DETAILS.find((story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria')
+                  ?.closingPrompt
+              }
             </p>
           )}
 

@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import PartnersSection from '../components/PartnersSection.astro';
-import { COMMUNITY_GRID_ITEMS } from '../data/communityGrid';
-import { PARTNERS } from '../data/about';
-import { TRUSTED_BY_LOGOS } from '../data/members';
+import { COMMUNITY_GRID_ITEMS, type CommunityGridItem } from '../data/communityGrid';
+import { PARTNERS, type Partner } from '../data/about';
+import { TRUSTED_BY_LOGOS, type TrustedByLogo } from '../data/members';
 import SectionHeader from '../components/SectionHeader.astro';
 import CardShell from '../components/CardShell.astro';
 import CtaBand from '../components/CtaBand.astro';
@@ -27,7 +27,7 @@ import CtaBand from '../components/CtaBand.astro';
 
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {
-          COMMUNITY_GRID_ITEMS.map((item) => (
+          COMMUNITY_GRID_ITEMS.map((item: CommunityGridItem) => (
             <CardShell variant="glass" class="flex h-full flex-col px-6 py-5">
               <div class="mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" aria-hidden="true" />
               <div class="mb-4 flex items-center gap-4 text-white/76">
@@ -179,7 +179,7 @@ import CtaBand from '../components/CtaBand.astro';
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {
-          TRUSTED_BY_LOGOS.map((logo) => (
+          TRUSTED_BY_LOGOS.map((logo: TrustedByLogo) => (
             <div
               class:list={[
                 'flex h-28 items-center justify-center rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-5 py-4 lg:h-32',
@@ -206,7 +206,11 @@ import CtaBand from '../components/CtaBand.astro';
     </div>
   </section>
 
-  <PartnersSection partners={PARTNERS} title="Our partners strengthen the Dataland network." showTopAccent={false} />
+  <PartnersSection
+    partners={PARTNERS as Partner[]}
+    title="Our partners strengthen the Dataland network."
+    showTopAccent={false}
+  />
 
   <section
     class="bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-14 text-white lg:px-8 lg:py-16"

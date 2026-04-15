@@ -69,139 +69,59 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
   </section>
-
-  <style>
-    .newsletter-input {
-      width: 100%;
-      border-radius: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: white;
-      padding: 0.82rem 0.95rem;
-      font-size: 0.95rem;
-      outline: none;
-      transition:
-        border-color 0.15s,
-        box-shadow 0.15s;
-    }
-
-    .newsletter-input::placeholder {
-      color: rgba(255, 255, 255, 0.38);
-    }
-
-    .newsletter-input:focus {
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
-    }
-
-    .newsletter-input.is-error {
-      border-color: #dc2626;
-      box-shadow: 0 0 0 1px #dc2626;
-    }
-
-    #submit-button.is-enabled {
-      opacity: 1;
-      cursor: pointer;
-      transition:
-        background-color 0.15s,
-        opacity 0.15s;
-    }
-
-    #submit-button.is-enabled:hover {
-      background: var(--color-primary-hover);
-    }
-
-    #form-message.is-error {
-      color: #fca5a5;
-    }
-
-    #form-message.is-success {
-      color: #86efac;
-    }
-  </style>
-
-  <script>
-    const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
-    const submitButton = document.getElementById('submit-button') as HTMLButtonElement | null;
-    const messageEl = document.getElementById('form-message') as HTMLElement | null;
-
-    const firstNameInput = document.getElementById('firstName') as HTMLInputElement | null;
-    const lastNameInput = document.getElementById('lastName') as HTMLInputElement | null;
-    const companyInput = document.getElementById('company') as HTMLInputElement | null;
-    const emailInput = document.getElementById('email') as HTMLInputElement | null;
-
-    const requiredInputs = [firstNameInput, lastNameInput, companyInput, emailInput].filter(
-      (input): input is HTMLInputElement => input !== null
-    );
-
-    function setMessage(text: string, type = ''): void {
-      if (!messageEl) return;
-      messageEl.textContent = text;
-      messageEl.classList.remove('is-error', 'is-success');
-      if (type) {
-        messageEl.classList.add(type);
-      }
-    }
-
-    function clearAllErrors(): void {
-      requiredInputs.forEach((input) => input.classList.remove('is-error'));
-    }
-
-    function isEmailValid(value: string): boolean {
-      return value.includes('@');
-    }
-
-    function areAllFieldsFilled(): boolean {
-      return requiredInputs.every((input) => input.value.trim() !== '');
-    }
-
-    function isFormReady(): boolean {
-      return areAllFieldsFilled() && isEmailValid(emailInput?.value.trim() ?? '');
-    }
-
-    function updateSubmitState(): void {
-      if (!submitButton) return;
-      const enabled = isFormReady();
-      submitButton.disabled = !enabled;
-      submitButton.classList.toggle('is-enabled', enabled);
-    }
-
-    requiredInputs.forEach((input) => {
-      input.addEventListener('input', updateSubmitState);
-
-      input.addEventListener('focus', () => {
-        input.classList.remove('is-error');
-        if (messageEl?.classList.contains('is-error')) {
-          setMessage('');
-        }
-      });
-    });
-
-    form?.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      clearAllErrors();
-      setMessage('');
-
-      const emptyInputs = requiredInputs.filter((input) => input.value.trim() === '');
-
-      if (emptyInputs.length > 0) {
-        emptyInputs.forEach((input) => input.classList.add('is-error'));
-        setMessage('Fields should not be empty.', 'is-error');
-        updateSubmitState();
-        return;
-      }
-
-      if (emailInput && !isEmailValid(emailInput.value.trim())) {
-        emailInput.classList.add('is-error');
-        setMessage('The email address is not valid.', 'is-error');
-        updateSubmitState();
-        return;
-      }
-
-      setMessage('Form submission is currently disabled.', 'is-error');
-    });
-
-    updateSubmitState();
-  </script>
 </Base>
+
+<script>
+  import { initNewsletterForm } from '../scripts/newsletter';
+  initNewsletterForm();
+</script>
+
+<style>
+  .newsletter-input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    color: white;
+    padding: 0.82rem 0.95rem;
+    font-size: 0.95rem;
+    outline: none;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.38);
+  }
+
+  .newsletter-input:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  .newsletter-input.is-error {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 1px #dc2626;
+  }
+
+  #submit-button.is-enabled {
+    opacity: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.15s,
+      opacity 0.15s;
+  }
+
+  #submit-button.is-enabled:hover {
+    background: var(--color-primary-hover);
+  }
+
+  #form-message.is-error {
+    color: #fca5a5;
+  }
+
+  #form-message.is-success {
+    color: #86efac;
+  }
+</style>
