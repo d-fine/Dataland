@@ -14,6 +14,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.datalandqaservice.utils.BuildTestSetArgs
+import org.dataland.datalandqaservice.utils.buildTestSet
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions

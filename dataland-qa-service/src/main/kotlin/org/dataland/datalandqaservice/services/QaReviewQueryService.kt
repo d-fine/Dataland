@@ -228,14 +228,14 @@ class QaReviewQueryService
             return QaReviewUtils.assignPriorities(qaReviewResponses, prioritiesOfAssociatedDataSourcing)
         }
 
-    /**
-     * Logs a warning and falls back to a non-fetch query findAllByDatasetIdIn.
-     *
-     * This function is called when a fetch-join query (as findAllWithDataPointsByDatasetIdIn) fails due to a
-     * PersistenceException or DataAccessException. It logs the original exception and returns the result of
-     * datasetJudgementRepository.findAllByDatasetIdIn.
-     */
-    private fun fallbackToNonFetch(
+        /**
+         * Logs a warning and falls back to a non-fetch query findAllByDatasetIdIn.
+         *
+         * This function is called when a fetch-join query (as findAllWithDataPointsByDatasetIdIn) fails due to a
+         * PersistenceException or DataAccessException. It logs the original exception and returns the result of
+         * datasetJudgementRepository.findAllByDatasetIdIn.
+         */
+        private fun fallbackToNonFetch(
             datasetUUIDs: Collection<UUID>,
             ex: Throwable,
         ) = run {

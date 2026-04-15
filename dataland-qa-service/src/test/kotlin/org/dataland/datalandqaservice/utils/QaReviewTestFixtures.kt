@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.services
+package org.dataland.datalandqaservice.utils
 
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingPriorityByDataDimensions
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
