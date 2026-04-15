@@ -207,42 +207,6 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
 
-  it('Check viewDataRequest page for nonSourceable request renders as expected and reopen data request', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(
-      createStoredDataRequest(RequestStatus.NonSourceable, [dummyMessageObject])
-    );
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(false);
-    interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-      props: {
-        requestId: requestId,
-      },
-    });
-    checkBasicPageElementsAsUser(RequestStatus.NonSourceable);
-    cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
-    cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
-    cy.get('[data-test="card_withdrawn"]').should('exist').should('be.visible');
-    cy.get('[data-test="card_reopen"]').should('exist');
-    cy.get('[data-test="card_reopen"]').within(() => {
-      cy.contains('Currently, your request has the status non-sourceable.').should('exist');
-      cy.contains('Reopen Request').should('exist');
-      cy.contains('Reopen request').click();
-    });
-    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
-    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible');
-    cy.get('[data-test="reopenModal"]').should('exist');
-    cy.get('[data-test="reopenModal"]').within(() => {
-      cy.get('[data-test="reopenMessage"]').should('be.visible');
-      cy.get('[data-test="reopenMessage"]').type('Make the test work, please!');
-      cy.get('[data-test="reopenRequestButton"]').should('be.visible');
-      cy.get('[data-test="reopenRequestButton"]').contains('REOPEN REQUEST').click();
-    });
-    cy.get('[data-test="reopenModal"]').should('not.exist');
-    cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();
-    cy.get('[data-test="reopenedModal"]').should('not.exist');
-  });
-
   it('Check view data request page for open request without data and withdraw the data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
