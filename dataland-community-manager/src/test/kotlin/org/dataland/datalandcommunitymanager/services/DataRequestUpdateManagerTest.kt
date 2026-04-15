@@ -26,7 +26,6 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
@@ -71,8 +70,6 @@ class DataRequestUpdateManagerTest {
 
     private val correlationId = UUID.randomUUID().toString()
     private val dummyCompanyId = "dummyCompanyId"
-    private val dummyNonSourceableInfo = testDataProvider.getDummyNonSourceableInfo()
-    private val dummySourceableInfo = testDataProvider.getDummySourceableInfo()
     private val dataMetaInformation = testDataProvider.getDataMetaInformation()
 
     private lateinit var dummyDataRequestEntityWithoutEarlierQaApproval1: DataRequestEntity
@@ -137,9 +134,9 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = dummyNonSourceableInfo.basicDataDimensions.companyId,
-                dataType = dummyNonSourceableInfo.basicDataDimensions.dataType,
-                reportingPeriod = dummyNonSourceableInfo.basicDataDimensions.reportingPeriod,
+                datalandCompanyId = testDataProvider.dummyCompanyId,
+                dataType = testDataProvider.nuclearAndGas,
+                reportingPeriod = "dummyPeriod",
             )
     }
 
@@ -373,18 +370,14 @@ class DataRequestUpdateManagerTest {
     }
 
     @Test
-    fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
-        assertThrows<IllegalArgumentException> {
-            dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
-                dummySourceableInfo,
-                correlationId,
-            )
-        }
-    }
-
-    @Test
     fun `validate that notification behaviour is as expected when requests are patched from Open to NonSourceable`() {
-        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+        dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId = testDataProvider.dummyCompanyId,
+            dataTypeAsString = testDataProvider.nuclearAndGas,
+            reportingPeriod = "dummyPeriod",
+            correlationId = correlationId,
+            requestStatusChangeReason = testDataProvider.dummyRequestChangeReason,
+        )
         verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenRequestStatusChanged(
                 eq(dummyDataRequestEntityWithoutEarlierQaApproval1),
@@ -412,8 +405,11 @@ class DataRequestUpdateManagerTest {
     @Test
     fun `validate that patching corresponding requests for a dataset only processes the corresponding requests`() {
         dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            dummyNonSourceableInfo,
-            correlationId,
+            companyId = testDataProvider.dummyCompanyId,
+            dataTypeAsString = testDataProvider.nuclearAndGas,
+            reportingPeriod = "dummyPeriod",
+            correlationId = correlationId,
+            requestStatusChangeReason = testDataProvider.dummyRequestChangeReason,
         )
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
             verify(mockDataRequestSummaryNotificationService)

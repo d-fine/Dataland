@@ -8,7 +8,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.BeforeEach
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -40,7 +38,6 @@ class CommunityManagerListenerUnitTest {
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
-    private val typeNonSourceable = MessageType.DATA_NONSOURCEABLE
     private val typeNonSourceabilityAutoAccepted = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
     private val typeNonSourceabilityQaAccepted = MessageType.NON_SOURCEABILITY_QA_ACCEPTED
 
@@ -153,23 +150,6 @@ class CommunityManagerListenerUnitTest {
     }
 
     @Test
-    fun `valid nonsourceable message should be processed successfully`() {
-        val sourceabilityInfoValid =
-            SourceabilityMessage(
-                basicDataDimensions = BasicDataDimensions("exampleCompany", "sfdr", "2023"),
-                isNonSourceable = true,
-                reason = "test",
-            )
-        communityManagerListener.processMessageForDataReportedAsNonSourceable(
-            jacksonObjectMapper.writeValueAsString(sourceabilityInfoValid), typeNonSourceable, correlationId,
-        )
-        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfoValid,
-            correlationId,
-        )
-    }
-
-    @Test
     fun `valid non-sourceability auto-accepted lifecycle event should be processed successfully`() {
         val event =
             NonSourceabilityLifecycleEvent(
@@ -217,57 +197,5 @@ class CommunityManagerListenerUnitTest {
             reportingPeriod = event.reportingPeriod,
             correlationId = correlationId,
         )
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-        value = [
-            ",2023",
-            "exampleCompany,",
-        ],
-    )
-    fun `should throw exception for incomplete data in nonsourceable message`(
-        companyId: String?,
-        reportingPeriod: String?,
-    ) {
-        val sourceabilityMessageIncomplete =
-            SourceabilityMessage(
-                BasicDataDimensions(
-                    companyId.orEmpty(),
-                    "sdfr",
-                    reportingPeriod.orEmpty(),
-                ),
-                true,
-                "test",
-            )
-        assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processMessageForDataReportedAsNonSourceable(
-                jacksonObjectMapper.writeValueAsString(sourceabilityMessageIncomplete),
-                typeNonSourceable,
-                correlationId,
-            )
-        }
-    }
-
-    @Test
-    fun `should throw exception when isNonSourceable is false in nonsourceable message`() {
-        assertThrows<MessageQueueRejectException> {
-            val sourceability =
-                SourceabilityMessage(
-                    BasicDataDimensions(
-                        "exampleCompany",
-                        "sfdr",
-                        "2023",
-                    ),
-                    false,
-                    "test",
-                )
-            communityManagerListener
-                .processMessageForDataReportedAsNonSourceable(
-                    jacksonObjectMapper.writeValueAsString(sourceability),
-                    typeNonSourceable,
-                    correlationId,
-                )
-        }
     }
 }

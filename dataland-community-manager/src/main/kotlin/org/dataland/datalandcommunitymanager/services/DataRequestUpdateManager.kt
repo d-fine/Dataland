@@ -15,7 +15,6 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
-import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -383,29 +382,6 @@ class DataRequestUpdateManager
                     earlierQaApprovedVersionOfDatasetExists = true,
                 )
             }
-        }
-
-        /**
-         * Method to patch all non-withdrawn data requests corresponding to a dataset to status non-sourceable.
-         * @param sourceabilityInfo the info on the non-sourceable dataset
-         */
-        @Transactional
-        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfo: SourceabilityMessage,
-            correlationId: String,
-        ) {
-            require(sourceabilityInfo.isNonSourceable) {
-                "Expected information about a non-sourceable dataset but received information about a sourceable dataset. No requests " +
-                    "are patched if a dataset is reported as sourceable until the dataset is uploaded."
-            }
-
-            patchAllNonWithdrawnRequestsToStatusNonSourceable(
-                companyId = sourceabilityInfo.basicDataDimensions.companyId,
-                dataTypeAsString = sourceabilityInfo.basicDataDimensions.dataType,
-                reportingPeriod = sourceabilityInfo.basicDataDimensions.reportingPeriod,
-                correlationId = correlationId,
-                requestStatusChangeReason = sourceabilityInfo.reason,
-            )
         }
 
         /**
