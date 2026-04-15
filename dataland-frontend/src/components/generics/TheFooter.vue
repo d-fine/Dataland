@@ -76,118 +76,118 @@ function showCookieSettings(): void {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .footer {
   background: var(--p-surface-0, #f7f7f5);
   border-top: 1px solid var(--p-surface-200, #e6e6e6);
   padding: 64px 64px 32px;
-
-  &__top {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__col {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  &__col-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0 0 16px;
-    color: var(--p-text-color, #1b1b1b);
-  }
-
-  &__description {
-    font-size: 0.875rem;
-    color: var(--p-text-muted-color, #737373);
-    line-height: 1.5;
-    margin: 0 0 16px;
-  }
-
-  &__logos {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  &__sponsor-logo {
-    height: 24px;
-    object-fit: contain;
-  }
-
-  &__link {
-    font-size: 0.875rem;
-    color: var(--p-text-color, #1b1b1b);
-    text-decoration: none;
-    display: block;
-    padding: 4px 0;
-
-    &:hover {
-      color: var(--p-primary-color);
-    }
-  }
-
-  &__bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid var(--p-surface-200, #e6e6e6);
-    font-size: 0.875rem;
-    color: var(--p-text-muted-color, #737373);
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  &__bottom-link {
-    font-size: 0.875rem;
-    color: var(--p-text-muted-color, #737373);
-    text-decoration: none;
-
-    &:hover {
-      color: var(--p-primary-color);
-    }
-  }
-
-  &__cookie-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  &__copyright {
-    font-size: 0.875rem;
-    color: var(--p-text-muted-color, #737373);
-  }
-
-  &__linkedin {
-    font-size: 1.125rem;
-  }
-
-  &--light {
-    background: var(--p-surface-100, #f0f0f0);
-  }
 }
 
-@media only screen and (max-width: $bp-lg) {
+.footer__top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer__col-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--p-text-color, #1b1b1b);
+}
+
+.footer__description {
+  font-size: 0.875rem;
+  color: var(--p-text-muted-color, #737373);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.footer__logos {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer__sponsor-logo {
+  height: 24px;
+  object-fit: contain;
+}
+
+.footer__link {
+  font-size: 0.875rem;
+  color: var(--p-text-color, #1b1b1b);
+  text-decoration: none;
+  display: block;
+  padding: 4px 0;
+}
+
+.footer__link:hover {
+  color: var(--p-primary-color);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--p-surface-200, #e6e6e6);
+  font-size: 0.875rem;
+  color: var(--p-text-muted-color, #737373);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer__bottom-link {
+  font-size: 0.875rem;
+  color: var(--p-text-muted-color, #737373);
+  text-decoration: none;
+}
+
+.footer__bottom-link:hover {
+  color: var(--p-primary-color);
+}
+
+.footer__cookie-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.footer__copyright {
+  font-size: 0.875rem;
+  color: var(--p-text-muted-color, #737373);
+}
+
+.footer__linkedin {
+  font-size: 1.125rem;
+}
+
+.footer--light {
+  background: var(--p-surface-100, #f0f0f0);
+}
+
+@media only screen and (max-width: 1024px) {
   .footer__top {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media only screen and (max-width: $bp-md) {
+@media only screen and (max-width: 768px) {
   .footer {
     padding: 32px 16px 24px;
   }
