@@ -120,10 +120,8 @@ class QaReviewQueryService
                 judgementEntities
                     .groupBy { it.datasetId }
                     .mapValues { (datasetIdKey, judgements) ->
-                        if (judgements.size != 1) {
-                            throw IllegalStateException(
-                                "Expected exactly one DatasetJudgement for datasetId=$datasetIdKey but found ${judgements.size}",
-                            )
+                        check (judgements.size == 1) {
+                            "Expected exactly one DatasetJudgement for datasetId=$datasetIdKey but found ${judgements.size}"
                         }
                         val firstJudgement = judgements.first()
                         MinimalDatasetJudgement(
