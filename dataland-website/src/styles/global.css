@@ -211,6 +211,7 @@ main {
   border-top-color: var(--color-primary);
 }
 
+
 .cta-band {
   display: flex;
   flex-direction: column;

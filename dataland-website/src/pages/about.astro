@@ -4,6 +4,7 @@ import AboutStartPanel from '../components/AboutStartPanel.astro';
 import PartnerStoryCards from '../components/PartnerStoryCards.astro';
 import NewsCard from '../components/NewsCard.astro';
 import SectionHeader from '../components/SectionHeader.astro';
+import { ABOUT_PAGE_CONTENT } from '../data/pageContent';
 import {
   COMPANY_COPY,
   LEADERSHIP_TEAM,
@@ -19,7 +20,7 @@ import { PARTNER_STORY_SUMMARIES, type PartnerStorySummary } from '../data/partn
 import { NEWS_ITEMS, type NewsItem } from '../data/news';
 ---
 
-<Base title="About — Dataland" description="Learn about Dataland's mission, team, and partners.">
+<Base title={ABOUT_PAGE_CONTENT.meta.title} description={ABOUT_PAGE_CONTENT.meta.description}>
   <!-- Section 1: Company (grey) -->
   <section
     id="company"
@@ -40,17 +41,14 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
       <div class="flex h-full flex-col justify-between gap-7 lg:pt-1">
         <div class="flex flex-col gap-4">
           <h1 class="m-0 text-[2rem] font-bold leading-[1.04] text-white lg:text-[2.3rem]">
-            Built for Europe, in Europe
+            {ABOUT_PAGE_CONTENT.company.title}
           </h1>
           <div class="flex flex-1 flex-col justify-center gap-4 pt-4 lg:pt-8">
             <p class="m-0 text-[1.06rem] leading-[1.6] text-white/78 lg:text-[1.18rem]">
               {COMPANY_COPY.text1}
             </p>
             <p class="m-0 text-[1.06rem] leading-[1.6] text-white/78 lg:text-[1.18rem]">
-              Dataland is part of the <span class="font-bold text-[var(--color-brand-blue-light)]">Werte-Stiftung</span> foundation,
-              with strategic support from <span class="font-bold text-[var(--color-brand-blue-light)]">d-fine</span> and <span
-                class="font-bold text-[var(--color-brand-blue-light)]">PwC</span
-              >.
+              {ABOUT_PAGE_CONTENT.company.supportLine.beforeFoundation}<span class="font-bold text-[var(--color-brand-blue-light)]">Werte-Stiftung</span>{ABOUT_PAGE_CONTENT.company.supportLine.betweenFoundationAndDfine}<span class="font-bold text-[var(--color-brand-blue-light)]">d-fine</span>{ABOUT_PAGE_CONTENT.company.supportLine.betweenDfineAndPwc}<span class="font-bold text-[var(--color-brand-blue-light)]">PwC</span>{ABOUT_PAGE_CONTENT.company.supportLine.afterPwc}
             </p>
           </div>
         </div>
@@ -94,8 +92,8 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
       <SectionHeader
-        title="Leadership team"
-        intro="The leadership team combines expertise in data, technology, and financial services."
+        title={ABOUT_PAGE_CONTENT.leadership.title}
+        intro={ABOUT_PAGE_CONTENT.leadership.intro}
         tone="light"
         class="mx-auto max-w-[860px]"
       />
@@ -162,8 +160,8 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
 
   <!-- Section 3: Partners (grey) -->
   <PartnerStoryCards
-    title="Integration partners"
-    intro="Dataland data is embedded into partner platforms, enabling Members to seamlessly access sustainability data through familiar interfaces and workflows."
+    title={ABOUT_PAGE_CONTENT.integrationPartners.title}
+    intro={ABOUT_PAGE_CONTENT.integrationPartners.intro}
     stories={PARTNER_STORY_SUMMARIES as PartnerStorySummary[]}
   />
 
@@ -175,8 +173,8 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
   >
     <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
       <SectionHeader
-        title="News and updates"
-        intro="Recent updates, announcements, and insights reflect Dataland's ongoing development."
+        title={ABOUT_PAGE_CONTENT.news.title}
+        intro={ABOUT_PAGE_CONTENT.news.intro}
         class="mx-auto max-w-[860px]"
       />
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -196,19 +194,14 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
         class="flex flex-col justify-between gap-8 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9"
       >
         <div class="flex flex-col gap-5">
-          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">Contact</p>
-          <h2 class="m-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[2.3rem]">
-            Bring sustainability data into your workflow.
-          </h2>
-          <p class="m-0 max-w-[42rem] text-[1.06rem] leading-relaxed text-white/78 lg:text-[1.12rem]">
-            Whether you are exploring membership, a partnership, or a product deep dive, we can point you to the right
-            next step.
-          </p>
+          <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">{ABOUT_PAGE_CONTENT.contact.eyebrow}</p>
+          <h2 class="m-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[2.3rem]">{ABOUT_PAGE_CONTENT.contact.title}</h2>
+          <p class="m-0 max-w-[42rem] text-[1.06rem] leading-relaxed text-white/78 lg:text-[1.12rem]">{ABOUT_PAGE_CONTENT.contact.intro}</p>
         </div>
 
         <div class="grid grid-cols-1 gap-7 md:grid-cols-2">
           <div class="flex flex-col gap-2.5">
-            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">Office</p>
+            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">{ABOUT_PAGE_CONTENT.contact.officeLabel}</p>
             <div class="flex flex-col gap-1">
               <p class="m-0 text-base font-semibold text-white">{CONTACT_ADDRESS.company}</p>
               <p class="m-0 text-[0.95rem] text-white/72">{CONTACT_ADDRESS.street}</p>
@@ -218,7 +211,7 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
           </div>
 
           <div class="flex flex-col gap-3">
-            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">Direct</p>
+            <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48">{ABOUT_PAGE_CONTENT.contact.directLabel}</p>
             <a
               href={CONTACT_PHONE}
               class="inline-flex items-center gap-2.5 text-white no-underline text-[0.95rem] motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100 opacity-84"
@@ -264,7 +257,15 @@ import { NEWS_ITEMS, type NewsItem } from '../data/news';
         </div>
       </div>
 
-      <AboutStartPanel inquiryMailto={CONTACT_INQUIRY_MAILTO} />
+      <AboutStartPanel
+        inquiryMailto={CONTACT_INQUIRY_MAILTO}
+        eyebrow={ABOUT_PAGE_CONTENT.startPanel.eyebrow}
+        title={ABOUT_PAGE_CONTENT.startPanel.title}
+        intro={ABOUT_PAGE_CONTENT.startPanel.intro}
+        contactLabel={ABOUT_PAGE_CONTENT.startPanel.buttons.contact}
+        documentationLabel={ABOUT_PAGE_CONTENT.startPanel.buttons.documentation}
+        tryLabel={ABOUT_PAGE_CONTENT.startPanel.buttons.try}
+      />
     </div>
   </section>
 </Base>

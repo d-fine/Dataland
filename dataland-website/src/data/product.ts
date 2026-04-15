@@ -208,6 +208,69 @@ export const GETTING_DATA_BLOCKS: GettingDataBlock[] = [
   },
 ];
 
+export interface ProductApplicationArea {
+  icon: string;
+  titleLines: readonly [string, string];
+}
+
+export const PRODUCT_APPLICATION_AREAS: ProductApplicationArea[] = [
+  { icon: '/static/images/img_icon_badge.svg', titleLines: ['Regulatory', 'reporting'] },
+  { icon: '/static/images/img_icon_invest.svg', titleLines: ['Investment', 'analysis'] },
+  { icon: '/static/images/img_icon_gauge.svg', titleLines: ['Risk', 'management'] },
+  { icon: '/static/images/img_icon_portfolio.svg', titleLines: ['Portfolio', 'management'] },
+  { icon: '/static/images/img_icon_bars_some.svg', titleLines: ['Performance', 'management'] },
+  { icon: '/static/images/img_icon_contact.svg', titleLines: ['Client', 'advisory'] },
+];
+
+export interface PricingFeatureItemData {
+  title: string;
+  text: string;
+}
+
+export const MEMBERSHIP_INCLUDED_ITEMS: PricingFeatureItemData[] = [
+  {
+    title: 'Free unrestricted data use',
+    text: 'All datasets available on Dataland can be accessed and used for internal purposes without restrictions.',
+  },
+  {
+    title: 'Free use of all features',
+    text: 'Current features, from download to template conversion, as well as all future features we will develop, are free for all members.',
+  },
+  {
+    title: 'On-demand sourcing',
+    text: 'Missing datasets can be requested and automatically delivered through Active Portfolio Monitoring.',
+  },
+  {
+    title: '100 credits',
+    text: 'for requesting missing datasets.',
+  },
+];
+
+export const SHARED_COST_ITEMS: PricingFeatureItemData[] = [
+  {
+    title: 'Additional credits',
+    text: 'Members can use the credits received with their annual subscription and purchase additional credits for EUR 50 per credit.',
+  },
+  {
+    title: 'Pay only for new data',
+    text: 'Credits are only used when new data is sourced. All datasets already on the platform are included at no additional cost.',
+  },
+];
+
+export interface CreditCostRow {
+  members: string;
+  cost: string;
+}
+
+export const PRODUCT_CREDITS_TABLE: CreditCostRow[] = [
+  { members: '1', cost: '1' },
+  { members: '2', cost: '0.5' },
+  { members: '3', cost: '0.4' },
+  { members: '4', cost: '0.3' },
+  { members: '5-9', cost: '0.2' },
+  { members: '> 10', cost: '0.1' },
+];
+
 // ---- Pricing data (spec section 4.10) ----
 
 export interface ValueProposition {
