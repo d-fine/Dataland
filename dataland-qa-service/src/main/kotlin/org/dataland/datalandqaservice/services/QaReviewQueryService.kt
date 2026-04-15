@@ -266,6 +266,7 @@ class QaReviewQueryService
         private fun getNumberOfQaReportsForDatasetIds(datasetIds: List<String>): Map<String, Long> {
             val dataPointIdsByDatasetId = mutableMapOf<String, Set<String>>()
             for (datasetId in datasetIds) {
+                logger.info("Debug: counting QA reports for datasetId={}", datasetId)
                 try {
                     val containedDataPoints = metaDataControllerApi.getContainedDataPoints(datasetId).values.toSet()
                     dataPointIdsByDatasetId[datasetId] = containedDataPoints
@@ -345,11 +346,11 @@ class QaReviewQueryService
                             "Expected exactly one DatasetJudgement for" +
                                 " datasetId=${judgements.first().datasetId} but found ${judgements.size}"
                         }
-                        val j = judgements.first()
+                        val associatedJudgement = judgements.first()
                         MinimalDatasetJudgement(
-                            dataSetJudgementId = j.dataSetJudgementId.toString(),
-                            qaJudgeUserId = j.qaJudgeUserId.toString(),
-                            qaJudgeUserName = j.qaJudgeUserName,
+                            dataSetJudgementId = associatedJudgement.dataSetJudgementId.toString(),
+                            qaJudgeUserId = associatedJudgement.qaJudgeUserId.toString(),
+                            qaJudgeUserName = associatedJudgement.qaJudgeUserName,
                         )
                     }
 
