@@ -133,6 +133,7 @@ describeIf(
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
       cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
+      cy.intercept('PUT', '**/portfolios/**').as('replacePortfolio');
       cy.window().then((win) => {
         cy.stub(win, 'confirm').returns(true);
       });
@@ -164,6 +165,7 @@ describeIf(
           });
         });
       });
+      cy.wait('@replacePortfolio');
       cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
       cy.get('[data-test="${editedSecondPortfolioName}"]', { timeout: mediumTimeoutInMs }).click();
