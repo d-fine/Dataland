@@ -60,9 +60,12 @@ class DataRequestUpdateManager
             dataRequestPatch: DataRequestPatch,
             correlationId: String,
         ) {
-            requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.requestStatusChangeReason,
-                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(dataRequestEntity),
+            sendImmediateNotificationOnRequestStatusChange(
+                dataRequestEntity,
+                dataRequestPatch,
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
+                    dataRequestEntity,
+                ),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -180,6 +183,21 @@ class DataRequestUpdateManager
             }
 
             return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
+        }
+
+        /**
+         * If applicable, send an immediate notification email corresponding to the status change to the user.
+         */
+        private fun sendImmediateNotificationOnRequestStatusChange(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            earlierQaApprovedVersionOfDatasetExists: Boolean,
+            correlationId: String,
+        ) {
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(
+                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.requestStatusChangeReason,
+                earlierQaApprovedVersionOfDatasetExists, correlationId,
+            )
         }
 
         /**
