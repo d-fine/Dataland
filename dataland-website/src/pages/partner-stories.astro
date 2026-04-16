@@ -1,127 +1,61 @@
 ---
 import Base from '../layouts/Base.astro';
 import {
-  PARTNER_STORY_DETAILS,
-  PARTNER_STORY_SUMMARIES,
-  type PartnerStoryDetail,
-  type PartnerStorySummary,
-  type PartnerStoryExtraSection,
+    PARTNER_STORY_DETAILS,
+    PARTNER_STORY_SUMMARIES,
+    type PartnerStoryDetail,
+    type PartnerStorySummary,
+    type PartnerStoryExtraSection,
 } from '../data/partnerStories';
 import { PARTNER_STORIES_PAGE_CONTENT } from '../data/pageContent';
-import CardShell from '../components/CardShell.astro';
-import PartnerDetailCard from '../components/PartnerDetailCard.astro';
+
+import PartnerStoriesHeroSection from '../components/partnerStories/PartnerStoriesHeroSection.astro';
+import PartnerStoriesDetailsSection from '../components/partnerStories/PartnerStoriesDetailsSection.astro';
+import PartnerStoriesMattersSection from '../components/partnerStories/PartnerStoriesMattersSection.astro';
 
 const integrationMattersSection: PartnerStoryExtraSection | undefined = PARTNER_STORY_DETAILS.find(
-  (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'
+    (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'
 )?.extraSections?.find((section) => section.title === 'Why Partner Integration Matters');
 
+const closingPrompt =
+    PARTNER_STORY_DETAILS.find((story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria')?.closingPrompt;
+
 const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
-  report: '/static/images/img_icon_badge.svg',
-  kpi: '/static/images/img_icon_gears.svg',
-  emissions: '/static/images/img_icon_smoke.svg',
-  integration: '/static/images/img_icon_server.svg',
-  traceability: '/static/images/img_icon_look.svg',
-  research: '/static/images/img_icon_invest.svg',
-  voting: '/static/images/img_icon_cardboard_check.svg',
-  fund: '/static/images/img_icon_leaf.svg',
-  compliance: '/static/images/img_icon_gavel.svg',
+    report: '/static/images/img_icon_badge.svg',
+    kpi: '/static/images/img_icon_gears.svg',
+    emissions: '/static/images/img_icon_smoke.svg',
+    integration: '/static/images/img_icon_server.svg',
+    traceability: '/static/images/img_icon_look.svg',
+    research: '/static/images/img_icon_invest.svg',
+    voting: '/static/images/img_icon_cardboard_check.svg',
+    fund: '/static/images/img_icon_leaf.svg',
+    compliance: '/static/images/img_icon_gavel.svg',
 };
 ---
 
-<Base title={PARTNER_STORIES_PAGE_CONTENT.meta.title} description={PARTNER_STORIES_PAGE_CONTENT.meta.description}>
-  <section
-    class="bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16"
-    aria-label="Integration partner stories overview"
-  >
-    <div class="max-w-[1200px] mx-auto flex flex-col gap-6">
-      <div class="max-w-[840px]">
-        <p class="m-0 mb-3 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/60">{PARTNER_STORIES_PAGE_CONTENT.hero.eyebrow}</p>
-        <h1 class="m-0 text-[2rem] font-bold leading-[1.15] lg:text-[3rem]">{PARTNER_STORIES_PAGE_CONTENT.hero.title}</h1>
-        <p class="mt-4 mb-0 max-w-[720px] text-[1rem] leading-relaxed text-white/78">
-          {PARTNER_STORIES_PAGE_CONTENT.hero.intro}
-        </p>
-      </div>
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {
-          PARTNER_STORY_SUMMARIES.map((story: PartnerStorySummary) => (
-            <CardShell
-              as="a"
-              href={story.link}
-              variant="glass"
-              accentTop={true}
-              class="flex h-full flex-col overflow-hidden text-white no-underline motion-safe:transition-colors motion-safe:duration-200 hover:bg-white/14"
-            >
-              <div class="flex min-h-[8rem] items-center justify-center overflow-hidden bg-white px-4 py-5">
-                <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
-                  <img
-                    src={story.logo}
-                    alt=""
-                    class:list={['h-20 w-full object-contain object-center', story.logoClassName]}
-                    loading="lazy"
-                    width="320"
-                    height="120"
-                  />
-                </div>
-              </div>
-              <div class="flex h-full flex-col gap-4 p-6">
-                <h2 class="m-0 text-[1.14rem] font-medium leading-snug">{story.title}</h2>
-                <p class="m-0 text-[0.95rem] leading-relaxed text-white/72">{story.text}</p>
-              </div>
-            </CardShell>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+<Base
+        title={PARTNER_STORIES_PAGE_CONTENT.meta.title}
+        description={PARTNER_STORIES_PAGE_CONTENT.meta.description}
+>
+    <PartnerStoriesHeroSection
+            content={PARTNER_STORIES_PAGE_CONTENT.hero}
+            stories={PARTNER_STORY_SUMMARIES}
+    />
 
-  <section
-    class="scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8"
-    aria-label={PARTNER_STORIES_PAGE_CONTENT.sections.detailsAriaLabel}
-  >
-    <div class="max-w-[1200px] mx-auto flex flex-col gap-10">
-      {
-        PARTNER_STORY_DETAILS.map((story: PartnerStoryDetail) => (
-          <article id={story.slug} class="scroll-mt-24">
-            <PartnerDetailCard story={story} useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY} />
-          </article>
-        ))
-      }
-    </div>
-  </section>
+    <PartnerStoriesDetailsSection
+            ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.detailsAriaLabel}
+            stories={PARTNER_STORY_DETAILS}
+            useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY}
+    />
 
-  {
-    integrationMattersSection && (
-      <section
-        class="bg-[linear-gradient(90deg,#1f3143_0%,#29435a_52%,#355572_100%)] px-6 py-14 text-white lg:px-8 lg:py-16"
-        aria-label={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
-      >
-        <div class="mx-auto flex max-w-[1200px] flex-col items-center gap-10">
-          <h2 class="m-0 text-center text-[1.75rem] font-bold leading-tight text-white lg:text-[2.2rem]">
-            {integrationMattersSection.title}
-          </h2>
-
-          <div class="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
-            {integrationMattersSection.items.map((item: { title: string; text: string }) => (
-              <section class="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/8 p-6 text-center">
-                <h3 class="m-0 text-[1.14rem] font-bold text-white">{item.title}</h3>
-                <p class="m-0 text-[0.95rem] leading-relaxed text-white/82">{item.text}</p>
-              </section>
-            ))}
-          </div>
-
-          {PARTNER_STORY_DETAILS.find((story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria')
-            ?.closingPrompt && (
-            <p class="m-0 max-w-[880px] text-center text-[1.14rem] leading-relaxed text-white/90">
-              {
-                PARTNER_STORY_DETAILS.find((story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria')
-                  ?.closingPrompt
-              }
-            </p>
-          )}
-
-          <a href="/contact" class="btn btn--primary">{PARTNER_STORIES_PAGE_CONTENT.cta.contact}</a>
-        </div>
-      </section>
-    )
-  }
+    {
+        integrationMattersSection && (
+                    <PartnerStoriesMattersSection
+                            ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
+                            section={integrationMattersSection}
+                            closingPrompt={closingPrompt}
+                            contactLabel={PARTNER_STORIES_PAGE_CONTENT.cta.contact}
+                    />
+        )
+    }
 </Base>
