@@ -32,7 +32,10 @@ const {
             text={story.text}
             class="bg-[#ecece7] no-underline shadow-[0_6px_18px_rgba(15,23,42,0.08)] motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]"
           >
-            <div slot="media" class="flex min-h-[6.25rem] items-center justify-center overflow-hidden bg-white px-6 py-5">
+            <div
+              slot="media"
+              class="flex min-h-[6.25rem] items-center justify-center overflow-hidden bg-white px-6 py-5"
+            >
               <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
                 <img
                   src={story.logo}

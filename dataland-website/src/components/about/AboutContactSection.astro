@@ -1,0 +1,141 @@
+---
+import AboutStartPanel from '../AboutStartPanel.astro';
+
+interface ContactContent {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  officeLabel: string;
+  directLabel: string;
+}
+
+interface StartPanelContent {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  buttons: {
+    contact: string;
+    documentation: string;
+    try: string;
+  };
+}
+
+interface Address {
+  company: string;
+  street: string;
+  city: string;
+  country: string;
+}
+
+interface Props {
+  contactContent: ContactContent;
+  startPanelContent: StartPanelContent;
+  inquiryMailto: string;
+  phoneHref: string;
+  phoneLabel: string;
+  emailHref: string;
+  emailLabel: string;
+  address: Address;
+}
+
+const { contactContent, startPanelContent, inquiryMailto, phoneHref, phoneLabel, emailHref, emailLabel, address } =
+  Astro.props;
+
+const sectionClass =
+  'scroll-mt-16 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-14 text-white lg:px-8 lg:py-18';
+
+const innerClass = 'mx-auto grid max-w-[1200px] grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch';
+
+const contactCardClass =
+  'flex flex-col justify-between gap-8 rounded-[1.5rem] border border-white/10 bg-white/6 p-7 backdrop-blur-[2px] lg:p-9';
+
+const topBlockClass = 'flex flex-col gap-5';
+const eyebrowClass = 'm-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55';
+const titleClass = 'm-0 max-w-[12ch] text-[2rem] font-bold leading-[1.05] lg:text-[2.3rem]';
+const introClass = 'm-0 max-w-[42rem] text-[1.06rem] leading-relaxed text-white/78 lg:text-[1.12rem]';
+
+const infoGridClass = 'grid grid-cols-1 gap-7 md:grid-cols-2';
+const officeBlockClass = 'flex flex-col gap-2.5';
+const directBlockClass = 'flex flex-col gap-3';
+const labelClass = 'm-0 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-white/48';
+const addressLinesClass = 'flex flex-col gap-1';
+const addressCompanyClass = 'm-0 text-base font-semibold text-white';
+const addressLineClass = 'm-0 text-[0.95rem] text-white/72';
+const contactLinkClass =
+  'inline-flex items-center gap-2.5 text-[0.95rem] text-white no-underline opacity-84 motion-safe:transition-opacity motion-safe:duration-200 hover:opacity-100';
+---
+
+<section id="contact" class={sectionClass} aria-label="Contact us">
+  <div class={innerClass}>
+    <div class={contactCardClass}>
+      <div class={topBlockClass}>
+        <p class={eyebrowClass}>{contactContent.eyebrow}</p>
+        <h2 class={titleClass}>{contactContent.title}</h2>
+        <p class={introClass}>{contactContent.intro}</p>
+      </div>
+
+      <div class={infoGridClass}>
+        <div class={officeBlockClass}>
+          <p class={labelClass}>{contactContent.officeLabel}</p>
+          <div class={addressLinesClass}>
+            <p class={addressCompanyClass}>{address.company}</p>
+            <p class={addressLineClass}>{address.street}</p>
+            <p class={addressLineClass}>{address.city}</p>
+            <p class={addressLineClass}>{address.country}</p>
+          </div>
+        </div>
+
+        <div class={directBlockClass}>
+          <p class={labelClass}>{contactContent.directLabel}</p>
+
+          <a href={phoneHref} class={contactLinkClass}>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              ></path>
+            </svg>
+            {phoneLabel}
+          </a>
+
+          <a href={emailHref} class={contactLinkClass}>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            {emailLabel}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <AboutStartPanel
+      inquiryMailto={inquiryMailto}
+      eyebrow={startPanelContent.eyebrow}
+      title={startPanelContent.title}
+      intro={startPanelContent.intro}
+      contactLabel={startPanelContent.buttons.contact}
+      documentationLabel={startPanelContent.buttons.documentation}
+      tryLabel={startPanelContent.buttons.try}
+    />
+  </div>
+</section>

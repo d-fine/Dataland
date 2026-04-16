@@ -1,0 +1,26 @@
+---
+const modalWrapClass = 'fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden';
+
+const modalCardClass = 'bg-white rounded-xl max-w-md w-full p-6 shadow-lg text-[var(--color-text)]';
+
+const modalTitleClass = 'mb-3 text-[1.14rem] font-bold';
+
+const modalTextClass = 'mb-6 text-[0.82rem] text-[var(--color-text-muted)]';
+
+const modalActionsClass = 'flex justify-end gap-3';
+
+const primaryButtonClass = 'btn btn--primary';
+
+const secondaryButtonClass = 'btn btn--outline';
+---
+
+<div id="logout-modal" class={modalWrapClass}>
+  <div class={modalCardClass}>
+    <h2 class={modalTitleClass}>You've been logged out</h2>
+    <p class={modalTextClass}>Your session has been closed due to inactivity. Login to start a new session.</p>
+    <div class={modalActionsClass}>
+      <button type="button" id="logout-modal-close" class={secondaryButtonClass}>Close</button>
+      <a href="/login" id="login_again_on_session_modal" class={primaryButtonClass}>Log in again</a>
+    </div>
+  </div>
+</div>

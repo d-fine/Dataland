@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build:scripts": "tsc --project tsconfig.scripts.json",
+    "build": "npm run build:scripts && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",

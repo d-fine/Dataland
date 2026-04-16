@@ -11,15 +11,7 @@ interface Props {
   textClass?: string;
 }
 
-const {
-  title,
-  text,
-  variant = 'light',
-  accentTop = false,
-  class: className,
-  titleClass,
-  textClass,
-} = Astro.props;
+const { title, text, variant = 'light', accentTop = false, class: className, titleClass, textClass } = Astro.props;
 ---
 
 <CardShell variant={variant} accentTop={accentTop} class:list={['flex h-full flex-col', className]}>

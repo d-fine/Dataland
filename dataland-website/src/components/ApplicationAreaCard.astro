@@ -14,18 +14,8 @@ const { titleLines, icon, class: className } = Astro.props;
     className,
   ]}
 >
-  <img
-    src={icon}
-    alt=""
-    aria-hidden="true"
-    width="56"
-    height="56"
-    class="h-14 w-14 object-contain"
-    loading="lazy"
-  />
+  <img src={icon} alt="" aria-hidden="true" width="56" height="56" class="h-14 w-14 object-contain" loading="lazy" />
   <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">
-    {titleLines.map((line) => (
-      <span class="block">{line}</span>
-    ))}
+    {titleLines.map((line) => <span class="block">{line}</span>)}
   </span>
 </div>

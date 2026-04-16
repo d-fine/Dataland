@@ -1,0 +1,104 @@
+---
+interface CompanyCopy {
+  text1: string;
+}
+
+interface SupportLine {
+  beforeFoundation: string;
+  betweenFoundationAndDfine: string;
+  betweenDfineAndPwc: string;
+  afterPwc: string;
+}
+
+interface Content {
+  title: string;
+  supportLine: SupportLine;
+}
+
+interface Props {
+  content: Content;
+  companyCopy: CompanyCopy;
+}
+
+const { content, companyCopy } = Astro.props;
+
+const sectionClass =
+  'scroll-mt-16 bg-[radial-gradient(circle_at_65%_80%,rgba(62,106,142,0.32),transparent_24%),linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16';
+
+const innerClass = 'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[52%_48%] lg:items-stretch';
+
+const imageWrapClass = 'flex justify-center lg:justify-start';
+
+const imageClass =
+  'h-full w-full max-w-[680px] rounded-[1.5rem] object-contain object-left shadow-[0_20px_55px_rgba(0,0,0,0.28)] lg:max-w-none';
+
+const contentWrapClass = 'flex h-full flex-col justify-between gap-7 lg:pt-1';
+const textGroupClass = 'flex flex-col gap-4';
+const titleClass = 'm-0 text-[2rem] font-bold leading-[1.04] text-white lg:text-[2.3rem]';
+const paragraphsWrapClass = 'flex flex-1 flex-col justify-center gap-4 pt-4 lg:pt-8';
+const paragraphClass = 'm-0 text-[1.06rem] leading-[1.6] text-white/78 lg:text-[1.18rem]';
+const accentClass = 'font-bold text-[var(--color-brand-blue-light)]';
+
+const logosWrapClass = 'flex flex-wrap items-center justify-center gap-x-8 gap-y-6 pt-2 lg:flex-nowrap';
+const wertestiftungLogoClass = 'h-auto w-[140px] object-contain lg:w-[165px]';
+const pwcWrapClass = '-mx-3 lg:-mx-5';
+const pwcLogoClass = 'h-auto w-[148px] object-contain lg:w-[178px]';
+const dfineLogoClass = 'h-auto w-[120px] object-contain brightness-0 invert opacity-95 lg:w-[145px]';
+---
+
+<section id="company" class={sectionClass} aria-label="About Dataland">
+  <div class={innerClass}>
+    <div class={imageWrapClass}>
+      <img
+        src="/static/images/img_about_main.png"
+        alt="Dataland team and company overview"
+        width="720"
+        height="520"
+        loading="eager"
+        class={imageClass}
+      />
+    </div>
+
+    <div class={contentWrapClass}>
+      <div class={textGroupClass}>
+        <h1 class={titleClass}>{content.title}</h1>
+
+        <div class={paragraphsWrapClass}>
+          <p class={paragraphClass}>{companyCopy.text1}</p>
+
+          <p class={paragraphClass}>
+            {content.supportLine.beforeFoundation}<span class={accentClass}>Werte-Stiftung</span>{
+              content.supportLine.betweenFoundationAndDfine
+            }<span class={accentClass}>d-fine</span>{content.supportLine.betweenDfineAndPwc}<span class={accentClass}
+              >PwC</span
+            >{content.supportLine.afterPwc}
+          </p>
+        </div>
+      </div>
+
+      <div class={logosWrapClass}>
+        <img
+          src="/static/logos/logo_wertestiftung.png"
+          alt="Werte-Stiftung"
+          width="160"
+          height="64"
+          loading="lazy"
+          class={wertestiftungLogoClass}
+        />
+
+        <div class={pwcWrapClass}>
+          <img src="/static/logos/logo_pwc.svg" alt="PwC" width="190" height="88" loading="lazy" class={pwcLogoClass} />
+        </div>
+
+        <img
+          src="/static/logos/logo_d-fine_RGB.svg"
+          alt="d-fine"
+          width="140"
+          height="64"
+          loading="lazy"
+          class={dfineLogoClass}
+        />
+      </div>
+    </div>
+  </div>
+</section>

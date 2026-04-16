@@ -1,0 +1,62 @@
+---
+import type { TrustedByLogo } from '../../data/members';
+import SectionHeader from '../SectionHeader.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+}
+
+interface Props {
+  content: Content;
+  logos: TrustedByLogo[];
+}
+
+const { content, logos } = Astro.props;
+
+const sectionClass = 'py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-10';
+
+const sectionHeaderClass = 'mx-auto max-w-[760px]';
+
+const logosGridClass = 'grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+
+const logoCardBaseClass =
+  'flex h-28 items-center justify-center rounded-[1.25rem] border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-5 py-4 lg:h-32';
+
+const logoStageClass =
+  'flex h-[3.75rem] w-full max-w-[9.75rem] items-center justify-center lg:h-[4.25rem] lg:max-w-[10.5rem]';
+
+const logoFrameBaseClass = 'flex h-full w-full items-center justify-center';
+
+const logoImageBaseClass = 'block max-h-full max-w-full object-contain';
+---
+
+<section id="trusted-organizations" class={sectionClass} aria-label="Trusted organizations">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
+
+    <div class={logosGridClass}>
+      {
+        logos.map((logo) => (
+          <div class:list={[logoCardBaseClass, logo.gridContainerClassName]}>
+            <div class={logoStageClass}>
+              <div class:list={[logoFrameBaseClass, logo.imageFrameClassName]}>
+                <img
+                  src={logo.imagePath}
+                  alt={logo.name}
+                  class:list={[logoImageBaseClass, logo.className]}
+                  style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
+                  loading="lazy"
+                  width="160"
+                  height="64"
+                />
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
