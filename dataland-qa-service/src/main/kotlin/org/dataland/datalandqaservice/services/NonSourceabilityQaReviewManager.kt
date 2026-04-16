@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -79,8 +80,11 @@ class NonSourceabilityQaReviewManager
             reviewerUserId: String,
             correlationId: String,
         ): NonSourceableQaReviewInformation {
-            require(qaStatus == QaStatus.Accepted || qaStatus == QaStatus.Rejected) {
-                "QA decision must be Accepted or Rejected, got $qaStatus"
+            if (qaStatus != QaStatus.Accepted && qaStatus != QaStatus.Rejected) {
+                throw InvalidInputApiException(
+                    "Invalid QA status",
+                    "QA decision must be Accepted or Rejected, got $qaStatus",
+                )
             }
             val entity = updateReviewEntity(nonSourceabilityId, qaStatus, qaComment, reviewerUserId)
             sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
