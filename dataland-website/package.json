@@ -4,9 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:scripts": "tsc --project tsconfig.scripts.json --watch",
-    "dev:astro": "astro dev",
-    "dev": "npm-run-all --parallel dev:scripts dev:astro",
+    "dev": "astro dev",
     "build:scripts": "tsc --project tsconfig.scripts.json",
     "build": "npm run build:scripts && astro build",
     "preview": "astro preview",
