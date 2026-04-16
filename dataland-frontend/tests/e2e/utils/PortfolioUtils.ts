@@ -1,5 +1,4 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { NotificationFrequency, PortfolioControllerApi, Configuration } from '@clients/userservice';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 
@@ -8,7 +7,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
  * and uses it to authenticate the API request for creating the portfolio.
  */
 export function createPortfolio(): void {
-  getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+  getAdminToken().then(async (token) => {
     const companyToUpload = generateDummyCompanyInformation('Dummy Company');
     const companyId = (await uploadCompanyViaApi(token, companyToUpload)).companyId;
 
@@ -29,7 +28,7 @@ export function createPortfolio(): void {
  * Deletes all portfolios associated with the current user.
  */
 export function deleteAllPortfolios(): void {
-  getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+  getAdminToken().then(async (token) => {
     const allUserPortfoliosAxiosResponse = await new PortfolioControllerApi(
       new Configuration({ accessToken: token })
     ).getAllPortfolioNamesForCurrentUser();
