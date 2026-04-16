@@ -1,6 +1,6 @@
 import { DataTypeEnum } from '@clients/backend';
 import { getBaseUrl } from '@e2e/utils/Cypress';
-import { loginWithCredentials, logout } from '@e2e/utils/Auth';
+import { loginWithCredentialsOfReader, logout } from '@e2e/utils/Auth';
 
 describe('As a user I expect to be redirected to the login page if I am unauthenticated', () => {
   const pages = [
@@ -28,7 +28,7 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
       cy.visitAndCheckAppMount(page);
       cy.get("[data-test='login-dataland-button']").should('exist').click();
 
-      loginWithCredentials();
+      loginWithCredentialsOfReader();
 
       cy.url().should('eq', getBaseUrl() + page);
       logout();
@@ -40,7 +40,7 @@ describe('As an unauthenticated user I expect to be redirected to the page I sta
 
       cy.contains('button', 'LOGIN TO ACCOUNT').should('exist').should('be.visible').click();
 
-      loginWithCredentials();
+      loginWithCredentialsOfReader();
 
       cy.url().should('eq', getBaseUrl() + page);
       logout();

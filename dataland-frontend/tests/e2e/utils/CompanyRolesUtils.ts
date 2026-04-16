@@ -7,6 +7,8 @@ import {
 import { admin_userId } from '@e2e/utils/Cypress';
 import { type AxiosError, type HttpStatusCode, isAxiosError } from 'axios';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Method that assigns a company role for a specified company to a user
  * @param token authentication token of the user doing the post request
@@ -77,7 +79,5 @@ export async function assignCompanyOwnershipToDatalandAdmin(
  * Checks that the QA status of the uploaded dataset is automatically set to Accepted
  */
 export function isDatasetAccepted(): void {
-  cy.get('[data-test="qa-status"]', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .first()
-    .should('have.text', 'Accepted');
+  cy.get('[data-test="qa-status"]', { timeout: mediumTimeoutInMs }).first().should('have.text', 'Accepted');
 }

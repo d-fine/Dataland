@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   Configuration,
   type DataMetaInformation,
@@ -17,6 +17,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Defines intercepts and submits data on the lksg upload for the lksg blanket test
@@ -39,7 +41,7 @@ function interceptsAndSubmitsDataset(
       '/upload?templateDataId=' +
       dataMetaInformation.dataId
   );
-  cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.wait('@getCompanyInformation', { timeout: mediumTimeoutInMs });
   cy.get('h1').should('contain', testCompanyName);
   cy.intercept({
     url: `**/api/data/${DataTypeEnum.Lksg}*`,
@@ -94,7 +96,7 @@ describeIf(
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
         lksgFixtureWithMinimalFields = getPreparedFixture('lksg-almost-only-nulls', preparedFixturesLksg);
       });
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     /**
@@ -144,14 +146,12 @@ describeIf(
       testCompanyName: string
     ): Cypress.Chainable<DataMetaInformation> {
       interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
-      return cy
-        .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-        .then((postInterception) => {
-          const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          isDatasetAccepted();
-          return cy.then(() => dataMetaInformation);
-        });
+      return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postInterception) => {
+        const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
+        cy.url().should('eq', getBaseUrl() + '/datasets');
+        isDatasetAccepted();
+        return cy.then(() => dataMetaInformation);
+      });
     }
 
     /**
@@ -204,17 +204,17 @@ describeIf(
     }
 
     afterEach(function () {
-      Cypress.env('excludeBypassQaIntercept', false);
+      Cypress.expose('excludeBypassQaIntercept', false);
     });
 
     it(
       'Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and ' +
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithNoNullFields, true);
           })
@@ -264,10 +264,10 @@ describeIf(
       'Create a company and a Lksg dataset via api with most entries being null and then verify that it can be ' +
         'reuploaded.',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Minimal-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithMinimalFields, false);
           })

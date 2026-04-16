@@ -1,8 +1,10 @@
-import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress';
+import { reader_userId } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { Configuration, NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describeIf(
   'As a user I want to share portfolios with other users who can view and remove them',
@@ -17,7 +19,7 @@ describeIf(
       const timestamp = Date.now();
       portfolioName = `E2E-Share-${timestamp}`;
 
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(
           `Company-Created-For-Share-Portfolio-Test-${timestamp}`
         );
@@ -42,7 +44,7 @@ describeIf(
     beforeEach(() => {
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.wait(['@getPortfolioNames']);
     });
@@ -52,14 +54,12 @@ describeIf(
       cy.intercept('POST', '**/community/emails/validation').as('emailValidation');
       cy.intercept('GET', '**/portfolios/**/access-rights').as('getAccessRights');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
-        'exist'
-      );
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should('exist');
       cy.get(`[data-test="${portfolioName}"]`).click();
       cy.wait(['@getEnrichedPortfolio']);
 
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="share-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.get('.p-dialog').find('.p-dialog-header').contains('Manage Portfolio Access');
@@ -72,11 +72,11 @@ describeIf(
       cy.wait('@emailValidation');
 
       cy.get('[data-test="users-with-access-listbox"]', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       }).should('contain', 'data.reader@example.com');
 
       cy.get('[data-test="save-changes-button"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.wait('@patchSharing').then((interception) => {
@@ -90,14 +90,12 @@ describeIf(
         .should('be.visible')
         .and('contain', 'Shared with 1 user');
 
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       cy.intercept('GET', '**/users/portfolios/shared/names').as('getSharedPortfolios');
       cy.visitAndCheckAppMount('/shared-portfolios');
       cy.wait('@getSharedPortfolios');
 
-      cy.get(`[data-test="${portfolioName}"]`, { timeout: Cypress.env('medium_timeout_in_ms') as number }).should(
-        'exist'
-      );
+      cy.get(`[data-test="${portfolioName}"]`, { timeout: mediumTimeoutInMs }).should('exist');
       cy.get(`[data-test="${portfolioName}"]`).click();
 
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="shared-by-tag"]`)
@@ -106,7 +104,7 @@ describeIf(
 
       cy.intercept('DELETE', '**/users/portfolios/shared/**').as('deleteSharing');
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="remove-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
 
       cy.get('[data-test="remove-sharing-modal"]').should('be.visible');
@@ -116,7 +114,7 @@ describeIf(
     });
 
     after(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const portfolioApi = new PortfolioControllerApi(new Configuration({ accessToken: token }));
         await portfolioApi.deletePortfolio(portfolioId);
       });
