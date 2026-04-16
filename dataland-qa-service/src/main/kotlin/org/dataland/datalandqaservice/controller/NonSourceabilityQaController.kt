@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.api.NonSourceabilityQaApi
+import org.dataland.datalandqaservice.model.NonSourceabilityDecisionRequest
 import org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
 import org.dataland.datalandqaservice.services.NonSourceabilityQaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -41,19 +42,18 @@ class NonSourceabilityQaController(
 
     override fun postNonSourceabilityDecision(
         nonSourceabilityId: String,
-        qaStatus: QaStatus,
-        qaComment: String?,
+        request: NonSourceabilityDecisionRequest,
     ): ResponseEntity<NonSourceableQaReviewInformation> {
         val reviewerUserId = DatalandAuthentication.fromContext().userId
         val correlationId = randomUUID().toString()
         logger.info(
-            "POST /nonSourceable/$nonSourceabilityId qaStatus=$qaStatus (correlationId=$correlationId)",
+            "POST /nonSourceable/$nonSourceabilityId qaStatus=${request.qaStatus} (correlationId=$correlationId)",
         )
         val result =
             nonSourceabilityQaReviewManager.postDecision(
                 nonSourceabilityId = nonSourceabilityId,
-                qaStatus = qaStatus,
-                qaComment = qaComment,
+                qaStatus = request.qaStatus,
+                qaComment = request.qaComment,
                 reviewerUserId = reviewerUserId,
                 correlationId = correlationId,
             )
