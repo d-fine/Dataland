@@ -321,3 +321,114 @@ main {
 .legal-page a:hover {
   text-decoration-thickness: 2px;
 }
+
+.mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--color-surface-0, #ffffff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem 2rem;
+}
+
+.mobile-nav__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.mobile-nav__title {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--color-text, #1a1a1a);
+}
+
+.mobile-nav__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--color-text, #1a1a1a);
+}
+
+.mobile-nav__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mobile-nav__link {
+    display: block;
+    padding: 0.75rem 0;
+    text-decoration: none;
+    color: var(--color-text, #1a1a1a);
+    font-weight: 500;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--color-surface-200, #e6e6e6);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .mobile-nav__link {
+        transition: color 0.15s;
+    }
+}
+
+.mobile-nav__link:hover {
+    color: var(--color-primary, #ff6813);
+}
+
+.mobile-nav__link--active {
+    color: var(--color-primary, #ff6813);
+}
+
+.mobile-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary, #ff6813);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .mobile-nav__cta {
+        transition: background 0.15s;
+    }
+}
+
+.mobile-nav__back-to-platform {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mobile-nav__cta:hover {
+    background: var(--color-primary-hover, #e55d10);
+}
+
+/* We rely on Tailwind's `hidden` class; if you don't include Tailwind's .hidden, add: */
+/*
+.hidden {
+  display: none !important;
+}
+*/
+

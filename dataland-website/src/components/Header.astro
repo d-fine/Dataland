@@ -1,5 +1,4 @@
 ---
-import MobileNav from './MobileNav.vue';
 import { ABOUT_SECTIONS, COMMUNITY_SECTIONS, PRODUCT_SECTIONS, type NavigationSection } from '../data/navigation';
 
 const currentPath = Astro.url.pathname;
@@ -209,9 +208,65 @@ const activeClasses = 'text-[var(--color-primary)]';
       </svg>
     </button>
   </div>
-
-  <!-- Mobile nav (Vue island) -->
-  <MobileNav client:media="(max-width: 1023px)" currentPath={currentPath} />
 </header>
 
+<!-- Mobile nav (no Vue island, controlled by JS) -->
+<nav id="mobile-nav" class="mobile-nav hidden" aria-label="Mobile navigation" role="dialog" aria-modal="true">
+  <div class="mobile-nav__header">
+    <span class="mobile-nav__title">Menu</span>
+    <button type="button" id="mobile-nav-close" class="mobile-nav__close" aria-label="Close menu">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="mobile-nav__links">
+    <!-- Same navLinks as in MobileNav.vue -->
+    <a href="/" class="mobile-nav__link">Home</a>
+    <a href="/product" class="mobile-nav__link">Product</a>
+    <a href="/about" class="mobile-nav__link">About</a>
+    <a href="/community" class="mobile-nav__link">Community</a>
+
+    <!-- Guest-only actions -->
+    <a href="/login" data-test="login-dataland-button" class="mobile-nav__link"> Login </a>
+    <a href="/register" data-test="signup-dataland-button" class="mobile-nav__cta"> Try it free </a>
+
+    <!-- Auth-only action -->
+    <a
+      href="/platform-redirect"
+      id="mobile-nav-back-to-platform"
+      data-test="backToPlatformLink"
+      class="mobile-nav__link mobile-nav__back-to-platform"
+    >
+      Back to platform
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7"></path>
+      </svg>
+    </a>
+  </div>
+</nav>
+
+<div id="mobile-nav-overlay" class="mobile-nav-overlay hidden"></div>
+
 <script type="module" src="/scripts/initHeader.js"></script>
+<script type="module" src="/scripts/mobileNav.js"></script>
