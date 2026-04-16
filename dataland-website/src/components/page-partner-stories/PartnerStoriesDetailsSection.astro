@@ -1,0 +1,28 @@
+---
+import PartnerDetailCard from './PartnerDetailCard.astro';
+import type { PartnerStoryDetail } from '../../data/partnerStories';
+
+interface Props {
+  ariaLabel: string;
+  stories: PartnerStoryDetail[];
+  useCaseIconByKey: Record<string, string>;
+}
+
+const { ariaLabel, stories, useCaseIconByKey } = Astro.props;
+
+const sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8';
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-10';
+const articleClass = 'scroll-mt-24';
+---
+
+<section class={sectionClass} aria-label={ariaLabel}>
+  <div class={sectionInnerClass}>
+    {
+      stories.map((story) => (
+        <article id={story.slug} class={articleClass}>
+          <PartnerDetailCard story={story} useCaseIconByKey={useCaseIconByKey} />
+        </article>
+      ))
+    }
+  </div>
+</section>

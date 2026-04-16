@@ -1,0 +1,67 @@
+---
+import CardShell from '../primitives/CardShell.astro';
+
+interface Props {
+  as?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
+  class?: string;
+  logoFrameClass?: string;
+  logoClass?: string;
+  logoAlt: string;
+  logoSrc: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  scale?: number;
+  accentTop?: boolean;
+  tone?: 'light' | 'glass';
+  minHeightClass?: string;
+}
+
+const {
+  as = 'div',
+  href,
+  target,
+  rel,
+  class: className,
+  logoFrameClass,
+  logoClass,
+  logoAlt,
+  logoSrc,
+  logoWidth = 180,
+  logoHeight = 70,
+  scale = 1,
+  accentTop = false,
+  tone = 'light',
+  minHeightClass = 'min-h-[100px]',
+} = Astro.props;
+---
+
+<CardShell
+  as={as}
+  href={href}
+  target={target}
+  rel={rel}
+  variant={tone}
+  accentTop={accentTop}
+  class:list={[
+    'relative flex items-center justify-center overflow-hidden rounded-xl p-8 px-6 no-underline',
+    minHeightClass,
+    className,
+  ]}
+>
+  <div class="flex h-[3.9rem] w-full max-w-[10.5rem] items-center justify-center lg:h-[4.4rem] lg:max-w-[11.25rem]">
+    <div class:list={['flex h-full w-full items-center justify-center', logoFrameClass]}>
+      <img
+        src={logoSrc}
+        alt={logoAlt}
+        class:list={['block max-h-full max-w-full object-contain', logoClass]}
+        style={`transform: scale(${scale}); transform-origin: center;`}
+        loading="lazy"
+        width={logoWidth}
+        height={logoHeight}
+      />
+    </div>
+  </div>
+</CardShell>

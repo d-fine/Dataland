@@ -1,0 +1,92 @@
+---
+import CardShell from '../primitives/CardShell.astro';
+import PricingFeatureItem from '../page-product/PricingFeatureItem.astro';
+
+interface PricingItem {
+  title: string;
+  text: string;
+}
+
+interface CreditRow {
+  members: string;
+  cost: string;
+}
+
+interface Props {
+  title?: string;
+  intro?: string;
+  footnote?: string;
+  highlight?: string;
+  membersHeader?: string;
+  costHeader?: string;
+  items: readonly PricingItem[];
+  rows: readonly CreditRow[];
+}
+
+const {
+  title = 'Shared cost approach',
+  intro = 'The cost of sourcing datasets is shared among members requesting the same data.',
+  footnote = 'Dataset = 1 company, 1 framework, 1 reporting period.',
+  highlight = 'The more members request the same company, the lower the cost per dataset.',
+  membersHeader = '# of Members',
+  costHeader = 'Cost (Credits)',
+  items,
+  rows,
+} = Astro.props;
+---
+
+<section aria-label="Shared cost approach">
+  <CardShell as="article" variant="dark" class="rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+      <div class="flex h-full flex-col gap-5">
+        <div class="flex flex-col gap-5">
+          <h3 class="m-0 text-[1.75rem] font-bold leading-tight">{title}</h3>
+          <p class="section-intro text-white/90">{intro}</p>
+          <div class="flex flex-col gap-5">
+            {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
+          </div>
+        </div>
+        <p class="m-0 pt-1 text-[0.82rem] leading-relaxed text-white/58">{footnote}</p>
+      </div>
+      <div class="grid h-full grid-rows-[auto_1fr] gap-5">
+        <div class="invisible text-[1.75rem] font-bold leading-tight" aria-hidden="true">
+          {title}
+        </div>
+        <div class="flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4">
+          <div class="max-w-[24rem]">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="border-b-2 border-white">
+                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
+                    >{membersHeader}</th
+                  >
+                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
+                    >{costHeader}</th
+                  >
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  rows.map((row, idx) => (
+                    <tr
+                      class:list={[
+                        'border-b border-[var(--color-surface-200)]',
+                        idx === rows.length - 1 && 'border-b-0',
+                      ]}
+                    >
+                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.members}</td>
+                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.cost}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+            <p class="m-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]">
+              {highlight}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </CardShell>
+</section>

@@ -9,9 +9,9 @@ import {
 } from '../data/partnerStories';
 import { PARTNER_STORIES_PAGE_CONTENT } from '../data/pageContent';
 
-import PartnerStoriesHeroSection from '../components/partnerStories/PartnerStoriesHeroSection.astro';
-import PartnerStoriesDetailsSection from '../components/partnerStories/PartnerStoriesDetailsSection.astro';
-import PartnerStoriesMattersSection from '../components/partnerStories/PartnerStoriesMattersSection.astro';
+import PartnerStoriesHeroSection from '../components/page-partner-stories/PartnerStoriesHeroSection.astro';
+import PartnerStoriesDetailsSection from '../components/page-partner-stories/PartnerStoriesDetailsSection.astro';
+import PartnerStoriesMattersSection from '../components/page-partner-stories/PartnerStoriesMattersSection.astro';
 
 const integrationMattersSection: PartnerStoryExtraSection | undefined = PARTNER_STORY_DETAILS.find(
   (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'

@@ -1,0 +1,37 @@
+---
+import CtaBand from '../primitives/CtaBand.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  contact: string;
+}
+
+interface Props {
+  content: Content;
+}
+
+const { content } = Astro.props;
+
+const sectionClass =
+  'bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-14 text-white lg:px-8 lg:py-16';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto';
+
+const introClass = 'section-intro m-0 max-w-[42rem] text-white/76';
+
+const buttonWrapClass = 'flex flex-wrap justify-center gap-3';
+---
+
+<section class={sectionClass} aria-label="Community call to action">
+  <div class={sectionInnerClass}>
+    <CtaBand title={content.title} titleClass="text-white">
+      <p class={introClass}>
+        {content.intro}
+      </p>
+      <div class={buttonWrapClass}>
+        <a href="/about#contact" class="btn btn--primary">{content.contact}</a>
+      </div>
+    </CtaBand>
+  </div>
+</section>

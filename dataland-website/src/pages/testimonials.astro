@@ -1,41 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
-import YouTubeEmbed from '../components/YouTubeEmbed.astro';
-import { TESTIMONIALS, type Testimonial } from '../data/testimonials';
+import { TESTIMONIALS } from '../data/testimonials';
+
+import TestimonialsHeroSection from '../components/page-testimonials/TestimonialsHeroSection.astro';
+import TestimonialsGridSection from '../components/page-testimonials/TestimonialsGridSection.astro';
+
+const TESTIMONIALS_PAGE_CONTENT = {
+    meta: {
+        title: 'Member Testimonials — Dataland',
+        description: 'Hear what our members say about the Dataland ESG data platform.',
+    },
+    hero: {
+        title: 'Member Testimonials',
+        intro:
+            'Hear directly from the financial institutions and organisations that use Dataland to access structured sustainability data.',
+    },
+};
 ---
 
 <Base
-  title="Member Testimonials — Dataland"
-  description="Hear what our members say about the Dataland ESG data platform."
+        title={TESTIMONIALS_PAGE_CONTENT.meta.title}
+        description={TESTIMONIALS_PAGE_CONTENT.meta.description}
 >
-  <section
-    class="pt-16 pb-12 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:pb-16 lg:px-8"
-    aria-label="Member testimonials"
-  >
-    <div class="max-w-[1200px] mx-auto flex flex-col gap-12">
-      <div class="text-center flex flex-col gap-3">
-        <h1 class="text-[2rem] font-bold m-0 text-[var(--color-text)] lg:text-[2.5rem]">Member Testimonials</h1>
-        <p
-          class="m-0 max-w-[640px] mx-auto text-[1.06rem] leading-relaxed text-[var(--color-text-muted)] lg:text-[1.12rem]"
-        >
-          Hear directly from the financial institutions and organisations that use Dataland to access structured
-          sustainability data.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {
-          TESTIMONIALS.map((t: Testimonial) => (
-            <div class="flex flex-col gap-4">
-              <YouTubeEmbed videoId={t.youtubeId} title={`${t.author} — ${t.affiliation}`} />
-              <div class="flex flex-col gap-0.5">
-                <p class="text-base font-bold m-0 text-[var(--color-text)]">{t.author}</p>
-                <p class="text-sm m-0 text-[var(--color-text-muted)]">{t.affiliation}</p>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+    <TestimonialsHeroSection content={TESTIMONIALS_PAGE_CONTENT.hero} />
+    <TestimonialsGridSection testimonials={TESTIMONIALS} />
 </Base>

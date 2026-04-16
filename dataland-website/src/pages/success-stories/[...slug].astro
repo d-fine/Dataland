@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
-import ArrowLink from '../../components/ArrowLink.astro';
-import QuotePanel from '../../components/QuotePanel.astro';
+import ArrowLink from '../../components/primitives/ArrowLink.astro';
+import QuotePanel from '../../components/panels/QuotePanel.astro';
 
 export async function getStaticPaths() {
   const stories = await getCollection('success-stories');

@@ -1,0 +1,273 @@
+---
+import { ABOUT_SECTIONS, COMMUNITY_SECTIONS, PRODUCT_SECTIONS, type NavigationSection } from '../../data/navigation';
+
+const currentPath = Astro.url.pathname;
+
+/** Check whether a nav link matches the current page */
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+const navLinks = [
+  //{ href: '/', label: 'Home' },
+  //{ href: '/product', label: 'Product' },
+  //{ href: '/about', label: 'About' },
+] as const;
+
+const baseLinkClasses = 'no-underline font-medium text-[1rem] motion-safe:transition-colors duration-150';
+const inactiveClasses = 'text-white/88 hover:text-[var(--color-primary)]';
+//const activeClasses = 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] pb-[2px]';
+const activeClasses = 'text-[var(--color-primary)]';
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] bg-[var(--color-dark-panel)] border-b border-white/10"
+>
+  <div class="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center no-underline" aria-label="Dataland home">
+      <img src="/static/logos/logo_dataland_orange.svg" alt="Dataland" class="h-7 w-auto" width="140" height="32" />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden lg:flex gap-12 items-center" aria-label="Main navigation">
+      <div class="relative group">
+        <a
+          href="/about"
+          class:list={[baseLinkClasses, isActive('/about') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/about') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            About
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
+
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[var(--color-dark-panel-elevated)] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              ABOUT_SECTIONS.map(({ href, label }: NavigationSection) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <a
+          href="/product"
+          class:list={[baseLinkClasses, isActive('/product') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/product') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            Product
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
+
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              PRODUCT_SECTIONS.map(({ href, label }: NavigationSection) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <a
+          href="/community"
+          class:list={[baseLinkClasses, isActive('/community') ? activeClasses : inactiveClasses]}
+          aria-current={isActive('/community') ? 'page' : undefined}
+          aria-haspopup="true"
+        >
+          <span class="flex items-center gap-1">
+            Community
+            <svg class="w-3 h-3 mt-[1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </a>
+
+        <div
+          class="absolute left-0 top-full pt-3 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto motion-safe:transition-all motion-safe:duration-150"
+        >
+          <div
+            class="min-w-[260px] rounded-xl border border-white/10 bg-[#252529] shadow-[0_14px_30px_rgba(0,0,0,0.35)] p-3 flex flex-col"
+          >
+            {
+              COMMUNITY_SECTIONS.map(({ href, label }: NavigationSection) => (
+                <a
+                  href={href}
+                  class="no-underline px-3 py-2 rounded-md text-[1rem] text-white/88 hover:text-[var(--color-primary)] hover:bg-white/6 motion-safe:transition-colors duration-150"
+                >
+                  {label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Desktop actions -->
+    <div class="hidden lg:flex items-center gap-5">
+      <span id="header-guest-actions" class="flex items-center gap-5">
+        <a
+          href="/login"
+          data-test="login-dataland-button"
+          class="no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+          >Login</a
+        >
+        <a
+          href="/register"
+          data-test="signup-dataland-button"
+          class="inline-flex items-center px-5 py-2 bg-[var(--color-primary)] text-white font-semibold text-[1rem] rounded-md no-underline motion-safe:transition-colors duration-150 hover:bg-[var(--color-primary-hover)]"
+          >Try it free</a
+        >
+      </span>
+      <a
+        id="header-back-to-platform"
+        href="/platform-redirect"
+        data-test="backToPlatformLink"
+        class="hidden items-center gap-2 no-underline text-white/88 font-medium text-[1rem] motion-safe:transition-colors duration-150 hover:text-[var(--color-primary)]"
+      >
+        Back to platform
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Mobile hamburger (visible < lg only) -->
+    <button
+      type="button"
+      class="flex lg:hidden items-center justify-center bg-transparent border-none cursor-pointer p-2 text-white"
+      aria-label="Open menu"
+      id="mobile-menu-toggle"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<template id="mobile-nav-template">
+  <nav id="mobile-nav" class="mobile-nav hidden" aria-label="Mobile navigation" role="dialog" aria-modal="true">
+    <div class="mobile-nav__header">
+      <span class="mobile-nav__title">Menu</span>
+      <button type="button" id="mobile-nav-close" class="mobile-nav__close" aria-label="Close menu">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-nav__links">
+      <!-- Same navLinks as before -->
+      <a href="/" class="mobile-nav__link">Home</a>
+      <a href="/product" class="mobile-nav__link">Product</a>
+      <a href="/about" class="mobile-nav__link">About</a>
+      <a href="/community" class="mobile-nav__link">Community</a>
+
+      <!-- Guest-only actions -->
+      <a href="/login" data-test="login-dataland-button" class="mobile-nav__link"> Login </a>
+      <a href="/register" data-test="signup-dataland-button" class="mobile-nav__cta"> Try it free </a>
+
+      <!-- Auth-only action -->
+      <a
+        href="/platform-redirect"
+        id="mobile-nav-back-to-platform"
+        data-test="backToPlatformLink"
+        class="mobile-nav__link mobile-nav__back-to-platform"
+      >
+        Back to platform
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <div id="mobile-nav-overlay" class="mobile-nav-overlay hidden"></div>
+</template>
+
+<script type="module" src="/scripts/initHeader.js"></script>
+<script type="module" src="/scripts/mobileNav.js"></script>

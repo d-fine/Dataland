@@ -1,0 +1,33 @@
+---
+interface Content {
+  title: string;
+  intro: string;
+}
+
+interface Props {
+  content: Content;
+}
+
+const { content } = Astro.props;
+
+const sectionClass =
+  'pt-16 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto';
+
+const textWrapClass = 'text-center flex flex-col gap-3';
+
+const titleClass = 'text-[2rem] font-bold m-0 text-[var(--color-text)] lg:text-[2.5rem]';
+
+const introClass =
+  'm-0 max-w-[640px] mx-auto text-[1.06rem] leading-relaxed text-[var(--color-text-muted)] lg:text-[1.12rem]';
+---
+
+<section class={sectionClass} aria-label="Member testimonials">
+  <div class={sectionInnerClass}>
+    <div class={textWrapClass}>
+      <h1 class={titleClass}>{content.title}</h1>
+      <p class={introClass}>{content.intro}</p>
+    </div>
+  </div>
+</section>

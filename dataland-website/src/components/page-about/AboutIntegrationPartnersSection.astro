@@ -1,0 +1,18 @@
+---
+import PartnerStoryCards from '../partnerStories/PartnerStoryCards.astro';
+import type { PartnerStorySummary } from '../../data/partnerStories';
+
+interface Content {
+  title: string;
+  intro: string;
+}
+
+interface Props {
+  content: Content;
+  stories: PartnerStorySummary[];
+}
+
+const { content, stories } = Astro.props;
+---
+
+<PartnerStoryCards title={content.title} intro={content.intro} stories={stories} />
