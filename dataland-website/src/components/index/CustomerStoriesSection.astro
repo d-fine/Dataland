@@ -46,11 +46,7 @@ const secondaryTagClass =
 const readMoreClass = 'arrow-link mt-auto';
 ---
 
-<section
-  id="customer-stories"
-  class={sectionClass}
-  aria-label="How our members use Dataland"
->
+<section id="customer-stories" class={sectionClass} aria-label="How our members use Dataland">
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={storiesGridClass}>
@@ -76,13 +72,9 @@ const readMoreClass = 'arrow-link mt-auto';
             </div>
             <div class={storyBodyClass}>
               <div class={tagsRowClass}>
-                <span class={primaryTagClass}>
-                  {story.primaryTag}
-                </span>
+                <span class={primaryTagClass}>{story.primaryTag}</span>
                 {story.secondaryTags.map((tag) => (
-                  <span class={secondaryTagClass}>
-                    {tag}
-                  </span>
+                  <span class={secondaryTagClass}>{tag}</span>
                 ))}
               </div>
               <h3 class={storyTitleClass}>{story.title}</h3>

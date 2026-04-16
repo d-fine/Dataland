@@ -24,9 +24,11 @@ const { item, iconSrc } = Astro.props;
   <div class="flex flex-col gap-3">
     <h4 class="m-0 text-[1.14rem] font-bold text-[var(--color-primary)]">{item.title}</h4>
     <div class="flex flex-col gap-2.5">
-      {item.lines.map((line) => (
-        <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
-      ))}
+      {
+        item.lines.map((line) => (
+          <p class="m-0 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">{line}</p>
+        ))
+      }
     </div>
   </div>
 </section>

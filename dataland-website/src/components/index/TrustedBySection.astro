@@ -46,10 +46,7 @@ const logoImageBaseClass =
           trustedByCarousel.map((logo, index) => (
             <a
               href="/community#trusted-organizations"
-              class:list={[
-                logoLinkBaseClass,
-                logo.carouselContainerClassName,
-              ]}
+              class:list={[logoLinkBaseClass, logo.carouselContainerClassName]}
               aria-label={`See ${logo.name} on the community page`}
             >
               <div class={logoFrameWrapClass}>
@@ -57,10 +54,7 @@ const logoImageBaseClass =
                   <img
                     src={logo.imagePath}
                     alt={logo.name}
-                    class:list={[
-                      logoImageBaseClass,
-                      logo.className,
-                    ]}
+                    class:list={[logoImageBaseClass, logo.className]}
                     style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
                     loading={index < logos.length ? 'eager' : 'lazy'}
                     width="176"

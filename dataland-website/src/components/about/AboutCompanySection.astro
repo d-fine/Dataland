@@ -25,8 +25,7 @@ const { content, companyCopy } = Astro.props;
 const sectionClass =
   'scroll-mt-16 bg-[radial-gradient(circle_at_65%_80%,rgba(62,106,142,0.32),transparent_24%),linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-16 pb-12 text-white lg:px-8 lg:pt-24 lg:pb-16';
 
-const innerClass =
-  'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[52%_48%] lg:items-stretch';
+const innerClass = 'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 lg:grid-cols-[52%_48%] lg:items-stretch';
 
 const imageWrapClass = 'flex justify-center lg:justify-start';
 
@@ -68,7 +67,11 @@ const dfineLogoClass = 'h-auto w-[120px] object-contain brightness-0 invert opac
           <p class={paragraphClass}>{companyCopy.text1}</p>
 
           <p class={paragraphClass}>
-            {content.supportLine.beforeFoundation}<span class={accentClass}>Werte-Stiftung</span>{content.supportLine.betweenFoundationAndDfine}<span class={accentClass}>d-fine</span>{content.supportLine.betweenDfineAndPwc}<span class={accentClass}>PwC</span>{content.supportLine.afterPwc}
+            {content.supportLine.beforeFoundation}<span class={accentClass}>Werte-Stiftung</span>{
+              content.supportLine.betweenFoundationAndDfine
+            }<span class={accentClass}>d-fine</span>{content.supportLine.betweenDfineAndPwc}<span class={accentClass}
+              >PwC</span
+            >{content.supportLine.afterPwc}
           </p>
         </div>
       </div>
@@ -84,14 +87,7 @@ const dfineLogoClass = 'h-auto w-[120px] object-contain brightness-0 invert opac
         />
 
         <div class={pwcWrapClass}>
-          <img
-            src="/static/logos/logo_pwc.svg"
-            alt="PwC"
-            width="190"
-            height="88"
-            loading="lazy"
-            class={pwcLogoClass}
-          />
+          <img src="/static/logos/logo_pwc.svg" alt="PwC" width="190" height="88" loading="lazy" class={pwcLogoClass} />
         </div>
 
         <img

@@ -57,25 +57,33 @@ const {
             <table class="w-full border-collapse">
               <thead>
                 <tr class="border-b-2 border-white">
-                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white">{membersHeader}</th>
-                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white">{costHeader}</th>
+                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
+                    >{membersHeader}</th
+                  >
+                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
+                    >{costHeader}</th
+                  >
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, idx) => (
-                  <tr
-                    class:list={[
-                      'border-b border-[var(--color-surface-200)]',
-                      idx === rows.length - 1 && 'border-b-0',
-                    ]}
-                  >
-                    <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.members}</td>
-                    <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.cost}</td>
-                  </tr>
-                ))}
+                {
+                  rows.map((row, idx) => (
+                    <tr
+                      class:list={[
+                        'border-b border-[var(--color-surface-200)]',
+                        idx === rows.length - 1 && 'border-b-0',
+                      ]}
+                    >
+                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.members}</td>
+                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.cost}</td>
+                    </tr>
+                  ))
+                }
               </tbody>
             </table>
-            <p class="m-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]">{highlight}</p>
+            <p class="m-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]">
+              {highlight}
+            </p>
           </div>
         </div>
       </div>

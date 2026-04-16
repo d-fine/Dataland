@@ -47,11 +47,7 @@ const ctaWrapClass = 'flex justify-center';
         frameworks.map((fw) => (
           <InfoCard variant="glass" title={fw.title} titleClass={infoCardTitleClass} class={infoCardClass}>
             <div slot="before" class={topAccentClass} aria-hidden="true" />
-            {fw.subtitle && (
-              <p class={subtitleClass}>
-                {fw.subtitle}
-              </p>
-            )}
+            {fw.subtitle && <p class={subtitleClass}>{fw.subtitle}</p>}
             <p class={descriptionClass}>{fw.description}</p>
           </InfoCard>
         ))

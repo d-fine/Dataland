@@ -2,14 +2,14 @@
 import Base from '../layouts/Base.astro';
 import { ABOUT_PAGE_CONTENT } from '../data/pageContent';
 import {
-    COMPANY_COPY,
-    LEADERSHIP_TEAM,
-    CONTACT_PHONE,
-    CONTACT_PHONE_DISPLAY,
-    CONTACT_EMAIL,
-    CONTACT_EMAIL_DISPLAY,
-    CONTACT_INQUIRY_MAILTO,
-    CONTACT_ADDRESS,
+  COMPANY_COPY,
+  LEADERSHIP_TEAM,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_DISPLAY,
+  CONTACT_INQUIRY_MAILTO,
+  CONTACT_ADDRESS,
 } from '../data/about';
 import { PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
 import { NEWS_ITEMS } from '../data/news';
@@ -22,34 +22,22 @@ import AboutContactSection from '../components/about/AboutContactSection.astro';
 ---
 
 <Base title={ABOUT_PAGE_CONTENT.meta.title} description={ABOUT_PAGE_CONTENT.meta.description}>
-    <AboutCompanySection
-            content={ABOUT_PAGE_CONTENT.company}
-            companyCopy={COMPANY_COPY}
-    />
+  <AboutCompanySection content={ABOUT_PAGE_CONTENT.company} companyCopy={COMPANY_COPY} />
 
-    <AboutLeadershipSection
-            content={ABOUT_PAGE_CONTENT.leadership}
-            people={LEADERSHIP_TEAM}
-    />
+  <AboutLeadershipSection content={ABOUT_PAGE_CONTENT.leadership} people={LEADERSHIP_TEAM} />
 
-    <AboutIntegrationPartnersSection
-            content={ABOUT_PAGE_CONTENT.integrationPartners}
-            stories={PARTNER_STORY_SUMMARIES}
-    />
+  <AboutIntegrationPartnersSection content={ABOUT_PAGE_CONTENT.integrationPartners} stories={PARTNER_STORY_SUMMARIES} />
 
-    <AboutNewsSection
-            content={ABOUT_PAGE_CONTENT.news}
-            items={NEWS_ITEMS}
-    />
+  <AboutNewsSection content={ABOUT_PAGE_CONTENT.news} items={NEWS_ITEMS} />
 
-    <AboutContactSection
-            contactContent={ABOUT_PAGE_CONTENT.contact}
-            startPanelContent={ABOUT_PAGE_CONTENT.startPanel}
-            inquiryMailto={CONTACT_INQUIRY_MAILTO}
-            phoneHref={CONTACT_PHONE}
-            phoneLabel={CONTACT_PHONE_DISPLAY}
-            emailHref={CONTACT_EMAIL}
-            emailLabel={CONTACT_EMAIL_DISPLAY}
-            address={CONTACT_ADDRESS}
-    />
+  <AboutContactSection
+    contactContent={ABOUT_PAGE_CONTENT.contact}
+    startPanelContent={ABOUT_PAGE_CONTENT.startPanel}
+    inquiryMailto={CONTACT_INQUIRY_MAILTO}
+    phoneHref={CONTACT_PHONE}
+    phoneLabel={CONTACT_PHONE_DISPLAY}
+    emailHref={CONTACT_EMAIL}
+    emailLabel={CONTACT_EMAIL_DISPLAY}
+    address={CONTACT_ADDRESS}
+  />
 </Base>

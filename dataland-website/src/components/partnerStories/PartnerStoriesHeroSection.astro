@@ -53,13 +53,7 @@ const cardTextClass = 'm-0 text-[0.95rem] leading-relaxed text-white/72';
     <div class={gridClass}>
       {
         stories.map((story) => (
-          <CardShell
-            as="a"
-            href={story.link}
-            variant="glass"
-            accentTop={true}
-            class={cardClass}
-          >
+          <CardShell as="a" href={story.link} variant="glass" accentTop={true} class={cardClass}>
             <div class={logoStageClass}>
               <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
                 <img

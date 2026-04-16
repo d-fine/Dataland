@@ -38,12 +38,14 @@ const closingPromptClass = 'm-0 max-w-[880px] text-center text-[1.14rem] leading
     <h2 class={titleClass}>{section.title}</h2>
 
     <div class={gridClass}>
-      {section.items.map((item: MatterItem) => (
-        <section class={itemCardClass}>
-          <h3 class={itemTitleClass}>{item.title}</h3>
-          <p class={itemTextClass}>{item.text}</p>
-        </section>
-      ))}
+      {
+        section.items.map((item: MatterItem) => (
+          <section class={itemCardClass}>
+            <h3 class={itemTitleClass}>{item.title}</h3>
+            <p class={itemTextClass}>{item.text}</p>
+          </section>
+        ))
+      }
     </div>
 
     {closingPrompt && <p class={closingPromptClass}>{closingPrompt}</p>}

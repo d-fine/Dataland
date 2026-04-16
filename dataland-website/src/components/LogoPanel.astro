@@ -28,14 +28,9 @@ const {
     className,
   ]}
 >
-  <div class:list={darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2' : 'flex w-full items-center justify-center'}>
-    <img
-      src={logo}
-      alt={name}
-      class:list={[imageClass, logoClassName]}
-      loading="lazy"
-      width={width}
-      height={height}
-    />
+  <div
+    class:list={darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-4 py-2' : 'flex w-full items-center justify-center'}
+  >
+    <img src={logo} alt={name} class:list={[imageClass, logoClassName]} loading="lazy" width={width} height={height} />
   </div>
 </div>

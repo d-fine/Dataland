@@ -14,8 +14,7 @@ interface Props {
 
 const { content, people } = Astro.props;
 
-const sectionClass =
-  'scroll-mt-16 bg-[var(--color-brand-blue)] px-6 py-12 text-white lg:px-8 lg:py-16';
+const sectionClass = 'scroll-mt-16 bg-[var(--color-brand-blue)] px-6 py-12 text-white lg:px-8 lg:py-16';
 
 const innerClass = 'max-w-[1200px] mx-auto flex flex-col gap-10';
 const headerClass = 'mx-auto max-w-[860px]';
@@ -42,14 +41,7 @@ const iconLinkClass =
       {
         people.map((person) => (
           <div class={cardClass}>
-            <img
-              src={person.imagePath}
-              alt={person.name}
-              class={imageClass}
-              loading="lazy"
-              width="340"
-              height="540"
-            />
+            <img src={person.imagePath} alt={person.name} class={imageClass} loading="lazy" width="340" height="540" />
 
             <div class={nameWrapClass}>
               <h3 class={nameClass}>{person.name}</h3>

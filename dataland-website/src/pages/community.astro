@@ -10,22 +10,15 @@ import CommunityTrustedOrganizationsSection from '../components/community/Commun
 import CommunityCtaSection from '../components/community/CommunityCtaSection.astro';
 ---
 
-<Base
-        title={COMMUNITY_PAGE_CONTENT.meta.title}
-        description={COMMUNITY_PAGE_CONTENT.meta.description}
->
-    <CommunityHeroSection content={COMMUNITY_PAGE_CONTENT.hero} items={COMMUNITY_GRID_ITEMS} />
+<Base title={COMMUNITY_PAGE_CONTENT.meta.title} description={COMMUNITY_PAGE_CONTENT.meta.description}>
+  <CommunityHeroSection content={COMMUNITY_PAGE_CONTENT.hero} items={COMMUNITY_GRID_ITEMS} />
 
-    <CommunityTrustedOrganizationsSection
-            content={COMMUNITY_PAGE_CONTENT.trustedOrganizations}
-            logos={TRUSTED_BY_LOGOS}
-    />
+  <CommunityTrustedOrganizationsSection
+    content={COMMUNITY_PAGE_CONTENT.trustedOrganizations}
+    logos={TRUSTED_BY_LOGOS}
+  />
 
-    <PartnersSection
-            partners={PARTNERS}
-            title={COMMUNITY_PAGE_CONTENT.partners.title}
-            showTopAccent={false}
-    />
+  <PartnersSection partners={PARTNERS} title={COMMUNITY_PAGE_CONTENT.partners.title} showTopAccent={false} />
 
-    <CommunityCtaSection content={COMMUNITY_PAGE_CONTENT.cta} />
+  <CommunityCtaSection content={COMMUNITY_PAGE_CONTENT.cta} />
 </Base>

@@ -1,3 +1,8 @@
+interface HeroStat {
+  value: string;
+  label: string;
+}
+
 export const INDEX_PAGE_CONTENT = {
   meta: {
     title: 'Dataland - Non-profit sustainability data',
@@ -11,7 +16,7 @@ export const INDEX_PAGE_CONTENT = {
       { value: '1,000', label: 'Users' },
       { value: '3,000', label: 'Datasets' },
       { value: '300,000', label: 'Live data points' },
-    ],
+    ] as HeroStat[],
     buttons: {
       try: 'Try it free',
       more: 'More about us',

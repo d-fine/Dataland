@@ -12,16 +12,7 @@ interface Props {
   [key: string]: unknown;
 }
 
-const {
-  as = 'div',
-  href,
-  class: className,
-  title,
-  text,
-  accentTop = true,
-  variant = 'light',
-  ...rest
-} = Astro.props;
+const { as = 'div', href, class: className, title, text, accentTop = true, variant = 'light', ...rest } = Astro.props;
 ---
 
 <CardShell
