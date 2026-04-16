@@ -1,16 +1,40 @@
 // src/scripts/mobileNav.ts
 
 export function initMobileNav(): void {
-  const nav = document.querySelector<HTMLElement>('#mobile-nav');
-  const overlay = document.querySelector<HTMLElement>('#mobile-nav-overlay');
+  let nav = document.querySelector<HTMLElement>('#mobile-nav');
+  let overlay = document.querySelector<HTMLElement>('#mobile-nav-overlay');
+
+  if (!nav || !overlay) {
+    const template = document.querySelector<HTMLTemplateElement>('#mobile-nav-template');
+    if (!template) return;
+
+    const fragment = template.content.cloneNode(true) as DocumentFragment;
+
+    document.body.appendChild(fragment);
+
+    nav = document.querySelector<HTMLElement>('#mobile-nav');
+    overlay = document.querySelector<HTMLElement>('#mobile-nav-overlay');
+  }
+
   const closeBtn = document.querySelector<HTMLButtonElement>('#mobile-nav-close');
   const toggle = document.querySelector<HTMLButtonElement>('#mobile-menu-toggle');
 
+  if (!nav || !overlay || !closeBtn || !toggle) return;
+
+  initMobileNavInternal(nav, overlay, closeBtn, toggle);
+}
+
+function initMobileNavInternal(
+  nav: HTMLElement,
+  overlay: HTMLElement,
+  closeBtn: HTMLButtonElement,
+  toggle: HTMLButtonElement
+): void {
   const isAuthenticated: boolean = localStorage.getItem('dataland_authenticated') === 'true';
 
   const backToPlatform = document.querySelector<HTMLElement>('#mobile-nav-back-to-platform');
-  const loginLink = nav?.querySelector<HTMLElement>('[data-test="login-dataland-button"]') ?? null;
-  const signupLink = nav?.querySelector<HTMLElement>('[data-test="signup-dataland-button"]') ?? null;
+  const loginLink = nav.querySelector<HTMLElement>('[data-test="login-dataland-button"]');
+  const signupLink = nav.querySelector<HTMLElement>('[data-test="signup-dataland-button"]');
 
   if (backToPlatform) {
     backToPlatform.style.display = isAuthenticated ? 'flex' : 'none';
@@ -23,8 +47,6 @@ export function initMobileNav(): void {
   }
 
   function markActiveLinks(): void {
-    if (!nav) return;
-
     const path: string = window.location.pathname;
     const links = nav.querySelectorAll<HTMLAnchorElement>('.mobile-nav__link');
 
@@ -46,9 +68,7 @@ export function initMobileNav(): void {
   let isOpen = false;
 
   function openNav(): void {
-    if (!nav || !overlay || !closeBtn || !toggle) return;
     if (isOpen) return;
-
     isOpen = true;
     nav.classList.remove('hidden');
     overlay.classList.remove('hidden');
@@ -56,9 +76,7 @@ export function initMobileNav(): void {
   }
 
   function closeNav(): void {
-    if (!nav || !overlay || !toggle) return;
     if (!isOpen) return;
-
     isOpen = false;
     nav.classList.add('hidden');
     overlay.classList.add('hidden');
@@ -82,8 +100,8 @@ export function initMobileNav(): void {
 
   document.addEventListener('toggle-mobile-nav', handleToggle);
   document.addEventListener('keydown', handleKeydown);
-  overlay?.addEventListener('click', closeNav);
-  closeBtn?.addEventListener('click', closeNav);
+  overlay.addEventListener('click', closeNav);
+  closeBtn.addEventListener('click', closeNav);
 
   window.addEventListener('resize', (): void => {
     if (window.innerWidth >= 1024 && isOpen) {
@@ -99,6 +117,7 @@ function setupMobileNavWithMedia(): void {
   function initIfMatches(e?: MediaQueryListEvent): void {
     const matches: boolean = e ? e.matches : mql.matches;
     if (!matches || initialized) return;
+
     initMobileNav();
     initialized = true;
   }
@@ -118,18 +137,10 @@ function setupMobileNavWithMedia(): void {
 
 if (typeof window !== 'undefined') {
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', setupMobileNavWithMedia);
-  } else {
-    setupMobileNavWithMedia();
-  }
-}
-
-if (typeof window !== 'undefined') {
-  if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => {
-      initMobileNav();
+    window.addEventListener('DOMContentLoaded', (): void => {
+      setupMobileNavWithMedia();
     });
   } else {
-    initMobileNav();
+    setupMobileNavWithMedia();
   }
 }
