@@ -160,3 +160,13 @@ export function initCompanySearchBar(): void {
     }, 150);
   });
 }
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => {
+      initCompanySearchBar();
+    });
+  } else {
+    initCompanySearchBar();
+  }
+}

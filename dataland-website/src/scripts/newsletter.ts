@@ -85,3 +85,13 @@ export function initNewsletterForm(): void {
 
   updateSubmitState();
 }
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => {
+      initNewsletterForm();
+    });
+  } else {
+    initNewsletterForm();
+  }
+}

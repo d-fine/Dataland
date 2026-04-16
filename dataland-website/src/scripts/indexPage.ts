@@ -60,3 +60,13 @@ export function initIndexPage(): void {
     }
   }
 }
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => {
+      initIndexPage();
+    });
+  } else {
+    initIndexPage();
+  }
+}

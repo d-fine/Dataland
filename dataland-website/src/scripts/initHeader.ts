@@ -26,3 +26,13 @@ export function initHeader(): void {
     }
   }
 }
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => {
+      initHeader();
+    });
+  } else {
+    initHeader();
+  }
+}
