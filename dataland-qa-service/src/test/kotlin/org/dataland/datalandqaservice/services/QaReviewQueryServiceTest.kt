@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import jakarta.persistence.PersistenceException
 import org.dataland.dataSourcingService.openApiClient.api.DataSourcingControllerApi
 import org.dataland.dataSourcingService.openApiClient.model.DataSourcingPriorityByDataDimensions
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -13,6 +14,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatalandBackendAccessor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.datalandqaservice.utils.BuildTestSetArgs
+import org.dataland.datalandqaservice.utils.buildTestSet
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
@@ -21,10 +24,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.dao.DataAccessException
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -71,6 +77,61 @@ class QaReviewQueryServiceTest {
             dataPoints = mutableListOf(),
         )
 
+    private val dataId1: String = UUID.randomUUID().toString()
+    private val dataId2: String = UUID.randomUUID().toString()
+
+    private val judgementId1: UUID = UUID.randomUUID()
+    private val judgementId2: UUID = UUID.randomUUID()
+    private val judgeId1: UUID = UUID.randomUUID()
+    private val judgeId2: UUID = UUID.randomUUID()
+
+    private val testSet1 =
+        buildTestSet(
+            BuildTestSetArgs(
+                dataId = dataId1,
+                companyId = "company-a",
+                companyName = "Company A",
+                reportingPeriod = "2024",
+                timestamp = 1000L,
+                triggeringUserId = "trigger-user-a",
+                comment = "first",
+                judgementId = judgementId1,
+                qaJudgeUserId = judgeId1,
+                qaJudgeUserName = "Judge A",
+                numberQaReports = 3L,
+                priority = 4,
+            ),
+        )
+
+    private val qaReviewEntity1 = testSet1.qaReview
+    private val datasetJudgementEntity1 = testSet1.datasetJudgement
+    private val expected1 = testSet1.response
+
+    private val testSet2 =
+        buildTestSet(
+            BuildTestSetArgs(
+                dataId = dataId2,
+                companyId = "company-b",
+                companyName = "Company B",
+                reportingPeriod = "2023",
+                timestamp = 2000L,
+                triggeringUserId = "trigger-user-b",
+                comment = "second",
+                judgementId = judgementId2,
+                qaJudgeUserId = judgeId2,
+                qaJudgeUserName = "Judge B",
+                numberQaReports = 5L,
+                priority = 9,
+            ),
+        )
+    private val qaReviewEntity2 = testSet2.qaReview
+    private val datasetJudgementEntity2 = testSet2.datasetJudgement
+    private val expected2 = testSet2.response
+
+    private val expected = listOf(expected2, expected1)
+
+    private val dataSourcingPriorities = listOf(testSet2.dataSourcingPriority, testSet1.dataSourcingPriority)
+
     private lateinit var qaReviewQueryService: QaReviewQueryService
 
     @BeforeEach
@@ -93,7 +154,21 @@ class QaReviewQueryServiceTest {
                 mockMetaDataControllerApi,
             )
 
-        doReturn(emptySet<String>()).whenever(mockBackendAccessor).getCompanyIdsForCompanyName(any())
+        doReturn(emptySet<String>())
+            .whenever(mockBackendAccessor)
+            .getCompanyIdsForCompanyName(any())
+
+        doReturn(emptyMap<String, String>())
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(any())
+
+        doReturn(emptyMap<String, Long>())
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+
+        doReturn(listOf(datasetJudgementEntity))
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
     }
 
     @Test
@@ -104,9 +179,9 @@ class QaReviewQueryServiceTest {
         doReturn(mapOf("first" to "dp1", "second" to "dp2"))
             .whenever(mockMetaDataControllerApi)
             .getContainedDataPoints(eq(dataId))
-        doReturn(2L)
+        doReturn(mapOf("dp1" to 1L, "dp2" to 1L))
             .whenever(mockDataPointQaReportManager)
-            .countQaReportsForDataPointIds(any())
+            .countQaReportsForDataPointIdsBulk(any())
         doReturn(listOf(datasetJudgementEntity))
             .whenever(mockDatasetJudgementRepository)
             .findAllByDatasetId(any())
@@ -189,5 +264,137 @@ class QaReviewQueryServiceTest {
 
         Assertions.assertEquals(1, responses.size)
         Assertions.assertNull(responses.first().priorityOfAssociatedDataSourcing)
+    }
+
+    @Test
+    fun `check that getInfoOnPendingDatasets returns stable content and order`() {
+        doReturn(listOf(qaReviewEntity2, qaReviewEntity1))
+            .whenever(mockQaReviewRepository)
+            .getPendingQaReviewMetadatasetsByCompany(any())
+
+        doReturn(listOf(datasetJudgementEntity1, datasetJudgementEntity2))
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
+
+        doReturn(mapOf("x" to "dp-1", "y" to "dp-2"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId1))
+
+        doReturn(mapOf("x" to "dp-3"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId2))
+
+        doReturn(mapOf("dp-1" to 1L, "dp-2" to 2L, "dp-3" to 5L))
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+
+        doReturn(dataSourcingPriorities).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
+
+        val actual =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = "dummy-user",
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewQueryService.getInfoOnPendingDatasets(companyName = null)
+            }
+
+        Assertions.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `fallback to findAllByDatasetIdIn when fetch join throws PersistenceException or DataAccessException`() {
+        val exceptions: List<Throwable> =
+            listOf(
+                PersistenceException(),
+                object : DataAccessException("db failure") {},
+            )
+
+        for (ex in exceptions) {
+            doReturn(null)
+                .whenever(mockDataSourcingService)
+                .getDataSourcingPriorities(any())
+
+            doReturn(listOf(qaReviewEntity))
+                .whenever(mockQaReviewRepository)
+                .getPendingQaReviewMetadatasetsByCompany(any())
+
+            doThrow(ex)
+                .whenever(mockDatasetJudgementRepository)
+                .findAllWithDataPointsByDatasetIdIn(any())
+
+            doReturn(listOf(datasetJudgementEntity))
+                .whenever(mockDatasetJudgementRepository)
+                .findAllByDatasetIdIn(any())
+
+            val responses =
+                AuthenticationMock.withAuthenticationMock(
+                    username = "user",
+                    userId = uploaderId,
+                    roles = setOf(DatalandRealmRole.ROLE_USER),
+                ) {
+                    qaReviewQueryService.getInfoOnPendingDatasets(
+                        companyName = null,
+                    )
+                }
+
+            Assertions.assertEquals(1, responses.size)
+            Assertions.assertEquals(dummyUserId.toString(), responses.first().qaJudgeUserId)
+            Assertions.assertEquals(dummyUserName, responses.first().qaJudgeUserName)
+
+            verify(mockDatasetJudgementRepository).findAllWithDataPointsByDatasetIdIn(any())
+            verify(mockDatasetJudgementRepository).findAllByDatasetIdIn(any())
+
+            reset(mockDatasetJudgementRepository)
+        }
+    }
+
+    @Test
+    fun `dataset without any judgement still returned with null judgement fields`() {
+        doReturn(
+            listOf(
+                DataSourcingPriorityByDataDimensions(
+                    dataType = framework,
+                    reportingPeriod = reportingPeriod,
+                    companyId = companyId,
+                    priority = 7,
+                ),
+            ),
+        ).whenever(mockDataSourcingService).getDataSourcingPriorities(any())
+
+        doReturn(listOf(qaReviewEntity))
+            .whenever(mockQaReviewRepository)
+            .getPendingQaReviewMetadatasetsByCompany(any())
+
+        doReturn(emptyList<DatasetJudgementEntity>())
+            .whenever(mockDatasetJudgementRepository)
+            .findAllWithDataPointsByDatasetIdIn(any())
+
+        doReturn(mapOf("x" to "dp-1", "y" to "dp-2"))
+            .whenever(mockMetaDataControllerApi)
+            .getContainedDataPoints(eq(dataId))
+
+        doReturn(mapOf("dp-1" to 3L, "dp-2" to 2L))
+            .whenever(mockDataPointQaReportManager)
+            .countQaReportsForDataPointIdsBulk(any())
+
+        val responses =
+            AuthenticationMock.withAuthenticationMock(
+                username = "user",
+                userId = uploaderId,
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            ) {
+                qaReviewQueryService.getInfoOnPendingDatasets(
+                    companyName = null,
+                )
+            }
+
+        Assertions.assertEquals(1, responses.size)
+        val resp = responses.first()
+        Assertions.assertNull(resp.qaJudgeUserId)
+        Assertions.assertNull(resp.qaJudgeUserName)
+        Assertions.assertNull(resp.datasetReviewId)
+        Assertions.assertEquals(5L, resp.numberQaReports)
+        Assertions.assertEquals(7, resp.priorityOfAssociatedDataSourcing)
     }
 }
