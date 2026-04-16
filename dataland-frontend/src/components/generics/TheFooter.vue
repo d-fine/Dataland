@@ -1,5 +1,5 @@
 <template>
-  <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo" data-test="dataland footer">
+  <footer class="footer" role="contentinfo" data-test="dataland footer">
     <div class="footer__top">
       <div class="footer__col footer__col--contact">
         <a href="/" class="footer__logo-link" aria-label="Dataland home">
@@ -212,9 +212,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-defineProps<{
-  isLightVersion?: boolean;
-}>();
+defineOptions({ name: 'TheFooter' });
 
 const currentYear = computed(() => new Date().getFullYear());
 
@@ -268,16 +266,13 @@ function showCookieSettings(): void {
 
 <style scoped>
 .footer {
-  background: var(--p-surface-0, #f7f7f5);
-  color: var(--p-text-color, #1b1b1b);
-}
-
-.footer--light {
-  background: var(--p-surface-100, #f0f0f0);
+  background: #f7f7f5;
+  color: #1b1b1b;
+  text-align: left;
 }
 
 .footer__top {
-  border-top: 1px solid var(--p-surface-200, #e6e6e6);
+  border-top: 1px solid #e6e6e6;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;
@@ -317,13 +312,14 @@ function showCookieSettings(): void {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  color: #737373;
 }
 
 .footer__company-name {
   font-size: 0.95rem;
   font-weight: 600;
   margin: 0;
-  color: var(--p-text-color, #1b1b1b);
+  color: #1b1b1b;
 }
 
 .footer__address-row {
@@ -336,7 +332,6 @@ function showCookieSettings(): void {
   margin-top: 0.375rem;
   flex-shrink: 0;
   align-self: flex-start;
-  color: var(--p-text-muted-color, #737373);
 }
 
 .footer__address-lines {
@@ -349,7 +344,7 @@ function showCookieSettings(): void {
 .footer__address-line {
   margin: 0;
   font-size: 0.82rem;
-  color: var(--p-text-muted-color, #737373);
+  color: #737373;
 }
 
 .footer__contact-link {
@@ -357,13 +352,13 @@ function showCookieSettings(): void {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.82rem;
-  color: var(--p-text-muted-color, #737373);
+  color: #737373;
   text-decoration: none;
   transition: color 150ms ease-in-out;
 }
 
 .footer__contact-link:hover {
-  color: var(--p-primary-color);
+  color: #e67e22;
 }
 
 .footer__icon {
@@ -376,7 +371,7 @@ function showCookieSettings(): void {
   text-transform: uppercase;
   letter-spacing: 0.16em;
   margin: 0 0 1rem;
-  color: var(--p-text-color, #1b1b1b);
+  color: #1b1b1b;
 }
 
 .footer__link-list {
@@ -391,14 +386,14 @@ function showCookieSettings(): void {
 
 .footer__list-link {
   font-size: 1rem;
-  color: var(--p-text-muted-color, #737373);
+  color: #737373;
   text-decoration: none;
   text-align: left;
   transition: color 150ms ease-in-out;
 }
 
 .footer__list-link:hover {
-  color: var(--p-primary-color);
+  color: #e67e22;
 }
 
 .footer__list-link--inline {
@@ -408,7 +403,7 @@ function showCookieSettings(): void {
 }
 
 .footer__bottom {
-  border-top: 1px solid var(--p-surface-200, #e6e6e6);
+  border-top: 1px solid #e6e6e6;
 }
 
 .footer__bottom-inner {
@@ -434,13 +429,13 @@ function showCookieSettings(): void {
   min-height: 44px;
   min-width: 44px;
   font-size: 0.8125rem;
-  color: var(--p-text-muted-color, #737373);
+  color: #737373;
   text-decoration: none;
   transition: color 150ms ease-in-out;
 }
 
 .footer__bottom-link:hover {
-  color: var(--p-primary-color);
+  color: #ff6813;
 }
 
 .footer__bottom-right {
@@ -448,7 +443,7 @@ function showCookieSettings(): void {
   align-items: center;
   gap: 1rem;
   font-size: 0.8125rem;
-  color: var(--p-text-muted-color, #737373);
+  color: #737373;
 }
 
 .footer__cookie-btn {
