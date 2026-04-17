@@ -269,6 +269,9 @@ function showCookieSettings(): void {
   background: #f7f7f5;
   color: #1b1b1b;
   text-align: left;
+  line-height: 1.5;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: unset;
 }
 
 .footer__top {
@@ -297,6 +300,7 @@ function showCookieSettings(): void {
 }
 
 .footer__logo-img {
+  display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -370,6 +374,7 @@ function showCookieSettings(): void {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
+  line-height: 1.5;
   margin: 0 0 1rem;
   color: #1b1b1b;
 }
