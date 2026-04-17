@@ -1,8 +1,8 @@
 // Config file for cypress E2E tests
 {
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["tests/sharedUtils/**/*", "tests/e2e/**/*", "build/clients/**/*", "src/types/**/*"],
   "compilerOptions": {
-    // Your existing options
     "isolatedModules": false,
     "baseUrl": ".",
     "types": ["cypress", "node"],
@@ -14,24 +14,6 @@
       "@e2e/*": ["./tests/e2e/*"],
       "@sharedUtils/*": ["./tests/sharedUtils/*"]
     },
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-
-    // Inlined defaults that previously came from @vue/tsconfig/tsconfig.dom.json
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "useDefineForClassFields": true,
-    "moduleDetection": "force",
-
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
   }
 }
