@@ -48,14 +48,7 @@ const ctaWrapClass = 'flex';
   <div class={pageInnerClass}>
     <div class={headerClass}>
       <div class={logoWrapClass}>
-        <img
-          src={logo}
-          alt={`${companyName} logo`}
-          class={logoClass}
-          loading="eager"
-          width="280"
-          height="80"
-        />
+        <img src={logo} alt={`${companyName} logo`} class={logoClass} loading="eager" width="280" height="80" />
       </div>
       <TagGroup primaryTag={primaryTag ?? companyType} secondaryTags={secondaryTags} />
       <h1 class={titleClass}>{title}</h1>

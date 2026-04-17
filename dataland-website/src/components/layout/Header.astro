@@ -10,7 +10,8 @@ function isActive(href: string): boolean {
 
 // Icon paths and line coordinates are kept here to avoid repeating SVG literals in the markup.
 const icons = {
-  chevron: 'M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z',
+  chevron:
+    'M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z',
   arrow: 'M5 12h14M12 5l7 7-7 7',
   menu: [
     { x1: 3, y1: 6, x2: 21, y2: 6 },
@@ -24,7 +25,8 @@ const icons = {
 } as const;
 
 const layoutClass = {
-  header: 'fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] border-b border-white/10 bg-[var(--color-dark-panel)]',
+  header:
+    'fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] border-b border-white/10 bg-[var(--color-dark-panel)]',
   inner: 'mx-auto flex h-full max-w-[1280px] items-center justify-between px-6',
   logoLink: 'flex items-center no-underline',
   logoImage: 'h-7 w-auto',
@@ -52,7 +54,8 @@ const linkClass = {
     'flex min-w-[260px] flex-col rounded-xl border border-white/10 bg-[var(--color-dark-panel-elevated)] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.35)]',
   dropdownLink:
     'rounded-md px-3 py-2 text-[1rem] text-white/88 no-underline duration-150 motion-safe:transition-colors hover:bg-white/6 hover:text-[var(--color-primary)]',
-  login: 'text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
+  login:
+    'text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
   signup: 'btn btn--orange',
   platform:
     'hidden items-center gap-2 text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
@@ -71,7 +74,13 @@ const iconClass = {
   <div class={layoutClass.inner}>
     <!-- Brand -->
     <a href="/" class={layoutClass.logoLink} aria-label="Dataland home">
-      <img src="/static/logos/logo_dataland_orange.svg" alt="Dataland" class={layoutClass.logoImage} width="140" height="32" />
+      <img
+        src="/static/logos/logo_dataland_orange.svg"
+        alt="Dataland"
+        class={layoutClass.logoImage}
+        width="140"
+        height="32"
+      />
     </a>
 
     <!-- Desktop navigation with hover dropdowns -->
@@ -88,20 +97,18 @@ const iconClass = {
               <span class={linkClass.navLabel}>
                 {label}
                 <svg class={iconClass.chevron} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d={icons.chevron} clip-rule="evenodd"></path>
+                  <path fill-rule="evenodd" d={icons.chevron} clip-rule="evenodd" />
                 </svg>
               </span>
             </a>
 
             <div class={linkClass.dropdownWrap}>
               <div class={linkClass.dropdownPanel}>
-                {
-                  sections.map(({ href: sectionHref, label: sectionLabel }) => (
-                    <a href={sectionHref} class={linkClass.dropdownLink}>
-                      {sectionLabel}
-                    </a>
-                  ))
-                }
+                {sections.map(({ href: sectionHref, label: sectionLabel }) => (
+                  <a href={sectionHref} class={linkClass.dropdownLink}>
+                    {sectionLabel}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -154,11 +161,7 @@ const iconClass = {
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        {
-          icons.menu.map((line) => (
-            <line {...line}></line>
-          ))
-        }
+        {icons.menu.map((line) => <line {...line} />)}
       </svg>
     </button>
   </div>
@@ -180,11 +183,7 @@ const iconClass = {
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          {
-            icons.close.map((line) => (
-              <line {...line}></line>
-            ))
-          }
+          {icons.close.map((line) => <line {...line} />)}
         </svg>
       </button>
     </div>
