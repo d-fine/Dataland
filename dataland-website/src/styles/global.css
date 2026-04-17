@@ -409,8 +409,8 @@ main {
   left: 0;
   right: 0;
   z-index: 100;
-  background: var(--color-surface-0, #ffffff);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--color-dark-panel-elevated);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
   padding: 1rem 1.5rem 2rem;
 }
 
@@ -424,7 +424,7 @@ main {
 .mobile-nav__title {
   font-weight: 600;
   font-size: 1.125rem;
-  color: var(--color-text, #1a1a1a);
+  color: rgba(255, 255, 255, 0.94);
 }
 
 .mobile-nav__close {
@@ -435,7 +435,7 @@ main {
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: var(--color-text, #1a1a1a);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .mobile-nav__links {
@@ -448,10 +448,10 @@ main {
   display: block;
   padding: 0.75rem 0;
   text-decoration: none;
-  color: var(--color-text, #1a1a1a);
+  color: rgba(255, 255, 255, 0.88);
   font-weight: 500;
   font-size: 1rem;
-  border-bottom: 1px solid var(--color-surface-200, #e6e6e6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @media (prefers-reduced-motion: no-preference) {

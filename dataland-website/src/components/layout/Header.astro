@@ -61,7 +61,6 @@ const linkClass = {
     'hidden items-center gap-2 text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
   mobile: 'mobile-nav__link',
   mobileSignup: 'mobile-nav__cta btn btn--orange',
-  mobilePlatform: 'mobile-nav__link mobile-nav__back-to-platform',
 } as const;
 
 const iconClass = {
@@ -203,26 +202,6 @@ const iconClass = {
       <a href={HEADER_ACTIONS.signup.href} data-test={HEADER_ACTIONS.signup.testId} class={linkClass.mobileSignup}>
         {HEADER_ACTIONS.signup.label}
       </a>
-      <a
-        href={HEADER_ACTIONS.platform.href}
-        id="mobile-nav-back-to-platform"
-        data-test={HEADER_ACTIONS.platform.testId}
-        class={linkClass.mobilePlatform}
-      >
-        {HEADER_ACTIONS.platform.label}
-        <svg
-          class={iconClass.stroke}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d={icons.arrow}></path>
-        </svg>
-      </a>
     </div>
   </nav>
 
@@ -230,6 +209,7 @@ const iconClass = {
   <div id="mobile-nav-overlay" class={layoutClass.mobileOverlay}></div>
 </template>
 
-<!-- Header behavior is handled by the existing client-side scripts -->
-<script type="module" src="/scripts/initHeader.js"></script>
-<script type="module" src="/scripts/mobileNav.js"></script>
+<script>
+  import '../../scripts/initHeader';
+  import '../../scripts/mobileNav';
+</script>

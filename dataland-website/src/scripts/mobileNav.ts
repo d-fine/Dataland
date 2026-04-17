@@ -37,6 +37,9 @@ export function initMobileNav(): void {
 
   if (!nav || !overlay || !closeBtn || !toggle) return;
 
+  if (nav.dataset.initialized === 'true') return;
+  nav.dataset.initialized = 'true';
+
   initMobileNavInternal(nav, overlay, closeBtn, toggle);
 }
 
@@ -48,13 +51,9 @@ function initMobileNavInternal(
 ): void {
   const isAuthenticated: boolean = globalThis.localStorage.getItem('dataland_authenticated') === 'true';
 
-  const backToPlatform = document.querySelector<HTMLElement>('#mobile-nav-back-to-platform');
   const loginLink = nav.querySelector<HTMLElement>('[data-test="login-dataland-button"]');
   const signupLink = nav.querySelector<HTMLElement>('[data-test="signup-dataland-button"]');
 
-  if (backToPlatform) {
-    backToPlatform.style.display = isAuthenticated ? 'flex' : 'none';
-  }
   if (loginLink) {
     loginLink.style.display = isAuthenticated ? 'none' : 'block';
   }
@@ -97,7 +96,7 @@ function initMobileNavInternal(
     }
   }
 
-  document.addEventListener('toggle-mobile-nav', handleToggle);
+  toggle.addEventListener('click', handleToggle);
   document.addEventListener('keydown', handleKeydown);
   overlay.addEventListener('click', closeNav);
   closeBtn.addEventListener('click', closeNav);
@@ -109,37 +108,12 @@ function initMobileNavInternal(
   });
 }
 
-function setupMobileNavWithMedia(): void {
-  const mql: MediaQueryList = globalThis.matchMedia('(max-width: 1023px)');
-  let initialized = false;
-
-  function initIfMatches(e?: MediaQueryListEvent): void {
-    const matches: boolean = e ? e.matches : mql.matches;
-    if (!matches || initialized) return;
-
-    initMobileNav();
-    initialized = true;
-  }
-
-  initIfMatches();
-
-  if (!initialized) {
-    const onChange = (e: MediaQueryListEvent): void => {
-      initIfMatches(e);
-      if (initialized) {
-        mql.removeEventListener('change', onChange);
-      }
-    };
-    mql.addEventListener('change', onChange);
-  }
-}
-
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', (): void => {
-      setupMobileNavWithMedia();
+      initMobileNav();
     });
   } else {
-    setupMobileNavWithMedia();
+    initMobileNav();
   }
 }
