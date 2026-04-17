@@ -14,7 +14,9 @@
     "jsx": "preserve",
 
     "skipLibCheck": true,
-    "types": []
+    "types": [],
+    "sourceMap": true,
+    "inlineSources": true
   },
   "include": ["src/scripts/**/*"],
   "exclude": ["node_modules"]
