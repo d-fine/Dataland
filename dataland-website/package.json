@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "astro dev",
     "build:scripts": "tsc --project tsconfig.scripts.json",
-    "instrument:scripts": "nyc instrument public/scripts public/scripts --in-place --compact=false",
     "build": "npm run build:scripts && astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -35,7 +34,6 @@
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-cypress": "^6.3.0",
     "eslint-plugin-vue": "^10.8.0",
-    "nyc": "^18.0.0",
     "prettier": "^3.8.2",
     "prettier-plugin-astro": "^0.14.1",
     "tailwindcss": "^4.1.4",
