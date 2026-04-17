@@ -202,8 +202,11 @@ class NonSourceabilityTest {
         val qaDecision =
             asAdmin {
                 apiAccessor.nonSourceabilityQaControllerApi.postNonSourceabilityDecision(
-                    nonSourceabilityId = nonSourceabilityId,
-                    qaStatus = qaStatus,
+                    nonSourceabilityId,
+                    org.dataland.datalandqaservice.openApiClient.model.NonSourceabilityDecisionRequest(
+                        qaStatus = qaStatus,
+                        qaComment = null,
+                    ),
                 )
             }
         assertEquals(qaStatus, qaDecision.qaStatus, "post decision response must reflect requested status")
