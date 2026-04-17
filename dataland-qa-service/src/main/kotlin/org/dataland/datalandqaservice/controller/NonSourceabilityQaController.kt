@@ -44,6 +44,10 @@ class NonSourceabilityQaController(
         nonSourceabilityId: String,
         request: NonSourceabilityDecisionRequest,
     ): ResponseEntity<NonSourceableQaReviewInformation> {
+        if (request.qaStatus == QaStatus.Pending) {
+            logger.warn("POST /nonSourceable/$nonSourceabilityId received invalid status 'Pending'")
+            return ResponseEntity.badRequest().build()
+        }
         val reviewerUserId = DatalandAuthentication.fromContext().userId
         val correlationId = randomUUID().toString()
         logger.info(

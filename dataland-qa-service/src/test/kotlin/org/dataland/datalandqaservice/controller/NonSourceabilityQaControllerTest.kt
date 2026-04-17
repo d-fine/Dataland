@@ -53,7 +53,12 @@ class NonSourceabilityQaControllerTest {
         whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any())).thenReturn(accepted)
 
         withReviewerAuthentication {
-            val result = controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, QaStatus.Accepted, null)
+            val request =
+                org.dataland.datalandqaservice.model.NonSourceabilityDecisionRequest(
+                    qaStatus = QaStatus.Accepted,
+                    qaComment = null,
+                )
+            val result = controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, request)
 
             assertEquals(HttpStatus.OK, result.statusCode)
             assertEquals(QaStatus.Accepted, result.body?.qaStatus)
@@ -67,8 +72,12 @@ class NonSourceabilityQaControllerTest {
         whenever(manager.postDecision(any(), any(), anyOrNull(), any(), any())).thenReturn(rejected)
 
         withReviewerAuthentication {
-            val result =
-                controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, QaStatus.Rejected, "Not applicable")
+            val request =
+                org.dataland.datalandqaservice.model.NonSourceabilityDecisionRequest(
+                    qaStatus = QaStatus.Rejected,
+                    qaComment = "Not applicable",
+                )
+            val result = controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, request)
 
             assertEquals(HttpStatus.OK, result.statusCode)
             assertEquals(QaStatus.Rejected, result.body?.qaStatus)
@@ -83,9 +92,27 @@ class NonSourceabilityQaControllerTest {
             .postDecision(any(), any(), anyOrNull(), any(), any())
 
         withReviewerAuthentication {
+            val request =
+                org.dataland.datalandqaservice.model.NonSourceabilityDecisionRequest(
+                    qaStatus = QaStatus.Accepted,
+                    qaComment = null,
+                )
             assertThrows<ResourceNotFoundApiException> {
-                controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000099", QaStatus.Accepted, null)
+                controller.postNonSourceabilityDecision("00000000-0000-0000-0000-000000000099", request)
             }
+        }
+    }
+
+    @Test
+    fun `postNonSourceabilityDecision returns 400 with pending status`() {
+        withReviewerAuthentication {
+            val request =
+                org.dataland.datalandqaservice.model.NonSourceabilityDecisionRequest(
+                    qaStatus = QaStatus.Pending,
+                    qaComment = null,
+                )
+            val result = controller.postNonSourceabilityDecision(DEFAULT_NON_SOURCEABILITY_ID, request)
+            assertEquals(HttpStatus.BAD_REQUEST, result.statusCode)
         }
     }
 
