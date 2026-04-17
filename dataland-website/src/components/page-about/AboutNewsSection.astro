@@ -1,0 +1,32 @@
+---
+import SectionHeader from '../primitives/SectionHeader.astro';
+import NewsCard from '../cards/NewsCard.astro';
+import type { NewsItem } from '../../data/news';
+
+interface Content {
+  title: string;
+  intro: string;
+}
+
+interface Props {
+  content: Content;
+  items: NewsItem[];
+}
+
+const { content, items } = Astro.props;
+
+const sectionClass = 'scroll-mt-16 bg-[var(--color-surface-0)] px-6 py-12 lg:px-8 lg:py-16';
+const innerClass = 'max-w-[1200px] mx-auto flex flex-col gap-8';
+const headerClass = 'mx-auto max-w-[860px]';
+const gridClass = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3';
+---
+
+<section id="updates" class={sectionClass} aria-label="News and updates">
+  <div class={innerClass}>
+    <SectionHeader title={content.title} intro={content.intro} class={headerClass} />
+
+    <div class={gridClass}>
+      {items.map((item) => <NewsCard item={item} />)}
+    </div>
+  </div>
+</section>

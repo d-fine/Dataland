@@ -1,0 +1,236 @@
+---
+import { HEADER_ACTIONS, HEADER_MOBILE_LINKS, HEADER_NAV_GROUPS } from '../../data/navigation';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+// Icon paths and line coordinates are kept here to avoid repeating SVG literals in the markup.
+const icons = {
+  chevron: 'M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z',
+  arrow: 'M5 12h14M12 5l7 7-7 7',
+  menu: [
+    { x1: 3, y1: 6, x2: 21, y2: 6 },
+    { x1: 3, y1: 12, x2: 21, y2: 12 },
+    { x1: 3, y1: 18, x2: 21, y2: 18 },
+  ],
+  close: [
+    { x1: 18, y1: 6, x2: 6, y2: 18 },
+    { x1: 6, y1: 6, x2: 18, y2: 18 },
+  ],
+} as const;
+
+const layoutClass = {
+  header: 'fixed top-0 left-0 right-0 z-50 h-[var(--header-height)] border-b border-white/10 bg-[var(--color-dark-panel)]',
+  inner: 'mx-auto flex h-full max-w-[1280px] items-center justify-between px-6',
+  logoLink: 'flex items-center no-underline',
+  logoImage: 'h-7 w-auto',
+  desktopNav: 'hidden items-center gap-12 lg:flex',
+  desktopActions: 'hidden items-center gap-5 lg:flex',
+  guestActions: 'flex items-center gap-5',
+  mobileToggle: 'flex cursor-pointer items-center justify-center border-none bg-transparent p-2 text-white lg:hidden',
+  mobileNav: 'mobile-nav hidden',
+  mobileHeader: 'mobile-nav__header',
+  mobileTitle: 'mobile-nav__title',
+  mobileClose: 'mobile-nav__close',
+  mobileLinks: 'mobile-nav__links',
+  mobileOverlay: 'mobile-nav-overlay hidden',
+} as const;
+
+const linkClass = {
+  navGroup: 'relative group',
+  navBase: 'no-underline text-[1rem] font-medium duration-150 motion-safe:transition-colors',
+  navActive: 'text-[var(--color-primary)]',
+  navInactive: 'text-white/88 hover:text-[var(--color-primary)]',
+  navLabel: 'flex items-center gap-1',
+  dropdownWrap:
+    'pointer-events-none invisible absolute left-0 top-full pt-3 opacity-0 motion-safe:transition-all motion-safe:duration-150 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100',
+  dropdownPanel:
+    'flex min-w-[260px] flex-col rounded-xl border border-white/10 bg-[var(--color-dark-panel-elevated)] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.35)]',
+  dropdownLink:
+    'rounded-md px-3 py-2 text-[1rem] text-white/88 no-underline duration-150 motion-safe:transition-colors hover:bg-white/6 hover:text-[var(--color-primary)]',
+  login: 'text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
+  signup: 'btn btn--orange',
+  platform:
+    'hidden items-center gap-2 text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
+  mobile: 'mobile-nav__link',
+  mobileSignup: 'mobile-nav__cta btn btn--orange',
+  mobilePlatform: 'mobile-nav__link mobile-nav__back-to-platform',
+} as const;
+
+const iconClass = {
+  chevron: 'mt-[1px] h-3 w-3',
+  stroke: 'h-5 w-5',
+} as const;
+---
+
+<header class={layoutClass.header}>
+  <div class={layoutClass.inner}>
+    <!-- Brand -->
+    <a href="/" class={layoutClass.logoLink} aria-label="Dataland home">
+      <img src="/static/logos/logo_dataland_orange.svg" alt="Dataland" class={layoutClass.logoImage} width="140" height="32" />
+    </a>
+
+    <!-- Desktop navigation with hover dropdowns -->
+    <nav class={layoutClass.desktopNav} aria-label="Main navigation">
+      {
+        HEADER_NAV_GROUPS.map(({ href, label, sections }) => (
+          <div class={linkClass.navGroup}>
+            <a
+              href={href}
+              class:list={[linkClass.navBase, isActive(href) ? linkClass.navActive : linkClass.navInactive]}
+              aria-current={isActive(href) ? 'page' : undefined}
+              aria-haspopup="true"
+            >
+              <span class={linkClass.navLabel}>
+                {label}
+                <svg class={iconClass.chevron} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d={icons.chevron} clip-rule="evenodd"></path>
+                </svg>
+              </span>
+            </a>
+
+            <div class={linkClass.dropdownWrap}>
+              <div class={linkClass.dropdownPanel}>
+                {
+                  sections.map(({ href: sectionHref, label: sectionLabel }) => (
+                    <a href={sectionHref} class={linkClass.dropdownLink}>
+                      {sectionLabel}
+                    </a>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </nav>
+
+    <!-- Desktop account and platform actions -->
+    <div class={layoutClass.desktopActions}>
+      <span id="header-guest-actions" class={layoutClass.guestActions}>
+        <a href={HEADER_ACTIONS.login.href} data-test={HEADER_ACTIONS.login.testId} class={linkClass.login}>
+          {HEADER_ACTIONS.login.label}
+        </a>
+        <a href={HEADER_ACTIONS.signup.href} data-test={HEADER_ACTIONS.signup.testId} class={linkClass.signup}>
+          {HEADER_ACTIONS.signup.label}
+        </a>
+      </span>
+
+      <a
+        id="header-back-to-platform"
+        href={HEADER_ACTIONS.platform.href}
+        data-test={HEADER_ACTIONS.platform.testId}
+        class={linkClass.platform}
+      >
+        {HEADER_ACTIONS.platform.label}
+        <svg
+          class={iconClass.stroke}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d={icons.arrow}></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Mobile menu trigger; the menu markup itself lives in the template below -->
+    <button type="button" class={layoutClass.mobileToggle} aria-label="Open menu" id="mobile-menu-toggle">
+      <svg
+        class={iconClass.stroke}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        {
+          icons.menu.map((line) => (
+            <line {...line}></line>
+          ))
+        }
+      </svg>
+    </button>
+  </div>
+</header>
+
+<template id="mobile-nav-template">
+  <!-- Mobile navigation is rendered from a template and mounted by the header scripts -->
+  <nav id="mobile-nav" class={layoutClass.mobileNav} aria-label="Mobile navigation" role="dialog" aria-modal="true">
+    <div class={layoutClass.mobileHeader}>
+      <span class={layoutClass.mobileTitle}>Menu</span>
+      <button type="button" id="mobile-nav-close" class={layoutClass.mobileClose} aria-label="Close menu">
+        <svg
+          class={iconClass.stroke}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          {
+            icons.close.map((line) => (
+              <line {...line}></line>
+            ))
+          }
+        </svg>
+      </button>
+    </div>
+
+    <div class={layoutClass.mobileLinks}>
+      {
+        HEADER_MOBILE_LINKS.map(({ href, label }) => (
+          <a href={href} class={linkClass.mobile}>
+            {label}
+          </a>
+        ))
+      }
+
+      <a href={HEADER_ACTIONS.login.href} data-test={HEADER_ACTIONS.login.testId} class={linkClass.mobile}>
+        {HEADER_ACTIONS.login.label}
+      </a>
+      <a href={HEADER_ACTIONS.signup.href} data-test={HEADER_ACTIONS.signup.testId} class={linkClass.mobileSignup}>
+        {HEADER_ACTIONS.signup.label}
+      </a>
+      <a
+        href={HEADER_ACTIONS.platform.href}
+        id="mobile-nav-back-to-platform"
+        data-test={HEADER_ACTIONS.platform.testId}
+        class={linkClass.mobilePlatform}
+      >
+        {HEADER_ACTIONS.platform.label}
+        <svg
+          class={iconClass.stroke}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d={icons.arrow}></path>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Overlay is toggled together with the mobile dialog -->
+  <div id="mobile-nav-overlay" class={layoutClass.mobileOverlay}></div>
+</template>
+
+<!-- Header behavior is handled by the existing client-side scripts -->
+<script type="module" src="/scripts/initHeader.js"></script>
+<script type="module" src="/scripts/mobileNav.js"></script>

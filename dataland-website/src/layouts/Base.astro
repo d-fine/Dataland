@@ -1,6 +1,6 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -37,14 +37,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland
     <link rel="icon" type="image/png" sizes="16x16" href="/static/gfx_logo_d_orange_S_favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
     <link rel="manifest" href="/static/site.webmanifest" />
-
-    <!-- IBM Plex Sans from Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- Cookiebot -->
     <script

@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import SuccessStoryArticle from '../components/page-success-stories/SuccessStoryArticle.astro';
+
+const [story] = await getCollection('success-stories', ({ data }) => data.slug === 'nordlb-primary-esg-data');
+const { Content } = await render(story);
+---
+
+<Base
+  title="NORD/LB - Success Story - Dataland"
+  description="Read how NORD/LB uses Dataland for ESG data."
+>
+  <SuccessStoryArticle
+    title={story.data.title}
+    companyName={story.data.companyName}
+    companyType={story.data.companyType}
+    logo={story.data.logo}
+    quoteText={story.data.quoteText}
+    quoteAuthor={story.data.quoteAuthor}
+    quoteRole={story.data.quoteRole}
+    primaryTag="Bank"
+    secondaryTags={['EU Taxo', 'API integration']}
+  >
+    <Content />
+  </SuccessStoryArticle>
+</Base>

@@ -1,0 +1,132 @@
+---
+import ArrowLink from '../primitives/ArrowLink.astro';
+import QuotePanel from '../panels/QuotePanel.astro';
+import TagGroup from '../cards/TagGroup.astro';
+
+interface Props {
+  title: string;
+  companyName: string;
+  companyType: string;
+  logo: string;
+  quoteText: string;
+  quoteAuthor: string;
+  quoteRole: string;
+  primaryTag?: string;
+  secondaryTags?: string[];
+}
+
+const {
+  title,
+  companyName,
+  companyType,
+  logo,
+  quoteText,
+  quoteAuthor,
+  quoteRole,
+  primaryTag,
+  secondaryTags = [],
+} = Astro.props;
+
+const pageClass = 'pt-16 pb-12 px-6 bg-[var(--color-surface-0)] lg:pt-24 lg:pb-16 lg:px-8';
+
+const pageInnerClass = 'max-w-[800px] mx-auto flex flex-col gap-10';
+
+const headerClass = 'flex flex-col gap-4';
+
+const logoWrapClass = 'flex min-h-[7rem] items-center justify-center rounded-xl bg-white px-4 py-5';
+
+const logoClass = 'h-20 w-full object-contain object-center';
+
+const titleClass = 'text-[1.75rem] font-bold m-0 text-[var(--color-text)] leading-snug lg:text-[2.25rem]';
+
+const contentClass = 'success-story-content';
+
+const ctaWrapClass = 'flex';
+---
+
+<article class={pageClass} aria-label={`${companyName} success story`}>
+  <div class={pageInnerClass}>
+    <div class={headerClass}>
+      <div class={logoWrapClass}>
+        <img
+          src={logo}
+          alt={`${companyName} logo`}
+          class={logoClass}
+          loading="eager"
+          width="280"
+          height="80"
+        />
+      </div>
+      <TagGroup primaryTag={primaryTag ?? companyType} secondaryTags={secondaryTags} />
+      <h1 class={titleClass}>{title}</h1>
+    </div>
+
+    <div class={contentClass}>
+      <slot />
+    </div>
+
+    <QuotePanel
+      quote={quoteText}
+      author={quoteAuthor}
+      role={quoteRole}
+      class="px-8 py-6"
+      quoteClass="mb-4 text-base leading-[1.7]"
+    />
+
+    <div class={ctaWrapClass}>
+      <ArrowLink href="/product#customer-stories">&larr; Back to customer stories</ArrowLink>
+    </div>
+  </div>
+</article>
+
+<style>
+  .success-story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .success-story-content :global(p) {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .success-story-content :global(h2) {
+    font-size: 1.14rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0;
+    color: var(--color-primary);
+  }
+
+  .success-story-content :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .success-story-content :global(ol) {
+    list-style: none;
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .success-story-content :global(li) {
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-story-content :global(li)::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0.72rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+  }
+</style>

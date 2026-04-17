@@ -1,0 +1,42 @@
+---
+interface Props {
+  videoId: string;
+  title: string;
+}
+
+const { videoId, title } = Astro.props;
+
+const classes = {
+  frame: 'relative aspect-video w-full overflow-hidden rounded-lg bg-black',
+  iframe: 'absolute inset-0 h-full w-full border-0',
+  fallback:
+    'flex aspect-video w-full items-center justify-center rounded-lg border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6',
+  fallbackText: 'm-0 text-center text-sm leading-normal text-[var(--color-text-muted)]',
+  fallbackLink: 'text-[var(--color-primary)] underline',
+} as const;
+---
+
+<div>
+  <!-- Show iframe when marketing cookies are accepted -->
+  <div class="cookieconsent-optin-marketing">
+    <div class={classes.frame}>
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+        class={classes.iframe}></iframe>
+    </div>
+  </div>
+
+  <!-- Show consent message when marketing cookies are not accepted -->
+  <div class="cookieconsent-optout-marketing">
+    <div class={classes.fallback}>
+      <p class={classes.fallbackText}>
+        This content is hosted by YouTube. To watch this video, please accept marketing cookies in your
+        <a href="javascript:void(0)" onclick="Cookiebot.renew()" class={classes.fallbackLink}>cookie settings</a>.
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  primaryTag: string;
+  secondaryTags?: string[];
+  class?: string;
+}
+
+const { primaryTag, secondaryTags = [], class: className } = Astro.props;
+
+const groupClass = 'flex min-h-[2.75rem] flex-wrap items-start gap-2';
+
+const primaryTagClass =
+  'inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]';
+
+const secondaryTagClass =
+  'inline-flex items-center rounded-md bg-[#2C4A6B]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[#2C4A6B]';
+---
+
+<div class:list={[groupClass, className]}>
+  <span class={primaryTagClass}>{primaryTag}</span>
+  {
+    secondaryTags.map((tag) => (
+      <span class={secondaryTagClass}>
+        {tag}
+      </span>
+    ))
+  }
+</div>

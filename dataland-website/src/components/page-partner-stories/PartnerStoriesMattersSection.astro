@@ -1,0 +1,55 @@
+---
+import type { PartnerStoryExtraSection } from '../../data/partnerStories';
+
+interface MatterItem {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  ariaLabel: string;
+  section: PartnerStoryExtraSection;
+  closingPrompt?: string;
+  contactLabel: string;
+}
+
+const { ariaLabel, section, closingPrompt, contactLabel } = Astro.props;
+
+const sectionClass =
+  'bg-[linear-gradient(90deg,#1f3143_0%,#29435a_52%,#355572_100%)] px-6 py-14 text-white lg:px-8 lg:py-16';
+
+const sectionInnerClass = 'mx-auto flex max-w-[1200px] flex-col items-center gap-10';
+
+const titleClass = 'm-0 text-center text-[1.75rem] font-bold leading-tight text-white lg:text-[2.2rem]';
+
+const gridClass = 'grid w-full grid-cols-1 gap-5 md:grid-cols-3';
+
+const itemCardClass = 'flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/8 p-6 text-center';
+
+const itemTitleClass = 'm-0 text-[1.14rem] font-bold text-white';
+
+const itemTextClass = 'm-0 text-[0.95rem] leading-relaxed text-white/82';
+
+const closingPromptClass = 'm-0 max-w-[880px] text-center text-[1.14rem] leading-relaxed text-white/90';
+---
+
+<section class={sectionClass} aria-label={ariaLabel}>
+  <div class={sectionInnerClass}>
+    <h2 class={titleClass}>{section.title}</h2>
+
+    <div class={gridClass}>
+      {
+        section.items.map((item: MatterItem) => (
+          <section class={itemCardClass}>
+            <h3 class={itemTitleClass}>{item.title}</h3>
+            <p class={itemTextClass}>{item.text}</p>
+          </section>
+        ))
+      }
+    </div>
+
+    {closingPrompt && <p class={closingPromptClass}>{closingPrompt}</p>}
+
+      <a href="/contact" class="btn btn--orange">{contactLabel}</a>
+  </div>
+</section>
