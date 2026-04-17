@@ -1,4 +1,20 @@
-// src/scripts/mobileNav.ts
+// mobileNav.ts
+const NAV_HREFS: ReadonlySet<string> = new Set(['/', '/product', '/about', '/community']);
+
+function markActiveLinks(nav: HTMLElement): void {
+  const path: string = globalThis.location.pathname;
+  const links = nav.querySelectorAll<HTMLAnchorElement>('.mobile-nav__link');
+
+  links.forEach((link: HTMLAnchorElement): void => {
+    const href: string | null = link.getAttribute('href');
+    if (!href || !NAV_HREFS.has(href)) return;
+
+    const isRoot: boolean = href === '/';
+    const active: boolean = isRoot ? path === '/' : path.startsWith(href);
+
+    link.classList.toggle('mobile-nav__link--active', active);
+  });
+}
 
 export function initMobileNav(): void {
   let nav = document.querySelector<HTMLElement>('#mobile-nav');
@@ -30,7 +46,7 @@ function initMobileNavInternal(
   closeBtn: HTMLButtonElement,
   toggle: HTMLButtonElement
 ): void {
-  const isAuthenticated: boolean = localStorage.getItem('dataland_authenticated') === 'true';
+  const isAuthenticated: boolean = globalThis.localStorage.getItem('dataland_authenticated') === 'true';
 
   const backToPlatform = document.querySelector<HTMLElement>('#mobile-nav-back-to-platform');
   const loginLink = nav.querySelector<HTMLElement>('[data-test="login-dataland-button"]');
@@ -46,24 +62,7 @@ function initMobileNavInternal(
     signupLink.style.display = isAuthenticated ? 'none' : 'inline-flex';
   }
 
-  function markActiveLinks(): void {
-    const path: string = window.location.pathname;
-    const links = nav.querySelectorAll<HTMLAnchorElement>('.mobile-nav__link');
-
-    const navHrefs: readonly string[] = ['/', '/product', '/about', '/community'];
-
-    links.forEach((link: HTMLAnchorElement): void => {
-      const href: string | null = link.getAttribute('href');
-      if (!href || !navHrefs.includes(href)) return;
-
-      const isRoot: boolean = href === '/';
-      const active: boolean = isRoot ? path === '/' : path.startsWith(href);
-
-      link.classList.toggle('mobile-nav__link--active', active);
-    });
-  }
-
-  markActiveLinks();
+  markActiveLinks(nav);
 
   let isOpen = false;
 
@@ -103,15 +102,15 @@ function initMobileNavInternal(
   overlay.addEventListener('click', closeNav);
   closeBtn.addEventListener('click', closeNav);
 
-  window.addEventListener('resize', (): void => {
-    if (window.innerWidth >= 1024 && isOpen) {
+  globalThis.addEventListener('resize', (): void => {
+    if (globalThis.innerWidth >= 1024 && isOpen) {
       closeNav();
     }
   });
 }
 
 function setupMobileNavWithMedia(): void {
-  const mql: MediaQueryList = window.matchMedia('(max-width: 1023px)');
+  const mql: MediaQueryList = globalThis.matchMedia('(max-width: 1023px)');
   let initialized = false;
 
   function initIfMatches(e?: MediaQueryListEvent): void {
@@ -135,9 +134,9 @@ function setupMobileNavWithMedia(): void {
   }
 }
 
-if (typeof window !== 'undefined') {
+if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', (): void => {
+    document.addEventListener('DOMContentLoaded', (): void => {
       setupMobileNavWithMedia();
     });
   } else {

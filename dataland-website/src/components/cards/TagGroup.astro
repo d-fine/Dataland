@@ -18,11 +18,5 @@ const secondaryTagClass =
 
 <div class:list={[groupClass, className]}>
   <span class={primaryTagClass}>{primaryTag}</span>
-  {
-    secondaryTags.map((tag) => (
-      <span class={secondaryTagClass}>
-        {tag}
-      </span>
-    ))
-  }
+  {secondaryTags.map((tag) => <span class={secondaryTagClass}>{tag}</span>)}
 </div>

@@ -15,9 +15,9 @@ export type ExecutionEnvironment = 'developmentLocal' | 'ci' | 'developmentCd' |
  * @returns a new test suite that is only executed when the current environment matches one in the execution config
  */
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
-  const executionEnvironment = Cypress.env('EXECUTION_ENVIRONMENT') as ExecutionEnvironment;
-  const isDatabaseReset = Cypress.env('RESET_DATABASE') as ExecutionEnvironment;
-  const ignoreExternalStorage = Cypress.env('IGNORE_EXTERNAL_STORAGE') as ExecutionEnvironment;
+  const executionEnvironment = Cypress.expose('EXECUTION_ENVIRONMENT') as ExecutionEnvironment;
+  const isDatabaseReset = Cypress.expose('RESET_DATABASE') as boolean;
+  const ignoreExternalStorage = Cypress.expose('IGNORE_EXTERNAL_STORAGE') as boolean;
 
   if (!execConfig.executionEnvironments.includes(executionEnvironment)) {
     return describe(`${name} - Disabled`, () => {

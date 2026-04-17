@@ -1,6 +1,6 @@
 import { DataTypeEnum, ExportFileType, type LksgData, type StoredCompany } from '@clients/backend';
-import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -10,12 +10,15 @@ import { describeIf } from '@e2e/support/TestUtility.ts';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Checks that the downloaded file does actually exist
  * @param filePath path to file
  */
 function checkThatFileExists(filePath: string): void {
-  cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+  cy.readFile(filePath, { timeout: shortTimeoutInMs }).should('exist');
 }
 
 /**
@@ -99,7 +102,7 @@ describeIf(
      * @param fileExtension - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyDownloadedFile(partialFileNamePrefix: string, fileExtension: string): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number); // optional short delay
+      cy.wait(mediumTimeoutInMs); // optional short delay
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
@@ -121,7 +124,7 @@ describeIf(
      * @param useAliases - The file extension to match (e.g. 'csv', 'xlsx', 'json').
      */
     function verifyAliases(partialFileNamePrefix: string, fileExtension: string, useAliases: boolean): void {
-      cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+      cy.wait(mediumTimeoutInMs);
       cy.task('findFileByPrefix', {
         folder: DOWNLOADS_FOLDER,
         prefix: partialFileNamePrefix,
@@ -161,7 +164,7 @@ describeIf(
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
@@ -181,7 +184,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
     });
 
     it('Download data as CSV file, check for appropriate size and delete it afterwards', () => {

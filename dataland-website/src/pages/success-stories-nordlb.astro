@@ -7,10 +7,7 @@ const [story] = await getCollection('success-stories', ({ data }) => data.slug =
 const { Content } = await render(story);
 ---
 
-<Base
-  title="NORD/LB - Success Story - Dataland"
-  description="Read how NORD/LB uses Dataland for ESG data."
->
+<Base title="NORD/LB - Success Story - Dataland" description="Read how NORD/LB uses Dataland for ESG data.">
   <SuccessStoryArticle
     title={story.data.title}
     companyName={story.data.companyName}

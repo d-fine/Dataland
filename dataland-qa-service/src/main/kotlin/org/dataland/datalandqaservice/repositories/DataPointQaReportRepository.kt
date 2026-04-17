@@ -62,6 +62,27 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     ): Long
 
     /**
+     * Returns the number of active QA reports per data point for the given IDs.
+     *
+     * For each data point that has at least one active report the query returns a projection
+     * containing the data point id and the count of active reports for that data point.
+     *
+     * @param dataPointIds set of dataPointId values to filter by
+     * @return list of [DataPointCount] projections; each element exposes the data point id
+     *         (String) and the count of active reports (Long). Only data points with at
+     *         least one active report are included (GROUP BY semantics).
+     */
+    @Query(
+        "SELECT qaReport.dataPointId AS dataPointId, COUNT(qaReport) AS qaReportCount FROM DataPointQaReportEntity qaReport " +
+            "WHERE qaReport.dataPointId IN :dataPointIds " +
+            "AND qaReport.active = TRUE " +
+            "GROUP BY qaReport.dataPointId",
+    )
+    fun countByDataPointIdInGrouped(
+        @Param("dataPointIds") dataPointIds: Set<String>,
+    ): List<DataPointCount>
+
+    /**
      * Makes testing easier
      */
     @Query(
@@ -70,4 +91,19 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
             "where qaReport.qaReportId = :qaReportId",
     )
     fun findDataPointTypeUsingId(qaReportId: String): String
+}
+
+/**
+ * Projection interface for data point id / count pairs returned by queries.
+ */
+interface DataPointCount {
+    /**
+     * Return dataPointId.
+     */
+    fun getDataPointId(): String
+
+    /**
+     * Return qaReportCount.
+     */
+    fun getQaReportCount(): Long
 }

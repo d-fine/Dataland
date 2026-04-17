@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, inject } from 'vue';
+import { onMounted, onBeforeUnmount, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 
@@ -19,8 +19,14 @@ const { register } = defineProps<{ register?: boolean }>();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-onMounted(async () => {
+/**
+ * Handles the authentication redirect logic for Keycloak login/register flows.
+ * Redirects the user based on authentication state and session storage flags.
+ * @returns {Promise<void>} Resolves when the redirect logic is complete.
+ */
+async function handleAuthRedirect(): Promise<void> {
   const redirectKey = register ? 'dataland_register_redirect_pending' : 'dataland_login_redirect_pending';
+
   const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
   const astroHomeUri = `${globalThis.location.origin}/`;
 
@@ -38,11 +44,37 @@ onMounted(async () => {
     return;
   }
 
-  // First visit to /login or /register — redirect to Keycloak
   sessionStorage.setItem(redirectKey, 'true');
   const action = register
     ? keycloak.register({ redirectUri: platformRedirectUri })
     : keycloak.login({ redirectUri: platformRedirectUri });
+
   action.catch((error) => console.error(error));
+}
+
+/**
+ * Handles the 'pageshow' event for page transitions.
+ * If the event is persisted, re-runs the authentication redirect logic.
+ * @param {PageTransitionEvent} event - The page transition event.
+ * @returns {void}
+ */
+let pageShowHandler: ((event: PageTransitionEvent) => void) | null = null;
+
+onMounted((): void => {
+  void handleAuthRedirect();
+
+  pageShowHandler = (event: PageTransitionEvent): void => {
+    if (event.persisted) {
+      void handleAuthRedirect();
+    }
+  };
+
+  window.addEventListener('pageshow', pageShowHandler);
+});
+
+onBeforeUnmount((): void => {
+  if (pageShowHandler) {
+    window.removeEventListener('pageshow', pageShowHandler);
+  }
 });
 </script>

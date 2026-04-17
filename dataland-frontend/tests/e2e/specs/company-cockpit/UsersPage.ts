@@ -1,5 +1,5 @@
-import { admin_name, admin_pw, reader_name, reader_pw, reader_userId, premium_user_userId } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { reader_userId, premium_user_userId } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName } from '@clients/backend';
 import { assignCompanyRole, removeAllCompanyRoles } from '@e2e/utils/CompanyRolesUtils.ts';
@@ -14,9 +14,7 @@ import { setupCommonInterceptions, fetchTestCompanies } from '@e2e/utils/Company
  * @param userId - The ID of the user whose roles are being removed.
  */
 function removeCompanyRoles(companyId: string, userId: string): Cypress.Chainable<void> {
-  return getKeycloakToken(admin_name, admin_pw).then((token: string) =>
-    removeAllCompanyRoles(token, companyId, userId)
-  );
+  return getAdminToken().then((token: string) => removeAllCompanyRoles(token, companyId, userId));
 }
 
 describeIf(
@@ -41,8 +39,8 @@ describeIf(
 
     it('When directing by url to the users page as a basic data reader who is only a company member of another company that user should be redirected to the company cockpit page', () => {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
-      cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) =>
+      cy.ensureLoggedInAsReader();
+      cy.then(() => getAdminToken()).then((token) =>
         assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId)
       );
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
@@ -157,8 +155,8 @@ describeIf(
      */
     function setupUserPage(userRole: CompanyRole, premiumUserRole: CompanyRole | null = null): void {
       removeCompanyRoles(alphaCompanyIdAndName.companyId, premium_user_userId);
-      cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.then(() => getKeycloakToken(admin_name, admin_pw)).then((token) => {
+      cy.ensureLoggedInAsReader();
+      cy.then(() => getAdminToken()).then((token) => {
         const promises = [assignCompanyRole(token, userRole, alphaCompanyIdAndName.companyId, reader_userId)];
         if (premiumUserRole) {
           promises.push(

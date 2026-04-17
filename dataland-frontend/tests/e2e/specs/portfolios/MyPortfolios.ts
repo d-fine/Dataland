@@ -1,9 +1,10 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Adds a portfolio via the UI.
@@ -12,7 +13,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
  */
 function addPortfolio(name: string, companyId: string): void {
   cy.get('button[data-test="add-portfolio"]').click({
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   });
   cy.get('.p-dialog').within(() => {
     cy.get('.p-dialog-header').contains('Add Portfolio');
@@ -27,7 +28,7 @@ function addPortfolio(name: string, companyId: string): void {
     cy.get('[data-test="invalidIdentifierErrorMessage"]').should('not.exist');
     cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
     cy.get('[data-test="portfolio-dialog-save-button"]').click({
-      timeout: Cypress.env('medium_timeout_in_ms') as number,
+      timeout: mediumTimeoutInMs,
     });
   });
   cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
@@ -41,10 +42,10 @@ function addPortfolio(name: string, companyId: string): void {
 function deletePortfolio(name: string): void {
   cy.get(`[data-test="${name}"]`).should('exist').click();
   cy.get(`[data-test="portfolio-${name}"] [data-test="edit-portfolio"]`).click({
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   });
   cy.get('[data-test="portfolio-dialog-delete-button"]').click({
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   });
   cy.get(`[data-test="${name}"]`).should('not.exist');
 }
@@ -56,7 +57,7 @@ function deletePortfolio(name: string): void {
 function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void {
   cy.get(`[data-test="${portfolioToActivate}"]`).click();
   cy.get(`[data-test="portfolio-${portfolioToActivate}"] [data-test="monitor-portfolio"]`).click({
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   });
 
   cy.get('.p-dialog').find('.p-dialog-header').contains(`Monitoring of`);
@@ -77,7 +78,7 @@ function activateActiveMonitoringForPortfolio(portfolioToActivate: string): void
         .click();
       cy.get('[data-test="timeWindowThresholdToggle"]').click();
       cy.get('[data-test="saveChangesButton"]').click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
     });
   cy.wait('@patchMonitoring')
@@ -108,7 +109,7 @@ describeIf(
     let editedSecondPortfolioName: string;
 
     before(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${companyTimestamp}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
@@ -125,13 +126,14 @@ describeIf(
       secondPortfolioName = `E2E-Test-Portfolio-Second-${secondPortfolioTimestamp}`;
       editedSecondPortfolioName = `${secondPortfolioName}-Edited`;
 
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
       cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
       cy.intercept('POST', '**/api/companies/validation').as('companyValidation');
+      cy.intercept('PUT', '**/portfolios/**').as('replacePortfolio');
       cy.window().then((win) => {
         cy.stub(win, 'confirm').returns(true);
       });
@@ -148,24 +150,39 @@ describeIf(
       // Edit the second portfolio and verify it is displayed afterward
       cy.get(`[data-test="${secondPortfolioName}"]`).click();
       cy.get(`[data-test="portfolio-${secondPortfolioName}"] [data-test="edit-portfolio"]`).click({
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       });
       cy.get('.p-dialog').within(() => {
         cy.get('.p-dialog-header').contains('Edit Portfolio');
         cy.get('.portfolio-dialog-content').within(() => {
-          cy.get('[data-test="portfolio-name-input"]').clear();
+          cy.get('[data-test="portfolio-name-input"]:visible').click();
+          cy.get('[data-test="portfolio-name-input"]:visible').type('{selectAll}{backspace}');
+          cy.get('[data-test="portfolio-name-input"]:visible').should('have.value', '');
           cy.get('[data-test="portfolio-name-input"]:visible').type(editedSecondPortfolioName);
+          cy.get('[data-test="portfolio-name-input"]:visible').should('have.value', editedSecondPortfolioName);
           cy.get('[data-test="company-identifiers-input"]').type(permIdOfSecondCompany);
           cy.get('[data-test="portfolio-dialog-add-companies"]:visible').click();
+          cy.waitUntil(() => cy.get('[data-test="company-identifiers-input"]:visible').should('be.empty'));
           cy.get('#existing-company-identifiers li').should('have.length', 2);
           cy.get('[data-test="portfolio-dialog-save-button"]').click({
-            timeout: Cypress.env('medium_timeout_in_ms') as number,
+            timeout: mediumTimeoutInMs,
           });
         });
       });
-      cy.wait(['@getEnrichedPortfolio', '@getPortfolioNames']);
-      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
+      cy.wait('@replacePortfolio')
+        .its('request.body')
+        .should((body) => {
+          expect(body.portfolioName).to.equal(editedSecondPortfolioName);
+        });
+      cy.wait('@getEnrichedPortfolio');
+      cy.wait('@getPortfolioNames', { timeout: mediumTimeoutInMs });
       cy.get(`[data-test="portfolio-${portfolioName}"]`).should('not.be.visible');
+      cy.contains('[data-test="portfolios"] .tabview-header', editedSecondPortfolioName, {
+        timeout: mediumTimeoutInMs,
+      })
+        .should('be.visible')
+        .click();
+      cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"]`).should('be.visible');
       cy.get(`[data-test="portfolio-${editedSecondPortfolioName}"] .p-datatable-tbody tr`).should('have.length', 2);
 
       activateActiveMonitoringForPortfolio(editedSecondPortfolioName);
