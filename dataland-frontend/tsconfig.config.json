@@ -1,5 +1,4 @@
 {
-  "extends": "@tsconfig/node24",
   "include": ["vite.config.*", "cypress.config.*", "tests/e2e/support/node/*"],
   "compilerOptions": {
     "composite": true,
