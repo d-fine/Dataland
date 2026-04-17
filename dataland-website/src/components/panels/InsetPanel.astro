@@ -5,14 +5,15 @@ interface Props {
 }
 
 const { title, class: className } = Astro.props;
+
+const classes = {
+  panel:
+    'flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]',
+  title: 'm-0 text-[1.14rem] font-bold',
+} as const;
 ---
 
-<section
-  class:list={[
-    'flex flex-col gap-4 rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] p-6 text-[var(--color-text)]',
-    className,
-  ]}
->
-  <h3 class="m-0 text-[1.14rem] font-bold">{title}</h3>
+<section class:list={[classes.panel, className]}>
+  <h3 class={classes.title}>{title}</h3>
   <slot />
 </section>

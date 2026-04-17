@@ -1,10 +1,18 @@
 ---
-// No server-side props needed — all logic runs in the browser
+const classes = {
+  root: 'relative w-full max-w-[520px]',
+  searchIcon: 'pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/50',
+  input:
+    'box-border w-full rounded-lg border-[1.5px] border-white/20 bg-white py-3.5 pr-4 pl-11 font-[var(--font-family)] text-base text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]',
+  listbox:
+    'absolute z-50 mt-1 hidden max-h-[264px] w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg',
+  warning: 'mt-1.5 hidden text-xs text-red-500',
+} as const;
 ---
 
-<div class="relative w-full max-w-[520px]" id="company-search-root">
+<div class={classes.root} id="company-search-root">
   <svg
-    class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none"
+    class={classes.searchIcon}
     aria-hidden="true"
     width="20"
     height="20"
@@ -23,20 +31,15 @@
     id="company-search-input"
     type="text"
     placeholder="Search by company name or LEI..."
-    class="w-full py-3.5 pr-4 pl-11 border-[1.5px] border-white/20 rounded-lg text-base font-[var(--font-family)] text-[var(--color-text)] bg-white box-border placeholder:text-[var(--color-text-muted)]"
+    class={classes.input}
     aria-label="Search by company name or LEI"
     aria-autocomplete="list"
     aria-expanded="false"
     aria-controls="company-search-listbox"
     autocomplete="off"
   />
-  <ul
-    id="company-search-listbox"
-    role="listbox"
-    class="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-y-auto max-h-[264px] hidden"
-  >
-  </ul>
-  <p id="company-search-warning" class="mt-1.5 text-xs text-red-500 hidden" role="alert">
+  <ul id="company-search-listbox" role="listbox" class={classes.listbox}></ul>
+  <p id="company-search-warning" class={classes.warning} role="alert">
     Please type at least 3 characters.
   </p>
 </div>

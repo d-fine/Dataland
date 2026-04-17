@@ -9,6 +9,13 @@ interface Props {
   tryLabel?: string;
 }
 
+interface PanelAction {
+  href: string;
+  label: string;
+  className: string;
+  iconMarkup: string;
+}
+
 const {
   inquiryMailto,
   eyebrow = 'Start here',
@@ -18,74 +25,77 @@ const {
   documentationLabel = 'View documentation',
   tryLabel = 'Try it free',
 } = Astro.props;
+
+const classes = {
+  panel:
+    'flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9',
+  textWrap: 'flex flex-col gap-4',
+  eyebrow: 'm-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55',
+  title: 'm-0 text-[1.45rem] font-bold leading-tight lg:text-[2rem]',
+  intro: 'm-0 text-[1.06rem] leading-relaxed text-white/74 lg:text-[1.12rem]',
+  actions: 'flex flex-col gap-4',
+  primaryButton: 'btn btn--orange min-h-[3.52rem] w-full gap-3',
+  whiteButton: 'btn btn--white min-h-[3.52rem] w-full gap-3',
+  solidWhiteButton:
+    'inline-flex min-h-[3.52rem] w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-[0.82rem] text-[0.95rem] font-semibold text-[#111111] no-underline duration-150 motion-safe:transition-colors hover:bg-white/90',
+  icon: 'h-5 w-5',
+} as const;
+
+const icons = {
+  mail: `
+    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+  `,
+  document: `
+    <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+    <path d="M14 3v6h6"></path>
+    <path d="M8 13h8"></path>
+    <path d="M8 17h8"></path>
+    <path d="M8 9h2"></path>
+  `,
+  plus: `
+    <path d="M12 5v14"></path>
+    <path d="M5 12h14"></path>
+  `,
+} as const;
+
+const actions: PanelAction[] = [
+  { href: inquiryMailto, label: contactLabel, className: classes.whiteButton, iconMarkup: icons.mail },
+  {
+    href: '/product#documentation',
+    label: documentationLabel,
+    className: classes.solidWhiteButton,
+    iconMarkup: icons.document,
+  },
+  { href: '/register', label: tryLabel, className: classes.primaryButton, iconMarkup: icons.plus },
+];
 ---
 
-<div
-  class="flex flex-col justify-between gap-6 rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] p-7 shadow-[0_20px_50px_rgba(0,0,0,0.22)] lg:p-9"
->
-  <div class="flex flex-col gap-4">
-    <p class="m-0 text-[0.82rem] font-semibold uppercase tracking-[0.16em] text-white/55">{eyebrow}</p>
-    <h3 class="m-0 text-[1.45rem] font-bold leading-tight lg:text-[2rem]">{title}</h3>
-    <p class="m-0 text-[1.06rem] leading-relaxed text-white/74 lg:text-[1.12rem]">{intro}</p>
+<div class={classes.panel}>
+  <div class={classes.textWrap}>
+    <p class={classes.eyebrow}>{eyebrow}</p>
+    <h3 class={classes.title}>{title}</h3>
+    <p class={classes.intro}>{intro}</p>
   </div>
 
-  <div class="flex flex-col gap-4">
-    <a href={inquiryMailto} class="btn btn--outline min-h-[3.52rem] w-full gap-3">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-      </svg>
-      {contactLabel}
-    </a>
-    <a
-      href="/product#documentation"
-      class="inline-flex min-h-[3.52rem] w-full items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-white/16 bg-white px-8 py-[0.82rem] text-[0.95rem] font-semibold text-[#111111] no-underline motion-safe:transition-colors duration-150 hover:bg-white/90"
-    >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-        <path d="M14 3v6h6"></path>
-        <path d="M8 13h8"></path>
-        <path d="M8 17h8"></path>
-        <path d="M8 9h2"></path>
-      </svg>
-      {documentationLabel}
-    </a>
-    <a href="/register" class="btn btn--primary min-h-[3.52rem] w-full gap-3">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M12 5v14"></path>
-        <path d="M5 12h14"></path>
-      </svg>
-      {tryLabel}
-    </a>
+  <div class={classes.actions}>
+    {
+      actions.map(({ href, label, className, iconMarkup }) => (
+        <a href={href} class={className}>
+          <svg
+            class={classes.icon}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            set:html={iconMarkup}
+          ></svg>
+          {label}
+        </a>
+      ))
+    }
   </div>
 </div>

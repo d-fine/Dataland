@@ -3,6 +3,15 @@ export interface NavigationSection {
   label: string;
 }
 
+export interface HeaderLink {
+  href: string;
+  label: string;
+}
+
+export interface HeaderAction extends HeaderLink {
+  testId: string;
+}
+
 export const ABOUT_SECTIONS = [
   { href: '/about#company', label: 'Company' },
   { href: '/about#team', label: 'Leadership team' },
@@ -25,3 +34,20 @@ export const COMMUNITY_SECTIONS = [
   { href: '/community#trusted-organizations', label: 'Our Network' },
   { href: '/community#partners', label: 'Partners' },
 ] as const;
+
+export const HEADER_NAV_GROUPS = [
+  { href: '/about', label: 'About', sections: ABOUT_SECTIONS },
+  { href: '/product', label: 'Product', sections: PRODUCT_SECTIONS },
+  { href: '/community', label: 'Community', sections: COMMUNITY_SECTIONS },
+] as const;
+
+export const HEADER_MOBILE_LINKS = [
+  { href: '/', label: 'Home' },
+  ...HEADER_NAV_GROUPS.map(({ href, label }) => ({ href, label })),
+] as const;
+
+export const HEADER_ACTIONS = {
+  login: { href: '/login', label: 'Login', testId: 'login-dataland-button' },
+  signup: { href: '/register', label: 'Try it free', testId: 'signup-dataland-button' },
+  platform: { href: '/platform-redirect', label: 'Back to platform', testId: 'backToPlatformLink' },
+} as const satisfies Record<string, HeaderAction>;

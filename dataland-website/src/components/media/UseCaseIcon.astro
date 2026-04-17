@@ -4,141 +4,99 @@ interface Props {
   className?: string;
 }
 
-const { icon, className = 'h-20 w-20 lg:h-24 lg:w-24' } = Astro.props;
----
+interface IconDefinition {
+  viewBox: string;
+  markup: string;
+}
 
-{
-  icon === 'report' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+const { icon, className = 'h-20 w-20 lg:h-24 lg:w-24' } = Astro.props;
+
+const iconMap: Record<string, IconDefinition> = {
+  report: {
+    viewBox: '0 0 64 64',
+    markup: `
       <rect x="14" y="10" width="36" height="44" rx="8" stroke="currentColor" stroke-width="3" />
       <path d="M24 24H40M24 32H40M24 40H34" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
       <path d="M40 14V26H52" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  )
-}
-
-{
-  icon === 'kpi' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+    `,
+  },
+  kpi: {
+    viewBox: '0 0 64 64',
+    markup: `
       <path d="M14 50H50" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
       <rect x="18" y="34" width="8" height="16" rx="3" fill="currentColor" />
       <rect x="28" y="26" width="8" height="24" rx="3" fill="currentColor" opacity="0.78" />
       <rect x="38" y="18" width="8" height="32" rx="3" fill="currentColor" opacity="0.56" />
-    </svg>
-  )
-}
-
-{
-  icon === 'emissions' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
-      <path
-        d="M20 46C20 37 28 31 32 18C36 31 44 37 44 46C44 53 38.5 58 32 58C25.5 58 20 53 20 46Z"
-        stroke="currentColor"
-        stroke-width="3"
-      />
-      <path
-        d="M32 24C29 31 28 35 28 39C28 43 30 46 32 48C34 46 36 43 36 39C36 35 35 31 32 24Z"
-        fill="currentColor"
-        opacity="0.65"
-      />
-    </svg>
-  )
-}
-
-{
-  icon === 'integration' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+    `,
+  },
+  emissions: {
+    viewBox: '0 0 64 64',
+    markup: `
+      <path d="M20 46C20 37 28 31 32 18C36 31 44 37 44 46C44 53 38.5 58 32 58C25.5 58 20 53 20 46Z" stroke="currentColor" stroke-width="3" />
+      <path d="M32 24C29 31 28 35 28 39C28 43 30 46 32 48C34 46 36 43 36 39C36 35 35 31 32 24Z" fill="currentColor" opacity="0.65" />
+    `,
+  },
+  integration: {
+    viewBox: '0 0 64 64',
+    markup: `
       <rect x="10" y="18" width="18" height="18" rx="5" stroke="currentColor" stroke-width="3" />
       <rect x="36" y="28" width="18" height="18" rx="5" stroke="currentColor" stroke-width="3" />
       <path d="M28 27H36M32 23V31" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
       <path d="M28 27C34 27 34 37 36 37" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-    </svg>
-  )
-}
-
-{
-  icon === 'traceability' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+    `,
+  },
+  traceability: {
+    viewBox: '0 0 64 64',
+    markup: `
       <path d="M18 18H34L46 30V46H18V18Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
       <path d="M34 18V30H46" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
       <circle cx="28" cy="36" r="4" fill="currentColor" />
       <path d="M32 36H38M28 40V44" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-    </svg>
-  )
-}
-
-{
-  icon === 'research' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+    `,
+  },
+  research: {
+    viewBox: '0 0 64 64',
+    markup: `
       <circle cx="28" cy="28" r="12" stroke="currentColor" stroke-width="3" />
       <path d="M38 38L50 50" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
       <path d="M28 22V34M22 28H34" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-    </svg>
-  )
-}
-
-{
-  icon === 'voting' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+    `,
+  },
+  voting: {
+    viewBox: '0 0 64 64',
+    markup: `
       <path d="M18 24H46L50 48H14L18 24Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
-      <path
-        d="M26 18L32 24L38 18"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M24 34L29 39L40 28"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  )
-}
-
-{
-  icon === 'fund' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
+      <path d="M26 18L32 24L38 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M24 34L29 39L40 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    `,
+  },
+  fund: {
+    viewBox: '0 0 64 64',
+    markup: `
       <circle cx="32" cy="32" r="16" stroke="currentColor" stroke-width="3" />
-      <path
-        d="M32 22V42M26 27C26 24.5 28.5 22 32 22C35.5 22 38 24 38 27C38 30 35.5 31 32 32C28.5 33 26 34 26 37C26 40 28.5 42 32 42C35.5 42 38 39.5 38 37"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-    </svg>
-  )
-}
+      <path d="M32 22V42M26 27C26 24.5 28.5 22 32 22C35.5 22 38 24 38 27C38 30 35.5 31 32 32C28.5 33 26 34 26 37C26 40 28.5 42 32 42C35.5 42 38 39.5 38 37" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+    `,
+  },
+  compliance: {
+    viewBox: '0 0 64 64',
+    markup: `
+      <path d="M32 12L46 18V30C46 40 40 48 32 52C24 48 18 40 18 30V18L32 12Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+      <path d="M25 32L30 37L39 27" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    `,
+  },
+  fallback: {
+    viewBox: '0 0 64 64',
+    markup: '<circle cx="32" cy="32" r="18" stroke="currentColor" stroke-width="3" />',
+  },
+};
 
-{
-  icon === 'compliance' && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
-      <path
-        d="M32 12L46 18V30C46 40 40 48 32 52C24 48 18 40 18 30V18L32 12Z"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M25 32L30 37L39 27"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  )
-}
+const iconDefinition = iconMap[icon] ?? iconMap.fallback;
+---
 
-{
-  !['report', 'kpi', 'emissions', 'integration', 'traceability', 'research', 'voting', 'fund', 'compliance'].includes(
-    icon
-  ) && (
-    <svg viewBox="0 0 64 64" class={className} fill="none" aria-hidden="true">
-      <circle cx="32" cy="32" r="18" stroke="currentColor" stroke-width="3" />
-    </svg>
-  )
-}
+<svg
+  viewBox={iconDefinition.viewBox}
+  class={className}
+  fill="none"
+  aria-hidden="true"
+  set:html={iconDefinition.markup}
+></svg>

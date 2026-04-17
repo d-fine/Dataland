@@ -1,6 +1,6 @@
 ---
 import CardShell from '../primitives/CardShell.astro';
-import PricingFeatureItem from '../page-product/PricingFeatureItem.astro';
+import PricingFeatureItem from './PricingFeatureItem.astro';
 
 interface PricingItem {
   title: string;
@@ -33,57 +33,68 @@ const {
   items,
   rows,
 } = Astro.props;
+
+const classes = {
+  card: 'rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10',
+  grid: 'grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch',
+  leftColumn: 'flex h-full flex-col gap-5',
+  leftTop: 'flex flex-col gap-5',
+  title: 'm-0 text-[1.75rem] font-bold leading-tight',
+  intro: 'section-intro text-white/90',
+  items: 'flex flex-col gap-5',
+  footnote: 'm-0 pt-1 text-[0.82rem] leading-relaxed text-white/58',
+  rightColumn: 'grid h-full grid-rows-[auto_1fr] gap-5',
+  spacerTitle: 'invisible text-[1.75rem] font-bold leading-tight',
+  tablePanel: 'flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4',
+  tableInner: 'max-w-[24rem]',
+  table: 'w-full border-collapse',
+  headerRow: 'border-b-2 border-white',
+  headCell: 'px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white',
+  bodyCell: 'px-8 py-1 text-center text-[1.06rem] font-bold text-white',
+  bodyRow: 'border-b border-[var(--color-surface-200)]',
+  lastBodyRow: 'border-b-0',
+  highlight: 'm-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]',
+} as const;
 ---
 
 <section aria-label="Shared cost approach">
-  <CardShell as="article" variant="dark" class="rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10">
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-      <div class="flex h-full flex-col gap-5">
-        <div class="flex flex-col gap-5">
-          <h3 class="m-0 text-[1.75rem] font-bold leading-tight">{title}</h3>
-          <p class="section-intro text-white/90">{intro}</p>
-          <div class="flex flex-col gap-5">
+  <CardShell as="article" variant="dark" class={classes.card}>
+    <div class={classes.grid}>
+      <div class={classes.leftColumn}>
+        <div class={classes.leftTop}>
+          <h3 class={classes.title}>{title}</h3>
+          <p class={classes.intro}>{intro}</p>
+          <div class={classes.items}>
             {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
           </div>
         </div>
-        <p class="m-0 pt-1 text-[0.82rem] leading-relaxed text-white/58">{footnote}</p>
+        <p class={classes.footnote}>{footnote}</p>
       </div>
-      <div class="grid h-full grid-rows-[auto_1fr] gap-5">
-        <div class="invisible text-[1.75rem] font-bold leading-tight" aria-hidden="true">
+      <div class={classes.rightColumn}>
+        <div class={classes.spacerTitle} aria-hidden="true">
           {title}
         </div>
-        <div class="flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4">
-          <div class="max-w-[24rem]">
-            <table class="w-full border-collapse">
+        <div class={classes.tablePanel}>
+          <div class={classes.tableInner}>
+            <table class={classes.table}>
               <thead>
-                <tr class="border-b-2 border-white">
-                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
-                    >{membersHeader}</th
-                  >
-                  <th class="px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white"
-                    >{costHeader}</th
-                  >
+                <tr class={classes.headerRow}>
+                  <th class={classes.headCell}>{membersHeader}</th>
+                  <th class={classes.headCell}>{costHeader}</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   rows.map((row, idx) => (
-                    <tr
-                      class:list={[
-                        'border-b border-[var(--color-surface-200)]',
-                        idx === rows.length - 1 && 'border-b-0',
-                      ]}
-                    >
-                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.members}</td>
-                      <td class="px-8 py-1 text-center text-[1.06rem] font-bold text-white">{row.cost}</td>
+                    <tr class:list={[classes.bodyRow, idx === rows.length - 1 && classes.lastBodyRow]}>
+                      <td class={classes.bodyCell}>{row.members}</td>
+                      <td class={classes.bodyCell}>{row.cost}</td>
                     </tr>
                   ))
                 }
               </tbody>
             </table>
-            <p class="m-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]">
-              {highlight}
-            </p>
+            <p class={classes.highlight}>{highlight}</p>
           </div>
         </div>
       </div>

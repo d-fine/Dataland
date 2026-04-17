@@ -1,6 +1,6 @@
 ---
 import CardShell from '../primitives/CardShell.astro';
-import PricingFeatureItem from '../page-product/PricingFeatureItem.astro';
+import PricingFeatureItem from './PricingFeatureItem.astro';
 
 interface PricingItem {
   title: string;
@@ -20,43 +20,53 @@ const {
   intro = 'For this fee, everything already available on the platform is free for all Members:',
   items,
 } = Astro.props;
+
+const classes = {
+  card: 'rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10',
+  grid: 'grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start',
+  leftColumn: 'flex h-full flex-col gap-5',
+  title: 'm-0 text-[1.75rem] font-bold leading-tight',
+  price: 'text-[3.4rem] font-bold leading-none lg:text-[4.6rem]',
+  arrowsWrap: 'flex flex-1 items-center justify-center pt-2',
+  arrowsRow: 'flex h-[15rem] w-full max-w-[24rem] items-center justify-center gap-8',
+  arrowBase: 'h-full w-auto',
+  rightColumn: 'flex flex-col gap-6',
+  intro: 'section-intro text-white/90',
+  items: 'flex flex-col gap-5',
+} as const;
+
+const arrowClasses = [
+  `${classes.arrowBase} opacity-65 saturate-[0.45]`,
+  `${classes.arrowBase} opacity-82 saturate-[0.72]`,
+  classes.arrowBase,
+];
 ---
 
 <section aria-label="Simple membership model">
-  <CardShell as="article" variant="dark" class="rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10">
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-      <div class="flex h-full flex-col gap-5">
-        <h3 class="m-0 text-[1.75rem] font-bold leading-tight">{title}</h3>
-        <span class="text-[3.4rem] font-bold leading-none lg:text-[4.6rem]">{price}</span>
-        <div class="flex flex-1 items-center justify-center pt-2" aria-hidden="true">
-          <div class="flex h-[15rem] w-full max-w-[24rem] items-center justify-center gap-8">
-            <img
-              src="/static/images/arrow_right_orange_simple.svg"
-              alt=""
-              width="30"
-              height="45"
-              class="h-full w-auto opacity-65 saturate-[0.45]"
-            />
-            <img
-              src="/static/images/arrow_right_orange_simple.svg"
-              alt=""
-              width="30"
-              height="45"
-              class="h-full w-auto opacity-82 saturate-[0.72]"
-            />
-            <img
-              src="/static/images/arrow_right_orange_simple.svg"
-              alt=""
-              width="30"
-              height="45"
-              class="h-full w-auto"
-            />
+  <CardShell as="article" variant="dark" class={classes.card}>
+    <div class={classes.grid}>
+      <div class={classes.leftColumn}>
+        <h3 class={classes.title}>{title}</h3>
+        <span class={classes.price}>{price}</span>
+        <div class={classes.arrowsWrap} aria-hidden="true">
+          <div class={classes.arrowsRow}>
+            {
+              arrowClasses.map((arrowClass) => (
+                <img
+                  src="/static/images/arrow_right_orange_simple.svg"
+                  alt=""
+                  width="30"
+                  height="45"
+                  class={arrowClass}
+                />
+              ))
+            }
           </div>
         </div>
       </div>
-      <div class="flex flex-col gap-6">
-        <p class="section-intro text-white/90">{intro}</p>
-        <div class="flex flex-col gap-5">
+      <div class={classes.rightColumn}>
+        <p class={classes.intro}>{intro}</p>
+        <div class={classes.items}>
           {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
         </div>
       </div>

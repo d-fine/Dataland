@@ -24,6 +24,12 @@ interface Props {
 
 const { content, stories } = Astro.props;
 
+const successStoryHrefMap: Record<string, string> = {
+  'meag-sfdr-data-gaps': '/success-stories-meag',
+  'nordlb-primary-esg-data': '/success-stories-nordlb',
+  'oeffentliche-pai-validation': '/success-stories-ovb',
+};
+
 const sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-0)] text-[var(--color-text)] lg:py-16 lg:px-8';
 
 const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-12';
@@ -82,8 +88,8 @@ const storyLinkClass = 'self-start';
 
             <QuotePanel quote={story.quoteText} author={story.quoteAuthor} role={story.quoteRole} />
 
-            {story.successStorySlug && (
-              <ArrowLink href={`/success-stories/${story.successStorySlug}`} class={storyLinkClass}>
+            {story.successStorySlug && successStoryHrefMap[story.successStorySlug] && (
+              <ArrowLink href={successStoryHrefMap[story.successStorySlug]} class={storyLinkClass}>
                 {content.readFullStory} &rarr;
               </ArrowLink>
             )}
