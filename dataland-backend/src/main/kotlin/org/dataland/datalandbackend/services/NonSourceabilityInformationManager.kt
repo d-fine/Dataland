@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -42,7 +41,28 @@ class NonSourceabilityInformationManager(
      * and emits the appropriate lifecycle event (FR-001, FR-002, FR-003).
      */
     @Transactional
-    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+    sealed class ProcessNonSourceabilityResult {
+        /**
+         * Represents a successful non-sourceability request result.
+         */
+        data class Success(
+            val response: NonSourceabilityInformationResponse,
+        ) : ProcessNonSourceabilityResult()
+
+        /**
+         * Represents a duplicate non-sourceability request result.
+         */
+        data class Duplicate(
+            val summary: String,
+            val message: String,
+        ) : ProcessNonSourceabilityResult()
+    }
+
+    /**
+     * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
+     * and emits the appropriate lifecycle event (FR-001, FR-002, FR-003).
+     */
+    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
         val blockedStatuses = listOf(QaStatus.Pending, QaStatus.Accepted)
@@ -54,7 +74,7 @@ class NonSourceabilityInformationManager(
                 blockedStatuses,
             )
         if (hasDuplicate) {
-            throw InvalidInputApiException(
+            return ProcessNonSourceabilityResult.Duplicate(
                 summary = "Duplicate non-sourceability entry.",
                 message =
                     "An active or pending non-sourceability entry already exists for " +
@@ -94,7 +114,7 @@ class NonSourceabilityInformationManager(
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
         )
 
-        return saved.toResponse()
+        return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }
 
     /**
