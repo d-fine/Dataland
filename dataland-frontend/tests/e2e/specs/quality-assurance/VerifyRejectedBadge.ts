@@ -1,8 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { type LksgData } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -14,7 +13,7 @@ describeIf(
   },
   () => {
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
     });
 
     let lksgFixture: FixtureData<LksgData>;
@@ -29,7 +28,7 @@ describeIf(
       cy.intercept('/api/data/lksg*', { middleware: true }, (req) => {
         req.headers['REQUIRE-QA'] = 'true';
       });
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
           LksgBaseFrameworkDefinition,
           token,

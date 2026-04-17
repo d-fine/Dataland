@@ -4,6 +4,8 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { faker } from '@faker-js/faker';
 
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+
 let modifiedMockDataSearchResponse: Array<BasicCompanyInformation>;
 const highlightedSubString = 'this_is_expected_to_be_highlighted';
 before(function () {
@@ -47,7 +49,7 @@ describe('Component tests for the search bar on the company search page', () => 
     getMountingFunction({ keycloak: minimalKeycloakMock() })(FrameworkDataSearchBar);
     cy.intercept('**/api/companies*', modifiedMockDataSearchResponse).as('searchCompany');
     typeIntoSearchBar(highlightedSubString);
-    cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number });
+    cy.wait('@searchCompany', { timeout: shortTimeoutInMs });
     validateAutocompletePanel(true);
     cy.get('.p-autocomplete-option')
       .eq(0)

@@ -1,18 +1,10 @@
-import {
-  reader_name,
-  reader_pw,
-  uploader_name,
-  uploader_pw,
-  reviewer_name,
-  reviewer_pw,
-  admin_name,
-  admin_pw,
-} from '@e2e/utils/Cypress';
 import { DataTypeEnum } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures';
+
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 describeIf(
   'Check if each page is visitable if and only if the corresponding role is given',
@@ -27,7 +19,7 @@ describeIf(
     const noPermissionMessage = "h1:contains('You do not have permission')";
 
     before(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const storedCompany = await uploadCompanyViaApi(token, generateCompanyInformation());
         companyId = storedCompany.companyId;
         readerAndUploaderPages = [
@@ -56,39 +48,39 @@ describeIf(
     });
 
     it('Check if a non uploader user can access only the corresponding pages', () => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       for (const page of readerAndUploaderPages) {
         it(`Non uploader should be able to access ${page}`, () => {
           cy.visit(page);
-          cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
+          cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
         });
       }
       for (const page of uploaderOnlyPages) {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
+        cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('exist');
       }
       for (const page of reviewerOnlyPages) {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
+        cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('exist');
       }
     });
 
     it('Check if an uploader user can access the corresponding pages', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       for (const page of readerAndUploaderPages) {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
+        cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
       }
       for (const page of uploaderOnlyPages) {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
+        cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
       }
     });
     it('Check if an reviewer user can access the corresponding page', () => {
-      cy.ensureLoggedIn(reviewer_name, reviewer_pw);
+      cy.ensureLoggedInAsReviewer();
       for (const page of reviewerOnlyPages) {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('not.exist');
+        cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
       }
     });
   }

@@ -19,7 +19,7 @@ const LOGO_METADATA_BY_FILENAME: Record<string, TrustedByLogoMetadata> = {
   'logo_atlas_metrics.svg': { name: 'Atlas Metrics' },
   'logo_bantleon.svg': { name: 'Bantleon' },
   'logo_bayerninvest.svg': { name: 'BayernInvest', scale: 1.12, className: 'translate-x-[0.08rem]' },
-  'logo_bayernlb_gross.svg': { name: 'BayernLB', scale: 1.0 },
+  'logo_bayernlb_gross.svg': { name: 'BayernLB', scale: 1 },
   'logo_bvi.png': { name: 'BVI' },
   'logo_ChomCapital.png': { name: 'Chom Capital', scale: 1.12 },
   'logo_deka_x.png': { name: 'Deka', scale: 1.08 },

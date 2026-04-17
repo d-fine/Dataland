@@ -9,11 +9,10 @@
     "rootDir": "src/scripts",
     "outDir": "public/scripts",
 
-    "lib": ["DOM", "ES2017"],
+    "lib": ["DOM", "ESNext"],
     "allowJs": false,
     "jsx": "preserve",
 
-    /* Key bits to fix your error: */
     "skipLibCheck": true,
     "types": []
   },

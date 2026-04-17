@@ -1,5 +1,5 @@
 ---
-import type { PartnerStoryDetail } from '../../data/partnerStories';
+import type { PartnerStoryDetail } from '../../config/partner-stories';
 import ArrowLink from '../primitives/ArrowLink.astro';
 import InsetPanel from '../panels/InsetPanel.astro';
 import LogoPanel from '../panels/LogoPanel.astro';
@@ -77,6 +77,6 @@ const { story, useCaseIconByKey } = Astro.props;
       Explore further use cases
       <span aria-hidden="true">&rarr;</span>
     </ArrowLink>
-          <a href="/contact" class="btn btn--orange"> Get in touch </a>
+    <a href="/contact" class="btn btn--orange"> Get in touch </a>
   </div>
 </div>

@@ -1,5 +1,5 @@
 ---
-import type { NewsItem } from '../../data/news';
+import type { NewsItem } from '../../content/about';
 
 interface Props {
   item: NewsItem;
@@ -25,22 +25,9 @@ const dateClass = 'mt-1 text-[0.82rem] text-[var(--color-text-muted)]';
 const readMoreClass = 'arrow-link mt-2';
 ---
 
-<a
-  href={item.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  class={cardClass}
->
+<a href={item.link} target="_blank" rel="noopener noreferrer" class={cardClass}>
   <div class={imageWrapClass}>
-    <img
-      src={item.image}
-      alt=""
-      class={imageBlurClass}
-      loading="lazy"
-      width="400"
-      height="400"
-      aria-hidden="true"
-    />
+    <img src={item.image} alt="" class={imageBlurClass} loading="lazy" width="400" height="400" aria-hidden="true" />
     <img src={item.image} alt="" class={imageClass} loading="lazy" width="400" height="400" />
   </div>
   <div class={bodyClass}>

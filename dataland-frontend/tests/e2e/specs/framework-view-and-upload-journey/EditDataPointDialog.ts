@@ -1,6 +1,6 @@
 import { DataTypeEnum, type SfdrData, type StoredCompany } from '@clients/backend';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition.ts';
@@ -65,7 +65,7 @@ describeIf(
         SfdrFixtureWithNoNullFields = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedFixturesSfdr);
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-EditDataPoint-Test-' + uniqueCompanyMarker;
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
@@ -85,7 +85,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
     });
 
     it('should open a BigDecimal EditDataPointDialog, edit all fields and save changes successfully', () => {

@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { type DataMetaInformation, DataTypeEnum, type StoredCompany } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -13,6 +13,8 @@ import { CompanyRole } from '@clients/communitymanager';
 let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 const uploadReports = new UploadReports('referencedReports');
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 /**
  * Fills out an AddressFormField
@@ -111,12 +113,12 @@ function uploadDocument(): void {
  */
 function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
   cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   })
     .then((expectedFileBinary) => cy.task('calculateHash', expectedFileBinary))
     .then((expectedFileHash) => {
       cy.readFile(expectedPathToDownloadedReport, 'binary', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       })
         .then((receivedFileBinary) => cy.task('calculateHash', receivedFileBinary))
         .should('eq', expectedFileHash);
@@ -129,33 +131,31 @@ function verifyDownloadedFile(expectedPathToDownloadedReport: string): void {
  * Check that data can be viewed and documents downloaded
  */
 function verifyDocumentDownloadAndDataIsViewable(): void {
-  cy.wait('@waitOnMyDatasetPage', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-  cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-    (postResponseInterception) => {
-      cy.url().should('eq', getBaseUrl() + '/datasets');
-      const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
+  cy.wait('@waitOnMyDatasetPage', { timeout: mediumTimeoutInMs });
+  cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postResponseInterception) => {
+    cy.url().should('eq', getBaseUrl() + '/datasets');
+    const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
 
-      cy.visitAndCheckAppMount(
-        '/companies/' +
-          storedTestCompany.companyId +
-          '/frameworks/' +
-          DataTypeEnum.Vsme +
-          '/' +
-          dataMetaInformationOfReuploadedDataset.dataId
-      );
+    cy.visitAndCheckAppMount(
+      '/companies/' +
+        storedTestCompany.companyId +
+        '/frameworks/' +
+        DataTypeEnum.Vsme +
+        '/' +
+        dataMetaInformationOfReuploadedDataset.dataId
+    );
 
-      MLDT.getSectionHead('Energy and greenhous gas emissions').should('have.attr', 'data-section-expanded', 'true');
-      MLDT.getCellValueContainer('Electricity Total').find('a.link').should('include.text', 'MWh').click();
-      const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}-private.pdf`;
-      cy.task('fileExists', expectedPathToDownloadedReport).should('eq', false);
-      cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
-      cy.get('[data-test="download-link-some-document-private"]').click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
-      cy.wait('@documentDownload');
-      verifyDownloadedFile(expectedPathToDownloadedReport);
-    }
-  );
+    MLDT.getSectionHead('Energy and greenhous gas emissions').should('have.attr', 'data-section-expanded', 'true');
+    MLDT.getCellValueContainer('Electricity Total').find('a.link').should('include.text', 'MWh').click();
+    const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}-private.pdf`;
+    cy.task('fileExists', expectedPathToDownloadedReport).should('eq', false);
+    cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
+    cy.get('[data-test="download-link-some-document-private"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.wait('@documentDownload');
+    verifyDownloadedFile(expectedPathToDownloadedReport);
+  });
 }
 
 /**
@@ -199,7 +199,7 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = 'Company-Created-In-Vsme-Blanket-Test-' + uniqueCompanyMarker;
 
-      getKeycloakToken(admin_name, admin_pw)
+      getAdminToken()
         .then((token: string) => {
           tokenForAdminUser = token;
 
@@ -218,7 +218,7 @@ describeIf(
 
     it('Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one', () => {
       cy.task('deleteFolder', Cypress.config('downloadsFolder'));
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.intercept('**/api/companies/' + storedTestCompany.companyId + '/info').as('getCompanyInformation');
       cy.visitAndCheckAppMount(
         '/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme + '/upload'

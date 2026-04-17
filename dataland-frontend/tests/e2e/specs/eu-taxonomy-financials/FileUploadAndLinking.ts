@@ -1,13 +1,14 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { type CompanyAssociatedDataEutaxonomyFinancialsData, DataTypeEnum } from '@clients/backend';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
@@ -22,10 +23,10 @@ describeIf(
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
       let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
-      getKeycloakToken(admin_name, admin_pw).then(async (token: string) => {
+      getAdminToken().then(async (token: string) => {
         const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
         storedCompanyId = storedCompany.companyId;
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
 
         cy.visitAndCheckAppMount(
           '/companies/' + storedCompanyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload'
@@ -80,11 +81,9 @@ describeIf(
           }
         ).as('postDataWithTwoReports');
         cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithTwoReports', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
-          (interception) => {
-            expect(interception.response?.statusCode).to.eq(200);
-          }
-        );
+        cy.wait('@postDataWithTwoReports', { timeout: shortTimeoutInMs }).then((interception) => {
+          expect(interception.response?.statusCode).to.eq(200);
+        });
         cy.get('[data-test="datasets-table"]').should('be.visible');
         checkIfLinkedReportsAreDownloadable(storedCompanyId);
         gotoEditForm(storedCompanyId, true);
@@ -111,11 +110,9 @@ describeIf(
           }
         ).as('postDataWithOneReport');
         cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithOneReport', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(
-          (interception) => {
-            expect(interception.response?.statusCode).to.eq(200);
-          }
-        );
+        cy.wait('@postDataWithOneReport', { timeout: shortTimeoutInMs }).then((interception) => {
+          expect(interception.response?.statusCode).to.eq(200);
+        });
         cy.get('[data-test="datasets-table"]').should('be.visible');
         gotoEditForm(storedCompanyId, false);
       });

@@ -1,5 +1,6 @@
 // companySearchBar.ts
 
+type TimerHandle = ReturnType<typeof globalThis.setTimeout>;
 const DEBOUNCE_MS = 300;
 const MIN_LENGTH_WARNING_MS = 1000;
 const RESULT_LIMIT = 100;
@@ -7,6 +8,34 @@ const RESULT_LIMIT = 100;
 interface CompanyIdAndName {
   companyId: string;
   companyName: string;
+}
+
+function escapeRegex(s: string): string {
+  return s.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+}
+
+function highlight(name: string, search: string): string {
+  if (!search) return name;
+  return name.replaceAll(
+    new RegExp(`(${escapeRegex(search)})`, 'gi'),
+    '<mark class="bg-yellow-100 text-inherit rounded-sm">$1</mark>'
+  );
+}
+
+async function fetchSuggestions(searchString: string): Promise<CompanyIdAndName[]> {
+  const params = new URLSearchParams({
+    searchString,
+    resultLimit: String(RESULT_LIMIT),
+  });
+
+  const response = await fetch(`${globalThis.location.origin}/api/companies/names?${params.toString()}`);
+
+  if (!response.ok) {
+    console.error(`Company search failed: ${response.status} ${response.statusText}`);
+    return [];
+  }
+
+  return response.json() as Promise<CompanyIdAndName[]>;
 }
 
 export function initCompanySearchBar(): void {
@@ -24,20 +53,8 @@ export function initCompanySearchBar(): void {
 
   let suggestions: CompanyIdAndName[] = [];
   let activeIndex = -1;
-  let debounceTimer: number | undefined;
-  let minLengthWarningTimer: number | undefined;
-
-  function escapeRegex(s: string): string {
-    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  function highlight(name: string, search: string): string {
-    if (!search) return name;
-    return name.replace(
-      new RegExp(`(${escapeRegex(search)})`, 'gi'),
-      '<mark class="bg-yellow-100 text-inherit rounded-sm">$1</mark>'
-    );
-  }
+  let debounceTimer: TimerHandle | undefined;
+  let minLengthWarningTimer: TimerHandle | undefined;
 
   function renderSuggestions(): void {
     if (suggestions.length === 0) {
@@ -84,24 +101,12 @@ export function initCompanySearchBar(): void {
   }
 
   function selectCompany(company: CompanyIdAndName): void {
-    window.location.href = `/companies/${company.companyId}`;
-  }
-
-  async function fetchSuggestions(searchString: string): Promise<CompanyIdAndName[]> {
-    const params = new URLSearchParams({ searchString, resultLimit: String(RESULT_LIMIT) });
-    const response = await fetch(`${window.location.origin}/api/companies/names?${params.toString()}`);
-
-    if (!response.ok) {
-      console.error(`Company search failed: ${response.status} ${response.statusText}`);
-      return [];
-    }
-
-    return response.json() as Promise<CompanyIdAndName[]>;
+    globalThis.location.href = `/companies/${company.companyId}`;
   }
 
   searchInput.addEventListener('input', (): void => {
-    if (debounceTimer !== undefined) window.clearTimeout(debounceTimer);
-    if (minLengthWarningTimer !== undefined) window.clearTimeout(minLengthWarningTimer);
+    if (debounceTimer !== undefined) globalThis.clearTimeout(debounceTimer);
+    if (minLengthWarningTimer !== undefined) globalThis.clearTimeout(minLengthWarningTimer);
 
     const trimmed = searchInput.value.trim();
 
@@ -117,14 +122,14 @@ export function initCompanySearchBar(): void {
       suggestions = [];
       activeIndex = -1;
       renderSuggestions();
-      minLengthWarningTimer = window.setTimeout((): void => {
+      minLengthWarningTimer = globalThis.setTimeout((): void => {
         warningEl.classList.remove('hidden');
       }, MIN_LENGTH_WARNING_MS);
       return;
     }
 
     warningEl.classList.add('hidden');
-    debounceTimer = window.setTimeout(async (): Promise<void> => {
+    debounceTimer = globalThis.setTimeout(async (): Promise<void> => {
       suggestions = await fetchSuggestions(trimmed);
       activeIndex = -1;
       renderSuggestions();
@@ -153,7 +158,7 @@ export function initCompanySearchBar(): void {
   });
 
   searchInput.addEventListener('blur', (): void => {
-    window.setTimeout((): void => {
+    globalThis.setTimeout((): void => {
       suggestions = [];
       activeIndex = -1;
       renderSuggestions();
@@ -161,9 +166,9 @@ export function initCompanySearchBar(): void {
   });
 }
 
-if (typeof window !== 'undefined') {
+if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       initCompanySearchBar();
     });
   } else {

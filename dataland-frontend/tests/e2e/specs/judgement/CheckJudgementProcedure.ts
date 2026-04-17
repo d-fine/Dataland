@@ -1,21 +1,17 @@
 import { type DataMetaInformation, type EutaxonomyFinancialsData, type StoredCompany } from '@clients/backend';
 import { AcceptedDataPointSource, QaReportDataPointVerdict } from '@clients/qaservice';
 import { describeIf } from '@e2e/support/TestUtility.ts';
-import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import {
-  admin_name,
-  admin_pw,
-  admin_userId,
-  getBaseUrl,
-  judge_name,
-  judge_pw,
-  reviewer_name,
-  reviewer_pw,
-  reviewer_userId,
-  uploader_name,
-  uploader_pw,
-} from '@e2e/utils/Cypress';
+  getAdminToken,
+  getUploaderToken,
+  getReviewerToken,
+  getJudgeToken,
+  loginAsAdmin,
+  loginAsJudge,
+  logout,
+} from '@e2e/utils/Auth';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
@@ -148,7 +144,7 @@ describeIf(
         preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => {
           storedCompany = newCompany;
@@ -217,7 +213,7 @@ function createJudgementAndOpenReviewPage(
   uploadedDataMetaInfo: DataMetaInformation,
   token: string
 ): Cypress.Chainable<string> {
-  login(judge_name, judge_pw);
+  loginAsJudge();
   return cy
     .request({
       method: 'POST',
@@ -243,18 +239,18 @@ function getTokens(): Cypress.Chainable<QaTokens> {
   let adminToken: string;
   let uploaderToken: string;
 
-  return getKeycloakToken(reviewer_name, reviewer_pw)
+  return getReviewerToken()
     .then((token) => {
       reviewerToken = token;
-      return getKeycloakToken(admin_name, admin_pw);
+      return getAdminToken();
     })
     .then((token) => {
       adminToken = token;
-      return getKeycloakToken(uploader_name, uploader_pw);
+      return getUploaderToken();
     })
     .then((token) => {
       uploaderToken = token;
-      return getKeycloakToken(judge_name, judge_pw);
+      return getJudgeToken();
     })
     .then((judgeToken) => ({ reviewerToken, adminToken, uploaderToken, judgeToken }));
 }
@@ -376,7 +372,7 @@ function runQaScenarioForDataPoint(
  * @param dataSetId Id of the dataset whose QA dataset row should be selected.
  */
 function checkoutDataset(dataSetId: string): void {
-  login(admin_name, admin_pw);
+  loginAsAdmin();
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .contains('[data-test="qa-review-data-id"]', dataSetId)
@@ -415,7 +411,7 @@ function startJudgement(dataSetId: string): void {
 function changeJudgeAssignment(dataSetId: string): void {
   cy.intercept('PATCH', '**/qa/dataset-judgements/**/judge').as('reassignJudgement');
   logout();
-  login(judge_name, judge_pw);
+  loginAsJudge();
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.get('[data-test="qa-review-section"]').should('be.visible');
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')

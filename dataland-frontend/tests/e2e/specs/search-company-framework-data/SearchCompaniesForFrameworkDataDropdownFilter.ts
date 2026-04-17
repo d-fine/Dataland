@@ -3,10 +3,10 @@ import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from '@e2e/utils/
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type SfdrData } from '@clients/backend';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { convertStringToQueryParamFormat } from '@e2e/utils/Converters';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -17,6 +17,9 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -46,7 +49,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[3];
 
   it('The framework filter synchronize between the search bar and the URL', { scrollBehavior: false }, () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
     cy.visit('/companies').wait('@companies-meta-information');
     verifySearchResultTableExists();
@@ -104,7 +107,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const demoCompanyToTestForCountryName = assertDefined(
             getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode)
           );
-          cy.ensureLoggedIn();
+          cy.ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
@@ -141,7 +144,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           );
           expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
 
-          cy.ensureLoggedIn();
+          cy.ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`
@@ -161,7 +164,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     }
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
     cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
     cy.get("span:contains('RESET')").click();
     cy.url().should('eq', getBaseUrl() + '/companies');
@@ -170,26 +173,26 @@ describe('As a user, I expect the search functionality on the /companies page to
     'Check that the filter dropdowns close when you scroll, especially on the resulting query when you check a box while you are not at the top of the page',
     { scrollBehavior: false },
     () => {
-      cy.ensureLoggedIn();
+      cy.ensureLoggedInAsReader();
       cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
       cy.visit('/companies').wait('@companies-meta-information');
       verifySearchResultTableExists();
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
-      cy.wait(Cypress.env('short_timeout_in_ms') as number);
+      cy.wait(shortTimeoutInMs);
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay')
         .should('be.visible')
@@ -211,7 +214,7 @@ describe('As a user, I expect the search functionality on the /companies page to
     },
     function () {
       beforeEach(function () {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedInAsUploader();
       });
 
       const companyNameMarker = `Data${Date.now().toString()}`;
@@ -223,7 +226,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const preFix = 'ThisCompanyHasNoDataset';
           const companyName = preFix + companyNameMarker;
           const sector = 'SectorWithNoDataset';
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.intercept({ url: '**/api/companies*', times: 1 }).as('searchCompanyInitial');
@@ -234,7 +237,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           );
           cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
           cy.get('input[id=search-bar-input]').type(companyNameMarker, { scrollBehavior: false });
-          cy.wait('@searchCompanyInput', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(() => {
+          cy.wait('@searchCompanyInput', { timeout: mediumTimeoutInMs }).then(() => {
             cy.get('.p-autocomplete-option').eq(0).find("span[class='font-normal']").contains(preFix).should('exist');
           });
         }
@@ -247,7 +250,7 @@ describe('As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
@@ -260,7 +263,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .find(`.p-multiselect-option:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
-          cy.wait('@getFilterOptions', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
+          cy.wait('@getFilterOptions', { timeout: shortTimeoutInMs }).then(() => {
             verifySearchResultTableExists();
             cy.get('#sector-filter').click({ scrollBehavior: false });
             cy.get('input[placeholder="Search sectors"]').type(sector, { scrollBehavior: false });
@@ -269,7 +272,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.intercept('**/api/companies*').as('searchCompany');
           cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
           cy.get('input[id=search-bar-input]').type(companyName, { scrollBehavior: false });
-          cy.wait('@searchCompany', { timeout: Cypress.env('short_timeout_in_ms') as number }).then(() => {
+          cy.wait('@searchCompany', { timeout: shortTimeoutInMs }).then(() => {
             const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
             // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
@@ -327,7 +330,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyNameSfdrPrefix = 'CompanyWithSfdr';
           const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             const sfdrFixture = companiesWithSfdrData[0];
             void uploadCompanyAndFrameworkDataForPublicToolboxFramework(
               SfdrBaseFrameworkDefinition,
@@ -354,7 +357,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           'framework filter is set to that framework, or to several frameworks including that framework',
         () => {
           const companyName = 'CompanyWithEuFinancial' + companyNameMarker;
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
+          getAdminToken().then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadFrameworkDataForPublicToolboxFramework(
