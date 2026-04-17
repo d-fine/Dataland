@@ -35,7 +35,9 @@
               aria-hidden="true"
               :style="{ color: 'var(--p-gray-300)', marginRight: 'var(--spacing-xs)' }"
             ></i>
-            <span>{{ slotProps.option.label }}</span>
+            <span :data-test="`next-datapoint-option-${slotProps.option.dataPointTypeId}`">
+              {{ slotProps.option.label }}
+            </span>
           </div>
         </template>
       </Select>

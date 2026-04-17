@@ -12,7 +12,10 @@
     <!-- Header -->
     <template #header>
       <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; flex: 1">
-        <span data-test="dialog-title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)">
+        <span
+          :data-test="`judge-dialog-header-${currentDataPointTypeId}`"
+          style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)"
+        >
           {{ currentDataPointLabel }}
         </span>
         <span
