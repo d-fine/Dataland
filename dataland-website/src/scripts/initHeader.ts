@@ -11,21 +11,18 @@ function clearAuthRedirectFlags(): void {
 }
 
 function updateHeaderForAuthState(): void {
-  const isAuthenticated: boolean = globalThis.localStorage.getItem('dataland_authenticated') === 'true';
-
-  if (!isAuthenticated) {
-    return;
-  }
+  const isAuthenticated = globalThis.localStorage.getItem('dataland_authenticated') === 'true';
 
   const guestActions = document.querySelector<HTMLElement>('#header-guest-actions');
   const backToPlatform = document.querySelector<HTMLElement>('#header-back-to-platform');
 
   if (guestActions) {
-    guestActions.style.display = 'none';
+    guestActions.style.display = isAuthenticated ? 'none' : 'flex';
   }
 
   if (backToPlatform) {
-    backToPlatform.style.display = 'inline-flex';
+    backToPlatform.classList.toggle('hidden', !isAuthenticated);
+    backToPlatform.style.removeProperty('display');
   }
 }
 
