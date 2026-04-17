@@ -1,21 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import { TESTIMONIALS } from '../data/testimonials';
+import { TESTIMONIALS, TESTIMONIALS_PAGE_CONTENT } from '../content/testimonials';
 
 import TestimonialsHeroSection from '../components/page-testimonials/TestimonialsHeroSection.astro';
 import TestimonialsGridSection from '../components/page-testimonials/TestimonialsGridSection.astro';
-
-const TESTIMONIALS_PAGE_CONTENT = {
-  meta: {
-    title: 'Member Testimonials — Dataland',
-    description: 'Hear what our members say about the Dataland ESG data platform.',
-  },
-  hero: {
-    title: 'Member Testimonials',
-    intro:
-      'Hear directly from the financial institutions and organisations that use Dataland to access structured sustainability data.',
-  },
-};
 ---
 
 <Base title={TESTIMONIALS_PAGE_CONTENT.meta.title} description={TESTIMONIALS_PAGE_CONTENT.meta.description}>
