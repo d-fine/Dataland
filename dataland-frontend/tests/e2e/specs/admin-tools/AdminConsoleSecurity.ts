@@ -30,8 +30,12 @@ describe('As a user I expect the admin console only to be reachable using admin-
       containsText: 'Sign in to your account',
       urlShouldInclude: 'realms/master',
     });
-    cy.get('#username').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME'), { force: true });
-    cy.get('#password').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD'), { force: true });
+    getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME').then((username) => {
+      cy.get('#username').should('exist').type(username, { force: true });
+    });
+    getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD').then((password) => {
+      cy.get('#password').should('exist').type(password, { force: true });
+    });
     cy.get('#kc-login').should('exist').click();
     cy.get('h1').should('exist').should('contain', 'master realm');
   });

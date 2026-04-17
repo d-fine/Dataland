@@ -7,7 +7,7 @@ import {
 
 beforeEach(() => {
   interceptAllAndCheckFor500Errors();
-  if (!Cypress.env('excludeBypassQaIntercept')) {
+  if (!Cypress.expose('excludeBypassQaIntercept')) {
     interceptAllDataPostsAndBypassQaIfPossible();
   }
 });

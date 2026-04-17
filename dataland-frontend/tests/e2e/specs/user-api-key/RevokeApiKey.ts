@@ -1,6 +1,6 @@
 describe('As a user I expect my api key will be revoke correctly', () => {
   it('successfully revoke api key', () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
     cy.visitAndCheckAppMount('/api-key');
     cy.intercept('GET', '**/api-keys/getApiKeyMetaInfoForUser*', { fixture: 'ApiKeyInfoMockWithKey.json' }).as(
       'apiKeyInfo'

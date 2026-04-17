@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   Configuration,
   type DataMetaInformation,
@@ -15,6 +15,8 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EutaxonomyFinancialsData>;
 
@@ -86,21 +88,19 @@ function submitInEditModeAndFetchReuploadedDataset(
   cy.visitAndCheckAppMount(
     '/companies/' + companyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload?templateDataId=' + dataId
   );
-  cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.wait('@fetchDataForPrefill', { timeout: mediumTimeoutInMs });
   cy.get('h1').should('contain', testCompanyName);
   cy.intercept({
     url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}?bypassQa=true`,
     times: 1,
   }).as('postCompanyAssociatedData');
   submitButton.clickButton();
-  return cy
-    .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .then((postInterception) => {
-      const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-      cy.url().should('eq', getBaseUrl() + '/datasets');
-      isDatasetAccepted();
-      return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
-    });
+  return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postInterception) => {
+    const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
+    cy.url().should('eq', getBaseUrl() + '/datasets');
+    isDatasetAccepted();
+    return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
+  });
 }
 
 before(function () {
@@ -120,8 +120,8 @@ describeIf(
   },
   function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      Cypress.env('excludeBypassQaIntercept', true);
+      cy.ensureLoggedInAsAdmin();
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -130,7 +130,7 @@ describeIf(
       () => {
         const testCompanyName = 'Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company';
         const reportingPeriod = '2023';
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName, reportingPeriod);
           })

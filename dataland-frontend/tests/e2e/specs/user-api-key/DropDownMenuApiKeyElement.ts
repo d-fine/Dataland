@@ -1,6 +1,6 @@
 describe('As a user I expect api key link will be visible in the menu', () => {
   it('successfully redirects to the page api-key', () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
 
     cy.visitAndCheckAppMount('/requests');
 

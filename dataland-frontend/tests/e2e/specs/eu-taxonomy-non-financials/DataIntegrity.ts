@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   Configuration,
@@ -16,6 +16,8 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import EuTaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 
@@ -87,7 +89,7 @@ function submitInEditModeAndFetchReuploadedDataset(
   dataId: string,
   testCompanyName: string
 ): Cypress.Chainable<DatasetsComparisonContext> {
-  cy.ensureLoggedIn(admin_name, admin_pw);
+  cy.ensureLoggedInAsAdmin();
   cy.intercept({
     url: `api/data/${dataType}/${dataId}`,
     times: 1,
@@ -100,34 +102,29 @@ function submitInEditModeAndFetchReuploadedDataset(
       '/upload?templateDataId=' +
       dataId
   );
-  return cy
-    .wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-    .then((interception) => {
-      const datasetFromPrefillRequest = (
-        interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-      ).data;
-      cy.get('h1').should('contain', testCompanyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}?bypassQa=true`,
-        times: 1,
-      }).as('postCompanyAssociatedData');
-      submitButton.clickButton();
+  return cy.wait('@getDataToPrefillForm', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData)
+      .data;
+    cy.get('h1').should('contain', testCompanyName);
+    cy.intercept({
+      url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}?bypassQa=true`,
+      times: 1,
+    }).as('postCompanyAssociatedData');
+    submitButton.clickButton();
+    return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((interceptionAfterPost) => {
+      const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
+      cy.url().should('eq', getBaseUrl() + '/datasets');
+      isDatasetAccepted();
       return cy
-        .wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number })
-        .then((interceptionAfterPost) => {
-          const dataMetaInformationOfReuploadedDataset = interceptionAfterPost.response?.body as DataMetaInformation;
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          isDatasetAccepted();
-          return cy
-            .then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId))
-            .then((reuploadedDatasetFromBackend) => {
-              return {
-                datasetFromPrefillRequest,
-                reuploadedDatasetFromBackend,
-              };
-            });
+        .then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId))
+        .then((reuploadedDatasetFromBackend) => {
+          return {
+            datasetFromPrefillRequest,
+            reuploadedDatasetFromBackend,
+          };
         });
     });
+  });
 }
 
 before(function () {
@@ -148,7 +145,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -158,7 +155,7 @@ describeIf(
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Eu-Taxo-Non-Financials-Blanket-Test-' + uniqueCompanyMarker;
 
-        getKeycloakToken(admin_name, admin_pw)
+        getAdminToken()
           .then((token: string) => {
             return createCompanyAndUploadDataset(token, testCompanyName);
           })

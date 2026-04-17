@@ -1,11 +1,13 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getUploaderToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
-import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
@@ -63,7 +65,11 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
  * @param testCompany the company that was searched for
  */
 function assertSearchedCompanyNameIsUnique(testCompany: BasicCompanyInformation): void {
-  cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`).then((items) => {
+  cy.get('.p-autocomplete-list-container').should('exist');
+  cy.get('.p-autocomplete-option').should('have.length.greaterThan', 0);
+  cy.get(`.p-autocomplete-option:contains('${testCompany.companyName}')`, {
+    timeout: mediumTimeoutInMs,
+  }).then((items) => {
     if (items.length !== 1)
       throw new Error(
         `The company name ${testCompany.companyName} does not seem to be unique. Please change the fake fixture for this test.`
@@ -78,7 +84,7 @@ before(function () {
 });
 
 beforeEach(function () {
-  cy.ensureLoggedIn();
+  cy.ensureLoggedInAsReader();
 });
 describeIf(
   'As a user, I expect the search functionality on the /companies page to show me the desired results',
@@ -137,7 +143,7 @@ describeIf(
       const placeholder = 'Search company by name or identifier (e.g. PermID, LEI, ...)';
       const inputValue = 'A company name';
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
@@ -157,7 +163,7 @@ describeIf(
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformation: Array<BasicCompanyInformation>) => {
             if (basicCompanyInformation.length < 2) {
@@ -180,7 +186,7 @@ describeIf(
             cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
             cy.get('input[id=search-bar-input]').should('be.focused');
-            cy.wait(Cypress.env('short_timeout_in_ms') as number);
+            cy.wait(shortTimeoutInMs);
             cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
             cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
             cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);

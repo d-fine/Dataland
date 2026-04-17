@@ -1,6 +1,6 @@
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from '@e2e/utils/CompanyUpload';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
   DataTypeEnum,
@@ -16,6 +16,9 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
@@ -88,7 +91,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
-        getKeycloakToken(admin_name, admin_pw).then(async (token: string): Promise<void> => {
+        getAdminToken().then(async (token: string): Promise<void> => {
           await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
           storedCompanyForManyDatasetsCompany = await uploadCompanyViaApi(
             token,
@@ -132,7 +135,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       });
 
       it('Go through the whole dataset creation process for a newly created company and verify pages and elements', function () {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         cy.visitAndCheckAppMount('/companies');
         verifySearchResultTableExists();
 
@@ -141,13 +144,13 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.get('div[id=option1Container]').find("[data-test='add-it-button']").click();
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
-          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: mediumTimeoutInMs });
           cy.url().should('eq', getBaseUrl() + '/companies/' + company.companyId + '/frameworks/upload');
         });
       });
 
       it('Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland', function () {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         cy.visitAndCheckAppMount('/companies/choose');
         const identifierDoesExistMessage = 'There already exists a company with this ID';
         cy.contains(identifierDoesExistMessage).should('not.exist');
@@ -219,7 +222,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
           ' and verify pages and elements.',
         function () {
-          cy.ensureLoggedIn(uploader_name, uploader_pw);
+          cy.ensureLoggedInAsUploader();
           cy.visitAndCheckAppMount('/companies');
           verifySearchResultTableExists();
           cy.get('button').contains('NEW DATASET').click({ force: true });
@@ -230,12 +233,12 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           cy.intercept('**/api/companies/names*').as('searchCompanyName');
           cy.get('input[id=company_search_bar_standard]').click({ force: true });
           cy.get('input[id=company_search_bar_standard]').type(testCompanyNameForManyDatasetsCompany);
-          cy.wait('@searchCompanyName', { timeout: Cypress.env('short_timeout_in_ms') as number });
+          cy.wait('@searchCompanyName', { timeout: shortTimeoutInMs });
           cy.get('.p-autocomplete-list-container').should('exist');
           cy.get('input[id=company_search_bar_standard]').type('{downArrow}');
           cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
           cy.get('input[id=company_search_bar_standard]').type('{enter}');
-          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: Cypress.env('short_timeout_in_ms') as number });
+          cy.wait('@retrieveExistingDatasetsForCompany', { timeout: shortTimeoutInMs });
           cy.url().should(
             'eq',
             getBaseUrl() + `/companies/${storedCompanyForManyDatasetsCompany.companyId}/frameworks/upload`
@@ -250,7 +253,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             dataIdOfLksgUpload
           );
 
-          cy.wait(Cypress.env('short_timeout_in_ms') as number);
+          cy.wait(shortTimeoutInMs);
 
           checkIfDropDownSwitchRendersData();
         }
