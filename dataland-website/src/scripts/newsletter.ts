@@ -1,3 +1,42 @@
+// newsletterForm.ts
+
+function setMessage(messageEl: HTMLElement | null, text: string, type: string = ''): void {
+  if (!messageEl) return;
+  messageEl.textContent = text;
+  messageEl.classList.remove('is-error', 'is-success');
+  if (type) {
+    messageEl.classList.add(type);
+  }
+}
+
+function clearAllErrors(requiredInputs: HTMLInputElement[]): void {
+  requiredInputs.forEach((input: HTMLInputElement): void => input.classList.remove('is-error'));
+}
+
+function isEmailValid(value: string): boolean {
+  return value.includes('@');
+}
+
+function areAllFieldsFilled(requiredInputs: HTMLInputElement[]): boolean {
+  return requiredInputs.every((input: HTMLInputElement): boolean => input.value.trim() !== '');
+}
+
+function isFormReady(requiredInputs: HTMLInputElement[], emailInput: HTMLInputElement | null): boolean {
+  const emailValue: string = emailInput?.value.trim() ?? '';
+  return areAllFieldsFilled(requiredInputs) && isEmailValid(emailValue);
+}
+
+function updateSubmitState(
+  submitButton: HTMLButtonElement | null,
+  requiredInputs: HTMLInputElement[],
+  emailInput: HTMLInputElement | null
+): void {
+  if (!submitButton) return;
+  const enabled: boolean = isFormReady(requiredInputs, emailInput);
+  submitButton.disabled = !enabled;
+  submitButton.classList.toggle('is-enabled', enabled);
+}
+
 export function initNewsletterForm(): void {
   const form = document.querySelector<HTMLFormElement>('#newsletter-form');
   const submitButton = document.querySelector<HTMLButtonElement>('#submit-button');
@@ -8,50 +47,21 @@ export function initNewsletterForm(): void {
   const companyInput = document.querySelector<HTMLInputElement>('#company');
   const emailInput = document.querySelector<HTMLInputElement>('#email');
 
-  const requiredInputs = [firstNameInput, lastNameInput, companyInput, emailInput].filter(
+  const requiredInputs: HTMLInputElement[] = [firstNameInput, lastNameInput, companyInput, emailInput].filter(
     (input): input is HTMLInputElement => input !== null
   );
 
-  function setMessage(text: string, type: string = ''): void {
-    if (!messageEl) return;
-    messageEl.textContent = text;
-    messageEl.classList.remove('is-error', 'is-success');
-    if (type) {
-      messageEl.classList.add(type);
-    }
-  }
-
-  function clearAllErrors(): void {
-    requiredInputs.forEach((input: HTMLInputElement): void => input.classList.remove('is-error'));
-  }
-
-  function isEmailValid(value: string): boolean {
-    return value.includes('@');
-  }
-
-  function areAllFieldsFilled(): boolean {
-    return requiredInputs.every((input: HTMLInputElement): boolean => input.value.trim() !== '');
-  }
-
-  function isFormReady(): boolean {
-    const emailValue: string = emailInput?.value.trim() ?? '';
-    return areAllFieldsFilled() && isEmailValid(emailValue);
-  }
-
-  function updateSubmitState(): void {
-    if (!submitButton) return;
-    const enabled: boolean = isFormReady();
-    submitButton.disabled = !enabled;
-    submitButton.classList.toggle('is-enabled', enabled);
-  }
+  const handleUpdateSubmitState = (): void => {
+    updateSubmitState(submitButton, requiredInputs, emailInput ?? null);
+  };
 
   requiredInputs.forEach((input: HTMLInputElement): void => {
-    input.addEventListener('input', updateSubmitState);
+    input.addEventListener('input', handleUpdateSubmitState);
 
     input.addEventListener('focus', (): void => {
       input.classList.remove('is-error');
       if (messageEl?.classList.contains('is-error')) {
-        setMessage('');
+        setMessage(messageEl, '');
       }
     });
   });
@@ -59,8 +69,8 @@ export function initNewsletterForm(): void {
   form?.addEventListener('submit', (event: SubmitEvent): void => {
     event.preventDefault();
 
-    clearAllErrors();
-    setMessage('');
+    clearAllErrors(requiredInputs);
+    setMessage(messageEl, '');
 
     const emptyInputs: HTMLInputElement[] = requiredInputs.filter(
       (input: HTMLInputElement): boolean => input.value.trim() === ''
@@ -68,27 +78,27 @@ export function initNewsletterForm(): void {
 
     if (emptyInputs.length > 0) {
       emptyInputs.forEach((input: HTMLInputElement): void => input.classList.add('is-error'));
-      setMessage('Fields should not be empty.', 'is-error');
-      updateSubmitState();
+      setMessage(messageEl, 'Fields should not be empty.', 'is-error');
+      handleUpdateSubmitState();
       return;
     }
 
     if (emailInput && !isEmailValid(emailInput.value.trim())) {
       emailInput.classList.add('is-error');
-      setMessage('The email address is not valid.', 'is-error');
-      updateSubmitState();
+      setMessage(messageEl, 'The email address is not valid.', 'is-error');
+      handleUpdateSubmitState();
       return;
     }
 
-    setMessage('Form submission is currently disabled.', 'is-error');
+    setMessage(messageEl, 'Form submission is currently disabled.', 'is-error');
   });
 
-  updateSubmitState();
+  handleUpdateSubmitState();
 }
 
-if (typeof window !== 'undefined') {
+if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       initNewsletterForm();
     });
   } else {
