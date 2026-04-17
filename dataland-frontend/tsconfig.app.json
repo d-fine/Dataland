@@ -1,35 +1,16 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["src/**/*", "src/**/*.vue", "build/clients/**/*"],
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    "types": ["vite/client"],
     "baseUrl": ".",
+    "verbatimModuleSyntax": false,
     "paths": {
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"]
     },
-
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "useDefineForClassFields": true,
-    "moduleDetection": "force",
-    "verbatimModuleSyntax": false,
-
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-
-    "types": ["vite/client"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
   }
 }
