@@ -34,24 +34,18 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "qaStatus",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/QaStatus"
-            }
-          },
-          {
-            "name": "qaComment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NonSourceabilityDecisionRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -4132,6 +4126,20 @@
   },
   "components": {
     "schemas": {
+      "NonSourceabilityDecisionRequest": {
+        "required": [
+          "qaStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "qaComment": {
+            "type": "string"
+          }
+        }
+      },
       "QaStatus": {
         "type": "string",
         "enum": [
