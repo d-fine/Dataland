@@ -25,7 +25,7 @@ describe('Component test for the footer', () => {
     //@ts-ignore
     cy.mountWithPlugins(TheFooter, {});
 
-    cy.get('.footer__col-heading').should('have.length.at.least', 3);
-    cy.get('.footer__list-link').should('have.length.at.least', 5);
+    cy.get('.footer__col-title').should('have.length.at.least', 3);
+    cy.get('.footer__link').should('have.length.at.least', 5);
   });
 });
