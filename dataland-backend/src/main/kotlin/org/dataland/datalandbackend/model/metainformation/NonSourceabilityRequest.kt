@@ -38,4 +38,13 @@ data class NonSourceabilityRequest(
                 "Requires ROLE_ADMIN.",
     )
     val bypassQa: Boolean = false,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description =
+            "When true the triple is treated as non-sourceable; when false the entry is inactive. " +
+                "Must be false when bypassQa=false (the QA service sets this to true upon approval). " +
+                "When bypassQa=true, signals whether the intent is to mark the triple as non-sourceable (true) " +
+                "or sourceable again (false).",
+    )
+    val currentlyActive: Boolean,
 )
