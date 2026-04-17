@@ -51,7 +51,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland
   <body>
     <a href="#main-content" class="skip-to-content">Skip to content</a>
     <Header />
-    <main id="main-content" class="pt-[var(--header-height)]">
+    <main id="main-content">
       <slot />
     </main>
     <Footer />

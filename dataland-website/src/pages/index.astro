@@ -29,6 +29,7 @@ import LogoutModal from '../components/page-index/LogoutModal.astro';
   <FrameworksSection content={INDEX_PAGE_CONTENT.frameworks} frameworks={FRAMEWORK_CARDS} />
   <IndexCtaSection content={INDEX_PAGE_CONTENT.cta} />
   <LogoutModal />
+  <script type="module">
+    import '../scripts/indexPage';
+  </script>
 </Base>
-
-<script type="module" src="/scripts/indexPage.js"></script>

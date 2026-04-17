@@ -76,7 +76,7 @@ export const WHY_US_PAIRS: ProblemSolutionPair[] = [
     problemTitle: 'Poor data quality',
     problemText:
       'Many data sourcing approaches introduce errors, inconsistencies, outdated values, or unexplained gaps. Inaccurate or untraceable ESG data undermines reporting, analytics, and decision-making.',
-    solutionTitle: 'AI extraction, human verification, source traceability.',
+    solutionTitle: 'AI extraction, human verification, source traceability',
     solutionText:
       'Dataland sources data from original publishers and combines tailored AI extraction with manual verification. Every published data point is linked to its original document, ensuring structured, quality-assured, and fully traceable datasets.',
   },

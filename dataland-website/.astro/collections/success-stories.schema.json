@@ -35,7 +35,16 @@
           "type": "string"
         }
       },
-      "required": ["slug", "title", "companyName", "companyType", "logo", "quoteText", "quoteAuthor", "quoteRole"],
+      "required": [
+        "slug",
+        "title",
+        "companyName",
+        "companyType",
+        "logo",
+        "quoteText",
+        "quoteAuthor",
+        "quoteRole"
+      ],
       "additionalProperties": false
     }
   },
