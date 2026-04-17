@@ -99,69 +99,16 @@ export const WHY_US_PAIRS: ProblemSolutionPair[] = [
 ];
 
 export const FRAMEWORK_CARDS: FrameworkCard[] = [
-  {
-    title: 'EU Taxonomy',
-    subtitle: 'Financials',
-    description:
-      'The EU Taxonomy Regulation enables financial institutions to assess and report the share of environmentally sustainable economic activities within their portfolios, based on eligibility and alignment metrics.',
-  },
-  {
-    title: 'EU Taxonomy',
-    subtitle: 'Non-Financials',
-    description:
-      'The EU Taxonomy Regulation provides a framework for non-financial companies to disclose the extent to which their activities are environmentally sustainable, based on defined technical screening criteria.',
-  },
-  {
-    title: 'EU Taxonomy',
-    subtitle: 'Nuclear and Gas',
-    description:
-      'The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions.',
-  },
-  {
-    title: 'SFDR',
-    subtitle: '',
-    description:
-      'The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level.',
-  },
-  {
-    title: 'PCAF',
-    subtitle: '',
-    description:
-      'The PCAF standard provides a methodology for financial institutions to measure and disclose financed emissions associated with their lending and investment portfolios.',
-  },
-  {
-    title: 'LkSG',
-    subtitle: '',
-    description:
-      'Lieferkettensorgfaltspflichtengesetz is a German law requiring companies to identify, assess, and manage human rights and environmental risks within their supply chains.',
-  },
+  { title: 'EU Taxonomy', subtitle: 'Financials', description: 'The EU Taxonomy Regulation enables financial institutions to assess and report the share of environmentally sustainable economic activities within their portfolios, based on eligibility and alignment metrics.' },
+  { title: 'EU Taxonomy', subtitle: 'Non-Financials', description: 'The EU Taxonomy Regulation provides a framework for non-financial companies to disclose the extent to which their activities are environmentally sustainable, based on defined technical screening criteria.' },
+  { title: 'EU Taxonomy', subtitle: 'Nuclear and Gas', description: 'The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions.' },
+  { title: 'SFDR', subtitle: '', description: 'The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level.' },
+  { title: 'PCAF', subtitle: '', description: 'The PCAF standard provides a methodology for financial institutions to measure and disclose financed emissions associated with their lending and investment portfolios.' },
+  { title: 'LkSG', subtitle: '', description: 'Lieferkettensorgfaltspflichtengesetz is a German law requiring companies to identify, assess, and manage human rights and environmental risks within their supply chains.' },
 ];
 
 export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
-  {
-    logo: '/static/logos/logo_meag_2026.svg',
-    logoClassName: 'scale-[1.18]',
-    title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
-    primaryTag: 'Asset manager',
-    secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
-    text: 'Filling SFDR gaps and EU Taxo template transition',
-    link: '/product#meag',
-  },
-  {
-    logo: '/static/logos/logo_nordlb.svg',
-    title: 'Primary source of EU Taxonomy data with automated delivery',
-    primaryTag: 'Bank',
-    secondaryTags: ['EU Taxo', 'API integration'],
-    text: 'Primary source of EU Taxonomy data with automated delivery',
-    link: '/product#nordlb',
-  },
-  {
-    logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.png',
-    logoClassName: 'scale-[1.3]',
-    title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
-    primaryTag: 'Insurance',
-    secondaryTags: ['SFDR', 'Validation', 'Audit'],
-    text: 'PAI lineage and source transparency for compliance',
-    link: '/product#ovbraunschweig',
-  },
+  { logo: '/static/logos/logo_meag_2026.svg', logoClassName: 'scale-[1.18]', title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition', primaryTag: 'Asset manager', secondaryTags: ['SFDR', 'EU Taxo', 'Audit'], text: 'Filling SFDR gaps and EU Taxo template transition', link: '/product#meag' },
+  { logo: '/static/logos/logo_nordlb.svg', title: 'Primary source of EU Taxonomy data with automated delivery', primaryTag: 'Bank', secondaryTags: ['EU Taxo', 'API integration'], text: 'Primary source of EU Taxonomy data with automated delivery', link: '/product#nordlb' },
+  { logo: '/static/logos/logo_Oeffentliche_Wort-Bildmarke_Blau_RGB.png', logoClassName: 'scale-[1.3]', title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit', primaryTag: 'Insurance', secondaryTags: ['SFDR', 'Validation', 'Audit'], text: 'PAI lineage and source transparency for compliance', link: '/product#ovbraunschweig' },
 ];

@@ -14,9 +14,6 @@ export default defineConfig({
   integrations: [mdx(), vue(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
-    esbuild: {
-      tsconfig: path.resolve(__dirname, 'tsconfig.json'),
-    },
     resolve: {
       alias: {
         '@shared': path.resolve(__dirname, '../dataland-frontend/src'),

@@ -268,7 +268,6 @@ function showCookieSettings(): void {
 .footer {
   background: #f7f7f5;
   color: #1b1b1b;
-  font-family: 'IBM Plex Sans', sans-serif;
   text-align: left;
   line-height: 1.5;
   -webkit-font-smoothing: subpixel-antialiased;

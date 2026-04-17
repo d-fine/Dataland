@@ -146,121 +146,32 @@ export const API_DOC_LINKS: DocumentationLink[] = [
 ];
 
 export const FEATURE_CARDS: FeatureCard[] = [
-  {
-    title: 'Download data',
-    tags: ['Flexible formats', 'Internal use'],
-    text: 'Download datasets as CSV or XLSX with or without metadata.',
-  },
-  {
-    title: 'Portfolio management',
-    tags: ['Portfolio setup', 'Monitoring'],
-    text: 'Build your own portfolios of companies and monitor ESG data availability.',
-  },
-  {
-    title: 'Portfolio sharing',
-    tags: ['Collaboration', 'Team access'],
-    text: 'Share company portfolios with colleagues and teams.',
-  },
-  {
-    title: 'Request data',
-    tags: ['On-demand sourcing', 'Missing data'],
-    text: 'Order missing datasets directly from the platform.',
-  },
-  {
-    title: 'Source transparency',
-    tags: ['Traceability', 'Quality comments'],
-    text: 'Inspect original source documents and quality comments.',
-  },
-  {
-    title: 'Multi-framework export',
-    tags: ['Reporting-ready formats', 'Framework coverage'],
-    text: 'Export datasets in formats suitable for different reporting frameworks.',
-  },
+  { title: 'Download data', tags: ['Flexible formats', 'Internal use'], text: 'Download datasets as CSV or XLSX with or without metadata.' },
+  { title: 'Portfolio management', tags: ['Portfolio setup', 'Monitoring'], text: 'Build your own portfolios of companies and monitor ESG data availability.' },
+  { title: 'Portfolio sharing', tags: ['Collaboration', 'Team access'], text: 'Share company portfolios with colleagues and teams.' },
+  { title: 'Request data', tags: ['On-demand sourcing', 'Missing data'], text: 'Order missing datasets directly from the platform.' },
+  { title: 'Source transparency', tags: ['Traceability', 'Quality comments'], text: 'Inspect original source documents and quality comments.' },
+  { title: 'Multi-framework export', tags: ['Reporting-ready formats', 'Framework coverage'], text: 'Export datasets in formats suitable for different reporting frameworks.' },
 ];
 
 export const HOW_IT_WORKS_BLOCKS: HowItWorksBlock[] = [
-  {
-    leftTitle: 'Platform access',
-    leftText: 'Access ESG datasets directly through the Dataland platform and download them in structured formats',
-    rightTitle: 'Browse, search, and download',
-    rightText: 'Browse companies, portfolios and datasets interactively',
-  },
-  {
-    leftTitle: 'API integration',
-    leftText: 'Integrate Dataland data into your internal systems and analytics pipelines',
-    rightTitle: 'Automated workflows',
-    rightText: 'Retrieve ESG datasets programmatically through stable APIs',
-  },
-  {
-    leftTitle: 'Partner integration',
-    leftText: 'Access Dataland data through software partners and ESG data platforms',
-    rightTitle: 'Embedded data services',
-    rightText: 'Partners integrate Dataland datasets into their own solutions',
-  },
+  { leftTitle: 'Platform access', leftText: 'Access ESG datasets directly through the Dataland platform and download them in structured formats', rightTitle: 'Browse, search, and download', rightText: 'Browse companies, portfolios and datasets interactively' },
+  { leftTitle: 'API integration', leftText: 'Integrate Dataland data into your internal systems and analytics pipelines', rightTitle: 'Automated workflows', rightText: 'Retrieve ESG datasets programmatically through stable APIs' },
+  { leftTitle: 'Partner integration', leftText: 'Access Dataland data through software partners and ESG data platforms', rightTitle: 'Embedded data services', rightText: 'Partners integrate Dataland datasets into their own solutions' },
 ];
 
 export const GETTING_DATA_BLOCKS: GettingDataBlock[] = [
-  {
-    title: 'Dataset already available',
-    text: 'Use the dataset within the platform or download it for your internal applications',
-    highlights: ['Free of charge', 'Data available for immediate use'],
-  },
-  {
-    title: 'Dataset not yet available',
-    text: 'Request the dataset from your account on the platform',
-    highlights: ['Delivery within a month', 'Shared costs for members requesting the same dataset'],
-  },
+  { title: 'Dataset already available', text: 'Use the dataset within the platform or download it for your internal applications', highlights: ['Free of charge', 'Data available for immediate use'] },
+  { title: 'Dataset not yet available', text: 'Request the dataset from your account on the platform', highlights: ['Delivery within a month', 'Shared costs for members requesting the same dataset'] },
 ];
 
 export const USE_CASES: UseCase[] = [
-  {
-    icon: '/static/product/use_cases/img_use_case_primary.png',
-    tags: ['Primary provider', 'Core workflows'],
-    title: 'Dataland as primary ESG data source',
-    titleLines: ['Dataland as primary', 'ESG data source'],
-    description:
-      'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated.',
-  },
-  {
-    icon: '/static/product/use_cases/img_use_case_complement.png',
-    tags: ['Provider complement', 'SME coverage'],
-    title: 'Dataland complementing primary data provider',
-    titleLines: ['Dataland complementing', 'primary data provider'],
-    description:
-      'Dataland complements a primary ESG data provider by closing remaining data gaps. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios.',
-  },
-  {
-    icon: '/static/product/use_cases/img_use_case_validation.png',
-    tags: ['Cross-checking', 'Auditability'],
-    title: 'Independent Validation and Audit Trail',
-    titleLines: ['Independent Validation', 'and Audit Trail'],
-    description:
-      'Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider - particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require.',
-  },
-  {
-    icon: '/static/product/use_cases/img_use_case_portfolio_monitoring.png',
-    tags: ['Portfolio coverage', 'Ongoing updates'],
-    title: 'Continuous Coverage for Your Portfolio',
-    titleLines: ['Continuous Coverage', 'for Your Portfolio'],
-    description:
-      'Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available.',
-  },
-  {
-    icon: '/static/product/use_cases/img_use_case_gap_filling.png',
-    tags: ['On-demand sourcing', 'Specific gaps'],
-    title: 'Targeted Sourcing of Missing Datasets',
-    titleLines: ['Targeted Sourcing of', 'Missing Datasets'],
-    description:
-      'Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages.',
-  },
-  {
-    icon: '/static/product/use_cases/img_use_case_format_update.png',
-    tags: ['EU Taxonomy', 'Template continuity'],
-    title: 'EU Taxonomy Format Continuity',
-    titleLines: ['EU Taxonomy Format', 'Continuity'],
-    description:
-      'Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change.',
-  },
+  { icon: '/static/product/use_cases/img_use_case_primary.png', tags: ['Primary provider', 'Core workflows'], title: 'Dataland as primary ESG data source', titleLines: ['Dataland as primary', 'ESG data source'], description: 'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated.' },
+  { icon: '/static/product/use_cases/img_use_case_complement.png', tags: ['Provider complement', 'SME coverage'], title: 'Dataland complementing primary data provider', titleLines: ['Dataland complementing', 'primary data provider'], description: 'Dataland complements a primary ESG data provider by closing remaining data gaps. This includes access to ESG data for SMEs and private companies that are typically not covered by large commercial vendors, extending ESG analysis beyond listed entities and enabling broader coverage of real-economy exposures, especially in lending, private markets, and insurance portfolios.' },
+  { icon: '/static/product/use_cases/img_use_case_validation.png', tags: ['Cross-checking', 'Auditability'], title: 'Independent Validation and Audit Trail', titleLines: ['Independent Validation', 'and Audit Trail'], description: 'Dataland datasets serve as an additional reference point to cross-check consistency, plausibility, and methodological differences against a primary provider - particularly in contexts requiring high data quality and auditability. Every data point is linked to its exact location in the original source document, providing the source transparency that regulatory audits increasingly require.' },
+  { icon: '/static/product/use_cases/img_use_case_portfolio_monitoring.png', tags: ['Portfolio coverage', 'Ongoing updates'], title: 'Continuous Coverage for Your Portfolio', titleLines: ['Continuous Coverage', 'for Your Portfolio'], description: 'Retrieval of ESG datasets for defined portfolios (e.g. loan books or investment portfolios), combined with continuous identification of newly available data. Portfolio coverage remains up to date as holdings evolve and additional datasets become available.' },
+  { icon: '/static/product/use_cases/img_use_case_gap_filling.png', tags: ['On-demand sourcing', 'Specific gaps'], title: 'Targeted Sourcing of Missing Datasets', titleLines: ['Targeted Sourcing of', 'Missing Datasets'], description: 'Missing datasets for specific companies or indicators can be ordered via credits, driven by concrete internal or regulatory requirements. This enables precise data procurement without dependency on predefined data packages.' },
+  { icon: '/static/product/use_cases/img_use_case_format_update.png', tags: ['EU Taxonomy', 'Template continuity'], title: 'EU Taxonomy Format Continuity', titleLines: ['EU Taxonomy Format', 'Continuity'], description: 'Provision of EU Taxonomy datasets in both current and previous template formats, including automated format conversion. Ensures continuity in internal reporting processes when regulatory templates change.' },
 ];
 
 export const PRODUCT_APPLICATION_AREAS: ProductApplicationArea[] = [
@@ -273,30 +184,15 @@ export const PRODUCT_APPLICATION_AREAS: ProductApplicationArea[] = [
 ];
 
 export const MEMBERSHIP_INCLUDED_ITEMS: PricingFeatureItemData[] = [
-  {
-    title: 'Free unrestricted data use',
-    text: 'All datasets available on Dataland can be accessed and used for internal purposes without restrictions.',
-  },
-  {
-    title: 'Free use of all features',
-    text: 'Current features, from download to template conversion, as well as all future features we will develop, are free for all members.',
-  },
-  {
-    title: 'On-demand sourcing',
-    text: 'Missing datasets can be requested and automatically delivered through Active Portfolio Monitoring.',
-  },
+  { title: 'Free unrestricted data use', text: 'All datasets available on Dataland can be accessed and used for internal purposes without restrictions.' },
+  { title: 'Free use of all features', text: 'Current features, from download to template conversion, as well as all future features we will develop, are free for all members.' },
+  { title: 'On-demand sourcing', text: 'Missing datasets can be requested and automatically delivered through Active Portfolio Monitoring.' },
   { title: '100 credits', text: 'for requesting missing datasets.' },
 ];
 
 export const SHARED_COST_ITEMS: PricingFeatureItemData[] = [
-  {
-    title: 'Additional credits',
-    text: 'Members can use the credits received with their annual subscription and purchase additional credits for EUR 50 per credit.',
-  },
-  {
-    title: 'Pay only for new data',
-    text: 'Credits are only used when new data is sourced. All datasets already on the platform are included at no additional cost.',
-  },
+  { title: 'Additional credits', text: 'Members can use the credits received with their annual subscription and purchase additional credits for EUR 50 per credit.' },
+  { title: 'Pay only for new data', text: 'Credits are only used when new data is sourced. All datasets already on the platform are included at no additional cost.' },
 ];
 
 export const PRODUCT_CREDITS_TABLE: CreditCostRow[] = [
