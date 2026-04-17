@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import { ABOUT_PAGE_CONTENT } from '../data/pageContent';
 import {
+  ABOUT_PAGE_CONTENT,
   COMPANY_COPY,
   LEADERSHIP_TEAM,
   CONTACT_PHONE,
@@ -10,9 +10,9 @@ import {
   CONTACT_EMAIL_DISPLAY,
   CONTACT_INQUIRY_MAILTO,
   CONTACT_ADDRESS,
-} from '../data/about';
-import { PARTNER_STORY_SUMMARIES } from '../data/partnerStories';
-import { NEWS_ITEMS } from '../data/news';
+  NEWS_ITEMS,
+} from '../content/about';
+import { PARTNER_STORY_SUMMARIES } from '../config/partner-stories';
 
 import AboutCompanySection from '../components/page-about/AboutCompanySection.astro';
 import AboutLeadershipSection from '../components/page-about/AboutLeadershipSection.astro';

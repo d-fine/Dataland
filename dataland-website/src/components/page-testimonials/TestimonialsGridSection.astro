@@ -1,6 +1,6 @@
 ---
 import YouTubeEmbed from '../media/YouTubeEmbed.astro';
-import type { Testimonial } from '../../data/testimonials';
+import type { Testimonial } from '../../content/testimonials';
 
 interface Props {
   testimonials: Testimonial[];
@@ -8,19 +8,12 @@ interface Props {
 
 const { testimonials } = Astro.props;
 
-const sectionClass =
-  'pb-12 px-6 bg-[var(--color-surface-0)] lg:pb-16 lg:px-8';
-
+const sectionClass = 'pb-12 px-6 bg-[var(--color-surface-0)] lg:pb-16 lg:px-8';
 const sectionInnerClass = 'max-w-[1200px] mx-auto';
-
 const gridClass = 'grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3';
-
 const cardClass = 'flex flex-col gap-4';
-
 const metaWrapClass = 'flex flex-col gap-0.5';
-
 const authorClass = 'text-base font-bold m-0 text-[var(--color-text)]';
-
 const affiliationClass = 'text-sm m-0 text-[var(--color-text-muted)]';
 ---
 
@@ -30,7 +23,7 @@ const affiliationClass = 'text-sm m-0 text-[var(--color-text-muted)]';
       {
         testimonials.map((t) => (
           <div class={cardClass}>
-            <YouTubeEmbed videoId={t.youtubeId} title={`${t.author} — ${t.affiliation}`} />
+            <YouTubeEmbed videoId={t.youtubeId} title={`${t.author} - ${t.affiliation}`} />
             <div class={metaWrapClass}>
               <p class={authorClass}>{t.author}</p>
               <p class={affiliationClass}>{t.affiliation}</p>

@@ -1,11 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
-import { WHY_US_PAIRS } from '../data/whyUs';
-import { TRUSTED_BY_LOGOS } from '../data/members';
-import { TESTIMONIALS } from '../data/testimonials';
-import { FRAMEWORK_CARDS } from '../data/frameworks';
-import { CUSTOMER_STORY_SUMMARIES } from '../data/customerStories';
-import { INDEX_PAGE_CONTENT } from '../data/pageContent';
+import { TRUSTED_BY_LOGOS } from '../config/logos';
+import { TESTIMONIALS } from '../content/testimonials';
+import {
+  WHY_US_PAIRS,
+  FRAMEWORK_CARDS,
+  CUSTOMER_STORY_SUMMARIES,
+  INDEX_PAGE_CONTENT,
+} from '../content/index';
 import HeroSection from '../components/page-index/HeroSection.astro';
 import SearchSection from '../components/page-index/SearchSection.astro';
 import WhyUsSection from '../components/page-index/WhyUsSection.astro';
