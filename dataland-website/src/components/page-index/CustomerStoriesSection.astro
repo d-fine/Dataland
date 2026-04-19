@@ -1,7 +1,7 @@
 ---
 import type { CustomerStorySummary } from '../../content/index';
 import SectionHeader from '../primitives/SectionHeader.astro';
-import CardShell from '../primitives/CardShell.astro';
+import LogoSummaryCard from '../cards/LogoSummaryCard.astro';
 
 interface Content {
   title: string;
@@ -23,27 +23,6 @@ const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-8';
 const sectionHeaderClass = 'mx-auto max-w-[860px]';
 
 const storiesGridClass = 'grid grid-cols-1 gap-6 md:grid-cols-3';
-
-const storyCardClass =
-  'flex h-full flex-col overflow-hidden text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]';
-
-const logoStageClass = 'flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5';
-
-const logoImageBaseClass = 'h-16 w-full object-contain object-center';
-
-const storyBodyClass = 'grid h-full grid-rows-[3.2rem_4.5rem_auto] gap-4 p-6';
-
-const tagsRowClass = 'flex min-h-[3.2rem] flex-wrap items-start gap-2';
-
-const storyTitleClass = 'card-title font-medium text-[var(--color-text)]';
-
-const primaryTagClass =
-  'inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]';
-
-const secondaryTagClass =
-  'inline-flex items-center rounded-md bg-[var(--color-brand-blue)]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-brand-blue)]';
-
-const readMoreClass = 'arrow-link mt-auto';
 ---
 
 <section id="customer-stories" class={sectionClass} aria-label="How our members use Dataland">
@@ -52,35 +31,15 @@ const readMoreClass = 'arrow-link mt-auto';
     <div class={storiesGridClass}>
       {
         stories.map((story) => (
-          <CardShell
-            as="a"
+          <LogoSummaryCard
             href={story.link}
-            variant="light"
-            accentTop={true}
-            class={storyCardClass}
-            style="background:#ecece7;"
-          >
-            <div class={logoStageClass}>
-              <img
-                src={story.logo}
-                alt=""
-                class:list={[logoImageBaseClass, story.logoClassName]}
-                loading="lazy"
-                width="220"
-                height="64"
-              />
-            </div>
-            <div class={storyBodyClass}>
-              <div class={tagsRowClass}>
-                <span class={primaryTagClass}>{story.primaryTag}</span>
-                {story.secondaryTags.map((tag) => (
-                  <span class={secondaryTagClass}>{tag}</span>
-                ))}
-              </div>
-              <h3 class={storyTitleClass}>{story.title}</h3>
-              <span class={readMoreClass}>{content.readMore} &rarr;</span>
-            </div>
-          </CardShell>
+            title={story.title}
+            logo={story.logo}
+            logoClassName={story.logoClassName}
+            primaryTag={story.primaryTag}
+            secondaryTags={story.secondaryTags}
+            linkLabel={content.readMore}
+          />
         ))
       }
     </div>

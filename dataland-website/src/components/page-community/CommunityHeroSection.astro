@@ -182,7 +182,7 @@ const buttonsWrapClass = 'flex flex-wrap justify-center gap-3';
       }
     </div>
 
-    <div class={buttonsWrapClass}>
+    <div class:list={[buttonsWrapClass, 'btn-group-equal']} data-equal-buttons>
       <a href="/product#customer-stories" class="btn btn--orange">{content.buttons.stories}</a>
       <a href="/product#use-cases" class="btn btn--white">{content.buttons.useCases}</a>
       <a href="/about#contact" class="btn btn--white">{content.buttons.contact}</a>

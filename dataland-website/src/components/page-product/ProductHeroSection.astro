@@ -85,7 +85,7 @@ const imageClass =
           </div>
         </div>
       </div>
-      <div class={buttonRowClass}>
+      <div class:list={[buttonRowClass, 'btn-group-equal']} data-equal-buttons>
         <a href="/register" class={primaryButtonClass}>{content.buttons.try}</a>
         <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.demo}</a>
         <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>

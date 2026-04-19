@@ -25,14 +25,14 @@ const { content } = Astro.props;
 
 const sectionClass = 'py-12 px-6 bg-[var(--color-surface-50)] lg:py-20 lg:px-8';
 
-const sectionInnerClass = 'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center lg:grid-cols-[50%_50%]';
+const sectionInnerClass = 'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center md:gap-12 md:grid-cols-[50%_50%]';
 
 const titleClass =
-  'page-title mb-4 max-w-[11.5ch] text-[1.85rem] leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:max-w-[12.5ch] sm:text-[1.9rem] lg:max-w-none lg:leading-[1.2] lg:tracking-normal';
+  'page-title mb-4 max-w-none text-[2rem] leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] md:text-[2.55rem] lg:leading-[1.2] lg:tracking-normal';
 
-const straplineClass = 'm-0 mb-8 text-[1.02rem] font-normal text-[var(--color-text-subtle)] sm:mb-10 sm:text-[1.14rem]';
+const straplineClass = 'm-0 mb-8 text-[1.4rem] font-normal text-[var(--color-text-subtle)] sm:mb-10';
 
-const statsRowClass = 'mb-8 flex flex-row flex-wrap items-start gap-x-6 gap-y-4 sm:flex-nowrap sm:gap-x-8 lg:gap-x-10';
+const statsRowClass = 'mb-8 flex flex-row flex-wrap items-start gap-x-6 gap-y-4 sm:flex-nowrap sm:gap-x-8 md:gap-x-10';
 
 const statItemClass = 'flex flex-col gap-1.5';
 
@@ -42,22 +42,22 @@ const statChevronClass =
   'absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]';
 
 const statValueClass =
-  'block text-[2.1rem] font-normal leading-none tracking-[-0.05em] sm:whitespace-nowrap sm:text-[2.55rem] lg:text-[3.1rem]';
+  'block text-[2.1rem] font-normal leading-none tracking-[-0.05em] sm:whitespace-nowrap sm:text-[2.55rem] md:text-[3.1rem]';
 
 const statLabelClass =
   'block text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)] sm:text-[0.82rem]';
 
 const buttonRowClass = 'flex flex-wrap gap-3';
 
-const leadingTextClass = 'block lg:inline lg:whitespace-nowrap';
+const leadingTextClass = 'inline';
 
-const accentTextClass = 'block text-[var(--color-primary)] lg:inline lg:whitespace-nowrap';
+const accentTextClass = 'inline text-[var(--color-primary)]';
 
 const primaryButtonClass = 'btn btn--orange';
 
 const secondaryButtonClass = 'btn btn--white';
 
-const imageWrapClass = 'hero-image-wrap flex justify-center lg:justify-end';
+const imageWrapClass = 'hero-image-wrap flex justify-center md:justify-end';
 
 const heroImageClasses = [
   'w-full',
@@ -69,7 +69,8 @@ const heroImageClasses = [
   'motion-safe:duration-400',
   'motion-safe:[transform:perspective(1500px)_rotateY(-1deg)_rotateX(0.5deg)_scale(1)]',
   'sm:max-w-[620px]',
-  'sm:motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)_scale(1.08)]',
+  'md:max-w-[620px]',
+  'md:motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)_scale(1.08)]',
   'lg:motion-safe:[transform:perspective(1500px)_rotateY(-5deg)_rotateX(2deg)_scale(1.2)]',
 ].join(' ');
 ---
@@ -95,7 +96,7 @@ const heroImageClasses = [
           ))
         }
       </div>
-      <div class={buttonRowClass}>
+      <div class:list={[buttonRowClass, 'btn-group-equal']} data-equal-buttons>
         <a href="/register" class={primaryButtonClass}>{content.buttons.try}</a>
         <a href="/about" class={secondaryButtonClass}>{content.buttons.more}</a>
         <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>

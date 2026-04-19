@@ -35,25 +35,25 @@ const {
 } = Astro.props;
 
 const classes = {
-  card: 'rounded-[1.5rem] px-8 py-8 lg:px-10 lg:py-10',
-  grid: 'grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch',
+  card: 'rounded-[1.5rem] px-5 py-7 sm:px-8 sm:py-8 lg:px-10 lg:py-10',
+  grid: 'grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch',
   leftColumn: 'flex h-full flex-col gap-5',
   leftTop: 'flex flex-col gap-5',
   title: 'm-0 text-[1.75rem] font-bold leading-tight',
   intro: 'section-intro text-white/90',
   items: 'flex flex-col gap-5',
   footnote: 'm-0 pt-1 text-[0.82rem] leading-relaxed text-white/58',
-  rightColumn: 'grid h-full grid-rows-[auto_1fr] gap-5',
+  rightColumn: 'grid h-full grid-rows-[auto_1fr] gap-4 sm:gap-5',
   spacerTitle: 'invisible text-[1.75rem] font-bold leading-tight',
-  tablePanel: 'flex h-full min-h-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-6 py-4',
-  tableInner: 'max-w-[24rem]',
+  tablePanel: 'flex h-full min-h-0 min-w-0 items-center justify-center rounded-[1.25rem] bg-white/6 px-3 py-4 sm:px-6',
+  tableInner: 'w-full max-w-[20rem] sm:max-w-[24rem]',
   table: 'w-full border-collapse',
   headerRow: 'border-b-2 border-white',
-  headCell: 'px-8 py-1 text-center text-[0.95rem] font-bold uppercase tracking-[0.04em] text-white',
-  bodyCell: 'px-8 py-1 text-center text-[1.06rem] font-bold text-white',
+  headCell: 'px-4 py-1 text-center text-[0.9rem] font-bold uppercase tracking-[0.04em] text-white sm:px-8 sm:text-[0.95rem]',
+  bodyCell: 'px-4 py-1 text-center text-[1rem] font-bold text-white sm:px-8 sm:text-[1.06rem]',
   bodyRow: 'border-b border-[var(--color-surface-200)]',
   lastBodyRow: 'border-b-0',
-  highlight: 'm-0 mt-4 text-center text-[1rem] font-semibold leading-relaxed text-[var(--color-primary)]',
+  highlight: 'm-0 mt-4 text-center text-[1.06rem] font-semibold leading-relaxed text-[var(--color-primary)] lg:text-[1.12rem]',
 } as const;
 ---
 

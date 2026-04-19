@@ -21,7 +21,8 @@ const headerClass = 'mx-auto max-w-[860px]';
 const gridClass = 'grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3';
 
 const cardClass = 'flex h-full flex-col items-center gap-1.5 text-center';
-const imageClass = 'h-[430px] w-full max-w-[340px] rounded-2xl object-cover object-top';
+const imageFrameClass = 'h-[430px] w-full max-w-[340px] overflow-hidden rounded-2xl';
+const imageClass = 'h-full w-full object-cover object-top';
 const nameWrapClass = 'flex items-start justify-center';
 const nameClass = 'm-0 text-[1.45rem] font-bold leading-tight';
 const roleWrapClass = 'mt-[0.1rem] flex items-start justify-center';
@@ -41,7 +42,16 @@ const iconLinkClass =
       {
         people.map((person) => (
           <div class={cardClass}>
-            <img src={person.imagePath} alt={person.name} class={imageClass} loading="lazy" width="340" height="540" />
+            <div class={imageFrameClass}>
+              <img
+                src={person.imagePath}
+                alt={person.name}
+                class:list={[imageClass, person.imageClassName]}
+                loading="lazy"
+                width="340"
+                height="540"
+              />
+            </div>
 
             <div class={nameWrapClass}>
               <h3 class={nameClass}>{person.name}</h3>

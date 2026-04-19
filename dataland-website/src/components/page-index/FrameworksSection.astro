@@ -28,13 +28,17 @@ const gridClass = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3';
 
 const infoCardClass = 'px-6 py-5';
 
-const infoCardTitleClass = 'text-white';
+const infoCardTitleClass = 'mb-0 text-white';
 
 const topAccentClass = 'mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]';
 
-const subtitleClass = 'mt-3 mb-0 text-[0.82rem] font-semibold uppercase tracking-[0.08em] text-white/72';
+const taggedContentClass = 'card-copy-stack card-copy-stack--compact mt-1';
 
-const descriptionClass = 'card-text mt-4 text-white/82';
+const plainContentClass = 'mt-4';
+
+const subtitleClass = 'm-0 text-[0.82rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-label-warm)]';
+
+const descriptionClass = 'card-text m-0 text-white/82';
 
 const ctaWrapClass = 'flex justify-center';
 ---
@@ -47,8 +51,16 @@ const ctaWrapClass = 'flex justify-center';
         frameworks.map((fw) => (
           <InfoCard variant="glass" title={fw.title} titleClass={infoCardTitleClass} class={infoCardClass}>
             <div slot="before" class={topAccentClass} aria-hidden="true" />
-            {fw.subtitle && <p class={subtitleClass}>{fw.subtitle}</p>}
-            <p class={descriptionClass}>{fw.description}</p>
+            {fw.subtitle ? (
+              <div class={taggedContentClass}>
+                <p class={subtitleClass}>{fw.subtitle}</p>
+                <p class={descriptionClass}>{fw.description}</p>
+              </div>
+            ) : (
+              <div class={plainContentClass}>
+                <p class={descriptionClass}>{fw.description}</p>
+              </div>
+            )}
           </InfoCard>
         ))
       }

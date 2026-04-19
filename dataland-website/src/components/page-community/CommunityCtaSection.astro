@@ -29,7 +29,7 @@ const buttonWrapClass = 'flex flex-wrap justify-center gap-3';
       <p class={introClass}>
         {content.intro}
       </p>
-      <div class={buttonWrapClass}>
+      <div class:list={[buttonWrapClass, 'btn-group-equal']} data-equal-buttons>
         <a href="/about#contact" class="btn btn--orange">{content.contact}</a>
       </div>
     </CtaBand>

@@ -3,6 +3,7 @@ export interface Person {
   role: string;
   bio: string;
   imagePath: string;
+  imageClassName?: string;
   email: string;
   linkedIn: string;
 }
@@ -83,6 +84,7 @@ export const LEADERSHIP_TEAM: Person[] = [
     role: 'Product Owner',
     bio: 'Andreas shapes the product vision, working closely with regulatory stakeholders and institutional members.',
     imagePath: '/static/about/team-andreas-hoecherl.jpg',
+    imageClassName: 'scale-[1.22]',
     email: 'mailto:andreas.hoecherl@dataland.com',
     linkedIn: 'https://www.linkedin.com/in/andreas-h%C3%B6cherl-016220b4/',
   },

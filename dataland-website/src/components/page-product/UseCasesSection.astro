@@ -46,12 +46,14 @@ const useCaseTitleClass = 'card-title text-[var(--color-text)] leading-[1.18]';
 
 const useCaseTitleLineClass = 'block';
 
-const useCaseDescriptionClass = 'card-text text-[var(--color-text-muted)]';
+const useCaseDescriptionWrapClass = 'card-copy-offset';
+
+const useCaseDescriptionClass = 'card-text m-0 text-[var(--color-text-muted)]';
 
 const supportWrapClass = 'flex flex-col gap-5 pt-2';
 
 const supportTextClass =
-  'mx-auto max-w-[760px] text-center text-[1.06rem] font-bold leading-relaxed m-0 text-[var(--color-text-muted)] lg:text-[1.12rem]';
+  'mx-auto max-w-[760px] text-center text-[1.06rem] font-bold leading-relaxed m-0 text-[var(--color-text)] lg:text-[1.12rem]';
 
 const applicationGridClass = 'grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6';
 ---
@@ -85,7 +87,9 @@ const applicationGridClass = 'grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols
                   ))}
                 </h3>
               </div>
-              <p class={useCaseDescriptionClass}>{uc.description}</p>
+              <div class={useCaseDescriptionWrapClass}>
+                <p class={useCaseDescriptionClass}>{uc.description}</p>
+              </div>
             </CardShell>
           ))
         }

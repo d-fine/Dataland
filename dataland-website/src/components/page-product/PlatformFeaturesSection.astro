@@ -29,7 +29,9 @@ const infoCardTitleClass = 'text-white';
 
 const topAccentClass = 'mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]';
 
-const textClass = 'card-text mt-4 text-white/82';
+const textWrapClass = 'card-copy-offset';
+
+const textClass = 'card-text m-0 text-white/82';
 ---
 
 <section id="features" class={sectionClass} aria-label="Platform features">
@@ -40,7 +42,9 @@ const textClass = 'card-text mt-4 text-white/82';
         cards.map((card) => (
           <InfoCard variant="glass" title={card.title} titleClass={infoCardTitleClass} class={infoCardClass}>
             <div slot="before" class={topAccentClass} aria-hidden="true" />
-            <p class={textClass}>{card.text}</p>
+            <div class={textWrapClass}>
+              <p class={textClass}>{card.text}</p>
+            </div>
           </InfoCard>
         ))
       }

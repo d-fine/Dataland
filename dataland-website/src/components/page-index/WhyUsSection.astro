@@ -98,7 +98,7 @@ const secondaryButtonClass = 'btn btn--white';
       }
     </div>
 
-    <div class={ctaRowClass}>
+    <div class:list={[ctaRowClass, 'btn-group-equal']} data-equal-buttons>
       <a href="/product#features" class={primaryButtonClass}>{content.buttons.features}</a>
       <a href="/product#use-cases" class={secondaryButtonClass}>{content.buttons.useCases}</a>
       <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>

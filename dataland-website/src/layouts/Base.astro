@@ -55,5 +55,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/equalButtons';
+    </script>
   </body>
 </html>

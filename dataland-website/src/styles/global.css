@@ -283,6 +283,23 @@ main {
   border-top-color: var(--color-primary);
 }
 
+.card-copy-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-copy-stack--compact {
+  gap: 1rem;
+}
+
+.card-copy-stack--spacious {
+  gap: 1.5rem;
+}
+
+.card-copy-offset {
+  margin-top: 1rem;
+}
+
 .cta-band {
   display: flex;
   flex-direction: column;

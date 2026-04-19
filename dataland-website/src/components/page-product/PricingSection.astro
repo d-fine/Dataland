@@ -80,7 +80,7 @@ const ctaBandClass = 'pt-7';
     </div>
 
     <CtaBand title={content.ctaTitle} titleClass={ctaTitleClass} class={ctaBandClass}>
-      <div class={ctaButtonsClass}>
+      <div class:list={[ctaButtonsClass, 'btn-group-equal']} data-equal-buttons>
         <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>
         <a href="/register" class={primaryButtonClass}>{content.buttons.try}</a>
       </div>
