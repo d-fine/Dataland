@@ -31,6 +31,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
+    workingDir.set(projectDir)
 }
 
 tasks.register("generateClients") {
