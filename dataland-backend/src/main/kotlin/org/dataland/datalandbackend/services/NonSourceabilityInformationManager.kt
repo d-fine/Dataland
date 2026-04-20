@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -37,8 +39,13 @@ class NonSourceabilityInformationManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
-     * and emits the appropriate lifecycle event (FR-001, FR-002, FR-003).
+     * Processes a non-sourceability submission request.
+     *
+     * Routes to one of four cases based on (bypassQa, currentlyActive):
+     * - (false, true)  → rejected immediately (invalid combination)
+     * - (false, false) → standard QA path: creates Pending entry, emits CREATED event
+     * - (true,  true)  → admin bypass: creates Accepted+active entry, emits AUTO_ACCEPTED event
+     * - (true,  false) → admin reversal: deactivates active entry, creates audit entry, no event
      */
     @Transactional
     sealed class ProcessNonSourceabilityResult {
@@ -65,29 +72,111 @@ class NonSourceabilityInformationManager(
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
-        val blockedStatuses = listOf(QaStatus.Pending, QaStatus.Accepted)
-        val hasDuplicate =
+        if (!request.bypassQa && request.currentlyActive) {
+            throw InvalidInputApiException(
+                summary = "Invalid non-sourceability request.",
+                message =
+                    "currentlyActive=true requires bypassQa=true. " +
+                        "The QA service is responsible for setting currentlyActive=true on QA-reviewed entries.",
+            )
+        }
+
+        val hasPendingEntry =
             nonSourceabilityDataRepository.existsActiveOrPendingForTuple(
                 request.companyId,
                 request.dataType,
                 request.reportingPeriod,
-                blockedStatuses,
+                listOf(QaStatus.Pending),
             )
-        if (hasDuplicate) {
-            return ProcessNonSourceabilityResult.Duplicate(
-                summary = "Duplicate non-sourceability entry.",
+        if (hasPendingEntry) {
+            throw ConflictApiException(
+                summary = "Pending non-sourceability entry exists.",
                 message =
-                    "An active or pending non-sourceability entry already exists for " +
+                    "A pending non-sourceability entry already exists for " +
+                        "companyId=${request.companyId}, dataType=${request.dataType}, " +
+                        "reportingPeriod=${request.reportingPeriod}. Resolve the pending entry first.",
+            )
+        }
+
+        return if (request.bypassQa && !request.currentlyActive) {
+            processReversal(request)
+        } else {
+            processStandardOrBypassCreate(request)
+        }
+    }
+
+    /**
+     * Handles bypassQa=true, currentlyActive=false: marks the triple as sourceable again.
+     * Deactivates the existing active entry and creates a new audit entry. No event is emitted.
+     */
+    private fun processReversal(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+        val activeEntries =
+            nonSourceabilityDataRepository.findActiveForTuple(
+                request.companyId,
+                request.dataType,
+                request.reportingPeriod,
+            )
+        if (activeEntries.isEmpty()) {
+            throw ConflictApiException(
+                summary = "Triple is already sourceable.",
+                message =
+                    "No active non-sourceability entry exists for " +
+                        "companyId=${request.companyId}, dataType=${request.dataType}, " +
+                        "reportingPeriod=${request.reportingPeriod}. The triple is already sourceable.",
+            )
+        }
+
+        activeEntries.forEach { it.currentlyActive = false }
+        nonSourceabilityDataRepository.saveAll(activeEntries)
+
+        val userId = DatalandAuthentication.fromContext().userId
+        val saved =
+            nonSourceabilityDataRepository.save(
+                NonSourceabilityInformationEntity(
+                    companyId = request.companyId,
+                    dataType = request.dataType,
+                    reportingPeriod = request.reportingPeriod,
+                    qaStatus = QaStatus.Accepted,
+                    uploaderUserId = userId,
+                    uploadTime = Instant.now().toEpochMilli(),
+                    currentlyActive = false,
+                    reason = request.reason,
+                    bypassQa = true,
+                ),
+            )
+        logger.info(
+            "Non-sourceability reversal: deactivated ${activeEntries.size} active entry(entries) and " +
+                "created audit entry ${saved.nonSourceabilityId} for " +
+                "companyId=${request.companyId}, dataType=${request.dataType}, reportingPeriod=${request.reportingPeriod}",
+        )
+        return saved.toResponse()
+    }
+
+    /**
+     * Handles bypassQa=false/currentlyActive=false (standard QA) and
+     * bypassQa=true/currentlyActive=true (admin bypass mark as non-sourceable).
+     * Creates a new entry and emits the appropriate lifecycle event.
+     */
+    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+        val hasActiveEntry =
+            nonSourceabilityDataRepository
+                .findActiveForTuple(
+                    request.companyId,
+                    request.dataType,
+                    request.reportingPeriod,
+                ).isNotEmpty()
+        if (hasActiveEntry) {
+            throw ConflictApiException(
+                summary = "Active non-sourceability entry exists.",
+                message =
+                    "An active non-sourceability entry already exists for " +
                         "companyId=${request.companyId}, dataType=${request.dataType}, " +
                         "reportingPeriod=${request.reportingPeriod}.",
             )
         }
 
         val userId = DatalandAuthentication.fromContext().userId
-        val uploadTime = Instant.now().toEpochMilli()
         val qaStatus = if (request.bypassQa) QaStatus.Accepted else QaStatus.Pending
-        val currentlyActive = request.bypassQa
-
         val entity =
             NonSourceabilityInformationEntity(
                 companyId = request.companyId,
@@ -95,8 +184,8 @@ class NonSourceabilityInformationManager(
                 reportingPeriod = request.reportingPeriod,
                 qaStatus = qaStatus,
                 uploaderUserId = userId,
-                uploadTime = uploadTime,
-                currentlyActive = currentlyActive,
+                uploadTime = Instant.now().toEpochMilli(),
+                currentlyActive = request.currentlyActive,
                 reason = request.reason,
                 bypassQa = request.bypassQa,
             )
@@ -108,13 +197,11 @@ class NonSourceabilityInformationManager(
         CorrelationLogging.withNonSourceabilityContext(correlationId, nonSourceabilityId) {
             emitLifecycleEvent(saved, request.bypassQa, correlationId)
         }
-
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
         )
-
-        return ProcessNonSourceabilityResult.Success(saved.toResponse())
+        return saved.toResponse()
     }
 
     /**

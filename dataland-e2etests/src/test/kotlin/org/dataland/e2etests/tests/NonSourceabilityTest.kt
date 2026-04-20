@@ -47,6 +47,7 @@ class NonSourceabilityTest {
                     reportingPeriod = testReportingPeriod,
                     reason = NO_PUBLIC_SOURCE_REASON,
                     bypassQa = true,
+                    currentlyActive = true,
                 ),
             )
         }
@@ -151,6 +152,7 @@ class NonSourceabilityTest {
                         reportingPeriod = ctx.reportingPeriod,
                         reason = NO_PUBLIC_SOURCE_REASON,
                         bypassQa = false,
+                        currentlyActive = false,
                     ),
                 )
             }
@@ -346,6 +348,7 @@ class NonSourceabilityTest {
                         reportingPeriod = ctx.reportingPeriod,
                         reason = NO_PUBLIC_SOURCE_REASON,
                         bypassQa = true,
+                        currentlyActive = true,
                     ),
                 )
             }

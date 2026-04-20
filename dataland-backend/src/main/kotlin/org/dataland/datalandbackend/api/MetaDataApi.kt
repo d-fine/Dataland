@@ -257,19 +257,23 @@ interface MetaDataApi {
     /**
      * Submits a non-sourceability request for a dataset.
      * When bypassQa=true the caller must hold ROLE_ADMIN; otherwise ROLE_UPLOADER is required.
-     * @param nonSourceabilityRequest request body containing dataset dimensions and bypass flag.
+     * When bypassQa=true and currentlyActive=false the request reverses a non-sourceability entry.
+     * @param nonSourceabilityRequest request body containing dataset dimensions, bypass flag, and currentlyActive flag.
      */
     @Operation(
         summary = "Submit a non-sourceability request for a dataset.",
         description =
-            "Creates a NonSourceabilityInformation entry. With bypassQa=false (default) the entry " +
-                "enters QA review; with bypassQa=true (admin only) it is immediately activated.",
+            "Creates a NonSourceabilityInformation entry. With bypassQa=false (default) and currentlyActive=false " +
+                "the entry enters QA review. With bypassQa=true and currentlyActive=true (admin only) it is " +
+                "immediately activated. With bypassQa=true and currentlyActive=false (admin only) the active " +
+                "entry is deactivated (triple marked as sourceable again).",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully submitted non-sourceability request."),
-            ApiResponse(responseCode = "400", description = "Duplicate or invalid request."),
+            ApiResponse(responseCode = "400", description = "Invalid combination of bypassQa and currentlyActive."),
             ApiResponse(responseCode = "403", description = "Insufficient role for bypassQa."),
+            ApiResponse(responseCode = "409", description = "Conflict — duplicate entry or invalid state transition."),
         ],
     )
     @PostMapping(

@@ -65,6 +65,7 @@ class DataRequestNonSourceableTest {
             reportingPeriod = "2023",
             reason = "This dataset is non-sourceable.",
             bypassQa = true,
+            currentlyActive = true,
         )
 
     private fun postTwoDataRequestForSameUserAndReturnRequestIds(): Pair<UUID, UUID> {
@@ -143,6 +144,7 @@ class DataRequestNonSourceableTest {
                 reportingPeriod = "2024",
                 reason = "This dataset is non-sourceable.",
                 bypassQa = true,
+                currentlyActive = true,
             )
 
         postSourceabilityInfo(sourceabilityInfoRequest2024)

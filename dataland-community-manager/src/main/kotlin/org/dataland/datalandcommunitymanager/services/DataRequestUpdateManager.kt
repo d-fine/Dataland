@@ -60,9 +60,12 @@ class DataRequestUpdateManager
             dataRequestPatch: DataRequestPatch,
             correlationId: String,
         ) {
-            requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.requestStatusChangeReason,
-                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(dataRequestEntity),
+            sendImmediateNotificationOnRequestStatusChange(
+                dataRequestEntity,
+                dataRequestPatch,
+                dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
+                    dataRequestEntity,
+                ),
                 correlationId,
             )
             createNotificationEvent(dataRequestEntity, dataRequestPatch)
@@ -183,6 +186,21 @@ class DataRequestUpdateManager
         }
 
         /**
+         * If applicable, send an immediate notification email corresponding to the status change to the user.
+         */
+        private fun sendImmediateNotificationOnRequestStatusChange(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            earlierQaApprovedVersionOfDatasetExists: Boolean,
+            correlationId: String,
+        ) {
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(
+                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.requestStatusChangeReason,
+                earlierQaApprovedVersionOfDatasetExists, correlationId,
+            )
+        }
+
+        /**
          * Change the request status of a given data request to 'Answered'. Only applied to open or non-sourceable requests at the moment.
          */
         private fun patchRequestStatusToAnsweredByDataRequestEntity(
@@ -191,30 +209,20 @@ class DataRequestUpdateManager
             correlationId: String,
             requestStatusChangeReason: String? = null,
         ) {
-            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            accessStatus = AccessStatus.Pending,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            } else {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            }
+            val isVsmeWithoutAccess =
+                dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
+                    dataRequestEntity.accessStatus != AccessStatus.Granted
+            patchDataRequest(
+                dataRequestId = dataRequestEntity.dataRequestId,
+                dataRequestPatch =
+                    DataRequestPatch(
+                        requestStatus = RequestStatus.Answered,
+                        accessStatus = if (isVsmeWithoutAccess) AccessStatus.Pending else null,
+                        requestStatusChangeReason = requestStatusChangeReason,
+                    ),
+                correlationId = correlationId,
+                answeringDataId = answeringDataId,
+            )
         }
 
         /**
@@ -338,12 +346,9 @@ class DataRequestUpdateManager
             val requestsToProcess = answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
             for (dataRequestEntity in requestsToProcess) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                    val accessStatusIsOkay =
-                        listOf(
-                            dataRequestEntity.accessStatus != AccessStatus.Declined,
-                            dataRequestEntity.accessStatus != AccessStatus.Revoked,
-                        ).all { it }
-                    if (accessStatusIsOkay) {
+                    if (dataRequestEntity.accessStatus != AccessStatus.Declined &&
+                        dataRequestEntity.accessStatus != AccessStatus.Revoked
+                    ) {
                         requestEmailManager.sendDataUpdatedEmail(
                             dataRequestEntity,
                             correlationId,

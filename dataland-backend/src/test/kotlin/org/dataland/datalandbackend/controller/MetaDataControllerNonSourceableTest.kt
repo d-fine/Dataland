@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceabilityReques
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -77,6 +78,7 @@ class MetaDataControllerNonSourceableTest
                     reportingPeriod = reportingPeriod,
                     reason = "No public source",
                     bypassQa = false,
+                    currentlyActive = false,
                 )
             val response = metaDataController.postNonSourceabilityOfADataset(request)
             assertEquals(QaStatus.Pending, response.body?.qaStatus)
@@ -94,6 +96,7 @@ class MetaDataControllerNonSourceableTest
                     reportingPeriod = reportingPeriod,
                     reason = "Admin bypass",
                     bypassQa = true,
+                    currentlyActive = true,
                 )
             val response = metaDataController.postNonSourceabilityOfADataset(request)
             assertEquals(QaStatus.Accepted, response.body?.qaStatus)
@@ -109,6 +112,7 @@ class MetaDataControllerNonSourceableTest
                     reportingPeriod = reportingPeriod,
                     reason = "Attempting bypass",
                     bypassQa = true,
+                    currentlyActive = true,
                 )
             assertThrows<AccessDeniedException> {
                 metaDataController.postNonSourceabilityOfADataset(request)
@@ -125,6 +129,7 @@ class MetaDataControllerNonSourceableTest
                     reportingPeriod = reportingPeriod,
                     reason = "Test",
                     bypassQa = true,
+                    currentlyActive = true,
                 ),
             )
 
@@ -160,8 +165,39 @@ class MetaDataControllerNonSourceableTest
                     reportingPeriod = reportingPeriod,
                     reason = "Active",
                     bypassQa = true,
+                    currentlyActive = true,
                 ),
             )
             metaDataController.isDataNonSourceable(storedCompany.companyId, dataType, reportingPeriod)
+        }
+
+        @Test
+        fun `reversal succeeds for admin and isDataNonSourceable returns 404 afterwards`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(
+                NonSourceabilityRequest(
+                    companyId = storedCompany.companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    reason = "Mark non-sourceable",
+                    bypassQa = true,
+                    currentlyActive = true,
+                ),
+            )
+            val reversalResponse =
+                metaDataController.postNonSourceabilityOfADataset(
+                    NonSourceabilityRequest(
+                        companyId = storedCompany.companyId,
+                        dataType = dataType,
+                        reportingPeriod = reportingPeriod,
+                        reason = "Reversal",
+                        bypassQa = true,
+                        currentlyActive = false,
+                    ),
+                )
+            assertFalse(reversalResponse.body?.currentlyActive ?: true)
+            assertThrows<ResourceNotFoundApiException> {
+                metaDataController.isDataNonSourceable(storedCompany.companyId, dataType, reportingPeriod)
+            }
         }
     }
