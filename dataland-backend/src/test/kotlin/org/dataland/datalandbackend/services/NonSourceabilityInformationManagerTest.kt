@@ -204,6 +204,7 @@ class NonSourceabilityInformationManagerTest(
         val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
         assertEquals(2, allEntries.size)
         assertTrue(allEntries.all { !it.currentlyActive })
+        assertEquals(2, allEntries.count { it.bypassQa && !it.currentlyActive && it.qaStatus == QaStatus.Accepted })
     }
 
     @Test
