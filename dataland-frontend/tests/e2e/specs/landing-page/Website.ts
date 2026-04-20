@@ -1,5 +1,5 @@
 import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { closeCookieBannerIfShown } from '@sharedUtils/../e2e/support/Commands.ts';
+import { closeCookieBannerIfShown } from '@e2eSupport/Commands.ts';
 
 describe('Check that the website works properly', () => {
   it('Check the links and buttons', () => {

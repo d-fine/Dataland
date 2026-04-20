@@ -12,6 +12,7 @@
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"],
       "@e2e/*": ["./tests/e2e/*"],
+      "@e2eSupport/*": ["./tests/e2e/support/*"],
       "@sharedUtils/*": ["./tests/sharedUtils/*"]
     },
     "lib": ["ESNext", "DOM", "DOM.Iterable"]

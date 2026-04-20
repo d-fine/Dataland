@@ -17,7 +17,7 @@ function updateEqualButtonGroup(group: HTMLElement): void {
   });
 }
 
-function initEqualButtons(): void {
+export function initEqualButtons(): void {
   const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-equal-buttons]'));
   if (groups.length === 0) {
     return;
