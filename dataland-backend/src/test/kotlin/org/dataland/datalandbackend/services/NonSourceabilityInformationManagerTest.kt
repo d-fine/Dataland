@@ -204,8 +204,10 @@ class NonSourceabilityInformationManagerTest(
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
         val result = manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
-        assertFalse(result.currentlyActive)
-        assertEquals(QaStatus.Accepted, result.qaStatus)
+        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
+        val response = result.response
+        assertFalse(response.currentlyActive)
+        assertEquals(QaStatus.Accepted, response.qaStatus)
         assertFalse(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
         val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
         assertEquals(2, allEntries.size)
