@@ -5,5 +5,10 @@
     "dataland-frontend",
     "dataland-website",
     "dataland-sharedElements/footer"
-  ]
+  ],
+  "scripts": {
+    "build": "npm run build --workspace dataland-frontend",
+    "build:frontend": "npm run build --workspace dataland-frontend",
+    "build:website": "npm run build --workspace dataland-website"
+  }
 }
