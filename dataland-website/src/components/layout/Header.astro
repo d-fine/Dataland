@@ -61,6 +61,7 @@ const linkClass = {
     'hidden items-center gap-2 text-[1rem] font-medium text-white/88 no-underline duration-150 motion-safe:transition-colors hover:text-[var(--color-primary)]',
   mobile: 'mobile-nav__link',
   mobileSignup: 'mobile-nav__cta btn btn--orange',
+  mobilePlatform: 'mobile-nav__link mobile-nav__back-to-platform',
 } as const;
 
 const iconClass = {
@@ -205,6 +206,26 @@ const iconClass = {
         class={linkClass.mobileSignup}
       >
         {HEADER_ACTIONS.signup.label}
+      </a>
+      <a
+        href={HEADER_ACTIONS.platform.href}
+        id="mobile-nav-back-to-platform"
+        data-test={HEADER_ACTIONS.platform.testId + '-mobile'}
+        class={`${linkClass.mobilePlatform} hidden`}
+      >
+        {HEADER_ACTIONS.platform.label}
+        <svg
+          class={iconClass.stroke}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d={icons.arrow}></path>
+        </svg>
       </a>
     </div>
   </nav>

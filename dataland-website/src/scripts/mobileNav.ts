@@ -51,9 +51,13 @@ function initMobileNavInternal(
 ): void {
   const isAuthenticated: boolean = globalThis.localStorage.getItem('dataland_authenticated') === 'true';
 
-  const loginLink = nav.querySelector<HTMLElement>('[data-test="login-dataland-button"]');
-  const signupLink = nav.querySelector<HTMLElement>('[data-test="signup-dataland-button"]');
+  const backToPlatform = nav.querySelector<HTMLElement>('#mobile-nav-back-to-platform');
+  const loginLink = nav.querySelector<HTMLElement>('[data-test="login-dataland-button-mobile"]');
+  const signupLink = nav.querySelector<HTMLElement>('[data-test="signup-dataland-button-mobile"]');
 
+  if (backToPlatform) {
+    backToPlatform.style.display = isAuthenticated ? 'flex' : 'none';
+  }
   if (loginLink) {
     loginLink.style.display = isAuthenticated ? 'none' : 'block';
   }

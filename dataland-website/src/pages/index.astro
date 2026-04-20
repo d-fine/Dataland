@@ -2,12 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { TRUSTED_BY_LOGOS } from '../config/logos';
 import { TESTIMONIALS } from '../content/testimonials';
-import {
-  WHY_US_PAIRS,
-  FRAMEWORK_CARDS,
-  CUSTOMER_STORY_SUMMARIES,
-  INDEX_PAGE_CONTENT,
-} from '../content/index';
+import { WHY_US_PAIRS, FRAMEWORK_CARDS, CUSTOMER_STORY_SUMMARIES, INDEX_PAGE_CONTENT } from '../content/index';
 import HeroSection from '../components/page-index/HeroSection.astro';
 import SearchSection from '../components/page-index/SearchSection.astro';
 import WhyUsSection from '../components/page-index/WhyUsSection.astro';
@@ -29,7 +24,5 @@ import LogoutModal from '../components/page-index/LogoutModal.astro';
   <FrameworksSection content={INDEX_PAGE_CONTENT.frameworks} frameworks={FRAMEWORK_CARDS} />
   <IndexCtaSection content={INDEX_PAGE_CONTENT.cta} />
   <LogoutModal />
-  <script type="module">
-    import '../scripts/indexPage';
-  </script>
+  <script type="module" src="/scripts/indexPage.js"></script>
 </Base>

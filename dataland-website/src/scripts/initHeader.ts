@@ -14,8 +14,7 @@ function updateHeaderForAuthState(): void {
   }
 
   if (backToPlatform) {
-    backToPlatform.classList.toggle('hidden', !isAuthenticated);
-    backToPlatform.style.removeProperty('display');
+    backToPlatform.style.display = isAuthenticated ? 'inline-flex' : 'none';
   }
 }
 
