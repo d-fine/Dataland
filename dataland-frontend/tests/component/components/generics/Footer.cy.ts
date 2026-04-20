@@ -19,13 +19,19 @@ describe('Component test for the footer', () => {
     for (const link of essentialLinks) {
       cy.get(`footer a[href='${link.href}']`).should('contain.text', link.text);
     }
+
+    cy.get('img[alt="Dataland"]').should('exist');
+    cy.get('img[alt="Werte-Stiftung Company"]').should('exist');
+
+    cy.get('.footer__col-heading').contains('About').should('exist');
+    cy.get('.footer__col-heading').contains('Product').should('exist');
+    cy.get('.footer__col-heading').contains('Connect and explore').should('exist');
   });
 
   it('Renders footer columns on desktop', () => {
     //@ts-ignore
     cy.mountWithPlugins(TheFooter, {});
 
-    cy.get('.footer__col-title').should('have.length.at.least', 3);
-    cy.get('.footer__link').should('have.length.at.least', 5);
+    cy.get('.footer__col').should('have.length.at.least', 4);
   });
 });

@@ -268,7 +268,15 @@ function showCookieSettings(): void {
 .footer {
   background: #f7f7f5;
   color: #1b1b1b;
+  font-family: 'IBM Plex Sans', sans-serif;
   text-align: left;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.footer svg {
+  display: block;
 }
 
 .footer__top {
@@ -370,6 +378,7 @@ function showCookieSettings(): void {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
+  line-height: 1.5;
   margin: 0 0 1rem;
   color: #1b1b1b;
 }
