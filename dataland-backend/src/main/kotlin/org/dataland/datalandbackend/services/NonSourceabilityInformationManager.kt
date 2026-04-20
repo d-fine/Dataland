@@ -109,7 +109,7 @@ class NonSourceabilityInformationManager(
      * Handles bypassQa=true, currentlyActive=false: marks the triple as sourceable again.
      * Deactivates the existing active entry and creates a new audit entry. No event is emitted.
      */
-    private fun processReversal(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+    private fun processReversal(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         val activeEntries =
             nonSourceabilityDataRepository.findActiveForTuple(
                 request.companyId,
@@ -149,7 +149,7 @@ class NonSourceabilityInformationManager(
                 "created audit entry ${saved.nonSourceabilityId} for " +
                 "companyId=${request.companyId}, dataType=${request.dataType}, reportingPeriod=${request.reportingPeriod}",
         )
-        return saved.toResponse()
+        return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }
 
     /**
@@ -157,7 +157,7 @@ class NonSourceabilityInformationManager(
      * bypassQa=true/currentlyActive=true (admin bypass mark as non-sourceable).
      * Creates a new entry and emits the appropriate lifecycle event.
      */
-    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         val hasActiveEntry =
             nonSourceabilityDataRepository
                 .findActiveForTuple(
@@ -201,7 +201,7 @@ class NonSourceabilityInformationManager(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
         )
-        return saved.toResponse()
+        return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }
 
     /**
