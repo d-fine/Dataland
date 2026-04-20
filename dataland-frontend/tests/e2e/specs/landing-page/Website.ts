@@ -1,10 +1,8 @@
 import { checkFooter } from '@sharedUtils/ElementChecks.ts';
-import { closeCookieBannerIfShown } from '@e2eSupport/Commands.ts';
 
 describe('Check that the website works properly', () => {
   it('Check the links and buttons', () => {
     cy.visitAndCheckAppMount('/');
-    closeCookieBannerIfShown();
 
     checkFooter();
 

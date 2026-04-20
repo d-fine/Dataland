@@ -72,7 +72,6 @@ export default defineConfig({
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
-      '@e2eSupport': path.resolve(__dirname, './tests/e2e/support'),
       '@shared': path.resolve(__dirname, '../dataland-sharedElements'),
     },
   },
