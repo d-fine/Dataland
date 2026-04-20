@@ -102,9 +102,7 @@ class DataRequestUpdateManagerTest {
 
     private fun mockRepos() {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
-            doReturn(it)
-                .whenever(mockDataRequestRepository)
-                .findByDataRequestId(it.dataRequestId)
+            doReturn(it).whenever(mockDataRequestRepository).findByDataRequestId(it.dataRequestId)
         }
         doReturn(dummyDataRequestEntityWithdrawn)
             .whenever(mockDataRequestRepository)
@@ -175,10 +173,8 @@ class DataRequestUpdateManagerTest {
 
     private fun mockMetaDataAndQaReviewResponses() {
         doReturn(dataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(dataMetaInformation.dataId)
-        mockQaReviewResponsesWithoutEarlierApproval =
-            listOf(mock<QaReviewResponse>())
-        mockQaReviewResponsesWithEarlierApproval =
-            listOf(mock<QaReviewResponse>(), mock<QaReviewResponse>())
+        mockQaReviewResponsesWithoutEarlierApproval = listOf(mock<QaReviewResponse>())
+        mockQaReviewResponsesWithEarlierApproval = listOf(mock<QaReviewResponse>(), mock<QaReviewResponse>())
         doReturn(mockQaReviewResponsesWithoutEarlierApproval)
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), eq(setOf("dummyPeriod")), any(), any(), any(), any())
@@ -227,17 +223,10 @@ class DataRequestUpdateManagerTest {
     @BeforeEach
     fun setupMocksAndDummyRequests() {
         reset(
-            mockCompanyInfoService,
-            mockDataRequestLogger,
-            mockDataRequestRepository,
-            mockDataRequestSummaryNotificationService,
-            mockMetaDataControllerApi,
-            mockQaControllerApi,
-            mockRequestEmailManager,
-            mockCompanyDataControllerApi,
-            mockExceptionForwarder,
-            mockMessageRepository,
-            mockRequestStatusRepository,
+            mockCompanyInfoService, mockDataRequestLogger, mockDataRequestRepository,
+            mockDataRequestSummaryNotificationService, mockMetaDataControllerApi,
+            mockQaControllerApi, mockRequestEmailManager, mockCompanyDataControllerApi,
+            mockExceptionForwarder, mockMessageRepository, mockRequestStatusRepository,
         )
         mockRepos()
         mockDataRequestUpdateUtils()

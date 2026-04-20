@@ -48,7 +48,28 @@ class NonSourceabilityInformationManager(
      * - (true,  false) → admin reversal: deactivates active entry, creates audit entry, no event
      */
     @Transactional
-    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): NonSourceabilityInformationResponse {
+    sealed class ProcessNonSourceabilityResult {
+        /**
+         * Represents a successful non-sourceability request result.
+         */
+        data class Success(
+            val response: NonSourceabilityInformationResponse,
+        ) : ProcessNonSourceabilityResult()
+
+        /**
+         * Represents a duplicate non-sourceability request result.
+         */
+        data class Duplicate(
+            val summary: String,
+            val message: String,
+        ) : ProcessNonSourceabilityResult()
+    }
+
+    /**
+     * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
+     * and emits the appropriate lifecycle event (FR-001, FR-002, FR-003).
+     */
+    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
         if (!request.bypassQa && request.currentlyActive) {

@@ -84,7 +84,9 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `creates pending entry when bypassQa is false`() {
-        val response = manager.processNonSourceabilityRequest(request())
+        val result = manager.processNonSourceabilityRequest(request())
+        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
+        val response = result.response
         assertEquals(QaStatus.Pending, response.qaStatus)
         assertFalse(response.currentlyActive)
     }
@@ -92,7 +94,9 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `creates accepted active entry when bypassQa is true`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        val response = manager.processNonSourceabilityRequest(request(bypassQa = true))
+        val result = manager.processNonSourceabilityRequest(request(bypassQa = true))
+        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
+        val response = result.response
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertTrue(response.currentlyActive)
     }
@@ -112,13 +116,15 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `new request allowed after Rejected entry FR013 edge case`() {
-        manager.processNonSourceabilityRequest(request())
+        val firstResult = manager.processNonSourceabilityRequest(request())
+        require(firstResult is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
         entity.qaStatus = QaStatus.Rejected
         nonSourceabilityDataRepository.save(entity)
 
-        val second = manager.processNonSourceabilityRequest(request())
-        assertEquals(QaStatus.Pending, second.qaStatus)
+        val secondResult = manager.processNonSourceabilityRequest(request())
+        require(secondResult is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
+        assertEquals(QaStatus.Pending, secondResult.response.qaStatus)
     }
 
     @Test
