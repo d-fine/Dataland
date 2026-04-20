@@ -1,9 +1,10 @@
 import { checkFooter } from '@sharedUtils/ElementChecks.ts';
+import { closeCookieBannerIfShown } from '@sharedUtils/../e2e/support/Commands.ts';
 
 describe('Check that the website works properly', () => {
   it('Check the links and buttons', () => {
     cy.visitAndCheckAppMount('/');
-    cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();
+    closeCookieBannerIfShown();
 
     checkFooter();
 
