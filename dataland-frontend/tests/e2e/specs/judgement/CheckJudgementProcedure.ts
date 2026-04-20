@@ -15,6 +15,7 @@ import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+import type { Interception } from 'cypress/types/net-stubbing';
 
 enum IconState {
   Accepted,
@@ -40,6 +41,7 @@ interface QaReport {
 interface QaJudgement {
   acceptedSource?: AcceptedDataPointSource;
   reporterUserIdOfAcceptedQaReport?: string;
+  reporterLabelOfAcceptedQaReport?: string;
   customDataPoint?: string;
 }
 
@@ -111,6 +113,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: reviewer_userId,
+      reporterLabelOfAcceptedQaReport: reviewer_userId,
       customDataPoint: '{"value":"No"}',
     },
   },
@@ -123,6 +126,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: admin_userId,
+      reporterLabelOfAcceptedQaReport: admin_userId,
     },
   },
 ];
@@ -178,6 +182,39 @@ describeIf(
         });
       })
     );
+
+    // This test is only a debug helper which can be deleted later
+    it.skip('debug judge modal selectors', () => {
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+        // 1) Compute the type + id for "Number of Employees"
+        const typeId = DATA_POINT_TYPES.numberOfEmployees;
+        const dataPointId = overview.dataPointsWithQaReports[typeId] ?? overview.dataPointsWithoutQaReports[typeId];
+
+        // 2) Click the KPI row to open the judge modal
+        cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
+
+        // 3) Now run the selector checks on the modal
+        selectNextDataPointToJudge(typeId);
+        goToSelectedDataPoint();
+
+        // 4 Test the intercept
+        cy.intercept('PATCH', '**/qa/dataset-judgements/**/data-points/**').as('patchDatapoint');
+
+        cy.get('[data-test ="corrected-datapoint-section"]').within(() => {
+          cy.get('[data-test="qa-next-button"]').click();
+        });
+
+        cy.pause();
+        cy.get('[data-test="accept-report-button"]').click();
+
+        cy.wait('@patchDatapoint').then((interception) => {
+          const judgement = QA_SCENARIO_CONFIG.find((config) => config.dataPointType === typeId)?.judgement;
+          if (judgement) {
+            checkPATCHDataPointsCalledCorrectly(interception, judgement);
+          }
+        });
+      });
+    });
 
     it('Check creating a Judgement and reassigning the Judge works as expected', () => {
       const dataSetId = uploadedDataMetaInfo.dataId;
@@ -283,6 +320,62 @@ function uploadQaReportForDataPoint(
       ...(verdict === QaReportDataPointVerdict.QaRejected && correctedValue ? { correctedData: correctedValue } : {}),
     },
   });
+}
+
+/**
+ * Selects the given data point type in the judge modal's "Next datapoint" dropdown.
+ *
+ * @param dataPointTypeId The data point type ID (e.g. DATA_POINT_TYPES.numberOfEmployees).
+ */
+function selectNextDataPointToJudge(dataPointTypeId: string): void {
+  cy.get('[data-test="next-datapoint-section"]').within(() => {
+    cy.get('[data-test="next-datapoint-select"]').click();
+  });
+
+  cy.get(`[data-test="next-datapoint-option-${dataPointTypeId}"]`).click();
+}
+
+/**
+ * This function is only a debug helper which can be deleted later
+ */
+function goToSelectedDataPoint(): void {
+  cy.get('[data-test="next-datapoint-section"]').within(() => {
+    cy.get('[data-test="go-to-datapoint-button"]').click();
+  });
+}
+
+/**
+ * Helpet that checks that the PATCH request to update a data point is called with the expected request body based on the judgement configuration.
+ *
+ * @param interception The Cypress interception object containing request and response details of the PATCH request.
+ * @param judgement    The judgement configuration used to determine the expected request body values.
+ */
+function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgement: QaJudgement): void {
+  expect(interception.response?.statusCode, 'PATCH status code').to.eq(200);
+
+  const body = interception.request.body ?? {};
+
+  if (judgement.acceptedSource == null) {
+    expect(body.acceptedSource ?? null, 'acceptedSource in request body').to.eq(null);
+  } else {
+    expect(body.acceptedSource, 'acceptedSource in request body').to.eq(judgement.acceptedSource);
+  }
+
+  if (judgement.reporterUserIdOfAcceptedQaReport == null) {
+    expect(body.reporterUserIdOfAcceptedQaReport ?? null, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
+      null
+    );
+  } else {
+    expect(body.reporterUserIdOfAcceptedQaReport, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
+      judgement.reporterUserIdOfAcceptedQaReport
+    );
+  }
+
+  if (judgement.customDataPoint == null) {
+    expect(body.customDataPoint ?? null, 'customDataPoint in request body').to.eq(null);
+  } else {
+    expect(body.customDataPoint, 'customDataPoint in request body').to.eq(judgement.customDataPoint);
+  }
 }
 
 /**
