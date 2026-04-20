@@ -8,8 +8,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,7 +38,6 @@ class CommunityManagerListenerUnitTest {
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
     private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
-    private val typeNonSourceable = MessageType.DATA_NONSOURCEABLE
     private val typeNonSourceabilityAutoAccepted = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
     private val typeNonSourceabilityQaAccepted = MessageType.NON_SOURCEABILITY_QA_ACCEPTED
 
@@ -153,23 +150,6 @@ class CommunityManagerListenerUnitTest {
     }
 
     @Test
-    fun `valid nonsourceable message should be processed successfully`() {
-        val sourceabilityInfoValid =
-            SourceabilityMessage(
-                basicDataDimensions = BasicDataDimensions("exampleCompany", "sfdr", "2023"),
-                isNonSourceable = true,
-                reason = "test",
-            )
-        communityManagerListener.processMessageForDataReportedAsNonSourceable(
-            jacksonObjectMapper.writeValueAsString(sourceabilityInfoValid), typeNonSourceable, correlationId,
-        )
-        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfoValid,
-            correlationId,
-        )
-    }
-
-    @Test
     fun `valid non sourceability auto accepted lifecycle event should be processed successfully`() {
         val event =
             NonSourceabilityLifecycleEvent(
@@ -177,7 +157,6 @@ class CommunityManagerListenerUnitTest {
                 companyId = "exampleCompany",
                 dataType = "sfdr",
                 reportingPeriod = "2023",
-                eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED,
             )
 
         communityManagerListener.processNonSourceabilityAutoAcceptedEvent(
@@ -202,7 +181,6 @@ class CommunityManagerListenerUnitTest {
                 companyId = "exampleCompany",
                 dataType = "sfdr",
                 reportingPeriod = "2023",
-                eventType = NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED,
             )
 
         communityManagerListener.processNonSourceabilityQaAcceptedEvent(
@@ -226,48 +204,23 @@ class CommunityManagerListenerUnitTest {
             "exampleCompany,",
         ],
     )
-    fun `should throw exception for incomplete data in nonsourceable message`(
+    fun `should throw exception for incomplete lifecycle event`(
         companyId: String?,
         reportingPeriod: String?,
     ) {
-        val sourceabilityMessageIncomplete =
-            SourceabilityMessage(
-                BasicDataDimensions(
-                    companyId.orEmpty(),
-                    "sdfr",
-                    reportingPeriod.orEmpty(),
-                ),
-                true,
-                "test",
+        val event =
+            NonSourceabilityLifecycleEvent(
+                nonSourceabilityId = UUID.randomUUID().toString(),
+                companyId = companyId.orEmpty(),
+                dataType = "sfdr",
+                reportingPeriod = reportingPeriod.orEmpty(),
             )
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processMessageForDataReportedAsNonSourceable(
-                jacksonObjectMapper.writeValueAsString(sourceabilityMessageIncomplete),
-                typeNonSourceable,
+            communityManagerListener.processNonSourceabilityAutoAcceptedEvent(
+                jacksonObjectMapper.writeValueAsString(event),
+                typeNonSourceabilityAutoAccepted,
                 correlationId,
             )
-        }
-    }
-
-    @Test
-    fun `should throw exception when isNonSourceable is false in nonsourceable message`() {
-        assertThrows<MessageQueueRejectException> {
-            val sourceability =
-                SourceabilityMessage(
-                    BasicDataDimensions(
-                        "exampleCompany",
-                        "sfdr",
-                        "2023",
-                    ),
-                    false,
-                    "test",
-                )
-            communityManagerListener
-                .processMessageForDataReportedAsNonSourceable(
-                    jacksonObjectMapper.writeValueAsString(sourceability),
-                    typeNonSourceable,
-                    correlationId,
-                )
         }
     }
 }

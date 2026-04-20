@@ -6,8 +6,8 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -30,16 +30,12 @@ import java.time.Instant
 class NonSourceabilityQaDecisionConsumerTest(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
 ) {
-    private fun buildEvent(
-        nonSourceabilityId: String,
-        eventType: NonSourceabilityEventType,
-    ): NonSourceabilityLifecycleEvent =
+    private fun buildEvent(nonSourceabilityId: String): NonSourceabilityLifecycleEvent =
         NonSourceabilityLifecycleEvent(
             nonSourceabilityId = nonSourceabilityId,
             companyId = "test-company",
             dataType = "eutaxonomy-financials",
             reportingPeriod = "2023",
-            eventType = eventType,
         )
 
     private fun persistPendingEntity(): NonSourceabilityInformationEntity {
@@ -63,22 +59,18 @@ class NonSourceabilityQaDecisionConsumerTest(
     @Test
     fun `qa decision listener discards event with malformed nonUUID nonSourceabilityId and throws reject exception`() {
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
-        val event = buildEvent("not-a-uuid", NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED)
+        val event = buildEvent("not-a-uuid")
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, "corr-id-001")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-id-001")
         }
     }
 
     @Test
     fun `qa decision listener discards event with unresolvable nonSourceabilityId and throws reject exception`() {
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
-        val event =
-            buildEvent(
-                "00000000-0000-0000-0000-000000000000",
-                NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED,
-            )
+        val event = buildEvent("00000000-0000-0000-0000-000000000000")
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, "corr-id-002")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-id-002")
         }
     }
 
@@ -89,9 +81,9 @@ class NonSourceabilityQaDecisionConsumerTest(
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
-        val event = buildEvent(id, NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED)
+        val event = buildEvent(id)
 
-        listener.processQaDecisionEvent(event, "corr-accepted")
+        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-accepted")
 
         val updated = nonSourceabilityDataRepository.findById(saved.nonSourceabilityId!!).orElseThrow()
         assertTrue(updated.currentlyActive)
@@ -103,9 +95,9 @@ class NonSourceabilityQaDecisionConsumerTest(
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
-        val event = buildEvent(id, NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED)
+        val event = buildEvent(id)
 
-        listener.processQaDecisionEvent(event, "corr-rejected")
+        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_REJECTED, "corr-rejected")
 
         val updated = nonSourceabilityDataRepository.findById(saved.nonSourceabilityId!!).orElseThrow()
         assertFalse(updated.currentlyActive)
@@ -117,9 +109,9 @@ class NonSourceabilityQaDecisionConsumerTest(
         val saved = persistPendingEntity()
         val id = saved.nonSourceabilityId.toString()
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
-        val event = buildEvent(id, NonSourceabilityEventType.NON_SOURCEABILITY_CREATED)
+        val event = buildEvent(id)
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, "corr-unexpected")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_CREATED, "corr-unexpected")
         }
     }
 }
