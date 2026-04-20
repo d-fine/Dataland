@@ -41,8 +41,9 @@ interface QaReport {
 interface QaJudgement {
   acceptedSource?: AcceptedDataPointSource;
   reporterUserIdOfAcceptedQaReport?: string;
-  reporterLabelOfAcceptedQaReport?: string;
+  reporterUserNameOfAcceptedQaReport?: string;
   customDataPoint?: string;
+  customValue?: string;
 }
 
 interface QaScenarioConfig {
@@ -113,8 +114,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: reviewer_userId,
-      reporterLabelOfAcceptedQaReport: reviewer_userId,
-      customDataPoint: '{"value":"No"}',
+      reporterUserNameOfAcceptedQaReport: 'Data Reviewer',
     },
   },
   {
@@ -126,7 +126,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
       reporterUserIdOfAcceptedQaReport: admin_userId,
-      reporterLabelOfAcceptedQaReport: admin_userId,
+      reporterUserNameOfAcceptedQaReport: 'Data Admin',
     },
   },
 ];
@@ -184,7 +184,7 @@ describeIf(
     );
 
     // This test is only a debug helper which can be deleted later
-    it.skip('debug judge modal selectors', () => {
+    it.only('debug judge modal selectors', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
         // 1) Compute the type + id for "Number of Employees"
         const typeId = DATA_POINT_TYPES.numberOfEmployees;
@@ -197,18 +197,31 @@ describeIf(
         selectNextDataPointToJudge(typeId);
         goToSelectedDataPoint();
 
-        // 4 Test the intercept
+        // 4) Set up intercept BEFORE making the judgement decision
         cy.intercept('PATCH', '**/qa/dataset-judgements/**/data-points/**').as('patchDatapoint');
 
-        cy.get('[data-test ="corrected-datapoint-section"]').within(() => {
-          cy.get('[data-test="qa-next-button"]').click();
-        });
+        // 5) Wait for all QA reports to be loaded in the modal
+        const qaConfig = QA_SCENARIO_CONFIG.find((config) => config.dataPointType === typeId);
+        const expectedQaReportCount = qaConfig?.qaReports.length ?? 0;
+
+        if (expectedQaReportCount > 0) {
+          // Wait for the nav count to match the expected number of QA reports
+          cy.contains(`[data-test="corrected-datapoint-section"]`, `(1 / ${expectedQaReportCount})`).should('exist');
+        }
 
         cy.pause();
-        cy.get('[data-test="accept-report-button"]').click();
 
+        // 6) Get the judgement config and make the decision (this handles all UI interactions)
+        const judgement = qaConfig?.judgement;
+        if (judgement) {
+          makeJudgementDecision(judgement);
+        }
+        cy.log(`makeJudgementDecision ran successfully!`);
+
+        cy.pause();
+
+        // 7) Wait for the PATCH and verify the request body
         cy.wait('@patchDatapoint').then((interception) => {
-          const judgement = QA_SCENARIO_CONFIG.find((config) => config.dataPointType === typeId)?.judgement;
           if (judgement) {
             checkPATCHDataPointsCalledCorrectly(interception, judgement);
           }
@@ -345,7 +358,7 @@ function goToSelectedDataPoint(): void {
 }
 
 /**
- * Helpet that checks that the PATCH request to update a data point is called with the expected request body based on the judgement configuration.
+ * Helper that checks that the PATCH request to update a data point is called with the expected request body based on the judgement configuration.
  *
  * @param interception The Cypress interception object containing request and response details of the PATCH request.
  * @param judgement    The judgement configuration used to determine the expected request body values.
@@ -375,6 +388,87 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
     expect(body.customDataPoint ?? null, 'customDataPoint in request body').to.eq(null);
   } else {
     expect(body.customDataPoint, 'customDataPoint in request body').to.eq(judgement.customDataPoint);
+  }
+}
+
+/**
+ * This function is used inside makeJudgementDecision to recursively scan QA report entries in the Judge modal until
+ * the target reporter label is found.
+ *
+ * Failure behaviour: should throw if no further QA entry exists (next button disabled) and target was not found.
+ */
+function tryFind(target: string): void {
+  cy.get('[data-test="qa-current-reporter-label"]')
+    .invoke('text')
+    .then((txt) => {
+      const current = txt;
+      cy.log(`Current QA label: "${current}"`);
+      cy.log(`Target label: "${target}"`);
+
+      if (current === target) {
+        cy.log('Label matched! Clicking accept-report-button');
+        cy.get('[data-test="accept-report-button"]').click();
+        return;
+      }
+
+      cy.log('next button:');
+      cy.pause();
+
+      cy.get('[data-test="qa-next-button"]').then(($next) => {
+        const isDisabled = $next.is(':disabled');
+        cy.log(`qa-next-button disabled: ${isDisabled}`);
+
+        // if (isDisabled) {
+        //  throw new Error(`Reporter "${target}" not found. No more entries.`);
+        // }
+        cy.log('Moving to next QA entry...');
+        cy.wrap($next).click();
+        // Wait for the label to change before reading it again
+        cy.get('[data-test="qa-current-reporter-label"]')
+          .should((el) => {
+            expect(el.text()).not.to.equal(current);
+          })
+          .then(() => {
+            tryFind(target);
+          });
+      });
+    });
+}
+
+/**
+ * Helper that executes the UI interaction needed to apply a judgement in the open Judge modal.
+ *
+ * @param judgement Judgement configuration defining source selection and optional custom value.
+ */
+function makeJudgementDecision(judgement: QaJudgement): void {
+  cy.log(`customValue: "${judgement.customValue}"`);
+
+  if (judgement.customValue != null) {
+    cy.get('[data-test="custom-value-field"]').click();
+    cy.get('[data-test="custom-value-field"]').clear();
+    cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
+  }
+
+  if (judgement.acceptedSource === AcceptedDataPointSource.Original) {
+    cy.get('[data-test="accept-original-button"]').click();
+    return;
+  }
+
+  if (judgement.acceptedSource === AcceptedDataPointSource.Custom) {
+    cy.get('[data-test="accept-custom-button"]').click();
+    return;
+  }
+
+  if (judgement.acceptedSource === AcceptedDataPointSource.Qa) {
+    const target = judgement.reporterUserNameOfAcceptedQaReport;
+    cy.log(`target: "${target}"`);
+
+    if (!target) {
+      throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
+    }
+
+    tryFind(target);
+    return;
   }
 }
 
