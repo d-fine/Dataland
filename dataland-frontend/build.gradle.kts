@@ -34,6 +34,10 @@ tasks.withType<NpmTask> {
     workingDir.set(projectDir)
 }
 
+tasks.named<NpmTask>("npmInstall") {
+    workingDir.set(rootProject.projectDir)
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
