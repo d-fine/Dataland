@@ -4,28 +4,28 @@
       <div class="footer__col footer__col--contact">
         <a href="/" class="footer__logo-link" aria-label="Dataland home">
           <img
-            src="/static/logos/logo_dataland_orange.svg"
-            alt="Dataland"
-            width="240"
-            height="55"
-            loading="lazy"
-            class="footer__logo-img"
+              src="/static/logos/logo_dataland_orange.svg"
+              alt="Dataland"
+              width="240"
+              height="55"
+              loading="lazy"
+              class="footer__logo-img"
           />
         </a>
         <a
-          href="https://wertestiftung.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer__logo-link"
-          aria-label="Visit Werte-Stiftung"
+            href="https://wertestiftung.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer__logo-link"
+            aria-label="Visit Werte-Stiftung"
         >
           <img
-            src="/static/logos/a_werte-stiftung_company.svg"
-            alt="Werte-Stiftung Company"
-            width="240"
-            height="24"
-            loading="lazy"
-            class="footer__logo-img"
+              src="/static/logos/a_werte-stiftung_company.svg"
+              alt="Werte-Stiftung Company"
+              width="240"
+              height="24"
+              loading="lazy"
+              class="footer__logo-img"
           />
         </a>
         <div class="footer__contact-block">
@@ -33,16 +33,16 @@
             <p class="footer__company-name">{{ CONTACT_ADDRESS.company }}</p>
             <div class="footer__address-row">
               <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                class="footer__icon footer__icon--location"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="footer__icon footer__icon--location"
               >
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
@@ -55,35 +55,35 @@
           </div>
           <a :href="CONTACT_PHONE" class="footer__contact-link">
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              class="footer__icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="footer__icon"
             >
               <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
               ></path>
             </svg>
             <span>{{ CONTACT_PHONE_DISPLAY }}</span>
           </a>
           <a :href="CONTACT_EMAIL" class="footer__contact-link">
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              class="footer__icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="footer__icon"
             >
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -117,14 +117,14 @@
         <ul class="footer__link-list">
           <li>
             <a
-              href="https://www.linkedin.com/company/dataland-gmbh/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer__list-link footer__list-link--inline"
+                href="https://www.linkedin.com/company/dataland-gmbh/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer__list-link footer__list-link--inline"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
-                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                 ></path>
               </svg>
               <span>LinkedIn</span>
@@ -133,15 +133,15 @@
           <li>
             <a :href="CONTACT_INQUIRY_MAILTO" class="footer__list-link footer__list-link--inline">
               <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
               >
                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -152,15 +152,15 @@
           <li>
             <a href="/login" class="footer__list-link footer__list-link--inline">
               <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
               >
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                 <polyline points="10 17 15 12 10 7"></polyline>
@@ -172,15 +172,15 @@
           <li>
             <a href="/register" class="footer__list-link footer__list-link--inline">
               <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
               >
                 <path d="M12 5v14"></path>
                 <path d="M5 12h14"></path>
@@ -230,7 +230,7 @@ const CONTACT_EMAIL = 'mailto:info@dataland.com';
 const CONTACT_EMAIL_DISPLAY = 'info@dataland.com';
 
 const CONTACT_INQUIRY_MAILTO =
-  'mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20membership&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20Dataland%20membership.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards';
+    'mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20membership&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20Dataland%20membership.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards';
 
 interface NavigationSection {
   href: string;

@@ -72,7 +72,7 @@ export default defineConfig({
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
-      '@shared': path.resolve(__dirname, '../dataland-sharedElements'),
+      '@shared-footer': path.resolve(__dirname, '../dataland-sharedElements/footer/src'),
     },
   },
   css: {
@@ -90,6 +90,9 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     allowedHosts: true,
+    fs: {
+      allow: ['..'],
+    },
     warmup: {
       clientFiles: [
         './src/components/*/*.vue',

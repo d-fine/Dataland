@@ -1,4 +1,4 @@
-import TheFooter from '@/components/generics/TheFooter.vue';
+import TheFooter from '@shared-footer/TheFooter.vue';
 
 describe('Component test for the footer', () => {
   it('Check if essential elements are present', () => {
