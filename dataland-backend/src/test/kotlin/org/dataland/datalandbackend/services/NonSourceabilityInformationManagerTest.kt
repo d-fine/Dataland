@@ -32,13 +32,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
  */
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=containerized-db"])
 @DefaultMocks
-@MockitoBean(types = [CloudEventMessageHandler::class])
 class NonSourceabilityInformationManagerTest(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val manager: NonSourceabilityInformationManager,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
 ) : BaseIntegrationTest() {
+    @MockitoBean
+    lateinit var cloudEventMessageHandler: CloudEventMessageHandler
     private lateinit var companyId: String
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
