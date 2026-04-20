@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -22,6 +21,8 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.clearInvocations
 import org.mockito.Mockito.verifyNoInteractions
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
@@ -30,7 +31,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
  * Covers all four (bypassQa, currentlyActive) combinations, constraint checks,
  * reversal logic, and event emission behaviour.
  */
-@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=containerized-db"])
+@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @DefaultMocks
 @MockitoBean(types = [CloudEventMessageHandler::class])
 class NonSourceabilityInformationManagerTest(
@@ -38,7 +40,7 @@ class NonSourceabilityInformationManagerTest(
     @Autowired private val manager: NonSourceabilityInformationManager,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-) : BaseIntegrationTest() {
+) {
     private lateinit var companyId: String
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
