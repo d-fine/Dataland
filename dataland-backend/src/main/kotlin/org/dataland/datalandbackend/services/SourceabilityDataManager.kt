@@ -1,22 +1,12 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.SourceabilityEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfo
 import org.dataland.datalandbackend.model.metainformation.SourceabilityInfoResponse
 import org.dataland.datalandbackend.repositories.SourceabilityDataRepository
-import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,14 +17,8 @@ import java.time.Instant
  */
 @Service("SourceabilityDataManager")
 class SourceabilityDataManager(
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val sourceabilityDataRepository: SourceabilityDataRepository,
-    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * The method stores meta information to a non-sourceable dataset in the nonSourceableDataRepository
      * @param sourceabilityInfo the of the dataset
@@ -55,44 +39,6 @@ class SourceabilityDataManager(
                 userId = userId,
             )
         return sourceabilityDataRepository.save(sourceabilityEntity).toApiModel()
-    }
-
-    /**
-     * Processes a request to store information about a dataset being labeled as non-sourceable.
-     * This includes verifying the existence of the company, checking if the dataset already exists,
-     * storing the non-sourceable data, and sending a corresponding message to a message queue.
-     * @param sourceabilityInfo the SourceabilityInfo of the dataset
-     */
-    fun processSourceabilityDataStorageRequest(sourceabilityInfo: SourceabilityInfo) {
-        val correlationId = generateCorrelationId(sourceabilityInfo.companyId, null)
-        companyQueryManager.assertCompanyIdExists(sourceabilityInfo.companyId)
-        val dataMetaInfo =
-            dataMetaInformationManager.searchDataMetaInfo(
-                DataMetaInformationSearchFilter(
-                    companyId = sourceabilityInfo.companyId,
-                    dataType = sourceabilityInfo.dataType,
-                    reportingPeriod = sourceabilityInfo.reportingPeriod,
-                    qaStatus = QaStatus.Accepted,
-                    onlyActive = false,
-                ),
-            )
-        if (dataMetaInfo.isNotEmpty()) {
-            logger.info("Creating a NonSourceableEntity failed because the dataset exists (correlationId: $correlationId)")
-            throw InvalidInputApiException(
-                "DataMetaInfo exists for the triple companyId, reportingPeriod and datyType. ",
-                "DataMetaInfo exists for companyId ${sourceabilityInfo.companyId}, " + "reporting period " +
-                    "${sourceabilityInfo.reportingPeriod} and dataType ${sourceabilityInfo.dataType}. ",
-            )
-        }
-        storeNonSourceableData(sourceabilityInfo)
-        logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(sourceabilityInfo),
-            type = MessageType.LEGACY_NON_SOURCEABLE,
-            correlationId = correlationId,
-            exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
-            routingKey = RoutingKeyNames.LEGACY_NON_SOURCEABLE,
-        )
     }
 
     /**
