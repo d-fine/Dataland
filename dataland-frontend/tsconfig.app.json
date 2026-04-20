@@ -9,7 +9,8 @@
     "verbatimModuleSyntax": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@clients/*": ["./build/clients/*"]
+      "@clients/*": ["./build/clients/*"],
+      "@shared-footer/*": ["../dataland-sharedElements/footer/src/*"]
     },
     "lib": ["ESNext", "DOM", "DOM.Iterable"]
   }
