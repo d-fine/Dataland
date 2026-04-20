@@ -14,7 +14,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.logging.CorrelationLogging
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -257,20 +256,12 @@ class NonSourceabilityInformationManager(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        val (eventType, routingKey) =
-            if (bypassQa) {
-                Pair(NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED, RoutingKeyNames.NON_SOURCEABILITY_AUTO_ACCEPTED)
-            } else {
-                Pair(NonSourceabilityEventType.NON_SOURCEABILITY_CREATED, RoutingKeyNames.NON_SOURCEABILITY_CREATED)
-            }
-
         val event =
             NonSourceabilityLifecycleEvent(
                 nonSourceabilityId = entity.nonSourceabilityId.toString(),
                 companyId = entity.companyId,
                 dataType = entity.dataType.name,
                 reportingPeriod = entity.reportingPeriod,
-                eventType = eventType,
             )
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -278,7 +269,7 @@ class NonSourceabilityInformationManager(
             type = if (bypassQa) MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED else MessageType.NON_SOURCEABILITY_CREATED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
-            routingKey = routingKey,
+            routingKey = RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION,
         )
     }
 

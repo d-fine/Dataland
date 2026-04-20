@@ -10,7 +10,6 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -169,7 +168,7 @@ class CommunityManagerListener(
             QueueBinding(
                 value =
                     Queue(
-                        "community-manager.queue.nonSourceableData",
+                        QueueNames.COMMUNITY_MANAGER_LEGACY_NON_SOURCEABLE,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -177,7 +176,7 @@ class CommunityManagerListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.DATA_NONSOURCEABLE],
+                key = [RoutingKeyNames.LEGACY_NON_SOURCEABLE],
             ),
         ],
     )
@@ -186,7 +185,7 @@ class CommunityManagerListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
+        MessageQueueUtils.validateMessageType(type, MessageType.LEGACY_NON_SOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
 
         checkThatReceivedDataIsComplete(sourceabilityMessage)
@@ -212,7 +211,7 @@ class CommunityManagerListener(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_AUTO_ACCEPTED,
+                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_SUBMISSION,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -220,7 +219,7 @@ class CommunityManagerListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_AUTO_ACCEPTED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION],
             ),
         ],
     )
@@ -232,9 +231,6 @@ class CommunityManagerListener(
         MessageQueueUtils.validateMessageType(type, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED)
         val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
         validateLifecycleEvent(event)
-        if (event.eventType != NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED) {
-            throw MessageQueueRejectException("Unexpected eventType ${event.eventType} for auto-accepted listener.")
-        }
         MessageQueueUtils.rejectMessageOnException {
             dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
                 companyId = event.companyId,
@@ -253,7 +249,7 @@ class CommunityManagerListener(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_QA_ACCEPTED,
+                        QueueNames.COMMUNITY_MANAGER_NON_SOURCEABILITY_QA_DECISION,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -261,7 +257,7 @@ class CommunityManagerListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION],
             ),
         ],
     )
@@ -273,9 +269,6 @@ class CommunityManagerListener(
         MessageQueueUtils.validateMessageType(type, MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
         val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
         validateLifecycleEvent(event)
-        if (event.eventType != NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED) {
-            throw MessageQueueRejectException("Unexpected eventType ${event.eventType} for QA-accepted listener.")
-        }
         MessageQueueUtils.rejectMessageOnException {
             dataRequestUpdateManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
                 companyId = event.companyId,

@@ -25,7 +25,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
- * Handles non-sourceability lifecycle events routed by the backend and QA service.
+ * Handles non-sourceability submission events from the backend.
+ *
+ * A single queue binds to [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION] and dispatches on
+ * [NonSourceabilityLifecycleEvent.eventType]:
+ *   - [NonSourceabilityEventType.NON_SOURCEABILITY_CREATED]       → [DataSourcingState.NonSourceableVerification]
+ *   - [NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED] → [DataSourcingState.NonSourceable]
  *
  * Fail-fast validation (SOR-002): events with malformed or blank nonSourceabilityId are
  * discarded with an error log and a [MessageQueueRejectException].
@@ -38,15 +43,16 @@ class NonSourceabilityEventListener(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Handles a non-sourceability-created event from the backend and transitions the matching
-     * data sourcing object to [DataSourcingState.NonSourceableVerification].
+     * Handles non-sourceability submission events from the backend and transitions the matching
+     * data sourcing object to [DataSourcingState.NonSourceableVerification] (standard QA path) or
+     * [DataSourcingState.NonSourceable] (admin bypass path) based on the event type.
      */
     @RabbitListener(
         bindings = [
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATA_SOURCING_SERVICE_NON_SOURCEABILITY_CREATED,
+                        QueueNames.DATA_SOURCING_SERVICE_NON_SOURCEABILITY_SUBMISSION,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -54,57 +60,32 @@ class NonSourceabilityEventListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_CREATED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION],
             ),
         ],
     )
-    fun onNonSourceabilityCreated(
+    fun onNonSourceabilitySubmission(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) messageType: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.rejectMessageOnException {
-            MessageQueueUtils.validateMessageType(messageType, MessageType.NON_SOURCEABILITY_CREATED)
-            val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
-                validateNonSourceabilityId(event.nonSourceabilityId)
-                transitionToVerification(event, correlationId)
+            if (messageType != MessageType.NON_SOURCEABILITY_CREATED &&
+                messageType != MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
+            ) {
+                throw MessageQueueRejectException(
+                    "Unexpected message type \"$messageType\" in NonSourceabilityEventListener",
+                )
             }
-        }
-    }
-
-    /**
-     * Handles a non-sourceability-auto-accepted event from the backend (bypassQa=true fast-path) and
-     * transitions the matching data sourcing object directly to [DataSourcingState.NonSourceable].
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value =
-                    Queue(
-                        QueueNames.DATA_SOURCING_SERVICE_NON_SOURCEABILITY_AUTO_ACCEPTED,
-                        arguments = [
-                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                            Argument(name = "defaultRequeueRejected", value = "false"),
-                        ],
-                    ),
-                exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_AUTO_ACCEPTED],
-            ),
-        ],
-    )
-    fun onNonSourceabilityAutoAccepted(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.TYPE) messageType: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-    ) {
-        MessageQueueUtils.rejectMessageOnException {
-            MessageQueueUtils.validateMessageType(messageType, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED)
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
             CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
                 validateNonSourceabilityId(event.nonSourceabilityId)
-                transitionToNonSourceable(event, correlationId)
+                when (messageType) {
+                    MessageType.NON_SOURCEABILITY_CREATED ->
+                        transitionToVerification(event, correlationId)
+                    MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED ->
+                        transitionToNonSourceable(event, correlationId)
+                }
             }
         }
     }
