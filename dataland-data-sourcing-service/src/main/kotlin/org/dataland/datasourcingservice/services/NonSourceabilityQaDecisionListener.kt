@@ -7,7 +7,6 @@ import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.logging.CorrelationLogging
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
@@ -56,7 +55,7 @@ class NonSourceabilityQaDecisionListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED, RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION],
             ),
         ],
     )
@@ -75,7 +74,7 @@ class NonSourceabilityQaDecisionListener(
             }
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
             CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
-                processQaDecisionEvent(event, correlationId)
+                processQaDecisionEvent(event, messageType, correlationId)
             }
         }
     }
@@ -83,19 +82,20 @@ class NonSourceabilityQaDecisionListener(
     @Transactional
     internal fun processQaDecisionEvent(
         event: NonSourceabilityLifecycleEvent,
+        messageType: String,
         correlationId: String,
     ) {
-        when (event.eventType) {
-            NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED ->
+        when (messageType) {
+            MessageType.NON_SOURCEABILITY_QA_ACCEPTED ->
                 transitionToNonSourceable(event, correlationId)
-            NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED ->
+            MessageType.NON_SOURCEABILITY_QA_REJECTED ->
                 keepInVerification(event, correlationId)
             else -> {
                 logger.error(
-                    "Unexpected event type ${event.eventType} in NonSourceabilityQaDecisionListener " +
+                    "Unexpected message type $messageType in NonSourceabilityQaDecisionListener " +
                         "(correlationId=$correlationId). Discarding.",
                 )
-                throw MessageQueueRejectException("Unexpected event type ${event.eventType} in QA decision listener")
+                throw MessageQueueRejectException("Unexpected message type $messageType in QA decision listener")
             }
         }
     }

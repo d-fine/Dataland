@@ -7,7 +7,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
 import org.dataland.datalandqaservice.model.NonSourceableQaReviewInformation
@@ -111,19 +110,12 @@ class NonSourceabilityQaReviewManager
             correlationId: String,
             nonSourceabilityId: String,
         ) {
-            val eventType =
-                if (qaStatus == QaStatus.Accepted) {
-                    NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED
-                } else {
-                    NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED
-                }
             val event =
                 NonSourceabilityLifecycleEvent(
                     nonSourceabilityId = nonSourceabilityId,
                     companyId = entity.companyId,
                     dataType = entity.dataType,
                     reportingPeriod = entity.reportingPeriod,
-                    eventType = eventType,
                 )
             val messageType =
                 if (qaStatus == QaStatus.Accepted) {
@@ -131,22 +123,15 @@ class NonSourceabilityQaReviewManager
                 } else {
                     MessageType.NON_SOURCEABILITY_QA_REJECTED
                 }
-            val routingKey =
-                if (qaStatus == QaStatus.Accepted) {
-                    RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED
-                } else {
-                    RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED
-                }
-            val payload = objectMapper.writeValueAsString(event)
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload,
+                objectMapper.writeValueAsString(event),
                 messageType,
                 correlationId,
                 ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS,
-                routingKey,
+                RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION,
             )
             logger.info(
-                "Emitted $eventType for nonSourceabilityId=$nonSourceabilityId (correlationId=$correlationId)",
+                "Emitted $messageType for nonSourceabilityId=$nonSourceabilityId (correlationId=$correlationId)",
             )
         }
 

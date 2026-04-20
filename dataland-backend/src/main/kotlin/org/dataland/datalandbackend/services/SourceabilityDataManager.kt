@@ -88,10 +88,10 @@ class SourceabilityDataManager(
         logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(sourceabilityInfo),
-            type = MessageType.DATA_NONSOURCEABLE,
+            type = MessageType.LEGACY_NON_SOURCEABLE,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
-            routingKey = RoutingKeyNames.DATA_NONSOURCEABLE,
+            routingKey = RoutingKeyNames.LEGACY_NON_SOURCEABLE,
         )
     }
 
