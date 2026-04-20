@@ -9,7 +9,7 @@ function updateEqualButtonGroup(group: HTMLElement): void {
   });
 
   const maxWidth = Math.ceil(
-    buttons.reduce((currentMax, button) => Math.max(currentMax, button.getBoundingClientRect().width), 0),
+    buttons.reduce((currentMax, button) => Math.max(currentMax, button.getBoundingClientRect().width), 0)
   );
 
   buttons.forEach((button) => {
