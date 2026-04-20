@@ -1,6 +1,6 @@
 ---
 import Header from '../components/layout/Header.astro';
-import Footer from '../components/layout/Footer.astro';
+import TheFooter from '@dataland/footer';
 import '../styles/global.css';
 
 interface Props {
@@ -54,7 +54,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland
     <main id="main-content">
       <slot />
     </main>
-    <Footer />
+    <TheFooter />
     <script type="module" src="/scripts/equalButtons.js"></script>
   </body>
 </html>

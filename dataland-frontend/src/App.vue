@@ -8,7 +8,7 @@
     <TheHeader />
     <router-view />
   </component>
-  <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -31,7 +31,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { useRoute } from 'vue-router';
 
 import TheHeader from '@/components/generics/TheHeader.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
+import TheFooter from '@dataland/footer';
 import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;
