@@ -15,6 +15,7 @@ plugins {
 node {
     download.set(true)
     version.set("24.9.0")
+    nodeProjectDir.set(rootProject.projectDir)
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"

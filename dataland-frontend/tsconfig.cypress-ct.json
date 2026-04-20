@@ -17,8 +17,7 @@
       "@/*": ["./src/*"],
       "@clients/*": ["./build/clients/*"],
       "@ct/*": ["./tests/component/*"],
-      "@sharedUtils/*": ["./tests/sharedUtils/*"],
-      "@shared-footer/*": ["../dataland-sharedElements/footer/src/*"]
+      "@sharedUtils/*": ["./tests/sharedUtils/*"]
     }
   }
 }

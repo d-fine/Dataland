@@ -1,0 +1,9 @@
+{
+  "name": "dataland",
+  "private": true,
+  "workspaces": [
+    "dataland-frontend",
+    "dataland-website",
+    "dataland-sharedElements/footer"
+  ]
+}

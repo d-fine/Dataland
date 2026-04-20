@@ -2,9 +2,6 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "paths": {
-      "@shared-footer/*": ["../dataland-sharedElements/footer/src/*"]
-    }
+    "jsxImportSource": "vue"
   }
 }

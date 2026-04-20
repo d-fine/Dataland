@@ -10,10 +10,8 @@ export default defineConfig({
   integrations: [mdx(), vue(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      fs: {
-        allow: ['..'],
-      },
+    resolve: {
+      preserveSymlinks: true,
     },
   },
 });

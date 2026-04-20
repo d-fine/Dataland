@@ -24,6 +24,7 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
+    "@dataland/footer": "0.0.1",
     "@formkit/core": "^1.6.9",
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",
@@ -43,8 +44,7 @@
     "primeicons": "^7.0.0",
     "primevue": "^4.4.1",
     "vue": "^3.5.28",
-    "vue-router": "^5.0.2",
-    "@dataland/footer": "file:../dataland-sharedElements/footer"
+    "vue-router": "^5.0.2"
   },
   "devDependencies": {
     "@cypress/code-coverage": "4.0.1",
@@ -52,7 +52,7 @@
     "@tsconfig/node24": "24.0.4",
     "@types/markdown-it": "14.1.2",
     "@types/node": "24.12.0",
-    "@vitejs/plugin-vue": "6.0.4",
+    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.7.0",
     "@vue/test-utils": "2.4.6",
@@ -76,8 +76,8 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "vite": "7.3.2",
-    "vite-plugin-istanbul": "7.2.1",
+    "vite": "^8.0.9",
+    "vite-plugin-istanbul": "^8.0.0",
     "vue-markdown-render": "2.3.0",
     "vue-tsc": "3.2.5"
   }

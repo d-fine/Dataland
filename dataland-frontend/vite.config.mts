@@ -67,6 +67,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    preserveSymlinks: true,
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@clients': path.resolve(__dirname, './build/clients'),
@@ -89,9 +90,6 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     allowedHosts: true,
-    fs: {
-      allow: ['..'],
-    },
     warmup: {
       clientFiles: [
         './src/components/*/*.vue',
