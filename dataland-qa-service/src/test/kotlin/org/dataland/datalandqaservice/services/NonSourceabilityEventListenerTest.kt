@@ -1,8 +1,9 @@
 package org.dataland.datalandqaservice.services
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
 import org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
@@ -19,22 +20,20 @@ import java.time.Instant
 class NonSourceabilityEventListenerTest {
     private val repository: NonSourceableQaReviewRepository = mock()
     private lateinit var listener: NonSourceabilityEventListener
+    private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
 
     @BeforeEach
     fun setUp() {
         listener = NonSourceabilityEventListener(repository)
     }
 
-    private fun event(
-        eventType: NonSourceabilityEventType = NonSourceabilityEventType.NON_SOURCEABILITY_CREATED,
-        nonSourceabilityId: String = "00000000-0000-0000-0000-000000000001",
-    ) = NonSourceabilityLifecycleEvent(
-        nonSourceabilityId = nonSourceabilityId,
-        companyId = "company-1",
-        dataType = "eutaxonomy-financials",
-        reportingPeriod = "2023",
-        eventType = eventType,
-    )
+    private fun event(nonSourceabilityId: String = "00000000-0000-0000-0000-000000000001") =
+        NonSourceabilityLifecycleEvent(
+            nonSourceabilityId = nonSourceabilityId,
+            companyId = "company-1",
+            dataType = "eutaxonomy-financials",
+            reportingPeriod = "2023",
+        )
 
     @Test
     fun `processCreatedEvent persists QA review record with Pending status`() {
@@ -66,9 +65,10 @@ class NonSourceabilityEventListenerTest {
     }
 
     @Test
-    fun `processCreatedEvent throws reject exception for wrong event type`() {
+    fun `onNonSourceabilityCreated throws reject exception for wrong message type`() {
+        val payload = objectMapper.writeValueAsString(event())
         assertThrows<MessageQueueRejectException> {
-            listener.processCreatedEvent(event(eventType = NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-3")
+            listener.onNonSourceabilityCreated(payload, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED, "corr-3")
         }
     }
 }
