@@ -196,10 +196,14 @@ const iconClass = {
         ))
       }
 
-      <a href={HEADER_ACTIONS.login.href} data-test={HEADER_ACTIONS.login.testId} class={linkClass.mobile}>
+      <a href={HEADER_ACTIONS.login.href} data-test={HEADER_ACTIONS.login.testId + '-mobile'} class={linkClass.mobile}>
         {HEADER_ACTIONS.login.label}
       </a>
-      <a href={HEADER_ACTIONS.signup.href} data-test={HEADER_ACTIONS.signup.testId} class={linkClass.mobileSignup}>
+      <a
+        href={HEADER_ACTIONS.signup.href}
+        data-test={HEADER_ACTIONS.signup.testId + '-mobile'}
+        class={linkClass.mobileSignup}
+      >
         {HEADER_ACTIONS.signup.label}
       </a>
     </div>
@@ -209,7 +213,5 @@ const iconClass = {
   <div id="mobile-nav-overlay" class={layoutClass.mobileOverlay}></div>
 </template>
 
-<script>
-  import '../../scripts/initHeader';
-  import '../../scripts/mobileNav';
-</script>
+<script type="module" src="/scripts/initHeader.js"></script>
+<script type="module" src="/scripts/mobileNav.js"></script>
