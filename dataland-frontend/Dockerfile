@@ -3,6 +3,13 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as build-stage
 WORKDIR /app
 
+COPY ./package.json ./package-lock.json ./
+
+COPY ./dataland-frontend/package.json ./dataland-frontend/
+COPY ./dataland-website/package.json ./dataland-website/
+COPY ./dataland-sharedElements/footer/package.json ./dataland-sharedElements/footer/
+COPY ./dataland-sharedElements/footer/src ./dataland-sharedElements/footer/src
+
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
