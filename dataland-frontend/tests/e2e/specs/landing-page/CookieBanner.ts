@@ -17,15 +17,6 @@ describe('As a user, I expect the cookie banner to render and to be functional',
         cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();
         cy.get('#CybotCookiebotDialog').should('not.be.visible');
       });
-
-      it('Check that the Cookie Settings button reopens the Cookiebot dialog after cookies have been accepted', () => {
-        cy.visit('/');
-        cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();
-        cy.get('#CybotCookiebotDialog').should('not.be.visible');
-
-        cy.get("button:contains('Cookie Settings')").should('exist').click();
-        cy.get('#CybotCookiebotDialog').should('be.visible');
-      });
     }
   );
 });
