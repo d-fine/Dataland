@@ -43,7 +43,6 @@ tasks.register("runCoverage", JavaExec::class) {
     group = "Verification"
     classpath = sourceSets["main"].runtimeClasspath
     mainClass = "org.dataland.frameworktoolbox.MainKt"
-    args = listOf("list")
     workingDir = rootDir
 }
 
