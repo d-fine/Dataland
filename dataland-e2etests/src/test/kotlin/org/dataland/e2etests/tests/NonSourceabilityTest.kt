@@ -17,7 +17,7 @@ import org.junit.jupiter.api.TestInstance
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class NonSourceabilityTest {
     private val apiAccessor = ApiAccessor()
     private val testReportingPeriod = "2026"
@@ -69,6 +69,26 @@ class NonSourceabilityTest {
     }
 
     @Test
+    fun `post nonSourceable with bypassQa false and qa Rejected keeps backend inactive and DS state done`() {
+        var ctx =
+            Ctx(
+                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = testReportingPeriod,
+            )
+        ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
+
+        val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
+        assertBackendEntryIsPending(ctx)
+        assertQaReviewRowAppears(ctx)
+        assertDsStateIsNonSourceableVerification(ctx)
+        postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
+        assertQaReviewIsRejected(ctx)
+        assertBackendEntryIsRejectedAndInactive(ctx)
+        assertDsState(ctx, DataSourcingState.DocumentSourcingDone)
+    }
+
+    @Test
     fun `post nonSourceable with bypassQa false triggers full qa lifecycle and currentlyActive becomes true after acceptance`() {
         var ctx =
             Ctx(
@@ -86,26 +106,6 @@ class NonSourceabilityTest {
         assertQaReviewIsAccepted(ctx)
         assertBackendEntryIsAcceptedAndActive(ctx)
         assertDsStateIsNonSourceable(ctx)
-    }
-
-    @Test
-    fun `post nonSourceable with bypassQa false and qa Rejected keeps backend inactive and DS state unchanged`() {
-        var ctx =
-            Ctx(
-                companyId = asAdmin { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId },
-                dataType = DataTypeEnum.sfdr,
-                reportingPeriod = testReportingPeriod,
-            )
-        ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
-
-        val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
-        assertBackendEntryIsPending(ctx)
-        assertQaReviewRowAppears(ctx)
-        assertDsStateIsNonSourceableVerification(ctx)
-        postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
-        assertQaReviewIsRejected(ctx)
-        assertBackendEntryIsRejectedAndInactive(ctx)
-        assertDsState(ctx, DataSourcingState.DocumentSourcingDone)
     }
 
     @Test
