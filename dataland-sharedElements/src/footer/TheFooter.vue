@@ -4,7 +4,7 @@
       <div class="footer__col footer__col--contact">
         <a href="/dataland-sharedElements/public" class="footer__logo-link" aria-label="Dataland home">
           <img
-              src="/logos/logo_dataland_orange.svg"
+              src="/static/logos/logo_dataland_orange.svg"
               alt="Dataland"
               width="240"
               height="55"
@@ -20,7 +20,7 @@
             aria-label="Visit Werte-Stiftung"
         >
           <img
-              src="/logos/a_werte-stiftung_company.svg"
+              src="/static/logos/a_werte-stiftung_company.svg"
               alt="Werte-Stiftung Company"
               width="240"
               height="24"
