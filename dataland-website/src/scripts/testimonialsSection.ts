@@ -38,14 +38,14 @@ function bindSliderControls(section: HTMLElement): void {
     return;
   }
 
-  const scrollSlider = (direction: number) => {
+  const scrollSlider = (direction: number): void => {
     slider.scrollBy({
       left: direction * getSliderStep(slider),
       behavior: 'smooth',
     });
   };
 
-  const handleUpdateButtons = () => {
+  const handleUpdateButtons = (): void => {
     updateSliderButtons(slider, prevButtons, nextButtons);
   };
 
@@ -74,7 +74,7 @@ if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
     document.addEventListener(
       'DOMContentLoaded',
-      () => {
+      (): void => {
         initTestimonialsSliders();
       },
       { once: true }
