@@ -19,8 +19,8 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 /**
- * Tests for the data-sourcing service non-sourceability event consumer (SOR-002).
- * Covers both fail-fast validation (T045) and transition behavior (T018).
+ * Tests for the data-sourcing service non-sourceability event consumer.
+ * Covers both fail-fast validation and transition behavior.
  */
 class NonSourceabilityEventConsumerTest {
     private val queryManager: DataSourcingQueryManager = mock()
@@ -46,7 +46,7 @@ class NonSourceabilityEventConsumerTest {
             whenever(it.state).thenReturn(state)
         }
 
-    // ----- T045: fail-fast validation -----
+    // ----- fail-fast validation -----
 
     @Test
     fun `data sourcing listener discards event with malformed nonSourceabilityId and throws reject exception`() {
@@ -62,7 +62,7 @@ class NonSourceabilityEventConsumerTest {
         }
     }
 
-    // ----- T018: transition behavior -----
+    // ----- transition behavior -----
 
     @Test
     fun `transitionToVerification patches sourcing to NonSourceableVerification when Active`() {

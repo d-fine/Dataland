@@ -63,7 +63,7 @@ class NonSourceabilityInformationManager(
 
     /**
      * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
-     * and emits the appropriate lifecycle event (FR-001, FR-002, FR-003).
+     * and emits the appropriate lifecycle event.
      */
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)

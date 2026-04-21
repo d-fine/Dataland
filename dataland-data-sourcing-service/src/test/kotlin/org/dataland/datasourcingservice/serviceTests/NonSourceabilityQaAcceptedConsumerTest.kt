@@ -19,14 +19,14 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 /**
- * Unit tests for [NonSourceabilityQaDecisionListener] data-sourcing service (T028).
+ * Unit tests for [NonSourceabilityQaDecisionListener] data-sourcing service.
  *
  * Covers:
- * - T028: QA accepted event transitions sourcing to NonSourceable
- * - T028: QA rejected event keeps sourcing in NonSourceableVerification (no patch)
- * - T028: Unexpected event type throws [MessageQueueRejectException]
- * - T028: No matching sourcing → graceful skip
- * - T028: Already NonSourceable on accepted event → idempotent skip
+ * - QA accepted event transitions sourcing to NonSourceable
+ * - QA rejected event keeps sourcing in NonSourceableVerification (no patch)
+ * - Unexpected event type throws [MessageQueueRejectException]
+ * - No matching sourcing → graceful skip
+ * - Already NonSourceable on accepted event → idempotent skip
  */
 class NonSourceabilityQaAcceptedConsumerTest {
     private val queryManager: DataSourcingQueryManager = mock()

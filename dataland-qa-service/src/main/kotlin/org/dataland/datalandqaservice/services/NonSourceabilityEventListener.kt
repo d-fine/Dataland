@@ -26,7 +26,7 @@ import java.time.Instant
 
 /**
  * Listens to non-sourceability-created events from the backend and creates a corresponding
- * [NonSourceableQaReviewInformationEntity] in the QA service (FR-004).
+ * [NonSourceableQaReviewInformationEntity] in the QA service.
  */
 @Service
 class NonSourceabilityEventListener(
