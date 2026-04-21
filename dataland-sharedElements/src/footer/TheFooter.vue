@@ -2,7 +2,7 @@
   <footer class="footer" role="contentinfo" data-test="dataland footer">
     <div class="footer__top">
       <div class="footer__col footer__col--contact">
-        <a href="/dataland-sharedElements/public" class="footer__logo-link" aria-label="Dataland home">
+        <a href="/" class="footer__logo-link" aria-label="Dataland home">
           <img
               src="/static/logos/logo_dataland_orange.svg"
               alt="Dataland"
@@ -197,9 +197,6 @@
           <a href="/legal" class="footer__bottom-link">Legal</a>
           <a href="/imprint" class="footer__bottom-link">Imprint</a>
           <a href="/dataprivacy" class="footer__bottom-link">Data Privacy</a>
-          <button type="button" class="footer__bottom-link footer__cookie-btn" @click="showCookieSettings">
-            Cookie Settings
-          </button>
         </div>
         <div class="footer__bottom-right">
           <span class="footer__copyright">&copy; {{ currentYear }} Dataland</span>
@@ -254,14 +251,6 @@ const productSections: NavigationSection[] = [
   { href: '/product#membership-pricing', label: 'Membership and pricing' },
   { href: '/product#documentation', label: 'Documentation' },
 ];
-
-/** Opens the Cookiebot consent dialog if available. */
-function showCookieSettings(): void {
-  const win = window as Window & { Cookiebot?: { show: () => void } };
-  if (typeof win.Cookiebot !== 'undefined') {
-    win.Cookiebot.show();
-  }
-}
 </script>
 
 <style scoped>
