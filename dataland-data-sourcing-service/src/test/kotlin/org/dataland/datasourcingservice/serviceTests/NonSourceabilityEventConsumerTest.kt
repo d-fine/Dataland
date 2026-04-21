@@ -1,7 +1,6 @@
 package org.dataland.datasourcingservice.serviceTests
 
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -33,16 +32,12 @@ class NonSourceabilityEventConsumerTest {
         listener = NonSourceabilityEventListener(queryManager, sourcingManager)
     }
 
-    private fun buildEvent(
-        nonSourceabilityId: String = UUID.randomUUID().toString(),
-        eventType: NonSourceabilityEventType = NonSourceabilityEventType.NON_SOURCEABILITY_CREATED,
-    ): NonSourceabilityLifecycleEvent =
+    private fun buildEvent(nonSourceabilityId: String = UUID.randomUUID().toString()): NonSourceabilityLifecycleEvent =
         NonSourceabilityLifecycleEvent(
             nonSourceabilityId = nonSourceabilityId,
             companyId = UUID.randomUUID().toString(),
             dataType = "eutaxonomy-non-financials",
             reportingPeriod = "2024",
-            eventType = eventType,
         )
 
     private fun stubStoredSourcing(state: DataSourcingState = DataSourcingState.Initialized): StoredDataSourcing =
@@ -108,7 +103,7 @@ class NonSourceabilityEventConsumerTest {
     @Test
     fun `transitionToNonSourceable patches sourcing to NonSourceable state`() {
         val stored = stubStoredSourcing(DataSourcingState.NonSourceableVerification)
-        val event = buildEvent(eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED)
+        val event = buildEvent()
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
@@ -121,7 +116,7 @@ class NonSourceabilityEventConsumerTest {
     @Test
     fun `transitionToNonSourceable is idempotent when already NonSourceable`() {
         val stored = stubStoredSourcing(DataSourcingState.NonSourceable)
-        val event = buildEvent(eventType = NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED)
+        val event = buildEvent()
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 

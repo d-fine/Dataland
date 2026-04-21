@@ -1,7 +1,7 @@
 package org.dataland.datasourcingservice.serviceTests
 
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datasourcingservice.model.datasourcing.StoredDataSourcing
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
@@ -33,16 +33,13 @@ class NonSourceabilityQaAcceptedConsumerTest {
     private val sourcingManager: DataSourcingManager = mock()
     private val listener = NonSourceabilityQaDecisionListener(queryManager, sourcingManager)
 
-    private fun buildEvent(
-        eventType: NonSourceabilityEventType,
-        companyId: String = UUID.randomUUID().toString(),
-    ) = NonSourceabilityLifecycleEvent(
-        nonSourceabilityId = UUID.randomUUID().toString(),
-        companyId = companyId,
-        dataType = "eutaxonomy-non-financials",
-        reportingPeriod = "2024",
-        eventType = eventType,
-    )
+    private fun buildEvent(companyId: String = UUID.randomUUID().toString()) =
+        NonSourceabilityLifecycleEvent(
+            nonSourceabilityId = UUID.randomUUID().toString(),
+            companyId = companyId,
+            dataType = "eutaxonomy-non-financials",
+            reportingPeriod = "2024",
+        )
 
     private fun stubSourcing(state: DataSourcingState): StoredDataSourcing =
         mock<StoredDataSourcing>().also {
@@ -57,7 +54,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
-        listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-1")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-1")
 
         verify(sourcingManager).patchDataSourcingEntityById(any(), any())
     }
@@ -68,7 +65,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 
-        listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-2")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-2")
 
         verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
     }
@@ -79,7 +76,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 
-        listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED), "corr-3")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_REJECTED, "corr-3")
 
         verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
     }
@@ -89,7 +86,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(emptyList())
 
-        listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED), "corr-4")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-4")
 
         verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
     }
@@ -97,7 +94,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
     @Test
     fun `unexpected event type throws reject exception`() {
         assertThrows<MessageQueueRejectException> {
-            listener.processQaDecisionEvent(buildEvent(NonSourceabilityEventType.NON_SOURCEABILITY_CREATED), "corr-5")
+            listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_CREATED, "corr-5")
         }
     }
 }

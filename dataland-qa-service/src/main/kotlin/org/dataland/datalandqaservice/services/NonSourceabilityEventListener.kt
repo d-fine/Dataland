@@ -6,9 +6,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.logging.CorrelationLogging
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
@@ -53,7 +51,7 @@ class NonSourceabilityEventListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_CREATED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION],
             ),
         ],
     )
@@ -76,12 +74,6 @@ class NonSourceabilityEventListener(
         event: NonSourceabilityLifecycleEvent,
         correlationId: String,
     ) {
-        if (event.eventType != NonSourceabilityEventType.NON_SOURCEABILITY_CREATED) {
-            throw MessageQueueRejectException(
-                "Unexpected event type ${event.eventType} in QA NonSourceabilityEventListener",
-            )
-        }
-
         val existing = nonSourceableQaReviewRepository.findByNonSourceabilityId(event.nonSourceabilityId)
         if (existing != null) {
             logger.info(
