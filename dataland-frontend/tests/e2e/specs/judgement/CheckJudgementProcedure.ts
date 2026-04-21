@@ -394,10 +394,10 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
  * @param targetReporterName
  * @param currentLabel
  */
-function clickNextQaOrThrow(targetReporterName: string, currentLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  cy.log('next button:');
+function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): void {
+  cy.log('Clicking next button...');
 
-  return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
+  cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
     const $visible = $buttons.filter(':visible');
     const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
     const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
@@ -407,13 +407,14 @@ function clickNextQaOrThrow(targetReporterName: string, currentLabel: string): C
     }
 
     cy.wrap($next).click({ force: $visible.length === 0 });
-
-    cy.get('[data-test="qa-current-reporter-label"]')
-      .invoke('text')
-      .should((nextTxt) => {
-        expect(nextTxt.trim()).not.to.equal(currentLabel);
-      });
   });
+
+  cy.get('[data-test="qa-current-reporter-label"]')
+    .invoke('text')
+    .should('not.equal', currentLabel) // 3. Simplified assertion
+    .then(() => {
+      navigateToProperQaReportRecursively(targetReporterName);
+    });
 }
 
 /**
@@ -422,23 +423,19 @@ function clickNextQaOrThrow(targetReporterName: string, currentLabel: string): C
  *
  * Failure behaviour: should throw if no further QA entry exists (next button disabled) and target was not found.
  */
-function navigateToProperQaReportRecursively(targetReporterName: string): void {
+export function navigateToProperQaReportRecursively(targetReporterName: string): void {
   cy.get('[data-test="qa-current-reporter-label"]')
     .invoke('text')
-    .then((currentText) => {
-      const current = currentText.trim();
-      cy.log(`Current QA label: "${current}"`);
-      cy.log(`Target label: "${targetReporterName}"`);
+    .then((txt) => {
+      const current = txt.trim(); // Good practice to trim immediately
+      cy.log(`Current QA label: "${current}" | Target: "${targetReporterName}"`);
 
       if (current === targetReporterName) {
         cy.log('Label matched! Clicking accept-report-button');
         cy.get('[data-test="accept-report-button"]').click();
-        return;
+      } else {
+        goToNextReportAndRecurse(targetReporterName, current);
       }
-
-      clickNextQaOrThrow(targetReporterName, current).then(() => {
-        navigateToProperQaReportRecursively(targetReporterName);
-      });
     });
 }
 
