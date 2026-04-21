@@ -1,4 +1,4 @@
-import TheFooter from '@dataland/footer';
+import TheFooter from '@dataland/shared-elements/footer';
 
 describe('Component test for the footer', () => {
   it('Check if essential elements are present', () => {

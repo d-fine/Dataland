@@ -9,7 +9,7 @@ tasks.register<Copy>("buildSharedFooter") {
     description = "Prepares the shared Vue footer component"
 
     from("src/footer") {
-        include("TheFooter.vue")
+        include("TheFooter.vue", "index.ts")
     }
 
     into(layout.buildDirectory.dir("footer"))

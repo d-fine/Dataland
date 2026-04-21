@@ -30,6 +30,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
+}
+
+tasks.named<NpmTask>("npm_run_build") {
+    dependsOn("generateClients")
     dependsOn(":dataland-sharedElements:buildSharedFooter")
 }
 
