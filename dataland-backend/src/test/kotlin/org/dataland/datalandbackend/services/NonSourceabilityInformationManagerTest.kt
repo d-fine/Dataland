@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
