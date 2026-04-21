@@ -66,7 +66,12 @@ const DATA_POINT_TYPES = {
   numberOfEmployees: 'extendedDecimalNumberOfEmployees',
 } as const;
 
-const UNPATCHABLE_DATA_POINT_TYPES = ['assurance'];
+// const UNPATCHABLE_DATA_POINT_TYPES = [
+//   'assurance',
+// 'provider',
+// 'Assurance Provider',
+// 'customEnumEuTaxonomyReportingAssurance',
+// ];
 
 type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
 type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
@@ -143,7 +148,32 @@ describeIf(
 
     before(function () {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+        // Deep-clone the fixtures loaded from disk and remove any `assurance` fields
+        // so the uploaded dataset payload does not contain assurance/provider KPIs.
+        // This modifies only the in-memory copy used by the test and does not change
+        // the original JSON file on disk.
+        preparedEuTaxonomyFixtures = (jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>).map((fixture) => {
+          const clone = JSON.parse(JSON.stringify(fixture)) as FixtureData<EutaxonomyFinancialsData>;
+
+          // Common locations: eutaxonomy financials often put the object under t.general.general.assurance
+          // some other fixtures may use t.general.assurance
+          try {
+            if (
+              clone.t?.general?.general &&
+              Object.prototype.hasOwnProperty.call(clone.t.general.general, 'assurance')
+            ) {
+              // Treat the nested object as a generic record to delete the key without using `any`.
+              delete (clone.t.general.general as Record<string, unknown>)['assurance'];
+            }
+            if (clone.t?.general && Object.prototype.hasOwnProperty.call(clone.t.general, 'assurance')) {
+              delete (clone.t.general as Record<string, unknown>)['assurance'];
+            }
+          } catch {
+            // ignore unexpected shapes
+          }
+
+          return clone;
+        });
       });
 
       getAdminToken().then((token: string) => {
@@ -634,11 +664,12 @@ function judgeDataPointsWithoutQaReports(
   judgeToken: string,
   overview: DataPointOverview
 ): void {
-  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports).filter(
-    ([dataPointType]) => !UNPATCHABLE_DATA_POINT_TYPES.includes(dataPointType)
-  );
+  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports); //.filter(
+  //([dataPointType]) => !UNPATCHABLE_DATA_POINT_TYPES.includes(dataPointType)
+  // );
 
   cy.log(`dataPointEntries: ${JSON.stringify(dataPointEntries)}`);
+  cy.pause();
   if (dataPointEntries.length === 0) return;
 
   // 1) Open the judge modal on the first datapoint without QA
