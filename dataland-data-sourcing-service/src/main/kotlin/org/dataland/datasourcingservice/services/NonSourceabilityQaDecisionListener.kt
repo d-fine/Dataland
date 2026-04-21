@@ -89,7 +89,7 @@ class NonSourceabilityQaDecisionListener(
             MessageType.NON_SOURCEABILITY_QA_ACCEPTED ->
                 transitionToNonSourceable(event, correlationId)
             MessageType.NON_SOURCEABILITY_QA_REJECTED ->
-                keepInVerification(event, correlationId)
+                transitionToDocumentSourcingDone(event, correlationId)
             else -> {
                 logger.error(
                     "Unexpected message type $messageType in NonSourceabilityQaDecisionListener " +
@@ -119,22 +119,22 @@ class NonSourceabilityQaDecisionListener(
         )
     }
 
-    private fun keepInVerification(
+    @Transactional
+    internal fun transitionToDocumentSourcingDone(
         event: NonSourceabilityLifecycleEvent,
         correlationId: String,
     ) {
-        val sourcing = findSourcingForEvent(event, correlationId)
-        if (sourcing == null) return
-        if (sourcing.state != DataSourcingState.NonSourceableVerification) {
-            logger.warn(
-                "QA rejected for nonSourceabilityId=${event.nonSourceabilityId} but data sourcing is in " +
-                    "state ${sourcing.state} instead of NonSourceableVerification. No transition performed " +
-                    "(correlationId=$correlationId).",
-            )
+        val sourcing = findSourcingForEvent(event, correlationId) ?: return
+        if (sourcing.state == DataSourcingState.DocumentSourcingDone) {
+            logger.info("Idempotent skip: already in DocumentSourcingDone for nonSourceabilityId=${event.nonSourceabilityId}")
             return
         }
+        dataSourcingManager.patchDataSourcingEntityById(
+            UUID.fromString(sourcing.dataSourcingId),
+            DataSourcingPatch(state = DataSourcingState.DocumentSourcingDone),
+        )
         logger.info(
-            "QA rejected: dataSourcingId=${sourcing.dataSourcingId} stays in NonSourceableVerification " +
+            "Transitioned dataSourcingId=${sourcing.dataSourcingId} to DocumentSourcingDone " +
                 "(correlationId=$correlationId, nonSourceabilityId=${event.nonSourceabilityId})",
         )
     }
