@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus
 
 /**
  * Unit tests for [NonSourceabilityQaController] covering:
- * - T026: QA controller tests for accepted/rejected decision on POST /nonSourceable/{nonSourceabilityId}
- * - T049: QA controller tests for GET /nonSourceable and GET /nonSourceable/queue
+ * - QA controller tests for accepted/rejected decision on POST /nonSourceable/{nonSourceabilityId}
+ * - QA controller tests for GET /nonSourceable and GET /nonSourceable/queue
  */
 class NonSourceabilityQaControllerTest {
     companion object {
@@ -45,7 +45,7 @@ class NonSourceabilityQaControllerTest {
         qaComment = null,
     )
 
-    // ─── T026: POST decision ────────────────────────────────────────────────
+    // ─── POST decision ────────────────────────────────────────────────────
 
     @Test
     fun `postNonSourceabilityDecision returns 200 with accepted review`() {
@@ -116,7 +116,7 @@ class NonSourceabilityQaControllerTest {
         }
     }
 
-    // ─── T049: GET listing and queue ────────────────────────────────────────
+    // ─── GET listing and queue ────────────────────────────────────────────
 
     @Test
     fun `getNonSourceableReviews delegates to manager and returns matching entries`() {

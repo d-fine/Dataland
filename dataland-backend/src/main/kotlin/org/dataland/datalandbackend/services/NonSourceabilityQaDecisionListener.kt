@@ -28,7 +28,7 @@ import java.util.UUID
  * Listens to non-sourceability QA decision events (accepted / rejected) emitted by the QA service
  * and applies the resulting state change to [NonSourceabilityInformationEntity].
  *
- * Fail-fast validation (SOR-002): events with malformed or unresolvable nonSourceabilityId are
+ * Fail-fast validation: events with malformed or unresolvable nonSourceabilityId are
  * discarded with an error log and a [MessageQueueRejectException] so they route to the dead-letter
  * exchange rather than causing silent state corruption.
  */

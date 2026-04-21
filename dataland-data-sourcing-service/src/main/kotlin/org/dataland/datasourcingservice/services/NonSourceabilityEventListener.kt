@@ -32,7 +32,7 @@ import java.util.UUID
  *   - [MessageType.NON_SOURCEABILITY_CREATED]       → [DataSourcingState.NonSourceableVerification]
  *   - [MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED] → [DataSourcingState.NonSourceable]
  *
- * Fail-fast validation (SOR-002): events with malformed or blank nonSourceabilityId are
+ * Fail-fast validation: events with malformed or blank nonSourceabilityId are
  * discarded with an error log and a [MessageQueueRejectException].
  */
 @Service

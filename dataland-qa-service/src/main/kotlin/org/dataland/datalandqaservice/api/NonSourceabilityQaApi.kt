@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * API interface for non-sourceability QA review endpoints (FR-005, FR-006, FR-007).
+ * API interface for non-sourceability QA review endpoints.
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID.randomUUID
 
 /**
- * Controller for non-sourceability QA review endpoints (FR-005, FR-006, FR-007, FR-009).
+ * Controller for non-sourceability QA review endpoints.
  */
 @RestController
 class NonSourceabilityQaController(

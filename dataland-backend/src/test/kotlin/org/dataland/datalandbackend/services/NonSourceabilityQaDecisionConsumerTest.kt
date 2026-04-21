@@ -21,7 +21,7 @@ import org.springframework.test.annotation.DirtiesContext
 import java.time.Instant
 
 /**
- * Tests for backend QA decision consumer behavior (T044: fail-fast; T027: accepted/rejected state application).
+ * Tests for backend QA decision consumer behavior: fail-fast validation and accepted/rejected state application.
  */
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -54,7 +54,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         return nonSourceabilityDataRepository.save(entity)
     }
 
-    // ─── T044: fail-fast validation ────────────────────────────────────────
+    // ─── fail-fast validation ────────────────────────────────────────────
 
     @Test
     fun `qa decision listener discards event with malformed nonUUID nonSourceabilityId and throws reject exception`() {
@@ -74,7 +74,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         }
     }
 
-    // ─── T027: accepted/rejected state application ─────────────────────────
+    // ─── accepted/rejected state application ─────────────────────────────
 
     @Test
     fun `qa decision listener sets qaStatus Accepted and currentlyActive true on accepted event`() {

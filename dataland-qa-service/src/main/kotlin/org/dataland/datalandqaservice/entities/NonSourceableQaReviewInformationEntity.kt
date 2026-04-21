@@ -13,8 +13,8 @@ import java.util.UUID
 
 /**
  * QA service persistence entity for a non-sourceability review task.
- * Created when the backend emits a non-sourceability-created event (FR-004).
- * Updated by the QA decision endpoint (FR-006, FR-007, FR-009).
+ * Created when the backend emits a non-sourceability-created event.
+ * Updated by the QA decision endpoint.
  *
  * [nonSourceabilityId] is the correlation key linking this record to the backend's
  * [NonSourceabilityInformationEntity].

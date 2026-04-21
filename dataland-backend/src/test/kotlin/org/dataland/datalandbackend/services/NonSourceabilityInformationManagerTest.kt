@@ -117,7 +117,7 @@ class NonSourceabilityInformationManagerTest(
     }
 
     @Test
-    fun `new request allowed after Rejected entry FR013 edge case`() {
+    fun `new request allowed after Rejected entry`() {
         val firstResult = manager.processNonSourceabilityRequest(request())
         require(firstResult is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
@@ -142,14 +142,14 @@ class NonSourceabilityInformationManagerTest(
     }
 
     @Test
-    fun `sc005 guard NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
+    fun `NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
         val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
-        assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source (SC-005)")
+        assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source")
     }
 
-    // --- T004 US4: invalid combination ---
+    // --- invalid combination ---
 
     @Test
     fun `invalid combination bypassQa false currentlyActive true throws InvalidInputApiException`() {
@@ -158,7 +158,7 @@ class NonSourceabilityInformationManagerTest(
         }
     }
 
-    // --- T006-T007 US3: standard QA path constraint checks ---
+    // --- standard QA path constraint checks ---
 
     @Test
     fun `bypassQa false currentlyActive false rejected when active entry exists throws ConflictApiException`() {
@@ -178,7 +178,7 @@ class NonSourceabilityInformationManagerTest(
         }
     }
 
-    // --- T009-T010 US2: admin bypass constraint checks ---
+    // --- admin bypass constraint checks ---
 
     @Test
     fun `bypassQa true currentlyActive true rejected when active entry exists throws ConflictApiException`() {
@@ -199,7 +199,7 @@ class NonSourceabilityInformationManagerTest(
         }
     }
 
-    // --- T012-T015 US1: admin reversal ---
+    // --- admin reversal ---
 
     @Test
     fun `bypassQa true currentlyActive false deactivates active entry and returns new entry`() {

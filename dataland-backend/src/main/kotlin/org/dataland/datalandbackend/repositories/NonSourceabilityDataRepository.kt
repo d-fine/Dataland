@@ -38,7 +38,7 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
 
     /**
      * Returns true if there is already a row with qaStatus Pending or Accepted for the given tuple.
-     * Used for duplicate-request rejection per FR-013.
+     * Used for duplicate-request rejection.
      */
     @Query(
         """
