@@ -18,22 +18,11 @@ COPY ./.git/ ./.git
 RUN ./gradlew dataland-frontend:generateClients --no-daemon --stacktrace
 
 FROM node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b as production-stage
-
-WORKDIR /app
-
-COPY ./package.json ./package-lock.json ./
-
-COPY ./dataland-frontend/package.json ./dataland-frontend/
-COPY ./dataland-website/package.json ./dataland-website/
-COPY ./dataland-sharedElements/footer/package.json ./dataland-sharedElements/footer/
-COPY ./dataland-sharedElements/footer/src ./dataland-sharedElements/footer/src
-
-RUN npm install
-
 COPY ./dataland-frontend /app/dataland-frontend
 COPY --from=build-stage /app/dataland-frontend/build/clients /app/dataland-frontend/build/clients
 
 WORKDIR /app/dataland-frontend
+RUN npm install
 CMD ["npm", "run", "dev"]
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8090

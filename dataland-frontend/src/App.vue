@@ -31,7 +31,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { useRoute } from 'vue-router';
 
 import TheHeader from '@/components/generics/TheHeader.vue';
-import TheFooter from '@dataland/footer';
+import TheFooter from '@dataland/shared-elements/footer';
 import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;

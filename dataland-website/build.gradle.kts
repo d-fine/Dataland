@@ -14,19 +14,19 @@ plugins {
 node {
     download.set(true)
     version.set("24.9.0")
-    nodeProjectDir.set(rootProject.projectDir)
 }
 
 tasks.register<NpmTask>("npmBuild") {
     description = "Builds the Astro static website."
     group = "build"
-    args.set(listOf("run", "--workspace", "dataland-website", "build"))
-    dependsOn(":dataland-frontend:npmInstall")
+    args.set(listOf("run", "build"))
+    dependsOn("npmInstall")
+    dependsOn(":dataland-sharedElements:buildSharedFooter")
     inputs.dir("src")
     inputs.dir("public")
     inputs.file("astro.config.mjs")
     inputs.file("package.json")
-    inputs.file("${rootProject.projectDir}/package-lock.json")
+    inputs.file("package-lock.json")
     inputs.file("tsconfig.json")
     outputs.dir("dist")
     // Always rerun: the Gradle cache is shared across CI runs via actions/setup-java,

@@ -15,7 +15,6 @@ plugins {
 node {
     download.set(true)
     version.set("24.9.0")
-    nodeProjectDir.set(rootProject.projectDir)
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
@@ -31,11 +30,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
-    workingDir.set(projectDir)
-}
-
-tasks.named<NpmTask>("npmInstall") {
-    workingDir.set(rootProject.projectDir)
+    dependsOn(":dataland-sharedElements:buildSharedFooter")
 }
 
 tasks.register("generateClients") {
