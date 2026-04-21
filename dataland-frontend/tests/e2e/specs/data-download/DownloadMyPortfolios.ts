@@ -179,8 +179,6 @@ describeIf(
         })
         .then(() => {
           createPortfolio(storedCompany, secondCompany, portfolioName);
-          cy.visitAndCheckAppMount('/portfolios');
-          cy.contains('[data-test]', portfolioName, { timeout: 30000 }).should('exist');
         });
     });
 

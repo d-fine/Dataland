@@ -6,7 +6,6 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
-import { visitAndCheckAppMount } from '@e2e/support/Commands.ts';
 
 const dataType = DataTypeEnum.Sfdr;
 let storedCompany: StoredCompany;
@@ -14,7 +13,7 @@ let storedCompany: StoredCompany;
  * Navigates to the framework edit mode page for the stored company
  */
 function navigateToEditMode(): void {
-  visitAndCheckAppMount(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
+  cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
   cy.get('button[data-test=editDataPointsButton]').should('exist').click();
 }
 

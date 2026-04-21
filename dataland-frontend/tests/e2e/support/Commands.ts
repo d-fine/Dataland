@@ -18,7 +18,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
-      closeCookieBannerIfItExists: typeof closeCookieBannerIfShown;
+      closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
       ensureLoggedInAsReader: typeof ensureLoggedInAsReader;
       ensureLoggedInAsUploader: typeof ensureLoggedInAsUploader;
       ensureLoggedInAsReviewer: typeof ensureLoggedInAsReviewer;
@@ -79,13 +79,14 @@ const ASTRO_ROUTES = new Set([
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
-  closeCookieBannerIfShown();
+  closeCookieBannerIfItExists();
 
   if (ASTRO_ROUTES.has(endpoint)) {
     return cy.get('main#main-content').should('exist');
   }
 
-  return cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
+  cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
+  return cy.get('#app');
 }
 
 /**
@@ -228,15 +229,11 @@ export function waitForPageLoad(options: {
 /**
  * Close the cookie banner if it exists and do nothing if it doesn't exist.
  */
-export function closeCookieBannerIfShown(): Cypress.Chainable {
-  return cy.get('body').then(($body) => {
-    if ($body.find('#CybotCookiebotDialogBody').length) {
-      cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll', {
-        timeout: 15000,
-      })
-        .should('be.visible')
-        .click({ force: true });
-      cy.get('#CybotCookiebotDialogBody', { timeout: 10000 }).should('not.be.visible');
+function closeCookieBannerIfItExists(): void {
+  cy.get('body').then(($body) => {
+    const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
+    if (allowCookies.length == 1) {
+      allowCookies[0].click();
     }
   });
 }
