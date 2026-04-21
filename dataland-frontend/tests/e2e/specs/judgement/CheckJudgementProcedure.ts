@@ -414,19 +414,33 @@ function tryFind(target: string): void {
       cy.log('next button:');
       cy.pause();
 
-      cy.get('[data-test="qa-next-button"]').then(($next) => {
-        const isDisabled = $next.is(':disabled');
-        cy.log(`qa-next-button disabled: ${isDisabled}`);
+      // Get all next buttons inside the panel; prefer a visible one but fall back
+      // to the first button to avoid ':visible' timeouts.
+      cy.get('[data-test="qa-next-button"]').then(($buttons) => {
+        const $visible = $buttons.filter(':visible');
+        const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+        if ($visible.length === 0) {
+          cy.log('No visible qa-next-button found in panel, falling back to first button');
+        }
 
-        // if (isDisabled) {
-        //  throw new Error(`Reporter "${target}" not found. No more entries.`);
-        // }
+        cy.pause();
+        const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+        cy.log(`qa-next-button disabled: ${isDisabled}`);
+        cy.pause();
+
+        if (isDisabled) {
+          throw new Error(`Reporter "${target}" not found. No more entries.`);
+        }
+
         cy.log('Moving to next QA entry...');
-        cy.wrap($next).click();
+        // If we had to fall back, click with force to bypass visibility issues
+        cy.wrap($next).click({ force: $visible.length === 0 });
+
         // Wait for the label to change before reading it again
         cy.get('[data-test="qa-current-reporter-label"]')
-          .should((el) => {
-            expect(el.text()).not.to.equal(current);
+          .invoke('text')
+          .should((nextTxt) => {
+            expect(nextTxt.trim()).not.to.equal(current);
           })
           .then(() => {
             tryFind(target);
