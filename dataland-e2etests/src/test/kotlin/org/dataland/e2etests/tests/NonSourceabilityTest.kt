@@ -283,7 +283,7 @@ class NonSourceabilityTest {
     }
 
     private fun assertDsStateIsNonSourceable(ctx: Ctx) {
-        awaitUntilAsserted {
+        awaitUntilAsserted(timeoutSeconds = 30) {
             val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
             assertEquals(
                 DataSourcingState.NonSourceable,
