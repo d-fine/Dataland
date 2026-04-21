@@ -90,6 +90,60 @@ class NonSourceabilityEventListener(
         }
     }
 
+    /**
+     * Handles a non-sourceability QA decision event from the QA service. Transitions the matching data
+     * sourcing object to [DataSourcingState.NonSourceable] if accepted, or to [DataSourcingState.DocumentSourcingDone]
+     * if rejected.
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.DATA_SOURCING_SERVICE_NON_SOURCEABILITY_QA_DECISION,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
+                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED, RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED],
+            ),
+        ],
+    )
+    fun onNonSourceabilityQaDecision(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.TYPE) messageType: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+    ) {
+        MessageQueueUtils.rejectMessageOnException {
+            if (messageType != MessageType.NON_SOURCEABILITY_QA_ACCEPTED &&
+                messageType != MessageType.NON_SOURCEABILITY_QA_REJECTED
+            ) {
+                throw MessageQueueRejectException(
+                    "Unexpected message type \"$messageType\" in non-sourceability QA decision listener",
+                )
+            }
+            val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
+            CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
+                when (event.eventType) {
+                    org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED ->
+                        transitionToNonSourceable(event, correlationId)
+                    org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED ->
+                        transitionToDocumentSourcingDone(event, correlationId)
+                    else -> {
+                        logger.error(
+                            "Unexpected event type ${event.eventType} in NonSourceabilityEventListener " +
+                                "(correlationId=$correlationId). Discarding.",
+                        )
+                        throw MessageQueueRejectException("Unexpected event type ${event.eventType} in QA decision listener")
+                    }
+                }
+            }
+        }
+    }
+
     @Transactional
     internal fun transitionToVerification(
         event: NonSourceabilityLifecycleEvent,
@@ -126,6 +180,26 @@ class NonSourceabilityEventListener(
         )
         logger.info(
             "Transitioned dataSourcingId=${sourcing.dataSourcingId} to NonSourceable " +
+                "(correlationId=$correlationId, nonSourceabilityId=${event.nonSourceabilityId})",
+        )
+    }
+
+    @Transactional
+    internal fun transitionToDocumentSourcingDone(
+        event: NonSourceabilityLifecycleEvent,
+        correlationId: String,
+    ) {
+        val sourcing = findSourcingForEvent(event, correlationId) ?: return
+        if (sourcing.state == DataSourcingState.DocumentSourcingDone) {
+            logger.info("Idempotent skip: already in DocumentSourcingDone for nonSourceabilityId=${event.nonSourceabilityId}")
+            return
+        }
+        dataSourcingManager.patchDataSourcingEntityById(
+            UUID.fromString(sourcing.dataSourcingId),
+            DataSourcingPatch(state = DataSourcingState.DocumentSourcingDone),
+        )
+        logger.info(
+            "Transitioned dataSourcingId=${sourcing.dataSourcingId} to DocumentSourcingDone " +
                 "(correlationId=$correlationId, nonSourceabilityId=${event.nonSourceabilityId})",
         )
     }
