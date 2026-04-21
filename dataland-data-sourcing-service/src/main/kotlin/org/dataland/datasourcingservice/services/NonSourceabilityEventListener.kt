@@ -28,9 +28,9 @@ import java.util.UUID
  * Handles non-sourceability submission events from the backend.
  *
  * A single queue binds to [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION] and dispatches on
- * [NonSourceabilityLifecycleEvent.eventType]:
- *   - [NonSourceabilityEventType.NON_SOURCEABILITY_CREATED]       → [DataSourcingState.NonSourceableVerification]
- *   - [NonSourceabilityEventType.NON_SOURCEABILITY_AUTO_ACCEPTED] → [DataSourcingState.NonSourceable]
+ * messageType:
+ *   - [MessageType.NON_SOURCEABILITY_CREATED]       → [DataSourcingState.NonSourceableVerification]
+ *   - [MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED] → [DataSourcingState.NonSourceable]
  *
  * Fail-fast validation (SOR-002): events with malformed or blank nonSourceabilityId are
  * discarded with an error log and a [MessageQueueRejectException].
@@ -108,7 +108,7 @@ class NonSourceabilityEventListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS, declare = "false"),
-                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_ACCEPTED, RoutingKeyNames.NON_SOURCEABILITY_QA_REJECTED],
+                key = [RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION],
             ),
         ],
     )
@@ -127,18 +127,11 @@ class NonSourceabilityEventListener(
             }
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
             CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
-                when (event.eventType) {
-                    org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType.NON_SOURCEABILITY_QA_ACCEPTED ->
+                when (messageType) {
+                    MessageType.NON_SOURCEABILITY_QA_ACCEPTED ->
                         transitionToNonSourceable(event, correlationId)
-                    org.dataland.datalandmessagequeueutils.model.NonSourceabilityEventType.NON_SOURCEABILITY_QA_REJECTED ->
+                    MessageType.NON_SOURCEABILITY_QA_REJECTED ->
                         transitionToDocumentSourcingDone(event, correlationId)
-                    else -> {
-                        logger.error(
-                            "Unexpected event type ${event.eventType} in NonSourceabilityEventListener " +
-                                "(correlationId=$correlationId). Discarding.",
-                        )
-                        throw MessageQueueRejectException("Unexpected event type ${event.eventType} in QA decision listener")
-                    }
                 }
             }
         }
