@@ -206,10 +206,10 @@ describeIf(
 
         if (expectedQaReportCount > 0) {
           // Wait for the nav count to match the expected number of QA reports
-          cy.contains(`[data-test="corrected-datapoint-section"]`, `(1 / ${expectedQaReportCount})`).should('exist');
+          cy.get('[data-test="corrected-datapoint-section"]')
+            .contains(`(1 / ${expectedQaReportCount})`)
+            .should('exist');
         }
-
-        cy.pause();
 
         // 6) Get the judgement config and make the decision (this handles all UI interactions)
         const judgement = qaConfig?.judgement;
@@ -217,8 +217,6 @@ describeIf(
           makeJudgementDecision(judgement);
         }
         cy.log(`makeJudgementDecision ran successfully!`);
-
-        cy.pause();
 
         // 7) Wait for the PATCH and verify the request body
         cy.wait('@patchDatapoint').then((interception) => {
@@ -392,59 +390,54 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
 }
 
 /**
+ * Clicks the "Next" button in the Judge modal to navigate to the next QA report entry, and verifies that the label has changed.
+ * @param targetReporterName
+ * @param currentLabel
+ */
+function clickNextQaOrThrow(targetReporterName: string, currentLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  cy.log('next button:');
+
+  return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
+    const $visible = $buttons.filter(':visible');
+    const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+    const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+
+    if (isDisabled) {
+      throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+    }
+
+    cy.wrap($next).click({ force: $visible.length === 0 });
+
+    cy.get('[data-test="qa-current-reporter-label"]')
+      .invoke('text')
+      .should((nextTxt) => {
+        expect(nextTxt.trim()).not.to.equal(currentLabel);
+      });
+  });
+}
+
+/**
  * This function is used inside makeJudgementDecision to recursively scan QA report entries in the Judge modal until
  * the target reporter label is found.
  *
  * Failure behaviour: should throw if no further QA entry exists (next button disabled) and target was not found.
  */
-function tryFind(target: string): void {
+function navigateToProperQaReportRecursively(targetReporterName: string): void {
   cy.get('[data-test="qa-current-reporter-label"]')
     .invoke('text')
-    .then((txt) => {
-      const current = txt;
+    .then((currentText) => {
+      const current = currentText.trim();
       cy.log(`Current QA label: "${current}"`);
-      cy.log(`Target label: "${target}"`);
+      cy.log(`Target label: "${targetReporterName}"`);
 
-      if (current === target) {
+      if (current === targetReporterName) {
         cy.log('Label matched! Clicking accept-report-button');
         cy.get('[data-test="accept-report-button"]').click();
         return;
       }
 
-      cy.log('next button:');
-      cy.pause();
-
-      // Get all next buttons inside the panel; prefer a visible one but fall back
-      // to the first button to avoid ':visible' timeouts.
-      cy.get('[data-test="qa-next-button"]').then(($buttons) => {
-        const $visible = $buttons.filter(':visible');
-        const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
-        if ($visible.length === 0) {
-          cy.log('No visible qa-next-button found in panel, falling back to first button');
-        }
-
-        cy.pause();
-        const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
-        cy.log(`qa-next-button disabled: ${isDisabled}`);
-        cy.pause();
-
-        if (isDisabled) {
-          throw new Error(`Reporter "${target}" not found. No more entries.`);
-        }
-
-        cy.log('Moving to next QA entry...');
-        // If we had to fall back, click with force to bypass visibility issues
-        cy.wrap($next).click({ force: $visible.length === 0 });
-
-        // Wait for the label to change before reading it again
-        cy.get('[data-test="qa-current-reporter-label"]')
-          .invoke('text')
-          .should((nextTxt) => {
-            expect(nextTxt.trim()).not.to.equal(current);
-          })
-          .then(() => {
-            tryFind(target);
-          });
+      clickNextQaOrThrow(targetReporterName, current).then(() => {
+        navigateToProperQaReportRecursively(targetReporterName);
       });
     });
 }
@@ -481,8 +474,7 @@ function makeJudgementDecision(judgement: QaJudgement): void {
       throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
     }
 
-    tryFind(target);
-    return;
+    navigateToProperQaReportRecursively(target);
   }
 }
 
