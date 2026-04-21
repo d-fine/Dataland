@@ -105,7 +105,7 @@ class NonSourceabilityTest {
         postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
         assertQaReviewIsRejected(ctx)
         assertBackendEntryIsRejectedAndInactive(ctx)
-        assertDsStateIsUnchanged(ctx, DataSourcingState.DocumentSourcingDone)
+        assertDsState(ctx, DataSourcingState.DocumentSourcingDone)
     }
 
     @Test
@@ -330,7 +330,7 @@ class NonSourceabilityTest {
         }
     }
 
-    private fun assertDsStateIsUnchanged(
+    private fun assertDsState(
         ctx: Ctx,
         expected: DataSourcingState,
     ) {
