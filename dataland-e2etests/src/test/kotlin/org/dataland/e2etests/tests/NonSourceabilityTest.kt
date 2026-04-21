@@ -105,7 +105,7 @@ class NonSourceabilityTest {
         postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
         assertQaReviewIsRejected(ctx)
         assertBackendEntryIsRejectedAndInactive(ctx)
-        assertDsStateIsUnchanged(ctx, DataSourcingState.NonSourceableVerification)
+        assertDsStateIsUnchanged(ctx, DataSourcingState.DocumentSourcingDone)
     }
 
     @Test
