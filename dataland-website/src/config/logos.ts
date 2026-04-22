@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-export interface TrustedByLogo {
+export interface MemberLogo {
   name: string;
   imagePath: string;
   scale?: number;
@@ -9,46 +9,48 @@ export interface TrustedByLogo {
   carouselContainerClassName?: string;
   gridContainerClassName?: string;
   imageFrameClassName?: string;
+  category: 'member' | 'partner';
+  url?: string;
 }
 
-type TrustedByLogoMetadata = Omit<TrustedByLogo, 'imagePath'> & { imagePath?: string };
+type LogoMetadata = Omit<MemberLogo, 'imagePath'> & { imagePath?: string };
 
 const PUBLIC_LOGOS_DIRECTORY = path.join(process.cwd(), 'public', 'static', 'logos');
 
-const LOGO_METADATA_BY_FILENAME: Record<string, TrustedByLogoMetadata> = {
-  'logo_atlas_metrics.svg': { name: 'Atlas Metrics' },
-  'logo_bantleon.svg': { name: 'Bantleon' },
-  'logo_bayerninvest.svg': { name: 'BayernInvest', scale: 1.12, className: 'translate-x-[0.08rem]' },
-  'logo_bayernlb_gross.svg': { name: 'BayernLB', scale: 1 },
-  'logo_bvi.png': { name: 'BVI' },
-  'logo_ChomCapital.png': { name: 'Chom Capital', scale: 1.12 },
-  'logo_deka_x.png': { name: 'Deka', scale: 1.08 },
-  'logo_deutsche_rueck.svg': { name: 'Deutsche Rueck' },
-  'logo_d-fine.svg': { name: 'd-fine' },
-  'logo_DYDONAI_x.png': { name: 'DYDONAI', scale: 1.12 },
-  'logo_Envoria.png': { name: 'Envoria' },
-  'logo_eurodat.svg': { name: 'EuroDat' },
-  'logo_fmf.png': { name: 'FMF', scale: 1.34 },
-  'logo_gleif_new.svg': { name: 'GLEIF' },
-  'logo_hansa_invest.svg': { name: 'Hansa-Invest' },
-  'logo_impact_cubed.svg': { name: 'Impact Cubed' },
-  'logo_KYT.svg': { name: 'KYT' },
-  'logo_laiqon.svg': { name: 'Laiqon' },
-  'logo_meag_big.svg': { name: 'MEAG' },
-  'logo_nordlb.svg': { name: 'NORD/LB' },
-  'logo_ovb.png': { name: 'OVB', scale: 1.04 },
-  'logo_pwc.svg': { name: 'PwC', scale: 1.12 },
-  'logo_sustaind.svg': { name: 'Sustaind', scale: 1.4 },
-  'logo_tsystems.svg': { name: 'T-Systems' },
-  'logo_vgh.svg': { name: 'VGH', scale: 1.04 },
-  'logo_vkb.svg': { name: 'VKB', scale: 1.04 },
-  'logo_wertestiftung.png': { name: 'Werte-Stiftung' },
-  'logo_iss-soprasteria.png': { name: 'ISS (Sopra Steria)' },
-  'logo_fact_Salbei.svg': { name: 'FACT First Cloud', scale: 1.36 },
-  'logo_eskua_salbei.svg': { name: 'Eskua AI', scale: 0.88 },
+const LOGO_METADATA_BY_FILENAME: Record<string, LogoMetadata> = {
+  'logo_atlas_metrics.svg': { name: 'Atlas Metrics', category: 'member' },
+  'logo_bantleon.svg': { name: 'Bantleon', category: 'member' },
+  'logo_bayerninvest.svg': { name: 'BayernInvest', scale: 1.12, className: 'translate-x-[0.08rem]', category: 'member' },
+  'logo_bayernlb_gross.svg': { name: 'BayernLB', scale: 1, category: 'member' },
+  'logo_bvi.png': { name: 'BVI', category: 'member' },
+  'logo_ChomCapital.png': { name: 'Chom Capital', scale: 1.12, category: 'member' },
+  'logo_deka_x.png': { name: 'Deka', scale: 1.08, category: 'member' },
+  'logo_deutsche_rueck.svg': { name: 'Deutsche Rueck', category: 'member' },
+  'logo_d-fine.svg': { name: 'd-fine', category: 'partner', url: 'https://www.d-fine.com/' },
+  'logo_DYDONAI_x.png': { name: 'DYDONAI', scale: 1.12, category: 'partner', url: 'https://dydon.ai/' },
+  'logo_Envoria.png': { name: 'Envoria', category: 'member' },
+  'logo_eurodat.svg': { name: 'EuroDat', category: 'partner' },
+  'logo_fmf.png': { name: 'FMF', scale: 1.34, category: 'member' },
+  'logo_gleif_new.svg': { name: 'GLEIF', category: 'partner', url: 'https://www.gleif.org/' },
+  'logo_hansa_invest.svg': { name: 'Hansa-Invest', category: 'member' },
+  'logo_laiqon.svg': { name: 'Laiqon', category: 'member' },
+  'logo_meag_big.svg': { name: 'MEAG', category: 'member' },
+  'logo_nordlb.svg': { name: 'NORD/LB', category: 'member' },
+  'logo_ovb.png': { name: 'OVB', scale: 1.04, category: 'member' },
+  'logo_pwc.svg': { name: 'PwC', scale: 1.12, category: 'member' },
+  'logo_sustaind.svg': { name: 'Sustaind', scale: 1.4, category: 'partner', url:'https://www.sustaind.de/' },
+  'logo_tsystems.svg': { name: 'T-Systems', category: 'partner', url: 'https://www.t-systems.com/' },
+  'logo_vgh.svg': { name: 'VGH', scale: 1.04, category: 'member' },
+  'logo_vkb.svg': { name: 'VKB', scale: 1.04, category: 'member' },
+  'logo_wertestiftung.png': { name: 'Werte-Stiftung', category: 'partner', url:'https://wertestiftung.org/' },
+  'logo_iss-soprasteria.png': { name: 'ISS (Sopra Steria)', category: 'partner', scale: 0.92, url: 'https://iss.soprasteria.de/' },
+  'logo_fact_Salbei.svg': { name: 'FACT First Cloud', scale: 1.62, category: 'partner', url: 'https://www.fact.de/unsere-loesungen/first-cloud/' },
+  'logo_eskua_salbei.svg': { name: 'Eskua AI', scale: 0.94, category: 'partner', url: 'https://www.eskua.ai/' },
   'logo_keynum.webp': {
     name: 'Keynum',
     imageFrameClassName: 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.2rem]',
+    category: 'partner',
+    url: 'https://www.keynum.com/',
   },
 };
 
@@ -79,7 +81,7 @@ function resolveLogoImagePath(filename: string): string {
   );
 }
 
-function createTrustedByLogo(filename: string): TrustedByLogo {
+function createMemberLogo(filename: string): MemberLogo {
   const metadata = LOGO_METADATA_BY_FILENAME[filename];
 
   return {
@@ -90,7 +92,17 @@ function createTrustedByLogo(filename: string): TrustedByLogo {
     carouselContainerClassName: metadata?.carouselContainerClassName,
     gridContainerClassName: metadata?.gridContainerClassName,
     imageFrameClassName: metadata?.imageFrameClassName,
+    category: metadata?.category ?? 'member',
+    url: metadata?.url,
   };
 }
 
-export const TRUSTED_BY_LOGOS: TrustedByLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME).map(createTrustedByLogo);
+export const MEMBER_LOGOS: MemberLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME)
+  .filter((filename) => LOGO_METADATA_BY_FILENAME[filename].category === 'member')
+  .map(createMemberLogo);
+
+export const PARTNER_LOGOS: MemberLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME)
+  .filter((filename) => LOGO_METADATA_BY_FILENAME[filename].category === 'partner')
+  .map(createMemberLogo);
+
+export const ALL_LOGOS: MemberLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME).map(createMemberLogo);
