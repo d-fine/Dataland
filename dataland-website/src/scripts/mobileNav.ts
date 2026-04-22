@@ -56,6 +56,7 @@ function initMobileNavInternal(
   const signupLink = nav.querySelector<HTMLElement>('[data-test="signup-dataland-button-mobile"]');
 
   if (backToPlatform) {
+    backToPlatform.hidden = !isAuthenticated;
     backToPlatform.style.display = isAuthenticated ? 'flex' : 'none';
   }
   if (loginLink) {
