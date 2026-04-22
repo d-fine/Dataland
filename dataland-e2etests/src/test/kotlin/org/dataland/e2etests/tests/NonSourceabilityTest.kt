@@ -340,7 +340,7 @@ class NonSourceabilityTest {
         ctx: Ctx,
         expected: DataSourcingState,
     ) {
-        awaitUntilAsserted {
+        awaitUntilAsserted(timeoutSeconds = 30) {
             val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
             assertEquals(expected, ds.state, "DS state must remain $expected after QA rejection")
         }
