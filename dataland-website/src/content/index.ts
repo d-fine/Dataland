@@ -115,13 +115,13 @@ export const FRAMEWORK_CARDS: FrameworkCard[] = [
     title: 'EU Taxonomy',
     subtitle: 'Nuclear and Gas',
     description:
-      'The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions.',
+      'The EU Taxonomy includes specific criteria for nuclear and gas activities under transitional provisions, allowing companies to report their contribution to climate objectives under defined conditions. Under the Omnibus 2026/73 EU Taxonomy update these KPIs have been integrated into the new Financials and Non-Financials templates.',
   },
   {
     title: 'SFDR',
     subtitle: '',
     description:
-      'The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level.',
+      'The Sustainable Finance Disclosure Regulation requires financial market participants to disclose how sustainability risks are integrated into investment decisions and to report Principal Adverse Impact indicators at entity and product level. The contained KPIs largely overlap with CSRD.',
   },
   {
     title: 'PCAF',
@@ -143,7 +143,7 @@ export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
     logoClassName: 'scale-[1.18]',
     title: 'Closing SFDR Data Gaps and Simplifying the EU Taxonomy Template Transition',
     primaryTag: 'Asset manager',
-    secondaryTags: ['SFDR', 'EU Taxo', 'Audit'],
+    secondaryTags: ['SFDR', 'EU Taxo'],
     text: 'Filling SFDR gaps and EU Taxo template transition',
     link: '/product#meag',
   },
@@ -160,7 +160,7 @@ export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
     logoClassName: 'scale-[1.3]',
     title: 'Using Dataland as an Independent Source to Validate PAI Data for Audit',
     primaryTag: 'Insurance',
-    secondaryTags: ['SFDR', 'Validation', 'Audit'],
+    secondaryTags: ['SFDR', 'Validation'],
     text: 'PAI lineage and source transparency for compliance',
     link: '/product#ovbraunschweig',
   },
