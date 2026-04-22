@@ -16,12 +16,24 @@ node {
     version.set("24.9.0")
 }
 
+tasks.register<Copy>("copySharedElements") {
+    group = "build"
+    description = "Copies the shared-elements tarball into build/shared-elements/ for local consumption"
+    dependsOn(":dataland-sharedElements:packSharedElements")
+    from("${project.rootDir}/dataland-sharedElements/build/dataland-shared-elements.tgz")
+    into(layout.buildDirectory.dir("shared-elements"))
+}
+
+tasks.withType<NpmTask> {
+    dependsOn("copySharedElements")
+}
+
 tasks.register<NpmTask>("npmBuild") {
     description = "Builds the Astro static website."
     group = "build"
     args.set(listOf("run", "build"))
     dependsOn("npmInstall")
-    dependsOn(":dataland-sharedElements:buildSharedFooter")
+    dependsOn("copySharedElements")
     inputs.dir("src")
     inputs.dir("public")
     inputs.file("astro.config.mjs")

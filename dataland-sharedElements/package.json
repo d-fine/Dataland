@@ -5,6 +5,10 @@
   "main": "src/footer/index.ts",
   "module": "src/footer/index.ts",
   "types": "src/footer/index.ts",
+  "files": [
+    "src",
+    "public"
+  ],
   "exports": {
     ".": "./src/footer/index.ts",
     "./footer": "./src/footer/index.ts"

@@ -30,11 +30,44 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
+    dependsOn("copySharedElements")
+    dependsOn("copyAstroWebsite")
+}
+
+tasks.register<Copy>("copySharedElements") {
+    group = "build"
+    description = "Copies the shared-elements tarball into build/shared-elements/ for local consumption"
+    dependsOn(":dataland-sharedElements:packSharedElements")
+    from("${project.rootDir}/dataland-sharedElements/build/dataland-shared-elements.tgz")
+    into(layout.buildDirectory.dir("shared-elements"))
+}
+
+tasks.register("copyAstroWebsite") {
+    group = "build"
+    description = "Copies the Astro website dist into public/ for serving alongside the Vue SPA"
+    dependsOn(":dataland-website:npmBuild")
+
+    doLast {
+        // Copy everything except index.html directly into public/ so paths like /_astro/ and /static/ work
+        copy {
+            from("${project.rootDir}/dataland-website/dist") {
+                exclude("index.html")
+            }
+            into("${projectDir}/public")
+        }
+        // Copy index.html as astro-index.html to avoid shadowing the Vue SPA entry point
+        copy {
+            from("${project.rootDir}/dataland-website/dist/index.html")
+            into("${projectDir}/public")
+            rename("index.html", "astro-index.html")
+        }
+    }
 }
 
 tasks.named<NpmTask>("npm_run_build") {
     dependsOn("generateClients")
-    dependsOn(":dataland-sharedElements:buildSharedFooter")
+    dependsOn("copySharedElements")
+    dependsOn("copyAstroWebsite")
 }
 
 tasks.register("generateClients") {

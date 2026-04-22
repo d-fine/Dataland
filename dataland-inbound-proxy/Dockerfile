@@ -11,7 +11,6 @@ COPY dataland-inbound-proxy/error_documents /var/www/html/error_documents
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-inbound-proxy/robots-prod.txt /var/www/html/robots-prod.txt
 COPY dataland-frontend/src/assets/images /var/www/images
-COPY dataland-website/dist /var/www/astro
 COPY ./gitinfo /var/www/html/gitinfo
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts

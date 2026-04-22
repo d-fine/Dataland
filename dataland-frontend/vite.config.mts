@@ -1,7 +1,41 @@
-import { defineConfig } from 'vite';
+import { defineConfig, Plugin } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import vue from '@vitejs/plugin-vue';
 import istanbul from 'vite-plugin-istanbul';
+
+/**
+ * Vite plugin to serve Astro pre-rendered pages from public/astro/.
+ * Maps clean URLs like /about to /astro/about/index.html,
+ * and / to /astro/index.html.
+ */
+function astroStaticPages(): Plugin {
+  const astroRoutes = [
+    '/', '/about', '/community', '/community/', '/product', '/imprint',
+    '/legal', '/dataprivacy', '/testimonials', '/partner-stories', '/newsletter',
+    '/success-stories-meag', '/success-stories-nordlb', '/success-stories-ovb',
+  ];
+  return {
+    name: 'astro-static-pages',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url?.split('?')[0];
+        if (url && astroRoutes.includes(url)) {
+          const filePath = url === '/'
+            ? path.resolve('public/astro-index.html')
+            : path.resolve(`public${url}/index.html`);
+          if (fs.existsSync(filePath)) {
+            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+            fs.createReadStream(filePath).pipe(res);
+            return;
+          }
+        }
+        next();
+      });
+    },
+  };
+}
 
 export default defineConfig({
   //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
@@ -57,6 +91,7 @@ export default defineConfig({
     ],
   },
   plugins: [
+    astroStaticPages(),
     vue(),
     istanbul({
       include: 'src/*',
