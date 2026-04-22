@@ -17,7 +17,7 @@ onMounted(async () => {
   sessionStorage.removeItem('dataland_login_redirect_pending');
   sessionStorage.removeItem('dataland_register_redirect_pending');
   if (!keycloak.authenticated) {
-    router.replace({ path: '/' }).catch((error) => console.error(error));
+    router.replace({ path: '/login' }).catch((error) => console.error(error));
     return;
   }
   const apiClientProvider = new ApiClientProvider(Promise.resolve(keycloak));
