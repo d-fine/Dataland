@@ -2,8 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PartnersSection from '../components/page-partner-stories/PartnersSection.astro';
 import { COMMUNITY_GRID_ITEMS, COMMUNITY_PAGE_CONTENT } from '../content/community';
-import { PARTNERS } from '../content/about';
-import { MEMBERS_LOGOS } from '../config/logos';
+import { MEMBER_LOGOS, PARTNER_LOGOS } from '../config/logos';
 import CommunityHeroSection from '../components/page-community/CommunityHeroSection.astro';
 import CommunityMembersSection from '../components/page-community/CommunityMembersSection.astro';
 import CommunityCtaSection from '../components/page-community/CommunityCtaSection.astro';
@@ -14,10 +13,10 @@ import CommunityCtaSection from '../components/page-community/CommunityCtaSectio
 
   <CommunityMembersSection
     content={COMMUNITY_PAGE_CONTENT.members}
-    logos={MEMBERS_LOGOS}
+    logos={MEMBER_LOGOS}
   />
 
-  <PartnersSection partners={PARTNERS} title={COMMUNITY_PAGE_CONTENT.partners.title} showTopAccent={false} />
+  <PartnersSection partners={PARTNER_LOGOS} title={COMMUNITY_PAGE_CONTENT.partners.title} showTopAccent={false} />
 
   <CommunityCtaSection content={COMMUNITY_PAGE_CONTENT.cta} />
 </Base>

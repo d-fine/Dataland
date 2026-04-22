@@ -8,14 +8,6 @@ export interface Person {
   linkedIn: string;
 }
 
-export interface Partner {
-  name: string;
-  imagePath: string;
-  url: string;
-  scale?: number;
-  darkBg?: boolean;
-}
-
 export interface NewsItem {
   image: string;
   title: string;
@@ -99,32 +91,6 @@ export const LEADERSHIP_TEAM: Person[] = [
   },
 ];
 
-export const PARTNERS: Partner[] = [
-  {
-    name: 'FACT First Cloud',
-    imagePath: '/static/logos/logo_fact_Salbei.svg',
-    url: 'https://www.fact.de/unsere-loesungen/first-cloud/',
-    scale: 1.62,
-  },
-  {
-    name: 'ISS (Sopra Steria)',
-    imagePath: '/static/logos/logo_iss-soprasteria.png',
-    url: 'https://iss.soprasteria.de/',
-    scale: 0.92,
-  },
-  {
-    name: 'Eskua AI',
-    imagePath: '/static/logos/logo_eskua_salbei.svg',
-    url: 'https://www.eskua.ai/',
-    scale: 0.94,
-  },
-  {
-    name: 'Keynum',
-    imagePath: '/static/logos/logo_keynum.webp',
-    url: 'https://www.keynum.com/',
-    darkBg: true,
-  },
-];
 
 export const COMPANY_COPY = {
   title: 'Company',
