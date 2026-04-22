@@ -1192,29 +1192,7 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
 
-    <!-- Small client-side script to handle language toggle -->
-    <script is:inline>
-      const checkbox = document.getElementById('languageToggle');
-      const english = document.getElementById('terms-en');
-      const german = document.getElementById('terms-de');
-
-      if (checkbox && english && german) {
-        // English visible by default
-        english.classList.remove('hidden');
-        german.classList.add('hidden');
-
-        checkbox.addEventListener('change', () => {
-          const isGerman = checkbox.checked;
-          if (isGerman) {
-            english.classList.add('hidden');
-            german.classList.remove('hidden');
-          } else {
-            english.classList.remove('hidden');
-            german.classList.add('hidden');
-          }
-        });
-      }
-    </script>
+    <script type="module" src="/scripts/languageToggle.js"></script>
 
     <style>
       .terms-page {
