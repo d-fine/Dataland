@@ -1,9 +1,11 @@
 ---
 interface Props {
+  demoMailto: string;
   inquiryMailto: string;
   eyebrow?: string;
   title?: string;
   intro?: string;
+  demoLabel?: string;
   contactLabel?: string;
   documentationLabel?: string;
   tryLabel?: string;
@@ -17,10 +19,12 @@ interface PanelAction {
 }
 
 const {
+  demoMailto,
   inquiryMailto,
   eyebrow = 'Start here',
   title = 'Pick the path that fits what you want to do next.',
   intro = 'Reach out directly, stay up to date, or start exploring the platform on your own.',
+  demoLabel = 'Book a demo',
   contactLabel = 'Get in touch',
   documentationLabel = 'View documentation',
   tryLabel = 'Try it free',
@@ -60,6 +64,7 @@ const icons = {
 } as const;
 
 const actions: PanelAction[] = [
+  { href: demoMailto, label: demoLabel, className: classes.whiteButton, iconMarkup: icons.mail },
   { href: inquiryMailto, label: contactLabel, className: classes.whiteButton, iconMarkup: icons.mail },
   {
     href: '/product#documentation',

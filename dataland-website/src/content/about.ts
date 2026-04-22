@@ -61,8 +61,9 @@ export const ABOUT_PAGE_CONTENT = {
   startPanel: {
     eyebrow: 'Start here',
     title: 'Pick the path that fits what you want to do next.',
-    intro: 'Reach out directly, stay up to date, or start exploring the platform on your own.',
+    intro: 'Reach out directly, book a demo, or start exploring the platform on your own.',
     buttons: {
+      demo: 'Book a demo',
       contact: 'Get in touch',
       documentation: 'View documentation',
       try: 'Try it free',
@@ -74,7 +75,7 @@ export const LEADERSHIP_TEAM: Person[] = [
   {
     name: 'Moritz Kiese',
     role: 'Managing Director',
-    bio: 'Moritz leads Dataland with a focus on open-source sustainability infrastructure and European ESG data standards.',
+    bio: "Moritz sets the strategic direction for Dataland, driving the platform's growth as open-source sustainability data infrastructure for European markets.",
     imagePath: '/static/about/team_Moritz_Kiese.jpg',
     email: 'mailto:moritz.kiese@dataland.com',
     linkedIn: 'https://www.linkedin.com/in/moritz-kiese-932b104/',
@@ -82,16 +83,16 @@ export const LEADERSHIP_TEAM: Person[] = [
   {
     name: 'Andreas Hoecherl',
     role: 'Product Owner',
-    bio: 'Andreas shapes the product vision, working closely with regulatory stakeholders and institutional members.',
+    bio: 'Andreas defines required features in close collaboration with our members and implements platform and data sourcing functionality with his team.',
     imagePath: '/static/about/team-andreas-hoecherl.jpg',
     imageClassName: 'scale-[1.22]',
     email: 'mailto:andreas.hoecherl@dataland.com',
     linkedIn: 'https://www.linkedin.com/in/andreas-h%C3%B6cherl-016220b4/',
   },
   {
-    name: 'Soeren Vorsmann',
+    name: 'Sören Vorsmann',
     role: 'Operations & Customer Relations',
-    bio: 'Soeren oversees platform operations, infrastructure, and member onboarding, ensuring a smooth platform experience.',
+    bio: 'Sören oversees platform operations, data sourcing, and member onboarding, ensuring a smooth platform experience.',
     imagePath: '/static/about/team-soeren-vorsmann.jpg',
     email: 'mailto:soeren.vorsmann@dataland.com',
     linkedIn: 'https://www.linkedin.com/company/dataland-gmbh',
@@ -193,6 +194,8 @@ export const CONTACT_PHONE = 'tel:+491622631304';
 export const CONTACT_PHONE_DISPLAY = '+49 162 263 1304';
 export const CONTACT_EMAIL = 'mailto:info@dataland.com';
 export const CONTACT_EMAIL_DISPLAY = 'info@dataland.com';
+export const CONTACT_DEMO_MAILTO =
+  'mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20demo&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20booking%20a%20demo%20tour%20through%20Dataland.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards';
 export const CONTACT_INQUIRY_MAILTO =
   'mailto:info@dataland.com?subject=Inquiry%20about%20Dataland%20membership&body=Dear%20Dataland%20team%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20Dataland%20membership.%0A%0AName%3A%20%0ACompany%3A%20%0ARole%3A%20%0A%0APlease%20get%20back%20to%20me%20at%20your%20earliest%20convenience.%0A%0ABest%20regards';
 export const CONTACT_ADDRESS = {

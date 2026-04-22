@@ -14,6 +14,7 @@ interface StartPanelContent {
   title: string;
   intro: string;
   buttons: {
+    demo: string;
     contact: string;
     documentation: string;
     try: string;
@@ -30,6 +31,7 @@ interface Address {
 interface Props {
   contactContent: ContactContent;
   startPanelContent: StartPanelContent;
+  demoMailto: string;
   inquiryMailto: string;
   phoneHref: string;
   phoneLabel: string;
@@ -38,8 +40,17 @@ interface Props {
   address: Address;
 }
 
-const { contactContent, startPanelContent, inquiryMailto, phoneHref, phoneLabel, emailHref, emailLabel, address } =
-  Astro.props;
+const {
+  contactContent,
+  startPanelContent,
+  demoMailto,
+  inquiryMailto,
+  phoneHref,
+  phoneLabel,
+  emailHref,
+  emailLabel,
+  address,
+} = Astro.props;
 
 const sectionClass =
   'scroll-mt-16 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] px-6 py-14 text-white lg:px-8 lg:py-18';
@@ -129,10 +140,12 @@ const contactLinkClass =
     </div>
 
     <AboutStartPanel
+      demoMailto={demoMailto}
       inquiryMailto={inquiryMailto}
       eyebrow={startPanelContent.eyebrow}
       title={startPanelContent.title}
       intro={startPanelContent.intro}
+      demoLabel={startPanelContent.buttons.demo}
       contactLabel={startPanelContent.buttons.contact}
       documentationLabel={startPanelContent.buttons.documentation}
       tryLabel={startPanelContent.buttons.try}
