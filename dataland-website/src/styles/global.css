@@ -507,7 +507,6 @@ main {
 }
 
 .mobile-nav__back-to-platform {
-  display: flex;
   align-items: center;
   gap: 0.5rem;
 }
