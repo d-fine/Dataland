@@ -14,7 +14,7 @@ export const COMMUNITY_PAGE_CONTENT = {
       'Dataland combines flexibility and breadth to support ESG data needs for different institution types, operational models, and reporting requirements.',
     buttons: { stories: 'Read Customer Stories', useCases: 'Explore Use Cases', contact: 'Get in touch' },
   },
-  trustedOrganizations: {
+  members: {
     title: 'Our Members',
     intro: 'A selection of our members representing the Dataland community which spans different industries, organizational sizes, and operating models.',
   },

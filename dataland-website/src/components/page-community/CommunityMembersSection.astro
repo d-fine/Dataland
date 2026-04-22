@@ -1,5 +1,5 @@
 ---
-import type { TrustedByLogo } from '../../config/logos';
+import type { MemberLogo } from '../../config/logos';
 import SectionHeader from '../primitives/SectionHeader.astro';
 
 interface Content {
@@ -9,7 +9,7 @@ interface Content {
 
 interface Props {
   content: Content;
-  logos: TrustedByLogo[];
+  logos: MemberLogo[];
 }
 
 const { content, logos } = Astro.props;
@@ -33,7 +33,7 @@ const logoFrameBaseClass = 'flex h-full w-full items-center justify-center';
 const logoImageBaseClass = 'block max-h-full max-w-full object-contain';
 ---
 
-<section id="trusted-organizations" class={sectionClass} aria-label="Trusted organizations">
+<section id="our-members" class={sectionClass} aria-label="Our Members">
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
 

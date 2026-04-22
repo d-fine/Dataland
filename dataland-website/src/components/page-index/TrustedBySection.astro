@@ -1,5 +1,5 @@
 ---
-import type { TrustedByLogo } from '../../config/logos';
+import type { MemberLogo } from '../../config/logos';
 import SectionHeader from '../primitives/SectionHeader.astro';
 
 interface Content {
@@ -9,11 +9,11 @@ interface Content {
 
 interface Props {
   content: Content;
-  logos: TrustedByLogo[];
+  logos: MemberLogo[];
 }
 
 const { content, logos } = Astro.props;
-const trustedByCarousel: TrustedByLogo[] = [...logos, ...logos];
+const membersCarousel: MemberLogo[] = [...logos, ...logos];
 
 const sectionClass = 'py-12 px-6 bg-[var(--color-surface-0)] lg:py-16 lg:px-8';
 
@@ -43,9 +43,9 @@ const logoImageBaseClass =
     <div class={marqueeClass}>
       <div class={trackClass}>
         {
-          trustedByCarousel.map((logo, index) => (
+          membersCarousel.map((logo, index) => (
             <a
-              href="/community#trusted-organizations"
+              href="/community#our-members"
               class:list={[logoLinkBaseClass, logo.carouselContainerClassName]}
               aria-label={`See ${logo.name} on the community page`}
             >

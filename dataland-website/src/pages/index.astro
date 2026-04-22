@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { TRUSTED_BY_LOGOS } from '../config/logos';
+import { MEMBERS_LOGOS } from '../config/logos';
 import { TESTIMONIALS } from '../content/testimonials';
 import { WHY_US_PAIRS, FRAMEWORK_CARDS, CUSTOMER_STORY_SUMMARIES, INDEX_PAGE_CONTENT } from '../content/index';
 import HeroSection from '../components/page-index/HeroSection.astro';
@@ -18,7 +18,7 @@ import LogoutModal from '../components/page-index/LogoutModal.astro';
   <HeroSection content={INDEX_PAGE_CONTENT.hero} />
   <SearchSection title={INDEX_PAGE_CONTENT.search.title} />
   <WhyUsSection content={INDEX_PAGE_CONTENT.whyUs} pairs={WHY_US_PAIRS} />
-  <TrustedBySection content={INDEX_PAGE_CONTENT.trustedBy} logos={TRUSTED_BY_LOGOS} />
+  <TrustedBySection content={INDEX_PAGE_CONTENT.trustedBy} logos={MEMBERS_LOGOS} />
   <CustomerStoriesSection content={INDEX_PAGE_CONTENT.customerStories} stories={CUSTOMER_STORY_SUMMARIES} />
   <TestimonialsSection content={INDEX_PAGE_CONTENT.testimonials} testimonials={TESTIMONIALS} />
   <FrameworksSection content={INDEX_PAGE_CONTENT.frameworks} frameworks={FRAMEWORK_CARDS} />

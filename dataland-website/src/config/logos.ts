@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-export interface TrustedByLogo {
+export interface MemberLogo {
   name: string;
   imagePath: string;
   scale?: number;
@@ -11,11 +11,11 @@ export interface TrustedByLogo {
   imageFrameClassName?: string;
 }
 
-type TrustedByLogoMetadata = Omit<TrustedByLogo, 'imagePath'> & { imagePath?: string };
+type MembersLogoMetadata = Omit<MemberLogo, 'imagePath'> & { imagePath?: string };
 
 const PUBLIC_LOGOS_DIRECTORY = path.join(process.cwd(), 'public', 'static', 'logos');
 
-const LOGO_METADATA_BY_FILENAME: Record<string, TrustedByLogoMetadata> = {
+const LOGO_METADATA_BY_FILENAME: Record<string, MembersLogoMetadata> = {
   'logo_atlas_metrics.svg': { name: 'Atlas Metrics' },
   'logo_bantleon.svg': { name: 'Bantleon' },
   'logo_bayerninvest.svg': { name: 'BayernInvest', scale: 1.12, className: 'translate-x-[0.08rem]' },
@@ -79,7 +79,7 @@ function resolveLogoImagePath(filename: string): string {
   );
 }
 
-function createTrustedByLogo(filename: string): TrustedByLogo {
+function createMemberLogo(filename: string): MemberLogo {
   const metadata = LOGO_METADATA_BY_FILENAME[filename];
 
   return {
@@ -93,4 +93,4 @@ function createTrustedByLogo(filename: string): TrustedByLogo {
   };
 }
 
-export const TRUSTED_BY_LOGOS: TrustedByLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME).map(createTrustedByLogo);
+export const MEMBERS_LOGOS: MemberLogo[] = Object.keys(LOGO_METADATA_BY_FILENAME).map(createMemberLogo);
