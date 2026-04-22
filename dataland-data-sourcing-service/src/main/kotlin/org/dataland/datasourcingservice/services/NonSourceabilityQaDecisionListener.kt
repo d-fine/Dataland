@@ -6,7 +6,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.logging.CorrelationLogging
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datasourcingservice.model.datasourcing.DataSourcingPatch
@@ -73,9 +72,7 @@ class NonSourceabilityQaDecisionListener(
                 )
             }
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            CorrelationLogging.withNonSourceabilityContext(correlationId, event.nonSourceabilityId) {
-                processQaDecisionEvent(event, messageType, correlationId)
-            }
+            processQaDecisionEvent(event, messageType, correlationId)
         }
     }
 
