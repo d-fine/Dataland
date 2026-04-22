@@ -66,13 +66,6 @@ const DATA_POINT_TYPES = {
   numberOfEmployees: 'extendedDecimalNumberOfEmployees',
 } as const;
 
-// const UNPATCHABLE_DATA_POINT_TYPES = [
-//   'assurance',
-// 'provider',
-// 'Assurance Provider',
-// 'customEnumEuTaxonomyReportingAssurance',
-// ];
-
 type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
 type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
 
@@ -134,6 +127,40 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   },
 ];
 
+/**
+ * Removes the assurance datapoint from the dataset. The data point does not match the standard format and creates known issues with the judge modal
+ * @param fixture
+ */
+function stripAssuranceFromFixture(
+  fixture: FixtureData<EutaxonomyFinancialsData>
+): FixtureData<EutaxonomyFinancialsData> {
+  // Deep-clone so we never mutate the original fixture object
+  const clone = JSON.parse(JSON.stringify(fixture)) as FixtureData<EutaxonomyFinancialsData>;
+
+  try {
+    const t = clone.t as unknown as {
+      general?: {
+        assurance?: unknown;
+        general?: { assurance?: unknown } & Record<string, unknown>;
+      } & Record<string, unknown>;
+    };
+
+    // Remove nested "assurance" under general.general.assurance
+    if (t?.general?.general && Object.prototype.hasOwnProperty.call(t.general.general, 'assurance')) {
+      delete (t.general.general as Record<string, unknown>)['assurance'];
+    }
+
+    // Remove top-level "assurance" under general.assurance
+    if (t?.general && Object.prototype.hasOwnProperty.call(t.general, 'assurance')) {
+      delete (t.general as Record<string, unknown>)['assurance'];
+    }
+  } catch {
+    // If the structure is different for some fixture, ignore and leave it as-is
+  }
+
+  return clone;
+}
+
 describeIf(
   'As a user, I expect to be able to go through the full judgement process',
   {
@@ -147,33 +174,11 @@ describeIf(
     let overview: DataPointOverview;
 
     before(function () {
-      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        // Deep-clone the fixtures loaded from disk and remove any `assurance` fields
-        // so the uploaded dataset payload does not contain assurance/provider KPIs.
-        // This modifies only the in-memory copy used by the test and does not change
-        // the original JSON file on disk.
-        preparedEuTaxonomyFixtures = (jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>).map((fixture) => {
-          const clone = JSON.parse(JSON.stringify(fixture)) as FixtureData<EutaxonomyFinancialsData>;
+      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then((jsonContent) => {
+        const rawFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
 
-          // Common locations: eutaxonomy financials often put the object under t.general.general.assurance
-          // some other fixtures may use t.general.assurance
-          try {
-            if (
-              clone.t?.general?.general &&
-              Object.prototype.hasOwnProperty.call(clone.t.general.general, 'assurance')
-            ) {
-              // Treat the nested object as a generic record to delete the key without using `any`.
-              delete (clone.t.general.general as Record<string, unknown>)['assurance'];
-            }
-            if (clone.t?.general && Object.prototype.hasOwnProperty.call(clone.t.general, 'assurance')) {
-              delete (clone.t.general as Record<string, unknown>)['assurance'];
-            }
-          } catch {
-            // ignore unexpected shapes
-          }
-
-          return clone;
-        });
+        // Strip Assurance from every prepared fixture we’ll potentially use
+        preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
       });
 
       getAdminToken().then((token: string) => {
