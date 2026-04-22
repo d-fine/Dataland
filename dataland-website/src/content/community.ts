@@ -16,9 +16,12 @@ export const COMMUNITY_PAGE_CONTENT = {
   },
   members: {
     title: 'Our Members',
-    intro: 'A selection of our members representing the Dataland community which spans different industries, organizational sizes, and operating models.',
+    intro:
+      'A selection of our members representing the Dataland community which spans different industries, organizational sizes, and operating models.',
   },
-  partners: { title: 'Our partners aid us in building and operating our platform and strengthen the Dataland ecosystem.' },
+  partners: {
+    title: 'Our partners aid us in building and operating our platform and strengthen the Dataland ecosystem.',
+  },
   cta: {
     title: 'Interested in joining us?',
     intro: 'Talk to us about membership, partnerships, and how Dataland can support your organization.',

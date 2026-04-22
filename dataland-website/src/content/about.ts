@@ -91,7 +91,6 @@ export const LEADERSHIP_TEAM: Person[] = [
   },
 ];
 
-
 export const COMPANY_COPY = {
   title: 'Company',
   text1:

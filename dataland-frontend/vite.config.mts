@@ -11,9 +11,20 @@ import istanbul from 'vite-plugin-istanbul';
  */
 function astroStaticPages(): Plugin {
   const astroRoutes = [
-    '/', '/about', '/community', '/community/', '/product', '/imprint',
-    '/legal', '/dataprivacy', '/testimonials', '/partner-stories', '/newsletter',
-    '/success-stories-meag', '/success-stories-nordlb', '/success-stories-ovb',
+    '/',
+    '/about',
+    '/community',
+    '/community/',
+    '/product',
+    '/imprint',
+    '/legal',
+    '/dataprivacy',
+    '/testimonials',
+    '/partner-stories',
+    '/newsletter',
+    '/success-stories-meag',
+    '/success-stories-nordlb',
+    '/success-stories-ovb',
   ];
   return {
     name: 'astro-static-pages',
@@ -21,9 +32,8 @@ function astroStaticPages(): Plugin {
       server.middlewares.use((req, res, next) => {
         const url = req.url?.split('?')[0];
         if (url && astroRoutes.includes(url)) {
-          const filePath = url === '/'
-            ? path.resolve('public/astro-index.html')
-            : path.resolve(`public${url}/index.html`);
+          const filePath =
+            url === '/' ? path.resolve('public/astro-index.html') : path.resolve(`public${url}/index.html`);
           if (fs.existsSync(filePath)) {
             res.setHeader('Content-Type', 'text/html');
             res.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
