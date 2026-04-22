@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -71,14 +72,15 @@ class NonSourceabilityQaAcceptedConsumerTest {
     }
 
     @Test
-    fun `rejected event keeps sourcing in NonSourceableVerification no patch performed`() {
+    fun `rejected event transitions sourcing to DocumentSourcingDone`() {
         val stored = stubSourcing(DataSourcingState.NonSourceableVerification)
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
+        whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
         listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_REJECTED, "corr-3")
 
-        verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
+        verify(sourcingManager).patchDataSourcingEntityById(any(), argThat { state == DataSourcingState.DocumentSourcingDone })
     }
 
     @Test

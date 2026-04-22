@@ -166,17 +166,19 @@ class NonSourceabilityTest {
     }
 
     private fun assertBackendEntryIsPending(ctx: Ctx) {
-        val entries =
-            asAdmin {
-                apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
-                    companyId = ctx.companyId,
-                    dataType = ctx.dataType,
-                    reportingPeriod = ctx.reportingPeriod,
-                )
-            }
-        assertEquals(1, entries.size, "Expected exactly one entry for the posted triple")
-        assertEquals(BackendQaStatus.Pending, entries.first().qaStatus)
-        assertFalse(entries.first().currentlyActive)
+        awaitUntilAsserted {
+            val entries =
+                asAdmin {
+                    apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertEquals(1, entries.size, "Expected exactly one entry for the posted triple")
+            assertEquals(BackendQaStatus.Pending, entries.first().qaStatus)
+            assertFalse(entries.first().currentlyActive)
+        }
     }
 
     private fun assertQaReviewRowAppears(ctx: Ctx) {
@@ -215,19 +217,21 @@ class NonSourceabilityTest {
     }
 
     private fun assertQaReviewIsAccepted(ctx: Ctx) {
-        val qaReviews =
-            asAdmin {
-                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
-                    companyId = ctx.companyId,
-                    dataType = ctx.dataType.value,
-                    reportingPeriod = ctx.reportingPeriod,
-                )
-            }
-        assertEquals(
-            QaServiceQaStatus.Accepted,
-            qaReviews.first().qaStatus,
-            "QA service must persist Accepted status after decision",
-        )
+        awaitUntilAsserted {
+            val qaReviews =
+                asAdmin {
+                    apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType.value,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertEquals(
+                QaServiceQaStatus.Accepted,
+                qaReviews.first().qaStatus,
+                "QA service must persist Accepted status after decision",
+            )
+        }
     }
 
     private fun assertBackendEntryIsAcceptedAndActive(ctx: Ctx) {
@@ -294,19 +298,21 @@ class NonSourceabilityTest {
     }
 
     private fun assertQaReviewIsRejected(ctx: Ctx) {
-        val qaReviews =
-            asAdmin {
-                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
-                    companyId = ctx.companyId,
-                    dataType = ctx.dataType.value,
-                    reportingPeriod = ctx.reportingPeriod,
-                )
-            }
-        assertEquals(
-            QaServiceQaStatus.Rejected,
-            qaReviews.first().qaStatus,
-            "QA service must persist Rejected status after decision",
-        )
+        awaitUntilAsserted {
+            val qaReviews =
+                asAdmin {
+                    apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType.value,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertEquals(
+                QaServiceQaStatus.Rejected,
+                qaReviews.first().qaStatus,
+                "QA service must persist Rejected status after decision",
+            )
+        }
     }
 
     private fun assertBackendEntryIsRejectedAndInactive(ctx: Ctx) {
