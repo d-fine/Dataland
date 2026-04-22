@@ -91,7 +91,7 @@ export const PRODUCT_PAGE_CONTENT = {
   },
   customerStories: {
     title: 'Customer stories',
-    intro: 'Real-world experiences illustrate how ESG data challenges are addressed in practice.',
+    intro: 'Real-world experiences show how organizations use Dataland to solve ESG data challenges in practice.',
     labels: { challenge: 'Challenge', solution: 'Solution', value: 'Value' },
     readFullStory: 'Read full story',
   },
