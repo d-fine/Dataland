@@ -13,7 +13,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.logging.CorrelationLogging
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -190,9 +189,7 @@ class NonSourceabilityInformationManager(
         val nonSourceabilityId = saved.nonSourceabilityId.toString()
         val correlationId = nonSourceabilityId
 
-        CorrelationLogging.withNonSourceabilityContext(correlationId, nonSourceabilityId) {
-            emitLifecycleEvent(saved, request.bypassQa, correlationId)
-        }
+        emitLifecycleEvent(saved, request.bypassQa, correlationId)
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
