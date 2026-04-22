@@ -190,6 +190,8 @@ import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGe
 import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { type AxiosError } from 'axios';
+import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 
@@ -197,7 +199,6 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
-  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -212,7 +213,30 @@ const errorModalDetails = ref<string | undefined>(undefined);
 
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
-const availableDocuments = computed(() => props.availableDocuments ?? []);
+
+// available company documents from query
+const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
+const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
+const availableDocuments = computed<DocumentOption[]>(() => {
+  const docs = allDocumentMetaInfo?.value ?? [];
+  return docs
+    .filter(
+      (doc: DocumentMetaInfoResponse) =>
+        doc.reportingPeriod == null || doc.reportingPeriod === datasetJudgement.value?.reportingPeriod
+    )
+    .map((doc: DocumentMetaInfoResponse) => {
+      const label = doc.documentName ?? doc.documentId;
+      return {
+        label: label,
+        value: label,
+        dataSource: {
+          fileName: label,
+          fileReference: doc.documentId,
+          publicationDate: doc.publicationDate ?? null,
+        },
+      };
+    });
+});
 
 // ===== Dataset review =====
 
