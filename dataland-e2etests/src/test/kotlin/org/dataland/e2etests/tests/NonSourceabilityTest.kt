@@ -340,8 +340,10 @@ class NonSourceabilityTest {
         ctx: Ctx,
         expected: DataSourcingState,
     ) {
-        val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
-        assertEquals(expected, ds.state, "DS state must remain $expected after QA rejection")
+        awaitUntilAsserted {
+            val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
+            assertEquals(expected, ds.state, "DS state must remain $expected after QA rejection")
+        }
     }
 
     private fun postNonSourceableWithBypassQa(ctx: Ctx) {
@@ -367,15 +369,17 @@ class NonSourceabilityTest {
     }
 
     private fun assertNoQaReviewRowExists(ctx: Ctx) {
-        val qaReviews =
-            asAdmin {
-                apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
-                    companyId = ctx.companyId,
-                    dataType = ctx.dataType.value,
-                    reportingPeriod = ctx.reportingPeriod,
-                )
-            }
-        assertTrue(qaReviews.isEmpty(), "QA service must have no review rows when bypassQa=true")
+        awaitUntilAsserted {
+            val qaReviews =
+                asAdmin {
+                    apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
+                        companyId = ctx.companyId,
+                        dataType = ctx.dataType.value,
+                        reportingPeriod = ctx.reportingPeriod,
+                    )
+                }
+            assertTrue(qaReviews.isEmpty(), "QA service must have no review rows when bypassQa=true")
+        }
     }
 
     private fun uploadDatasetForTriple(ctx: Ctx): String =
