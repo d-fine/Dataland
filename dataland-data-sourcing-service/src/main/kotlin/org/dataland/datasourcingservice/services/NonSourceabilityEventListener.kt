@@ -79,10 +79,13 @@ class NonSourceabilityEventListener(
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
             validateNonSourceabilityId(event.nonSourceabilityId)
             when (messageType) {
-                MessageType.NON_SOURCEABILITY_CREATED ->
+                MessageType.NON_SOURCEABILITY_CREATED -> {
                     transitionToVerification(event, correlationId)
-                MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED ->
+                }
+
+                MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED -> {
                     transitionToNonSourceable(event, correlationId)
+                }
             }
         }
     }
