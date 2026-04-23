@@ -35,8 +35,17 @@ const classes = {
     <div class={classes.fallback}>
       <p class={classes.fallbackText}>
         This content is hosted by YouTube. To watch this video, please accept marketing cookies in your
-        <a href="javascript:void(0)" onclick="Cookiebot.renew()" class={classes.fallbackLink}>cookie settings</a>.
+        <button type="button" class={`${classes.fallbackLink} bg-transparent border-0 p-0 cursor-pointer`} data-cookiebot-renew>cookie settings</button>.
       </p>
     </div>
   </div>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-cookiebot-renew]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      (window as unknown as { Cookiebot?: { renew: () => void } }).Cookiebot?.renew();
+    });
+  });
+</script>
+
