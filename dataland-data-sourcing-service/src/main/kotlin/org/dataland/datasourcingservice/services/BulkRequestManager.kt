@@ -156,21 +156,32 @@ class BulkRequestManager
 
         private fun getExistingNonSourceableDataRequests(dataDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
             val nonSourceableDimensions =
-                dataSourcingQueryManager
-                    .searchDataSourcings(
-                        companyId = null,
-                        dataType = null,
-                        reportingPeriod = null,
-                        state = DataSourcingState.NonSourceable,
-                        chunkSize = Int.MAX_VALUE,
-                        chunkIndex = 0,
-                    ).map {
-                        BasicDataDimensions(
-                            companyId = it.companyId,
-                            dataType = it.dataType,
-                            reportingPeriod = it.reportingPeriod,
-                        )
-                    }.toSet()
+                (
+                    dataSourcingQueryManager
+                        .searchDataSourcings(
+                            companyId = null,
+                            dataType = null,
+                            reportingPeriod = null,
+                            state = DataSourcingState.NonSourceable,
+                            chunkSize = Int.MAX_VALUE,
+                            chunkIndex = 0,
+                        ) +
+                        dataSourcingQueryManager
+                            .searchDataSourcings(
+                                companyId = null,
+                                dataType = null,
+                                reportingPeriod = null,
+                                state = DataSourcingState.NonSourceableVerification,
+                                chunkSize = Int.MAX_VALUE,
+                                chunkIndex = 0,
+                            )
+                ).map {
+                    BasicDataDimensions(
+                        companyId = it.companyId,
+                        dataType = it.dataType,
+                        reportingPeriod = it.reportingPeriod,
+                    )
+                }.toSet()
 
             return dataDimensions.intersect(nonSourceableDimensions)
         }
