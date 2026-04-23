@@ -19,10 +19,21 @@ tasks.register<NpmTask>("npmInstallSharedElements") {
     outputs.dir("node_modules")
 }
 
+tasks.register<NpmTask>("buildSharedElements") {
+    group = "build"
+    description = "Type-checks the shared elements source via vue-tsc"
+    dependsOn("npmInstallSharedElements")
+    args.set(listOf("run", "build"))
+    inputs.files("package.json", "tsconfig.json")
+    inputs.dir("src")
+    outputs.upToDateWhen { false }
+}
+
 tasks.register<NpmTask>("packSharedElements") {
     group = "build"
     description = "Packs the shared elements into a tarball for consumption by frontend and website"
     dependsOn("npmInstallSharedElements")
+    dependsOn("buildSharedElements")
     val packDestination = layout.buildDirectory.get().asFile
     val finalTarball =
         layout.buildDirectory
