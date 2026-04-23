@@ -164,7 +164,7 @@ export const FEATURE_CARDS: FeatureCard[] = [
   {
     title: 'Request data',
     tags: ['On-demand sourcing', 'Missing data'],
-    text: 'Order missing datasets directly from the platform.',
+    text: 'Order missing datasets directly through the platform.',
   },
   {
     title: 'Source transparency',
@@ -219,7 +219,7 @@ export const USE_CASES: UseCase[] = [
     title: 'Dataland as primary ESG data source',
     titleLines: ['Dataland as primary', 'ESG data source'],
     description:
-      'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on traditional ESG data vendors can be reduced or eliminated.',
+      'Dataland serves as the main source of ESG datasets, with data retrieval, reporting, and analysis processes built directly on its datasets. Reliance on expensive ESG data monopolists can be reduced or eliminated.',
   },
   {
     icon: '/static/product/use_cases/img_use_case_complement.png',
