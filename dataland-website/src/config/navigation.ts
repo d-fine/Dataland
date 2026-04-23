@@ -31,14 +31,14 @@ export const PRODUCT_SECTIONS = [
 ] as const;
 
 export const COMMUNITY_SECTIONS = [
-  { href: '/community#our-members', label: 'Our Members' },
-  { href: '/community#partners', label: 'Partners' },
+  { href: '/network#our-members', label: 'Our Members' },
+  { href: '/network#partners', label: 'Partners' },
 ] as const;
 
 export const HEADER_NAV_GROUPS = [
   { href: '/about', label: 'About', sections: ABOUT_SECTIONS },
   { href: '/product', label: 'Product', sections: PRODUCT_SECTIONS },
-  { href: '/community', label: 'Community', sections: COMMUNITY_SECTIONS },
+  { href: '/network', label: 'Community', sections: COMMUNITY_SECTIONS },
 ] as const;
 
 export const HEADER_MOBILE_LINKS = [
