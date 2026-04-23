@@ -23,7 +23,7 @@ describe('Check that the website works properly', () => {
     cy.get("a[href='/']").eq(0).click();
 
     cy.get("nav a[href='/community']").should('exist').click();
-    cy.url().should('include', '/community');
+    cy.url().should('include', '/dataland-community');
     cy.get("a[href='/']").eq(0).click();
 
     cy.get("a[href='/legal']").click();
