@@ -73,7 +73,7 @@ export const LEADERSHIP_TEAM: Person[] = [
     linkedIn: 'https://www.linkedin.com/in/moritz-kiese-932b104/',
   },
   {
-    name: 'Andreas Hoecherl',
+    name: 'Andreas Höcherl',
     role: 'Product Owner',
     bio: 'Andreas defines required features in close collaboration with our members and implements platform and data sourcing functionality with his team.',
     imagePath: '/static/about/team-andreas-hoecherl.jpg',
