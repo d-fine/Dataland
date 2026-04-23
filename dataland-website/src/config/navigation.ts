@@ -31,7 +31,7 @@ export const PRODUCT_SECTIONS = [
 ] as const;
 
 export const COMMUNITY_SECTIONS = [
-  { href: '/community#our-members', label: 'Our Network' },
+  { href: '/community#our-members', label: 'Our Members' },
   { href: '/community#partners', label: 'Partners' },
 ] as const;
 
