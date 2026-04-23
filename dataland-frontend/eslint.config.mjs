@@ -13,7 +13,7 @@ export default defineConfigWithVueTs(
   },
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/build/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/build/**', '**/coverage/**', '**/public/**'],
   },
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommendedTypeChecked,

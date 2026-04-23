@@ -34,7 +34,7 @@ const LOGO_METADATA_BY_FILENAME: Record<string, LogoMetadata> = {
   'logo_d-fine.svg': { name: 'd-fine', scale: 0.76, category: 'partner', url: 'https://www.d-fine.com/' },
   'logo_DYDONAI_x.png': { name: 'DYDONAI', scale: 1.12, category: 'partner', url: 'https://dydon.ai/' },
   'logo_Envoria.png': { name: 'Envoria', category: 'member' },
-  'logo_eurodat.svg': { name: 'EuroDat', category: 'partner', url:' https://www.eurodat.org/' },
+  'logo_eurodat.svg': { name: 'EuroDat', category: 'partner', url: ' https://www.eurodat.org/' },
   'logo_fmf.png': { name: 'FMF', scale: 1.34, category: 'member' },
   'logo_gleif_new.svg': { name: 'GLEIF', category: 'partner', url: 'https://www.gleif.org/' },
   'logo_hansa_invest.svg': { name: 'Hansa-Invest', category: 'member' },
