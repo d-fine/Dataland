@@ -13,7 +13,8 @@ function astroStaticPages(): Plugin {
   const astroRoutes = [
     '/',
     '/about',
-    '/network',
+    '/community',
+    '/community/',
     '/product',
     '/imprint',
     '/legal',

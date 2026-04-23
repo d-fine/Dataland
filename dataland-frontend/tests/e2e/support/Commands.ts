@@ -60,12 +60,13 @@ const ASTRO_ROUTES = new Set([
   '/about',
   '/product',
   '/partner-stories',
-  '/network',
+  '/community',
   '/newsletter',
   '/testimonials',
   '/legal',
   '/dataprivacy',
   '/imprint',
+  '/community',
 ]);
 /**
  * Visits the supplied endpoint, waits for the application root element (`#app`) to be present,
