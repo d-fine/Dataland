@@ -69,4 +69,6 @@ class DataCompositionService
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) &&
                     specificationService.isDataPointType(dimensions.dataPointType)
             }
+
+        // add function to determine if a datapoint can be calculated from another data point
     }

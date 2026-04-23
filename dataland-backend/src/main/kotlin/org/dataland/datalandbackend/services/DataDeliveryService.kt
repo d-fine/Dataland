@@ -47,6 +47,7 @@ class DataDeliveryService
                         relevantDataPointTypes.getValue(dataDimension.framework),
                     )
                 val deliverableDataPointIds = dataAvailabilityChecker.getViewableDataPointIds(relevantDimensions)
+                // check if data points can be calculated here
                 if (deliverableDataPointIds.isNotEmpty()) {
                     requiredData[dataDimension] = deliverableDataPointIds
                 }
