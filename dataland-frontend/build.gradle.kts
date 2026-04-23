@@ -53,12 +53,12 @@ tasks.register("copyAstroWebsite") {
             from("${project.rootDir}/dataland-website/dist") {
                 exclude("index.html")
             }
-            into("${projectDir}/public")
+            into("$projectDir/public")
         }
         // Copy index.html as astro-index.html to avoid shadowing the Vue SPA entry point
         copy {
             from("${project.rootDir}/dataland-website/dist/index.html")
-            into("${projectDir}/public")
+            into("$projectDir/public")
             rename("index.html", "astro-index.html")
         }
     }
