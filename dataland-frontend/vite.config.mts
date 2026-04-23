@@ -1,4 +1,5 @@
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig } from 'vite';
+import type { Plugin } from 'vite';
 import path from 'path';
 import fs from 'fs';
 import vue from '@vitejs/plugin-vue';
@@ -27,7 +28,7 @@ function astroStaticPages(): Plugin {
   ];
   return {
     name: 'astro-static-pages',
-    configureServer(server) {
+    configureServer(server): void {
       server.middlewares.use((req, res, next) => {
         const url = req.url?.split('?')[0];
         if (url && astroRoutes.includes(url)) {
