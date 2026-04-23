@@ -69,13 +69,13 @@ jobs:
         run: |
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
-      - name: Store generated frontend API clients for use by cypress
+      - name: Store generated frontend dependencies for use by cypress
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
-          name: frontendClients
+          name: frontendDependencies
           path: |
             ./dataland-frontend/build/clients/
-            ./dataland-frontend/build/dataland-shared-elements
+            ./dataland-frontend/build/shared-elements
   merge-artefacts:
     runs-on: ubuntu-latest
     needs:
@@ -254,7 +254,7 @@ jobs:
       - name: Download frontend dependencies
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
-          name: frontendClients
+          name: frontendDependencies
           path: ./dataland-frontend/build/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
