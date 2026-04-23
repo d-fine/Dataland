@@ -9,9 +9,6 @@
     "src",
     "public"
   ],
-  "scripts": {
-    "build": ""
-  },
   "exports": {
     ".": "./src/footer/index.ts",
     "./footer": "./src/footer/index.ts"
