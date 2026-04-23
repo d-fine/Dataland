@@ -61,7 +61,7 @@ const hasTags = Boolean(primaryTag) || secondaryTags.length > 0;
   style="background:#ecece7;"
 >
   <div class={classes.logoStage}>
-    <div class:list={darkLogoFrame ? classes.darkLogoFrame : undefined}>
+    <div class:list={darkLogoFrame && classes.darkLogoFrame}>
       <img src={logo} alt="" class:list={[classes.logoImage, logoClassName]} loading="lazy" width="220" height="64" />
     </div>
   </div>
