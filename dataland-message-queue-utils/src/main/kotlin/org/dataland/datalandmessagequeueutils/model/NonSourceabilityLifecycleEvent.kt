@@ -11,4 +11,5 @@ data class NonSourceabilityLifecycleEvent(
     val companyId: String,
     val dataType: String,
     val reportingPeriod: String,
+    val uploaderUserId: String = "",
 )

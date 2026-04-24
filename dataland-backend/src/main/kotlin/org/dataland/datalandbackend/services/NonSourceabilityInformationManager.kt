@@ -256,6 +256,7 @@ class NonSourceabilityInformationManager(
                 companyId = entity.companyId,
                 dataType = entity.dataType.name,
                 reportingPeriod = entity.reportingPeriod,
+                uploaderUserId = entity.uploaderUserId,
             )
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
