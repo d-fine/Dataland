@@ -1,6 +1,12 @@
 // dataland-sharedElements/build.gradle.kts
 import com.github.gradle.node.npm.task.NpmTask
 
+val sources = fileTree(projectDir)
+sources.include("src/**", "public/**")
+val sonarSources by extra(sources.files.map { it })
+val jacocoSources by extra(emptyList<File>())
+val jacocoClasses by extra(emptyList<File>())
+
 plugins {
     base
     id("com.github.node-gradle.node")
