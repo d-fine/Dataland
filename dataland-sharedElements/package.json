@@ -16,6 +16,9 @@
   "peerDependencies": {
     "vue": "^3.5.0"
   },
+  "scripts": {
+    "build": "vue-tsc --noEmit"
+  },
   "devDependencies": {
     "vue": "^3.5.0",
     "typescript": "^5.7.3",
