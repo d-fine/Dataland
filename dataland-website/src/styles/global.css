@@ -271,7 +271,6 @@ main {
 }
 
 .surface-card--glass {
-  color: #fff;
   border-color: rgba(255, 255, 255, 0.12);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -492,7 +491,7 @@ main {
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
   background: var(--color-primary, #ff6813);
-  color: white;
+  color: #111111;
   font-weight: 600;
   font-size: 1rem;
   border-radius: 6px;

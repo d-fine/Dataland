@@ -2,7 +2,7 @@
   <div class="dataland-header m-0 fixed top-0 h-4rem w-full grid align-items-center">
     <div class="col-4 text-left">
       <a href="/">
-        <img src="/static/logos/gfx_logo_dataland_orange_S.svg" alt="Dataland" />
+        <img src="/static/logos/logo_dataland_orange.svg" alt="Dataland" />
       </a>
     </div>
 
