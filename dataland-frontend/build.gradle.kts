@@ -63,6 +63,11 @@ tasks.register("copyAstroWebsite") {
             into("$projectDir/public")
             rename("index.html", "astro-index.html")
         }
+        // Copy frontend-owned static assets (e.g. silent-check-sso.html for Keycloak)
+        copy {
+            from("$projectDir/static-assets")
+            into("$projectDir/public/static")
+        }
     }
 }
 
