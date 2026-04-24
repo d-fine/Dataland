@@ -112,7 +112,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    preserveSymlinks: true,
+    preserveSymlinks: false,
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@clients': path.resolve(__dirname, './build/clients'),
