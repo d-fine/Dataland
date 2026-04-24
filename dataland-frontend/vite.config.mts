@@ -135,6 +135,14 @@ export default defineConfig({
     host: '0.0.0.0',
     strictPort: true,
     allowedHosts: true,
+    fs: {
+      allow: [
+        // Allow serving files from the shared-elements symlink target
+        path.resolve(__dirname, '../dataland-sharedElements'),
+        // Default: project root
+        path.resolve(__dirname),
+      ],
+    },
     warmup: {
       clientFiles: [
         './src/components/*/*.vue',
