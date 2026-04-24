@@ -1,6 +1,6 @@
 // languageToggle.ts
 
-function initLanguageToggle(): void {
+export function initLanguageToggle(): void {
   const checkbox = document.querySelector<HTMLInputElement>('#languageToggle');
   const english = document.querySelector<HTMLElement>('#terms-en');
   const german = document.querySelector<HTMLElement>('#terms-de');
@@ -32,5 +32,3 @@ if (typeof document !== 'undefined') {
     initLanguageToggle();
   }
 }
-
-export {};
