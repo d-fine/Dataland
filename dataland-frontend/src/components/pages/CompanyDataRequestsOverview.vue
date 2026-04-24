@@ -169,6 +169,8 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import { defineComponent, inject } from 'vue';
 
+const DEFAULT_SORT_FIELD: keyof ExtendedStoredDataRequest = 'requestStatus';
+
 export default defineComponent({
   name: 'MyDataRequestsOverview',
   computed: {
@@ -208,7 +210,7 @@ export default defineComponent({
       availableAccessStatus: [] as Array<SelectableItem>,
       selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: 'requestStatus',
+      sortField: DEFAULT_SORT_FIELD,
       sortOrder: 1,
     };
   },
@@ -358,7 +360,7 @@ export default defineComponent({
       const aValue = a[this.sortField] ?? '';
       const bValue = b[this.sortField] ?? '';
 
-      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
+      if (this.sortField != DEFAULT_SORT_FIELD) {
         if (aValue < bValue) return -1 * this.sortOrder;
         if (aValue > bValue) return this.sortOrder;
       }

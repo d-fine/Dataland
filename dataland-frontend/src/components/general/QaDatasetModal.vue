@@ -43,6 +43,14 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { QaStatus } from '@clients/backend';
 
+interface QaDatasetModalData {
+  dataId: string;
+  qaStatus: QaStatus;
+  message: string;
+  reviewSubmitted: boolean;
+  reviewSuccessful: boolean;
+}
+
 export default defineComponent({
   components: { DatalandProgressSpinner, PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
   inject: ['dialogRef'],
@@ -52,7 +60,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  data() {
+  data(): QaDatasetModalData {
     return {
       dataId: '',
       qaStatus: QaStatus.Pending,

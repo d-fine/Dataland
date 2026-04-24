@@ -95,6 +95,10 @@ const euTaxonomyObjectives = [
 
 type KpiKey = 'revenue' | 'capex' | 'opex';
 
+type ColumnHeaders = { [kpiKeyOfTable: string]: { [columnName: string]: string } };
+
+const INITIAL_COLUMN_HEADERS: ColumnHeaders = {};
+
 type ActivityRow = Record<string, unknown> & {
   activityName?: Activity;
   naceCodes?: string[];
@@ -127,7 +131,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
     return {
       listOfRowContents: [] as Array<ActivityRow>,
       kpiKeyOfTable: '',
-      columnHeaders: {},
+      columnHeaders: { ...INITIAL_COLUMN_HEADERS },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<MainColumnDefinition>,
@@ -147,7 +151,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
       kpiKeyOfTable: string;
-      columnHeaders: { [kpiKeyOfTable: string]: { [columnName: string]: string } };
+      columnHeaders: ColumnHeaders;
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
