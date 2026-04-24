@@ -112,12 +112,13 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    preserveSymlinks: false,
+    preserveSymlinks: true,
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
+      '@dataland/shared-elements': path.resolve(__dirname, '../dataland-sharedElements'),
     },
   },
   css: {
