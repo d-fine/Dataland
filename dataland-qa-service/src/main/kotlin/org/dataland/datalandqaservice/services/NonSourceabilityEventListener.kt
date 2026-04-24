@@ -88,7 +88,7 @@ class NonSourceabilityEventListener(
                 reportingPeriod = event.reportingPeriod,
                 qaStatus = QaStatus.Pending,
                 reason = null,
-                uploaderUserId = "",
+                uploaderUserId = event.uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
             )
         nonSourceableQaReviewRepository.save(entity)
