@@ -23,6 +23,11 @@ import org.mockito.kotlin.whenever
 import java.time.Instant
 
 class NonSourceabilityQaReviewManagerTest {
+    companion object {
+        private const val DEFAULT_COMPANY_ID = DEFAULT_COMPANY_ID
+        private const val DEFAULT_REVIEWER_ID = DEFAULT_REVIEWER_ID
+    }
+
     private val repository: NonSourceableQaReviewRepository = mock()
     private val cloudEventMessageHandler: CloudEventMessageHandler = mock()
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
@@ -35,7 +40,7 @@ class NonSourceabilityQaReviewManagerTest {
 
     private fun entity(
         nonSourceabilityId: String = "00000000-0000-0000-0000-000000000001",
-        companyId: String = "company-1",
+        companyId: String = DEFAULT_COMPANY_ID,
         dataType: String = "eutaxonomy-financials",
         reportingPeriod: String = "2023",
         qaStatus: QaStatus = QaStatus.Pending,
@@ -64,13 +69,13 @@ class NonSourceabilityQaReviewManagerTest {
 
     @Test
     fun `getReviews filters by companyId`() {
-        val entities = listOf(entity(companyId = "company-1"), entity(companyId = "company-2"))
+        val entities = listOf(entity(companyId = DEFAULT_COMPANY_ID), entity(companyId = "company-2"))
         whenever(repository.findByQaStatusFilter(null)).thenReturn(entities)
 
-        val result = manager.getReviews("company-1", null, null, null, 10, 0)
+        val result = manager.getReviews(DEFAULT_COMPANY_ID, null, null, null, 10, 0)
 
         assertEquals(1, result.size)
-        assertEquals("company-1", result.first().companyId)
+        assertEquals(DEFAULT_COMPANY_ID, result.first().companyId)
     }
 
     @Test
@@ -143,10 +148,10 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(e.nonSourceabilityId)).thenReturn(e)
         whenever(repository.save(e)).thenReturn(e)
 
-        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Accepted, null, "reviewer-1", "corr-1")
+        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Accepted, null, DEFAULT_REVIEWER_ID, "corr-1")
 
         assertEquals(QaStatus.Accepted, result.qaStatus)
-        assertEquals("reviewer-1", result.reviewerUserId)
+        assertEquals(DEFAULT_REVIEWER_ID, result.reviewerUserId)
         assertNull(result.qaComment)
         verify(cloudEventMessageHandler).buildCEMessageAndSendToQueue(
             any(),
@@ -163,7 +168,7 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(e.nonSourceabilityId)).thenReturn(e)
         whenever(repository.save(e)).thenReturn(e)
 
-        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Rejected, "Not applicable", "reviewer-1", "corr-2")
+        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Rejected, "Not applicable", DEFAULT_REVIEWER_ID, "corr-2")
 
         assertEquals(QaStatus.Rejected, result.qaStatus)
         assertEquals("Not applicable", result.qaComment)
@@ -181,7 +186,7 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(any())).thenReturn(null)
 
         assertThrows<ResourceNotFoundApiException> {
-            manager.postDecision("non-existent-id", QaStatus.Accepted, null, "reviewer-1", "corr-3")
+            manager.postDecision("non-existent-id", QaStatus.Accepted, null, DEFAULT_REVIEWER_ID, "corr-3")
         }
 
         verify(cloudEventMessageHandler, never()).buildCEMessageAndSendToQueue(any(), any(), any(), any(), any())
@@ -190,7 +195,7 @@ class NonSourceabilityQaReviewManagerTest {
     @Test
     fun `postDecision throws IllegalArgumentException when qaStatus is Pending`() {
         assertThrows<IllegalArgumentException> {
-            manager.postDecision("some-id", QaStatus.Pending, null, "reviewer-1", "corr-4")
+            manager.postDecision("some-id", QaStatus.Pending, null, DEFAULT_REVIEWER_ID, "corr-4")
         }
 
         verify(repository, never()).findByNonSourceabilityId(any())
