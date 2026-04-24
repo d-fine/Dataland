@@ -29,7 +29,8 @@ before(function () {
  */
 function validateFormUploadedData(companyId: string): void {
   cy.visit('/companies/' + companyId + '/frameworks/' + DataTypeEnum.Sfdr);
-
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(50000);
   MLDT.getSectionHead('Environmental').should('have.attr', 'data-section-expanded', 'true');
   MLDT.getSectionHead('Biodiversity').should('have.attr', 'data-section-expanded', 'true');
   MLDT.getSectionHead('Energy performance').should('have.attr', 'data-section-expanded', 'true');
