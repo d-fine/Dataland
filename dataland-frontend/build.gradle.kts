@@ -30,16 +30,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
-    dependsOn("copySharedElements")
+    // Shared-elements is consumed via a directory reference (file:../dataland-sharedElements),
+    // so npm install reads its source directly. buildSharedElements runs the vue-tsc typecheck
+    // before any npm activity in the frontend.
+    dependsOn(":dataland-sharedElements:buildSharedElements")
     dependsOn("copyAstroWebsite")
-}
-
-tasks.register<Copy>("copySharedElements") {
-    group = "build"
-    description = "Copies the shared-elements tarball into build/shared-elements/ for local consumption"
-    dependsOn(":dataland-sharedElements:packSharedElements")
-    from("${project.rootDir}/dataland-sharedElements/build/dataland-shared-elements.tgz")
-    into(layout.buildDirectory.dir("shared-elements"))
 }
 
 tasks.register("copyAstroWebsite") {
@@ -66,7 +61,7 @@ tasks.register("copyAstroWebsite") {
 
 tasks.named<NpmTask>("npm_run_build") {
     dependsOn("generateClients")
-    dependsOn("copySharedElements")
+    dependsOn(":dataland-sharedElements:buildSharedElements")
     dependsOn("copyAstroWebsite")
 }
 

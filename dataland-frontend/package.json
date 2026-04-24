@@ -24,7 +24,7 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
-    "@dataland/shared-elements": "file:./build/shared-elements/dataland-shared-elements.tgz",
+    "@dataland/shared-elements": "file:../dataland-sharedElements",
     "@formkit/core": "^1.6.9",
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",

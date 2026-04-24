@@ -16,16 +16,11 @@ node {
     version.set("24.9.0")
 }
 
-tasks.register<Copy>("copySharedElements") {
-    group = "build"
-    description = "Copies the shared-elements tarball into build/shared-elements/ for local consumption"
-    dependsOn(":dataland-sharedElements:packSharedElements")
-    from("${project.rootDir}/dataland-sharedElements/build/dataland-shared-elements.tgz")
-    into(layout.buildDirectory.dir("shared-elements"))
-}
-
 tasks.withType<NpmTask> {
-    dependsOn("copySharedElements")
+    // Shared-elements is consumed via a directory reference (file:../dataland-sharedElements),
+    // so npm install reads its source directly. buildSharedElements runs the vue-tsc typecheck
+    // before any npm activity in the website.
+    dependsOn(":dataland-sharedElements:buildSharedElements")
 }
 
 tasks.register<NpmTask>("npmBuild") {
@@ -33,7 +28,6 @@ tasks.register<NpmTask>("npmBuild") {
     group = "build"
     args.set(listOf("run", "build"))
     dependsOn("npmInstall")
-    dependsOn("copySharedElements")
     inputs.dir("src")
     inputs.dir("public")
     inputs.file("astro.config.mjs")

@@ -24,7 +24,7 @@
     "astro": "^5.7.10",
     "typescript": "^5.7.3",
     "vue": "^3.5.28",
-    "@dataland/shared-elements": "file:./build/shared-elements/dataland-shared-elements.tgz"
+    "@dataland/shared-elements": "file:../dataland-sharedElements"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.4",

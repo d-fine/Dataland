@@ -29,52 +29,18 @@ tasks.register<NpmTask>("buildSharedElements") {
     outputs.upToDateWhen { false }
 }
 
-tasks.register<NpmTask>("packSharedElements") {
-    group = "build"
-    description = "Packs the shared elements into a tarball for consumption by frontend and website"
-    dependsOn("npmInstallSharedElements")
-    dependsOn("buildSharedElements")
-    val packDestination = layout.buildDirectory.get().asFile
-    val finalTarball =
-        layout.buildDirectory
-            .file("dataland-shared-elements.tgz")
-            .get()
-            .asFile
-    doFirst {
-
-        packDestination.mkdirs()
-        finalTarball.delete()
-    }
-
-    doLast {
-        // npm pack always includes the version in the filename — rename to a fixed name
-        val versionedTarball =
-            packDestination.listFiles()?.firstOrNull {
-                it.name.startsWith("dataland-shared-elements-") &&
-                    it.name.endsWith(".tgz")
-            }
-        requireNotNull(versionedTarball) { "npm pack did not produce a tarball in ${packDestination.absolutePath}" }
-        versionedTarball.renameTo(finalTarball)
-    }
-
-    args.set(listOf("pack", "--pack-destination", packDestination.absolutePath))
-    inputs.files("package.json", "tsconfig.json")
-    inputs.dir("src")
-    outputs.file(finalTarball)
-}
-
 // Keep backward-compatible task name
 tasks.register("buildSharedFooter") {
     group = "build"
-    description = "Alias for packSharedElements"
-    dependsOn("packSharedElements")
+    description = "Alias for buildSharedElements"
+    dependsOn("buildSharedElements")
 }
 
 // Preempt the node-gradle plugin's task-rule that would otherwise lazily create
 // `npm_run_build` and fail because this package has no `build` script.
 // The actual typecheck runs via `buildSharedElements` (→ `npm run typecheck`)
-// as part of the `packSharedElements` chain.
+// and is wired in by consumers (dataland-frontend, dataland-website).
 tasks.register("npm_run_build") {
     group = "build"
-    description = "No-op: shared-elements builds via packSharedElements; CI-level npm_run_build fan-out lands here."
+    description = "No-op: shared-elements is consumed as a source directory; CI-level npm_run_build fan-out lands here."
 }
