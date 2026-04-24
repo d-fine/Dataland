@@ -68,7 +68,6 @@ import PrimeButton from 'primevue/button';
 import Popover from 'primevue/popover';
 import RadioButton from 'primevue/radiobutton';
 import Tree from 'primevue/tree';
-import type { TreeNode } from 'primevue/treenode';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
@@ -87,7 +86,7 @@ export default defineComponent({
     };
   },
   data: () => ({
-    allActivities: activityTree as TreeNode[],
+    allActivities: activityTree,
     selectedActivityValue: '',
   }),
   computed: {
@@ -96,7 +95,7 @@ export default defineComponent({
         if (activities?.children?.length) {
           for (const activity of activities.children) {
             if (activity.value === this.selectedActivityValue) {
-              return activity as ActivityNode;
+              return activity;
             }
           }
         }

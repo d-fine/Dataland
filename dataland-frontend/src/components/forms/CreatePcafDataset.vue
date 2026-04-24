@@ -215,7 +215,7 @@ async function loadPcafData(): Promise<void> {
     if (!pcafData) {
       throw ReferenceError('Response from PcafDataController invalid.');
     }
-    companyAssociatedDataPcafData.value = objectDropNull(pcafData) as CompanyAssociatedDataPcafData;
+    companyAssociatedDataPcafData.value = objectDropNull(pcafData);
   } catch (e) {
     console.error('Error while loading PCAF data', e);
   } finally {
@@ -307,72 +307,5 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
   background-color: var(--p-surface-50);
   padding: var(--spacing-xl) var(--spacing-xxl);
   text-align: start;
-}
-
-.form-container {
-  display: flex;
-  gap: var(--spacing-xl);
-
-  .form-content {
-    flex-grow: 5;
-
-    .subcategory-container {
-      margin-bottom: var(--spacing-xl);
-      display: flex;
-
-      .label-container {
-        flex-basis: 25%;
-
-        h4 {
-          margin-bottom: var(--spacing-xxs);
-        }
-      }
-
-      .form-field-container {
-        flex: auto;
-        padding: var(--spacing-md);
-        background-color: var(--p-surface-0);
-      }
-    }
-  }
-
-  .sidebar {
-    margin-left: auto;
-    text-align: start;
-    flex-grow: 1;
-    position: sticky;
-    top: 5rem;
-    align-self: flex-start;
-    width: 300px;
-    max-width: 300px;
-    min-width: 220px;
-    box-sizing: border-box;
-
-    .message-container {
-      margin: var(--spacing-sm) 0;
-      width: 100%;
-      word-break: break-word;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-
-      li {
-        list-style: none;
-        margin: 0.5rem 0;
-
-        a {
-          color: var(--p-surface-500);
-          text-decoration: none;
-
-          &:hover {
-            color: var(--p-primary-color);
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
 }
 </style>

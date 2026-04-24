@@ -226,12 +226,7 @@ import {
 } from '@/utils/RequestsOverviewPageUtilsLegacy.ts';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import type { DataTypeEnum } from '@clients/backend';
-import {
-  type ExtendedStoredDataRequest,
-  type GetDataRequestsDataTypeEnum,
-  type RequestPriority,
-  type RequestStatus,
-} from '@clients/communitymanager';
+import { type ExtendedStoredDataRequest, type RequestPriority, type RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
@@ -371,7 +366,7 @@ export default defineComponent({
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.communityManagerRequestController.getDataRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+              selectedFrameworksAsSet,
               undefined,
               emailFilter,
               commentFilter,
@@ -387,7 +382,7 @@ export default defineComponent({
           ).data;
           this.totalRecords = (
             await apiClientProvider.apiClients.communityManagerRequestController.getNumberOfRequests(
-              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+              selectedFrameworksAsSet,
               undefined,
               emailFilter,
               commentFilter,

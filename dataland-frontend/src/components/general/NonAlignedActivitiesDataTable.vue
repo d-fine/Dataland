@@ -52,8 +52,8 @@ export default defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<EuTaxonomyAlignedActivity>,
-      kpiKeyOfTable: '' as string,
-      columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
+      kpiKeyOfTable: '',
+      columnHeaders: {},
       mainColumnDefinitions: [] as Array<MainColumnDefinition>,
       mainColumnData: [] as Array<NonAlignedActivityFieldValueObject>,
     };
@@ -82,7 +82,7 @@ export default defineComponent({
     ];
 
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
-      activity: activity.activityName as string,
+      activity: activity.activityName,
       naceCodes: activity.naceCodes as string[],
       kpi: formatAmountWithCurrency(activity.share?.absoluteShare),
       kpiPercent: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),

@@ -103,7 +103,7 @@ export default defineComponent({
       humanizeString: humanizeStringOrNumber,
       convertDate: convertUnixTimeInMsToDateString,
       loading: false,
-      latestSearchString: '' as string,
+      latestSearchString: '',
     };
   },
   props: {
@@ -170,8 +170,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.text-primary {
-  color: var(--main-color);
-}
-</style>

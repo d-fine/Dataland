@@ -163,7 +163,7 @@ function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
 async function getAggregatedFrameworkDataSummary(): Promise<void> {
   const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
   const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
-  aggregatedFrameworkDataSummary.value = response.data as SummaryByType;
+  aggregatedFrameworkDataSummary.value = response.data;
 }
 
 /**

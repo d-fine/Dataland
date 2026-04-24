@@ -9,7 +9,6 @@ import {
   type DatasetJudgementResponse,
 } from '@clients/qaservice';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 
@@ -75,7 +74,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     dataSetJudgementId: 'review-id',
     datasetId: dataId,
     companyId: companyId,
-    dataType: framework as DatasetJudgementResponse['dataType'],
+    dataType: framework,
     reportingPeriod: reportingPeriod,
     judgementState: DatasetJudgementState.Pending,
     qaReporters: qaReporterUsers,
@@ -185,7 +184,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     }).as('getFrameworkData');
 
     const mount = getMountingFunction();
-    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
+    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}));
     const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
     mount(DatasetReviewComparisonTable, {
@@ -283,7 +282,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
           },
         },
       },
-    } as SfdrData;
+    };
 
     mountComponent({ data: dataWithReports });
 

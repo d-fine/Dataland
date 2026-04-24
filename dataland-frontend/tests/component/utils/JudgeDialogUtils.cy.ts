@@ -158,7 +158,7 @@ describe('transformDataPointDetailToFormData', () => {
         fileReference: 'ref-123',
         page: '7',
       },
-    } as ParsedSingleDataPoint;
+    };
 
     const form = transformDataPointDetailToFormData(detail);
 

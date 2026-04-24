@@ -1,7 +1,6 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
@@ -84,7 +83,7 @@ export function formatVsmeSubsidiaryForDisplay(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+  return {
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -121,7 +120,7 @@ export function formatVsmePollutionEmissionForDisplay(
     convertedValueForModal = convertVsmePollutionEmissionToListForModal(input);
   }
 
-  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+  return {
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -158,7 +157,7 @@ export function formatVsmeWasteClassificationObjectForDisplay(
     convertedValueForModal = convertVsmeWasteClassificationToListForModal(input);
   }
 
-  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+  return {
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -233,7 +232,7 @@ export function formatVsmeSiteAndAreaForDisplay(
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    return {
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${fieldLabel}`,
@@ -267,7 +266,7 @@ export function formatVsmeEmployeesPerCountryForDisplay(
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    return {
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${fieldLabel}`,

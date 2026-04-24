@@ -44,7 +44,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.t.general.masterData.industry = generateNaceCodes(1, 5);
-  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = <{ [key: string]: Array<string> }>{
+  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = {
     DE: generateNaceCodes(1, 5),
     GB: generateNaceCodes(0, 5),
   };

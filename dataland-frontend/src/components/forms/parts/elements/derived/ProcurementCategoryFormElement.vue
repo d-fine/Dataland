@@ -95,14 +95,13 @@ import PercentageFormField from '@/components/forms/parts/fields/PercentageFormF
 import PrimeButton from 'primevue/button';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
-import { type LksgProcurementCategory } from '@clients/backend';
 
 export default defineComponent({
   name: 'ProcurementCategoryFormElement',
   inject: {
     selectedProcurementCategories: {
       from: 'selectedProcurementCategories',
-      default: {} as { [key: string]: LksgProcurementCategory },
+      default: {},
     },
   },
   components: {

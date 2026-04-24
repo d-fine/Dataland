@@ -188,7 +188,7 @@ async function handleDocumentUpload(): Promise<void> {
     return;
   }
 
-  const fileToUpload: File = selectedFiles.value[0] as File;
+  const fileToUpload: File = selectedFiles.value[0];
   const documentMetaInfo: DocumentMetaInfo = {
     documentName: documentName.value,
     documentCategory: documentCategory.value!,

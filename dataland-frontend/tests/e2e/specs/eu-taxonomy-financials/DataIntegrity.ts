@@ -66,7 +66,7 @@ async function fetchReuploadedDataset(token: string, dataId: string): Promise<Eu
   const axiosResponse = await new EutaxonomyFinancialsDataControllerApi(
     new Configuration({ accessToken: token })
   ).getCompanyAssociatedEutaxonomyFinancialsData(dataId);
-  return axiosResponse.data.data as unknown as EutaxonomyFinancialsData;
+  return axiosResponse.data.data;
 }
 
 /**

@@ -90,7 +90,6 @@ import {
 } from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
-import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
@@ -100,7 +99,7 @@ export default defineComponent({
   inject: {
     injectReportsNameAndReferences: {
       from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
-      default: {} as ObjectType,
+      default: {},
     },
   },
   components: { SingleSelectFormField, FormKit, UploadFormHeader },

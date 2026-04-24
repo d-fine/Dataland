@@ -43,14 +43,13 @@ import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldPro
 import { FormKit } from '@formkit/vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import { type DriveMixType } from '@/api-models/DriveMixType';
 
 export default defineComponent({
   name: 'DriveMixFormElement',
   inject: {
     driveMixPerFleetSegment: {
       from: 'driveMixPerFleetSegment',
-      default: {} as { [key: string]: DriveMixType },
+      default: {},
     },
   },
   components: {

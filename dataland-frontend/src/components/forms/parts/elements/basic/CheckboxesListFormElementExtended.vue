@@ -130,7 +130,6 @@ import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
-import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -142,7 +141,7 @@ export default defineComponent({
   inject: {
     injectReportsNameAndReferences: {
       from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
-      default: {} as ObjectType,
+      default: {},
     },
     injectlistOfFilledKpis: {
       from: 'listOfFilledKpis',
@@ -162,7 +161,7 @@ export default defineComponent({
       qualityValue: null as null | string,
       commentValue: '',
       currentReportValue: undefined as string | undefined,
-      dataPoint: {} as ExtendedDataPoint<unknown>,
+      dataPoint: {},
       currentValue: undefined as string | undefined,
       checkboxValue: [] as string[],
       firstAssignmentWhileEditModeWasDone: false,
