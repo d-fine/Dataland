@@ -14,7 +14,7 @@
     "./footer": "./src/footer/index.ts"
   },
   "scripts": {
-    "build": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

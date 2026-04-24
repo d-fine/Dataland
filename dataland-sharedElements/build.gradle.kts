@@ -23,7 +23,7 @@ tasks.register<NpmTask>("buildSharedElements") {
     group = "build"
     description = "Type-checks the shared elements source via vue-tsc"
     dependsOn("npmInstallSharedElements")
-    args.set(listOf("run", "build"))
+    args.set(listOf("run", "typecheck"))
     inputs.files("package.json", "tsconfig.json")
     inputs.dir("src")
     outputs.upToDateWhen { false }
@@ -68,4 +68,13 @@ tasks.register("buildSharedFooter") {
     group = "build"
     description = "Alias for packSharedElements"
     dependsOn("packSharedElements")
+}
+
+// Preempt the node-gradle plugin's task-rule that would otherwise lazily create
+// `npm_run_build` and fail because this package has no `build` script.
+// The actual typecheck runs via `buildSharedElements` (→ `npm run typecheck`)
+// as part of the `packSharedElements` chain.
+tasks.register("npm_run_build") {
+    group = "build"
+    description = "No-op: shared-elements builds via packSharedElements; CI-level npm_run_build fan-out lands here."
 }
