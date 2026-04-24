@@ -305,8 +305,11 @@ describeIf(
     it.only('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+        // cy.pause();
         tryFinishingJudgementBeforeAllDataPointsReviewed();
+        // cy.pause();
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+        // cy.pause();
         finishJudgement(uploadedDataMetaInfo.dataId);
       });
     });
@@ -746,19 +749,24 @@ function judgeDataPointsWithoutQaReports(
     };
 
     // 3 Make the judgement decision (click the button) and check if the decision is actually made
-    // cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointId}**`).as('patchDatapoint');
-    cy.intercept('PATCH', '**/qa/dataset-judgements/**/data-points/**').as('patchDatapoint');
-    cy.log(`[judge/no-qa] applying judgement, acceptedSource=${judgement.acceptedSource}`);
+    // const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
+    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as('patchDatapoint');
+    // cy.log(`[expected] dataPointId=${dataPointId}`);
+    // cy.intercept('PATCH', '**/qa/dataset-judgements/**/data-points/**').as('patchDatapoint');
+    // cy.log(`[judge/no-qa] applying judgement, acceptedSource=${judgement.acceptedSource}`);
     makeJudgementDecision(judgement);
     cy.wait('@patchDatapoint').then((interception) => {
       checkPATCHDataPointsCalledCorrectly(interception, judgement);
+      cy.log(`url: ${interception.request.url}`);
       cy.log(`[judge/no-qa] PATCH finished for index=${index}, dataPointType=${dataPointType}`);
       console.log('[judge/no-qa] context', { index, dataPointType, judgement });
     });
     // cy.pause();
-    cy.wait(shortTimeoutInMs);
+    cy.wait(shortTimeoutInMs); // This waiting time is crucial in order to run the e2e tests, patching the correct URL!
+    // cy.pause();
   });
 
+  // cy.pause();
   checkOriginalDataPointsAccepted(dataPointEntries, overview);
 }
 
@@ -827,9 +835,8 @@ function judgeDataPointsWithQaReports(
     }
 
     const judgement = scenario.judgement;
-    const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
 
-    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointId}**`).as('patchDatapoint');
+    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${scenario.dataPointType}**`).as('patchDatapoint');
     makeJudgementDecision(judgement);
 
     cy.log(`message 2/2 loop through QA scenarios, index: ${index + 1}, datapointType: ${scenario.dataPointType}`);
