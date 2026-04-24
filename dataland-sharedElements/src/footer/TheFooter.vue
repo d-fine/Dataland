@@ -20,7 +20,7 @@
             aria-label="Visit Werte-Stiftung"
         >
           <img
-              src="/static/logos/a_werte-stiftung_company.svg"
+              src="/static/images/a_werte-stiftung_company.svg"
               alt="Werte-Stiftung Company"
               width="240"
               height="24"

@@ -19,6 +19,10 @@ tasks.register<NpmTask>("npmInstallSharedElements") {
     outputs.dir("node_modules")
 }
 
+tasks.named<NpmTask>("npm_run_build") {
+    dependsOn("packSharedElements")
+}
+
 tasks.register<NpmTask>("packSharedElements") {
     group = "build"
     description = "Packs the shared elements into a tarball for consumption by frontend and website"
@@ -50,11 +54,4 @@ tasks.register<NpmTask>("packSharedElements") {
     inputs.files("package.json", "tsconfig.json")
     inputs.dir("src")
     outputs.file(finalTarball)
-}
-
-// Keep backward-compatible task name
-tasks.register("buildSharedFooter") {
-    group = "build"
-    description = "Alias for packSharedElements"
-    dependsOn("packSharedElements")
 }

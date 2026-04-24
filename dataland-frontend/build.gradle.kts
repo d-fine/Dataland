@@ -28,18 +28,20 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
-tasks.withType<NpmTask> {
-    dependsOn("generateClients")
-    dependsOn("copySharedElements")
-    dependsOn("copyAstroWebsite")
+tasks.register<NpmTask>("npmInstallFrontend") {
+    group = "build"
+    description = "Runs npm install for the frontend"
+    args.set(listOf("install"))
+    inputs.file("package.json")
+    outputs.dir("node_modules/@dataland/shared-elements")
 }
 
-tasks.register<Copy>("copySharedElements") {
-    group = "build"
-    description = "Copies the shared-elements tarball into build/shared-elements/ for local consumption"
-    dependsOn(":dataland-sharedElements:packSharedElements")
-    from("${project.rootDir}/dataland-sharedElements/build/dataland-shared-elements.tgz")
-    into(layout.buildDirectory.dir("shared-elements"))
+tasks.withType<NpmTask> {
+    if (name != "npmInstallFrontend") {
+        dependsOn("generateClients")
+        dependsOn("copyAstroWebsite")
+        dependsOn("npmInstallFrontend")
+    }
 }
 
 tasks.register("copyAstroWebsite") {
@@ -62,12 +64,6 @@ tasks.register("copyAstroWebsite") {
             rename("index.html", "astro-index.html")
         }
     }
-}
-
-tasks.named<NpmTask>("npm_run_build") {
-    dependsOn("generateClients")
-    dependsOn("copySharedElements")
-    dependsOn("copyAstroWebsite")
 }
 
 tasks.register("generateClients") {
