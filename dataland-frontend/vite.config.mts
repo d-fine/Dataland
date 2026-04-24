@@ -118,7 +118,7 @@ export default defineConfig({
       '@clients': path.resolve(__dirname, './build/clients'),
       '@ct': path.resolve(__dirname, './tests/component'),
       '@sharedUtils': path.resolve(__dirname, './tests/sharedUtils'),
-      '@dataland/shared-elements': path.resolve(__dirname, '../dataland-sharedElements'),
+      '@dataland/shared-elements': path.resolve(__dirname, '../dataland-sharedElements/src'),
     },
   },
   css: {
