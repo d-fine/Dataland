@@ -24,8 +24,8 @@ import java.time.Instant
 
 class NonSourceabilityQaReviewManagerTest {
     companion object {
-        private const val DEFAULT_COMPANY_ID = DEFAULT_COMPANY_ID
-        private const val DEFAULT_REVIEWER_ID = DEFAULT_REVIEWER_ID
+        private const val DEFAULT_COMPANY_ID = "company-1"
+        private const val DEFAULT_REVIEWER_ID = "reviewer-1"
     }
 
     private val repository: NonSourceableQaReviewRepository = mock()
