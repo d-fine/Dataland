@@ -9,6 +9,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
 import org.dataland.datalandqaservice.repositories.NonSourceableQaReviewRepository
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,8 +21,6 @@ import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.Instant
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class NonSourceabilityQaReviewManagerTest {
     private val repository: NonSourceableQaReviewRepository = mock()
