@@ -395,9 +395,7 @@ onMounted(() => {
 async function getAllRequestsForFilters(): Promise<void> {
   waitingForData.value = true;
   const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
-    selectedFrameworks.value.length
-      ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
-      : undefined
+    selectedFrameworks.value.length ? selectedFrameworks.value.map((i) => i.frameworkDataType) : undefined
   );
 
   const mixedStateFilters = computed(() => convertDisplayedStatesToApiFilters(selectedMixedStates.value));

@@ -24,8 +24,7 @@ export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
  */
 export function getStringCypressEnv(variableName: string): Cypress.Chainable<string> {
   return cy.env([variableName]).then((vars) => {
-    const v = vars as Record<string, unknown>;
-    const value = v[variableName];
+    const value = vars[variableName];
 
     if (typeof value === 'string') {
       return value;

@@ -141,7 +141,6 @@ import FailMessage from '@/components/messages/FailMessage.vue';
 import { eutaxonomyNonFinancialsDataModel } from '@/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig';
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
-  type CompanyReport,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
@@ -252,7 +251,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       documentsToUpload: [] as DocumentToUpload[],
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      referencedReportsForPrefill: {},
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       editMode: false,

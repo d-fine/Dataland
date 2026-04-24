@@ -167,7 +167,6 @@ import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import {
   type CompanyAssociatedDataEutaxonomyFinancialsData,
-  type CompanyReport,
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
@@ -243,7 +242,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       documentsToUpload: [] as DocumentToUpload[],
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      referencedReportsForPrefill: {},
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       editMode: false,

@@ -72,7 +72,7 @@ export default defineComponent({
   data() {
     return {
       existingElements: [] as unknown[],
-      listOfElementIds: (this.displayOneSubFormPerDefault ? [0] : []) as number[],
+      listOfElementIds: this.displayOneSubFormPerDefault ? [0] : [],
       idCounter: 0,
     };
   },

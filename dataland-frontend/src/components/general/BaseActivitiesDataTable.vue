@@ -126,8 +126,8 @@ const BaseActivitiesDataTableComponent = defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<ActivityRow>,
-      kpiKeyOfTable: '' as KpiKey | '',
-      columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
+      kpiKeyOfTable: '',
+      columnHeaders: {},
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
       mainColumnDefinitions: [] as Array<MainColumnDefinition>,
@@ -149,7 +149,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
       kpiKeyOfTable: string;
       columnHeaders: { [kpiKeyOfTable: string]: { [columnName: string]: string } };
     };
-    this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable as KpiKey;
+    this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
 
     if (typeof dialogRefData.listOfRowContents[0] === 'string') {

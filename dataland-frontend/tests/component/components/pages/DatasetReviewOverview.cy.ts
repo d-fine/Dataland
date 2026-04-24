@@ -7,7 +7,6 @@ import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { type DatasetJudgementResponse, DatasetJudgementState } from '@clients/qaservice';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
-import type Keycloak from 'keycloak-js';
 
 describe('DatasetReviewOverview page details', () => {
   const keycloakMockWithJudge = minimalKeycloakMock({
@@ -85,7 +84,7 @@ describe('DatasetReviewOverview page details', () => {
 
   /**
    * Mounts the DatasetReviewOverview page pre-configured for tests.
-   * @returns {void} No return value; the function performs side-effects
+   * @returns {void} No return value; the function performs side effects
    *   (network stubs and mounting) necessary for the tests.
    */
   function mountPage(options?: {
@@ -148,7 +147,7 @@ describe('DatasetReviewOverview page details', () => {
     });
 
     const mount = getMountingFunction();
-    const keycloakPromise = Promise.resolve(keycloakMockWithJudge as unknown as Keycloak);
+    const keycloakPromise = Promise.resolve(keycloakMockWithJudge);
     const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
     mount(DatasetReviewOverview, {

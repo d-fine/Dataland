@@ -137,12 +137,7 @@ import DatePicker from 'primevue/datepicker';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { nuclearAndGasDataModel } from '@/frameworks/nuclear-and-gas/UploadConfig';
-import {
-  type CompanyAssociatedDataNuclearAndGasData,
-  type CompanyReport,
-  DataTypeEnum,
-  type NuclearAndGasData,
-} from '@clients/backend';
+import { type CompanyAssociatedDataNuclearAndGasData, DataTypeEnum, type NuclearAndGasData } from '@clients/backend';
 import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
@@ -205,7 +200,7 @@ export default defineComponent({
       postNuclearAndGasDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      referencedReportsForPrefill: {},
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
@@ -287,9 +282,7 @@ export default defineComponent({
         const nuclearAndGasResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
         this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};
-        this.companyAssociatedNuclearAndGasData = objectDropNull(
-          nuclearAndGasResponseData
-        ) as CompanyAssociatedDataNuclearAndGasData;
+        this.companyAssociatedNuclearAndGasData = objectDropNull(nuclearAndGasResponseData);
         this.waitingForData = false;
       }
     },

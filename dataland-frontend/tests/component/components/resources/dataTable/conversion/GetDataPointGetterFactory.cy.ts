@@ -1,8 +1,5 @@
 import { type Field } from '@/utils/GenericFrameworkTypes';
-import {
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
-} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { MLDTDisplayComponentName } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from '@clients/backend';
 import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
 import { getDataPointGetterFactory } from '@/components/resources/dataTable/conversion/DataPoints';
@@ -48,7 +45,7 @@ describe('Unit test for the YesNoDataPointValueGetterFactory', () => {
         },
       };
       const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
+      expect(value).to.deep.equal({
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: 'Data Formatted',
       });
@@ -61,7 +58,7 @@ describe('Unit test for the YesNoDataPointValueGetterFactory', () => {
         },
       };
       const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
-      expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
+      expect(value).to.deep.equal({
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
           label: 'Data Formatted',
@@ -98,7 +95,7 @@ function assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(
     },
   };
   const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
-  expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
+  expect(value).to.deep.equal({
     displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
     displayValue: {
       fieldLabel: dummyField.label,

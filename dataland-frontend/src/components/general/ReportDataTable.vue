@@ -42,9 +42,7 @@ export default defineComponent({
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as { data: { companyReport: CompanyReport } };
-    const dialogRefData = dialogRefToDisplay.data as {
-      companyReport: CompanyReport;
-    };
+    const dialogRefData = dialogRefToDisplay.data;
     this.companyReport = dialogRefData.companyReport;
   },
 });

@@ -84,7 +84,6 @@
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import {
-  type BasePortfolioName,
   type EnrichedPortfolio,
   type EnrichedPortfolioEntry,
   NotificationFrequency,
@@ -239,7 +238,7 @@ async function savePortfolio(): Promise<void> {
     dialogRef?.value.close({
       portfolioId: response.data.portfolioId,
       portfolioName: response.data.portfolioName,
-    } as BasePortfolioName);
+    });
   } catch (error) {
     if (error instanceof AxiosError) {
       portfolioErrors.value =
