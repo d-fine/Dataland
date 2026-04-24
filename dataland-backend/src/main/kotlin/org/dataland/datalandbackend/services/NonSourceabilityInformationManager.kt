@@ -17,9 +17,22 @@ import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEve
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.event.TransactionPhase
+import org.springframework.transaction.event.TransactionalEventListener
 import java.time.Instant
+
+/**
+ * Internal Spring application event published inside a transaction to trigger RabbitMQ message
+ * sending only after the transaction commits successfully.
+ */
+data class NonSourceabilityLifecycleApplicationEvent(
+    val entity: NonSourceabilityInformationEntity,
+    val bypassQa: Boolean,
+    val correlationId: String,
+)
 
 /**
  * Manages the canonical non-sourceability lifecycle in the backend.
@@ -30,6 +43,7 @@ class NonSourceabilityInformationManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -42,7 +56,6 @@ class NonSourceabilityInformationManager(
      * - (true,  true)  → admin bypass: creates Accepted+active entry, emits AUTO_ACCEPTED event
      * - (true,  false) → admin reversal: deactivates active entry, creates audit entry, no event
      */
-    @Transactional
     sealed class ProcessNonSourceabilityResult {
         /**
          * Represents a successful non-sourceability request result.
@@ -64,6 +77,7 @@ class NonSourceabilityInformationManager(
      * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
      * and emits the appropriate lifecycle event.
      */
+    @Transactional
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
@@ -189,7 +203,7 @@ class NonSourceabilityInformationManager(
         val nonSourceabilityId = saved.nonSourceabilityId.toString()
         val correlationId = nonSourceabilityId
 
-        emitLifecycleEvent(saved, request.bypassQa, correlationId)
+        applicationEventPublisher.publishEvent(NonSourceabilityLifecycleApplicationEvent(saved, request.bypassQa, correlationId))
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
@@ -243,6 +257,15 @@ class NonSourceabilityInformationManager(
                     "companyId=$companyId, dataType=$dataType, reportingPeriod=$reportingPeriod",
             )
         }
+    }
+
+    /**
+     * Sends the RabbitMQ lifecycle event after the enclosing transaction commits successfully,
+     * preventing phantom messages if the DB commit fails.
+     */
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    fun onNonSourceabilityLifecycleEvent(event: NonSourceabilityLifecycleApplicationEvent) {
+        emitLifecycleEvent(event.entity, event.bypassQa, event.correlationId)
     }
 
     private fun emitLifecycleEvent(
