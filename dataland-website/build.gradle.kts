@@ -37,6 +37,7 @@ tasks.register<NpmTask>("npmInstallWebsite") {
 tasks.register<NpmTask>("npmBuild") {
     description = "Builds the Astro static website."
     group = "build"
+    dependsOn("npmInstall")
     args.set(listOf("run", "build"))
     inputs.dir("src")
     inputs.dir("public")
