@@ -115,9 +115,9 @@ export default defineComponent({
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: {
         companyNameFilter: '',
-        frameworkFilter: [],
-        sectorFilter: [],
-        countryCodeFilter: [],
+        frameworkFilter: [] as Array<DataTypeEnum>,
+        sectorFilter: [] as Array<string>,
+        countryCodeFilter: [] as Array<string>,
       },
       isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
