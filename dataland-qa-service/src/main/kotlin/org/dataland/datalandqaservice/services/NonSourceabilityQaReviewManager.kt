@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 /**
  * Manages QA review decisions for non-sourceability entries.
@@ -82,7 +84,17 @@ class NonSourceabilityQaReviewManager
                 "QA decision must be Accepted or Rejected, got $qaStatus"
             }
             val entity = updateReviewEntity(nonSourceabilityId, qaStatus, qaComment, reviewerUserId)
-            sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+            if (TransactionSynchronizationManager.isSynchronizationActive()) {
+                TransactionSynchronizationManager.registerSynchronization(
+                    object : TransactionSynchronization {
+                        override fun afterCommit() {
+                            sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+                        }
+                    },
+                )
+            } else {
+                sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+            }
             return entity.toResponse()
         }
 
