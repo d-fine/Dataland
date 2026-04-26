@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 
 /**
@@ -42,7 +44,6 @@ class NonSourceabilityInformationManager(
      * - (true,  true)  → admin bypass: creates Accepted+active entry, emits AUTO_ACCEPTED event
      * - (true,  false) → admin reversal: deactivates active entry, creates audit entry, no event
      */
-    @Transactional
     sealed class ProcessNonSourceabilityResult {
         /**
          * Represents a successful non-sourceability request result.
@@ -64,6 +65,7 @@ class NonSourceabilityInformationManager(
      * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
      * and emits the appropriate lifecycle event.
      */
+    @Transactional
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
@@ -189,7 +191,13 @@ class NonSourceabilityInformationManager(
         val nonSourceabilityId = saved.nonSourceabilityId.toString()
         val correlationId = nonSourceabilityId
 
-        emitLifecycleEvent(saved, request.bypassQa, correlationId)
+        TransactionSynchronizationManager.registerSynchronization(
+            object : TransactionSynchronization {
+                override fun afterCommit() {
+                    emitLifecycleEvent(saved, request.bypassQa, correlationId)
+                }
+            },
+        )
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
                 "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
