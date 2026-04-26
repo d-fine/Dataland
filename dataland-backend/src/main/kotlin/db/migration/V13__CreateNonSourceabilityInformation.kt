@@ -43,5 +43,13 @@ class V13__CreateNonSourceabilityInformation : BaseJavaMigration() {
                 ON non_sourceability_information (qa_status)
             """.trimIndent(),
         )
+
+        context.connection.createStatement().execute(
+            """
+            CREATE UNIQUE INDEX idx_non_sourceability_active_unique
+                ON non_sourceability_information (company_id, data_type, reporting_period)
+                WHERE currently_active = TRUE
+            """.trimIndent(),
+        )
     }
 }
