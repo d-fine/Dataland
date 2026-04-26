@@ -21,7 +21,8 @@
     "prepopulate": "cypress run --spec tests/e2e/specs/prepopulation/index.ts",
     "updatepackages": "npm-check-updates -u",
     "fixvulnerabilites": "npm audit fix",
-    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
+    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'",
+    "checkdeadcode": "knip"
   },
   "dependencies": {
     "@formkit/core": "^1.6.9",
@@ -65,6 +66,7 @@
     "eslint-plugin-jsdoc": "62.7.1",
     "eslint-plugin-vue": "10.8.0",
     "git-commit-id": "2.0.1",
+    "knip": "5.39.0",
     "lint-staged": "16.3.2",
     "markdown-it": "14.1.1",
     "mocha": "11.7.5",

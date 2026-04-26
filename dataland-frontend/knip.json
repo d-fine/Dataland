@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/main.ts",
+    "tests/component/**/*.cy.ts",
+    "tests/e2e/specs/**/*.ts",
+    "tests/e2e/fixtures/GenerateFakeFixtures.ts"
+  ],
+  "project": ["src/**/*.{ts,vue}", "tests/**/*.{ts,vue}"],
+  "ignore": ["build/**", "dist/**", "coverage/**"],
+  "ignoreDependencies": ["@clients/.*", "@ct/.*", "@e2e/.*", "@sharedUtils/.*"],
+  "paths": {
+    "@/*": ["src/*"],
+    "@clients/*": ["build/clients/*"],
+    "@ct/*": ["tests/component/*"],
+    "@e2e/*": ["tests/e2e/*"],
+    "@sharedUtils/*": ["tests/sharedUtils/*"]
+  }
+}
