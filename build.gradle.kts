@@ -116,7 +116,8 @@ sonar {
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
-                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt",
+                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
+                "dataland-website/src/**/*.ts",
         )
         property(
             "sonar.sources",
