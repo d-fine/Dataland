@@ -201,7 +201,7 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val isActive = nonSourceabilityInformationManager.isCurrentlyActive(companyId, dataType, reportingPeriod)
+        val isActive = nonSourceabilityInformationManager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod)
         if (!isActive) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset has no active non-sourceability entry.",

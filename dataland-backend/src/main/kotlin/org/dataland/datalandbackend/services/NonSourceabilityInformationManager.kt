@@ -24,7 +24,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 
 /**
- * Manages the canonical non-sourceability lifecycle in the backend.
+ * Manages the non-sourceability workflow in the backend.
  */
 @Service
 class NonSourceabilityInformationManager(
@@ -39,10 +39,10 @@ class NonSourceabilityInformationManager(
      * Processes a non-sourceability submission request.
      *
      * Routes to one of four cases based on (bypassQa, currentlyActive):
-     * - (false, true)  → rejected immediately (invalid combination)
-     * - (false, false) → standard QA path: creates Pending entry, emits CREATED event
-     * - (true,  true)  → admin bypass: creates Accepted+active entry, emits AUTO_ACCEPTED event
-     * - (true,  false) → admin reversal: deactivates active entry, creates audit entry, no event
+     * - (false, true) → rejected immediately (invalid combination)
+     * - (false, false) → standard QA path: creates Pending entry, emits NON_SOURCEABILITY_CREATED Event
+     * - (true, true) → admin bypass: creates Accepted+active entry, emits NON_SOURCEABILITY_AUTO_ACCEPTED Event
+     * - (true, false) → admin reversal: deactivates active entry, creates audit entry, no event
      */
     sealed class ProcessNonSourceabilityResult {
         /**
@@ -62,8 +62,21 @@ class NonSourceabilityInformationManager(
     }
 
     /**
-     * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
-     * and emits the appropriate lifecycle event.
+     * Processes a non-sourceability submission request for the given request.
+     *
+     * Routes to one of four cases based on bypassQa and currentlyActive:
+     * false, true → throws InvalidInputApiException immediately — invalid combination.
+     * false, false → standard QA path: creates a Pending entry, emits NON_SOURCEABILITY_CREATED.
+     * true, true → admin bypass: creates an Accepted + active entry, emits NON_SOURCEABILITY_AUTO_ACCEPTED.
+     * true, false → admin reversal: deactivates the existing active entry, creates an audit entry, no event emitted.
+     *
+     * @param request the non-sourceability submission containing companyId, dataType, reportingPeriod,
+     * reason, bypassQa flag, and currentlyActive flag.
+     * @return a Success wrapping the persisted NonSourceabilityInformationResponse.
+     * @throws InvalidInputApiException if bypassQa=false and currentlyActive=true.
+     * @throws ConflictApiException if a pending entry already exists for the same (companyId, dataType, reportingPeriod) triple;
+     * if bypassQa=true, currentlyActive=true and an active entry already exists;
+     * or if bypassQa=true, currentlyActive=fals` and no active entry exists to reverse.
      */
     @Transactional
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
@@ -189,18 +202,17 @@ class NonSourceabilityInformationManager(
 
         val saved = nonSourceabilityDataRepository.save(entity)
         val nonSourceabilityId = saved.nonSourceabilityId.toString()
-        val correlationId = nonSourceabilityId
 
         TransactionSynchronizationManager.registerSynchronization(
             object : TransactionSynchronization {
                 override fun afterCommit() {
-                    emitLifecycleEvent(saved, request.bypassQa, correlationId)
+                    emitLifecycleEvent(saved, request.bypassQa, nonSourceabilityId)
                 }
             },
         )
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
-                "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
+                "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$nonSourceabilityId)",
         )
         return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }
@@ -222,7 +234,7 @@ class NonSourceabilityInformationManager(
      * Returns true if an active non-sourceability entry exists for the given tuple
      * (used by HEAD /metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}).
      */
-    fun isCurrentlyActive(
+    fun isTripleCurrentlyNonSourceable(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,

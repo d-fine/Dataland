@@ -27,8 +27,7 @@ import java.util.UUID
  * Handles the QA decision events for non-sourceability emitted by the QA service.
  *
  * On QA_ACCEPTED: transitions the matching data sourcing object to [DataSourcingState.NonSourceable].
- * On QA_REJECTED: keeps the data sourcing object in [DataSourcingState.NonSourceableVerification]
- *   to signal that the entry requires manual follow-up.
+ * On QA_REJECTED: sets the data sourcing object in [DataSourcingState.DocumentSourcingDone].
  */
 @Service
 class NonSourceabilityQaDecisionListener(
@@ -83,10 +82,14 @@ class NonSourceabilityQaDecisionListener(
         correlationId: String,
     ) {
         when (messageType) {
-            MessageType.NON_SOURCEABILITY_QA_ACCEPTED ->
+            MessageType.NON_SOURCEABILITY_QA_ACCEPTED -> {
                 transitionToNonSourceable(event, correlationId)
-            MessageType.NON_SOURCEABILITY_QA_REJECTED ->
+            }
+
+            MessageType.NON_SOURCEABILITY_QA_REJECTED -> {
                 transitionToDocumentSourcingDone(event, correlationId)
+            }
+
             else -> {
                 logger.error(
                     "Unexpected message type $messageType in NonSourceabilityQaDecisionListener " +
