@@ -14,8 +14,10 @@
 import { onMounted, onBeforeUnmount, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
+import { useRoute } from 'vue-router';
 
-const { register } = defineProps<{ register?: boolean }>();
+const route = useRoute();
+const isRegister = route.meta.register ?? false;
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -25,7 +27,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
  * @returns {Promise<void>} Resolves when the redirect logic is complete.
  */
 async function handleAuthRedirect(): Promise<void> {
-  const redirectKey = register ? 'dataland_register_redirect_pending' : 'dataland_login_redirect_pending';
+  const redirectKey = isRegister ? 'dataland_register_redirect_pending' : 'dataland_login_redirect_pending';
 
   const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
   const astroHomeUri = `${globalThis.location.origin}/`;
@@ -45,7 +47,7 @@ async function handleAuthRedirect(): Promise<void> {
   }
 
   sessionStorage.setItem(redirectKey, 'true');
-  const action = register
+  const action = isRegister
     ? keycloak.register({ redirectUri: platformRedirectUri })
     : keycloak.login({ redirectUri: platformRedirectUri });
 

@@ -3,7 +3,6 @@
   <component
     v-if="route.meta.requiresAuthentication !== undefined"
     :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
-    :register="route.meta.register === true"
   >
     <TheHeader />
     <router-view />

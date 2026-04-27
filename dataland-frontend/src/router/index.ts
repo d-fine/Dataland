@@ -293,15 +293,16 @@ const routes = [
     component: KeycloakRedirect,
     meta: {
       requiresAuthentication: false,
+      register: false,
     },
   },
   {
     path: '/register',
     name: 'Register',
     component: KeycloakRedirect,
-    props: { register: true },
     meta: {
       requiresAuthentication: false,
+      register: true,
     },
   },
   {
