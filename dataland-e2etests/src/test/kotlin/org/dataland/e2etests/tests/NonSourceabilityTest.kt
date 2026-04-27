@@ -81,7 +81,7 @@ class NonSourceabilityTest {
         val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
         assertBackendEntryIsPending(ctx)
         assertQaReviewRowAppears(ctx)
-        assertDsStateIsNonSourceableVerification(ctx)
+        assertDsState(ctx, DataSourcingState.NonSourceableVerification)
         postQaDecision(nonSourceabilityId, QaServiceQaStatus.Rejected)
         assertQaReviewIsRejected(ctx)
         assertBackendEntryIsRejectedAndInactive(ctx)
@@ -101,11 +101,11 @@ class NonSourceabilityTest {
         val nonSourceabilityId = postNonSourceableAndAssertPending(ctx)
         assertBackendEntryIsPending(ctx)
         assertQaReviewRowAppears(ctx)
-        assertDsStateIsNonSourceableVerification(ctx)
+        assertDsState(ctx, DataSourcingState.NonSourceableVerification)
         postQaDecision(nonSourceabilityId, QaServiceQaStatus.Accepted)
         assertQaReviewIsAccepted(ctx)
         assertBackendEntryIsAcceptedAndActive(ctx)
-        assertDsStateIsNonSourceable(ctx)
+        assertDsState(ctx, DataSourcingState.NonSourceable)
     }
 
     @Test
@@ -121,7 +121,7 @@ class NonSourceabilityTest {
         postNonSourceableWithBypassQa(ctx)
         assertNoQaReviewRowExists(ctx)
         assertBackendEntryIsAcceptedAndActive(ctx)
-        assertDsStateIsNonSourceable(ctx)
+        assertDsState(ctx, DataSourcingState.NonSourceable)
     }
 
     @Test
@@ -275,28 +275,6 @@ class NonSourceabilityTest {
         return storedRequest.dataSourcingEntityId!!
     }
 
-    private fun assertDsStateIsNonSourceableVerification(ctx: Ctx) {
-        awaitUntilAsserted {
-            val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
-            assertEquals(
-                DataSourcingState.NonSourceableVerification,
-                ds.state,
-                "DS state must be NonSourceableVerification after non-sourceability posted",
-            )
-        }
-    }
-
-    private fun assertDsStateIsNonSourceable(ctx: Ctx) {
-        awaitUntilAsserted(timeoutSeconds = 30) {
-            val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
-            assertEquals(
-                DataSourcingState.NonSourceable,
-                ds.state,
-                "DS state must be NonSourceable after QA acceptance",
-            )
-        }
-    }
-
     private fun assertQaReviewIsRejected(ctx: Ctx) {
         awaitUntilAsserted {
             val qaReviews =
@@ -342,7 +320,7 @@ class NonSourceabilityTest {
     ) {
         awaitUntilAsserted(timeoutSeconds = 30) {
             val ds = asAdmin { apiAccessor.dataSourcingControllerApi.getDataSourcingById(ctx.dataSourcingId!!) }
-            assertEquals(expected, ds.state, "DS state must remain $expected after QA rejection")
+            assertEquals(expected, ds.state, "Expected DS state to be $expected")
         }
     }
 
