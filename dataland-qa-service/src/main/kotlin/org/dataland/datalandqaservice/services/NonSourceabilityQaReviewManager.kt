@@ -136,6 +136,7 @@ class NonSourceabilityQaReviewManager
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(event),
                 messageType,
+                entity.nonSourceabilityId,
                 ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS,
                 RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION,
             )
