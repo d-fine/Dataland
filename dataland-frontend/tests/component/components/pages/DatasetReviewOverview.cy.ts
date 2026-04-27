@@ -254,6 +254,7 @@ describe('DatasetReviewOverview page details', () => {
     modalBody: string;
     expectedUrlSuffix: string;
     expectedStateParam?: string;
+    allDataPointsReviewed?: boolean;
   }
 
   /**
@@ -262,7 +263,25 @@ describe('DatasetReviewOverview page details', () => {
    */
   function testButtonAndModalFlow(config: ButtonAndModalTestConfig): void {
     if (config.mountAssignedToCurrentUser) {
-      mountPageAssignedToCurrentUser();
+      if (config.allDataPointsReviewed) {
+        const fullyReviewedDataPoints = Object.fromEntries(
+          Object.entries(baseDatasetJudgement.dataPoints).map(([key, dataPoint]) => [
+            key,
+            { ...dataPoint, acceptedSource: dataPoint.acceptedSource ?? 'Qa' },
+          ])
+        ) as DatasetJudgementResponse['dataPoints'];
+
+        mountPage({
+          datasetJudgementResponse: {
+            ...baseDatasetJudgement,
+            qaJudgeUserId: keycloakMockWithJudge.idTokenParsed?.sub ?? 'current-judgement-id',
+            qaJudgeUserName: 'Current Judge',
+            dataPoints: fullyReviewedDataPoints,
+          },
+        });
+      } else {
+        mountPageAssignedToCurrentUser();
+      }
     } else {
       mountPage();
     }
@@ -304,15 +323,24 @@ describe('DatasetReviewOverview page details', () => {
       interceptAlias: 'rejectReview',
       triggerButtonText: 'REJECT DATASET',
       modalTitle: 'Reject Dataset',
-      modalBody: 'Are you sure you want to reject this dataset review?',
+      modalBody:
+        'Are you sure you want to reject the dataset and all ' +
+        'underlying data points? This action will finish the review and cannot be undone.',
       expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
-      expectedStateParam: 'datasetJudgementState=Aborted',
+      expectedStateParam: 'datasetJudgementState=FinishedWithDatasetRejection',
     });
+  });
+
+  it('Finish Review button is disabled when not all data points are reviewed', () => {
+    mountPageAssignedToCurrentUser();
+    cy.wait('@getDatasetJudgement');
+    cy.contains('FINISH REVIEW').should('be.visible').and('be.disabled');
   });
 
   it('opens the finish review modal when assigned and performs correct API call', () => {
     testButtonAndModalFlow({
       mountAssignedToCurrentUser: true,
+      allDataPointsReviewed: true,
       interceptUrl: '**/qa/dataset-judgements/**/state**',
       interceptAlias: 'finishReview',
       triggerButtonText: 'FINISH REVIEW',

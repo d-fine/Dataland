@@ -53,15 +53,15 @@
 
           <tbody>
             <!-- Loading / error for original dataset -->
-            <tr v-if="loadingOriginal">
+            <tr v-if="isInitialFrameworkLoading">
               <td :colspan="totalNumberOfColumns" class="p-3 text-center">
                 <p class="font-medium text-xl">Loading Dataset..</p>
                 <DatalandProgressSpinner />
               </td>
             </tr>
-            <tr v-else-if="errorOriginal">
+            <tr v-else-if="isInitialFrameworkError">
               <td :colspan="totalNumberOfColumns" class="p-3 text-center text-red-500">
-                Failed to load original dataset
+                {{ frameworkErrorMessage }}
               </td>
             </tr>
 
@@ -70,7 +70,8 @@
               <tr
                 v-for="(row, index) in filteredRows"
                 :key="row.type + '-' + row.label + '-' + index"
-                :class="row.type === 'section' ? 'surface-100 ' : 'border-bottom-1 surface-border hover:surface-50'"
+                :class="row.type === 'section' ? 'surface-100 ' : 'border-bottom-1 surface-border'"
+                :data-test="row.type === 'cell' ? getRowDataTest(row) : undefined"
               >
                 <!-- Section header row -->
                 <template v-if="row.type === 'section'">
@@ -95,9 +96,15 @@
                     data-row-header="true"
                   >
                     <div class="flex justify-content-between align-items-center">
-                      <span class="table-left-label font-normal">
+                      <button
+                        type="button"
+                        class="table-left-label font-normal text-left kpi-link"
+                        :class="{ 'cursor-default': !props.rowClickable }"
+                        :disabled="!props.rowClickable"
+                        @click="props.rowClickable ? emit('row-click', row) : undefined"
+                      >
                         {{ row.label }}
-                      </span>
+                      </button>
                       <em
                         v-if="row.explanation"
                         class="material-icons inline-flex align-items-center ml-2 cursor-help"
@@ -109,7 +116,7 @@
                     </div>
                   </td>
 
-                  <!-- Original datapoint -->
+                  <!-- Original data point -->
                   <td class="vertical-align-top">
                     <div class="flex align-items-start gap-2">
                       <MultiLayerDataTableCell
@@ -133,7 +140,7 @@
                     </div>
                   </td>
 
-                  <!-- Corrected datapoint -->
+                  <!-- Corrected data point -->
                   <td
                     v-for="qaReporter in datasetReview.qaReporters"
                     :key="qaReporter.reporterUserId"
@@ -184,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
@@ -210,9 +217,17 @@ import Tooltip from 'primevue/tooltip';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
-import { toTitleCase } from '@/utils/StringFormatter.ts';
+import { toSafeDisplayString, toTitleCase } from '@/utils/StringFormatter.ts';
+import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { wrapDataPointJson } from '@/utils/JudgeDialogUtils.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
+
+const emit = defineEmits<{
+  (e: 'row-click', row: CellRow): void;
+  (e: 'kpi-rows-built', rows: CellRow[]): void;
+  (e: 'documents-built', documents: DocumentOption[]): void;
+}>();
 
 const props = defineProps<{
   framework: DataTypeEnum;
@@ -221,6 +236,7 @@ const props = defineProps<{
   datasetReview: DatasetJudgementResponse;
   dataMetaInformation: DataMetaInformation;
   hideEmptyFields: boolean;
+  rowClickable?: boolean;
 }>();
 
 const totalNumberOfColumns = computed(() => (props.datasetReview.qaReporters?.length ?? 0) + 3);
@@ -247,11 +263,23 @@ const showMultipleReportsBanner = computed(() => {
 
 const {
   data: originalDataAndMeta,
-  isPending: loadingOriginal,
-  error: errorOriginal,
+  isPending,
+  isError,
+  error,
 } = useGetFrameworkDataQuery({
   framework: frameworkRef,
   dataId: dataIdRef,
+});
+
+const hasFrameworkData = computed(() => !!originalDataAndMeta.value);
+const isInitialFrameworkLoading = computed(() => isPending.value && !hasFrameworkData.value);
+const isInitialFrameworkError = computed(() => isError.value && !hasFrameworkData.value);
+
+const frameworkErrorMessage = computed(() => {
+  const err = error.value;
+  const backendMessage = err?.message;
+  if (backendMessage) return `Failed to load dataset: ${backendMessage}`;
+  return 'Failed to load dataset.';
 });
 
 const sortedReportingPeriods = computed(() => {
@@ -285,13 +313,36 @@ const sortedReports = computed(() => {
   }
 });
 
+const availableDocuments = computed<DocumentOption[]>(() => {
+  if (!sortedReports.value.length) return [];
+  return sortedReports.value.flatMap((reportsForPeriod) =>
+    Object.entries(reportsForPeriod ?? {}).map(([name, report]) => ({
+      label: name ?? 'Unnamed_File',
+      value: report.fileName ?? report.fileReference ?? name,
+      dataSource: {
+        fileName: report.fileName ?? null,
+        fileReference: report.fileReference,
+        publicationDate: report.publicationDate ?? null,
+      },
+    }))
+  );
+});
+
+watch(
+  availableDocuments,
+  (documents) => {
+    emit('documents-built', documents);
+  },
+  { immediate: true }
+);
+
 type SectionRow = {
   type: 'section';
   label: string;
   level: number;
 };
 
-type CellRow = {
+export type CellRow = {
   type: 'cell';
   label: string;
   dataPointTypeId?: string;
@@ -345,6 +396,15 @@ const allRows = computed<KpiRow[]>(() => {
   return buildRowsFromConfig(mldtConfig.value, originalDataAndMeta.value.data);
 });
 
+watch(
+  allRows,
+  (rows) => {
+    const kpiRows = rows.filter((row): row is CellRow => row.type === 'cell' && !!row.dataPointTypeId);
+    emit('kpi-rows-built', kpiRows);
+  },
+  { immediate: true }
+);
+
 const filteredRows = computed<KpiRow[]>(() => {
   if (!props.searchQuery) return allRows.value;
   const q = props.searchQuery.toLowerCase();
@@ -364,6 +424,19 @@ const filteredRows = computed<KpiRow[]>(() => {
 function getReviewInfo(dataPointTypeId?: string): DataPointJudgement | undefined {
   if (!dataPointTypeId) return undefined;
   return props.datasetReview.dataPoints[dataPointTypeId];
+}
+
+/**
+ * Builds the data-test label for a KPI row using the dataPointId from the dataset review.
+ *
+ * @param {KpiRow} row - The row to build the label for.
+ * @returns {string | undefined} The data-test label or undefined when unavailable.
+ */
+function getRowDataTest(row: KpiRow): string | undefined {
+  if (row.type !== 'cell') return undefined;
+  const reviewInfo = getReviewInfo(row.dataPointTypeId);
+  const dataPointId = reviewInfo?.dataPointId;
+  return dataPointId ? `data-point-row-${dataPointId}` : undefined;
 }
 
 /**
@@ -395,12 +468,9 @@ function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport
  */
 function getCorrectedDisplayFromQaReport(qaReport: DataPointQaReport | undefined): string | null {
   if (!qaReport?.correctedData) return null;
-  try {
-    const parsed = JSON.parse(qaReport.correctedData);
-    return parsed.value == null ? null : parsed.value;
-  } catch {
-    return null;
-  }
+  const detail = wrapDataPointJson(qaReport.correctedData);
+  if (detail?.value == null) return null;
+  return toSafeDisplayString(detail.value);
 }
 
 /**
@@ -416,16 +486,9 @@ function getCustomDisplayValue(dataPointTypeId?: string): string | null {
   const reviewInfo = getReviewInfo(dataPointTypeId);
   const customValue = reviewInfo?.customValue;
   if (customValue == null) return null;
-  const trimmed = customValue.trim();
-  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-    try {
-      const parsed = JSON.parse(trimmed);
-      return parsed?.value == null ? null : String(parsed.value);
-    } catch {
-      return null;
-    }
-  }
-  return customValue;
+  const detail = wrapDataPointJson(customValue);
+  if (detail?.value == null) return null;
+  return toSafeDisplayString(detail.value);
 }
 
 /**
@@ -530,7 +593,7 @@ function isRowEmpty(cellRow: CellRow): boolean {
 /**
  * Return the display text for a cell's QA report (verdict label or corrected value).
  *
- * @param {CellRow} cellRow - Table cell row describing the datapoint.
+ * @param {CellRow} cellRow - Table cell row describing the data point.
  * @param {string} reporterUserId - Reporter user id to look up the QA report.
  * @returns {string} Short label for the QA verdict or the corrected display value.
  */
@@ -567,5 +630,38 @@ function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
 /* slightly higher z-index for header so it stays above cells */
 .p-datatable-table thead th:first-child {
   z-index: 3;
+}
+
+.kpi-link {
+  /* Reset native button styles so it looks like a text link */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: var(--main-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  /* Optional: remove default button appearance in some browsers */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.kpi-link:disabled {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--p-text-color, #000);
+  cursor: default;
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* Optional: custom focus style for accessibility */
+.kpi-link:focus-visible {
+  outline: 2px solid var(--main-color);
+  outline-offset: 2px;
 }
 </style>

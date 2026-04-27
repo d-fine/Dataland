@@ -166,6 +166,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
     searchQuery?: string;
     hideEmptyFields?: boolean;
     data?: SfdrData;
+    rowClickable?: boolean;
+    onRowClick?: () => void;
   }): void {
     const queryClient = new QueryClient({
       defaultOptions: {
@@ -194,6 +196,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
         datasetReview: options?.datasetReview ?? baseDatasetReview,
         dataMetaInformation: mockMetaInformation,
         hideEmptyFields: options?.hideEmptyFields ?? false,
+        rowClickable: options?.rowClickable ?? false,
+        ...(options?.onRowClick && { onRowClick: options.onRowClick }),
       },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
@@ -218,14 +222,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
-    cy.contains('span', 'Data Date').should('be.visible');
-    cy.contains('span', 'Fiscal Year Deviation').should('be.visible');
+    cy.contains('button', 'Data Date').should('be.visible');
+    cy.contains('button', 'Fiscal Year Deviation').should('be.visible');
   });
 
   it('shows accepted and rejected icons for original and QA sources', () => {
     mountComponent();
 
-    cy.contains('span', 'Data Date')
+    cy.contains('button', 'Data Date')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.accepted-check').should('exist');
@@ -235,7 +239,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.rejected-check').should('not.exist');
       });
 
-    cy.contains('span', 'Fiscal Year Deviation')
+    cy.contains('button', 'Fiscal Year Deviation')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -243,7 +247,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(3).find('.accepted-check').should('exist');
       });
 
-    cy.contains('span', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -256,14 +260,14 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('hides empty KPI rows when hideEmptyFields is true', () => {
     mountComponent({ hideEmptyFields: true });
 
-    cy.contains('span', 'Scope 2 GHG emissions').should('not.exist');
-    cy.contains('span', 'Data Date').should('be.visible');
+    cy.contains('button', 'Scope 2 GHG emissions').should('not.exist');
+    cy.contains('button', 'Data Date').should('be.visible');
   });
 
   it('shows empty KPI rows when hideEmptyFields is false', () => {
     mountComponent({ hideEmptyFields: false });
 
-    cy.contains('span', 'Scope 2 GHG emissions').should('be.visible');
+    cy.contains('button', 'Scope 2 GHG emissions').should('be.visible');
   });
 
   it('renders the company reports banner with referenced reports', () => {
@@ -290,11 +294,26 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('renders the custom datapoint value from JSON', () => {
     mountComponent();
 
-    cy.contains('span', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(4).should('contain.text', '2023-12-15');
         cy.get('td').eq(4).find('.accepted-check').should('exist');
       });
+  });
+
+  it('emits row-click and applies kpi-link style when rowClickable is true', () => {
+    const onRowClick = cy.spy().as('onRowClick');
+
+    mountComponent({ rowClickable: true, onRowClick });
+
+    cy.contains('button', 'Data Date').should('have.class', 'kpi-link').click();
+    cy.get('@onRowClick').should('have.been.calledOnce');
+    cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'plainDateSfdrDataDate' });
+  });
+
+  it('kpi name is not clickable when rowClickable is set to false', () => {
+    mountComponent({ rowClickable: false });
+    cy.contains('button', 'Data Date').should('have.class', 'cursor-default');
   });
 });

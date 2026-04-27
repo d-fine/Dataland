@@ -1,9 +1,9 @@
-import { login, logout } from '@e2e/utils/Auth';
+import { loginAsReader, logout } from '@e2e/utils/Auth';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 
 describe('As a user I want to be able to login and I want the login page to behave as I expect', () => {
   it('Checks that login & logout works', () => {
-    login();
+    loginAsReader();
     logout();
   });
 

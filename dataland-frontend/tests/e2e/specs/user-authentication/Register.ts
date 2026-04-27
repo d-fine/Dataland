@@ -10,6 +10,9 @@ describe('As a user I want to be able to register for an account and be able to 
   const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, '0')).join('');
 
+  const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+  const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+
   it('Checks that the Dataland password-policy gets respected', () => {
     cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
     cy.get('#email').should('exist').type(email, { force: true });
@@ -59,8 +62,12 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.visit('http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users');
       cy.get('h1').should('exist').should('contain', 'Sign in to your account');
       cy.url().should('contain', 'realms/master');
-      cy.get('#username').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME'), { force: true });
-      cy.get('#password').should('exist').type(getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD'), { force: true });
+      getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME').then((username) => {
+        cy.get('#username').should('exist').type(username, { force: true });
+      });
+      getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD').then((password) => {
+        cy.get('#password').should('exist').type(password, { force: true });
+      });
       cy.get('#kc-login').should('exist').click();
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com').as('typedUsernameInSearch');
       cy.get('input.pf-v5-c-text-input-group__text-input').type(`${returnEmail}{enter}`, { force: true });
@@ -107,13 +114,11 @@ describe('As a user I want to be able to register for an account and be able to 
           cy.get("button:contains('Account security')").should('exist').click();
           cy.get("a:contains('Signing in')").should('exist').click();
           cy.get("button:contains('Set up Authenticator application')")
-            .should('be.visible', { timeout: Cypress.env('medium_timeout_in_ms') as number })
+            .should('be.visible', { timeout: mediumTimeoutInMs })
             .click();
-          cy.get("a:contains('Unable to scan')")
-            .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
-            .click();
+          cy.get("a:contains('Unable to scan')").should('be.visible', { timeout: shortTimeoutInMs }).click();
           cy.get("span[id='kc-totp-secret-key']")
-            .should('be.visible', { timeout: Cypress.env('short_timeout_in_ms') as number })
+            .should('be.visible', { timeout: shortTimeoutInMs })
             .invoke('text')
             .then((text) => {
               const totpKey = text.replaceAll(/\s/g, '');
@@ -122,7 +127,7 @@ describe('As a user I want to be able to register for an account and be able to 
                 cy.get("input[id='saveTOTPBtn']").click();
                 cy.get(`button:contains('${firstName} ${lastName}')`).click();
                 cy.get("span:contains('Sign out')").should('exist', {
-                  timeout: Cypress.env('medium_timeout_in_ms') as number,
+                  timeout: mediumTimeoutInMs,
                 });
                 cy.task('setTotpKey', totpKey);
               });
@@ -139,7 +144,7 @@ describe('As a user I want to be able to register for an account and be able to 
               throw new Error('Email or password or TOTP key retrieved by task is not a string. Cannot proceed.');
             }
 
-            cy.wait(Cypress.env('medium_timeout_in_ms') as number);
+            cy.wait(mediumTimeoutInMs);
 
             login(returnEmail, returnPassword, () => {
               return generate({ secret: key });

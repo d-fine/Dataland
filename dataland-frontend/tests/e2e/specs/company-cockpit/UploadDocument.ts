@@ -1,9 +1,8 @@
 import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils';
 import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import type { CompanyIdAndName } from '@clients/backend';
+import { getAdminToken } from '@e2e/utils/Auth'; // new helpers
 
 /** Views document details and edits the category */
 function viewDocumentDetailsAndEditCategory(documentName: string, expectedCategory: string): void {
@@ -49,14 +48,15 @@ describeIf(
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
       });
-      getKeycloakToken(admin_name, admin_pw).then((t) => {
-        Cypress.env('token', t);
+
+      getAdminToken().then((t) => {
+        cy.task('setToken', { keycloakToken: t });
       });
     });
 
     beforeEach(() => {
       setupCommonInterceptions();
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.task('createUniquePdfFixture').then((filename) => {
         testDocFileName = filename as string;
         testDocFilePath = testDocFilePathBase + testDocFileName;
@@ -95,37 +95,47 @@ describeIf(
     });
 
     it('Shows conflict modal for already associated document', () => {
-      const token = Cypress.env('token');
-      cy.readFile(testDocFilePath, null).then((buffer) => {
-        void uploadDocumentViaApi(token, buffer, testDocFileName, {
-          documentName: testDocFileName,
-          documentCategory: 'Other',
-          companyIds: [alphaCompanyIdAndName.companyId] as unknown as Set<string>,
+      cy.task('getToken', ['keycloakToken']).then((result) => {
+        const { keycloakToken } = result as { keycloakToken: string };
+        const token = keycloakToken;
+
+        cy.readFile(testDocFilePath, null).then((buffer) => {
+          void uploadDocumentViaApi(token, buffer, testDocFileName, {
+            documentName: testDocFileName,
+            documentCategory: 'Other',
+            companyIds: [alphaCompanyIdAndName.companyId] as unknown as Set<string>,
+          });
         });
+
+        visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
+        cy.contains('Document already exists').should('be.visible');
+        cy.get('[data-test="ok-button"]').should('be.visible').click();
+        cy.contains(testDocFileName).should('exist');
       });
-      visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
-      cy.contains('Document already exists').should('be.visible');
-      cy.get('[data-test="ok-button"]').should('be.visible').click();
-      cy.contains(testDocFileName).should('exist');
     });
 
     it('Associate document with new company after conflict', () => {
-      const token = Cypress.env('token');
-      cy.readFile(testDocFilePath, null).then((buffer) => {
-        void uploadDocumentViaApi(token, buffer, testDocFileName, {
-          documentName: testDocFileName,
-          documentCategory: 'Other',
-          companyIds: [betaCompanyIdAndName.companyId] as unknown as Set<string>,
+      cy.task('getToken', ['keycloakToken']).then((result) => {
+        const { keycloakToken } = result as { keycloakToken: string };
+        const token = keycloakToken;
+
+        cy.readFile(testDocFilePath, null).then((buffer) => {
+          void uploadDocumentViaApi(token, buffer, testDocFileName, {
+            documentName: testDocFileName,
+            documentCategory: 'Other',
+            companyIds: [betaCompanyIdAndName.companyId] as unknown as Set<string>,
+          });
         });
+
+        visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
+        cy.contains('Document already exists').should('be.visible');
+        cy.contains(betaCompanyIdAndName.companyName).should('be.visible');
+        cy.get('[data-test="associate-document-button"]').should('be.visible').click();
+        cy.get('[data-test="success-modal"]').should('be.visible');
+        cy.contains('Document associated successfully.').should('be.visible');
+        cy.get('[data-test="close-success-modal-button"]').click();
+        cy.contains(testDocFileName).should('exist');
       });
-      visitDocumentPageAndUploadDocument(alphaCompanyIdAndName.companyId);
-      cy.contains('Document already exists').should('be.visible');
-      cy.contains(betaCompanyIdAndName.companyName).should('be.visible');
-      cy.get('[data-test="associate-document-button"]').should('be.visible').click();
-      cy.get('[data-test="success-modal"]').should('be.visible');
-      cy.contains('Document associated successfully.').should('be.visible');
-      cy.get('[data-test="close-success-modal-button"]').click();
-      cy.contains(testDocFileName).should('exist');
     });
   }
 );

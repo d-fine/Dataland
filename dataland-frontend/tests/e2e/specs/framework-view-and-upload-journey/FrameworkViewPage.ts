@@ -1,6 +1,5 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type LksgData, type SfdrData } from '@clients/backend';
@@ -11,6 +10,9 @@ import { getCellValueContainer } from '@sharedUtils/components/resources/dataTab
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
@@ -44,7 +46,7 @@ function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: strin
   }).as('autocompleteSuggestions');
   cy.get(searchBarSelector).click();
   cy.get(searchBarSelector).type(companyName, { force: true });
-  cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
+  cy.wait('@autocompleteSuggestions', { timeout: longTimeoutInMs });
   const companySelector = '.p-autocomplete-option';
   cy.get(companySelector).first().click({ force: true });
 }
@@ -222,7 +224,7 @@ describeIf(
      */
     function uploadCompanyAlphaAndData(): void {
       const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
           .then((storedCompany) => {
             companyIdOfAlpha = storedCompany.companyId;
@@ -286,7 +288,7 @@ describeIf(
      *
      */
     function uploadCompanyBetaAndData(): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
           async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
@@ -322,7 +324,7 @@ describeIf(
     });
 
     it('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, false);
@@ -340,7 +342,7 @@ describeIf(
       'Check that clicking a search result on the search page or an autocomplete suggestion on the view page' +
         ' redirects the user to the company cockpit',
       () => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedInAsUploader();
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, nameOfCompanyAlpha);
 
         cy.get('[data-test=toggleShowAll]').scrollIntoView();
@@ -359,7 +361,7 @@ describeIf(
     );
 
     it('Check that using back-button and dropdowns on the view-page work as expected', () => {
-      cy.ensureLoggedIn();
+      cy.ensureLoggedInAsReader();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
@@ -385,7 +387,7 @@ describeIf(
     });
 
     it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
-      cy.ensureLoggedIn();
+      cy.ensureLoggedInAsReader();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
@@ -410,7 +412,7 @@ describeIf(
     });
 
     it('Check if the version change bar works as expected on several framework view pages', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`);
 
       cy.contains('2023-04-18').should('exist');
@@ -457,9 +459,9 @@ describeIf(
 
     it(
       'Check that using the reporting period in URL still yields data for assembled datasets',
-      { defaultCommandTimeout: Cypress.env('short_timeout_in_ms') as number },
+      { defaultCommandTimeout: shortTimeoutInMs },
       () => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedInAsUploader();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}/reportingPeriods/2019`);
         cy.get('.d-content').should('not.contain.text', 'We are having issues loading the data.');
         cy.get('[data-test="frameworkNewDataTableTitle"]').should('be.visible');

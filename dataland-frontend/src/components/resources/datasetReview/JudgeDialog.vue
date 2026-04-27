@@ -1,0 +1,738 @@
+<template>
+  <PrimeDialog
+    id="judgeModal"
+    :dismissable-mask="true"
+    :draggable="false"
+    :modal="true"
+    :pt="{ root: { style: { width: '80vw', maxHeight: '80vh' } } }"
+    v-model:visible="isOpen"
+    @hide="emit('close')"
+    data-test="judge-modal"
+  >
+    <!-- Header -->
+    <template #header>
+      <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; flex: 1">
+        <span data-test="dialog-title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)">
+          {{ currentDataPointLabel }}
+        </span>
+        <span
+          v-if="verdictBadge"
+          :style="{
+            fontSize: 'var(--font-size-sm)',
+            whiteSpace: 'nowrap',
+            backgroundColor: verdictBadge.background,
+            color: verdictBadge.color,
+          }"
+          data-test="verdict-badge"
+        >
+          {{ verdictBadge.label }}
+        </span>
+      </div>
+    </template>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto 1fr;
+        gap: var(--spacing-lg);
+        flex: 1;
+        min-height: 0;
+      "
+    >
+      <!-- Top-left: Original data point -->
+      <JudgeDialogTopSection
+        title="Original data point"
+        :data="originalData"
+        :is-loading="isOriginalLoading"
+        :is-loading-error="isOriginalLoadingError"
+        :loading-error-object="originalErrorValue"
+        accept-label="ACCEPT ORIGINAL"
+        :accept-disabled="isPatching"
+        accept-data-test="accept-original-button"
+        data-test="original-datapoint-section"
+        :show-nav="false"
+        :nav-index="0"
+        :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
+        section-type="original"
+        @accept="onAcceptClick(AcceptedDataPointSource.Original)"
+        @show-popover="showPopover"
+        @hide-popover="hidePopover"
+      />
+
+      <!-- Top-right: Reviewed data point (QA reports) -->
+      <JudgeDialogTopSection
+        title="Reviewed data point"
+        :data="currentQaCorrectedData"
+        empty-text="No QA reports available."
+        accept-label="ACCEPT REVIEWED"
+        :accept-disabled="isPatching || allQaReports.length === 0 || !currentQaReport"
+        accept-data-test="accept-report-button"
+        data-test="corrected-datapoint-section"
+        :show-nav="allQaReports.length > 0"
+        :nav-index="currentQaReportIndex"
+        :nav-count="allQaReports.length"
+        :nav-label="currentQaReporterLabel"
+        :is-accepted="
+          currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Qa &&
+          currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
+        "
+        :index-of-accepted-qa-report="indexOfAcceptedQaReport"
+        section-type="qa"
+        @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
+        @prev="goToPreviousReport"
+        @next="goToNextReport"
+        @show-popover="showPopover"
+        @hide-popover="hidePopover"
+      />
+
+      <!-- Bottom-left: Custom data point -->
+      <JudgeDialogCustomSection
+        v-model:edit-mode-enabled="editModeEnabled"
+        v-model:json="customJson"
+        v-model:form-data="customFormData"
+        :accept-disabled="isPatching"
+        :can-copy-original="!!originalData"
+        :can-copy-corrected="!!currentQaCorrectedData"
+        :available-documents="availableDocuments"
+        :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Custom"
+        @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
+        @copy-original="copyOriginalToCustom"
+        @copy-corrected="copyCorrectedToCustom"
+      />
+
+      <!-- Bottom-right: Next data point selection & patch error -->
+      <JudgeDialogNextSection
+        v-model:only-show-unreviewed="onlyShowUnreviewed"
+        v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
+        :options="nextDataPointOptions"
+        @go-to="navigateToDataPoint(selectedNextDataPointTypeId)"
+      />
+    </div>
+
+    <Popover
+      ref="overflowPopover"
+      placement="top"
+      :pt="{
+        root: {
+          style: { width: popoverWidth },
+          'data-test': 'overflow-popover',
+        },
+      }"
+    >
+      <div style="white-space: pre-wrap; word-break: break-word">
+        {{ popoverText }}
+      </div>
+    </Popover>
+  </PrimeDialog>
+  <PopupConfirmationModal
+    v-model:visible="isErrorModalVisible"
+    :header="errorModalHeader"
+    :message="errorModalMessage"
+    :error-message="errorModalDetails"
+    :is-loading="false"
+    :is-success="false"
+    @confirm="isErrorModalVisible = false"
+    @cancel="isErrorModalVisible = false"
+    :dismissable-mask="false"
+    :show-cancel-button="false"
+    confirm-label="OK"
+  />
+  <PopupConfirmationModal
+    v-model:visible="isAllReviewedModalVisible"
+    header="All data points reviewed!"
+    message="Every data point has been reviewed at least once."
+    :error-message="undefined"
+    :is-loading="false"
+    :is-success="true"
+    @confirm="isAllReviewedModalVisible = false"
+    @cancel="isAllReviewedModalVisible = false"
+    :dismissable-mask="true"
+    :show-cancel-button="false"
+    confirm-label="OK"
+  />
+</template>
+
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import PrimeDialog from 'primevue/dialog';
+import Popover from 'primevue/popover';
+
+import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
+import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
+import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
+import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
+import type {
+  CustomFormData,
+  ParsedSingleDataPoint,
+  DocumentOption,
+  NextDataPointOption,
+} from '@/types/JudgeDialogTypes.ts';
+
+import {
+  parseDataPointJsonToFormData,
+  parseFormDataToDataPointJson,
+  unwrapDataPointJson,
+  wrapDataPointJson,
+  transformDataPointDetailToFormData,
+  DEFAULT_CUSTOM_JSON,
+  DEFAULT_CUSTOM_FORM_DATA,
+  type JudgementErrorResponse,
+} from '@/utils/JudgeDialogUtils.ts';
+import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
+import {
+  AcceptedDataPointSource,
+  type DataPointJudgement,
+  QaReportDataPointVerdict,
+  type QaReporter,
+  type DataPointQaReport,
+} from '@clients/qaservice';
+import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGetDataPointByIdQuery.ts';
+import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
+import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import { type AxiosError } from 'axios';
+
+// ===== Props & emits =====
+
+const props = defineProps<{
+  datasetReviewId: string;
+  dataPointTypeId: string;
+  kpiRows: CellRow[];
+  availableDocuments?: DocumentOption[];
+}>();
+
+const emit = defineEmits<{
+  close: [];
+}>();
+
+// Error popover
+const isErrorModalVisible = ref(false);
+const errorModalHeader = ref('Error updating data point');
+const errorModalMessage = ref('Failed to update data point judgement.');
+const errorModalDetails = ref<string | undefined>(undefined);
+
+// v-model:visible from parent
+const isOpen = defineModel<boolean>('isOpen');
+const availableDocuments = computed(() => props.availableDocuments ?? []);
+
+// ===== Dataset review =====
+
+const datasetJudgementId = computed(() => props.datasetReviewId);
+const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
+
+// ===== Accept Button mutations  =====
+const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgementDetailsForDataPointMutation();
+
+// ===== Current data point selection =====
+
+const currentDataPointTypeId = ref<string>(props.dataPointTypeId);
+const currentDataPointLabel = computed(() => {
+  const row = props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value);
+  return row ? row.label : currentDataPointTypeId.value;
+});
+
+watch(
+  () => props.dataPointTypeId,
+  (newVal) => {
+    currentDataPointTypeId.value = newVal;
+    selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(currentDataPointTypeId.value);
+    resetStateForCurrentDataPoint();
+  }
+);
+
+const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
+  if (!datasetJudgement.value?.dataPoints) return null;
+  return datasetJudgement.value.dataPoints[currentDataPointTypeId.value] ?? null;
+});
+
+const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');
+
+// ===== Original data point =====
+
+const isOriginalQueryEnabled = computed(() => !!currentDataPointId.value);
+
+const {
+  data: originalDataPoint,
+  isPending: isOriginalPending,
+  isError: isOriginalError,
+  error: originalError,
+} = useGetDataPointByIdQuery(currentDataPointId, {
+  enabled: isOriginalQueryEnabled,
+});
+
+const isOriginalLoading = computed(() => isOriginalQueryEnabled.value && isOriginalPending.value);
+const isOriginalLoadingError = computed(() => isOriginalQueryEnabled.value && isOriginalError.value);
+const originalErrorValue = computed<Error | null>(() => (isOriginalLoadingError.value ? originalError.value : null));
+
+const originalData = computed<ParsedSingleDataPoint | null>(() => {
+  const originalDataPointUnrefed = originalDataPoint.value;
+  if (!originalDataPointUnrefed?.dataPoint) return null;
+  const detail = wrapDataPointJson(originalDataPointUnrefed.dataPoint);
+  if (detail === null) console.error('Failed to parse original data point JSON');
+  return detail;
+});
+
+// ===== QA reports =====
+
+const allQaReports = computed<DataPointQaReport[]>(() => {
+  const judgementMetaData = currentDatapointJudgement.value;
+  if (!judgementMetaData?.qaReports) return [];
+  return judgementMetaData.qaReports;
+});
+
+const verdictBadge = computed<{ label: string; background: string; color: string } | null>(() => {
+  const judgementMetaData = currentDatapointJudgement.value;
+  if (!judgementMetaData) return null;
+  const allReports = judgementMetaData.qaReports ?? [];
+
+  if (allReports.length === 0) {
+    return {
+      label: 'QA NOT ATTEMPTED',
+      background: 'var(--p-yellow-100)',
+      color: 'var(--p-yellow-700)',
+    };
+  }
+
+  if (allReports.every((r) => r.verdict === QaReportDataPointVerdict.QaAccepted)) {
+    return {
+      label: 'QA ACCEPTED',
+      background: 'var(--p-green-100)',
+      color: 'var(--p-green-700)',
+    };
+  }
+
+  if (allReports.some((r) => r.verdict === QaReportDataPointVerdict.QaRejected)) {
+    return {
+      label: 'QA REJECTED',
+      background: 'var(--p-red-100)',
+      color: 'var(--p-red-700)',
+    };
+  }
+
+  return {
+    label: 'MIXED VERDICTS',
+    background: 'var(--p-yellow-100)',
+    color: 'var(--p-yellow-700)',
+  };
+});
+
+const indexOfAcceptedQaReport = computed(() => {
+  const judgement = currentDatapointJudgement.value;
+  if (judgement?.acceptedSource !== AcceptedDataPointSource.Qa) return -1;
+
+  const reports = allQaReports.value;
+  if (!reports.length) return -1;
+
+  return reports.findIndex((r) => r.reporterUserId === judgement.reporterUserIdOfAcceptedQaReport);
+});
+
+const currentQaReportIndex = ref<number>(0);
+
+watch(
+  () => allQaReports.value.length,
+  () => {
+    currentQaReportIndex.value = 0;
+  }
+);
+
+const currentQaReport = computed<DataPointQaReport | null>(() => {
+  const list = allQaReports.value;
+  if (!list.length) return null;
+  return list[currentQaReportIndex.value] ?? list[0];
+});
+
+const qaReportersById = computed<Record<string, QaReporter>>(() => {
+  const map: Record<string, QaReporter> = {};
+  if (!datasetJudgement.value?.qaReporters) return map;
+  for (const r of datasetJudgement.value.qaReporters) {
+    map[r.reporterUserId] = r;
+  }
+  return map;
+});
+
+const currentQaReporterLabel = computed(() => {
+  const report = currentQaReport.value;
+  if (!report) return 'No QA report selected';
+  const reporter = qaReportersById.value[report.reporterUserId];
+  if (reporter?.reporterUserName) return reporter.reporterUserName;
+  if (reporter?.reporterEmailAddress) return reporter.reporterEmailAddress;
+  return report.reporterUserId;
+});
+
+const currentQaCorrectedData = computed<ParsedSingleDataPoint | null>(() => {
+  if (!currentQaReport.value?.correctedData) return null;
+  const detail = wrapDataPointJson(currentQaReport.value.correctedData);
+  if (detail === null) console.error('Failed to parse correctedData JSON');
+  return detail;
+});
+
+/**
+ * Navigates to the previous QA report in the filtered list, if available.
+ *
+ * @returns Nothing.
+ */
+function goToPreviousReport(): void {
+  if (currentQaReportIndex.value > 0) {
+    currentQaReportIndex.value -= 1;
+  }
+}
+
+/**
+ * Navigates to the next QA report in the filtered list, if available.
+ *
+ * @returns Nothing.
+ */
+function goToNextReport(): void {
+  if (currentQaReportIndex.value < allQaReports.value.length - 1) {
+    currentQaReportIndex.value += 1;
+  }
+}
+
+const editModeEnabled = ref<boolean>(false);
+const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
+const customFormData = ref<CustomFormData>({ ...DEFAULT_CUSTOM_FORM_DATA });
+
+/**
+ * Copies the original data point values into the custom section
+ * (either as JSON or into the structured form).
+ *
+ * @returns Nothing.
+ */
+function copyOriginalToCustom(): void {
+  if (!originalData.value) return;
+
+  if (editModeEnabled.value) {
+    customJson.value = JSON.stringify(originalData.value, null, 2);
+  } else {
+    customFormData.value = transformDataPointDetailToFormData(originalData.value);
+  }
+}
+
+/**
+ * Copies the current QA-corrected data point values into the custom section
+ * (either as JSON or into the structured form).
+ *
+ * @returns Nothing.
+ */
+function copyCorrectedToCustom(): void {
+  if (!currentQaCorrectedData.value) return;
+
+  if (editModeEnabled.value) {
+    customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
+  } else {
+    customFormData.value = transformDataPointDetailToFormData(currentQaCorrectedData.value);
+  }
+}
+
+// ===== Next data point =====
+
+const onlyShowUnreviewed = ref<boolean>(true);
+
+const nextDataPointOptions = computed<NextDataPointOption[]>(() => {
+  const options: NextDataPointOption[] = [];
+  for (const row of props.kpiRows) {
+    if (!row.dataPointTypeId) continue;
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[row.dataPointTypeId];
+    const reviewed = judgementMetaData ? isDataPointJudged(judgementMetaData) : false;
+    if (onlyShowUnreviewed.value && reviewed) continue;
+    options.push({
+      label: row.label,
+      dataPointTypeId: row.dataPointTypeId,
+      reviewed,
+    });
+  }
+  return options;
+});
+
+const selectedNextDataPointTypeId = ref<string>(findNextUnreviewedDataPoint(currentDataPointTypeId.value));
+
+// Track which KPI data point types exist in this dialog
+const relevantDataPointTypeIds = computed<string[]>(() =>
+  props.kpiRows.map((row) => row.dataPointTypeId).filter((id): id is string => !!id)
+);
+
+const hasShownAllReviewedNotice = ref(false);
+const isAllReviewedModalVisible = ref(false);
+
+/**
+ * Returns true when every relevant data point has an accepted source.
+ */
+const areAllDataPointsReviewed = computed<boolean>(() => {
+  const judgement = datasetJudgement.value;
+  if (!judgement?.dataPoints) return false;
+
+  return relevantDataPointTypeIds.value.every((id) => {
+    const meta = judgement.dataPoints[id];
+    return meta != null && meta.acceptedSource != null;
+  });
+});
+
+/**
+ * Determines whether the given data point judgement has already been decided.
+ *
+ * @param judgementMetaData - Data Point judgement metadata.
+ * @returns True if the data point has an accepted source; otherwise false.
+ */
+function isDataPointJudged(judgementMetaData: DataPointJudgement): boolean {
+  return judgementMetaData.acceptedSource != null;
+}
+
+/**
+ * Finds the next unreviewed data point type ID, starting after the current one
+ * and wrapping around when necessary.
+ *
+ * @param startingDataPointTypeId - The data point type ID to start from.
+ * @returns The next unreviewed data point type ID, or the current one if none found.
+ */
+function findNextUnreviewedDataPoint(startingDataPointTypeId: string): string {
+  const ids = nextDataPointOptions.value.map((row) => row.dataPointTypeId).filter(Boolean);
+  const currentIndex = ids.indexOf(startingDataPointTypeId);
+  const total = ids.length;
+
+  for (let offset = 1; offset < total; offset++) {
+    const targetDataPointTypeId = ids[(currentIndex + offset) % total];
+    const judgementMetaData = datasetJudgement.value?.dataPoints?.[targetDataPointTypeId];
+    if (!judgementMetaData || !isDataPointJudged(judgementMetaData)) return targetDataPointTypeId;
+  }
+  return startingDataPointTypeId;
+}
+
+/**
+ * Navigates to the given data point type, resets local state, and advances the
+ * "selected next" pointer to the next unreviewed data point after it.
+ *
+ * @param targetId - The data point type ID to navigate to.
+ * @returns Nothing.
+ */
+function navigateToDataPoint(targetId: string | null): void {
+  if (!targetId) return;
+  currentDataPointTypeId.value = targetId;
+  resetStateForCurrentDataPoint();
+  selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(targetId);
+}
+
+/**
+ * Handles navigation and cleanup after a successful patch of a data point judgement.
+ *
+ * @returns Nothing.
+ */
+function afterSuccessfulPatch(): void {
+  if (selectedNextDataPointTypeId.value) {
+    navigateToDataPoint(selectedNextDataPointTypeId.value);
+  } else {
+    selectedNextDataPointTypeId.value = findNextUnreviewedDataPoint(currentDataPointTypeId.value);
+  }
+
+  if (!hasShownAllReviewedNotice.value && areAllDataPointsReviewed.value) {
+    isAllReviewedModalVisible.value = true;
+    hasShownAllReviewedNotice.value = true;
+  }
+}
+
+/**
+ * Calls patchJudgementDetail for the current data point with the given details,
+ * navigating on success and logging on error.
+ *
+ * @param acceptedSource - The accepted data point source.
+ * @param reporterUserIdOfAcceptedQaReport - The reporter user ID of the accepted QA report, if applicable.
+ * @param customDataPoint - The custom data point JSON string, if applicable.
+ * @param errorLogMessage - Message logged when the patch fails.
+ * @returns Nothing.
+ */
+function patchCurrentDatapoint(
+  acceptedSource: AcceptedDataPointSource,
+  reporterUserIdOfAcceptedQaReport: string | undefined,
+  customDataPoint: string | undefined,
+  errorLogMessage: string
+): void {
+  patchJudgementDetail(
+    {
+      judgementId: props.datasetReviewId,
+      dataPointTypeId: currentDataPointTypeId.value,
+      details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint },
+    },
+    {
+      onSuccess: () => {
+        afterSuccessfulPatch();
+      },
+      onError: (err: Error) => {
+        console.error(errorLogMessage, err);
+
+        const axiosErr = err as AxiosError<JudgementErrorResponse>;
+        const apiErrors = axiosErr.response?.data?.errors;
+        const firstError = Array.isArray(apiErrors) && apiErrors.length > 0 ? apiErrors[0] : undefined;
+
+        const errorType = firstError?.errorType;
+        const httpStatusFromBody = firstError?.httpStatus;
+        const httpStatusFromResponse = axiosErr.response?.status;
+        const httpStatus = httpStatusFromBody ?? httpStatusFromResponse;
+
+        const summary = firstError?.summary;
+        const backendMessage = firstError?.message;
+
+        const detailsParts: string[] = [];
+
+        if (summary) {
+          detailsParts.push(summary);
+        }
+        if (backendMessage) {
+          detailsParts.push(backendMessage);
+        }
+        if (errorType || httpStatus) {
+          const typePart = errorType ?? 'unknown-error';
+          const statusPart = httpStatus ? `HTTP ${httpStatus}` : 'HTTP status unknown';
+          detailsParts.push(`(${typePart} – ${statusPart})`);
+        }
+
+        const finalDetails = detailsParts.length > 0 ? detailsParts.join('\n') : err.message || 'Unknown error.';
+
+        errorModalHeader.value = 'Failed to update data point judgement';
+        errorModalMessage.value = 'Your decision could not be saved. Please review the data point.';
+        errorModalDetails.value = finalDetails;
+
+        isErrorModalVisible.value = true;
+      },
+    }
+  );
+}
+
+/**
+ * Central handler for accepting a data point from a given source
+ * (original / QA / custom).
+ *
+ * @param acceptedSource - The selected data point source to accept.
+ * @returns Nothing.
+ */
+function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
+  switch (acceptedSource) {
+    case AcceptedDataPointSource.Original:
+      acceptOriginalDatapoint();
+      break;
+    case AcceptedDataPointSource.Qa:
+      acceptQaReportDatapoint();
+      break;
+    case AcceptedDataPointSource.Custom:
+      acceptCustomDatapoint();
+      break;
+  }
+}
+
+/**
+ * Accepts the original data point as the final judgement for the current data point type.
+ *
+ * @returns Nothing.
+ */
+function acceptOriginalDatapoint(): void {
+  if (!currentDataPointTypeId.value) return;
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Original,
+    undefined,
+    undefined,
+    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
+  );
+}
+
+/**
+ * Accepts the currently selected QA report as the final judgement
+ * for the current data point type.
+ *
+ * @returns Nothing.
+ */
+function acceptQaReportDatapoint(): void {
+  if (!currentDataPointTypeId.value || !currentQaReport.value) return;
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Qa,
+    currentQaReport.value.reporterUserId,
+    undefined,
+    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
+  );
+}
+
+/**
+ * Accepts the custom data point (either from JSON or from the structured form)
+ * as the final judgement for the current data point type.
+ *
+ * @returns Nothing.
+ */
+function acceptCustomDatapoint(): void {
+  if (!currentDataPointTypeId.value) return;
+  const documentOption = availableDocuments.value.find((doc) => doc.value === customFormData.value.document) ?? null;
+  const customDataPointJson = unwrapDataPointJson(
+    editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
+    originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
+  );
+  patchCurrentDatapoint(
+    AcceptedDataPointSource.Custom,
+    undefined,
+    customDataPointJson,
+    `Error in patching datasetJudgement object for dataPointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
+  );
+}
+
+/**
+ * Resets transient state (e.g. current QA report index) for the active data point.
+ *
+ * @returns Nothing.
+ */
+function resetStateForCurrentDataPoint(): void {
+  currentQaReportIndex.value = 0;
+}
+
+/**
+ * Initializes the custom form / JSON for the currently selected data point
+ * based on previously accepted custom judgement, if present.
+ *
+ * @param judgementMetaData - The current data point judgement metadata.
+ * @returns Nothing.
+ */
+function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement | null): void {
+  if (judgementMetaData?.acceptedSource === AcceptedDataPointSource.Custom && judgementMetaData.customValue) {
+    const parsed = parseDataPointJsonToFormData(judgementMetaData.customValue);
+    if (parsed !== null) {
+      customFormData.value = parsed;
+      const wrapped = wrapDataPointJson(judgementMetaData.customValue);
+      customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
+      return;
+    }
+    console.error('Failed to parse previously accepted custom data point JSON');
+  }
+  customJson.value = DEFAULT_CUSTOM_JSON;
+  customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
+}
+
+watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });
+
+// ===== Overflow popover =====
+
+const overflowPopover = ref<InstanceType<typeof Popover> | null>(null);
+const popoverText = ref<string>('');
+const popoverWidth = ref<string>('auto');
+
+/**
+ * Shows the overflow popover for truncated content with a width
+ * matching the corresponding table cell or form field.
+ *
+ * @param event - Mouse event from the trigger element.
+ * @param text - Text content to display inside the popover.
+ * @returns Nothing.
+ */
+function showPopover(event: MouseEvent, text: string): void {
+  const triggerElement = event.currentTarget as HTMLElement;
+  const cellElement = triggerElement.closest('td') as HTMLElement | null;
+  const anchor = cellElement ?? triggerElement;
+
+  const width = anchor.getBoundingClientRect().width;
+  popoverWidth.value = `${width}px`;
+
+  popoverText.value = text;
+  overflowPopover.value?.show(event, anchor);
+}
+
+/**
+ * Hides the overflow popover, if visible.
+ *
+ * @returns Nothing.
+ */
+function hidePopover(): void {
+  overflowPopover.value?.hide();
+}
+</script>

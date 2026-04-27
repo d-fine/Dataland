@@ -3,43 +3,55 @@
     v-model:visible="isVisible"
     :header="header"
     modal
-    :closable="false"
-    :dismissable-mask="!isLoading"
-    style="min-width: 20rem; text-align: center"
-    data-test="confirmation-modal"
+    :dismissable-mask="props.dismissableMask ?? !isLoading"
+    :closable="!isLoading"
     @hide="handleCancel"
+    data-test="confirmation-modal"
+    :style="{ width: '30rem' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <div v-if="isSuccess" class="text-green-500 mb-3">
-      <i class="pi pi-check-circle" style="font-size: 3rem"></i>
-    </div>
+    <div class="flex flex-column gap-3 pt-2">
+      <div v-if="isSuccess" class="flex justify-content-center text-green-500 mb-2">
+        <i class="pi pi-check-circle text-5xl"></i>
+      </div>
 
-    <div style="max-width: 30rem; margin: 8px auto 0; white-space: pre-line; text-align: left; word-break: break-word">
       <slot>
-        {{ message }}
+        <p class="m-0 text-left white-space-pre-line line-height-3 text-color-secondary">
+          {{ message }}
+        </p>
       </slot>
-    </div>
 
-    <div v-if="errorMessage" data-test="confirmation-modal-error-message">
-      <Message severity="error" class="my-3" style="max-width: 30rem; text-align: left">
+      <Message
+        v-if="errorMessage"
+        severity="error"
+        :closable="false"
+        class="m-0 mt-2"
+        data-test="confirmation-modal-error-message"
+      >
         {{ errorMessage }}
       </Message>
     </div>
 
-    <!-- Hide footer when isSuccess = true -->
+    <!-- Footer only for non-success state -->
     <template #footer v-if="!isSuccess">
-      <PrimeButton
-        label="CANCEL"
-        @click="handleCancel"
-        variant="outlined"
-        :disabled="isLoading"
-        data-test="cancel-confirmation-modal-button"
-      />
-      <PrimeButton
-        label="CONFIRM"
-        @click="handleConfirm"
-        :loading="isLoading"
-        data-test="ok-confirmation-modal-button"
-      />
+      <div class="flex justify-content-end gap-2 w-full mt-2">
+        <!-- Cancel is optional -->
+        <PrimeButton
+          v-if="showCancelButton"
+          label="CANCEL"
+          @click="handleCancel"
+          severity="secondary"
+          outlined
+          :disabled="isLoading"
+          data-test="cancel-confirmation-modal-button"
+        />
+        <PrimeButton
+          :label="confirmLabel"
+          @click="handleConfirm"
+          :loading="isLoading"
+          data-test="ok-confirmation-modal-button"
+        />
+      </div>
     </template>
   </PrimeDialog>
 </template>
@@ -57,6 +69,9 @@ const props = defineProps<{
   errorMessage?: string;
   isLoading?: boolean;
   isSuccess?: boolean;
+  dismissableMask?: boolean;
+  showCancelButton?: boolean;
+  confirmLabel?: string;
 }>();
 
 const emit = defineEmits<{
@@ -69,6 +84,9 @@ const isVisible = computed({
   get: () => props.visible,
   set: (val) => emit('update:visible', val),
 });
+
+const showCancelButton = computed(() => props.showCancelButton ?? true);
+const confirmLabel = computed(() => props.confirmLabel ?? 'CONFIRM');
 
 const handleConfirm = (): void => {
   emit('confirm');
