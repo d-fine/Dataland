@@ -18,6 +18,8 @@ function astroStaticPages(): Plugin {
     '/product',
     '/imprint',
     '/legal',
+    '/token',
+    '/pricing',
     '/dataprivacy',
     '/testimonials',
     '/partner-stories',
