@@ -46,14 +46,14 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         WHERE e.companyId = :companyId
           AND e.dataType = :dataType
           AND e.reportingPeriod = :reportingPeriod
-          AND e.qaStatus IN :blockedStatuses
+          AND e.qaStatus IN :statuses
         """,
     )
-    fun existsActiveOrPendingForTuple(
+    fun existsWithGivenStatuses(
         @Param("companyId") companyId: String,
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
-        @Param("blockedStatuses") blockedStatuses: List<QaStatus>,
+        @Param("statuses") statuses: List<QaStatus>,
     ): Boolean
 
     /**

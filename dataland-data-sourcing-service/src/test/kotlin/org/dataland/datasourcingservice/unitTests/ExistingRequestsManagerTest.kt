@@ -182,10 +182,10 @@ class ExistingRequestsManagerTest {
                 times(1),
             ).buildCEMessageAndSendToQueue(
                 any(),
-                eq(MessageType.LEGACY_DATA_SOURCING_NON_SOURCEABLE),
+                eq(MessageType.DATA_SOURCING_NON_SOURCEABLE),
                 any(),
                 eq(ExchangeName.DATASOURCING_DATA_NONSOURCEABLE),
-                eq(RoutingKeyNames.LEGACY_DATA_SOURCING_NON_SOURCEABLE),
+                eq(RoutingKeyNames.DATA_SOURCING_NON_SOURCEABLE),
             )
         } else {
             verifyNoInteractions(mockCloudEventMessageHandler)

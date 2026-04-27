@@ -174,10 +174,10 @@ class DataSourcingManager
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 JsonUtils.defaultObjectMapper.writeValueAsString(messageBody),
-                MessageType.LEGACY_DATA_SOURCING_NON_SOURCEABLE,
+                MessageType.DATA_SOURCING_NON_SOURCEABLE,
                 correlationId,
                 ExchangeName.DATASOURCING_DATA_NONSOURCEABLE,
-                RoutingKeyNames.LEGACY_DATA_SOURCING_NON_SOURCEABLE,
+                RoutingKeyNames.DATA_SOURCING_NON_SOURCEABLE,
             )
         }
 

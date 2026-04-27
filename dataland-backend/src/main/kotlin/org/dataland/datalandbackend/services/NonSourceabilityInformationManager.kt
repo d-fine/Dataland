@@ -84,7 +84,7 @@ class NonSourceabilityInformationManager(
         }
 
         val hasPendingEntry =
-            nonSourceabilityDataRepository.existsActiveOrPendingForTuple(
+            nonSourceabilityDataRepository.existsWithGivenStatuses(
                 request.companyId,
                 request.dataType,
                 request.reportingPeriod,

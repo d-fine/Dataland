@@ -45,7 +45,7 @@ class NotificationEventListenerTest {
 
         notificationEventListener.processMessageForDataReportedAsNonSourceable(
             JsonUtils.defaultObjectMapper.writeValueAsString(payload),
-            MessageType.LEGACY_DATA_SOURCING_NON_SOURCEABLE,
+            MessageType.DATA_SOURCING_NON_SOURCEABLE,
             UUID.randomUUID().toString(),
         )
 
