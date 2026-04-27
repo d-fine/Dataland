@@ -87,7 +87,6 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `creates pending entry when bypassQa is false`() {
         val result = manager.processNonSourceabilityRequest(request())
-        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         val response = result.response
         assertEquals(QaStatus.Pending, response.qaStatus)
         assertFalse(response.currentlyActive)
@@ -97,7 +96,6 @@ class NonSourceabilityInformationManagerTest(
     fun `creates accepted active entry when bypassQa is true`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         val result = manager.processNonSourceabilityRequest(request(bypassQa = true))
-        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         val response = result.response
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertTrue(response.currentlyActive)
@@ -118,14 +116,12 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `new request allowed after Rejected entry`() {
-        val firstResult = manager.processNonSourceabilityRequest(request())
-        require(firstResult is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
+        manager.processNonSourceabilityRequest(request())
         val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
         entity.qaStatus = QaStatus.Rejected
         nonSourceabilityDataRepository.save(entity)
 
         val secondResult = manager.processNonSourceabilityRequest(request())
-        require(secondResult is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         assertEquals(QaStatus.Pending, secondResult.response.qaStatus)
     }
 
@@ -206,7 +202,6 @@ class NonSourceabilityInformationManagerTest(
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
         val result = manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
-        require(result is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success)
         val response = result.response
         assertFalse(response.currentlyActive)
         assertEquals(QaStatus.Accepted, response.qaStatus)
