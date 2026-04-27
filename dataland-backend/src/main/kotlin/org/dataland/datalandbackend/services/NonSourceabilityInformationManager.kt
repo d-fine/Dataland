@@ -181,18 +181,17 @@ class NonSourceabilityInformationManager(
 
         val saved = nonSourceabilityDataRepository.save(entity)
         val nonSourceabilityId = saved.nonSourceabilityId.toString()
-        val correlationId = nonSourceabilityId
 
         TransactionSynchronizationManager.registerSynchronization(
             object : TransactionSynchronization {
                 override fun afterCommit() {
-                    emitLifecycleEvent(saved, request.bypassQa, correlationId)
+                    emitLifecycleEvent(saved, request.bypassQa)
                 }
             },
         )
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
-                "bypassQa=${request.bypassQa}, qaStatus=$qaStatus (correlationId=$correlationId)",
+                "bypassQa=${request.bypassQa}, qaStatus=$qaStatus",
         )
         return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }
@@ -248,7 +247,6 @@ class NonSourceabilityInformationManager(
     private fun emitLifecycleEvent(
         entity: NonSourceabilityInformationEntity,
         bypassQa: Boolean,
-        correlationId: String,
     ) {
         val event =
             NonSourceabilityLifecycleEvent(
@@ -262,7 +260,7 @@ class NonSourceabilityInformationManager(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(event),
             type = if (bypassQa) MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED else MessageType.NON_SOURCEABILITY_CREATED,
-            correlationId = correlationId,
+            correlationId = event.nonSourceabilityId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
             routingKey = RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION,
         )
