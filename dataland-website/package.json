@@ -21,7 +21,7 @@
     "@astrojs/mdx": "^4.0.0",
     "@astrojs/sitemap": "^3.3.1",
     "@astrojs/vue": "^5.1.4",
-    "astro": "^5.7.10",
+    "astro": "^6.0.0",
     "typescript": "^5.7.3",
     "vue": "^3.5.28",
     "@dataland/shared-elements": "file:../dataland-sharedElements"
