@@ -249,7 +249,7 @@ class NonSourceabilityInformationManager(
      * meaning data now exists and the non-sourceability is no longer valid.
      */
     @Transactional
-    fun deactivateForTriple(
+    fun deactivateExistingNonSourceabilitiesForTriple(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
