@@ -112,13 +112,13 @@ class NonSourceabilityInformationManager(
      * Deactivates the existing active entry and creates a new audit entry. No event is emitted.
      */
     private fun processReversal(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
-        val activeEntries =
+        val activeEntry =
             nonSourceabilityDataRepository.findActiveForTuple(
                 request.companyId,
                 request.dataType,
                 request.reportingPeriod,
             )
-        if (activeEntries.isEmpty()) {
+        if (activeEntry == null) {
             throw ConflictApiException(
                 summary = "Triple is already sourceable.",
                 message =
@@ -128,8 +128,8 @@ class NonSourceabilityInformationManager(
             )
         }
 
-        activeEntries.forEach { it.currentlyActive = false }
-        nonSourceabilityDataRepository.saveAll(activeEntries)
+        activeEntry.currentlyActive = false
+        nonSourceabilityDataRepository.save(activeEntry)
 
         val userId = DatalandAuthentication.fromContext().userId
         val saved =
@@ -147,7 +147,7 @@ class NonSourceabilityInformationManager(
                 ),
             )
         logger.info(
-            "Non-sourceability reversal: deactivated ${activeEntries.size} active entry(entries) and " +
+            "Non-sourceability reversal: deactivated active entry and " +
                 "created audit entry ${saved.nonSourceabilityId} for " +
                 "companyId=${request.companyId}, dataType=${request.dataType}, reportingPeriod=${request.reportingPeriod}",
         )
@@ -166,7 +166,7 @@ class NonSourceabilityInformationManager(
                     request.companyId,
                     request.dataType,
                     request.reportingPeriod,
-                ).isNotEmpty()
+                ) != null
         if (hasActiveEntry) {
             throw ConflictApiException(
                 summary = "Active non-sourceability entry exists.",
@@ -232,8 +232,7 @@ class NonSourceabilityInformationManager(
         reportingPeriod: String,
     ): Boolean =
         nonSourceabilityDataRepository
-            .findActiveForTuple(companyId, dataType, reportingPeriod)
-            .isNotEmpty()
+            .findActiveForTuple(companyId, dataType, reportingPeriod) != null
 
     /**
      * Sets currentlyActive = false on every active non-sourceability entry for the given triple.
@@ -247,11 +246,11 @@ class NonSourceabilityInformationManager(
         reportingPeriod: String,
     ) {
         val active = nonSourceabilityDataRepository.findActiveForTuple(companyId, dataType, reportingPeriod)
-        if (active.isNotEmpty()) {
-            active.forEach { it.currentlyActive = false }
-            nonSourceabilityDataRepository.saveAll(active)
+        if (active != null) {
+            active.currentlyActive = false
+            nonSourceabilityDataRepository.save(active)
             logger.info(
-                "Deactivated ${active.size} non-sourceability entries for " +
+                "Deactivated non-sourceability entry for " +
                     "companyId=$companyId, dataType=$dataType, reportingPeriod=$reportingPeriod",
             )
         }
