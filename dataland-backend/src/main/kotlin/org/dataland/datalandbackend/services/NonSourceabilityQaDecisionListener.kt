@@ -61,7 +61,6 @@ class NonSourceabilityQaDecisionListener(
     fun onNonSourceabilityQaDecision(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) messageType: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.rejectMessageOnException {
             if (messageType != MessageType.NON_SOURCEABILITY_QA_ACCEPTED &&
@@ -72,7 +71,7 @@ class NonSourceabilityQaDecisionListener(
                 )
             }
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            processQaDecisionEvent(event, messageType, correlationId)
+            processQaDecisionEvent(event, messageType)
         }
     }
 
@@ -84,14 +83,12 @@ class NonSourceabilityQaDecisionListener(
     internal fun processQaDecisionEvent(
         event: NonSourceabilityLifecycleEvent,
         messageType: String,
-        correlationId: String,
     ) {
-        val nonSourceabilityId = parseAndValidateId(event.nonSourceabilityId, correlationId)
+        val nonSourceabilityId = parseAndValidateId(event.nonSourceabilityId)
         val entity =
             nonSourceabilityDataRepository.findById(nonSourceabilityId).orElseThrow {
                 logger.error(
-                    "Received QA decision event for unknown nonSourceabilityId=${event.nonSourceabilityId} " +
-                        "(correlationId=$correlationId). Discarding.",
+                    "Received QA decision event for unknown nonSourceabilityId=${event.nonSourceabilityId}.Discarding.",
                 )
                 MessageQueueRejectException(
                     "Unknown nonSourceabilityId=${event.nonSourceabilityId} in QA decision event",
@@ -103,8 +100,7 @@ class NonSourceabilityQaDecisionListener(
                 entity.qaStatus = QaStatus.Accepted
                 entity.currentlyActive = true
                 logger.info(
-                    "Set qaStatus=Accepted and currentlyActive=true for " +
-                        "nonSourceabilityId=${entity.nonSourceabilityId} (correlationId=$correlationId)",
+                    "Set qaStatus=Accepted and currentlyActive=true for nonSourceabilityId=${entity.nonSourceabilityId}",
                 )
             }
 
@@ -112,15 +108,13 @@ class NonSourceabilityQaDecisionListener(
                 entity.qaStatus = QaStatus.Rejected
                 entity.currentlyActive = false
                 logger.info(
-                    "Set qaStatus=Rejected and currentlyActive=false for " +
-                        "nonSourceabilityId=${entity.nonSourceabilityId} (correlationId=$correlationId)",
+                    "Set qaStatus=Rejected and currentlyActive=false for nonSourceabilityId=${entity.nonSourceabilityId}",
                 )
             }
 
             else -> {
                 logger.error(
-                    "Unexpected message type $messageType received in NonSourceabilityQaDecisionListener " +
-                        "(correlationId=$correlationId). Discarding.",
+                    "Unexpected message type $messageType received in NonSourceabilityQaDecisionListener. Discarding.",
                 )
                 throw MessageQueueRejectException("Unexpected message type $messageType in QA decision listener")
             }
@@ -128,16 +122,12 @@ class NonSourceabilityQaDecisionListener(
         nonSourceabilityDataRepository.save(entity)
     }
 
-    private fun parseAndValidateId(
-        rawId: String,
-        correlationId: String,
-    ): UUID {
+    private fun parseAndValidateId(rawId: String): UUID {
         try {
             return UUID.fromString(rawId)
         } catch (e: IllegalArgumentException) {
             logger.error(
-                "Malformed nonSourceabilityId='$rawId' received in QA decision event " +
-                    "(correlationId=$correlationId). Discarding.",
+                "Malformed nonSourceabilityId='$rawId' received in QA decision event. Discarding.",
                 e,
             )
             throw MessageQueueRejectException("Malformed nonSourceabilityId='$rawId'", e)
