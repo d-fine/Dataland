@@ -78,7 +78,6 @@ class NonSourceabilityQaReviewManager
             qaStatus: QaStatus,
             qaComment: String?,
             reviewerUserId: String,
-            correlationId: String,
         ): NonSourceableQaReviewInformation {
             require(qaStatus == QaStatus.Accepted || qaStatus == QaStatus.Rejected) {
                 "QA decision must be Accepted or Rejected, got $qaStatus"
@@ -88,12 +87,12 @@ class NonSourceabilityQaReviewManager
                 TransactionSynchronizationManager.registerSynchronization(
                     object : TransactionSynchronization {
                         override fun afterCommit() {
-                            sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+                            sendQaDecisionEvent(entity, qaStatus, nonSourceabilityId)
                         }
                     },
                 )
             } else {
-                sendQaDecisionEvent(entity, qaStatus, correlationId, nonSourceabilityId)
+                sendQaDecisionEvent(entity, qaStatus, nonSourceabilityId)
             }
             return entity.toResponse()
         }
@@ -119,7 +118,6 @@ class NonSourceabilityQaReviewManager
         private fun sendQaDecisionEvent(
             entity: NonSourceableQaReviewInformationEntity,
             qaStatus: QaStatus,
-            correlationId: String,
             nonSourceabilityId: String,
         ) {
             val event =
@@ -138,12 +136,11 @@ class NonSourceabilityQaReviewManager
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(event),
                 messageType,
-                correlationId,
                 ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS,
                 RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION,
             )
             logger.info(
-                "Emitted $messageType for nonSourceabilityId=$nonSourceabilityId (correlationId=$correlationId)",
+                "Emitted $messageType for nonSourceabilityId=$nonSourceabilityId",
             )
         }
 
