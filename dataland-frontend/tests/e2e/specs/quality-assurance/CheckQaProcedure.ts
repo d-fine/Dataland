@@ -5,13 +5,15 @@ import {
   type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken, login } from '@e2e/utils/Auth';
+import { getAdminToken, getUploaderToken, loginAsAdmin, loginAsUploader } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describeIf(
   'As a user, I expect to be able to add a new dataset and see it as pending',
@@ -32,7 +34,7 @@ describeIf(
         preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });
@@ -40,7 +42,7 @@ describeIf(
 
     it('Check whether newly added dataset has Pending status and can be approved by an admin', () => {
       const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getUploaderToken().then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
           token,
@@ -56,7 +58,7 @@ describeIf(
 
     it('Check whether newly added dataset has Rejected status and can be edited', () => {
       const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getUploaderToken().then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           LksgBaseFrameworkDefinition,
           token,
@@ -82,12 +84,12 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
   dataMetaInfo: DataMetaInformation
 ): void {
   const companyName = storedCompany.companyInformation.companyName;
-  login(uploader_name, uploader_pw);
+  loginAsUploader();
 
   testDatasetPresentWithCorrectStatus(companyName, 'Pending');
 
   safeLogout();
-  login(admin_name, admin_pw);
+  loginAsAdmin();
 
   viewRecentlyUploadedDatasetsInQaTable();
 
@@ -107,7 +109,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(
   cy.get('[data-test="qaApproveButton"]').should('exist').click();
 
   safeLogout();
-  login(uploader_name, uploader_pw);
+  loginAsUploader();
 
   testDatasetPresentWithCorrectStatus(companyName, 'Accepted');
 }
@@ -128,7 +130,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
   dataMetaInfo: DataMetaInformation
 ): void {
-  login(admin_name, admin_pw);
+  loginAsAdmin();
 
   viewRecentlyUploadedDatasetsInQaTable();
 
@@ -138,7 +140,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.get('[data-test="qaRejectButton"]').should('exist').click();
 
   safeLogout();
-  login(uploader_name, uploader_pw);
+  loginAsUploader();
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'Rejected');
 
@@ -157,7 +159,7 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
 function viewRecentlyUploadedDatasetsInQaTable(): void {
   cy.visitAndCheckAppMount('/qualityassurance');
   cy.contains('span', 'REVIEW');
-  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+  cy.get('.p-paginator-last', { timeout: mediumTimeoutInMs }).then((element) => {
     if (element.prop('disabled')) {
       return;
     }
@@ -176,7 +178,7 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
   cy.wait('@getMyDatasets');
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
-    timeout: Cypress.env('medium_timeout_in_ms') as number,
+    timeout: mediumTimeoutInMs,
   })
     .first()
     .find('.data-test-company-name')
@@ -193,7 +195,7 @@ function safeLogout(): void {
   cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
   cy.get('[data-test="user-profile-toggle"]').click();
   cy.get('a:contains("LOG OUT")').click();
-  cy.wait(Cypress.env('short_timeout_in_ms') as number);
+  cy.wait(mediumTimeoutInMs);
   cy.url().should('eq', getBaseUrl() + '/');
   cy.get("[data-test='login-dataland-button']").should('exist');
 }

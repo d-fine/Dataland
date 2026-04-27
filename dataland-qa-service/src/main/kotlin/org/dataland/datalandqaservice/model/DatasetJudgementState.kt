@@ -10,6 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 enum class DatasetJudgementState {
     Pending,
-    Finished,
-    Aborted,
+    FinishedWithDatasetAcceptance,
+    FinishedWithDatasetRejection,
 }

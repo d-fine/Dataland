@@ -74,6 +74,24 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
+val normalizeFeCoverageForSonar by tasks.registering {
+    doLast {
+        val feCoverageDir = projectDir.resolve("fe-coverage")
+        if (!feCoverageDir.isDirectory) return@doLast
+
+        feCoverageDir
+            .listFiles { file -> file.name.endsWith(".info") }
+            ?.forEach { reportFile ->
+                val content = reportFile.readText()
+                val normalized =
+                    content
+                        .replace(Regex("""SF:/app/dataland-frontend/"""), "SF:dataland-frontend/")
+                        .replace(Regex("""SF:.*/Dataland/"""), "SF:")
+                reportFile.writeText(normalized)
+            }
+    }
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
@@ -222,6 +240,10 @@ sonar {
         property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
         property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
     }
+}
+
+tasks.named("sonar") {
+    dependsOn(normalizeFeCoverageForSonar)
 }
 
 jacoco {

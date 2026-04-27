@@ -28,6 +28,7 @@ class DatasetJudgementService
         private val datasetJudgementRepository: DatasetJudgementRepository,
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
+        private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -39,7 +40,7 @@ class DatasetJudgementService
          * @param datasetId The UUID of the dataset to judge.
          * @return DatasetJudgementResponse API response with created judgement details.
          * @throws ResourceNotFoundApiException If the dataset is not found.
-         * @throws ConflictApiException If a pending judgement exists.
+         * @throws ConflictApiException If a dataset judgement exists.
          */
         @Transactional
         fun postDatasetJudgement(datasetId: UUID): DatasetJudgementResponse {
@@ -52,10 +53,10 @@ class DatasetJudgementService
                         "Dataset with the id: $datasetId could not be found.",
                     )
                 }
-            if (datasetJudgementRepository.findAllByDatasetIdAndJudgementState(datasetId, DatasetJudgementState.Pending).isNotEmpty()) {
+            if (datasetJudgementRepository.findAllByDatasetId(datasetId).isNotEmpty()) {
                 throw ConflictApiException(
-                    summary = "Pending dataset judgement entity already exists.",
-                    message = "There is already a dataset judgement entity for this dataset which is pending.",
+                    summary = "Dataset judgement entity already exists.",
+                    message = "There is already a dataset judgement entity for this dataset.",
                 )
             }
 
@@ -102,6 +103,19 @@ class DatasetJudgementService
         ): DatasetJudgementResponse {
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
+            DatasetJudgementValidationHelper.validateDatasetJudgementIsPending(datasetJudgement)
+            when (state) {
+                DatasetJudgementState.FinishedWithDatasetAcceptance -> {
+                    datasetJudgementFinalizationService.handleAcceptance(datasetJudgement)
+                }
+                DatasetJudgementState.FinishedWithDatasetRejection -> {
+                    datasetJudgementFinalizationService.handleRejection(datasetJudgement)
+                }
+                DatasetJudgementState.Pending -> throw InvalidInputApiException(
+                    summary = "Invalid judgement state.",
+                    message = "Cannot set judgement state to pending.",
+                )
+            }
             datasetJudgement.judgementState = state
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }

@@ -9,14 +9,16 @@ import {
   type StoredCompany,
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
+import { getBaseUrl } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyRoleAssignment } from '@clients/communitymanager';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let pcafFixtureData: FixtureData<PcafData>;
 before(function () {
@@ -30,7 +32,7 @@ before(function () {
  * Helper to get Keycloak token.
  */
 function getToken(): Cypress.Chainable<string> {
-  return getKeycloakToken(admin_name, admin_pw);
+  return getAdminToken();
 }
 
 /**
@@ -135,7 +137,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -148,7 +150,7 @@ describeIf(
         cy.wrap(null)
           .then(() => setupCompanyAndFramework(testCompanyName))
           .then(({ token, storedCompany }) => {
-            cy.ensureLoggedIn(admin_name, admin_pw);
+            cy.ensureLoggedInAsAdmin();
             cy.intercept({
               url: `**/api/data/${DataTypeEnum.Pcaf}/**`,
               times: 1,
@@ -163,7 +165,7 @@ describeIf(
             );
             let initiallyUploadedData: PcafData;
             cy.wait('@getInitiallyUploadedData', {
-              timeout: Cypress.env('medium_timeout_in_ms') as number,
+              timeout: mediumTimeoutInMs,
             }).then((interception) => {
               initiallyUploadedData = (interception.response?.body as CompanyAssociatedDataPcafData).data;
             });
@@ -175,11 +177,9 @@ describeIf(
                 cy.get('.p-datepicker-year').contains(pcafFixtureData.reportingPeriod.toString()).click();
               });
             cy.get('[data-test="submitButton"]').click();
-            cy.wait('@resubmitPcafData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-              (interception) => {
-                handleDataResubmissionValidation(interception, token, initiallyUploadedData);
-              }
-            );
+            cy.wait('@resubmitPcafData', { timeout: mediumTimeoutInMs }).then((interception) => {
+              handleDataResubmissionValidation(interception, token, initiallyUploadedData);
+            });
           });
       }
     );

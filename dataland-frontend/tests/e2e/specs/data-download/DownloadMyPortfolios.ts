@@ -1,4 +1,3 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import {
   type DataMetaInformation,
@@ -6,7 +5,7 @@ import {
   type EutaxonomyNonFinancialsData,
   type StoredCompany,
 } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
@@ -21,6 +20,8 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+
 /**
  * Uploads data for a given company for specified years using a generic framework.
  *
@@ -65,7 +66,7 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
  * @return {void} This function does not return a value.
  */
 function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
-  cy.ensureLoggedIn(admin_name, admin_pw);
+  cy.ensureLoggedInAsAdmin();
   cy.visitAndCheckAppMount('/portfolios');
   cy.get('[data-test="add-portfolio"]').click();
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
@@ -106,7 +107,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(Cypress.env('long_timeout_in_ms') as number);
+    cy.wait(longTimeoutInMs);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -115,7 +116,7 @@ function testDownloadPortfolio({
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 
-      cy.readFile(filePathStr, { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
+      cy.readFile(filePathStr, { timeout: longTimeoutInMs }).should('exist');
 
       cy.task('getFileSize', filePathStr).then((size) => {
         expect(size).to.be.greaterThan(5000);
@@ -165,7 +166,7 @@ describeIf(
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
       portfolioName = `Download Portfolio ${Date.now()}`;
 
-      return getKeycloakToken(admin_name, admin_pw)
+      return getAdminToken()
         .then((token) => {
           return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
             .then((company1) => {
@@ -182,7 +183,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
       cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
       cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
