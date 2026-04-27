@@ -523,8 +523,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Retrieve information about the sourceability of datasets",
-        "description": "Retrieve information about the sourceability of datasets by the filters.",
+        "summary": "Retrieve non-sourceability information for datasets",
+        "description": "Retrieves NonSourceabilityInformation records filtered by the provided parameters.",
         "operationId": "getInfoOnNonSourceabilityOfDatasets",
         "parameters": [
           {
@@ -557,24 +557,24 @@
             "example": 2023
           },
           {
-            "name": "nonSourceable",
+            "name": "qaStatus",
             "in": "query",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data.",
+            "description": "The status with regard to Dataland\u0027s quality assurance process.",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "$ref": "#/components/schemas/QaStatus"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved datasets.",
+            "description": "Successfully retrieved non-sourceability records.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SourceabilityInfoResponse"
+                    "$ref": "#/components/schemas/NonSourceabilityInformationResponse"
                   }
                 }
               }
@@ -614,14 +614,14 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Adds a dataset with information on sourceability.",
-        "description": "A dataset is added with information on its sourceability.",
+        "summary": "Submit a non-sourceability request for a dataset.",
+        "description": "Creates a NonSourceabilityInformation entry. With bypassQa\u003dfalse (default) and currentlyActive\u003dfalse the entry enters QA review. With bypassQa\u003dtrue and currentlyActive\u003dtrue (admin only) it is immediately activated. With bypassQa\u003dtrue and currentlyActive\u003dfalse (admin only) the active entry is deactivated (triple marked as sourceable again).",
         "operationId": "postNonSourceabilityOfADataset",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SourceabilityInfo"
+                "$ref": "#/components/schemas/NonSourceabilityRequest"
               }
             }
           },
@@ -629,13 +629,44 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully added dataset."
+            "description": "Successfully submitted non-sourceability request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonSourceabilityInformationResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request has been submitted."
+            "description": "Invalid combination of bypassQa and currentlyActive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonSourceabilityInformationResponse"
+                }
+              }
+            }
           },
-          "404": {
-            "description": "Invalid input parameters."
+          "403": {
+            "description": "Insufficient role for bypassQa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonSourceabilityInformationResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict — duplicate entry or invalid state transition.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonSourceabilityInformationResponse"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -3781,8 +3812,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Checks if a dataset is non-sourceable.",
-        "description": "Checks if a specific dataset is non-sourceable.",
+        "summary": "Checks if a dataset is currently non-sourceable.",
+        "description": "Returns 200 if an active NonSourceabilityInformation entry exists for the tuple; 404 otherwise.",
         "operationId": "isDataNonSourceable",
         "parameters": [
           {
@@ -3817,10 +3848,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that dataset is non-sourceable."
+            "description": "Dataset has an active non-sourceability entry."
           },
           "404": {
-            "description": "Successfully checked that dataset is sourceable."
+            "description": "Dataset has no active non-sourceability entry."
           },
           "default": {
             "description": "An error occurred",
@@ -8525,11 +8556,12 @@
           }
         }
       },
-      "SourceabilityInfo": {
+      "NonSourceabilityRequest": {
         "required": [
+          "bypassQa",
           "companyId",
+          "currentlyActive",
           "dataType",
-          "isNonSourceable",
           "reason",
           "reportingPeriod"
         ],
@@ -8548,14 +8580,77 @@
             "description": "The relevant reporting period (e.g. a fiscal year).",
             "example": "2023"
           },
-          "isNonSourceable": {
-            "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
-          },
           "reason": {
             "type": "string",
             "description": "The reason why there is no source available",
             "example": "Parent Uploaded"
+          },
+          "bypassQa": {
+            "type": "boolean",
+            "description": "When true the non-sourceability entry is immediately activated without QA review. Requires ROLE_ADMIN."
+          },
+          "currentlyActive": {
+            "type": "boolean",
+            "description": "When true the triple is treated as non-sourceable; when false the entry is inactive. Must be false when bypassQa\u003dfalse (the QA service sets this to true upon approval). When bypassQa\u003dtrue, signals whether the intent is to mark the triple as non-sourceable (true) or sourceable again (false)."
+          }
+        }
+      },
+      "NonSourceabilityInformationResponse": {
+        "required": [
+          "bypassQa",
+          "companyId",
+          "currentlyActive",
+          "dataType",
+          "nonSourceabilityId",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime",
+          "uploaderUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "nonSourceabilityId": {
+            "type": "string",
+            "description": "Unique identifier for this non-sourceability entry."
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "description": "User ID of the user who submitted the non-sourceability request."
+          },
+          "uploadTime": {
+            "type": "integer",
+            "description": "Unix epoch millisecond timestamp when the entry was created.",
+            "format": "int64"
+          },
+          "currentlyActive": {
+            "type": "boolean",
+            "description": "True when this entry is the active (accepted) non-sourceability record for the dataset."
+          },
+          "reason": {
+            "type": "string",
+            "description": "The reason why there is no source available",
+            "nullable": true,
+            "example": "Parent Uploaded"
+          },
+          "bypassQa": {
+            "type": "boolean",
+            "description": "Whether this entry was created via the QA-bypass fast path (admin only)."
           }
         }
       },
@@ -22450,53 +22545,6 @@
             "description": "The timestamp (epoch milliseconds) at which the document was uploaded to Dataland.",
             "format": "int64",
             "example": 1751291891271
-          }
-        }
-      },
-      "SourceabilityInfoResponse": {
-        "required": [
-          "companyId",
-          "creationTime",
-          "dataType",
-          "isNonSourceable",
-          "reason",
-          "reportingPeriod",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "$ref": "#/components/schemas/DataTypeEnum"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "example": "2023"
-          },
-          "isNonSourceable": {
-            "type": "boolean",
-            "description": "If true, the method only returns meta info for datasets which arenon-sourceable. If false, it returns sourceable data."
-          },
-          "reason": {
-            "type": "string",
-            "description": "The reason why there is no source available",
-            "example": "Parent Uploaded"
-          },
-          "creationTime": {
-            "type": "integer",
-            "description": "The timestamp (epoch milliseconds) at which the dataset was created.",
-            "format": "int64",
-            "example": 1751291891271
-          },
-          "userId": {
-            "type": "string",
-            "description": "The Dataland user ID of the user who uploaded the dataset.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },

@@ -96,7 +96,7 @@ open class DataExportService<T>(
     private fun buildStream(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
         newExportJob: ExportJob,
-        clazz: Class<T>,
+        clazz: Class<out T>,
         exportOptions: ExportOptions,
     ) {
         val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz)
@@ -119,7 +119,7 @@ open class DataExportService<T>(
     open fun startExportJob(
         listDataDimensions: ListDataDimensions,
         newExportJob: ExportJob,
-        clazz: Class<T>,
+        clazz: Class<out T>,
         exportOptions: ExportOptions,
     ) = buildStream(
         getPlainData(listDataDimensions, newExportJob.id.toString()),
@@ -140,7 +140,7 @@ open class DataExportService<T>(
     open fun startLatestExportJob(
         companyIds: Collection<String>,
         newExportJob: ExportJob,
-        clazz: Class<T>,
+        clazz: Class<out T>,
         exportOptions: ExportOptions,
     ) = buildStream(
         getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
@@ -244,7 +244,7 @@ open class DataExportService<T>(
 
     private fun buildCompanyExportData(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
-        clazz: Class<T>,
+        clazz: Class<out T>,
     ): List<SingleCompanyExportData<T>> {
         val basicCompanyInformation =
             companyQueryManager.getBasicCompanyInformationByIds(

@@ -31,6 +31,11 @@ dependencies {
     implementation(libs.spring.amqp)
     implementation(libs.json)
     implementation(project(":dataland-backend-utils"))
+    testImplementation(libs.junit.jupiter)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.bootJar {

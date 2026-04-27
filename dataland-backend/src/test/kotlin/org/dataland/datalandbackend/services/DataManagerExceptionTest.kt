@@ -54,7 +54,7 @@ class DataManagerExceptionTest
         dataMetaInformationManager: DataMetaInformationManager,
         companyQueryManager: CompanyQueryManager,
         dataManagerUtils: DataManagerUtils,
-        sourceabilityDataManager: SourceabilityDataManager,
+        nonSourceabilityInformationManager: NonSourceabilityInformationManager,
         val companyAlterationManager: CompanyAlterationManager,
         val cloudEventsMessageHandler: CloudEventMessageHandler,
     ) : DataManagerTest(
@@ -62,7 +62,7 @@ class DataManagerExceptionTest
             dataMetaInformationManager = dataMetaInformationManager,
             companyQueryManager = companyQueryManager,
             dataManagerUtils = dataManagerUtils,
-            sourceabilityDataManager = sourceabilityDataManager,
+            nonSourceabilityInformationManager = nonSourceabilityInformationManager,
         ) {
         @BeforeEach
         override fun setup() {

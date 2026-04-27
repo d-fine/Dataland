@@ -7,15 +7,9 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
- * --- API model ---
- * SourceabilityInfo storing the history of whether a dataset is sourceable or not used for posting and for message queue.
- * @param companyId unique identifier to identify the company the data is associated with
- * @param dataType type of the data
- * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
- * @param isNonSourceable true if there is no source available
- * @param reason reason why there is no source available
+ * API request model for submitting a non-sourceability request.
  */
-data class SourceabilityInfo(
+data class NonSourceabilityRequest(
     @field:JsonProperty(required = true)
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
@@ -23,9 +17,7 @@ data class SourceabilityInfo(
     )
     val companyId: String,
     @field:JsonProperty(required = true)
-    @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-    )
+    @field:Schema(description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION)
     val dataType: DataType,
     @field:JsonProperty(required = true)
     @field:Schema(
@@ -35,13 +27,24 @@ data class SourceabilityInfo(
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = BackendOpenApiDescriptionsAndExamples.IS_NON_SOURCEABLE_DESCRIPTION,
-    )
-    val isNonSourceable: Boolean,
-    @field:JsonProperty(required = true)
-    @field:Schema(
         description = BackendOpenApiDescriptionsAndExamples.REASON_DESCRIPTION,
         example = BackendOpenApiDescriptionsAndExamples.REASON_EXAMPLE,
     )
     val reason: String,
+    @field:JsonProperty(required = false)
+    @field:Schema(
+        description =
+            "When true the non-sourceability entry is immediately activated without QA review. " +
+                "Requires ROLE_ADMIN.",
+    )
+    val bypassQa: Boolean = false,
+    @field:JsonProperty(required = true)
+    @field:Schema(
+        description =
+            "When true the triple is treated as non-sourceable; when false the entry is inactive. " +
+                "Must be false when bypassQa=false (the QA service sets this to true upon approval). " +
+                "When bypassQa=true, signals whether the intent is to mark the triple as non-sourceable (true) " +
+                "or sourceable again (false).",
+    )
+    val currentlyActive: Boolean,
 )
