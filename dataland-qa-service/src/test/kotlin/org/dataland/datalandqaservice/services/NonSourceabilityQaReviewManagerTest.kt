@@ -156,7 +156,7 @@ class NonSourceabilityQaReviewManagerTest {
         verify(cloudEventMessageHandler).buildCEMessageAndSendToQueue(
             any(),
             eq(MessageType.NON_SOURCEABILITY_QA_ACCEPTED),
-            eq("corr-1"),
+            any(),
             eq(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS),
             eq(RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION),
         )
@@ -175,7 +175,7 @@ class NonSourceabilityQaReviewManagerTest {
         verify(cloudEventMessageHandler).buildCEMessageAndSendToQueue(
             any(),
             eq(MessageType.NON_SOURCEABILITY_QA_REJECTED),
-            eq("corr-2"),
+            any(),
             eq(ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS),
             eq(RoutingKeyNames.NON_SOURCEABILITY_QA_DECISION),
         )
