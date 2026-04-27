@@ -1,0 +1,45 @@
+---
+const classes = {
+  root: 'relative w-full max-w-[520px]',
+  searchIcon: 'pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/50',
+  input:
+    'box-border w-full rounded-lg border-[1.5px] border-white/20 bg-white py-3.5 pr-4 pl-11 font-[var(--font-family)] text-base text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]',
+  listbox:
+    'absolute z-50 mt-1 hidden max-h-[264px] w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg',
+  warning: 'mt-1.5 hidden text-xs text-red-500',
+} as const;
+---
+
+<div class={classes.root} id="company-search-root">
+  <svg
+    class={classes.searchIcon}
+    aria-hidden="true"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+      stroke="currentColor"
+      stroke-width="1.67"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+  <input
+    id="company-search-input"
+    type="text"
+    placeholder="Search by company name or LEI..."
+    class={classes.input}
+    aria-label="Search by company name or LEI"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-controls="company-search-listbox"
+    autocomplete="off"
+  />
+  <ul id="company-search-listbox" role="listbox" class={classes.listbox}></ul>
+  <p id="company-search-warning" class={classes.warning} role="alert">Please type at least 3 characters.</p>
+</div>
+
+<script type="module" src="/scripts/companySearchBar.js"></script>

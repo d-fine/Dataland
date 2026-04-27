@@ -32,3 +32,6 @@ reports
 # auto generated code
 mock-server
 *.tsbuildinfo
+
+# Astro website build output (copied by Gradle copyAstroWebsite task)
+public/

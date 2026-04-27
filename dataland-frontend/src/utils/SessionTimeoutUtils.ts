@@ -1,12 +1,13 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
-import { loginAndRedirectToRedirectPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { useSharedSessionStateStore } from '@/stores/Stores';
+
+const platformRedirectUri = `${globalThis.location.origin}/platform-redirect`;
 
 export enum SessionDialogMode {
   SessionWarning,
   SessionClosed,
-  ExternalLogout,
 }
 
 const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
@@ -49,7 +50,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
     const currentTimestampInMs = Date.now();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
-      logoutAndRedirectToUri(keycloak, '');
+      logoutAndRedirectToUri(keycloak, '/');
     } else if (currentTimestampInMs >= sessionWarningTimestamp) {
       clearInterval(functionIdOfSetInterval);
       onSurpassingExpiredSessionTimestampCallback();
@@ -92,7 +93,7 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   After the grace time, you will be redirected to the usual Keycloak login page.
    */
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-    void loginAndRedirectToRedirectPage(keycloak);
+    keycloak.login({ redirectUri: platformRedirectUri }).catch((error) => console.error(error));
   } else {
     void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }

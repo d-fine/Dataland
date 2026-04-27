@@ -71,7 +71,7 @@ function goToUserSettings(): void {
  */
 function logoutViaDropdown(): void {
   assertDefined(getKeycloakPromise)()
-    .then((keycloak) => logoutAndRedirectToUri(keycloak, ''))
+    .then((keycloak) => logoutAndRedirectToUri(keycloak, '/'))
     .catch((error) => console.log(error));
 }
 

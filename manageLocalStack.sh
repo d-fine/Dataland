@@ -81,7 +81,7 @@ check_backend_not_running() {
 }
 
 assemble_all_projects() {
-  ./gradlew assemble dataland-frontend:npmInstall
+  ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
 }
 
 reset_development_stack() {

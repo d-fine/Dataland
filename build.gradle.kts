@@ -116,7 +116,9 @@ sonar {
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
-                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt",
+                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
+                "dataland-website/src/**/*.ts," +
+                "dataland-sharedElements/src/footer/TheFooter.vue",
         )
         property(
             "sonar.sources",
@@ -141,6 +143,8 @@ sonar {
                 "EutaxonomyNonFinancials202673DataFixtures.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasActivityNames.ts," +
+                "dataland-website/src/content/about.ts," +
+                "dataland-website/src/content/product.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
@@ -214,11 +218,6 @@ sonar {
             "sonar.exclusions",
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
-                "dataland-frontend/src/components/pages/AboutPage.vue," +
-                "dataland-frontend/src/components/generics/TheNewHeader.vue," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
-                "dataland-frontend/src/components/resources/aboutPage/**," +
-                "dataland-frontend/src/components/resources/newLandingPage/**," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +

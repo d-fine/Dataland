@@ -13,6 +13,8 @@ COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/use
 COPY ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json
 COPY ./dataland-accounting-service/accountingServiceOpenApi.json ./dataland-accounting-service/accountingServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
+COPY ./dataland-sharedElements/ ./dataland-sharedElements/
+COPY ./dataland-website/ ./dataland-website/
 COPY ./.git/ ./.git
 
 ARG DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES

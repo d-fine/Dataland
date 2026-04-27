@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  PARTNER_STORY_DETAILS,
+  PARTNER_STORY_SUMMARIES,
+  type PartnerStoryDetail,
+  type PartnerStoryExtraSection,
+} from '../config/partner-stories';
+import { PARTNER_STORIES_PAGE_CONTENT } from '../content/partner-stories';
+
+import PartnerStoriesHeroSection from '../components/page-partner-stories/PartnerStoriesHeroSection.astro';
+import PartnerStoriesDetailsSection from '../components/page-partner-stories/PartnerStoriesDetailsSection.astro';
+import PartnerStoriesMattersSection from '../components/page-partner-stories/PartnerStoriesMattersSection.astro';
+
+const integrationMattersSection: PartnerStoryExtraSection | undefined = PARTNER_STORY_DETAILS.find(
+  (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'
+)?.extraSections?.find((section) => section.title === 'Why Partner Integration Matters');
+
+const closingPrompt = PARTNER_STORY_DETAILS.find(
+  (story: PartnerStoryDetail) => story.slug === 'iss-sopra-steria'
+)?.closingPrompt;
+
+const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
+  report: '/static/images/img_icon_badge.svg',
+  kpi: '/static/images/img_icon_gears.svg',
+  emissions: '/static/images/img_icon_smoke.svg',
+  integration: '/static/images/img_icon_server.svg',
+  traceability: '/static/images/img_icon_look.svg',
+  research: '/static/images/img_icon_invest.svg',
+  voting: '/static/images/img_icon_cardboard_check.svg',
+  fund: '/static/images/img_icon_leaf.svg',
+  compliance: '/static/images/img_icon_gavel.svg',
+};
+---
+
+<Base title={PARTNER_STORIES_PAGE_CONTENT.meta.title} description={PARTNER_STORIES_PAGE_CONTENT.meta.description}>
+  <PartnerStoriesHeroSection content={PARTNER_STORIES_PAGE_CONTENT.hero} stories={PARTNER_STORY_SUMMARIES} />
+
+  <PartnerStoriesDetailsSection
+    ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.detailsAriaLabel}
+    stories={PARTNER_STORY_DETAILS}
+    useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY}
+  />
+
+  {
+    integrationMattersSection && (
+      <PartnerStoriesMattersSection
+        ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
+        section={integrationMattersSection}
+        closingPrompt={closingPrompt}
+        contactLabel={PARTNER_STORIES_PAGE_CONTENT.cta.contact}
+      />
+    )
+  }
+</Base>

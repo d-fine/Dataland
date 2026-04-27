@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: 'light' | 'warm' | 'cool' | 'dark' | 'glass';
+  accentTop?: boolean;
+  class?: string;
+  as?: string;
+  [key: string]: unknown;
+}
+
+const { variant = 'light', accentTop = false, class: className, as = 'div', ...rest } = Astro.props;
+const Tag = as;
+---
+
+<Tag
+  class:list={['surface-card', `surface-card--${variant}`, accentTop && 'surface-card--accent-top', className]}
+  {...rest}
+>
+  <slot />
+</Tag>

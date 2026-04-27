@@ -1,0 +1,38 @@
+---
+interface Props {
+  logo: string;
+  name: string;
+  logoClassName?: string;
+  darkLogoFrame?: boolean;
+  class?: string;
+  imageClass?: string;
+  width?: number;
+  height?: number;
+}
+
+const {
+  logo,
+  name,
+  logoClassName,
+  darkLogoFrame = false,
+  class: className,
+  imageClass = 'h-20 w-full object-contain object-center lg:h-24',
+  width = 360,
+  height = 160,
+} = Astro.props;
+
+const classes = {
+  panel:
+    'flex items-center justify-center rounded-xl border border-[var(--color-surface-200)] bg-[var(--color-surface-50)] px-6 py-7 shadow-[0_6px_18px_rgba(15,23,42,0.06)]',
+  lightFrame: 'flex w-full items-center justify-center',
+  darkFrame: 'rounded-[0.35rem] bg-[#111111] px-4 py-2',
+} as const;
+
+const frameClass = darkLogoFrame ? classes.darkFrame : classes.lightFrame;
+---
+
+<div class:list={[classes.panel, className]}>
+  <div class={frameClass}>
+    <img src={logo} alt={name} class:list={[imageClass, logoClassName]} loading="lazy" width={width} height={height} />
+  </div>
+</div>

@@ -55,6 +55,23 @@ declare global {
   }
 }
 
+const ASTRO_ROUTES = new Set([
+  '/',
+  '/about',
+  '/dataland-community',
+  '/product',
+  '/imprint',
+  '/legal',
+  '/token',
+  '/pricing',
+  '/dataprivacy',
+  '/testimonials',
+  '/partner-stories',
+  '/newsletter',
+  '/success-stories-meag',
+  '/success-stories-nordlb',
+  '/success-stories-ovb',
+]);
 /**
  * Visits the supplied endpoint, waits for the application root element (`#app`) to be present,
  * attempts to close the cookie consent banner if it exists, and then returns a Cypress
@@ -64,10 +81,15 @@ declare global {
  * @return Cypress.Chainable<JQuery> a chainable that yields the `#app` element after mount and optional cookie-banner handling
  * @throws Error if the `#app` element does not appear within `longTimeoutInMs`, causing the Cypress assertion to fail
  */
-export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
+export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
-  cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
   closeCookieBannerIfItExists();
+
+  if (ASTRO_ROUTES.has(endpoint)) {
+    return cy.get('main#main-content').should('exist');
+  }
+
+  cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
   return cy.get('#app');
 }
 

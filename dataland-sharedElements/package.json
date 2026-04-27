@@ -1,0 +1,28 @@
+{
+  "name": "@dataland/shared-elements",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/footer/index.ts",
+  "module": "src/footer/index.ts",
+  "types": "src/footer/index.ts",
+  "files": [
+    "src",
+    "public"
+  ],
+  "exports": {
+    ".": "./src/footer/index.ts",
+    "./footer": "./src/footer/index.ts"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "scripts": {
+    "build": "vue-tsc --noEmit"
+  },
+  "devDependencies": {
+    "vue": "^3.5.0",
+    "typescript": "^5.7.3",
+    "vue-tsc": "^2.1.0",
+    "@vue/compiler-sfc": "^3.5.0"
+  }
+}

@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  intro?: string;
+  align?: 'left' | 'center';
+  tone?: 'dark' | 'light';
+  class?: string;
+  titleClass?: string;
+  introClass?: string;
+}
+
+const { title, intro, align = 'center', tone = 'dark', class: className, titleClass, introClass } = Astro.props;
+---
+
+<div
+  class:list={[
+    'section-header',
+    align === 'center' && 'section-header--center',
+    tone === 'light' && 'section-header--light',
+    className,
+  ]}
+>
+  <h2 class:list={['section-title', titleClass]}>{title}</h2>
+  {intro && <p class:list={['section-intro', introClass]}>{intro}</p>}
+</div>

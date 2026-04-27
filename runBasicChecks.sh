@@ -31,13 +31,16 @@ commands[detekt]="./gradlew detekt"
 commands[backend_unit_tests]="./gradlew dataland-backend:test"
 commands[e2e_compilation]="./gradlew dataland-e2etests:compileTestKotlin"
 commands[eslint]="npm --prefix ./dataland-frontend run lint"
+commands[eslint_website]="npm --prefix ./dataland-website run lintci"
+commands[format_website]="npm --prefix ./dataland-website run formatci"
+commands[typecheck_website]="npm --prefix ./dataland-website run typecheck"
 commands[cypress_compilation]="npm --prefix ./dataland-frontend run checkcypresscompilation"
 commands[frontend_compilation]="npm --prefix ./dataland-frontend run build"
 commands[fixture_compilation]="npm --prefix ./dataland-frontend run checkfakefixturecompilation"
 commands[dependency]="npm --prefix ./dataland-frontend run checkdependencies"
 commands[frontend_component_tests]="npm --prefix ./dataland-frontend run testcomponent"
 
-tests="ktlint detekt eslint dependency frontend_compilation cypress_compilation fixture_compilation e2e_compilation"
+tests="ktlint detekt eslint eslint_website format_website typecheck_website dependency frontend_compilation cypress_compilation fixture_compilation e2e_compilation"
 if [[ $mode == full ]]; then
   if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
     echo "ERROR: The backend is currently running. This will interfere with the cleanup."

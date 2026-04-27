@@ -30,7 +30,7 @@ describe('The page should behave well-defined when the user logs out in a differ
 
         const logoutUrl = `/keycloak/realms/datalandsecurity/protocol/openid-connect/logout?id_token_hint=${idToken}`;
         cy.request(logoutUrl);
-        cy.get('button[name=login_dataland_button_on_session_modal]', { timeout: 10000 }).click();
+        cy.get('a#login_again_on_session_modal', { timeout: 10000 }).click();
         cy.get('#username').should('exist').get('#password').should('exist').get('#kc-login').should('exist');
       });
     }

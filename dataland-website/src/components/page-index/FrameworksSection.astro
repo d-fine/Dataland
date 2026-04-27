@@ -1,0 +1,72 @@
+---
+import type { FrameworkCard } from '../../content/index';
+import SectionHeader from '../primitives/SectionHeader.astro';
+import ArrowLink from '../primitives/ArrowLink.astro';
+import InfoCard from '../cards/InfoCard.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  cta: string;
+}
+
+interface Props {
+  content: Content;
+  frameworks: FrameworkCard[];
+}
+
+const { content, frameworks } = Astro.props;
+
+const sectionClass =
+  'py-12 px-6 bg-[radial-gradient(circle_at_top_left,rgba(62,106,142,0.28),transparent_34%),linear-gradient(135deg,#091119_0%,#101922_38%,#172635_72%,#21384b_100%)] text-white lg:py-16 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-8';
+
+const sectionHeaderClass = 'mx-auto max-w-[860px]';
+
+const gridClass = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3';
+
+const infoCardClass = 'px-6 py-5';
+
+const infoCardTitleClass = 'mb-0 text-white';
+
+const topAccentClass = 'mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]';
+
+const taggedContentClass = 'card-copy-stack card-copy-stack--compact mt-1';
+
+const plainContentClass = 'mt-4';
+
+const subtitleClass = 'm-0 text-[0.82rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-label-warm)]';
+
+const descriptionClass = 'card-text m-0 text-white/92';
+
+const ctaWrapClass = 'flex justify-center';
+---
+
+<section id="frameworks" class={sectionClass} aria-label="Frameworks on Dataland">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} tone="light" class={sectionHeaderClass} />
+    <div class={gridClass}>
+      {
+        frameworks.map((fw) => (
+          <InfoCard variant="glass" title={fw.title} titleClass={infoCardTitleClass} class={infoCardClass}>
+            <div slot="before" class={topAccentClass} aria-hidden="true" />
+            {fw.subtitle ? (
+              <div class={taggedContentClass}>
+                <p class={subtitleClass}>{fw.subtitle}</p>
+                <p class={descriptionClass}>{fw.description}</p>
+              </div>
+            ) : (
+              <div class={plainContentClass}>
+                <p class={descriptionClass}>{fw.description}</p>
+              </div>
+            )}
+          </InfoCard>
+        ))
+      }
+    </div>
+    <div class={ctaWrapClass}>
+      <ArrowLink href="/product#customer-stories">{content.cta} &rarr;</ArrowLink>
+    </div>
+  </div>
+</section>

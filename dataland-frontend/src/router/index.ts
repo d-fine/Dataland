@@ -1,17 +1,10 @@
 import { createWebHistory, createRouter, type RouteComponent, type RouteLocationNormalized } from 'vue-router';
 
 const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/pages/CompanyCockpitPage.vue');
-const LandingPage = (): Promise<RouteComponent> => import('@/components/pages/LandingPage.vue');
-import AboutPage from '@/components/pages/AboutPage.vue';
 
 const QualityAssurance = (): Promise<RouteComponent> => import('@/components/pages/QualityAssurance.vue');
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import('@/components/pages/SearchCompaniesForFrameworkData.vue');
-const TermsAndConditions = (): Promise<RouteComponent> => import('@/components/pages/TermsAndConditions.vue');
-const TokenTerms = (): Promise<RouteComponent> => import('@/components/pages/TokenTerms.vue');
-const PricingAndRemuneration = (): Promise<RouteComponent> => import('@/components/pages/PricingAndRemuneration.vue');
-const TheImprint = (): Promise<RouteComponent> => import('@/components/pages/TheImprint.vue');
-const DataPrivacy = (): Promise<RouteComponent> => import('@/components/pages/DataPrivacy.vue');
 const NoContentFound = (): Promise<RouteComponent> => import('@/components/pages/NoContentFound.vue');
 const ApiKeysPage = (): Promise<RouteComponent> => import('@/components/pages/ApiKeysPage.vue');
 const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pages/SingleDataRequest.vue');
@@ -39,26 +32,11 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/AdminAllRequestsOverviewLegacy.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
-import PlatformRedirect from '@/components/resources/landingPage/PlatformRedirect.vue';
 const DatasetReviewOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetReviewOverview.vue');
+import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
+import KeycloakRedirect from '@/components/pages/KeycloakRedirect.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'Welcome to Dataland',
-    component: LandingPage,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/about',
-    name: 'About Page',
-    component: AboutPage,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
   {
     path: '/companies/choose',
     name: 'Choose Company',
@@ -101,7 +79,6 @@ const routes = [
     component: CompanyCockpitPage,
     meta: {
       requiresAuthentication: false,
-      useLandingPageHeader: false,
     },
   },
   {
@@ -295,46 +272,6 @@ const routes = [
     },
   },
   {
-    path: '/dataprivacy',
-    name: 'DataPrivacy',
-    component: DataPrivacy,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/terms',
-    name: 'TermsAndConditions',
-    component: TermsAndConditions,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/pricing',
-    name: 'Pricing',
-    component: PricingAndRemuneration,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/token',
-    name: 'TokenTerms',
-    component: TokenTerms,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/imprint',
-    name: 'LandingImprint',
-    component: TheImprint,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
     path: '/nocontent',
     name: 'NoContentFound',
     component: NoContentFound,
@@ -347,7 +284,25 @@ const routes = [
     name: 'Platform Redirect',
     component: PlatformRedirect,
     meta: {
-      requiresAuthentication: true,
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: KeycloakRedirect,
+    meta: {
+      requiresAuthentication: false,
+      register: false,
+    },
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: KeycloakRedirect,
+    meta: {
+      requiresAuthentication: false,
+      register: true,
     },
   },
   {
@@ -362,8 +317,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
-    globalThis.scrollTo(0, 0);
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' };
+    }
+    return { top: 0 };
   },
 });
 

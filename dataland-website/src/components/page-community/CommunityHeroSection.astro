@@ -1,0 +1,191 @@
+---
+import type { CommunityGridItem } from '../../content/community';
+import CardShell from '../primitives/CardShell.astro';
+
+interface HeroContent {
+  title: string;
+  buttons: {
+    stories: string;
+    useCases: string;
+    contact: string;
+  };
+}
+
+interface Props {
+  content: HeroContent;
+  items: CommunityGridItem[];
+}
+
+const { content, items } = Astro.props;
+
+const sectionClass =
+  'bg-[linear-gradient(90deg,#020408_0%,#08111b_24%,#142231_52%,#27435d_82%,#345877_100%)] px-6 pt-26 pb-12 text-white lg:px-8 lg:pt-30 lg:pb-16';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-10';
+
+const titleWrapClass = 'max-w-[900px] mx-auto text-center';
+
+const titleClass = 'm-0 text-[1.75rem] font-bold text-white';
+
+const cardsGridClass = 'grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3';
+
+const cardClass = 'flex h-full flex-col px-6 py-5';
+
+const topAccentClass = 'mb-4 h-[3px] w-14 rounded-full bg-[var(--color-primary)]';
+
+const cardHeaderClass = 'mb-4 flex items-center gap-4 text-white/90';
+
+const iconClass = 'shrink-0';
+
+const cardTitleClass = 'm-0 text-[1.14rem] font-bold text-white';
+
+const cardTextClass = 'm-0 text-[0.95rem] leading-relaxed text-white/92';
+
+const buttonsWrapClass = 'flex flex-wrap justify-center gap-3';
+---
+
+<section class={sectionClass} aria-label="Community overview">
+  <div class={sectionInnerClass}>
+    <div class={titleWrapClass}>
+      <h1 class={titleClass}>{content.title}</h1>
+    </div>
+
+    <div class={cardsGridClass}>
+      {
+        items.map((item) => (
+          <CardShell variant="glass" class={cardClass}>
+            <div class={topAccentClass} aria-hidden="true" />
+            <div class={cardHeaderClass}>
+              {item.icon === 'sectors' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <path d="M3 21h18" />
+                  <path d="M5 21V8l4-3 4 3v13" />
+                  <path d="M13 21V5l3-2 3 2v16" />
+                  <path d="M8 11h.01" />
+                  <path d="M8 15h.01" />
+                  <path d="M16 9h.01" />
+                  <path d="M16 13h.01" />
+                </svg>
+              )}
+              {item.icon === 'sizes' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <rect x="3" y="11" width="5" height="10" rx="1" />
+                  <rect x="10" y="7" width="5" height="14" rx="1" />
+                  <rect x="17" y="3" width="4" height="18" rx="1" />
+                </svg>
+              )}
+              {item.icon === 'use_cases' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <path d="M4 6h7" />
+                  <path d="M4 12h10" />
+                  <path d="M4 18h8" />
+                  <circle cx="16" cy="6" r="2" />
+                  <circle cx="19" cy="12" r="2" />
+                  <circle cx="15" cy="18" r="2" />
+                </svg>
+              )}
+              {item.icon === 'frameworks' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M7 8h10" />
+                  <path d="M7 12h10" />
+                  <path d="M7 16h6" />
+                </svg>
+              )}
+              {item.icon === 'delivery' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <rect x="3" y="5" width="10" height="14" rx="2" />
+                  <path d="M16 7h5" />
+                  <path d="M16 12h5" />
+                  <path d="M16 17h5" />
+                </svg>
+              )}
+              {item.icon === 'collaboration' && (
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class={iconClass}
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                  <circle cx="10" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              )}
+              <h2 class={cardTitleClass}>{item.title}</h2>
+            </div>
+            <p class={cardTextClass}>{item.text}</p>
+          </CardShell>
+        ))
+      }
+    </div>
+
+    <div class:list={[buttonsWrapClass, 'btn-group-equal']} data-equal-buttons>
+      <a href="/product#customer-stories" class="btn btn--orange">{content.buttons.stories}</a>
+      <a href="/product#use-cases" class="btn btn--white">{content.buttons.useCases}</a>
+      <a href="/about#contact" class="btn btn--white">{content.buttons.contact}</a>
+    </div>
+  </div>
+</section>
