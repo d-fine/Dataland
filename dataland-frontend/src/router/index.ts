@@ -5,8 +5,6 @@ const CompanyCockpitPage = (): Promise<RouteComponent> => import('@/components/p
 const QualityAssurance = (): Promise<RouteComponent> => import('@/components/pages/QualityAssurance.vue');
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import('@/components/pages/SearchCompaniesForFrameworkData.vue');
-const TokenTerms = (): Promise<RouteComponent> => import('@/components/pages/TokenTerms.vue');
-const PricingAndRemuneration = (): Promise<RouteComponent> => import('@/components/pages/PricingAndRemuneration.vue');
 const NoContentFound = (): Promise<RouteComponent> => import('@/components/pages/NoContentFound.vue');
 const ApiKeysPage = (): Promise<RouteComponent> => import('@/components/pages/ApiKeysPage.vue');
 const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pages/SingleDataRequest.vue');
@@ -271,22 +269,6 @@ const routes = [
     component: UnsubscribeFromMailsPage,
     meta: {
       requiresAuthentication: true,
-    },
-  },
-  {
-    path: '/pricing',
-    name: 'Pricing',
-    component: PricingAndRemuneration,
-    meta: {
-      requiresAuthentication: false,
-    },
-  },
-  {
-    path: '/token',
-    name: 'TokenTerms',
-    component: TokenTerms,
-    meta: {
-      requiresAuthentication: false,
     },
   },
   {
