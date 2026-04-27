@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import type { Ref } from 'vue';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { datasetReviewKeys } from '@/api-queries/qa-service/dataset-review/datasetReviewKeys.ts';
+import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys.ts';
 import { type DatasetJudgementResponse } from '@clients/qaservice';
 import { type AxiosResponse } from 'axios';
 
@@ -12,7 +12,7 @@ import { type AxiosResponse } from 'axios';
  * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success it
  * invalidates the corresponding dataset judgement detail query.
  */
-export function useSetDatasetReviewJudge(
+export function useSetJudgeForDatasetJudgement(
   datasetJudgementId: Ref<string | undefined>
 ): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
   const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ export function useSetDatasetReviewJudge(
       return apiClientProvider.apiClients.datasetJudgementController.setJudge(id);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetReviewKeys.detail(datasetJudgementId.value) });
+      await queryClient.invalidateQueries({ queryKey: datasetJudgementKeys.detail(datasetJudgementId.value) });
     },
     onError: (error) => {
       console.error('Error setting dataset judge:', error);

@@ -21,6 +21,8 @@ import {
 } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Validates the existence of the company search bar
  * @param isSearchBarExpected determines if the existence of the search bar is expected
@@ -180,7 +182,7 @@ describe('Component test for the company cockpit', () => {
     const categoryKeys = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const _ of categoryKeys) {
-      cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+      cy.wait('@fetchDocumentMetadata', { timeout: mediumTimeoutInMs });
     }
     for (const category of categoryKeys) {
       cy.get('[data-test="' + category + '"]')

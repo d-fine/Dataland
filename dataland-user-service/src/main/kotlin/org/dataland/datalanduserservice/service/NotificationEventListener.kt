@@ -55,7 +55,7 @@ class NotificationEventListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.DATASOURCING_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.LEGACY_DATA_SOURCING_NON_SOURCEABLE],
+                key = [RoutingKeyNames.DATA_SOURCING_NON_SOURCEABLE],
             ),
         ],
     )
@@ -64,7 +64,7 @@ class NotificationEventListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.LEGACY_DATA_SOURCING_NON_SOURCEABLE)
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_SOURCING_NON_SOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
 

@@ -16,7 +16,7 @@ object MessageType {
     const val PRIVATE_DATA_STORED = "Private Data Stored"
     const val PRIVATE_DATA_RECEIVED = "Private Data received"
     const val QA_STATUS_UPDATED = "QA status updated"
-    const val LEGACY_DATA_SOURCING_NON_SOURCEABLE = "DataSourcing non-sourceable" // This is for user notifications, maybe change process
+    const val DATA_SOURCING_NON_SOURCEABLE = "DataSourcing non-sourceable" // This is for user notifications, maybe change process
     const val NON_SOURCEABILITY_CREATED = "NonSourceability created"
     const val NON_SOURCEABILITY_AUTO_ACCEPTED = "NonSourceability auto-accepted"
     const val NON_SOURCEABILITY_QA_ACCEPTED = "NonSourceability QA accepted"

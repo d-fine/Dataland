@@ -15,9 +15,9 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import java.util.UUID
 
 /**
- * The canonical backend persistence entity for the non-sourceability lifecycle.
- * This is the single source of truth for non-sourceability state; [SourceabilityEntity]
- * is retained as backup-only and must not be used as a runtime source.
+ * The database entity for a non-sourceability object.
+ * This entity should be regarded as the single source of truth
+ * for non-sourceability Information.
  */
 @Entity
 @Table(name = "non_sourceability_information")

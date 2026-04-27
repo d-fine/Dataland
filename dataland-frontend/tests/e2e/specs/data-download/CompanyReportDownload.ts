@@ -1,16 +1,8 @@
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { type LksgData, type StoredCompany } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
-import {
-  admin_name,
-  admin_pw,
-  getBaseUrl,
-  reader_name,
-  reader_pw,
-  uploader_name,
-  uploader_pw,
-} from '@e2e/utils/Cypress.ts';
-import { getKeycloakToken } from '@e2e/utils/Auth.ts';
+import { getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { getAdminToken, getUploaderToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -41,7 +33,7 @@ describeIf(
         getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
@@ -53,7 +45,7 @@ describeIf(
 
       cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
         const arrayBuffer = Uint8Array.from(buffer).buffer;
-        getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        getUploaderToken().then(async (token: string) => {
           documentMetaInfoResponse = await uploadDocumentViaApi(token, arrayBuffer, documentName);
           return documentMetaInfoResponse;
         });
@@ -61,7 +53,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
     });
 
     it('Download document, check for file name and appropriate size, and delete it afterwards', () => {
@@ -69,7 +61,7 @@ describeIf(
         documentName: documentName,
         companyIds: [storedCompany.companyId] as unknown as Set<string>,
       };
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return patchDocumentMetaInfo(token, documentMetaInfoResponse.documentId, documentMetaInfoPatch);
       });
 

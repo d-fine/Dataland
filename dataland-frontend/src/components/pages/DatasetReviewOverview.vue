@@ -58,8 +58,16 @@
                     icon="pi pi-times"
                     outlined
                     @click="rejectDataset"
+                    data-test="qaReviewPageRejectButton"
                   />
-                  <PrimeButton label="FINISH REVIEW" severity="success" icon="pi pi-check" @click="finishReview" />
+                  <PrimeButton
+                    label="FINISH REVIEW"
+                    severity="success"
+                    icon="pi pi-check"
+                    :disabled="!canFinishReview || isFinishReviewMutationPending"
+                    @click="finishReview"
+                    data-test="qaReviewPageFinishButton"
+                  />
                 </div>
                 <div v-else class="text-left">
                   <PrimeButton
@@ -82,7 +90,19 @@
               :data-meta-information="dataMetaInformation!"
               :search-query="''"
               :hide-empty-fields="hideEmptyFields"
+              :row-clickable="isAssignedToCurrentUser"
               data-test="datasetReviewComparisonTable"
+              @row-click="onComparisonTableRowClicked"
+              @kpi-rows-built="onKpiRowsBuilt"
+              @documents-built="onDocumentsBuilt"
+            />
+            <JudgeDialog
+              v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId && isAssignedToCurrentUser"
+              :dataset-review-id="props.datasetJudgementId"
+              :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
+              :kpi-rows="kpiRows"
+              :available-documents="availableDocuments"
+              v-model:is-open="isJudgeDialogOpen"
             />
           </div>
         </div>
@@ -102,6 +122,8 @@
 
 <script setup lang="ts">
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
+import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
+import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { ref, onMounted, computed, inject } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import PrimeButton from 'primevue/button';
@@ -113,12 +135,13 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetJudgementState } from '@clients/qaservice';
-import { useDatasetReviewQuery } from '@/api-queries/qa-service/dataset-review/useDatasetReviewQuery.ts';
+import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
-import { useSetDatasetReviewStateMutation } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewStateMutation.ts';
-import { useSetDatasetReviewJudge } from '@/api-queries/qa-service/dataset-review/useSetDatasetReviewJudge.ts';
+import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
+import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
+import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -127,6 +150,26 @@ const props = defineProps<{
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
+const isJudgeDialogOpen = ref(false);
+const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
+const availableDocuments = ref<DocumentOption[]>([]);
+
+/**
+ * Callback function to receive the list of available documents for a data point from the ComparisonTable child component.
+ * @param documents
+ */
+function onDocumentsBuilt(documents: DocumentOption[]): void {
+  availableDocuments.value = documents;
+}
+
+/**
+ * Callback function to handle clicks on rows in the ComparisonTable child component. Opens the JudgeDialog for the clicked data point.
+ * @param row
+ */
+function onComparisonTableRowClicked(row: CellRow): void {
+  judgeDialogDataPointTypeId.value = row.dataPointTypeId;
+  isJudgeDialogOpen.value = true;
+}
 
 const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
@@ -135,7 +178,7 @@ const {
   data: datasetReview,
   isPending: isDatasetReviewPending,
   isError: isDatasetReviewError,
-} = useDatasetReviewQuery({
+} = useDatasetJudgementQuery({
   datasetJudgementId: datasetJudgementIdRef,
 });
 
@@ -160,21 +203,35 @@ const dataPointsLeftToReview = computed(() => {
   return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
 });
 
+const canFinishReview = computed(() => dataPointsLeftToReview.value === 0);
+
 const isAssignedToCurrentUser = computed(() => {
   if (!datasetReview.value) return false;
   return datasetReview.value.qaJudgeUserId === currentUserId.value;
 });
 
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetDatasetReviewJudge(datasetJudgementIdRef);
+const kpiRows = ref<CellRow[]>([]);
 
-const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetReviewStateMutation(
+/**
+ * Callback function to receive the list of KPI rows from the ComparisonTable child component.
+ * These are needed to populate the "Next data point" dropdown in the JudgeDialog.
+ * @param rows
+ */
+function onKpiRowsBuilt(rows: CellRow[]): void {
+  kpiRows.value = rows;
+}
+
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } =
+  useSetJudgeForDatasetJudgement(datasetJudgementIdRef);
+
+const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetJudgementStateMutation(
   datasetJudgementIdRef,
-  DatasetJudgementState.Aborted
+  DatasetJudgementState.FinishedWithDatasetRejection
 );
 
-const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetReviewStateMutation(
+const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetJudgementStateMutation(
   datasetJudgementIdRef,
-  DatasetJudgementState.Finished
+  DatasetJudgementState.FinishedWithDatasetAcceptance
 );
 
 const isModalActionPending = computed(
@@ -204,22 +261,27 @@ const assignToMe = (): void => {
 };
 
 const rejectDataset = (): void => {
-  openConfirmationModal('Reject Dataset', 'Are you sure you want to reject this dataset review?', () => {
-    rejectReviewMutation(undefined, {
-      onSuccess: () => {
-        isActionSuccess.value = true;
-        confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-        setTimeout(() => {
-          confirmationModal.value.visible = false;
-          isActionSuccess.value = false;
-          void goToQaPage();
-        }, 3200);
-      },
-      onError: (error) => {
-        confirmationModal.value.errorMessage = 'Failed to reject dataset review: ' + error.message;
-      },
-    });
-  });
+  openConfirmationModal(
+    'Reject Dataset',
+    'Are you sure you want to reject the dataset and all ' +
+      'underlying data points? This action will finish the review and cannot be undone.',
+    () => {
+      rejectReviewMutation(undefined, {
+        onSuccess: () => {
+          isActionSuccess.value = true;
+          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+          setTimeout(() => {
+            confirmationModal.value.visible = false;
+            isActionSuccess.value = false;
+            void goToQaPage();
+          }, 3200);
+        },
+        onError: (error) => {
+          confirmationModal.value.errorMessage = 'Failed to reject dataset: ' + error.message;
+        },
+      });
+    }
+  );
 };
 
 const finishReview = (): void => {

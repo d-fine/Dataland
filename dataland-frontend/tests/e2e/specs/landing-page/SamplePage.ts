@@ -1,5 +1,7 @@
 import { getBaseUrl } from '@e2e/utils/Cypress';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 describe('As a user, I expect the sample page to be functional and reachable without logging in', () => {
   it('Check that the sample section works properly without authentication', () => {
     cy.intercept('**/api/companies/teaser')
@@ -12,7 +14,7 @@ describe('As a user, I expect the sample page to be functional and reachable wit
       .as('getDataById');
     cy.visitAndCheckAppMount('/preview');
     cy.wait(['@getTeaserCompanies', '@getMetaDataOfFirstTeaserCompany', '@getCompanyById', '@getDataById'], {
-      timeout: Cypress.env('medium_timeout_in_ms') as number,
+      timeout: mediumTimeoutInMs,
     });
 
     cy.url().should('eq', getBaseUrl() + '/preview');

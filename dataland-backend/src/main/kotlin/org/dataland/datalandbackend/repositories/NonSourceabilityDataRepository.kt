@@ -11,8 +11,7 @@ import java.util.UUID
 /**
  * JPA repository for [NonSourceabilityInformationEntity].
  *
- * Provides filtered search and existence checks used by the canonical non-sourceability
- * workflow. [SourceabilityDataRepository] continues to exist as backup-only storage.
+ * Provides filtered search and existence checks used for the non-sourceability workflow.
  */
 interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInformationEntity, UUID> {
     /**
@@ -47,14 +46,14 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         WHERE e.companyId = :companyId
           AND e.dataType = :dataType
           AND e.reportingPeriod = :reportingPeriod
-          AND e.qaStatus IN :blockedStatuses
+          AND e.qaStatus IN :statuses
         """,
     )
-    fun existsActiveOrPendingForTuple(
+    fun existsWithGivenStatuses(
         @Param("companyId") companyId: String,
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
-        @Param("blockedStatuses") blockedStatuses: List<QaStatus>,
+        @Param("statuses") statuses: List<QaStatus>,
     ): Boolean
 
     /**
@@ -75,5 +74,5 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         @Param("companyId") companyId: String,
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
-    ): List<NonSourceabilityInformationEntity>
+    ): NonSourceabilityInformationEntity?
 }
