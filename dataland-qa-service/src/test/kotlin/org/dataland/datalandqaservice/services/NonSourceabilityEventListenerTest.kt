@@ -39,7 +39,7 @@ class NonSourceabilityEventListenerTest {
     fun `processCreatedEvent persists QA review record with Pending status`() {
         whenever(repository.findByNonSourceabilityId(any())).thenReturn(null)
 
-        listener.processCreatedEvent(event(), "corr-1")
+        listener.processCreatedEvent(event())
 
         verify(repository).save(any<NonSourceableQaReviewInformationEntity>())
     }
@@ -59,7 +59,7 @@ class NonSourceabilityEventListenerTest {
             )
         whenever(repository.findByNonSourceabilityId(any())).thenReturn(existing)
 
-        listener.processCreatedEvent(event(), "corr-2")
+        listener.processCreatedEvent(event())
 
         verify(repository, never()).save(any())
     }
@@ -68,7 +68,7 @@ class NonSourceabilityEventListenerTest {
     fun `onNonSourceabilityCreated throws reject exception for wrong message type`() {
         val payload = objectMapper.writeValueAsString(event())
         assertThrows<MessageQueueRejectException> {
-            listener.onNonSourceabilityCreated(payload, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED, "corr-3")
+            listener.onNonSourceabilityCreated(payload, MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED)
         }
     }
 }

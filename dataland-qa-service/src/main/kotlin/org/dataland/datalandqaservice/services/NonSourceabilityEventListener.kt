@@ -57,25 +57,20 @@ class NonSourceabilityEventListener(
     fun onNonSourceabilityCreated(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) messageType: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.rejectMessageOnException {
             MessageQueueUtils.validateMessageType(messageType, MessageType.NON_SOURCEABILITY_CREATED)
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            processCreatedEvent(event, correlationId)
+            processCreatedEvent(event)
         }
     }
 
     @Transactional
-    internal fun processCreatedEvent(
-        event: NonSourceabilityLifecycleEvent,
-        correlationId: String,
-    ) {
+    internal fun processCreatedEvent(event: NonSourceabilityLifecycleEvent) {
         val existing = nonSourceableQaReviewRepository.findByNonSourceabilityId(event.nonSourceabilityId)
         if (existing != null) {
             logger.info(
-                "Idempotent skip: QA review record already exists for nonSourceabilityId=${event.nonSourceabilityId} " +
-                    "(correlationId=$correlationId)",
+                "Idempotent skip: QA review record already exists for nonSourceabilityId=${event.nonSourceabilityId}",
             )
             return
         }
@@ -93,7 +88,7 @@ class NonSourceabilityEventListener(
             )
         nonSourceableQaReviewRepository.save(entity)
         logger.info(
-            "Created QA review record for nonSourceabilityId=${event.nonSourceabilityId} (correlationId=$correlationId)",
+            "Created QA review record for nonSourceabilityId=${event.nonSourceabilityId}",
         )
     }
 }

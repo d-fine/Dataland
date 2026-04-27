@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID.randomUUID
 
 /**
  * Controller for non-sourceability QA review endpoints.
@@ -49,9 +48,8 @@ class NonSourceabilityQaController(
             return ResponseEntity.badRequest().build()
         }
         val reviewerUserId = DatalandAuthentication.fromContext().userId
-        val correlationId = randomUUID().toString()
         logger.info(
-            "POST /nonSourceable/$nonSourceabilityId qaStatus=${request.qaStatus} (correlationId=$correlationId)",
+            "POST /nonSourceable/$nonSourceabilityId qaStatus=${request.qaStatus}",
         )
         val result =
             nonSourceabilityQaReviewManager.postDecision(
@@ -59,7 +57,6 @@ class NonSourceabilityQaController(
                 qaStatus = request.qaStatus,
                 qaComment = request.qaComment,
                 reviewerUserId = reviewerUserId,
-                correlationId = correlationId,
             )
         return ResponseEntity.ok(result)
     }

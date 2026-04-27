@@ -55,7 +55,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
-        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-1")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
 
         verify(sourcingManager).patchDataSourcingEntityById(any(), any())
     }
@@ -66,7 +66,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(listOf(stored))
 
-        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-2")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
 
         verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
     }
@@ -78,7 +78,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
             .thenReturn(listOf(stored))
         whenever(sourcingManager.patchDataSourcingEntityById(any(), any())).thenReturn(stored)
 
-        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_REJECTED, "corr-3")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_REJECTED)
 
         verify(sourcingManager).patchDataSourcingEntityById(any(), argThat { state == DataSourcingState.DocumentSourcingDone })
     }
@@ -88,7 +88,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
         whenever(queryManager.searchDataSourcings(anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), any(), any()))
             .thenReturn(emptyList())
 
-        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-4")
+        listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
 
         verify(sourcingManager, never()).patchDataSourcingEntityById(any(), any())
     }
@@ -96,7 +96,7 @@ class NonSourceabilityQaAcceptedConsumerTest {
     @Test
     fun `unexpected event type throws reject exception`() {
         assertThrows<MessageQueueRejectException> {
-            listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_CREATED, "corr-5")
+            listener.processQaDecisionEvent(buildEvent(), MessageType.NON_SOURCEABILITY_CREATED)
         }
     }
 }
