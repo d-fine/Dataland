@@ -61,7 +61,6 @@ class NonSourceabilityQaDecisionListener(
     fun onNonSourceabilityQaDecision(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) messageType: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.rejectMessageOnException {
             if (messageType != MessageType.NON_SOURCEABILITY_QA_ACCEPTED &&
@@ -72,7 +71,7 @@ class NonSourceabilityQaDecisionListener(
                 )
             }
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            processQaDecisionEvent(event, messageType, correlationId)
+            processQaDecisionEvent(event, messageType)
         }
     }
 
@@ -80,28 +79,24 @@ class NonSourceabilityQaDecisionListener(
     internal fun processQaDecisionEvent(
         event: NonSourceabilityLifecycleEvent,
         messageType: String,
-        correlationId: String,
     ) {
         when (messageType) {
             MessageType.NON_SOURCEABILITY_QA_ACCEPTED ->
-                transitionToNonSourceable(event, correlationId)
+                transitionToNonSourceable(event)
             MessageType.NON_SOURCEABILITY_QA_REJECTED ->
-                transitionToDocumentSourcingDone(event, correlationId)
+                transitionToDocumentSourcingDone(event)
             else -> {
                 logger.error(
                     "Unexpected message type $messageType in NonSourceabilityQaDecisionListener " +
-                        "(correlationId=$correlationId). Discarding.",
+                        ". Discarding.",
                 )
                 throw MessageQueueRejectException("Unexpected message type $messageType in QA decision listener")
             }
         }
     }
 
-    private fun transitionToNonSourceable(
-        event: NonSourceabilityLifecycleEvent,
-        correlationId: String,
-    ) {
-        val sourcing = findSourcingForEvent(event, correlationId) ?: return
+    private fun transitionToNonSourceable(event: NonSourceabilityLifecycleEvent) {
+        val sourcing = findSourcingForEvent(event) ?: return
         if (sourcing.state == DataSourcingState.NonSourceable) {
             logger.info("Idempotent skip: already NonSourceable for nonSourceabilityId=${event.nonSourceabilityId}")
             return
@@ -112,16 +107,13 @@ class NonSourceabilityQaDecisionListener(
         )
         logger.info(
             "Transitioned dataSourcingId=${sourcing.dataSourcingId} to NonSourceable via QA accepted " +
-                "(correlationId=$correlationId, nonSourceabilityId=${event.nonSourceabilityId})",
+                "(nonSourceabilityId=${event.nonSourceabilityId})",
         )
     }
 
     @Transactional
-    internal fun transitionToDocumentSourcingDone(
-        event: NonSourceabilityLifecycleEvent,
-        correlationId: String,
-    ) {
-        val sourcing = findSourcingForEvent(event, correlationId) ?: return
+    internal fun transitionToDocumentSourcingDone(event: NonSourceabilityLifecycleEvent) {
+        val sourcing = findSourcingForEvent(event) ?: return
         if (sourcing.state == DataSourcingState.DocumentSourcingDone) {
             logger.info("Idempotent skip: already in DocumentSourcingDone for nonSourceabilityId=${event.nonSourceabilityId}")
             return
@@ -132,29 +124,27 @@ class NonSourceabilityQaDecisionListener(
         )
         logger.info(
             "Transitioned dataSourcingId=${sourcing.dataSourcingId} to DocumentSourcingDone " +
-                "(correlationId=$correlationId, nonSourceabilityId=${event.nonSourceabilityId})",
+                "(nonSourceabilityId=${event.nonSourceabilityId})",
         )
     }
 
-    private fun findSourcingForEvent(
-        event: NonSourceabilityLifecycleEvent,
-        correlationId: String,
-    ) = dataSourcingQueryManager
-        .searchDataSourcings(
-            companyId = UUID.fromString(event.companyId),
-            dataType = event.dataType,
-            reportingPeriod = event.reportingPeriod,
-            state = null,
-            chunkSize = 1,
-            chunkIndex = 0,
-        ).firstOrNull()
-        .also { sourcing ->
-            if (sourcing == null) {
-                logger.info(
-                    "No data sourcing object found for companyId=${event.companyId}, dataType=${event.dataType}, " +
-                        "reportingPeriod=${event.reportingPeriod} (correlationId=$correlationId, " +
-                        "nonSourceabilityId=${event.nonSourceabilityId}). Skipping.",
-                )
+    private fun findSourcingForEvent(event: NonSourceabilityLifecycleEvent) =
+        dataSourcingQueryManager
+            .searchDataSourcings(
+                companyId = UUID.fromString(event.companyId),
+                dataType = event.dataType,
+                reportingPeriod = event.reportingPeriod,
+                state = null,
+                chunkSize = 1,
+                chunkIndex = 0,
+            ).firstOrNull()
+            .also { sourcing ->
+                if (sourcing == null) {
+                    logger.info(
+                        "No data sourcing object found for companyId=${event.companyId}, dataType=${event.dataType}, " +
+                            "reportingPeriod=${event.reportingPeriod} (" +
+                            "nonSourceabilityId=${event.nonSourceabilityId}). Skipping.",
+                    )
+                }
             }
-        }
 }
