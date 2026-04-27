@@ -11,8 +11,7 @@ import java.util.UUID
 /**
  * JPA repository for [NonSourceabilityInformationEntity].
  *
- * Provides filtered search and existence checks used by the canonical non-sourceability
- * workflow. [SourceabilityDataRepository] continues to exist as backup-only storage.
+ * Provides filtered search and existence checks used for the non-sourceability workflow.
  */
 interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInformationEntity, UUID> {
     /**

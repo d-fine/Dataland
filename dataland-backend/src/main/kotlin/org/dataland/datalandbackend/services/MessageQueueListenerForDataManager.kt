@@ -111,7 +111,7 @@ class MessageQueueListenerForDataManager(
                 logger.info("Set dataset with dataId $currentlyActiveDataId to active.")
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
                 logger.info("Deactivating any active non-sourceability entries for the same triple.")
-                nonSourceabilityInformationManager.deactivateForTriple(
+                nonSourceabilityInformationManager.deactivateExistingNonSourceabilitiesForTriple(
                     updatedDataMetaInformation.company.companyId,
                     DataType.valueOf(updatedDataMetaInformation.dataType),
                     updatedDataMetaInformation.reportingPeriod,

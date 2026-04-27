@@ -127,14 +127,14 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `isCurrentlyActive returns false when no active entry exists`() {
-        assertFalse(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
+        assertFalse(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
     }
 
     @Test
     fun `isCurrentlyActive returns true after admin bypass entry`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(bypassQa = true))
-        assertTrue(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
+        assertTrue(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
     }
 
     @Test
@@ -205,7 +205,7 @@ class NonSourceabilityInformationManagerTest(
         val response = result.response
         assertFalse(response.currentlyActive)
         assertEquals(QaStatus.Accepted, response.qaStatus)
-        assertFalse(manager.isCurrentlyActive(companyId, dataType, reportingPeriod))
+        assertFalse(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
         val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
         assertEquals(2, allEntries.size)
         assertTrue(allEntries.all { !it.currentlyActive })
