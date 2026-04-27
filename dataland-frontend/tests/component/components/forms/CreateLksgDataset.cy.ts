@@ -87,10 +87,10 @@ function mountEditForm(data: LksgData): Cypress.Chainable {
   };
   cy.intercept('**/api/data/lksg/**', dummyCompanyAssociatedData);
   const router = createRouter({
-    routes: [{ path: '/', component: CreateLksgDataset }],
+    routes: [{ path: '/companies', component: CreateLksgDataset }],
     history: createMemoryHistory(),
   });
-  void router.push({ path: '/', query: { reportingPeriod: '2024' } });
+  void router.push({ path: '/companies', query: { reportingPeriod: '2024' } });
 
   const mountingFunction = getMountingFunction({
     router: router,

@@ -1,0 +1,60 @@
+---
+import Header from '../components/layout/Header.astro';
+import TheFooter from '@dataland/shared-elements/footer';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Dataland is the non-profit open-source platform for standardised ESG data.',
+  ogImage = '/static/images/og-default.png',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://dataland.com');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://dataland.com').href} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/gfx_logo_d_orange_S_favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/gfx_logo_d_orange_S_favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
+    <link rel="manifest" href="/static/site.webmanifest" />
+
+    <!-- Cookiebot -->
+    <script
+      id="Cookiebot"
+      src="https://consent.cookiebot.com/uc.js"
+      data-cbid="cba5002e-6f0e-4848-aadc-ccc8d5c96c86"
+      data-blockingmode="auto"
+      type="text/javascript"></script>
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <TheFooter />
+    <script type="module" src="/scripts/equalButtons.js"></script>
+  </body>
+</html>

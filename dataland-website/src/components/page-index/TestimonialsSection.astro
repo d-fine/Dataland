@@ -1,0 +1,116 @@
+---
+import type { Testimonial } from '../../content/testimonials';
+import SectionHeader from '../primitives/SectionHeader.astro';
+import ArrowLink from '../primitives/ArrowLink.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  watch: string;
+}
+
+interface Props {
+  content: Content;
+  testimonials: Testimonial[];
+}
+
+const { content, testimonials } = Astro.props;
+
+const layoutClass = {
+  section: 'py-12 px-6 bg-[var(--color-brand-blue)] text-white lg:py-16 lg:px-8',
+  inner: 'max-w-[1200px] mx-auto flex flex-col gap-8',
+  header: 'mx-auto max-w-[860px]',
+  sliderShell: 'flex flex-col gap-4 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-4',
+  slider:
+    'testimonial-slider flex min-w-0 flex-1 gap-4 overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] pb-2 [scrollbar-width:none] sm:gap-5 [&::-webkit-scrollbar]:hidden',
+  mobileControls: 'flex items-center justify-center gap-3 lg:hidden',
+  desktopControl: 'hidden lg:inline-flex',
+  linkWrap: 'flex justify-center',
+} as const;
+
+const cardClass = {
+  root: 'testimonial-card m-0 flex w-full min-w-full shrink-0 snap-start flex-col gap-3.5 rounded-xl bg-white/10 p-5 sm:min-w-[280px] sm:max-w-[340px] sm:gap-4 sm:p-6',
+  quote: 'm-0 flex-1 text-[0.98rem] italic leading-[1.58] text-white/90 sm:text-[1.06rem] sm:leading-[1.62]',
+  footer: 'flex flex-col gap-0.5',
+  author: 'not-italic text-[0.95rem] font-bold text-white',
+  affiliation: 'text-[0.82rem] text-white/70',
+} as const;
+
+const navClass = {
+  button:
+    'testimonial-nav h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white motion-safe:transition-colors motion-safe:duration-150 hover:bg-white/18 disabled:cursor-not-allowed disabled:opacity-35',
+  icon: 'text-xl leading-none',
+} as const;
+
+const previousButton = {
+  direction: 'prev',
+  icon: '\u2190',
+  label: 'Show previous testimonials',
+} as const;
+
+const nextButton = {
+  direction: 'next',
+  icon: '\u2192',
+  label: 'Show next testimonials',
+} as const;
+---
+
+<section class={layoutClass.section} aria-label="What our members say" data-testimonials-section>
+  <div class={layoutClass.inner}>
+    <SectionHeader title={content.title} intro={content.intro} tone="light" class={layoutClass.header} />
+    <div class={layoutClass.sliderShell}>
+      <button
+        type="button"
+        class:list={[navClass.button, layoutClass.desktopControl]}
+        data-direction={previousButton.direction}
+        aria-label={previousButton.label}
+      >
+        <span aria-hidden="true" class={navClass.icon}>{previousButton.icon}</span>
+      </button>
+      <div class={layoutClass.slider} data-testimonial-slider>
+        {
+          testimonials.map((t) => (
+            <blockquote class={cardClass.root}>
+              <p class={cardClass.quote}>&ldquo;{t.quote}&rdquo;</p>
+              <footer class={cardClass.footer}>
+                <cite class={cardClass.author}>{t.author}</cite>
+                <span class={cardClass.affiliation}>{t.affiliation}</span>
+              </footer>
+            </blockquote>
+          ))
+        }
+      </div>
+      <button
+        type="button"
+        class:list={[navClass.button, layoutClass.desktopControl]}
+        data-direction={nextButton.direction}
+        aria-label={nextButton.label}
+      >
+        <span aria-hidden="true" class={navClass.icon}>{nextButton.icon}</span>
+      </button>
+      <div class={layoutClass.mobileControls}>
+        <button
+          type="button"
+          class={navClass.button}
+          data-direction={previousButton.direction}
+          aria-label={previousButton.label}
+        >
+          <span aria-hidden="true" class={navClass.icon}>{previousButton.icon}</span>
+        </button>
+        <button
+          type="button"
+          class={navClass.button}
+          data-direction={nextButton.direction}
+          aria-label={nextButton.label}
+        >
+          <span aria-hidden="true" class={navClass.icon}>{nextButton.icon}</span>
+        </button>
+      </div>
+    </div>
+    <div class={layoutClass.linkWrap}>
+      <ArrowLink href="/testimonials">{content.watch} <span aria-hidden="true">&rarr;</span></ArrowLink>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/scripts/testimonialsSection.js"></script>

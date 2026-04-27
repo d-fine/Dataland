@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { ALL_LOGOS } from '../config/logos';
+import { TESTIMONIALS } from '../content/testimonials';
+import { WHY_US_PAIRS, FRAMEWORK_CARDS, CUSTOMER_STORY_SUMMARIES, INDEX_PAGE_CONTENT } from '../content';
+import HeroSection from '../components/page-index/HeroSection.astro';
+import SearchSection from '../components/page-index/SearchSection.astro';
+import WhyUsSection from '../components/page-index/WhyUsSection.astro';
+import TrustedBySection from '../components/page-index/TrustedBySection.astro';
+import CustomerStoriesSection from '../components/page-index/CustomerStoriesSection.astro';
+import TestimonialsSection from '../components/page-index/TestimonialsSection.astro';
+import FrameworksSection from '../components/page-index/FrameworksSection.astro';
+import IndexCtaSection from '../components/page-index/IndexCtaSection.astro';
+import LogoutModal from '../components/page-index/LogoutModal.astro';
+---
+
+<Base title={INDEX_PAGE_CONTENT.meta.title}>
+  <HeroSection content={INDEX_PAGE_CONTENT.hero} />
+  <SearchSection title={INDEX_PAGE_CONTENT.search.title} />
+  <WhyUsSection content={INDEX_PAGE_CONTENT.whyUs} pairs={WHY_US_PAIRS} />
+  <TrustedBySection content={INDEX_PAGE_CONTENT.trustedBy} logos={ALL_LOGOS} />
+  <CustomerStoriesSection content={INDEX_PAGE_CONTENT.customerStories} stories={CUSTOMER_STORY_SUMMARIES} />
+  <TestimonialsSection content={INDEX_PAGE_CONTENT.testimonials} testimonials={TESTIMONIALS} />
+  <FrameworksSection content={INDEX_PAGE_CONTENT.frameworks} frameworks={FRAMEWORK_CARDS} />
+  <IndexCtaSection content={INDEX_PAGE_CONTENT.cta} />
+  <LogoutModal />
+  <script type="module" src="/scripts/indexPage.js"></script>
+</Base>

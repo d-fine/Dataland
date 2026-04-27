@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { TESTIMONIALS, TESTIMONIALS_PAGE_CONTENT } from '../content/testimonials';
+
+import TestimonialsHeroSection from '../components/page-testimonials/TestimonialsHeroSection.astro';
+import TestimonialsGridSection from '../components/page-testimonials/TestimonialsGridSection.astro';
+---
+
+<Base title={TESTIMONIALS_PAGE_CONTENT.meta.title} description={TESTIMONIALS_PAGE_CONTENT.meta.description}>
+  <TestimonialsHeroSection content={TESTIMONIALS_PAGE_CONTENT.hero} />
+  <TestimonialsGridSection testimonials={TESTIMONIALS} />
+</Base>

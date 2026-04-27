@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import SuccessStoryArticle from '../components/page-success-stories/SuccessStoryArticle.astro';
+
+const [story] = await getCollection('success-stories', ({ data }) => data.slug === 'meag-sfdr-data-gaps');
+const { Content } = await render(story);
+---
+
+<Base title="MEAG - Success Story - Dataland" description="Read how MEAG uses Dataland for ESG data.">
+  <SuccessStoryArticle
+    title={story.data.title}
+    companyName={story.data.companyName}
+    companyType={story.data.companyType}
+    logo={story.data.logo}
+    quoteText={story.data.quoteText}
+    quoteAuthor={story.data.quoteAuthor}
+    quoteRole={story.data.quoteRole}
+    primaryTag="Asset manager"
+    secondaryTags={['SFDR', 'EU Taxo', 'Audit']}
+  >
+    <Content />
+  </SuccessStoryArticle>
+</Base>

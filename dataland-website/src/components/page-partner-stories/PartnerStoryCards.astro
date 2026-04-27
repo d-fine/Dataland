@@ -1,0 +1,42 @@
+---
+import type { PartnerStorySummary } from '../../config/partner-stories';
+import SectionHeader from '../primitives/SectionHeader.astro';
+import LogoSummaryCard from '../cards/LogoSummaryCard.astro';
+
+interface Props {
+  stories: PartnerStorySummary[];
+  title?: string;
+  intro?: string;
+  sectionClass?: string;
+}
+
+const {
+  stories,
+  title = 'Our partners',
+  intro,
+  sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8',
+} = Astro.props;
+---
+
+<section id="partners" class={sectionClass} aria-label={title}>
+  <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+    <SectionHeader title={title} intro={intro} class="mx-auto max-w-[760px]" />
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {
+        stories.map((story) => (
+          <LogoSummaryCard
+            href={story.link}
+            title={story.title}
+            text={story.text}
+            logo={story.logo}
+            logoClassName={story.logoClassName}
+            darkLogoFrame={story.darkLogoFrame}
+            linkLabel="Read more"
+            bodyClass="gap-6"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

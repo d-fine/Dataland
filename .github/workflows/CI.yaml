@@ -232,6 +232,9 @@ jobs:
       - name: Frontend type checking
         run: ./gradlew :dataland-frontend:npm_run_typecheck  dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace
         if: always()
+      - name: Website linting and type checking
+        run: ./gradlew :dataland-website:npm_run_lintci :dataland-website:npm_run_formatci :dataland-website:npm_run_typecheck --no-daemon --stacktrace
+        if: always()
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()

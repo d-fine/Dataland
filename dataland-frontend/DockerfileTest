@@ -13,13 +13,17 @@ COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/use
 COPY ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json
 COPY ./dataland-accounting-service/accountingServiceOpenApi.json ./dataland-accounting-service/accountingServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
+COPY ./dataland-sharedElements/ ./dataland-sharedElements/
+COPY ./dataland-website/ ./dataland-website/
 COPY ./.git/ ./.git
 
-RUN ./gradlew dataland-frontend:generateClients --no-daemon --stacktrace
+RUN ./gradlew dataland-frontend:generateClients dataland-frontend:copyAstroWebsite --no-daemon --stacktrace
 
 FROM node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b as production-stage
 COPY ./dataland-frontend /app/dataland-frontend
+COPY ./dataland-sharedElements /app/dataland-sharedElements
 COPY --from=build-stage /app/dataland-frontend/build/clients /app/dataland-frontend/build/clients
+COPY --from=build-stage /app/dataland-frontend/public /app/dataland-frontend/public
 
 WORKDIR /app/dataland-frontend
 RUN npm install

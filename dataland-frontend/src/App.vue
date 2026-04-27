@@ -4,11 +4,10 @@
     v-if="route.meta.requiresAuthentication !== undefined"
     :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
-    <LandingPageHeader v-if="useLandingPageHeader" />
-    <TheHeader v-else />
+    <TheHeader />
     <router-view />
   </component>
-  <TheFooter :isLightVersion="route.meta.requiresAuthentication === true" />
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -30,9 +29,8 @@ import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUti
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { useRoute } from 'vue-router';
 
-import LandingPageHeader from '@/components/generics/LandingPageHeader.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
+import TheFooter from '@dataland/shared-elements/footer';
 import { useDialog } from 'primevue/usedialog';
 
 const smallScreenBreakpoint = 768;
@@ -42,7 +40,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, LandingPageHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
+  components: { TheHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
 
   data() {
     return {
@@ -60,10 +58,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const dialog = useDialog();
-    const useLandingPageHeader = computed(() => {
-      return route.meta.useLandingPageHeader ?? !route.meta.requiresAuthentication;
-    });
-    return { route, useLandingPageHeader, dialog };
+    return { route, dialog };
   },
 
   computed: {
@@ -165,8 +160,11 @@ export default defineComponent({
     handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
+        localStorage.setItem('dataland_authenticated', 'true');
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
         void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+      } else {
+        localStorage.removeItem('dataland_authenticated');
       }
     },
 
@@ -183,11 +181,10 @@ export default defineComponent({
     },
 
     /**
-     * Executed as callback when the user is logged out. It tries another logout by redirecting the user to a keycloak
-     * logout uri, where the user is instantly re-redirected back to the Welcome page with a specific query param
-     * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
+     * Executed as callback when the user is logged out. Redirects the user to the Astro website at /.
      */
     handleAuthLogout() {
+      localStorage.removeItem('dataland_authenticated');
       logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, '?externalLogout=true');
     },
 

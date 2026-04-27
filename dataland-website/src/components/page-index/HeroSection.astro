@@ -1,0 +1,174 @@
+---
+interface HeroStat {
+  value: string;
+  label: string;
+}
+
+interface HeroContent {
+  ariaLabel: string;
+  titleLeading: string;
+  titleAccent: string;
+  strapline: string;
+  stats: readonly HeroStat[];
+  buttons: {
+    try: string;
+    more: string;
+    contact: string;
+  };
+}
+
+interface Props {
+  content: HeroContent;
+}
+
+const { content } = Astro.props;
+
+const sectionClass = 'bg-[var(--color-surface-50)] px-6 pt-26 pb-12 text-white lg:px-8 lg:pt-26 lg:pb-20';
+
+const sectionInnerClass =
+  'max-w-[1200px] mx-auto grid grid-cols-1 gap-10 items-center md:gap-12 md:grid-cols-[50%_50%]';
+
+const titleClass =
+  'page-title mb-4 max-w-none text-[2rem] leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] md:text-[2.55rem] lg:leading-[1.2] lg:tracking-normal';
+
+const straplineClass = 'm-0 mb-8 text-[1.4rem] font-normal text-[var(--color-text-subtle)] sm:mb-10';
+
+const statsRowClass = 'mb-8 flex flex-row flex-wrap items-start gap-x-6 gap-y-4 sm:flex-nowrap sm:gap-x-8 md:gap-x-10';
+
+const statItemClass = 'flex flex-col gap-1.5';
+
+const statInnerClass = 'relative pl-[1.35rem] text-[color:rgba(62,106,142,0.84)]';
+
+const statChevronClass =
+  'absolute left-0 top-[0.2em] text-[1.8rem] font-normal leading-none tracking-[-0.08em] opacity-65 lg:text-[2.2rem]';
+
+const statValueClass =
+  'block text-[2.1rem] font-normal leading-none tracking-[-0.05em] sm:whitespace-nowrap sm:text-[2.55rem] md:text-[3.1rem]';
+
+const statLabelClass =
+  'block text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-[color:rgba(62,106,142,0.84)] sm:text-[0.82rem]';
+
+const buttonRowClass = 'flex flex-wrap gap-3';
+
+const leadingTextClass = 'inline';
+
+const accentTextClass = 'inline text-[var(--color-primary)]';
+
+const primaryButtonClass = 'btn btn--orange';
+
+const secondaryButtonClass = 'btn btn--white';
+
+const imageWrapClass = 'hero-image-wrap flex justify-center md:justify-end';
+
+const heroImageClasses = [
+  'w-full',
+  'max-w-[520px]',
+  'h-auto',
+  'rounded-xl',
+  'shadow-[0_8px_30px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)]',
+  'motion-safe:transition-transform',
+  'motion-safe:duration-400',
+  'motion-safe:[transform:perspective(1500px)_rotateY(-1deg)_rotateX(0.5deg)_scale(1)]',
+  'sm:max-w-[620px]',
+  'md:max-w-[620px]',
+  'md:motion-safe:[transform:perspective(1500px)_rotateY(-3deg)_rotateX(1deg)_scale(1.08)]',
+  'lg:motion-safe:[transform:perspective(1500px)_rotateY(-5deg)_rotateX(2deg)_scale(1.2)]',
+].join(' ');
+---
+
+<section class={sectionClass} aria-label={content.ariaLabel}>
+  <div class={sectionInnerClass}>
+    <div>
+      <h1 class={titleClass}>
+        <span class={leadingTextClass}>{content.titleLeading}</span>{' '}
+        <span class={accentTextClass}>{content.titleAccent}</span>
+      </h1>
+      <p class={straplineClass}>{content.strapline}</p>
+      <div class={statsRowClass} aria-label="Platform statistics">
+        {
+          content.stats.map((stat) => (
+            <div class={statItemClass}>
+              <div class={statInnerClass}>
+                <span class={statChevronClass}>&gt;</span>
+                <span class={statValueClass}>{stat.value}</span>
+                <span class={statLabelClass}>{stat.label}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class:list={[buttonRowClass, 'btn-group-equal']} data-equal-buttons>
+        <a href="/register" class={primaryButtonClass}>{content.buttons.try}</a>
+        <a href="/about" class={secondaryButtonClass}>{content.buttons.more}</a>
+        <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>
+      </div>
+    </div>
+    <div class={imageWrapClass}>
+      <img
+        src="/static/images/img_index_main_1.png"
+        alt="Dataland platform showing structured ESG data for a company"
+        class={heroImageClasses}
+        loading="eager"
+        width="600"
+        height="400"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-image-wrap {
+    perspective: 1500px;
+  }
+
+  .hero-image-wrap img {
+    -webkit-mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      );
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 12%,
+        rgba(0, 0, 0, 0.88) 22%,
+        rgba(0, 0, 0, 1) 32%,
+        rgba(0, 0, 0, 1) 68%,
+        rgba(0, 0, 0, 0.88) 78%,
+        rgba(0, 0, 0, 0.45) 88%,
+        transparent 100%
+      );
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+</style>

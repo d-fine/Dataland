@@ -28,8 +28,47 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
+tasks.register<NpmTask>("npmInstallFrontend") {
+    group = "build"
+    description = "Runs npm install for the frontend"
+    args.set(listOf("install"))
+    inputs.file("package.json")
+    outputs.dir("node_modules/@dataland/shared-elements")
+}
+
 tasks.withType<NpmTask> {
-    dependsOn("generateClients")
+    if (name != "npmInstallFrontend") {
+        dependsOn("generateClients")
+        dependsOn("copyAstroWebsite")
+        dependsOn("npmInstallFrontend")
+    }
+}
+
+tasks.register("copyAstroWebsite") {
+    group = "build"
+    description = "Copies the Astro website dist into public/ for serving alongside the Vue SPA"
+    dependsOn(":dataland-website:npmBuild")
+
+    doLast {
+        // Copy everything except index.html directly into public/ so paths like /_astro/ and /static/ work
+        copy {
+            from("${project.rootDir}/dataland-website/dist") {
+                exclude("index.html")
+            }
+            into("$projectDir/public")
+        }
+        // Copy index.html as astro-index.html to avoid shadowing the Vue SPA entry point
+        copy {
+            from("${project.rootDir}/dataland-website/dist/index.html")
+            into("$projectDir/public")
+            rename("index.html", "astro-index.html")
+        }
+        // Copy frontend-owned static assets (e.g. silent-check-sso.html for Keycloak)
+        copy {
+            from("$projectDir/static-assets")
+            into("$projectDir/public/static")
+        }
+    }
 }
 
 tasks.register("generateClients") {

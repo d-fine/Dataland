@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "noEmitOnError": true,
+
+    "rootDir": "src/scripts",
+    "outDir": "public/scripts",
+
+    "lib": ["DOM", "ESNext"],
+    "allowJs": false,
+    "jsx": "preserve",
+
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["src/scripts/**/*"],
+  "exclude": ["node_modules"]
+}
