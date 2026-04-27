@@ -57,6 +57,7 @@ class NonSourceabilityInformationManager(
      * Processes a non-sourceability submission request. Validates uniqueness, persists the entry,
      * and emits the appropriate lifecycle event.
      */
+    @Transactional
     fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
