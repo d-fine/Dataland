@@ -74,5 +74,5 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         @Param("companyId") companyId: String,
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
-    ): List<NonSourceabilityInformationEntity>
+    ): NonSourceabilityInformationEntity?
 }
