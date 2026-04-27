@@ -45,7 +45,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            return keycloak.login({ redirectUri: `${globalThis.location.origin}/platform-redirect` });
+            return keycloak.login();
           }
         })
         .catch((error) => console.log(error));
