@@ -61,7 +61,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent("not-a-uuid")
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-id-001")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
         }
     }
 
@@ -70,7 +70,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent("00000000-0000-0000-0000-000000000000")
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-id-002")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
         }
     }
 
@@ -83,7 +83,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent(id)
 
-        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED, "corr-accepted")
+        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_ACCEPTED)
 
         val updated = nonSourceabilityDataRepository.findById(saved.nonSourceabilityId!!).orElseThrow()
         assertTrue(updated.currentlyActive)
@@ -97,7 +97,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent(id)
 
-        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_REJECTED, "corr-rejected")
+        listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_QA_REJECTED)
 
         val updated = nonSourceabilityDataRepository.findById(saved.nonSourceabilityId!!).orElseThrow()
         assertFalse(updated.currentlyActive)
@@ -111,7 +111,7 @@ class NonSourceabilityQaDecisionConsumerTest(
         val listener = NonSourceabilityQaDecisionListener(nonSourceabilityDataRepository)
         val event = buildEvent(id)
         assertThrows(MessageQueueRejectException::class.java) {
-            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_CREATED, "corr-unexpected")
+            listener.processQaDecisionEvent(event, MessageType.NON_SOURCEABILITY_CREATED)
         }
     }
 }

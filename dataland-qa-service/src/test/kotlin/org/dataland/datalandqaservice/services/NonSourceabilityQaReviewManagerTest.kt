@@ -148,7 +148,7 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(e.nonSourceabilityId)).thenReturn(e)
         whenever(repository.save(e)).thenReturn(e)
 
-        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Accepted, null, DEFAULT_REVIEWER_ID, "corr-1")
+        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Accepted, null, DEFAULT_REVIEWER_ID)
 
         assertEquals(QaStatus.Accepted, result.qaStatus)
         assertEquals(DEFAULT_REVIEWER_ID, result.reviewerUserId)
@@ -168,7 +168,7 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(e.nonSourceabilityId)).thenReturn(e)
         whenever(repository.save(e)).thenReturn(e)
 
-        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Rejected, "Not applicable", DEFAULT_REVIEWER_ID, "corr-2")
+        val result = manager.postDecision(e.nonSourceabilityId, QaStatus.Rejected, "Not applicable", DEFAULT_REVIEWER_ID)
 
         assertEquals(QaStatus.Rejected, result.qaStatus)
         assertEquals("Not applicable", result.qaComment)
@@ -186,7 +186,7 @@ class NonSourceabilityQaReviewManagerTest {
         whenever(repository.findByNonSourceabilityId(any())).thenReturn(null)
 
         assertThrows<ResourceNotFoundApiException> {
-            manager.postDecision("non-existent-id", QaStatus.Accepted, null, DEFAULT_REVIEWER_ID, "corr-3")
+            manager.postDecision("non-existent-id", QaStatus.Accepted, null, DEFAULT_REVIEWER_ID)
         }
 
         verify(cloudEventMessageHandler, never()).buildCEMessageAndSendToQueue(any(), any(), any(), any(), any())
@@ -195,7 +195,7 @@ class NonSourceabilityQaReviewManagerTest {
     @Test
     fun `postDecision throws IllegalArgumentException when qaStatus is Pending`() {
         assertThrows<IllegalArgumentException> {
-            manager.postDecision("some-id", QaStatus.Pending, null, DEFAULT_REVIEWER_ID, "corr-4")
+            manager.postDecision("some-id", QaStatus.Pending, null, DEFAULT_REVIEWER_ID)
         }
 
         verify(repository, never()).findByNonSourceabilityId(any())
