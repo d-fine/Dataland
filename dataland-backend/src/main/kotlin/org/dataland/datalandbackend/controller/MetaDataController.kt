@@ -172,28 +172,7 @@ class MetaDataController(
             throw AccessDeniedException("bypassQa=true requires ROLE_ADMIN.")
         }
         val result = nonSourceabilityInformationManager.processNonSourceabilityRequest(nonSourceabilityRequest)
-        return when (result) {
-            is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Success -> {
-                ResponseEntity.ok(result.response)
-            }
-
-            is NonSourceabilityInformationManager.ProcessNonSourceabilityResult.Duplicate -> {
-                ResponseEntity.ok(
-                    NonSourceabilityInformationResponse(
-                        nonSourceabilityId = "",
-                        companyId = nonSourceabilityRequest.companyId,
-                        dataType = nonSourceabilityRequest.dataType,
-                        reportingPeriod = nonSourceabilityRequest.reportingPeriod,
-                        qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Pending,
-                        uploaderUserId = "",
-                        uploadTime = 0L,
-                        currentlyActive = false,
-                        reason = result.message,
-                        bypassQa = nonSourceabilityRequest.bypassQa,
-                    ),
-                )
-            }
-        }
+        return ResponseEntity.ok(result.response)
     }
 
     override fun isDataNonSourceable(

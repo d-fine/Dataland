@@ -51,14 +51,6 @@ class NonSourceabilityInformationManager(
         data class Success(
             val response: NonSourceabilityInformationResponse,
         ) : ProcessNonSourceabilityResult()
-
-        /**
-         * Represents a duplicate non-sourceability request result.
-         */
-        data class Duplicate(
-            val summary: String,
-            val message: String,
-        ) : ProcessNonSourceabilityResult()
     }
 
     /**
@@ -79,7 +71,7 @@ class NonSourceabilityInformationManager(
      * or if bypassQa=true, currentlyActive=fals` and no active entry exists to reverse.
      */
     @Transactional
-    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
+    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
         if (!request.bypassQa && request.currentlyActive) {
@@ -119,7 +111,7 @@ class NonSourceabilityInformationManager(
      * Handles bypassQa=true, currentlyActive=false: marks the triple as sourceable again.
      * Deactivates the existing active entry and creates a new audit entry. No event is emitted.
      */
-    private fun processReversal(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
+    private fun processReversal(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
         val activeEntries =
             nonSourceabilityDataRepository.findActiveForTuple(
                 request.companyId,
@@ -167,7 +159,7 @@ class NonSourceabilityInformationManager(
      * bypassQa=true/currentlyActive=true (admin bypass mark as non-sourceable).
      * Creates a new entry and emits the appropriate lifecycle event.
      */
-    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): ProcessNonSourceabilityResult {
+    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
         val hasActiveEntry =
             nonSourceabilityDataRepository
                 .findActiveForTuple(
