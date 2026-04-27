@@ -45,7 +45,7 @@ const logoImageBaseClass =
         {
           membersCarousel.map((logo, index) => (
             <a
-              href="/dataland-community#our-members"
+              href={logo.category === 'partner' ? '/dataland-community#partners' : '/dataland-community#our-members'}
               class:list={[logoLinkBaseClass, logo.carouselContainerClassName]}
               aria-label={`See ${logo.name} on the community page`}
             >
