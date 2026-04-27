@@ -89,6 +89,14 @@ class NonSourceabilityQaDecisionListener(
             MessageType.NON_SOURCEABILITY_QA_REJECTED -> {
                 transitionToDocumentSourcingDone(event, correlationId)
             }
+
+            else -> {
+                logger.error(
+                    "Unexpected message type $messageType in NonSourceabilityQaDecisionListener " +
+                        "(correlationId=$correlationId). Discarding.",
+                )
+                throw MessageQueueRejectException("Unexpected message type $messageType in QA decision listener")
+            }
         }
     }
 
