@@ -1,7 +1,7 @@
 import com.github.gradle.node.npm.task.NpmTask
 
 val sources = fileTree(projectDir)
-sources.include("src/**", "public/**", "tests/**")
+sources.include("src/**", "public/**")
 val sonarSources by extra(sources.files.map { it })
 val jacocoSources by extra(emptyList<File>())
 val jacocoClasses by extra(emptyList<File>())
