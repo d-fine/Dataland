@@ -128,10 +128,10 @@ export const PRODUCT_PAGE_CONTENT = {
 } as const;
 
 export const FRAMEWORK_DOC = {
-  label: 'Documentation overview',
-  url: 'https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation',
+  label: 'Framework documentation overview',
+  url: 'https://dev3.dataland.com/api/swagger-ui/index.html',
   description:
-    'Understand the data frameworks and structures behind Dataland - coverage, field definitions, and supported standards.',
+    'Test Understand the data frameworks and structures behind Dataland - coverage, field definitions, and supported standards.',
 };
 
 export const API_DOC_LINKS: DocumentationLink[] = [
