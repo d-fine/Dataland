@@ -128,15 +128,15 @@ export const PRODUCT_PAGE_CONTENT = {
 } as const;
 
 export const FRAMEWORK_DOC = {
-  label: 'Framework documentation overview',
+  label: 'Documentation overview',
   url: 'https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation',
   description:
     'Understand the data frameworks and structures behind Dataland - coverage, field definitions, and supported standards.',
 };
 
 export const API_DOC_LINKS: DocumentationLink[] = [
-  { label: 'Backend API', url: '/api/swagger-ui/index.html' },
-  { label: 'Document Manager', url: '/documents/swagger-ui/index.html' },
+  { label: 'Backend API', url: 'https://dev3.dataland.com/api/swagger-ui/index.html' },
+  { label: 'Backend API', url: '/documents/swagger-ui/index.html' },
   { label: 'Community Manager', url: '/community/swagger-ui/index.html' },
   { label: 'Quality Assurance', url: '/qa/swagger-ui/index.html' },
   { label: 'Users', url: '/users/swagger-ui/index.html' },

@@ -10,7 +10,7 @@
           },
         }"
       >
-        <Tab value="datasets" data-test="datasetsTab">Test Datasets</Tab>
+        <Tab value="datasets" data-test="datasetsTab">Datasets</Tab>
         <Tab value="users" data-test="usersTab">Users</Tab>
         <Tab value="credits" v-if="canViewCredits" data-test="creditsTab">Credits</Tab>
       </TabList>

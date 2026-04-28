@@ -25,7 +25,7 @@ export const INDEX_PAGE_CONTENT = {
   meta: { title: 'Dataland - Non-profit sustainability data' },
   hero: {
     ariaLabel: 'The open-source platform for structured sustainability data',
-    titleLeading: 'Test Open-source platform for',
+    titleLeading: 'Open-source platform for',
     titleAccent: 'structured sustainability data',
     strapline: 'Non-profit. Source-based. Unrestricted use.',
     stats: [
