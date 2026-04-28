@@ -56,7 +56,7 @@ class V3__AddNonSourableVerificationToConstraintInAudTable : BaseJavaMigration()
         statement.execute(
             """
             ALTER TABLE data_sourcing_aud
-            CONSTRAINT data_sourcing_aud_state_check CHECK (state::text = ANY (ARRAY[
+            ADD CONSTRAINT data_sourcing_aud_state_check CHECK (state::text = ANY (ARRAY[
               'Initialized'::character varying::text,
               'DocumentSourcing'::character varying::text,
               'DocumentSourcingDone'::character varying::text,
