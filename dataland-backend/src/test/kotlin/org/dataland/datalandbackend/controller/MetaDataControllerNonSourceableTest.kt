@@ -69,18 +69,17 @@ class MetaDataControllerNonSourceableTest
             storedCompany = companyManager.addCompany(companyInfo)
         }
 
+        private fun body(reason: String = "No public source") =
+            NonSourceabilityRequest(
+                companyId = storedCompany.companyId,
+                dataType = dataType,
+                reportingPeriod = reportingPeriod,
+                reason = reason,
+            )
+
         @Test
         fun `post nonSourceable creates entry with qaStatus Pending when bypassQa is false`() {
-            val request =
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "No public source",
-                    bypassQa = false,
-                    currentlyActive = false,
-                )
-            val response = metaDataController.postNonSourceabilityOfADataset(request)
+            val response = metaDataController.postNonSourceabilityOfADataset(body(), bypassQa = false, currentlyActive = false)
             assertEquals(QaStatus.Pending, response.body?.qaStatus)
             assertFalse(response.body?.currentlyActive ?: true)
         }
@@ -88,50 +87,22 @@ class MetaDataControllerNonSourceableTest
         @Test
         fun `post nonSourceable creates entry with qaStatus Accepted when bypassQa is true and caller is admin`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-
-            val request =
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "Admin bypass",
-                    bypassQa = true,
-                    currentlyActive = true,
-                )
-            val response = metaDataController.postNonSourceabilityOfADataset(request)
+            val response = metaDataController.postNonSourceabilityOfADataset(body("Admin bypass"), bypassQa = true, currentlyActive = true)
             assertEquals(QaStatus.Accepted, response.body?.qaStatus)
             assertTrue(response.body?.currentlyActive ?: false)
         }
 
         @Test
         fun `post nonSourceable with bypassQa true throws AccessDeniedException for non admin`() {
-            val request =
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "Attempting bypass",
-                    bypassQa = true,
-                    currentlyActive = true,
-                )
             assertThrows<AccessDeniedException> {
-                metaDataController.postNonSourceabilityOfADataset(request)
+                metaDataController.postNonSourceabilityOfADataset(body("Attempting bypass"), bypassQa = true, currentlyActive = true)
             }
         }
 
         @Test
         fun `get nonSourceable returns entries filtered by qaStatus`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-            metaDataController.postNonSourceabilityOfADataset(
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "Test",
-                    bypassQa = true,
-                    currentlyActive = true,
-                ),
-            )
+            metaDataController.postNonSourceabilityOfADataset(body("Test"), bypassQa = true, currentlyActive = true)
 
             val allResults =
                 metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, dataType, reportingPeriod, null)
@@ -158,43 +129,16 @@ class MetaDataControllerNonSourceableTest
         @Test
         fun `head nonSourceable returns 200 for active entry`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-            metaDataController.postNonSourceabilityOfADataset(
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "Active",
-                    bypassQa = true,
-                    currentlyActive = true,
-                ),
-            )
+            metaDataController.postNonSourceabilityOfADataset(body("Active"), bypassQa = true, currentlyActive = true)
             metaDataController.isDataNonSourceable(storedCompany.companyId, dataType, reportingPeriod)
         }
 
         @Test
         fun `reversal succeeds for admin and isDataNonSourceable returns 404 afterwards`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-            metaDataController.postNonSourceabilityOfADataset(
-                NonSourceabilityRequest(
-                    companyId = storedCompany.companyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    reason = "Mark non-sourceable",
-                    bypassQa = true,
-                    currentlyActive = true,
-                ),
-            )
+            metaDataController.postNonSourceabilityOfADataset(body("Mark non-sourceable"), bypassQa = true, currentlyActive = true)
             val reversalResponse =
-                metaDataController.postNonSourceabilityOfADataset(
-                    NonSourceabilityRequest(
-                        companyId = storedCompany.companyId,
-                        dataType = dataType,
-                        reportingPeriod = reportingPeriod,
-                        reason = "Reversal",
-                        bypassQa = true,
-                        currentlyActive = false,
-                    ),
-                )
+                metaDataController.postNonSourceabilityOfADataset(body("Reversal"), bypassQa = true, currentlyActive = false)
             assertFalse(reversalResponse.body?.currentlyActive ?: true)
             assertThrows<ResourceNotFoundApiException> {
                 metaDataController.isDataNonSourceable(storedCompany.companyId, dataType, reportingPeriod)

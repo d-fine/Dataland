@@ -258,7 +258,9 @@ interface MetaDataApi {
      * Submits a non-sourceability request for a dataset.
      * When bypassQa=true the caller must hold ROLE_ADMIN; otherwise ROLE_UPLOADER is required.
      * When bypassQa=true and currentlyActive=false the request reverses a non-sourceability entry.
-     * @param nonSourceabilityRequest request body containing dataset dimensions, bypass flag, and currentlyActive flag.
+     * @param nonSourceabilityRequest request body containing dataset dimensions and reason.
+     * @param bypassQa when true the entry skips QA review and is immediately activated (requires ROLE_ADMIN).
+     * @param currentlyActive when true the triple is treated as non-sourceable; false reverses an active entry.
      */
     @Operation(
         summary = "Submit a non-sourceability request for a dataset.",
@@ -285,6 +287,12 @@ interface MetaDataApi {
     fun postNonSourceabilityOfADataset(
         @Valid @RequestBody
         nonSourceabilityRequest: NonSourceabilityRequest,
+        @Parameter(description = "When true the entry skips QA review and is immediately activated. Requires ROLE_ADMIN.")
+        @RequestParam(required = false, defaultValue = "false")
+        bypassQa: Boolean,
+        @Parameter(description = "When true the triple is marked as non-sourceable; false reverses an active entry.")
+        @RequestParam(required = false, defaultValue = "false")
+        currentlyActive: Boolean,
     ): ResponseEntity<NonSourceabilityInformationResponse>
 
     /**
