@@ -65,7 +65,6 @@ class V2__AddNonSourableVerificationToConstraint : BaseJavaMigration() {
                 'NonSourceable'::character varying::text, 
                 'NonSourceableVerification'::character varying::text, 
                 'Done'::character varying::text]))
-                CHECK (company_role IN ('Admin', 'Analyst', 'CompanyOwner', 'DataUploader'));
             """.trimIndent(),
         )
         statement.close()
