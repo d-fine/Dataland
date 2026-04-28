@@ -70,23 +70,19 @@ class NonSourceabilityInformationManagerTest(
         companyId = storedCompany.companyId
     }
 
-    private fun request(
-        bypassQa: Boolean = false,
-        currentlyActive: Boolean = bypassQa,
-    ) = NonSourceabilityRequest(
-        companyId = companyId,
-        dataType = dataType,
-        reportingPeriod = reportingPeriod,
-        reason = "No source",
-        bypassQa = bypassQa,
-        currentlyActive = currentlyActive,
-    )
+    private fun request() =
+        NonSourceabilityRequest(
+            companyId = companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            reason = "No source",
+        )
 
     // --- Existing tests (updated) ---
 
     @Test
     fun `creates pending entry when bypassQa is false`() {
-        val result = manager.processNonSourceabilityRequest(request())
+        val result = manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         val response = result.response
         assertEquals(QaStatus.Pending, response.qaStatus)
         assertFalse(response.currentlyActive)
@@ -95,7 +91,7 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `creates accepted active entry when bypassQa is true`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        val result = manager.processNonSourceabilityRequest(request(bypassQa = true))
+        val result = manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         val response = result.response
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertTrue(response.currentlyActive)
@@ -103,25 +99,29 @@ class NonSourceabilityInformationManagerTest(
 
     @Test
     fun `duplicate request for Pending entry throws ConflictApiException`() {
-        manager.processNonSourceabilityRequest(request())
-        assertThrows<ConflictApiException> { manager.processNonSourceabilityRequest(request()) }
+        manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
+        assertThrows<ConflictApiException> {
+            manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
+        }
     }
 
     @Test
     fun `duplicate request for Accepted entry throws ConflictApiException`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true))
-        assertThrows<ConflictApiException> { manager.processNonSourceabilityRequest(request(bypassQa = true)) }
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
+        assertThrows<ConflictApiException> {
+            manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
+        }
     }
 
     @Test
     fun `new request allowed after Rejected entry`() {
-        manager.processNonSourceabilityRequest(request())
+        manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
         entity.qaStatus = QaStatus.Rejected
         nonSourceabilityDataRepository.save(entity)
 
-        val secondResult = manager.processNonSourceabilityRequest(request())
+        val secondResult = manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         assertEquals(QaStatus.Pending, secondResult.response.qaStatus)
     }
 
@@ -133,14 +133,14 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `isCurrentlyActive returns true after admin bypass entry`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         assertTrue(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
     }
 
     @Test
     fun `NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
         assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source")
     }
@@ -150,7 +150,7 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `invalid combination bypassQa false currentlyActive true throws InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = true))
+            manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = true)
         }
     }
 
@@ -159,18 +159,18 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `bypassQa false currentlyActive false rejected when active entry exists throws ConflictApiException`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = false))
+            manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         }
     }
 
     @Test
     fun `bypassQa false currentlyActive false rejected when pending entry exists throws ConflictApiException`() {
-        manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = false))
+        manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = false))
+            manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         }
     }
 
@@ -179,19 +179,19 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `bypassQa true currentlyActive true rejected when active entry exists throws ConflictApiException`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
+            manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         }
     }
 
     @Test
     fun `bypassQa true currentlyActive true rejected when pending entry exists throws ConflictApiException`() {
         AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = false))
+        manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
+            manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         }
     }
 
@@ -200,8 +200,8 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `bypassQa true currentlyActive false deactivates active entry and returns new entry`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
-        val result = manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
+        val result = manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = false)
         val response = result.response
         assertFalse(response.currentlyActive)
         assertEquals(QaStatus.Accepted, response.qaStatus)
@@ -216,26 +216,26 @@ class NonSourceabilityInformationManagerTest(
     fun `bypassQa true currentlyActive false returns ConflictApiException when no active entry exists`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
+            manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = false)
         }
     }
 
     @Test
     fun `bypassQa true currentlyActive false returns ConflictApiException when pending entry exists`() {
         AuthenticationMock.mockSecurityContext("uploader", "uploaderId", uploaderRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = false, currentlyActive = false))
+        manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         assertThrows<ConflictApiException> {
-            manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
+            manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = false)
         }
     }
 
     @Test
     fun `bypassQa true currentlyActive false does not emit lifecycle event`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
-        manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = true))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         clearInvocations(cloudEventMessageHandler)
-        manager.processNonSourceabilityRequest(request(bypassQa = true, currentlyActive = false))
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = false)
         verifyNoInteractions(cloudEventMessageHandler)
     }
 }
