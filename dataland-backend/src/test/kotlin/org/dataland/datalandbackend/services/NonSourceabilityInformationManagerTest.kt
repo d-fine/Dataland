@@ -172,6 +172,9 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         }
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
+        assertEquals(QaStatus.Pending, entries.single().qaStatus)
     }
 
     // --- admin bypass constraint checks ---
@@ -183,6 +186,9 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         }
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
+        assertTrue(entries.single().currentlyActive, "Active entry must remain active after rejected duplicate")
     }
 
     @Test
