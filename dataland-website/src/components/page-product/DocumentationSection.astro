@@ -90,7 +90,12 @@ const apiLinkDotClass = 'w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shri
         <div class={apiLinksGridClass}>
           {
             apiLinks.map((doc) => (
-              <a href={doc.url} target="_blank" rel="noopener noreferrer" class={apiLinkClass}>
+              <a
+                href="https://dev3.dataland.com/api/swagger-ui/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class={apiLinkClass}
+              >
                 <span class={apiLinkDotClass} aria-hidden="true" />
                 {doc.label}
               </a>
