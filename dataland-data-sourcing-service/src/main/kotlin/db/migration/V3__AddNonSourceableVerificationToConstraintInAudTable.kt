@@ -4,7 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * Adds the priority column to the data_sourcing_aud table.
+ * Extends constraint in data_sourcing_aud table to include NonSourceableVerification state.
  *
  *
  * Before this script the table is equivalent to:
@@ -39,7 +39,7 @@ import org.flywaydb.core.api.migration.Context
  * )
  */
 @Suppress("ClassName")
-class V3__AddNonSourableVerificationToConstraintInAudTable : BaseJavaMigration() {
+class V3__AddNonSourceableVerificationToConstraintInAudTable : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         val connection = context!!.connection
         val hasTable = connection.metaData.getTables(null, null, "data_sourcing_aud", null).next()

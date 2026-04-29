@@ -13,7 +13,7 @@ import javax.sql.DataSource
 @SpringBootTest(classes = [DatalandDataSourcingService::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
-class V2__AddNonSourableVerificationToConstraintTest : BaseFlywayMigrationTest() {
+class V2__AddNonSourceableVerificationToConstraintTest : BaseFlywayMigrationTest() {
     @Autowired
     lateinit var dataSource: DataSource
 
@@ -41,7 +41,7 @@ class V2__AddNonSourableVerificationToConstraintTest : BaseFlywayMigrationTest()
 @SpringBootTest(classes = [DatalandDataSourcingService::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Suppress("ClassName")
-class V3__AddNonSourableVerificationToConstraintInAudTableTest : BaseFlywayMigrationTest() {
+class V3__AddNonSourceableVerificationToConstraintInAudTableTest : BaseFlywayMigrationTest() {
     @Autowired
     lateinit var dataSource: DataSource
 
