@@ -621,7 +621,7 @@
           {
             "name": "bypassQa",
             "in": "query",
-            "description": "When true the entry skips QA review and is immediately activated. Requires ROLE_ADMIN.",
+            "description": "bypassQa when true the entry skips QA review (requires ROLE_ADMIN).",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -631,7 +631,7 @@
           {
             "name": "currentlyActive",
             "in": "query",
-            "description": "When true the triple is marked as non-sourceable; false reverses an active entry.",
+            "description": "determines whether a non-sourceability entry is marked as active or not.",
             "required": false,
             "schema": {
               "type": "boolean",
