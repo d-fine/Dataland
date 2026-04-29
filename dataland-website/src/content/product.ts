@@ -336,7 +336,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
     logoClassName: 'scale-[0.96]',
     primaryTag: 'Bank',
     secondaryTags: ['EU Taxo', 'API integration', 'Lean model', 'Efficiency'],
-    title: 'Primary source of EU Taxonomy data with automated delivery',
+    title: 'Primary source of EU Taxonomy KPIs with automated delivery',
     summary:
       "NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reporting because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows. Instead of purchasing large bundled ESG data packages, NORD/LB requests and obtains EU Taxonomy data exactly for the companies it needs. The datasets are now integrated directly into the bank's internal systems via API, replacing an earlier manual data retrieval process.",
     challenge:
