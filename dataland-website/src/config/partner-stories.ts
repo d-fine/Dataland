@@ -65,7 +65,7 @@ export const PARTNER_STORY_SUMMARIES: PartnerStorySummary[] = [
     title: 'ISS Sopra Steria',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG solutions', 'Platform workflows'],
-    text: 'ISS (a Sopra Steria company) provides comprehensive ESG and sustainable investment solutions.',
+    text: 'ISS (a Sopra Steria company) is an integrated investment solutions platform including ESG.',
     link: '/partner-stories#iss-sopra-steria',
     externalUrl: 'https://iss.soprasteria.de/',
   },
@@ -145,68 +145,59 @@ export const PARTNER_STORY_DETAILS: PartnerStoryDetail[] = [
     name: 'ISS Sopra Steria',
     logo: '/static/logos/logo_iss-soprasteria.png',
     logoClassName: 'scale-[1.1] lg:scale-[1.25]',
-    heroTitle: 'ISS - ESG Solutions',
+    heroTitle: 'ISS \u2013 ESG Solutions',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG solutions', 'Platform workflows'],
     intro: [
-      'ISS (a Sopra Steria company) provides comprehensive ESG and sustainable investment solutions.',
-      'Our integration makes Dataland\u2019s transparency-focused, source-traceable sustainability data available within the ISS platform ecosystem.',
+      'ISS (a company within the Sopra Steria Group) provides comprehensive ESG solutions and an integrated asset management offering.',
+      'Through our integration, Dataland\u2019s sustainability data \u2013 designed for transparency and source traceability \u2013 is made available within the ISS Asset Management platform ecosystem.',
     ],
     keyUseCases: [
       {
-        title: 'Investment Research Enhancement',
-        icon: 'research',
+        title: 'Regulatory Reporting Integration',
+        icon: 'report',
         lines: [
-          'Investment teams using ISS platforms can enhance their ESG research with Dataland\u2019s primary-source datasets, providing additional verification and granularity for company sustainability assessments.',
+          'ISS ESG generates regulatory ESG reports using integrated Dataland data.',
+          'It derives principal adverse impacts (PAI indicators) in line with the RTS and populates the standard reports.',
+          'ISS ESG also calculates EU taxonomy metrics and prepares taxonomy reports using the templates in Annex X to Commission Delegated Regulation (EU) 2021/2178 and Annex XII to Commission Delegated Regulation (EU) 2022/1214.',
         ],
       },
       {
-        title: 'Proxy Voting Support',
-        icon: 'voting',
+        title: 'Enhancing Investment Research',
+        icon: 'research',
         lines: [
-          'Institutional investors can access detailed sustainability disclosures from Dataland through ISS platforms to inform their proxy voting decisions on ESG-related shareholder proposals.',
+          'Investment teams using ISS platforms can deepen their ESG analyses by combining their respective primary ESG data sources with Dataland. These provide additional verification and a higher level of detail for companies\u2019 sustainability assessments.',
         ],
       },
       {
         title: 'Sustainable Fund Management',
         icon: 'fund',
         lines: [
-          'Fund managers running sustainable investment strategies can leverage Dataland data within ISS tools to screen investments, monitor portfolio sustainability characteristics, and generate client reporting.',
+          'Fund managers pursuing sustainable investment strategies can use Dataland data in ISS tools to screen investments, monitor portfolio sustainability characteristics, and create client reports.',
         ],
       },
       {
         title: 'Compliance Verification',
         icon: 'compliance',
         lines: [
-          'Compliance teams can use Dataland\u2019s source-traceable data through ISS platforms to verify and document the underlying sources for regulatory filings, providing audit-ready transparency.',
+          'Compliance teams can use Dataland\u2019s source-traceable data via ISS platforms to verify and document the underlying sources for regulatory disclosures \u2013 ensuring audit-ready transparency.',
+        ],
+      },
+      {
+        title: 'ESG Data Hub',
+        icon: 'integration',
+        lines: [
+          'A modular ESG data foundation for banks and insurers \u2013 governed, automated, and audit-ready.',
+          'Better with ISS ESG: One seamless flow from data sourcing to analysis to disclosure.',
         ],
       },
     ],
     benefits: [
-      'Enhanced data transparency and source documentation',
-      'Complementary coverage for smaller and regional companies',
-      'Access to on-demand data sourcing capabilities',
-      'Seamless integration within existing ISS workflows',
+      'Improved data transparency and source documentation',
+      'Complementary coverage of smaller and regional companies',
+      'Access to on-demand data collection capabilities',
+      'Seamless integration into existing ISS workflows',
       'Combined strength of multiple data providers',
-    ],
-    extraSections: [
-      {
-        title: 'Why Partner Integration Matters',
-        items: [
-          {
-            title: 'Reduced Complexity',
-            text: 'Access multiple data sources through a single familiar interface',
-          },
-          {
-            title: 'Faster Implementation',
-            text: 'Leverage existing platform integrations instead of building from scratch',
-          },
-          {
-            title: 'Enhanced Workflows',
-            text: 'Combine Dataland data with existing tools and processes seamlessly',
-          },
-        ],
-      },
     ],
     externalUrl: 'https://iss.soprasteria.de/',
   },
