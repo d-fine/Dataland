@@ -278,6 +278,20 @@ describeIf(
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         finishJudgement(uploadedDataMetaInfo.dataId);
 
+        cy.wait(shortTimeoutInMs * 4); // allow backend processing (adjust as needed)
+
+        cy.request({
+          method: 'GET',
+          url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
+          headers: { Authorization: `Bearer ${tokens.adminToken}` },
+        }).then((response) => {
+          expect(response.status).to.eq(200); // qaStatus value sometimes varies in case; normalize to be robust
+          const qaStatus = String(response.body?.qaStatus ?? '').toLowerCase();
+          expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
+        });
+
+        // cy.pause();
+
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
         verifyJudgementDataStoredCorrectly(
           QA_SCENARIO_CONFIG,
@@ -1059,12 +1073,14 @@ function verifyJudgementDataStoredCorrectly(
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
   cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
 
+  cy.pause();
+
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
 
   cy.request({
     method: 'GET',
-    url: `${apiBaseUrl}/api/data/eutaxonomy-financials`,
+    url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
     qs: { companyId, reportingPeriod },
     headers: { Authorization: `Bearer ${judgeToken}` },
   }).then((response) => {
