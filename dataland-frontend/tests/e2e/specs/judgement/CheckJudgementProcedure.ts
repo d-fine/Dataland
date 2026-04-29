@@ -1073,7 +1073,7 @@ function verifyJudgementDataStoredCorrectly(
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
   cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
 
-  cy.pause();
+  // cy.pause();
 
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
