@@ -24,7 +24,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "2.3.21"
+kotlin = "2.0.0"
 ##  ⬆ = "2.0.10"
 ##  ⬆ = "2.0.20"
 ##  ⬆ = "2.0.21"
