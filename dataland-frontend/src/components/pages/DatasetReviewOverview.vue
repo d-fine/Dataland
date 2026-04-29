@@ -82,6 +82,15 @@
                 </div>
               </div>
             </div>
+            <div v-if="reviewWarnings.length" class="mb-3">
+              <div
+                v-for="warning in reviewWarnings"
+                :key="warning"
+                class="p-3 mb-2 border-round bg-yellow-100 text-yellow-900"
+              >
+                {{ warning }}
+              </div>
+            </div>
             <DatasetReviewComparisonTable
               v-if="datasetReview"
               :framework="dataMetaInformation!.dataType"
@@ -134,7 +143,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState } from '@clients/qaservice';
+import { DatasetJudgementState, QaStatus } from '@clients/qaservice';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
@@ -142,6 +151,9 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { useGetRequestByDataRequestIdQuery } from '@/api-queries/data-sourcing/request/useGetRequestByDataRequestId.ts';
+import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
+import { RequestState } from '@clients/datasourcingservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -173,6 +185,69 @@ function onComparisonTableRowClicked(row: CellRow): void {
 
 const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
+const dataTypeRef = computed(() => datasetReview.value?.dataType);
+const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
+const companyId = computed(() => dataMetaInformation.value?.companyId);
+
+const { data: datasetRequest } = useGetRequestByDataRequestIdQuery(datasetJudgementIdRef);
+const hasValidRequestState = computed(() => {
+  const requestState = datasetRequest.value?.state ?? '';
+  return requestState === RequestState.Processing || requestState === RequestState.Open;
+});
+
+const { data: companyData } = useGetCompanyInformationQuery(companyId);
+const hasAssignedSector = computed(() => {
+  const companySector = companyData.value?.companyInformation.sector ?? '';
+  return companySector != '';
+});
+
+const objectsWithSamePeriodAndType = computed(() =>
+  (companyData.value?.dataRegisteredByDataland ?? []).filter(
+    (entry) => entry.reportingPeriod === reportingPeriodRef.value && entry.dataType === dataTypeRef.value
+  )
+);
+
+const acceptedObjectsWithSamePeriodAndType = computed(() =>
+  objectsWithSamePeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Accepted)
+);
+
+const hasAcceptedObjectWithSamePeriodAndType = computed(() => acceptedObjectsWithSamePeriodAndType.value.length > 0);
+
+const pendingObjectsWithSamePeriodAndType = computed(() =>
+  objectsWithSamePeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
+);
+
+const hasMultiplePendingObjects = computed(() => pendingObjectsWithSamePeriodAndType.value.length > 1);
+
+const isViewingNewestPendingObject = computed(() => {
+  const viewedObject = pendingObjectsWithSamePeriodAndType.value.find((entry) => entry.dataId === dataIdRef.value);
+  return (
+    !!viewedObject &&
+    pendingObjectsWithSamePeriodAndType.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime)
+  );
+});
+
+const reviewWarnings = computed(() => {
+  const warnings: string[] = [];
+
+  if (!hasValidRequestState.value) {
+    warnings.push('The related data request is no longer Open or Processing.');
+  }
+
+  if (!hasAssignedSector.value) {
+    warnings.push('The company has no assigned sector.');
+  }
+
+  if (hasAcceptedObjectWithSamePeriodAndType.value) {
+    warnings.push('There is already an accepted dataset with the same reporting period and data type.');
+  }
+
+  if (hasMultiplePendingObjects.value && !isViewingNewestPendingObject.value) {
+    warnings.push('There are multiple pending datasets. You are not reviewing the newest upload.');
+  }
+
+  return warnings;
+});
 
 const {
   data: datasetReview,
@@ -184,7 +259,6 @@ const {
 
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
-const companyId = computed(() => dataMetaInformation.value?.companyId);
 const isInitialLoading = computed(() => {
   const hasDataId = !!dataIdRef.value;
   return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
