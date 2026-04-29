@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  text: string;
+  class?: string;
+}
+
+const { title, text, class: className } = Astro.props;
+
+const classes = {
+  item: 'flex flex-col gap-1.5 border-l-[3px] border-[var(--color-primary)] pl-4',
+  title: 'm-0 text-[1rem] font-bold text-white',
+  text: 'card-text text-white/74',
+} as const;
+---
+
+<div class:list={[classes.item, className]}>
+  <h3 class={classes.title}>{title}</h3>
+  <p class={classes.text}>{text}</p>
+</div>

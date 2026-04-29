@@ -13,7 +13,7 @@ open class DataManagerTest(
     val dataMetaInformationManager: DataMetaInformationManager,
     val companyQueryManager: CompanyQueryManager,
     val dataManagerUtils: DataManagerUtils,
-    val sourceabilityDataManager: SourceabilityDataManager,
+    val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
     val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
@@ -36,7 +36,7 @@ open class DataManagerTest(
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
                 dataMetaInformationManager,
-                dataManager, sourceabilityDataManager,
+                dataManager, nonSourceabilityInformationManager,
             )
     }
 }

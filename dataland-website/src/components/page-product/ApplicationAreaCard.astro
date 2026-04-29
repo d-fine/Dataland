@@ -1,0 +1,21 @@
+---
+interface Props {
+  titleLines: [string, string] | string[];
+  icon: string;
+  class?: string;
+}
+
+const { titleLines, icon, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    'flex min-h-[8.2rem] flex-col items-center justify-start rounded-[1.2rem] border border-[#eadbcf] bg-[#f4ece3] px-4 py-5 text-center shadow-[0_14px_26px_rgba(15,23,42,0.12)]',
+    className,
+  ]}
+>
+  <img src={icon} alt="" aria-hidden="true" width="56" height="56" class="h-14 w-14 object-contain" loading="lazy" />
+  <span class="mt-4 text-[1.14rem] font-semibold leading-[1.15] text-[#1f3143]">
+    {titleLines.map((line) => <span class="block">{line}</span>)}
+  </span>
+</div>

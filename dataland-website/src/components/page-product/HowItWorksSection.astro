@@ -1,0 +1,93 @@
+---
+import type { HowItWorksBlock } from '../../content/product';
+import SectionHeader from '../primitives/SectionHeader.astro';
+import CardShell from '../primitives/CardShell.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+}
+
+interface Props {
+  content: Content;
+  blocks: HowItWorksBlock[];
+}
+
+const { content, blocks } = Astro.props;
+
+const sectionClass = 'scroll-mt-16 py-12 px-6 bg-[var(--color-surface-50)] lg:py-16 lg:px-8';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-10';
+
+const sectionHeaderClass = 'mx-auto max-w-[860px]';
+
+const gridClass = 'grid grid-cols-1 gap-6 lg:grid-cols-3';
+
+const cardClass =
+  'grid h-full grid-rows-[9.6rem_minmax(6.1rem,auto)_1.1rem_minmax(6.1rem,auto)] rounded-[1.25rem] px-6 py-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]';
+
+const iconBaseClass =
+  'object-contain [filter:brightness(0)_saturate(100%)_invert(35%)_sepia(18%)_saturate(1059%)_hue-rotate(167deg)_brightness(90%)_contrast(91%)]';
+
+const iconWrapClass = 'flex items-center justify-center';
+
+const largeIconClass = 'h-44 w-44';
+
+const regularIconClass = 'h-40 w-40';
+
+const leftBlockClass = 'flex flex-col items-center gap-1 self-start text-center';
+
+const leftTitleClass = 'card-title text-[var(--color-text)]';
+
+const bodyTextClass = 'card-text text-[var(--color-text-muted)]';
+
+const accentBarWrapClass = 'flex items-center justify-center self-center';
+
+const accentBarClass = 'h-[3px] w-14 rounded-full bg-[var(--color-primary)]';
+
+const rightBlockClass = 'flex flex-col items-center gap-1 self-start text-center pt-2';
+
+const rightTitleClass = 'card-title text-[var(--color-primary)]';
+---
+
+<section id="how-it-works" class={sectionClass} aria-label="How it works">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
+    <div class={gridClass}>
+      {
+        blocks.map((block, index) => (
+          <CardShell as="article" variant="warm" accentTop={true} class={cardClass}>
+            <div class={iconWrapClass}>
+              <img
+                src={
+                  index === 0
+                    ? '/static/images/img_icon_desktop.png'
+                    : index === 1
+                      ? '/static/images/img_icon_api.png'
+                      : '/static/images/img_icon_partner.png'
+                }
+                alt=""
+                aria-hidden="true"
+                width="176"
+                height="176"
+                class:list={[iconBaseClass, index === 1 ? largeIconClass : regularIconClass]}
+                loading="lazy"
+              />
+            </div>
+            <div class={leftBlockClass}>
+              <h3 class={leftTitleClass}>{block.leftTitle}</h3>
+              <p class={bodyTextClass}>{block.leftText}</p>
+            </div>
+            <div class={accentBarWrapClass} aria-hidden="true">
+              <div class={accentBarClass} />
+            </div>
+            <div class={rightBlockClass}>
+              <h3 class={rightTitleClass}>{block.rightTitle}</h3>
+              <p class={bodyTextClass}>{block.rightText}</p>
+            </div>
+          </CardShell>
+        ))
+      }
+    </div>
+  </div>
+</section>

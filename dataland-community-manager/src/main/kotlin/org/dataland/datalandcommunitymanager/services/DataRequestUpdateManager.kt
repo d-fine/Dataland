@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -15,6 +14,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestUpdateUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,6 +35,7 @@ class DataRequestUpdateManager
         private val metaDataControllerApi: MetaDataControllerApi,
         private val dataRequestUpdateUtils: DataRequestUpdateUtils,
         private val companyDataControllerApi: CompanyDataControllerApi,
+        private val dataRequestNonSourceabilityManager: DataRequestNonSourceabilityManager,
     ) {
         /**
          * Method for creating the user-specific notification event for the given data request entity and patch.
@@ -208,30 +209,20 @@ class DataRequestUpdateManager
             correlationId: String,
             requestStatusChangeReason: String? = null,
         ) {
-            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            accessStatus = AccessStatus.Pending,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            } else {
-                patchDataRequest(
-                    dataRequestId = dataRequestEntity.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.Answered,
-                            requestStatusChangeReason = requestStatusChangeReason,
-                        ),
-                    correlationId = correlationId,
-                    answeringDataId = answeringDataId,
-                )
-            }
+            val isVsmeWithoutAccess =
+                dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
+                    dataRequestEntity.accessStatus != AccessStatus.Granted
+            patchDataRequest(
+                dataRequestId = dataRequestEntity.dataRequestId,
+                dataRequestPatch =
+                    DataRequestPatch(
+                        requestStatus = RequestStatus.Answered,
+                        accessStatus = if (isVsmeWithoutAccess) AccessStatus.Pending else null,
+                        requestStatusChangeReason = requestStatusChangeReason,
+                    ),
+                correlationId = correlationId,
+                answeringDataId = answeringDataId,
+            )
         }
 
         /**
@@ -355,12 +346,9 @@ class DataRequestUpdateManager
             val requestsToProcess = answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
             for (dataRequestEntity in requestsToProcess) {
                 if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                    val accessStatusIsOkay =
-                        listOf(
-                            dataRequestEntity.accessStatus != AccessStatus.Declined,
-                            dataRequestEntity.accessStatus != AccessStatus.Revoked,
-                        ).all { it }
-                    if (accessStatusIsOkay) {
+                    if (dataRequestEntity.accessStatus != AccessStatus.Declined &&
+                        dataRequestEntity.accessStatus != AccessStatus.Revoked
+                    ) {
                         requestEmailManager.sendDataUpdatedEmail(
                             dataRequestEntity,
                             correlationId,
@@ -390,34 +378,22 @@ class DataRequestUpdateManager
          */
         @Transactional
         fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            sourceabilityInfo: SourceabilityInfo,
+            sourceabilityInfo: SourceabilityMessage,
             correlationId: String,
-        ) {
-            require(sourceabilityInfo.isNonSourceable) {
-                "Expected information about a non-sourceable dataset but received information about a sourceable dataset. No requests " +
-                    "are patched if a dataset is reported as sourceable until the dataset is uploaded."
-            }
+        ) = dataRequestNonSourceabilityManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(sourceabilityInfo, correlationId)
 
-            val dataRequestEntities =
-                dataRequestRepository.searchDataRequestEntity(
-                    DataRequestsFilter(
-                        dataType = setOf(sourceabilityInfo.dataType),
-                        datalandCompanyIds = setOf(sourceabilityInfo.companyId),
-                        reportingPeriods = setOf(sourceabilityInfo.reportingPeriod),
-                        requestStatus = RequestStatus.entries.filter { it != RequestStatus.Withdrawn }.toSet(),
-                    ),
-                )
-
-            dataRequestEntities.forEach {
-                patchDataRequest(
-                    dataRequestId = it.dataRequestId,
-                    dataRequestPatch =
-                        DataRequestPatch(
-                            requestStatus = RequestStatus.NonSourceable,
-                            requestStatusChangeReason = sourceabilityInfo.reason,
-                        ),
-                    correlationId = correlationId,
-                )
-            }
-        }
+        /**
+         * Method to patch all non-withdrawn data requests corresponding to a dataset to status non-sourceable.
+         * This entrypoint is used for lifecycle events where no reason is present in the MQ payload.
+         */
+        @Transactional
+        fun patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId: String,
+            dataTypeAsString: String,
+            reportingPeriod: String,
+            correlationId: String,
+            requestStatusChangeReason: String? = null,
+        ) = dataRequestNonSourceabilityManager.patchAllNonWithdrawnRequestsToStatusNonSourceable(
+            companyId, dataTypeAsString, reportingPeriod, correlationId, requestStatusChangeReason,
+        )
     }

@@ -18,5 +18,6 @@ enum class DisplayedState {
     DataExtraction,
     DataVerification,
     NonSourceable,
+    NonSourceableVerification,
     Done,
 }

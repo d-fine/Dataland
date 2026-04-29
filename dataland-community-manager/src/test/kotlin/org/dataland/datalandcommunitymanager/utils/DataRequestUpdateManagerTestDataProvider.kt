@@ -4,12 +4,13 @@ import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
-import org.dataland.datalandbackend.openApiClient.model.SourceabilityInfo
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
+import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
 import org.junit.jupiter.params.provider.Arguments
 import java.util.UUID
 import java.util.stream.Stream
@@ -20,19 +21,25 @@ class DataRequestUpdateManagerTestDataProvider {
     val nuclearAndGas = "nuclear-and-gas"
 
     fun getDummyNonSourceableInfo() =
-        SourceabilityInfo(
-            companyId = dummyCompanyId,
-            dataType = DataTypeEnum.nuclearMinusAndMinusGas,
-            reportingPeriod = "dummyPeriod",
+        SourceabilityMessage(
+            basicDataDimensions =
+                BasicDataDimensions(
+                    companyId = dummyCompanyId,
+                    dataType = DataTypeEnum.nuclearMinusAndMinusGas.value,
+                    reportingPeriod = "dummyPeriod",
+                ),
             isNonSourceable = true,
             reason = dummyRequestChangeReason,
         )
 
     fun getDummySourceableInfo() =
-        SourceabilityInfo(
-            companyId = "",
-            dataType = DataTypeEnum.nuclearMinusAndMinusGas,
-            reportingPeriod = "",
+        SourceabilityMessage(
+            basicDataDimensions =
+                BasicDataDimensions(
+                    companyId = "",
+                    dataType = DataTypeEnum.nuclearMinusAndMinusGas.value,
+                    reportingPeriod = "",
+                ),
             isNonSourceable = false,
             reason = dummyRequestChangeReason,
         )

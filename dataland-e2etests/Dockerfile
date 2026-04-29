@@ -2,6 +2,7 @@ ARG DATALAND_E2ETESTS_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_e2etests_base:${DATALAND_E2ETESTS_BASE_VERSION}
 
 WORKDIR /app
+
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
@@ -12,6 +13,8 @@ COPY ./dataland-user-service/userServiceOpenApi.json ./dataland-user-service/use
 COPY ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json ./dataland-data-sourcing-service/dataSourcingServiceOpenApi.json
 COPY ./dataland-accounting-service/accountingServiceOpenApi.json ./dataland-accounting-service/accountingServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend
+COPY ./dataland-sharedElements/ ./dataland-sharedElements/
+COPY ./dataland-website/ ./dataland-website/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-e2etests/ ./dataland-e2etests
 COPY ./testing/ ./testing

@@ -51,7 +51,7 @@ open class DataController<T>(
     private val dataExportService: DataExportService<T>,
     private val dataExportStorage: DataExportStore,
     private val companyQueryManager: CompanyQueryManager,
-    private val clazz: Class<T>,
+    private val clazz: Class<out T>,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)

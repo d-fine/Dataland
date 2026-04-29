@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  ABOUT_PAGE_CONTENT,
+  COMPANY_COPY,
+  LEADERSHIP_TEAM,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_DISPLAY,
+  CONTACT_DEMO_MAILTO,
+  CONTACT_INQUIRY_MAILTO,
+  CONTACT_ADDRESS,
+  NEWS_ITEMS,
+} from '../content/about';
+import { PARTNER_STORY_SUMMARIES } from '../config/partner-stories';
+
+import AboutCompanySection from '../components/page-about/AboutCompanySection.astro';
+import AboutLeadershipSection from '../components/page-about/AboutLeadershipSection.astro';
+import AboutIntegrationPartnersSection from '../components/page-about/AboutIntegrationPartnersSection.astro';
+import AboutNewsSection from '../components/page-about/AboutNewsSection.astro';
+import AboutContactSection from '../components/page-about/AboutContactSection.astro';
+---
+
+<Base title={ABOUT_PAGE_CONTENT.meta.title} description={ABOUT_PAGE_CONTENT.meta.description}>
+  <AboutCompanySection content={ABOUT_PAGE_CONTENT.company} companyCopy={COMPANY_COPY} />
+
+  <AboutLeadershipSection content={ABOUT_PAGE_CONTENT.leadership} people={LEADERSHIP_TEAM} />
+
+  <AboutIntegrationPartnersSection content={ABOUT_PAGE_CONTENT.integrationPartners} stories={PARTNER_STORY_SUMMARIES} />
+
+  <AboutNewsSection content={ABOUT_PAGE_CONTENT.news} items={NEWS_ITEMS} />
+
+  <AboutContactSection
+    contactContent={ABOUT_PAGE_CONTENT.contact}
+    startPanelContent={ABOUT_PAGE_CONTENT.startPanel}
+    demoMailto={CONTACT_DEMO_MAILTO}
+    inquiryMailto={CONTACT_INQUIRY_MAILTO}
+    phoneHref={CONTACT_PHONE}
+    phoneLabel={CONTACT_PHONE_DISPLAY}
+    emailHref={CONTACT_EMAIL}
+    emailLabel={CONTACT_EMAIL_DISPLAY}
+    address={CONTACT_ADDRESS}
+  />
+</Base>

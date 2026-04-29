@@ -165,7 +165,7 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["DocumentSourcingDone", "NonSourceable"])
+    @ValueSource(strings = ["DocumentSourcingDone"])
     fun `document collectors can set allowed states`(stateName: String) {
         val state = DataSourcingState.valueOf(stateName)
         setMockSecurityContext(dummyUserAuthentication)
@@ -184,7 +184,12 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["Initialized", "DocumentSourcing", "DataExtraction", "DataVerification", "Done"])
+    @ValueSource(
+        strings = [
+            "Initialized", "DocumentSourcing", "DataExtraction", "DataVerification",
+            "NonSourceableVerification", "NonSourceable", "Done",
+        ],
+    )
     fun `document collectors cannot set restricted states`(stateName: String) {
         val state = DataSourcingState.valueOf(stateName)
         setMockSecurityContext(dummyUserAuthentication)
@@ -193,18 +198,8 @@ class DataSourcingControllerTest : BaseDataSourcingControllerTest() {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["NonSourceable"])
-    fun `data extractors can set allowed state NonSourceable`(stateName: String) {
-        val state = DataSourcingState.valueOf(stateName)
-        setMockSecurityContext(dummyUserAuthentication)
-        stubRoleAssignments(regularUserId, dataExtractorId, listOf(memberAssignmentForDataExtractor))
-        performPatchStateAndExpect(state, status().isOk())
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["Initialized", "DocumentSourcing", "DocumentSourcingDone", "DataExtraction", "DataVerification", "Done"])
-    fun `data extractors cannot set restricted states`(stateName: String) {
-        val state = DataSourcingState.valueOf(stateName)
+    @EnumSource(DataSourcingState::class)
+    fun `data extractors cannot set any state`(state: DataSourcingState) {
         setMockSecurityContext(dummyUserAuthentication)
         stubRoleAssignments(regularUserId, dataExtractorId, listOf(memberAssignmentForDataExtractor))
         performPatchStateAndExpect(state, status().isForbidden())

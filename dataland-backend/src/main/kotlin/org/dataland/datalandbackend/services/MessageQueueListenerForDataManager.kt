@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -36,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional
 class MessageQueueListenerForDataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
-    @Autowired private val sourceabilityDataManager: SourceabilityDataManager,
+    @Autowired private val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -111,8 +110,12 @@ class MessageQueueListenerForDataManager(
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
                 logger.info("Set dataset with dataId $currentlyActiveDataId to active.")
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                logger.info("Check if dataset was previously marked as non-sourceable and if so, mark as sourceable.")
-                storeUpdatedDataToNonSourceableData(updatedDataMetaInformation)
+                logger.info("Deactivating any active non-sourceability entries for the same triple.")
+                nonSourceabilityInformationManager.deactivateExistingNonSourceabilitiesForTriple(
+                    updatedDataMetaInformation.company.companyId,
+                    DataType.valueOf(updatedDataMetaInformation.dataType),
+                    updatedDataMetaInformation.reportingPeriod,
+                )
             }
         }
     }
@@ -152,28 +155,6 @@ class MessageQueueListenerForDataManager(
                     .info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
                 dataManager.removeDatasetFromInMemoryStore(dataId)
             }
-        }
-    }
-
-    /**
-     * Adds a new entry to the data-sourceability repo if a corresponding dataset was previously flagged as
-     * non-sourceable.
-     * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
-     */
-    private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
-        if (sourceabilityDataManager
-                .getLatestSourceabilityInfoForDataset(
-                    updatedDataMetaInformation.company.companyId,
-                    DataType.valueOf(updatedDataMetaInformation.dataType),
-                    updatedDataMetaInformation.reportingPeriod,
-                )?.isNonSourceable == true
-        ) {
-            sourceabilityDataManager.storeSourceableData(
-                updatedDataMetaInformation.company.companyId,
-                DataType.valueOf(updatedDataMetaInformation.dataType),
-                updatedDataMetaInformation.reportingPeriod,
-                updatedDataMetaInformation.uploaderUserId,
-            )
         }
     }
 }

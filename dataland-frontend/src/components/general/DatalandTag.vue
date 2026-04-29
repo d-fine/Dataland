@@ -141,6 +141,7 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case DataSourcingState.DocumentSourcingDone:
     case DataSourcingState.DataExtraction:
     case DataSourcingState.DataVerification:
+    case DataSourcingState.NonSourceableVerification:
     case DisplayedState.Validated:
     case DisplayedState.DocumentVerification:
       return stateBlueTag;

@@ -28,7 +28,7 @@ function checkCommonCspHeaders(expectedHeader: string): void {
 
 describe('As a developer, I want to ensure that security relevant headers are set.', () => {
   const cspHeaders =
-    "frame-src 'self' data: https://www.youtube.com https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' 'sha256-Ufh4gFF+3wijVQyJo86U1jiXhiwxTNfKBjPqBWLdvEY=' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://www.youtube.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data: https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com https://i.ytimg.com/ https://img.youtube.com/";
+    "frame-src 'self' data: https://www.youtube.com https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://www.youtube.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data: https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com https://i.ytimg.com/ https://img.youtube.com/";
 
   describeIf(
     'Check CSP headers in the local development environment',

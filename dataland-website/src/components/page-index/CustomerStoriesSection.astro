@@ -1,0 +1,47 @@
+---
+import type { CustomerStorySummary } from '../../content/index';
+import SectionHeader from '../primitives/SectionHeader.astro';
+import LogoSummaryCard from '../cards/LogoSummaryCard.astro';
+
+interface Content {
+  title: string;
+  intro: string;
+  readMore: string;
+}
+
+interface Props {
+  content: Content;
+  stories: CustomerStorySummary[];
+}
+
+const { content, stories } = Astro.props;
+
+const sectionClass = 'py-12 px-6 bg-[var(--color-surface-50)]';
+
+const sectionInnerClass = 'max-w-[1200px] mx-auto flex flex-col gap-8';
+
+const sectionHeaderClass = 'mx-auto max-w-[860px]';
+
+const storiesGridClass = 'grid grid-cols-1 gap-6 md:grid-cols-3';
+---
+
+<section id="customer-stories" class={sectionClass} aria-label="How our members use Dataland">
+  <div class={sectionInnerClass}>
+    <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
+    <div class={storiesGridClass}>
+      {
+        stories.map((story) => (
+          <LogoSummaryCard
+            href={story.link}
+            title={story.title}
+            logo={story.logo}
+            logoClassName={story.logoClassName}
+            primaryTag={story.primaryTag}
+            secondaryTags={story.secondaryTags}
+            linkLabel={content.readMore}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

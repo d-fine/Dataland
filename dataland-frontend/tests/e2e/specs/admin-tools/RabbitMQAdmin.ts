@@ -20,10 +20,15 @@ const queues = [
   'qa-service.qaDatasets',
   'qa-service.qaDataPoints',
   'qa-service.migrateDatasets',
-  'community-manager.queue.nonSourceableData',
   'data-sourcing-service.datasetQaStatusUpdate',
   'user-service.processMessageForDataReportedAsNonSourceable',
   'user-service.processMessageForAvailableDataAndUpdates',
+  'qa-service.processNonSourceabilityCreated',
+  'data-sourcing-service.processNonSourceabilitySubmission',
+  'community-manager.processNonSourceabilitySubmission',
+  'backend.processNonSourceabilityQaDecision',
+  'data-sourcing-service.processNonSourceabilityQaDecision',
+  'community-manager.processNonSourceabilityQaDecision',
 ];
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
