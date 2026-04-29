@@ -221,7 +221,7 @@ describeIf(
     );
 
     // This test is only a debug helper which can be deleted later
-    it('debug judge modal selectors', () => {
+    it.skip('debug judge modal selectors', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
         // 1) Compute the type + id for "Number of Employees"
         const typeId = DATA_POINT_TYPES.numberOfEmployees;
@@ -271,26 +271,20 @@ describeIf(
       changeJudgeAssignment(dataSetId);
     });
 
-    it.only('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
+    it('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
-        // cy.pause();
         tryFinishingJudgementBeforeAllDataPointsReviewed();
-        cy.pause();
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
-        cy.pause();
         finishJudgement(uploadedDataMetaInfo.dataId);
 
-        cy.log(`And now check that everything is uploaded correctly`);
-        cy.pause();
-        // Verify the judgement data was correctly stored in the backend and displayed on the framework page
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
         verifyJudgementDataStoredCorrectly(
           QA_SCENARIO_CONFIG,
           euTaxonomyData.t,
-          uploadedDataMetaInfo.dataId,
           storedCompany.companyId,
-          uploadedDataMetaInfo.dataType
+          uploadedDataMetaInfo.reportingPeriod,
+          tokens.judgeToken
         );
       });
     });
@@ -830,7 +824,7 @@ function judgeDataPointsWithQaReports(
       cy.log(`[patch] url=${interception.request.url}`);
       // cy.pause();
       cy.wait(shortTimeoutInMs);
-      // checkPATCHDataPointsCalledCorrectly(interception, judgement);
+      //checkPATCHDataPointsCalledCorrectly(interception, judgement);
     });
     cy.log(`patched`);
     // cy.pause();
@@ -941,20 +935,60 @@ function finishJudgement(dataSetId: string): void {
   cy.contains('[data-test="qa-review-data-id"]', dataSetId).should('not.exist');
 }
 
-/** helper 1 */
+/**
+ * Safely parses a JSON string and extracts the 'value' property if it exists.
+ * If the value is an object, it is stringified via JSON to avoid [object Object].
+ *
+ * @param raw - The raw JSON string to be parsed.
+ * @returns The extracted value as a string, or the original string if parsing fails.
+ */
 function parseJsonValue(raw?: string): string | undefined {
   if (raw == null) return undefined;
+
   try {
-    const parsed = JSON.parse(raw) as { value?: unknown };
-    if (parsed && parsed.value != null) return String(parsed.value);
-    return raw;
+    const parsed: unknown = JSON.parse(raw);
+
+    if (typeof parsed !== 'object' || parsed === null || !('value' in parsed)) {
+      return raw;
+    }
+
+    const val = (parsed as { value?: unknown }).value;
+
+    if (val == null) {
+      return raw;
+    }
+
+    if (typeof val === 'string') {
+      return val;
+    }
+
+    if (typeof val === 'number' || typeof val === 'boolean') {
+      return val.toString();
+    }
+
+    return JSON.stringify(val);
   } catch {
     return raw;
   }
 }
 
-/** helper 2 */
-function getOriginalValueForType(dataPointType: DataPointType, fixture: EutaxonomyFinancialsData): string {}
+/**
+ * Extract value from get endpoint
+ * @param dataPointType
+ * @param data
+ */
+function extractValueForType(dataPointType: DataPointType, data: EutaxonomyFinancialsData): string {
+  if (dataPointType === DATA_POINT_TYPES.fiscalYearEnd) {
+    return String(data.general?.general?.fiscalYearEnd?.value ?? '');
+  }
+  if (dataPointType === DATA_POINT_TYPES.greenAssetRatioTotal) {
+    return String(data.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.value ?? '');
+  }
+  if (dataPointType === DATA_POINT_TYPES.isNfrdMandatory) {
+    return String(data.general?.general?.isNfrdMandatory?.value ?? '');
+  }
+  return String(data.general?.general?.numberOfEmployees?.value ?? '');
+}
 
 /** This function returns the selected value for each KPI, based on the indicated AcceptedDataPointSource
  *
@@ -971,7 +1005,7 @@ function buildExpectedByType(
   const result = {} as Record<DataPointType, string>;
 
   (Object.values(DATA_POINT_TYPES) as DataPointType[]).forEach((dataPointType) => {
-    const originalValue = getOriginalValueForType(dataPointType, fixture);
+    const originalValue = extractValueForType(dataPointType, fixture);
     const scenario = scenarioByType.get(dataPointType);
 
     const acceptedSource = scenario?.judgement.acceptedSource;
@@ -1006,127 +1040,43 @@ function buildExpectedByType(
 }
 
 /**
- * Verifies that the judgement data is correctly stored and displayed on the company framework page.
- * Navigates to the company framework page and checks that all judged data points are displayed
- * with their correct accepted sources and custom values.
+ * Verifies that after finishing the judgement, the active dataset returned by the backend API
+ * contains the expected values for each data point based on its accepted source.
  *
- * (@param dataSetId           The id of the dataset that was judged.)
- * (@param judgeToken          Bearer token for the judge user to access the API.)
- *
- * @param scenarios           Array of QA scenario configurations used to validate the stored judgement.
- * @param fixture             The input from JSON file.
- * @param dataId              The dataset ID to verify on the framework page (used in the URL).
- * @param companyId           The company ID to navigate to the framework page for UI verification.
- * @param frameworkType       The framework type (e.g., 'eutaxonomy-financials', 'sfdr') to construct the URL.
- * @returns                   A Cypress.Chainable that resolves after all verifications are complete.
+ * @param scenarios        QA scenario configurations defining accepted sources and expected values.
+ * @param fixture          The original fixture data uploaded before the judgement.
+ * @param companyId        The company ID used to query the active dataset.
+ * @param reportingPeriod  The reporting period used to query the active dataset.
+ * @param judgeToken       Bearer token for authentication.
  */
 function verifyJudgementDataStoredCorrectly(
-  scenarios: QaScenarioConfig[] = QA_SCENARIO_CONFIG,
-  fixture?: EutaxonomyFinancialsData,
-  dataId?: string,
-  companyId?: string,
-  frameworkType?: string
+  scenarios: QaScenarioConfig[],
+  fixture: EutaxonomyFinancialsData,
+  companyId: string,
+  reportingPeriod: string,
+  judgeToken: string
 ): void {
-  // CHECK INPUT PARAMETERS DO EXIST
-  // if (!companyId || !frameworkType) {
-  // cy.log('⚠️  companyId or frameworkType not provided - skipping verification');
-  // return cy.wrap(undefined);
-  // }
+  const expectedValuesByType = buildExpectedByType(scenarios, fixture);
+  cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
 
-  // CHECK YOU CAN GO TO THE COMPANY ID PAGE
-  cy.visit(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`);
+  // Allow the message queue to process data point replacements posted during finalization.
+  cy.wait(shortTimeoutInMs * 4);
 
-  cy.pause();
-  cy.visit(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`);
+  cy.request({
+    method: 'GET',
+    url: `${apiBaseUrl}/api/data/eutaxonomy-financials`,
+    qs: { companyId, reportingPeriod },
+    headers: { Authorization: `Bearer ${judgeToken}` },
+  }).then((response) => {
+    expect(response.status, 'GET eutaxonomy-financials status').to.eq(200);
+    const data = (response.body as { data: EutaxonomyFinancialsData }).data;
 
-  cy.pause();
-
-  cy.get('tr[data-cell-label="Is NFRD mandatory?"]')
-    .find('td')
-    .eq(1)
-    .invoke('text')
-    .then((value) => {
-      cy.log(value.trim());
+    (Object.values(DATA_POINT_TYPES) as DataPointType[]).forEach((dataPointType) => {
+      const expected = expectedValuesByType[dataPointType];
+      const actual = extractValueForType(dataPointType, data);
+      cy.log(`[verify] ${dataPointType}: expected="${expected}", actual="${actual}"`);
+      expect(actual, `stored value for ${dataPointType}`).to.eq(expected);
     });
-
-  cy.pause();
-
-  // Build expected values from scenarios and fixture
-  const expectedValuesByType = fixture ? buildExpectedByType(scenarios, fixture) : {};
-
-  cy.log(`expected values: ${JSON.stringify(expectedValuesByType, null, 2)}`);
-  cy.pause();
-
-  // 1) Find the KPI row by exact label
-  cy.get('tr[data-cell-label="Is NFRD mandatory?"]').within(() => {
-    // 2) Click the value link in that row (the link that opens the modal)
-    cy.get('a.link').first().click();
-  });
-
-  // 3) In the opened PrimeVue dialog, read the value at the right of "Value"
-  cy.get('.p-dialog:visible').within(() => {
-    cy.contains('th .table-left-label', 'Value')
-      .closest('tr')
-      .find('td')
-      .invoke('text')
-      .then((modalValue) => {
-        const extracted = modalValue.trim();
-        const expectedValue = expectedValuesByType[DATA_POINT_TYPES.isNfrdMandatory];
-        cy.log(`Value from popup = ${extracted}`);
-        cy.log(`Expected value = ${expectedValue}`);
-
-        expect(extracted).to.equal(expectedValue);
-      });
-  });
-
-  cy.pause();
-
-  // after a loop over all KPIs
-  cy.log('✓ All judgement data verified successfully in the company framework page');
-}
-
-/**
- * Helper function to verify that the accepted source is correctly displayed in the UI for a data point.
- *
- * @param dataPointId    The ID of the data point to verify.
- * @param acceptedSource The expected accepted source (Original, Custom, or Qa).
- */
-function verifyAcceptedSourceInUI(dataPointId: string, acceptedSource: AcceptedDataPointSource | undefined): void {
-  cy.log(`Verifying acceptedSource for ${dataPointId} should be ${String(acceptedSource)}`);
-
-  // Check that the data point row exists in the table
-  cy.get(`[data-test="data-point-row-${dataPointId}"]`).should('be.visible');
-
-  if (acceptedSource === AcceptedDataPointSource.Original) {
-    cy.log(`  - Checking Original column for ${dataPointId}`);
-    cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
-      cy.get('td').eq(1).should('contain.text', 'Original').or('have.class', 'accepted-check');
-    });
-  } else if (acceptedSource === AcceptedDataPointSource.Custom) {
-    cy.log(`  - Checking Custom column for ${dataPointId}`);
-    cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
-      cy.get('td').eq(4).should('contain.text', 'Custom').or('have.class', 'accepted-check');
-    });
-  } else if (acceptedSource === AcceptedDataPointSource.Qa) {
-    cy.log(`  - Checking QA column for ${dataPointId}`);
-    cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
-      cy.get('td').eq(2).or('td').eq(3).should('have.class', 'accepted-check');
-    });
-  }
-}
-
-/**
- * Helper function to verify that a custom value is correctly displayed in the UI for a data point.
- *
- * @param dataPointId  The ID of the data point to verify.
- * @param customValue  The expected custom value.
- */
-function verifyCustomValueInUI(dataPointId: string, customValue: string): void {
-  cy.log(`Verifying custom value for ${dataPointId} should be ${customValue}`);
-
-  // Check that the custom value is visible somewhere in the data point row or details
-  cy.get(`[data-test="data-point-row-${dataPointId}"]`).within(() => {
-    cy.contains(customValue).should('be.visible');
   });
 }
 
