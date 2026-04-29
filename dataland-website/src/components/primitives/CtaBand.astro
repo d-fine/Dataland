@@ -1,0 +1,14 @@
+---
+interface Props {
+  title: string;
+  class?: string;
+  titleClass?: string;
+}
+
+const { title, class: className, titleClass } = Astro.props;
+---
+
+<div class:list={['cta-band', className]}>
+  <p class:list={['cta-band__title', titleClass]}>{title}</p>
+  <slot />
+</div>

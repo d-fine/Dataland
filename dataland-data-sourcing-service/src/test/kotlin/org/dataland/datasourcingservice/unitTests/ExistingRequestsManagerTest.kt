@@ -18,6 +18,7 @@ import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
 import org.dataland.datasourcingservice.services.RequestQueryManager
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
@@ -70,6 +71,7 @@ class ExistingRequestsManagerTest {
             mockDataSourcingValidator,
             existingRequestsManager,
             mockCloudEventMessageHandler,
+            mock<DerivedRightsUtilsComponent>(),
         )
     private val dataRequestIdForSfdr = UUID.randomUUID()
 
@@ -180,10 +182,10 @@ class ExistingRequestsManagerTest {
                 times(1),
             ).buildCEMessageAndSendToQueue(
                 any(),
-                eq(MessageType.DATASOURCING_NONSOURCEABLE),
+                eq(MessageType.DATA_SOURCING_NON_SOURCEABLE),
                 any(),
                 eq(ExchangeName.DATASOURCING_DATA_NONSOURCEABLE),
-                eq(RoutingKeyNames.DATASOURCING_NONSOURCEABLE),
+                eq(RoutingKeyNames.DATA_SOURCING_NON_SOURCEABLE),
             )
         } else {
             verifyNoInteractions(mockCloudEventMessageHandler)

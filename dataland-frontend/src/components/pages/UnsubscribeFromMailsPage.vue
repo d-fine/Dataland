@@ -14,7 +14,7 @@
           </p>
           <p>
             Go to
-            <RouterLink to="/" class="text-primary" title="back to landing page">Dataland</RouterLink>
+            <a href="/" class="text-primary" title="back to landing page">Dataland</a>
           </p>
         </div>
       </div>

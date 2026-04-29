@@ -50,14 +50,14 @@ class DataManagerNoExceptionTest
         dataMetaInformationManager: DataMetaInformationManager,
         companyQueryManager: CompanyQueryManager,
         dataManagerUtils: DataManagerUtils,
-        sourceabilityDataManager: SourceabilityDataManager,
+        nonSourceabilityInformationManager: NonSourceabilityInformationManager,
         val companyAlterationManager: CompanyAlterationManager,
     ) : DataManagerTest(
             objectMapper = objectMapper,
             dataMetaInformationManager = dataMetaInformationManager,
             companyQueryManager = companyQueryManager,
             dataManagerUtils = dataManagerUtils,
-            sourceabilityDataManager = sourceabilityDataManager,
+            nonSourceabilityInformationManager = nonSourceabilityInformationManager,
         ) {
         @BeforeEach
         override fun setup() {

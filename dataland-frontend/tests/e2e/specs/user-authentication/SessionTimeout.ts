@@ -1,4 +1,4 @@
-import { login } from '@e2e/utils/Auth';
+import { loginAsReader } from '@e2e/utils/Auth';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 type TokenResponse = { id_token: string; access_token: string; refresh_token: string };
@@ -11,7 +11,7 @@ type TokenResponse = { id_token: string; access_token: string; refresh_token: st
  */
 function setJwtExpiryTime(jwt: string, newExpiryTime: number): string {
   const split = jwt.split('.');
-  const decodedBody = JSON.parse(Buffer.from(split[1]!, 'base64').toString('binary')) as { exp: number };
+  const decodedBody = JSON.parse(Buffer.from(split[1], 'base64').toString('binary')) as { exp: number };
   decodedBody.exp = newExpiryTime;
   split[1] = Buffer.from(JSON.stringify(decodedBody), 'binary').toString('base64');
   return split.join('.');
@@ -23,14 +23,14 @@ describe('The page should behave well-defined when the user logs out in a differ
       'after the user gets logged out in the background',
     () => {
       cy.intercept('**/token').as('tokenResponse');
-      login();
+      loginAsReader();
       cy.wait('@tokenResponse').then(({ response }) => {
         const responseTyped = response as { body: TokenResponse };
         const idToken = assertDefined(responseTyped.body?.id_token);
 
         const logoutUrl = `/keycloak/realms/datalandsecurity/protocol/openid-connect/logout?id_token_hint=${idToken}`;
         cy.request(logoutUrl);
-        cy.get('button[name=login_dataland_button_on_session_modal]', { timeout: 10000 }).click();
+        cy.get('a#login_again_on_session_modal', { timeout: 10000 }).click();
         cy.get('#username').should('exist').get('#password').should('exist').get('#kc-login').should('exist');
       });
     }
@@ -53,7 +53,7 @@ describe('The page should behave well-defined when the user logs out in a differ
         });
       }
     });
-    login();
+    loginAsReader();
     cy.get('button[name=refresh_session_button]', { timeout: 10000 }).click();
     cy.url().should('contain', '/companies');
   });

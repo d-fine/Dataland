@@ -1,0 +1,22 @@
+---
+import CardShell from '../primitives/CardShell.astro';
+
+interface Props {
+  title: string;
+  text?: string;
+  variant?: 'light' | 'warm' | 'cool' | 'dark' | 'glass';
+  accentTop?: boolean;
+  class?: string;
+  titleClass?: string;
+  textClass?: string;
+}
+
+const { title, text, variant = 'light', accentTop = false, class: className, titleClass, textClass } = Astro.props;
+---
+
+<CardShell variant={variant} accentTop={accentTop} class:list={['flex h-full flex-col', className]}>
+  <slot name="before" />
+  <h3 class:list={['card-title', titleClass]}>{title}</h3>
+  {text && <p class:list={['card-text mt-4', textClass]}>{text}</p>}
+  <slot />
+</CardShell>

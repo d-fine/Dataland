@@ -239,9 +239,9 @@ describe('Component tests for the data requests search page', function (): void 
   it('Check filter functionality for framework', function (): void {
     const expectedFrameworkNameSubstrings = [
       'SFDR',
-      'EU Taxonomy',
-      'for financial companies',
-      'for non-financial companies',
+      'EU Taxonomy Financials',
+      'EU Taxonomy Non-Financials',
+      '(2020/852)',
     ];
     interceptUserRequests();
     mountMyDataRequestsOverview();

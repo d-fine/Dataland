@@ -27,6 +27,11 @@ const val REVIEWER_USER_ID = "f7a02ff1-0dab-4e10-a908-7d775c1014ae"
 val REVIEWER_USER_PASSWORD: String = System.getenv("KEYCLOAK_REVIEWER_PASSWORD")
 val REVIEWER_EXTENDED_ROLES = listOf("ROLE_REVIEWER")
 
+const val JUDGE_USER_NAME = "data_judge"
+const val JUDGE_USER_ID = "375c4c42-fa50-4f7d-af69-450803fe0ca1"
+val JUDGE_USER_PASSWORD: String = System.getenv("KEYCLOAK_JUDGE_PASSWORD")
+val JUDGE_EXTENDED_ROLES = listOf("ROLE_JUDGE")
+
 const val UPLOADER_USER_NAME = "data_uploader"
 const val UPLOADER_USER_ID = "c5ef10b1-de23-4a01-9005-e62ea226ee83"
 val UPLOADER_USER_PASSWORD: String = System.getenv("KEYCLOAK_UPLOADER_PASSWORD")

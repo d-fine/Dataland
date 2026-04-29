@@ -51,7 +51,7 @@ data class DataMetaInformationEntity(
      * The viewingUser can view information about the dataset or the dataset itself if
      * (a) the dataset is QAd
      * (b) the user has uploaded the dataset
-     * (c) the user is an admin or a reviewer
+     * (c) the user is an admin or judge or reviewer
      * This function checks these conditions.
      */
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
@@ -60,7 +60,9 @@ data class DataMetaInformationEntity(
             isDatasetViewableByUserViaRole(viewingUser?.roles ?: emptySet())
 
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
-        roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
+        roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
+            roles.contains(DatalandRealmRole.ROLE_JUDGE) ||
+            roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
     override fun toApiModel(): DataMetaInformation =
         DataMetaInformation(

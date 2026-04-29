@@ -250,6 +250,7 @@ object RequestStateHistoryUtils {
                     DataSourcingState.DocumentSourcingDone -> DisplayedState.DocumentVerification
                     DataSourcingState.DataExtraction -> DisplayedState.DataExtraction
                     DataSourcingState.DataVerification -> DisplayedState.DataVerification
+                    DataSourcingState.NonSourceableVerification -> DisplayedState.NonSourceableVerification
                     DataSourcingState.NonSourceable -> DisplayedState.NonSourceable
                     DataSourcingState.Done -> DisplayedState.Done
                 }

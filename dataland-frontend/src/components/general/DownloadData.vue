@@ -267,7 +267,7 @@ function checkIfShowErrors(): void {
 }
 
 .download-content {
-  width: 20em;
+  width: 23em;
   height: 100%;
   border-radius: 0.25rem;
   background-color: white;

@@ -1,11 +1,12 @@
-const testGroupingDisabled = Number.isNaN(Cypress.env('TEST_GROUP') as number);
-let cypressTestGroup = undefined;
+const testGroupingDisabled = Cypress.expose('TEST_GROUP') == null || Number.isNaN(Number(Cypress.expose('TEST_GROUP')));
+
+let cypressTestGroup: number | undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = Number.parseInt(Cypress.env('TEST_GROUP') as string);
+  cypressTestGroup = Number.parseInt(String(Cypress.expose('TEST_GROUP')));
 }
 
-const singlePopulate = !testGroupingDisabled && Cypress.env('SINGLE_POPULATE') === true;
-const runPrepopulation = Cypress.env('RUN_PREPOPULATION') !== false;
+const singlePopulate = !testGroupingDisabled && Cypress.expose('SINGLE_POPULATE') === true;
+const runPrepopulation = Cypress.expose('RUN_PREPOPULATION') !== false;
 
 if (testGroupingDisabled) {
   console.log('Test grouping disabled. Loading all tests...');
@@ -15,7 +16,7 @@ if (testGroupingDisabled) {
 
 /**
  * Test grouping overview
- * 1 - 4      : Traditional E2E-Tests
+ * 1 - 5      : Traditional E2E-Tests
  * 101 - 102  : Restartability E2E-Tests
  */
 
@@ -41,13 +42,16 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-financials');
+  require('./eutaxonomy-financials-2026-73');
   require('./eu-taxonomy-non-financials');
+  require('./eutaxonomy-non-financials-2026-73');
   require('./vsme');
   require('./pcaf');
   require('./company-ownership');
   require('./user-experience');
   require('./portfolios');
   require('./data-sourcing');
+  require('./judgement');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
@@ -64,5 +68,8 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
   require('./quality-assurance');
+}
+
+if (testGroupingDisabled || cypressTestGroup === 5) {
   require('./data-download');
 }

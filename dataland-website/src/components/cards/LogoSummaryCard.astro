@@ -1,0 +1,85 @@
+---
+import CardShell from '../primitives/CardShell.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  logo: string;
+  logoClassName?: string;
+  primaryTag?: string;
+  secondaryTags?: string[];
+  text?: string;
+  linkLabel: string;
+  darkLogoFrame?: boolean;
+  class?: string;
+  titleClass?: string;
+  bodyClass?: string;
+}
+
+const {
+  href,
+  title,
+  logo,
+  logoClassName,
+  primaryTag,
+  secondaryTags = [],
+  text,
+  linkLabel,
+  darkLogoFrame = false,
+  class: className,
+  titleClass,
+  bodyClass,
+} = Astro.props;
+
+const classes = {
+  card: 'flex h-full flex-col overflow-hidden text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_8px_22px_rgba(15,23,42,0.12)]',
+  logoStage: 'flex min-h-[6.25rem] items-center justify-center bg-white px-6 py-5',
+  darkLogoFrame: 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]',
+  logoImage: 'h-16 w-full object-contain object-center',
+  body: 'grid h-full grid-rows-[3.2rem_4.5rem_auto] gap-4 p-6',
+  bodyNoTags: 'flex h-full flex-col gap-4 p-6',
+  tagsRow: 'flex min-h-[3.2rem] flex-wrap items-start gap-2',
+  primaryTag:
+    'inline-flex items-center rounded-md bg-[var(--color-primary)]/12 px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-primary)]',
+  secondaryTag:
+    'inline-flex items-center rounded-md bg-[var(--color-brand-blue)]/10 px-2.5 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-[var(--color-brand-blue)]',
+  title: 'card-title font-medium text-[var(--color-text)]',
+  text: 'card-text text-[var(--color-text-muted)]',
+  textWrap: 'flex flex-col gap-1.5',
+  readMore: 'arrow-link mt-auto',
+} as const;
+
+const hasTags = Boolean(primaryTag) || secondaryTags.length > 0;
+---
+
+<CardShell
+  as="a"
+  href={href}
+  variant="light"
+  accentTop={true}
+  class:list={[classes.card, className]}
+  style="background:#ecece7;"
+>
+  <div class={classes.logoStage}>
+    <div class:list={darkLogoFrame ? classes.darkLogoFrame : undefined}>
+      <img src={logo} alt="" class:list={[classes.logoImage, logoClassName]} loading="lazy" width="220" height="64" />
+    </div>
+  </div>
+  <div class:list={[hasTags ? classes.body : classes.bodyNoTags, bodyClass]}>
+    {
+      hasTags && (
+        <div class={classes.tagsRow}>
+          {primaryTag && <span class={classes.primaryTag}>{primaryTag}</span>}
+          {secondaryTags.map((tag) => (
+            <span class={classes.secondaryTag}>{tag}</span>
+          ))}
+        </div>
+      )
+    }
+    <div class={classes.textWrap}>
+      <h3 class:list={[classes.title, titleClass]}>{title}</h3>
+      {text && <p class={classes.text}>{text}</p>}
+    </div>
+    <span class={classes.readMore}>{linkLabel} &rarr;</span>
+  </div>
+</CardShell>

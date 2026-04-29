@@ -47,7 +47,7 @@ class NotificationEventListener(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.USER_SERVICE_NON_SOURCABLE_EVENT,
+                        QueueNames.USER_SERVICE_NON_SOURCEABLE_EVENT,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -55,7 +55,7 @@ class NotificationEventListener(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.DATASOURCING_DATA_NONSOURCEABLE, declare = "false"),
-                key = [RoutingKeyNames.DATASOURCING_NONSOURCEABLE],
+                key = [RoutingKeyNames.DATA_SOURCING_NON_SOURCEABLE],
             ),
         ],
     )
@@ -64,7 +64,7 @@ class NotificationEventListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DATASOURCING_NONSOURCEABLE)
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_SOURCING_NON_SOURCEABLE)
         val sourceabilityMessage = MessageQueueUtils.readMessagePayload<SourceabilityMessage>(payload)
         checkThatDatasetWasSetToNonSourceable(sourceabilityMessage)
 

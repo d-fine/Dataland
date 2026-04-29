@@ -14,6 +14,12 @@
       value="REVIEWER"
       severity="danger"
     ></Tag>
+    <Tag
+      v-if="userRoles.includes(KEYCLOAK_ROLE_JUDGE)"
+      data-test="userRoleJudge"
+      value="JUDGE"
+      severity="secondary"
+    ></Tag>
     <Tag v-if="userRoles.includes(KEYCLOAK_ROLE_ADMIN)" data-test="userRoleAdmin" value="ADMIN" severity="info"></Tag>
   </div>
 </template>
@@ -26,6 +32,7 @@ import {
   KEYCLOAK_ROLE_REVIEWER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
+  KEYCLOAK_ROLE_JUDGE,
 } from '@/utils/KeycloakRoles';
 
 defineProps<{

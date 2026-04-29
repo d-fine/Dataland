@@ -39,7 +39,7 @@
         <div v-if="!isFrontendUploadFormExisting">
           <p>
             (Uploading data for this framework is currently not enabled on the Dataland frontend. You can use the
-            Dataland API to do so.)
+            Dataland API instead.)
           </p>
         </div>
       </div>

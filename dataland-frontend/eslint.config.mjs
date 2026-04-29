@@ -2,7 +2,7 @@ import pluginVue from 'eslint-plugin-vue';
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 
 // @ts-ignore
-import pluginCypress from 'eslint-plugin-cypress/flat';
+import pluginCypress from 'eslint-plugin-cypress';
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 import jsdoc from 'eslint-plugin-jsdoc';
 
@@ -13,7 +13,7 @@ export default defineConfigWithVueTs(
   },
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/build/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/build/**', '**/coverage/**', '**/public/**'],
   },
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommendedTypeChecked,

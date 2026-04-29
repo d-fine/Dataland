@@ -35,10 +35,10 @@ data class DataPointQaReport(
     )
     val qaReportId: String,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REPORTER_USER_ID_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_USER_ID_EXAMPLE,
     )
-    val reporterUserId: String?,
+    val reporterUserId: String,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.QA_REPORT_UPLOAD_TIME_EXAMPLE,

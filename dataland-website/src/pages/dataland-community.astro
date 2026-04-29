@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import PartnersSection from '../components/page-partner-stories/PartnersSection.astro';
+import { COMMUNITY_GRID_ITEMS, COMMUNITY_PAGE_CONTENT } from '../content/community';
+import { MEMBER_LOGOS, PARTNER_LOGOS } from '../config/logos';
+import CommunityHeroSection from '../components/page-community/CommunityHeroSection.astro';
+import CommunityMembersSection from '../components/page-community/CommunityMembersSection.astro';
+import CommunityCtaSection from '../components/page-community/CommunityCtaSection.astro';
+---
+
+<Base title={COMMUNITY_PAGE_CONTENT.meta.title} description={COMMUNITY_PAGE_CONTENT.meta.description}>
+  <CommunityHeroSection content={COMMUNITY_PAGE_CONTENT.hero} items={COMMUNITY_GRID_ITEMS} />
+
+  <CommunityMembersSection content={COMMUNITY_PAGE_CONTENT.members} logos={MEMBER_LOGOS} />
+
+  <PartnersSection partners={PARTNER_LOGOS} title={COMMUNITY_PAGE_CONTENT.partners.title} showTopAccent={false} />
+
+  <CommunityCtaSection content={COMMUNITY_PAGE_CONTENT.cta} />
+</Base>

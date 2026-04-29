@@ -9,7 +9,9 @@ class DataTypesExtractorTest {
         val expectedTypes =
             setOf(
                 "eutaxonomy-financials",
+                "eutaxonomy-financials-2026-73",
                 "eutaxonomy-non-financials",
+                "eutaxonomy-non-financials-2026-73",
                 "lksg",
                 "sfdr",
                 "vsme",

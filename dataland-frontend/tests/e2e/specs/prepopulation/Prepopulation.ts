@@ -1,4 +1,4 @@
-import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
+import { doThingsInChunks, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
 import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -33,7 +33,7 @@ function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCo
       },
     },
     () => {
-      cy.getKeycloakToken(admin_name, admin_pw)
+      cy.getAdminToken()
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDatasetsForDataType(token, frameworkIdentifier)))
         .then((response) => {
           assert(
@@ -51,7 +51,7 @@ function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCo
 describe(
   'As a user, I want to be able to see some data on the Dataland webpage',
   {
-    defaultCommandTimeout: Cypress.env('prepopulate_timeout_s') * 2000,
+    defaultCommandTimeout: Number(Cypress.expose('prepopulate_timeout_s') ?? 180) * 2000,
     retries: {
       runMode: 0,
       openMode: 0,
@@ -60,7 +60,7 @@ describe(
 
   () => {
     before(function uploadDocumentsAndStoreDocumentIds() {
-      cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+      cy.getAdminToken().then((token) => {
         uploadAllDocuments(token);
       });
     });
@@ -91,7 +91,7 @@ describe(
           });
 
           it(`Upload data for framework ${frameworkIdentifier}`, () => {
-            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+            cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadGenericFrameworkData(
@@ -132,7 +132,7 @@ describe(
           });
 
           it(`Upload data for framework ${DataTypeEnum.Vsme}`, () => {
-            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+            cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadVsmeFrameworkData(
@@ -158,7 +158,7 @@ describe(
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
         (config) => getBasePublicFrameworkDefinition(framework)!.getPublicFrameworkApiClient(config),
-        `CompanyInformationWith${dataTypeInPascalCase}Data`.replace('-', '')
+        `CompanyInformationWith${dataTypeInPascalCase}Data`.replaceAll('-', '')
       );
     }
 

@@ -91,7 +91,7 @@ interface DataSourcingRepository : JpaRepository<DataSourcingEntity, UUID> {
         pageable: Pageable,
     ): Page<UUID>
 
-/**
+    /**
      * Find all DataSourcingEntity instances by a list of ids and fetch all lazily loaded fields.
      */
     @Query(

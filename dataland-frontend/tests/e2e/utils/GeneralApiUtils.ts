@@ -98,12 +98,11 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
       incomingRequest.query['bypassQa'] = 'false';
       return;
     }
-    const authorizationHeader = (incomingRequest.headers['authorization'] ??
-      incomingRequest.headers['Authorization']) as string;
+    const authorizationHeader = incomingRequest.headers['authorization'] ?? incomingRequest.headers['Authorization'];
     if (authorizationHeader === undefined) {
       return;
     }
-    const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1]!;
+    const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1];
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
     if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_REVIEWER)) {
       incomingRequest.query['bypassQa'] = 'true';

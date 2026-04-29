@@ -11,4 +11,5 @@ enum class DatalandRealmRole {
     ROLE_ADMIN,
     ROLE_REVIEWER,
     ROLE_PREMIUM_USER,
+    ROLE_JUDGE,
 }

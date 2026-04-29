@@ -10,18 +10,11 @@ let returnPassword: string;
 let returnTotpKey: string;
 
 export default defineConfig({
+  allowCypressEnv: false,
   env: {
-    commit_id: require('git-commit-id')({ cwd: '../' }),
-    prepopulate_timeout_s: 180,
-    short_timeout_in_ms: 10000,
-    medium_timeout_in_ms: 30000,
-    long_timeout_in_ms: 100000,
-    mobile_device_viewport_height: 667,
-    mobile_device_viewport_width: 300,
-    AWAIT_PREPOPULATION_RETRIES: 250,
-    EXECUTION_ENVIRONMENT: 'developmentLocal',
     KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
     KEYCLOAK_REVIEWER_PASSWORD: process.env.KEYCLOAK_REVIEWER_PASSWORD,
+    KEYCLOAK_JUDGE_PASSWORD: process.env.KEYCLOAK_JUDGE_PASSWORD,
     KEYCLOAK_PREMIUM_USER_PASSWORD: process.env.KEYCLOAK_PREMIUM_USER_PASSWORD,
     KEYCLOAK_UPLOADER_PASSWORD: process.env.KEYCLOAK_UPLOADER_PASSWORD,
     KEYCLOAK_READER_PASSWORD: process.env.KEYCLOAK_READER_PASSWORD,
@@ -36,6 +29,25 @@ export default defineConfig({
         : '2',
     GRAFANA_ADMIN: process.env.GRAFANA_ADMIN,
     GRAFANA_PASSWORD: process.env.GRAFANA_PASSWORD,
+  },
+  expose: {
+    commit_id: require('git-commit-id')({ cwd: '../' }),
+    mobile_device_viewport_height: 667,
+    mobile_device_viewport_width: 300,
+    prepopulate_timeout_s: 180,
+    short_timeout_in_ms: 10000,
+    medium_timeout_in_ms: 30000,
+    long_timeout_in_ms: 100000,
+    fakeFixtureDocumentIds: [],
+    excludeBypassQaIntercept: false,
+    AWAIT_PREPOPULATION_RETRIES: 250,
+    TEST_GROUP: process.env.CYPRESS_TEST_GROUP ? Number(process.env.CYPRESS_TEST_GROUP) : undefined,
+    SINGLE_POPULATE: process.env.CYPRESS_SINGLE_POPULATE === 'true',
+    RUN_PREPOPULATION:
+      process.env.CYPRESS_RUN_PREPOPULATION == null ? true : process.env.CYPRESS_RUN_PREPOPULATION === 'true',
+    EXECUTION_ENVIRONMENT: process.env.CYPRESS_EXECUTION_ENVIRONMENT ?? 'developmentLocal',
+    RESET_DATABASE: process.env.CYPRESS_RESET_DATABASE,
+    IGNORE_EXTERNAL_STORAGE: process.env.CYPRESS_IGNORE_EXTERNAL_STORAGE,
   },
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
@@ -57,12 +69,13 @@ export default defineConfig({
   e2e: {
     baseUrl: 'https://local-dev.dataland.com',
     setupNodeEvents(on, config) {
-      const executionEnvironment = config.env['EXECUTION_ENVIRONMENT'];
+      const executionEnvironment = config.expose['EXECUTION_ENVIRONMENT'];
+      const configProcessScopedVariables: Record<string, unknown> = {};
 
       console.log(`Execution environment: ${executionEnvironment}`);
       if (executionEnvironment === 'developmentLocal') {
         console.log(
-          'Detected local development run. Running all tests per default. In order to run a specific test run npm run cypress run --spec <./.../specific_test.ts>'
+          'Detected local development run. Running all tests per default. In order to run a specific test run npm run Cypress run --spec <./.../specific_test.ts>'
         );
         config.specPattern = ['tests/e2e/specs'];
         config.defaultCommandTimeout = 22000;
@@ -72,6 +85,21 @@ export default defineConfig({
       }
       require('@cypress/code-coverage/task')(on, config);
 
+      on('task', {
+        setToken(keySet: Record<string, unknown>) {
+          Object.entries(keySet).forEach(([key, value]) => {
+            configProcessScopedVariables[key] = value;
+          });
+          return null;
+        },
+        getToken(keys: string[]) {
+          const result: Record<string, unknown> = {};
+          keys.forEach((key) => {
+            result[key] = configProcessScopedVariables[key];
+          });
+          return result;
+        },
+      });
       on('task', {
         setEmail: (val: string) => {
           return (returnEmail = val);
@@ -199,7 +227,7 @@ export default defineConfig({
           return filename;
         },
       });
-      config.env.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
+      config.expose.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',

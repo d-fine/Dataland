@@ -499,7 +499,7 @@ function splitRequestedDateLines(timestamp: number): { line1: string; line2: str
   const dateString = convertUnixTimeInMsToDateString(timestamp).replaceAll(/\r?\n/g, '');
   const parts = dateString.split(', ');
   const [weekday, dayMonthYear, time] = parts;
-  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonthYearParts = dayMonthYear.split(' ');
   const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
   const year = dayMonthYearParts[2];
   return {
@@ -517,7 +517,7 @@ function splitRequestedDataSourcingDate(date: string): { line1: string; line2: s
   const dateString = dateStringFormatter(date);
   const parts = dateString.split(', ');
   const [weekday, dayMonthYear] = parts;
-  const dayMonthYearParts = dayMonthYear!.split(' ');
+  const dayMonthYearParts = dayMonthYear.split(' ');
   const dayMonth = dayMonthYearParts[0] + ' ' + dayMonthYearParts[1];
   const year = dayMonthYearParts[2];
   return {

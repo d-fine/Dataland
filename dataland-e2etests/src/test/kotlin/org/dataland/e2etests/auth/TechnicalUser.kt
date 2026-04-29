@@ -2,6 +2,8 @@ package org.dataland.e2etests.auth
 
 import org.dataland.e2etests.ADMIN_EXTENDED_ROLES
 import org.dataland.e2etests.ADMIN_USER_ID
+import org.dataland.e2etests.JUDGE_EXTENDED_ROLES
+import org.dataland.e2etests.JUDGE_USER_ID
 import org.dataland.e2etests.MUTUAL_ROLES_DATALAND_USERS
 import org.dataland.e2etests.PREMIUM_USER_EXTENDED_ROLES
 import org.dataland.e2etests.PREMIUM_USER_ID
@@ -20,4 +22,5 @@ enum class TechnicalUser(
     Reader(READER_USER_ID, MUTUAL_ROLES_DATALAND_USERS),
     Reviewer(REVIEWER_USER_ID, MUTUAL_ROLES_DATALAND_USERS + REVIEWER_EXTENDED_ROLES),
     PremiumUser(PREMIUM_USER_ID, MUTUAL_ROLES_DATALAND_USERS + PREMIUM_USER_EXTENDED_ROLES),
+    Judge(JUDGE_USER_ID, MUTUAL_ROLES_DATALAND_USERS + JUDGE_EXTENDED_ROLES),
 }

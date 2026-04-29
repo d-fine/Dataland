@@ -18,4 +18,5 @@ data class DataSourcingPatch(
     val dataExtractor: UUID? = null,
     val adminComment: String? = null,
     val associatedRequests: Set<StoredRequest>? = null,
+    val priority: Int? = null,
 )

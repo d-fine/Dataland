@@ -1,0 +1,35 @@
+---
+
+---
+
+<div class="static-content">
+  <section role="main" class="legal-main">
+    <div class="legal-container">
+      <slot />
+    </div>
+  </section>
+</div>
+
+<style>
+  .static-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+  }
+
+  .legal-main {
+    display: flex;
+    justify-content: center;
+    padding-top: 6.5rem;
+    padding-bottom: 3.25rem;
+  }
+
+  .legal-container {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: left;
+  }
+</style>

@@ -7,18 +7,13 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetReviewState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReportManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetReviewService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewQueryService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -48,9 +43,8 @@ class QaReviewManagerTest {
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
-    private val mockExceptionForwarder: ExceptionForwarder = mock<ExceptionForwarder>()
-    private val mockDataPointQaReportManager: DataPointQaReportManager = mock<DataPointQaReportManager>()
-    private val mockDatasetReviewService: DatasetReviewService = mock<DatasetReviewService>()
+    private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
+    private val mockQaReviewQueryService: QaReviewQueryService = mock<QaReviewQueryService>()
 
     private val bypassQaComment = "Automatically QA approved."
     private val companyId: String = "dummyCompanyId"
@@ -58,8 +52,6 @@ class QaReviewManagerTest {
     private val dataId: String = UUID.randomUUID().toString()
     private val reportingPeriod: String = "dummyReportingPeriod"
     private val uploaderId = "dummyUploaderId"
-    private val dummyUserName = "dummyUserName"
-    private val dummyUserId = "dummyUserId"
 
     private val mockQaReviewEntity = mock<QaReviewEntity> { on { dataId } doReturn dataId }
     private val mockCompanyInformation = mock<CompanyInformation> { on { companyName } doReturn "dummyCompanyName" }
@@ -72,36 +64,6 @@ class QaReviewManagerTest {
             on { reportingPeriod } doReturn reportingPeriod
         }
 
-    private val qaReviewEntity =
-        QaReviewEntity(
-            dataId = dataId,
-            companyId = companyId,
-            companyName = "dummyCompanyName",
-            framework = "dummyFramework",
-            reportingPeriod = reportingPeriod,
-            timestamp = 0L,
-            qaStatus = QaStatus.Pending,
-            triggeringUserId = uploaderId,
-            comment = null,
-        )
-
-    private val datasetReviewResponse =
-        DatasetReviewResponse(
-            dataSetReviewId = UUID.randomUUID().toString(),
-            datasetId = dataId,
-            companyId = companyId,
-            dataType = "dummyFramework",
-            reportingPeriod = reportingPeriod,
-            reviewState = DatasetReviewState.Pending,
-            reviewerUserId = dummyUserId,
-            reviewerUserName = dummyUserName,
-            preapprovedDataPointIds = emptySet(),
-            qaReports = emptySet(),
-            approvedDataPointIds = emptyMap(),
-            approvedQaReportIds = emptyMap(),
-            approvedCustomDataPointIds = emptyMap(),
-        )
-
     private lateinit var qaReviewManager: QaReviewManager
     private lateinit var spyQaReviewManager: QaReviewManager
 
@@ -112,9 +74,8 @@ class QaReviewManagerTest {
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
-            mockExceptionForwarder,
-            mockDataPointQaReportManager,
-            mockDatasetReviewService,
+            mockDataPointQaReviewManager,
+            mockQaReviewQueryService,
         )
         qaReviewManager =
             QaReviewManager(
@@ -123,17 +84,16 @@ class QaReviewManagerTest {
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
                 objectMapper,
-                mockExceptionForwarder,
-                mockDataPointQaReportManager,
-                mockDatasetReviewService,
+                mockDataPointQaReviewManager,
+                mockQaReviewQueryService,
             )
 
         doReturn(mockDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(any())
         doReturn(mockStoredCompany).whenever(mockCompanyDataControllerApi).getCompanyById(any())
         doReturn(mock<QaReviewEntity>()).whenever(mockQaReviewRepository).save(any<QaReviewEntity>())
         doReturn(listOf(mockQaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
+            .whenever(mockQaReviewQueryService)
+            .getAcceptedReviewMetadataSorted(any(), any(), any())
     }
 
     @ParameterizedTest
@@ -146,7 +106,12 @@ class QaReviewManagerTest {
         expectedStatus: QaStatus,
     ) {
         spyQaReviewManager = spy(qaReviewManager)
-        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
+        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(
+            any<QaReviewEntity>(),
+            any(),
+            any(),
+            any(),
+        )
 
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(
@@ -167,6 +132,8 @@ class QaReviewManagerTest {
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
             argCaptor.capture(),
             eq(correlationId),
+            any(),
+            any(),
         )
         Assertions.assertEquals(dataId, argCaptor.firstValue.dataId)
         Assertions.assertEquals(companyId, argCaptor.firstValue.companyId)
@@ -225,42 +192,5 @@ class QaReviewManagerTest {
             )
         }
         Assertions.assertEquals(uploaderId, dummyUploadQaReviewEntity.triggeringUserId)
-    }
-
-    @Test
-    fun `check that QaReviewResponse includes qa report count and reviewer user name`() {
-        doReturn(listOf(qaReviewEntity))
-            .whenever(mockQaReviewRepository)
-            .getSortedAndFilteredQaReviewMetadataset(any(), any(), any())
-        doReturn(mapOf("first" to "dp1", "second" to "dp2"))
-            .whenever(mockMetaDataControllerApi)
-            .getContainedDataPoints(eq(dataId))
-        doReturn(2L)
-            .whenever(mockDataPointQaReportManager)
-            .countQaReportsForDataPointIds(any())
-        doReturn(listOf(datasetReviewResponse))
-            .whenever(mockDatasetReviewService)
-            .getDatasetReviewsByDatasetId(any())
-
-        val responses =
-            AuthenticationMock.withAuthenticationMock(
-                username = "user",
-                userId = uploaderId,
-                roles = setOf(DatalandRealmRole.ROLE_USER),
-            ) {
-                qaReviewManager.getInfoOnDatasets(
-                    dataTypes = setOf(DataTypeEnum.sfdr),
-                    reportingPeriods = setOf(reportingPeriod),
-                    companyName = null,
-                    qaStatus = QaStatus.Pending,
-                    chunkSize = 10,
-                    chunkIndex = 0,
-                )
-            }
-
-        Assertions.assertEquals(1, responses.size)
-        Assertions.assertEquals(2L, responses.first().numberQaReports)
-        Assertions.assertEquals(dummyUserId, responses.first().reviewerUserId)
-        Assertions.assertEquals(dummyUserName, responses.first().reviewerUserName)
     }
 }

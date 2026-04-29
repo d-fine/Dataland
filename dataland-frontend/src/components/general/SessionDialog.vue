@@ -3,13 +3,6 @@
   <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
     <PrimeButton
-      v-if="sessionDialogMode === SessionDialogMode.ExternalLogout"
-      label="Login to account"
-      class="p-button-sm uppercase d-letters w-15rem"
-      name="login_dataland_button_on_session_modal"
-      @click="login"
-    />
-    <PrimeButton
       v-if="
         sessionDialogMode === SessionDialogMode.SessionWarning || sessionDialogMode === SessionDialogMode.SessionClosed
       "
@@ -33,9 +26,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
-import { loginAndRedirectToRedirectPage } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import router from '@/router';
 
 export default defineComponent({
   inject: ['dialogRef'],
@@ -59,9 +50,6 @@ export default defineComponent({
   watch: {
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
-      if (this.sessionDialogMode === SessionDialogMode.ExternalLogout) {
-        void router.push({ path: '/companies', replace: true });
-      }
     },
   },
 
@@ -75,8 +63,6 @@ export default defineComponent({
           return 'Session expires soon';
         case SessionDialogMode.SessionClosed:
           return 'Session closed';
-        case SessionDialogMode.ExternalLogout:
-          return 'You have been logged out';
         default:
           return '';
       }
@@ -88,8 +74,6 @@ export default defineComponent({
           return 'To refresh it, please click on the button below.';
         case SessionDialogMode.SessionClosed:
           return 'Your session has been closed due to inactivity. Login to start a new session.';
-        case SessionDialogMode.ExternalLogout:
-          return 'Do you want to login again?';
         default:
           return '';
       }
@@ -110,19 +94,6 @@ export default defineComponent({
   },
 
   methods: {
-    /**
-     * Sends the user to the keycloak login page
-     */
-    login() {
-      assertDefined(this.getKeycloakPromise)()
-        .then((keycloak) => {
-          if (!keycloak.authenticated) {
-            void loginAndRedirectToRedirectPage(keycloak);
-          }
-        })
-        .catch((error) => console.log(error));
-    },
-
     /**
      * Handles a click on the refresh button.
      */

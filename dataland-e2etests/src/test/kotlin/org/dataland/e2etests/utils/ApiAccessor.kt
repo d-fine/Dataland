@@ -28,6 +28,7 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandqaservice.openApiClient.api.NonSourceabilityQaControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_ACCOUNTING_SERVICE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -64,6 +65,7 @@ class ApiAccessor {
 
     val accountingServiceCreditsControllerApi = CreditsControllerApi(BASE_PATH_TO_ACCOUNTING_SERVICE)
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val nonSourceabilityQaControllerApi = NonSourceabilityQaControllerApi(BASE_PATH_TO_QA_SERVICE)
     val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()

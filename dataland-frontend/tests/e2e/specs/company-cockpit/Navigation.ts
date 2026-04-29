@@ -1,8 +1,10 @@
-import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { fetchTestCompanies, setupCommonInterceptions } from '@e2e/utils/CompanyCockpitPage/CompanyCockpitUtils.ts';
+
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion
@@ -12,6 +14,18 @@ function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
   cy.get('input#company_search_bar_standard').scrollIntoView();
   cy.get('input#company_search_bar_standard').type(searchTerm);
   cy.get('[data-pc-section="list"]').contains(searchTerm).click();
+}
+
+/**
+ * Searches for a specified term in the companies search bar on the landing page and selects the first autocomplete suggestion
+ * @param searchTerm the term to search for
+ */
+function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void {
+  cy.contains('section', 'Search sustainability data by company name or LEI').scrollIntoView();
+  cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
+    cy.get('#company-search-input', { timeout: 10000 }).should('exist').type(searchTerm);
+    cy.contains('#company-search-listbox li[role="option"]', searchTerm, { timeout: 10000 }).click();
+  });
 }
 
 describeIf(
@@ -36,8 +50,8 @@ describeIf(
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
-      searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+      searchCompanyAndChooseFirstSuggestionLanding(alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(
         alphaCompanyIdAndName.companyName
       );
     });
@@ -49,20 +63,15 @@ describeIf(
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
-        'not.contain',
-        `/companies/${alphaCompanyIdAndName.companyId}`
-      );
-      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
-        betaCompanyIdAndName.companyName
-      );
+      cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
     });
 
     it('From the company cockpit page visit a view page', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+      cy.url({ timeout: longTimeoutInMs }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
       );
@@ -70,10 +79,10 @@ describeIf(
     });
 
     it('From the company cockpit page visit an upload page', () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-provide-data-button']`).click();
-      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+      cy.url({ timeout: longTimeoutInMs }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
@@ -83,7 +92,7 @@ describeIf(
       cy.intercept('POST', '**/community/company-ownership/**', {
         statusCode: 200,
       }).as('postCompanyOwnershipRequest');
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedInAsUploader();
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
@@ -100,7 +109,7 @@ describeIf(
       cy.get("[data-test='submitButton']").should('exist').click();
       cy.wait('@postCompanyOwnershipRequest');
       cy.get("[data-test='claimOwnershipDialogSubmittedMessage']", {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       }).should('exist');
       cy.get("[data-test='claimOwnershipDialogMessage']").should('not.exist');
       cy.get("[data-test='closeButton']").should('exist').click();

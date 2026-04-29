@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned",
+  "name" : "Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Nuclear Activities",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ]
+}

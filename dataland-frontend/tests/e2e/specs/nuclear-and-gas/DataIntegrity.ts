@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   type CompanyAssociatedDataNuclearAndGasData,
   Configuration,
@@ -17,7 +17,111 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import EuTaxonomyNuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 let euTaxonomyForNuclearAndGasFixtureForTest: FixtureData<NuclearAndGasData>;
+
+type UploadedDatasetContext = {
+  token: string;
+  companyId: string;
+  dataId: string;
+  dataType: string;
+};
+
+type DatasetsComparisonContext = {
+  datasetFromPrefillRequest: NuclearAndGasData;
+  reuploadedDatasetFromBackend: NuclearAndGasData;
+};
+
+/**
+ * Creates a company, assigns ownership to the admin and uploads the initial Nuclear and Gas dataset.
+ *
+ * @param token keycloak access token
+ * @param testCompanyName name used for the generated dummy company
+ * @returns token, company id, dataset id and dataset type
+ */
+async function createCompanyAndUploadDataset(token: string, testCompanyName: string): Promise<UploadedDatasetContext> {
+  const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+  await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
+  const dataMetaInformation = await uploadFrameworkDataForPublicToolboxFramework(
+    EuTaxonomyNuclearAndGasBaseFrameworkDefinition,
+    token,
+    storedCompany.companyId,
+    '2021',
+    euTaxonomyForNuclearAndGasFixtureForTest.t
+  );
+  return {
+    token,
+    companyId: storedCompany.companyId,
+    dataId: dataMetaInformation.dataId,
+    dataType: dataMetaInformation.dataType,
+  };
+}
+
+/**
+ * Fetches a previously uploaded/reuploaded Nuclear and Gas dataset from backend.
+ *
+ * @param token keycloak access token
+ * @param dataId id of the dataset to fetch
+ * @returns backend dataset payload
+ */
+async function fetchReuploadedDataset(token: string, dataId: string): Promise<NuclearAndGasData> {
+  const axiosResponse = await new NuclearAndGasDataControllerApi(
+    new Configuration({ accessToken: token })
+  ).getCompanyAssociatedNuclearAndGasData(dataId);
+  return axiosResponse.data.data;
+}
+
+/**
+ * Opens the upload form in edit mode and captures the prefilled dataset from the API response.
+ *
+ * @param companyId id of the company
+ * @param dataType data type used in the prefill request endpoint
+ * @param dataId id of the dataset used for template prefill
+ * @param testCompanyName expected company name shown in the header
+ * @returns dataset from the prefill request
+ */
+function openEditFormAndCapturePrefillDataset(
+  companyId: string,
+  dataType: string,
+  dataId: string,
+  testCompanyName: string
+): Cypress.Chainable<NuclearAndGasData> {
+  cy.ensureLoggedInAsAdmin();
+  cy.intercept({
+    url: `api/data/${dataType}/${dataId}`,
+    times: 1,
+  }).as('getDataToPrefillForm');
+  cy.visitAndCheckAppMount(
+    '/companies/' + companyId + '/frameworks/' + DataTypeEnum.NuclearAndGas + '/upload?templateDataId=' + dataId
+  );
+  return cy.wait('@getDataToPrefillForm', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataNuclearAndGasData).data;
+    cy.get('h1').should('contain', testCompanyName);
+    return cy.then(() => datasetFromPrefillRequest);
+  });
+}
+
+/**
+ * Submits the edit form and fetches the resulting reuploaded dataset from backend.
+ *
+ * @param token keycloak access token
+ * @returns reuploaded dataset payload
+ */
+function submitAndFetchReuploadedDataset(token: string): Cypress.Chainable<NuclearAndGasData> {
+  cy.intercept({
+    url: `**/api/data/${DataTypeEnum.NuclearAndGas}?bypassQa=true`,
+    times: 1,
+  }).as('postCompanyAssociatedData');
+  submitButton.clickButton();
+  return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((interception) => {
+    const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+    cy.url().should('eq', getBaseUrl() + '/datasets');
+    isDatasetAccepted();
+    return cy.then(() => fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId));
+  });
+}
+
 before(function () {
   cy.fixture('CompanyInformationWithNuclearAndGasPreparedFixtures.json').then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<NuclearAndGasData>>;
@@ -36,7 +140,7 @@ describeIf(
   },
   function (): void {
     before(() => {
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -46,65 +150,30 @@ describeIf(
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Eu-Taxo-Nuclear-and-Gas-Blanket-Test-' + uniqueCompanyMarker;
 
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadFrameworkDataForPublicToolboxFramework(
-                EuTaxonomyNuclearAndGasBaseFrameworkDefinition,
-                token,
-                storedCompany.companyId,
-                '2021',
-                euTaxonomyForNuclearAndGasFixtureForTest.t
-              ).then((dataMetaInformation) => {
-                let datasetFromPrefillRequest: NuclearAndGasData;
-                cy.ensureLoggedIn(admin_name, admin_pw);
-                cy.intercept({
-                  url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
-                  times: 1,
-                }).as('getDataToPrefillForm');
-                cy.visitAndCheckAppMount(
-                  '/companies/' +
-                    storedCompany.companyId +
-                    '/frameworks/' +
-                    DataTypeEnum.NuclearAndGas +
-                    '/upload?templateDataId=' +
-                    dataMetaInformation.dataId
-                );
-
-                cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                  (interception) => {
-                    datasetFromPrefillRequest = (interception.response?.body as CompanyAssociatedDataNuclearAndGasData)
-                      .data;
-                  }
-                );
-                cy.get('h1').should('contain', testCompanyName);
-                cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.NuclearAndGas}?bypassQa=true`,
-                  times: 1,
-                }).as('postCompanyAssociatedData');
-                submitButton.clickButton();
-                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                  (interception) => {
-                    cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetAccepted();
-                    const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                    return new NuclearAndGasDataControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedNuclearAndGasData(dataMetaInformationOfReuploadedDataset.dataId)
-                      .then((axiosResponse) => {
-                        const reuploadedDatasetFromBackend = axiosResponse.data.data;
-                        compareObjectKeysAndValuesDeep(
-                          datasetFromPrefillRequest as Record<string, object>,
-                          reuploadedDatasetFromBackend as Record<string, object>
-                        );
-                        cy.url().should('eq', getBaseUrl() + '/datasets');
-                        cy.get('[data-test="datasets-table"]').should('be.visible');
-                      });
-                  }
-                );
-              });
-            });
+        getAdminToken()
+          .then((token: string) => {
+            return createCompanyAndUploadDataset(token, testCompanyName);
+          })
+          .then(({ token, companyId, dataId, dataType }) => {
+            return openEditFormAndCapturePrefillDataset(companyId, dataType, dataId, testCompanyName).then(
+              (datasetFromPrefillRequest) => {
+                return submitAndFetchReuploadedDataset(token).then((reuploadedDatasetFromBackend) => {
+                  return {
+                    datasetFromPrefillRequest,
+                    reuploadedDatasetFromBackend,
+                  } as DatasetsComparisonContext;
+                });
+              }
+            );
+          })
+          .then(({ datasetFromPrefillRequest, reuploadedDatasetFromBackend }) => {
+            compareObjectKeysAndValuesDeep(
+              datasetFromPrefillRequest as Record<string, object>,
+              reuploadedDatasetFromBackend as Record<string, object>
+            );
+            cy.url().should('eq', getBaseUrl() + '/datasets');
+            cy.get('[data-test="datasets-table"]').should('be.visible');
           });
-        });
       }
     );
   }

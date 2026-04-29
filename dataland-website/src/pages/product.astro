@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  PRODUCT_PAGE_CONTENT,
+  HOW_IT_WORKS_BLOCKS,
+  GETTING_DATA_BLOCKS,
+  FEATURE_CARDS,
+  USE_CASES,
+  CUSTOMER_STORIES_DETAILED,
+  FRAMEWORK_DOC,
+  API_DOC_LINKS,
+  PRODUCT_APPLICATION_AREAS,
+  MEMBERSHIP_INCLUDED_ITEMS,
+  SHARED_COST_ITEMS,
+  PRODUCT_CREDITS_TABLE,
+} from '../content/product';
+import ProductHeroSection from '../components/page-product/ProductHeroSection.astro';
+import HowItWorksSection from '../components/page-product/HowItWorksSection.astro';
+import GettingDataSection from '../components/page-product/GettingDataSection.astro';
+import PlatformFeaturesSection from '../components/page-product/PlatformFeaturesSection.astro';
+import UseCasesSection from '../components/page-product/UseCasesSection.astro';
+import ProductCustomerStoriesSection from '../components/page-product/ProductCustomerStoriesSection.astro';
+import PricingSection from '../components/page-product/PricingSection.astro';
+import DocumentationSection from '../components/page-product/DocumentationSection.astro';
+import DocumentationCtaSection from '../components/page-product/DocumentationCtaSection.astro';
+---
+
+<Base
+  title="Product - Dataland"
+  description="Explore Dataland's ESG data platform features, frameworks, use cases, and pricing."
+>
+  <ProductHeroSection content={PRODUCT_PAGE_CONTENT.hero} />
+  <HowItWorksSection content={PRODUCT_PAGE_CONTENT.howItWorks} blocks={HOW_IT_WORKS_BLOCKS} />
+  <GettingDataSection content={PRODUCT_PAGE_CONTENT.gettingData} blocks={GETTING_DATA_BLOCKS} />
+  <PlatformFeaturesSection content={PRODUCT_PAGE_CONTENT.features} cards={FEATURE_CARDS} />
+  <UseCasesSection
+    content={PRODUCT_PAGE_CONTENT.useCases}
+    useCases={USE_CASES}
+    applicationAreas={PRODUCT_APPLICATION_AREAS}
+  />
+  <ProductCustomerStoriesSection content={PRODUCT_PAGE_CONTENT.customerStories} stories={CUSTOMER_STORIES_DETAILED} />
+  <PricingSection
+    content={PRODUCT_PAGE_CONTENT.pricing}
+    membershipItems={MEMBERSHIP_INCLUDED_ITEMS}
+    sharedCostItems={SHARED_COST_ITEMS}
+    creditRows={PRODUCT_CREDITS_TABLE}
+  />
+  <DocumentationSection
+    content={PRODUCT_PAGE_CONTENT.documentation}
+    frameworkDoc={FRAMEWORK_DOC}
+    apiLinks={API_DOC_LINKS}
+  />
+  <DocumentationCtaSection content={PRODUCT_PAGE_CONTENT.documentation} />
+</Base>

@@ -21,6 +21,8 @@ import {
 } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Validates the existence of the company search bar
  * @param isSearchBarExpected determines if the existence of the search bar is expected
@@ -51,7 +53,9 @@ describe('Component test for the company cockpit', () => {
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
+    DataTypeEnum.EutaxonomyFinancials202673,
     DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.EutaxonomyNonFinancials202673,
     DataTypeEnum.NuclearAndGas,
     DataTypeEnum.Sfdr,
   ]);
@@ -65,7 +69,7 @@ describe('Component test for the company cockpit', () => {
     cy.clearLocalStorage();
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
-      companyInformationForTest = lksgFixtures[0]!.companyInformation;
+      companyInformationForTest = lksgFixtures[0].companyInformation;
     });
     cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -98,6 +102,11 @@ describe('Component test for the company cockpit', () => {
     frameworksToTest: Set<DataTypeEnum>,
     isCompanyOwner: boolean = false
   ): void {
+    const frameworksWithoutProvideDataButton = new Set([
+      'lksg',
+      'eutaxonomy-financials-2026-73',
+      'eutaxonomy-non-financials-2026-73',
+    ]);
     for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
       const frameworkDataSummary = new Map(Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary)).get(
@@ -122,7 +131,7 @@ describe('Component test for the company cockpit', () => {
         return;
       }
       if (isProvideDataButtonExpected) {
-        if (frameworkName != 'lksg') {
+        if (!frameworksWithoutProvideDataButton.has(frameworkName)) {
           cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
         }
       } else {
@@ -148,7 +157,7 @@ describe('Component test for the company cockpit', () => {
       initiallyDisplayedFrameworks,
       isCompanyOwner
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
     validateDisplayedFrameworkSummaryPanels(
       isProvideDataButtonExpected,
@@ -163,7 +172,7 @@ describe('Component test for the company cockpit', () => {
       initiallyDisplayedFrameworks,
       isCompanyOwner
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 4);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
   }
 
   it('Checks the latest documents', () => {
@@ -173,7 +182,7 @@ describe('Component test for the company cockpit', () => {
     const categoryKeys = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const _ of categoryKeys) {
-      cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+      cy.wait('@fetchDocumentMetadata', { timeout: mediumTimeoutInMs });
     }
     for (const category of categoryKeys) {
       cy.get('[data-test="' + category + '"]')

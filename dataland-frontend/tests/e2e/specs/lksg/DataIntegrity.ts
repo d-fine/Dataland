@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import {
   Configuration,
   type DataMetaInformation,
@@ -18,8 +18,11 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Defines intercepts and submits data on the lksg upload for the lksg blanket test
+ *
  * @param storedCompany stored company information
  * @param dataMetaInformation meta data information
  * @param testCompanyName name of the company
@@ -38,7 +41,7 @@ function interceptsAndSubmitsDataset(
       '/upload?templateDataId=' +
       dataMetaInformation.dataId
   );
-  cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+  cy.wait('@getCompanyInformation', { timeout: mediumTimeoutInMs });
   cy.get('h1').should('contain', testCompanyName);
   cy.intercept({
     url: `**/api/data/${DataTypeEnum.Lksg}*`,
@@ -48,13 +51,27 @@ function interceptsAndSubmitsDataset(
 }
 
 /**
- * Sorts the riskPositions Array by converting the
- * elements into strings and explicitly defining a compare function
+ * Sorts the riskPositions Array
+ *
  * @param riskPositions an array of risk positions
  * @returns sorted riskPositions
  */
 function sortRiskPositions(riskPositions: RiskPositionType[]): RiskPositionType[] {
   return riskPositions.sort((a: RiskPositionType, b: RiskPositionType) => String(a).localeCompare(String(b)));
+}
+
+/**
+ * Fetches only the response status code for a LKSG dataset fetch call.
+ *
+ * @param token keycloak access token
+ * @param dataId id of the dataset to fetch
+ * @returns HTTP status code
+ */
+async function fetchReuploadedDatasetStatus(token: string, dataId: string): Promise<number> {
+  const axiosGetResponse = await new LksgDataControllerApi(
+    new Configuration({ accessToken: token })
+  ).getCompanyAssociatedLksgData(dataId);
+  return axiosGetResponse.status;
 }
 
 describeIf(
@@ -67,77 +84,164 @@ describeIf(
     let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
     let lksgFixtureWithMinimalFields: FixtureData<LksgData>;
 
+    type UploadedLksgContext = {
+      token: string;
+      storedCompany: StoredCompany;
+      dataMetaInformation: DataMetaInformation;
+    };
+
     before(function () {
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         const preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
         lksgFixtureWithMinimalFields = getPreparedFixture('lksg-almost-only-nulls', preparedFixturesLksg);
       });
-      Cypress.env('excludeBypassQaIntercept', true);
+      Cypress.expose('excludeBypassQaIntercept', true);
     });
 
+    /**
+     * Creates a company, optionally assigns ownership and uploads the initial LKSG dataset.
+     *
+     * @param token keycloak access token
+     * @param testCompanyName name used for the generated dummy company
+     * @param fixture prepared fixture used for upload data
+     * @param assignOwnership whether ownership should be assigned to dataland admin
+     * @returns token, stored company and uploaded dataset metadata
+     */
+    async function createCompanyAndUploadDataset(
+      token: string,
+      testCompanyName: string,
+      fixture: FixtureData<LksgData>,
+      assignOwnership: boolean
+    ): Promise<UploadedLksgContext> {
+      const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+      if (assignOwnership) {
+        await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
+      }
+      const dataMetaInformation = await uploadFrameworkDataForPublicToolboxFramework(
+        LksgBaseFrameworkDefinition,
+        token,
+        storedCompany.companyId,
+        '2021',
+        fixture.t
+      );
+      return {
+        token,
+        storedCompany,
+        dataMetaInformation,
+      };
+    }
+
+    /**
+     * Submits the LKSG edit form and returns metadata of the reuploaded dataset.
+     *
+     * @param storedCompany stored company information
+     * @param dataMetaInformation metadata of the dataset used for edit prefill
+     * @param testCompanyName expected company name displayed in the header
+     * @returns metadata of the reuploaded dataset
+     */
+    function submitInEditModeAndGetMeta(
+      storedCompany: StoredCompany,
+      dataMetaInformation: DataMetaInformation,
+      testCompanyName: string
+    ): Cypress.Chainable<DataMetaInformation> {
+      interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
+      return cy.wait('@postCompanyAssociatedData', { timeout: mediumTimeoutInMs }).then((postInterception) => {
+        const dataMetaInformation = postInterception.response?.body as DataMetaInformation;
+        cy.url().should('eq', getBaseUrl() + '/datasets');
+        isDatasetAccepted();
+        return cy.then(() => dataMetaInformation);
+      });
+    }
+
+    /**
+     * Fetches a reuploaded LKSG dataset from backend.
+     *
+     * @param token keycloak access token
+     * @param dataId id of the dataset to fetch
+     * @returns LKSG dataset payload
+     */
+    async function fetchReuploadedDataset(token: string, dataId: string): Promise<LksgData> {
+      const axiosGetResponse = await new LksgDataControllerApi(
+        new Configuration({ accessToken: token })
+      ).getCompanyAssociatedLksgData(dataId);
+      return axiosGetResponse.data.data;
+    }
+
+    /**
+     * Submits the LKSG edit form and fetches the reuploaded dataset from backend.
+     *
+     * @param token keycloak access token
+     * @param storedCompany stored company information
+     * @param dataMetaInformation metadata of the dataset used for edit prefill
+     * @param testCompanyName expected company name displayed in the header
+     * @returns LKSG dataset payload
+     */
+    function submitInEditModeAndFetchReuploadedDataset(
+      token: string,
+      storedCompany: StoredCompany,
+      dataMetaInformation: DataMetaInformation,
+      testCompanyName: string
+    ): Cypress.Chainable<LksgData> {
+      return submitInEditModeAndGetMeta(storedCompany, dataMetaInformation, testCompanyName).then(
+        (dataMetaInformationOfReuploadedDataset) => {
+          return fetchReuploadedDataset(token, dataMetaInformationOfReuploadedDataset.dataId);
+        }
+      );
+    }
+
+    /**
+     * Normalizes order-dependent LKSG fields before deep comparison.
+     *
+     * @param dataset dataset to normalize
+     * @returns normalized dataset
+     */
+    function normalizeLksgDataset(dataset: LksgData): LksgData {
+      dataset.general?.productionSpecific?.specificProcurement?.sort();
+      dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+      dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+      return sortComplaintsRiskObject(dataset);
+    }
+
     afterEach(function () {
-      Cypress.env('excludeBypassQaIntercept', false);
+      Cypress.expose('excludeBypassQaIntercept', false);
     });
 
     it(
       'Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and ' +
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadFrameworkDataForPublicToolboxFramework(
-                LksgBaseFrameworkDefinition,
-                token,
-                storedCompany.companyId,
-                '2021',
-                lksgFixtureWithNoNullFields.t
-              ).then((dataMetaInformation) => {
-                interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
-                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                  (postInterception) => {
-                    cy.url().should('eq', getBaseUrl() + '/datasets');
-                    isDatasetAccepted();
-                    const dataMetaInformationOfReuploadedDataset = postInterception.response
-                      ?.body as DataMetaInformation;
-                    return new LksgDataControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
-                      .then((axiosGetResponse) => {
-                        let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
-                        let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
-
-                        frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
-                        frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                        frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
-                        frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
-
-                        originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
-                        originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                        originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
-                        originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
-
-                        compareObjectKeysAndValuesDeep(
-                          originallyUploadedLksgDataset as unknown as Record<string, object>,
-                          frontendSubmittedLksgDataset as unknown as Record<string, object>,
-                          '',
-                          ['publicationDate']
-                        );
-                      });
-                  }
-                );
-              });
-            });
+        getAdminToken()
+          .then((token: string) => {
+            return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithNoNullFields, true);
+          })
+          .then(({ token, storedCompany, dataMetaInformation }) => {
+            return submitInEditModeAndFetchReuploadedDataset(
+              token,
+              storedCompany,
+              dataMetaInformation,
+              testCompanyName
+            );
+          })
+          .then((frontendSubmittedLksgDataset) => {
+            const normalizedFrontendSubmittedLksgDataset = normalizeLksgDataset(frontendSubmittedLksgDataset);
+            const normalizedOriginallyUploadedLksgDataset = normalizeLksgDataset(lksgFixtureWithNoNullFields.t);
+            compareObjectKeysAndValuesDeep(
+              normalizedOriginallyUploadedLksgDataset as unknown as Record<string, object>,
+              normalizedFrontendSubmittedLksgDataset as unknown as Record<string, object>,
+              '',
+              ['publicationDate']
+            );
           });
-        });
       }
     );
 
     /**
      * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
+     *
      * @param dataset frontend dataset to modify
      * @returns sorted frontend object
      */
@@ -160,33 +264,23 @@ describeIf(
       'Create a company and a Lksg dataset via api with most entries being null and then verify that it can be ' +
         'reuploaded.',
       () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.ensureLoggedInAsAdmin();
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = 'Company-Created-In-Lksg-Minimal-Blanket-Test' + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              LksgBaseFrameworkDefinition,
-              token,
-              storedCompany.companyId,
-              '2021',
-              lksgFixtureWithMinimalFields.t
-            ).then((dataMetaInformation) => {
-              interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
-              cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                (postInterception) => {
-                  cy.url().should('eq', getBaseUrl() + '/datasets');
-                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new LksgDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosGetResponse) => {
-                      assert(axiosGetResponse.status == 200);
-                    });
-                }
-              );
-            });
+        getAdminToken()
+          .then((token: string) => {
+            return createCompanyAndUploadDataset(token, testCompanyName, lksgFixtureWithMinimalFields, false);
+          })
+          .then(({ token, storedCompany, dataMetaInformation }) => {
+            return submitInEditModeAndGetMeta(storedCompany, dataMetaInformation, testCompanyName).then(
+              (dataMetaInformationOfReuploadedDataset) => {
+                return fetchReuploadedDatasetStatus(token, dataMetaInformationOfReuploadedDataset.dataId);
+              }
+            );
+          })
+          .then((statusCode) => {
+            assert(statusCode == 200);
           });
-        });
       }
     );
   }

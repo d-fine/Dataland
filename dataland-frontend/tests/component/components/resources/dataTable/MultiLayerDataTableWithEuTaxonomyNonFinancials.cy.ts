@@ -44,13 +44,13 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           ].includes(it.companyInformation.companyName)
         );
 
-        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0]!.t.revenue?.totalAmount);
+        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0].t.revenue?.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
         revenueOfDatasetAlphaTotalAmount.currency = 'EUR';
 
-        betaCapex = assertDefined(fixturesForTests[1]!.t.capex);
+        betaCapex = assertDefined(fixturesForTests[1].t.capex);
 
-        gammaCapex = assertDefined(fixturesForTests[2]!.t.capex);
+        gammaCapex = assertDefined(fixturesForTests[2].t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
         if (!gammaCapexAlignedActivities.value || gammaCapexAlignedActivities.value.length < 1) {
           throw new Error(
@@ -160,7 +160,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
     const allReports = fixturesForTests.map((it) => assertDefined(it.t.general?.referencedReports));
     const expectedLatestReportingPeriod = allReportingPeriods[0];
-    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0]!)[0];
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0])[0];
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
       dialogOptions: {

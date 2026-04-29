@@ -74,6 +74,24 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
+val normalizeFeCoverageForSonar by tasks.registering {
+    doLast {
+        val feCoverageDir = projectDir.resolve("fe-coverage")
+        if (!feCoverageDir.isDirectory) return@doLast
+
+        feCoverageDir
+            .listFiles { file -> file.name.endsWith(".info") }
+            ?.forEach { reportFile ->
+                val content = reportFile.readText()
+                val normalized =
+                    content
+                        .replace(Regex("""SF:/app/dataland-frontend/"""), "SF:dataland-frontend/")
+                        .replace(Regex("""SF:.*/Dataland/"""), "SF:")
+                reportFile.writeText(normalized)
+            }
+    }
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
@@ -98,7 +116,9 @@ sonar {
                 "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
-                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt",
+                "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
+                "dataland-website/src/**/*.ts," +
+                "dataland-sharedElements/src/footer/TheFooter.vue",
         )
         property(
             "sonar.sources",
@@ -117,13 +137,21 @@ sonar {
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
                 "EutaxonomyFinancialsDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials-2026-73/" +
+                "EutaxonomyFinancials202673DataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials-2026-73/" +
+                "EutaxonomyNonFinancials202673DataFixtures.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasActivityNames.ts," +
+                "dataland-website/src/content/about.ts," +
+                "dataland-website/src/content/product.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials-2026-73/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-non-financials-2026-73/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
@@ -190,11 +218,6 @@ sonar {
             "sonar.exclusions",
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
-                "dataland-frontend/src/components/pages/AboutPage.vue," +
-                "dataland-frontend/src/components/generics/TheNewHeader.vue," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
-                "dataland-frontend/src/components/resources/aboutPage/**," +
-                "dataland-frontend/src/components/resources/newLandingPage/**," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
@@ -216,6 +239,10 @@ sonar {
         property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
         property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
     }
+}
+
+tasks.named("sonar") {
+    dependsOn(normalizeFeCoverageForSonar)
 }
 
 jacoco {

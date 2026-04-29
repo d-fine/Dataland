@@ -102,9 +102,7 @@ class DataRequestUpdateManagerTest {
 
     private fun mockRepos() {
         dummyDataRequestEntitiesWithoutEarlierQaApproval.forEach {
-            doReturn(it)
-                .whenever(mockDataRequestRepository)
-                .findByDataRequestId(it.dataRequestId)
+            doReturn(it).whenever(mockDataRequestRepository).findByDataRequestId(it.dataRequestId)
         }
         doReturn(dummyDataRequestEntityWithdrawn)
             .whenever(mockDataRequestRepository)
@@ -137,9 +135,9 @@ class DataRequestUpdateManagerTest {
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
             .whenever(mockDataRequestRepository)
             .findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = dummyNonSourceableInfo.companyId,
-                dataType = dummyNonSourceableInfo.dataType.toString(),
-                reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
+                datalandCompanyId = dummyNonSourceableInfo.basicDataDimensions.companyId,
+                dataType = dummyNonSourceableInfo.basicDataDimensions.dataType,
+                reportingPeriod = dummyNonSourceableInfo.basicDataDimensions.reportingPeriod,
             )
     }
 
@@ -175,10 +173,8 @@ class DataRequestUpdateManagerTest {
 
     private fun mockMetaDataAndQaReviewResponses() {
         doReturn(dataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(dataMetaInformation.dataId)
-        mockQaReviewResponsesWithoutEarlierApproval =
-            listOf(mock<QaReviewResponse>())
-        mockQaReviewResponsesWithEarlierApproval =
-            listOf(mock<QaReviewResponse>(), mock<QaReviewResponse>())
+        mockQaReviewResponsesWithoutEarlierApproval = listOf(mock<QaReviewResponse>())
+        mockQaReviewResponsesWithEarlierApproval = listOf(mock<QaReviewResponse>(), mock<QaReviewResponse>())
         doReturn(mockQaReviewResponsesWithoutEarlierApproval)
             .whenever(mockQaControllerApi)
             .getInfoOnDatasets(any(), eq(setOf("dummyPeriod")), any(), any(), any(), any())
@@ -191,6 +187,14 @@ class DataRequestUpdateManagerTest {
     }
 
     private fun setupDataRequestUpdateManager() {
+        val dataRequestNonSourceabilityManager =
+            DataRequestNonSourceabilityManager(
+                dataRequestRepository = mockDataRequestRepository,
+                metaDataControllerApi = mockMetaDataControllerApi,
+                requestEmailManager = mockRequestEmailManager,
+                dataRequestSummaryNotificationService = mockDataRequestSummaryNotificationService,
+                dataRequestUpdateUtils = mockDataRequestUpdateUtils,
+            )
         dataRequestUpdateManager =
             DataRequestUpdateManager(
                 dataRequestRepository = mockDataRequestRepository,
@@ -200,6 +204,7 @@ class DataRequestUpdateManagerTest {
                 metaDataControllerApi = mockMetaDataControllerApi,
                 dataRequestUpdateUtils = mockDataRequestUpdateUtils,
                 companyDataControllerApi = mockCompanyDataControllerApi,
+                dataRequestNonSourceabilityManager = dataRequestNonSourceabilityManager,
             )
     }
 
@@ -218,17 +223,10 @@ class DataRequestUpdateManagerTest {
     @BeforeEach
     fun setupMocksAndDummyRequests() {
         reset(
-            mockCompanyInfoService,
-            mockDataRequestLogger,
-            mockDataRequestRepository,
-            mockDataRequestSummaryNotificationService,
-            mockMetaDataControllerApi,
-            mockQaControllerApi,
-            mockRequestEmailManager,
-            mockCompanyDataControllerApi,
-            mockExceptionForwarder,
-            mockMessageRepository,
-            mockRequestStatusRepository,
+            mockCompanyInfoService, mockDataRequestLogger, mockDataRequestRepository,
+            mockDataRequestSummaryNotificationService, mockMetaDataControllerApi,
+            mockQaControllerApi, mockRequestEmailManager, mockCompanyDataControllerApi,
+            mockExceptionForwarder, mockMessageRepository, mockRequestStatusRepository,
         )
         mockRepos()
         mockDataRequestUpdateUtils()

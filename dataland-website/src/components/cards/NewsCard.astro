@@ -1,0 +1,38 @@
+---
+import type { NewsItem } from '../../content/about';
+
+interface Props {
+  item: NewsItem;
+}
+
+const { item } = Astro.props;
+
+const cardClass =
+  'flex flex-col overflow-hidden rounded-xl bg-[var(--color-surface-50)] text-[var(--color-text)] no-underline motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]';
+
+const imageWrapClass = 'relative h-[240px] overflow-hidden bg-[var(--color-surface-200)] sm:h-[260px]';
+
+const imageBlurClass = 'absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-2xl';
+
+const imageClass = 'relative h-full w-full object-cover';
+
+const bodyClass = 'grid flex-1 grid-rows-[4.8rem_auto_auto] px-5 pt-4 pb-5';
+
+const titleClass = 'm-0 text-[1.14rem] font-bold leading-snug';
+
+const dateClass = 'mt-1 text-[0.82rem] text-[var(--color-text-muted)]';
+
+const readMoreClass = 'arrow-link mt-2';
+---
+
+<a href={item.link} target="_blank" rel="noopener noreferrer" class={cardClass}>
+  <div class={imageWrapClass}>
+    <img src={item.image} alt="" class={imageBlurClass} loading="lazy" width="400" height="400" aria-hidden="true" />
+    <img src={item.image} alt="" class={imageClass} loading="lazy" width="400" height="400" />
+  </div>
+  <div class={bodyClass}>
+    <h3 class={titleClass}>{item.title}</h3>
+    <time class={dateClass}>{item.date}</time>
+    <span class={readMoreClass}>Read more &rarr;</span>
+  </div>
+</a>

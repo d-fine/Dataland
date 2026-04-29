@@ -1,6 +1,17 @@
-import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
+import {
+  ensureLoggedInAsAdmin,
+  ensureLoggedInAsJudge,
+  ensureLoggedInAsReader,
+  ensureLoggedInAsReviewer,
+  ensureLoggedInAsUploader,
+  getAdminToken,
+  getKeycloakToken,
+  getReaderToken,
+} from '@e2e/utils/Auth';
 import { browserThen } from '@e2e/utils/Cypress';
 import 'cypress-wait-until';
+
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -8,8 +19,14 @@ declare global {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
       closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
-      ensureLoggedIn: typeof ensureLoggedIn;
+      ensureLoggedInAsReader: typeof ensureLoggedInAsReader;
+      ensureLoggedInAsUploader: typeof ensureLoggedInAsUploader;
+      ensureLoggedInAsReviewer: typeof ensureLoggedInAsReviewer;
+      ensureLoggedInAsJudge: typeof ensureLoggedInAsJudge;
+      ensureLoggedInAsAdmin: typeof ensureLoggedInAsAdmin;
       getKeycloakToken: typeof getKeycloakToken;
+      getReaderToken: typeof getReaderToken;
+      getAdminToken: typeof getAdminToken;
       browserThen: typeof browserThen;
 
       setExceptionContext(context: string | null): void;
@@ -38,15 +55,41 @@ declare global {
   }
 }
 
+const ASTRO_ROUTES = new Set([
+  '/',
+  '/about',
+  '/dataland-community',
+  '/product',
+  '/imprint',
+  '/legal',
+  '/token',
+  '/pricing',
+  '/dataprivacy',
+  '/testimonials',
+  '/partner-stories',
+  '/newsletter',
+  '/success-stories-meag',
+  '/success-stories-nordlb',
+  '/success-stories-ovb',
+]);
 /**
- * Visits a given external admin page URL and verifies that it has loaded successfully, e. g. the Vue #app component exists
- * @param endpoint the endpoint to navigate to via URL
- * @returns Cypress chainable object pointing to the `<body>` element after successful page load and checks
+ * Visits the supplied endpoint, waits for the application root element (`#app`) to be present,
+ * attempts to close the cookie consent banner if it exists, and then returns a Cypress
+ * chainable that yields the `#app` element for further interactions.
+ *
+ * @param endpoint URL or path to visit (e.g. `/admin` or full external URL)
+ * @return Cypress.Chainable<JQuery> a chainable that yields the `#app` element after mount and optional cookie-banner handling
+ * @throws Error if the `#app` element does not appear within `longTimeoutInMs`, causing the Cypress assertion to fail
  */
-export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
+export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable {
   cy.visit(endpoint);
-  cy.get('#app', { timeout: Cypress.env('long_timeout_in_ms') as number }).should('exist');
   closeCookieBannerIfItExists();
+
+  if (ASTRO_ROUTES.has(endpoint)) {
+    return cy.get('main#main-content').should('exist');
+  }
+
+  cy.get('#app', { timeout: longTimeoutInMs }).should('exist');
   return cy.get('#app');
 }
 
@@ -80,7 +123,7 @@ export function visitAndCheckExternalAdminPage(options: {
     containsText,
     urlShouldInclude,
     method = 'GET',
-    timeoutInMs = Cypress.env('long_timeout_in_ms'),
+    timeoutInMs = longTimeoutInMs,
     ignoreExceptions = [],
   } = options;
 
@@ -155,7 +198,7 @@ export function waitForPageLoad(options: {
     elementSelectors = [],
     containsText,
     customCheck,
-    timeout = Cypress.env('long_timeout_in_ms'),
+    timeout = longTimeoutInMs,
     interval = 1000,
     errorMsg = 'Page did not load expected elements within the timeout period',
   } = options;
@@ -194,7 +237,7 @@ function closeCookieBannerIfItExists(): void {
   cy.get('body').then(($body) => {
     const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     if (allowCookies.length == 1) {
-      allowCookies[0]!.click();
+      allowCookies[0].click();
     }
   });
 }
@@ -202,6 +245,12 @@ function closeCookieBannerIfItExists(): void {
 Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
 Cypress.Commands.add('visitAndCheckExternalAdminPage', visitAndCheckExternalAdminPage);
 Cypress.Commands.add('waitForPageLoad', waitForPageLoad);
-Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
+Cypress.Commands.add('ensureLoggedInAsReader', ensureLoggedInAsReader);
+Cypress.Commands.add('ensureLoggedInAsUploader', ensureLoggedInAsUploader);
+Cypress.Commands.add('ensureLoggedInAsReviewer', ensureLoggedInAsReviewer);
+Cypress.Commands.add('ensureLoggedInAsJudge', ensureLoggedInAsJudge);
+Cypress.Commands.add('ensureLoggedInAsAdmin', ensureLoggedInAsAdmin);
 Cypress.Commands.add('getKeycloakToken', getKeycloakToken);
+Cypress.Commands.add('getReaderToken', getReaderToken);
+Cypress.Commands.add('getAdminToken', getAdminToken);
 Cypress.Commands.add('browserThen', browserThen);

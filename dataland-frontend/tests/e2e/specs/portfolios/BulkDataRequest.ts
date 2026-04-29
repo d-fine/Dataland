@@ -1,14 +1,15 @@
-import { admin_name, admin_pw } from '@e2e/utils/Cypress';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import type { Interception } from 'cypress/types/net-stubbing.d.ts';
 import { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
+
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 
 /**
  * Choose reporting periods
@@ -99,16 +100,16 @@ describeIf(
     let permIdOfExistingCompany: string;
     let testCompanyName: string;
     before(() => {
-      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
+      getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
-        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId]![0]);
+        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         testCompanyName = companyToUpload.companyName;
         await uploadCompanyViaApi(token, companyToUpload);
       });
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/bulkdatarequest');
     });
 
@@ -172,7 +173,7 @@ describeIf(
       additionalTodos();
       cy.get('button[type="submit"]').click();
 
-      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+      cy.wait('@postRequestData', { timeout: shortTimeoutInMs }).then((interception) => {
         checkIfIdentifiersProperlyDisplayed(interception);
       });
     }

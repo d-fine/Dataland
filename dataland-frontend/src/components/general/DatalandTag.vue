@@ -118,6 +118,16 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
       return priorityHighTag;
     case RequestPriority.Urgent:
       return priorityUrgentTag;
+    // data sourcing priority
+    case 'sourcing-priority-high':
+      return priorityUrgentTag;
+    case 'sourcing-priority-medium':
+      return priorityHighTag;
+    case 'sourcing-priority-low':
+      return priorityLowTag;
+    case 'sourcing-priority-slate':
+      return stateSlateTag;
+    // request state
     case RequestState.Open:
       return stateAmberTag;
     case RequestState.Processing:
@@ -131,6 +141,7 @@ const designToken: Ref<TagColorDefinition> = computed(() => {
     case DataSourcingState.DocumentSourcingDone:
     case DataSourcingState.DataExtraction:
     case DataSourcingState.DataVerification:
+    case DataSourcingState.NonSourceableVerification:
     case DisplayedState.Validated:
     case DisplayedState.DocumentVerification:
       return stateBlueTag;

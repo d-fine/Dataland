@@ -1,12 +1,12 @@
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import router from '@/router';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_JUDGE, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component test for UserProfileDropDown', () => {
-  it('Checks QA menu item is visible for the reviewer role', () => {
+  it('Checks QA menu item is visible for the judge role', () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
-      roles: [KEYCLOAK_ROLE_REVIEWER],
+      roles: [KEYCLOAK_ROLE_JUDGE],
     });
     cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(UserProfileDropDown, {

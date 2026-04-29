@@ -3,6 +3,6 @@
   "name" : "Scope Of Entities",
   "businessDefinition" : "Are all Group legal entities covered in the reports?",
   "dataPointBaseTypeId" : "extendedEnumYesNoNa",
-  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
   "constraints" : null
 }

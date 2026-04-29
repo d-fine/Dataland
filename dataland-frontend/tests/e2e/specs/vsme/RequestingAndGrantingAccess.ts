@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
-import { getKeycloakToken } from '@e2e/utils/Auth';
+import { getBaseUrl } from '@e2e/utils/Cypress';
+import { getAdminToken } from '@e2e/utils/Auth';
 import { DataTypeEnum, type StoredCompany, type VsmeData } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { uploadVsmeFrameworkData } from '@e2e/utils/FrameworkUpload';
@@ -85,7 +85,7 @@ describeIf(
         vsmeFixtures = jsonContent as Array<FixtureData<VsmeData>>;
       });
 
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getAdminToken().then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
           .then((storedCompany) => {
             storedTestCompany = storedCompany;
@@ -93,7 +93,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeGranted,
-              vsmeFixtures[0]!.t,
+              vsmeFixtures[0].t,
               []
             );
           })
@@ -102,7 +102,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodToBeDeclined,
-              vsmeFixtures[1]!.t,
+              vsmeFixtures[1].t,
               []
             )
           )
@@ -111,7 +111,7 @@ describeIf(
               token,
               storedTestCompany.companyId,
               reportingPeriodWithoutRequest,
-              vsmeFixtures[1]!.t,
+              vsmeFixtures[1].t,
               []
             )
           );
@@ -169,7 +169,7 @@ describeIf(
      * Performs the first steps of the data reader of this test.
      */
     function dataReaderChecksReportingPeriodTableAndCreatesAccessRequests(): void {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       cy.visitAndCheckAppMount('/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme);
       validateSubmitButton(false);
 
@@ -194,7 +194,7 @@ describeIf(
      * Performs the steps of the data admin in its role as the company owner.
      */
     function dataAdminGrantsOneAndDeclinesOneAccessRequest(): void {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/companyrequests');
 
       clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
@@ -216,7 +216,7 @@ describeIf(
      * Performs the last steps of the data reader in this test.
      */
     function dataReaderChecksThatOneReportingPeriodIsVisibleAndTwoReportingPeriodsCanBeRequested(): void {
-      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.ensureLoggedInAsReader();
       cy.visitAndCheckAppMount('/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme);
       validateThatReportingPeriodWithGrantedAccessIsDisplayed();
       clickToRequestMoreReportingPeriodsAndVerifyThatTheCorrectYearsAreDisplayed();

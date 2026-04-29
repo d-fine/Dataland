@@ -6,6 +6,8 @@ import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 describe('Test YesNoBaseDataPointFormField for entries', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
   before(() => {
@@ -18,7 +20,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
     const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
       cy.get('[data-test^="BaseDataPointFormField"] button[data-test="files-to-upload-remove"]', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       })
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
@@ -35,7 +37,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
     const dummyData = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
       cy.get('[data-test="subcontractingCompaniesCountries"]', {
-        timeout: Cypress.env('medium_timeout_in_ms') as number,
+        timeout: mediumTimeoutInMs,
       }).within(() => {
         cy.get('.p-multiselect').first().should('contains.text', 'Germany');
         cy.get('.p-multiselect').first().should('contains.text', 'United Kingdom');
@@ -85,10 +87,10 @@ function mountEditForm(data: LksgData): Cypress.Chainable {
   };
   cy.intercept('**/api/data/lksg/**', dummyCompanyAssociatedData);
   const router = createRouter({
-    routes: [{ path: '/', component: CreateLksgDataset }],
+    routes: [{ path: '/companies', component: CreateLksgDataset }],
     history: createMemoryHistory(),
   });
-  void router.push({ path: '/', query: { reportingPeriod: '2024' } });
+  void router.push({ path: '/companies', query: { reportingPeriod: '2024' } });
 
   const mountingFunction = getMountingFunction({
     router: router,

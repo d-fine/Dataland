@@ -1,3 +1,6 @@
+const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
+
 /**
  * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if
  * the Chrome browser is used to execute this cypress test. For other browsers it skips that part of the test.
@@ -7,7 +10,7 @@ function verifyCreatingApiKeyAndCopyingIt(): void {
   cy.get('div#expiryTime').click();
   cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
   cy.get('button#generateApiKey').click();
-  cy.wait('@generateApiKey', { timeout: Cypress.env('short_timeout_in_ms') as number });
+  cy.wait('@generateApiKey', { timeout: shortTimeoutInMs });
   cy.get('[data-test="apiKeyInfo"]').should('exist');
   cy.get('textarea#newKeyHolder').should('exist');
   cy.get('#existingApiKeyCard').find('span').contains('The API Key has no defined expiry date').should('exist');
@@ -36,7 +39,7 @@ function verifyCreatingApiKeyAndCopyingIt(): void {
  */
 function verifyAlreadyExistingApiKeyState(): void {
   cy.reload(true);
-  cy.wait('@getApiKeyMetaInfoForUser', { timeout: Cypress.env('short_timeout_in_ms') as number });
+  cy.wait('@getApiKeyMetaInfoForUser', { timeout: shortTimeoutInMs });
   cy.url().should('contain', '/api-key');
   cy.get('[data-test="regenerateApiKeyMessage"]').should('exist');
   cy.get('textarea#newKeyHolder').should('not.exist');
@@ -55,11 +58,11 @@ function verifyAlreadyExistingApiKeyState(): void {
 
 describe('As a user I expect my api key will be generated correctly', () => {
   it('Check Api Key functionalities', () => {
-    cy.ensureLoggedIn();
+    cy.ensureLoggedInAsReader();
     cy.intercept('GET', '**/api-keys/getApiKeyMetaInfoForUser*').as('getApiKeyMetaInfoForUser');
     cy.intercept('GET', '**/api-keys/generateApiKey*').as('generateApiKey');
     cy.visitAndCheckAppMount('/api-key');
-    cy.wait('@getApiKeyMetaInfoForUser', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+    cy.wait('@getApiKeyMetaInfoForUser', { timeout: mediumTimeoutInMs });
 
     verifyCreatingApiKeyAndCopyingIt();
 

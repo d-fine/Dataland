@@ -14,6 +14,7 @@ import org.dataland.datasourcingservice.services.DataSourcingManager
 import org.dataland.datasourcingservice.services.DataSourcingValidator
 import org.dataland.datasourcingservice.services.ExistingRequestsManager
 import org.dataland.datasourcingservice.services.RequestDataSourcingAssigner
+import org.dataland.datasourcingservice.utils.DerivedRightsUtilsComponent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
@@ -39,6 +40,7 @@ class DataSourcingManagerTest {
     private val mockDataSourcingRepository = mock<DataSourcingRepository>()
     private val mockExistingRequestsManager = mock<ExistingRequestsManager>()
     private val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
+    private val mockDerivedRightsUtilsComponent = mock<DerivedRightsUtilsComponent>()
 
     private lateinit var dataSourcingManager: DataSourcingManager
     private lateinit var requestDataSourcingAssigner: RequestDataSourcingAssigner
@@ -132,6 +134,7 @@ class DataSourcingManagerTest {
                 dataSourcingRepository = mockDataSourcingRepository,
                 existingRequestsManager = mockExistingRequestsManager,
                 cloudEventMessageHandler = mockCloudEventMessageHandler,
+                derivedRightsUtilsComponent = mockDerivedRightsUtilsComponent,
             )
 
         requestDataSourcingAssigner =
