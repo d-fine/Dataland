@@ -151,9 +151,9 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
-import { useGetRequestByDataRequestIdQuery } from '@/api-queries/data-sourcing/request/useGetRequestByDataRequestId.ts';
+//import { useGetRequestByDataRequestIdQuery } from '@/api-queries/data-sourcing/request/useGetRequestByDataRequestId.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
-import { RequestState } from '@clients/datasourcingservice';
+//import { RequestState } from '@clients/datasourcingservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -183,22 +183,41 @@ function onComparisonTableRowClicked(row: CellRow): void {
   isJudgeDialogOpen.value = true;
 }
 
-const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
-const dataTypeRef = computed(() => datasetReview.value?.dataType);
-const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
-const companyId = computed(() => dataMetaInformation.value?.companyId);
 
-const { data: datasetRequest } = useGetRequestByDataRequestIdQuery(datasetJudgementIdRef);
-const hasValidRequestState = computed(() => {
-  const requestState = datasetRequest.value?.state ?? '';
-  return requestState === RequestState.Processing || requestState === RequestState.Open;
+const {
+  data: datasetReview,
+  isPending: isDatasetReviewPending,
+  isError: isDatasetReviewError,
+} = useDatasetJudgementQuery({
+  datasetJudgementId: datasetJudgementIdRef,
 });
 
-const { data: companyData } = useGetCompanyInformationQuery(companyId);
+const dataIdRef = computed(() => datasetReview.value?.datasetId);
+const dataTypeRef = computed(() => datasetReview.value?.dataType);
+const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
+
+const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
+
+const companyId = computed(() => dataMetaInformation.value?.companyId);
+/*
+const {
+  data: datasetRequest,
+  isPending: isDatasetRequestPending,
+  isError: isDatasetRequestError,
+} = useGetRequestByDataRequestIdQuery(datasetJudgementIdRef);
+const hasValidRequestState = computed(() => {
+  const requestState = datasetRequest.value?.state;
+  return requestState === RequestState.Processing || requestState === RequestState.Open;
+});
+*/
+const {
+  data: companyData,
+  isPending: isCompanyDataPending,
+  isError: isCompanyDataError,
+} = useGetCompanyInformationQuery(companyId);
 const hasAssignedSector = computed(() => {
-  const companySector = companyData.value?.companyInformation.sector ?? '';
-  return companySector != '';
+  return !!companyData.value?.companyInformation.sector;
 });
 
 const objectsWithSamePeriodAndType = computed(() =>
@@ -229,35 +248,30 @@ const isViewingNewestPendingObject = computed(() => {
 
 const reviewWarnings = computed(() => {
   const warnings: string[] = [];
-
-  if (!hasValidRequestState.value) {
+  /*
+  if (!isDatasetRequestPending.value && !isDatasetRequestError.value && !hasValidRequestState.value) {
     warnings.push('The related data request is no longer Open or Processing.');
   }
-
-  if (!hasAssignedSector.value) {
+  */
+  if (!isCompanyDataPending.value && !isCompanyDataError.value && !hasAssignedSector.value) {
     warnings.push('The company has no assigned sector.');
   }
 
-  if (hasAcceptedObjectWithSamePeriodAndType.value) {
-    warnings.push('There is already an accepted dataset with the same reporting period and data type.');
+  if (!isCompanyDataPending.value && !isCompanyDataError.value && hasAcceptedObjectWithSamePeriodAndType.value) {
+    warnings.push('There is already an accepted dataset with the same reporting period and framework.');
   }
 
-  if (hasMultiplePendingObjects.value && !isViewingNewestPendingObject.value) {
+  if (
+    !isCompanyDataPending.value &&
+    !isCompanyDataError.value &&
+    hasMultiplePendingObjects.value &&
+    !isViewingNewestPendingObject.value
+  ) {
     warnings.push('There are multiple pending datasets. You are not reviewing the newest upload.');
   }
 
   return warnings;
 });
-
-const {
-  data: datasetReview,
-  isPending: isDatasetReviewPending,
-  isError: isDatasetReviewError,
-} = useDatasetJudgementQuery({
-  datasetJudgementId: datasetJudgementIdRef,
-});
-
-const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
 const isInitialLoading = computed(() => {
   const hasDataId = !!dataIdRef.value;
