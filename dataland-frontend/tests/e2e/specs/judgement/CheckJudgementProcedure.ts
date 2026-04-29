@@ -1057,6 +1057,11 @@ function verifyJudgementDataStoredCorrectly(
   // CHECK YOU CAN GO TO THE COMPANY ID PAGE
   cy.visit(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`);
 
+  cy.pause();
+  cy.visit(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`);
+
+  cy.pause();
+
   cy.get('tr[data-cell-label="Is NFRD mandatory?"]')
     .find('td')
     .eq(1)
