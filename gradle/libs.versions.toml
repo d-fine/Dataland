@@ -7,7 +7,6 @@ io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 org-springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.2.0" }
-##                                                                           ⬆ = "14.2.0" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 org-sonarqube = { id = "org.sonarqube", version = "7.2.3.7755" }
@@ -19,14 +18,13 @@ org-openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
 ##                                                           ⬆ = "7.21.0" }
 ##                                                           ⬆ = "7.22.0" }
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.54.0" }
-##                                                                           ⬆ = "0.54.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 [versions]
 
-kotlin = "2.0.0"
+kotlin = "2.3.21"
 ##  ⬆ = "2.0.10"
 ##  ⬆ = "2.0.20"
 ##  ⬆ = "2.0.21"
@@ -84,9 +82,7 @@ flyway = "11.20.3"
 ##  ⬆ = "12.5.0"
 cloudevents = "4.0.2"
 itext = "9.6.0"
-## ⬆ = "9.6.0"
 tika = "3.3.0"
-##⬆ = "3.3.0"
 poi = "5.5.1"
 jodconverter = "4.4.11"
 spring-boot = "3.5.11"
@@ -119,12 +115,6 @@ testcontainers = "1.21.4"
 
 # Gradle
 gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.5.0" }
-##                                                                         ⬆ = "9.4.0-milestone-1" }
-##                                                                         ⬆ = "9.4.0-milestone-2" }
-##                                                                         ⬆ = "9.4.0-milestone-3" }
-##                                                                         ⬆ = "9.4.0-milestone-4" }
-##                                                                         ⬆ = "9.4.0-milestone-5" }
-##                                                                         ⬆ = "9.4.1" }
 ##                                                                         ⬆ = "9.5.0-milestone-1" }
 ##                                                                         ⬆ = "9.5.0-milestone-2" }
 ##                                                                         ⬆ = "9.5.0-milestone-3" }
@@ -132,7 +122,6 @@ gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = 
 ##                                                                         ⬆ = "9.5.0-milestone-5" }
 ##                                                                         ⬆ = "9.5.0-milestone-6" }
 ##                                                                         ⬆ = "9.5.0-milestone-7" }
-##                                                                         ⬆ = "9.5.0" }
 ##                                                                         ⬆ = "9.6.0-milestone-1" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
@@ -185,11 +174,11 @@ spring-security-crypto = { module = "org.springframework.security:spring-securit
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 
 # Spring-related
-spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.3.1" }
+spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.1" }
 ##                                                                                                                  ⬆ = "4.3.2" }
 ##                                                                                                                  ⬆ = "5.0.0" }
 ##                                                                                                                  ⬆ = "5.0.1" }
-springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.16" }
+springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.0.3" }
 ##                                                                                                   ⬆ = "2.8.17" }
 ##                                                                                                   ⬆ = "3.0.0" }
 ##                                                                                                   ⬆ = "3.0.1" }
@@ -225,9 +214,7 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-modul
 
 # Commons
 commons-io = { group = "commons-io", name = "commons-io", version = "2.22.0" }
-##                                                             ⬆ = "2.22.0" }
 commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.22.0" }
-##                                                                      ⬆ = "1.22.0" }
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.15.0" }
 
 # PDFBox
@@ -237,7 +224,6 @@ pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.7" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.3.0" }
-##                                                                             ⬆ = "6.3.0" }
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
@@ -250,7 +236,7 @@ testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql",
 awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
-json = { group = "org.json", name = "json", version = "20250517" }
+json = { group = "org.json", name = "json", version = "20251224" }
 ##                                               ⬆ = "20251224" }
 
 # Mailjet
