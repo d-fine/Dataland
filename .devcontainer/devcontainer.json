@@ -17,5 +17,5 @@
   },
   "appPort": ["80:80", "443:443"],
   "forwardPorts": [80, 443],
-  "postCreateCommand": "sudo sh -c 'echo \"127.0.0.1 local-dev.dataland.com dataland-admin\" >> /etc/hosts' && git config --global --add safe.directory /workspaces/agentic-ai-training"
+  "postCreateCommand": "sudo sh -c 'echo \"127.0.0.1 local-dev.dataland.com dataland-admin\" >> /etc/hosts' && git config --global --add safe.directory /workspaces/dataland"
 }
