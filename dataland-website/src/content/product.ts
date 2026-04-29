@@ -129,14 +129,14 @@ export const PRODUCT_PAGE_CONTENT = {
 
 export const FRAMEWORK_DOC = {
   label: 'Framework documentation overview',
-  url: 'https://dev3.dataland.com/api/swagger-ui/index.html',
+  url: 'https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation',
   description:
-    'Test Understand the data frameworks and structures behind Dataland - coverage, field definitions, and supported standards.',
+    'Understand the data frameworks and structures behind Dataland - coverage, field definitions, and supported standards.',
 };
 
 export const API_DOC_LINKS: DocumentationLink[] = [
-  { label: 'Backend API', url: 'https://dev3.dataland.com/api/swagger-ui/index.html' },
-  { label: 'Backend API', url: '/documents/swagger-ui/index.html' },
+  { label: 'Backend API', url: '/api/swagger-ui/index.html' },
+  { label: 'Document Manager', url: '/documents/swagger-ui/index.html' },
   { label: 'Community Manager', url: '/community/swagger-ui/index.html' },
   { label: 'Quality Assurance', url: '/qa/swagger-ui/index.html' },
   { label: 'Users', url: '/users/swagger-ui/index.html' },
