@@ -941,7 +941,7 @@ function finishJudgement(dataSetId: string): void {
   cy.contains('[data-test="qa-review-data-id"]', dataSetId).should('not.exist');
 }
 
-// helper 1
+/** helper 1 */
 function parseJsonValue(raw?: string): string | undefined {
   if (raw == null) return undefined;
   try {
@@ -953,29 +953,8 @@ function parseJsonValue(raw?: string): string | undefined {
   }
 }
 
-// helper 2
-function getOriginalValueForType(dataPointType: DataPointType, fixture: EutaxonomyFinancialsData): string {
-  switch (dataPointType) {
-    case DATA_POINT_TYPES.fiscalYearEnd:
-      return String(fixture.general?.general?.fiscalYearEnd?.value ?? '');
-
-    case DATA_POINT_TYPES.greenAssetRatioTotal:
-      // use the exact path corresponding to this datapoint type in your fixture shape
-      return String(
-        fixture.alignment?.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.total?.grossCarryingAmount
-          ?.value ?? ''
-      );
-
-    case DATA_POINT_TYPES.isNfrdMandatory:
-      return String(fixture.general?.general?.isNfrdMandatory?.value ?? '');
-
-    case DATA_POINT_TYPES.numberOfEmployees:
-      return String(fixture.general?.general?.numberOfEmployees?.value ?? '');
-
-    default:
-      return '';
-  }
-}
+/** helper 2 */
+function getOriginalValueForType(dataPointType: DataPointType, fixture: EutaxonomyFinancialsData): string {}
 
 /** This function returns the selected value for each KPI, based on the indicated AcceptedDataPointSource
  *
@@ -1104,135 +1083,6 @@ function verifyJudgementDataStoredCorrectly(
 
   // after a loop over all KPIs
   cy.log('✓ All judgement data verified successfully in the company framework page');
-}
-
-/**
- * Verifies that the judgement data is correctly stored and displayed on the company framework page.
- * Navigates to the company framework page and checks that all judged data points are displayed
- * with their correct accepted sources and custom values.
- *
- * (@param dataSetId           The id of the dataset that was judged.)
- * (@param judgeToken          Bearer token for the judge user to access the API.)
- *
- * @param overview            DataPointOverview containing data point IDs and configurations.
- * @param scenarios           Array of QA scenario configurations used to validate the stored judgement.
- * @param dataId              The dataset ID to verify on the framework page (used in the URL).
- * @param companyId           The company ID to navigate to the framework page for UI verification.
- * @param frameworkType       The framework type (e.g., 'eutaxonomy-financials', 'sfdr') to construct the URL.
- * @param fixture             The input from JSON file.
- * @returns                   A Cypress.Chainable that resolves after all verifications are complete.
- */
-function verifyJudgementDataStoredCorrectlyOld(
-  overview: DataPointOverview,
-  scenarios: QaScenarioConfig[] = QA_SCENARIO_CONFIG,
-  dataId?: string,
-  companyId?: string,
-  frameworkType?: string,
-  fixture?: EutaxonomyFinancialsData
-): Cypress.Chainable<JQuery<HTMLElement>> {
-  // if (!companyId || !frameworkType) {
-  // cy.log('⚠️  companyId or frameworkType not provided - skipping verification');
-  // return cy.wrap(undefined);
-  // }
-
-  // Build expected values from scenarios and fixture
-  const expectedValuesByType = fixture ? buildExpectedByType(scenarios, fixture) : {};
-
-  cy.visit(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`);
-  // or: cy.visit('https://local-dev.dataland.com/companies/...')
-
-  cy.get('tr[data-cell-label="Is NFRD mandatory?"]')
-    .find('td')
-    .eq(1)
-    .invoke('text')
-    .then((value) => {
-      cy.log(value.trim());
-    });
-
-  cy.pause();
-
-  // 1) Find the KPI row by exact label
-  cy.get('tr[data-cell-label="Is NFRD mandatory?"]').within(() => {
-    // 2) Click the value link in that row (the link that opens the modal)
-    cy.get('a.link').first().click();
-  });
-
-  // 3) In the opened PrimeVue dialog, read the value at the right of "Value"
-  cy.get('.p-dialog:visible').within(() => {
-    cy.contains('th .table-left-label', 'Value')
-      .closest('tr')
-      .find('td')
-      .invoke('text')
-      .then((modalValue) => {
-        const extracted = modalValue.trim();
-        const expectedValue = expectedValuesByType[DATA_POINT_TYPES.isNfrdMandatory];
-        cy.log(`Value from popup = ${extracted}`);
-        cy.log(`Expected value = ${expectedValue}`);
-
-        expect(extracted).to.equal(expectedValue);
-      });
-  });
-
-  cy.pause();
-
-  cy.get('tr[data-cell-label]').each(($row) => {
-    const label = $row.attr('data-cell-label')?.trim();
-
-    const uiValue = $row.find('td').eq(1).text().trim();
-
-    cy.log(`label: ${label}, UI value: ${uiValue}`);
-  });
-
-  // Navigate to company framework page to verify UI displays the judged data correctly
-  cy.log(`Navigating to company framework page: /companies/${companyId}/frameworks/${frameworkType}`);
-
-  cy.request({
-    url: `/companies/${companyId}/frameworks/${frameworkType}/${dataId}`,
-    failOnStatusCode: false,
-  })
-    .its('status')
-    .should('eq', 200); // or .should('be.oneOf', [200, 301, 302])
-
-  cy.log(`The page does exist.`);
-  cy.pause();
-
-  return cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${frameworkType}/${dataId}`).then(() => {
-    cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
-    cy.log('✓ Framework page loaded and data table is visible');
-    cy.pause();
-
-    // Verify each data point judgement matches the expected scenario configuration
-    scenarios.forEach((scenario) => {
-      const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
-      if (!dataPointId) {
-        cy.log(`Skipping verification for ${scenario.dataPointType} - no data point ID found`);
-        return;
-      }
-
-      cy.log(`Verifying data point ${dataPointId} (type: ${scenario.dataPointType}) - press continue`);
-      cy.pause();
-
-      // Verify the accepted source is displayed correctly
-      verifyAcceptedSourceInUI(dataPointId, scenario.judgement.acceptedSource);
-
-      // Verify custom value if expected
-      if (scenario.judgement.customDataPoint) {
-        verifyCustomValueInUI(dataPointId, scenario.judgement.customDataPoint);
-        cy.log(`✓ Custom value verified for ${dataPointId}`);
-      }
-
-      cy.log(`✓ Data point ${dataPointId} verification passed`);
-    });
-
-    // Verify data points without QA reports are displayed as accepted original
-    Object.entries(overview.dataPointsWithoutQaReports).forEach(([dataPointType, dataPointId]) => {
-      cy.log(`Verifying data point without QA: ${dataPointId} (type: ${dataPointType})`);
-      verifyAcceptedSourceInUI(dataPointId, AcceptedDataPointSource.Original);
-      cy.log(`✓ Data point ${dataPointId} (no QA) verification passed`);
-    });
-
-    cy.log('✓ All judgement data verified successfully in the company framework page');
-  });
 }
 
 /**
