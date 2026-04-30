@@ -220,50 +220,6 @@ describeIf(
       })
     );
 
-    // This test is only a debug helper which can be deleted later
-    it.skip('debug judge modal selectors', () => {
-      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
-        // 1) Compute the type + id for "Number of Employees"
-        const typeId = DATA_POINT_TYPES.numberOfEmployees;
-        const dataPointId = overview.dataPointsWithQaReports[typeId] ?? overview.dataPointsWithoutQaReports[typeId];
-
-        // 2) Click the KPI row to open the judge modal
-        cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
-
-        // 3) Now run the selector checks on the modal
-        selectNextDataPointToJudge(typeId);
-        goToSelectedDataPoint();
-
-        // 4) Set up intercept BEFORE making the judgement decision
-        cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointId}**`).as('patchDatapoint');
-
-        // 5) Wait for all QA reports to be loaded in the modal
-        const qaConfig = QA_SCENARIO_CONFIG.find((config) => config.dataPointType === typeId);
-        const expectedQaReportCount = qaConfig?.qaReports.length ?? 0;
-
-        if (expectedQaReportCount > 0) {
-          // Wait for the nav count to match the expected number of QA reports
-          cy.get('[data-test="corrected-datapoint-section"]')
-            .contains(`(1 / ${expectedQaReportCount})`)
-            .should('exist');
-        }
-
-        // 6) Get the judgement config and make the decision (this handles all UI interactions)
-        const judgement = qaConfig?.judgement;
-        if (judgement) {
-          makeJudgementDecision(judgement);
-        }
-        cy.log(`makeJudgementDecision ran successfully!`);
-
-        // 7) Wait for the PATCH and verify the request body
-        cy.wait('@patchDatapoint').then((interception) => {
-          if (judgement) {
-            checkPATCHDataPointsCalledCorrectly(interception, judgement);
-          }
-        });
-      });
-    });
-
     it('Check creating a Judgement and reassigning the Judge works as expected', () => {
       const dataSetId = uploadedDataMetaInfo.dataId;
       checkoutDataset(dataSetId);
@@ -271,7 +227,7 @@ describeIf(
       changeJudgeAssignment(dataSetId);
     });
 
-    it('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
+    it.only('Check judge modal selects expected values and stores them after finishing review', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
@@ -290,10 +246,18 @@ describeIf(
           expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
         });
 
-        // cy.pause();
+        cy.log(`here we are`);
+        cy.pause();
 
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+
+        cy.log(`overview: ${JSON.stringify(overview)}`);
+        cy.log(`overview: ${JSON.stringify(overview.dataPointsWithQaReports)}`);
+        cy.log(`overview: ${JSON.stringify(overview.dataPointsWithoutQaReports)}`);
+        cy.pause();
+
         verifyJudgementDataStoredCorrectly(
+          overview,
           QA_SCENARIO_CONFIG,
           euTaxonomyData.t,
           storedCompany.companyId,
@@ -991,17 +955,147 @@ function parseJsonValue(raw?: string): string | undefined {
  * @param dataPointType
  * @param data
  */
-function extractValueForType(dataPointType: DataPointType, data: EutaxonomyFinancialsData): string {
-  if (dataPointType === DATA_POINT_TYPES.fiscalYearEnd) {
-    return String(data.general?.general?.fiscalYearEnd?.value ?? '');
+function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsData): string {
+  switch (dataPointType) {
+    case DATA_POINT_TYPES.fiscalYearEnd:
+      return String(data.general?.general?.fiscalYearEnd?.value ?? '');
+    case DATA_POINT_TYPES.isNfrdMandatory:
+      return String(data.general?.general?.isNfrdMandatory?.value ?? '');
+    case DATA_POINT_TYPES.numberOfEmployees:
+      return String(data.general?.general?.numberOfEmployees?.value ?? '');
+    case 'extendedEnumFiscalYearDeviation':
+      return String(data.general?.general?.fiscalYearDeviation?.value ?? '');
+    case 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports':
+      return String(data.general?.general?.areAllGroupEntitiesCovered?.value ?? '');
+
+    case DATA_POINT_TYPES.greenAssetRatioTotal:
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.value ?? ''
+      );
+
+    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible':
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
+          ?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible?.value ?? ''
+      );
+
+    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned':
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
+          ?.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned?.value ?? ''
+      );
+
+    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds':
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
+          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds?.value ?? ''
+      );
+
+    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional':
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
+          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional?.value ?? ''
+      );
+
+    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling':
+      return String(
+        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
+          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling?.value ?? ''
+      );
   }
-  if (dataPointType === DATA_POINT_TYPES.greenAssetRatioTotal) {
-    return String(data.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.value ?? '');
+  // Ensure a string is always returned for any (possibly unknown) dataPointType
+  return '';
+}
+
+// Generic KPI extraction utility: traverses the fixture and returns dotted-path
+// KPI name / value pairs for any node that has an own "value" property.
+type KPI = { name: string; value: string | number | null };
+
+/**
+ * Extract KPI name/value pairs from an arbitrary fixture.
+ * A KPI node is any object that has an own `value` property.
+ */
+function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArrayIndex?: boolean }): KPI[] {
+  const out: KPI[] = [];
+  const root =
+    options?.rootKey &&
+    fixture &&
+    typeof fixture === 'object' &&
+    options.rootKey in (fixture as Record<string, unknown>)
+      ? (fixture as Record<string, unknown>)[options.rootKey]
+      : fixture;
+
+  const normalize = (v: unknown): string | number | null => {
+    if (v === null || v === undefined) return null;
+    if (typeof v === 'number') return v;
+    if (typeof v === 'string') return v;
+    if (typeof v === 'boolean') return String(v);
+    try {
+      return JSON.stringify(v);
+    } catch {
+      return null;
+    }
+  };
+
+  /**
+   * If `node` contains a value property, push it to the result and return true.
+   */
+  function pushIfValue(node: unknown, path: string[]): boolean {
+    if (node == null || typeof node !== 'object') return false;
+    if (!Object.prototype.hasOwnProperty.call(node, 'value')) return false;
+
+    const nodeRec = node as Record<string, unknown>;
+    let v = nodeRec['value'];
+
+    // prefer inner .value when present and primitive-ish
+    if (v && typeof v === 'object' && Object.prototype.hasOwnProperty.call(v, 'value')) {
+      const inner = (v as Record<string, unknown>)['value'];
+      if (
+        inner === null ||
+        inner === undefined ||
+        typeof inner === 'number' ||
+        typeof inner === 'string' ||
+        typeof inner === 'boolean'
+      ) {
+        v = inner;
+      }
+    }
+
+    out.push({ name: path.join('.'), value: normalize(v) });
+    return true;
   }
-  if (dataPointType === DATA_POINT_TYPES.isNfrdMandatory) {
-    return String(data.general?.general?.isNfrdMandatory?.value ?? '');
+
+  /**
+   * Recursively walk the fixture tree and collect KPI nodes.
+   */
+  function walk(node: unknown, path: string[]): void {
+    if (node == null) return;
+    if (pushIfValue(node, path)) return;
+
+    if (Array.isArray(node)) {
+      node.forEach((item, idx) => {
+        if (options?.includeArrayIndex) {
+          path.push(String(idx));
+          walk(item, path);
+          path.pop();
+        } else {
+          walk(item, path);
+        }
+      });
+      return;
+    }
+
+    if (typeof node === 'object') {
+      for (const key of Object.keys(node as Record<string, unknown>)) {
+        path.push(key);
+        walk((node as Record<string, unknown>)[key], path);
+        path.pop();
+      }
+    }
   }
-  return String(data.general?.general?.numberOfEmployees?.value ?? '');
+
+  walk(root, []);
+  return out;
 }
 
 /** This function returns the selected value for each KPI, based on the indicated AcceptedDataPointSource
@@ -1018,7 +1112,19 @@ function buildExpectedByType(
 
   const result = {} as Record<DataPointType, string>;
 
-  (Object.values(DATA_POINT_TYPES) as DataPointType[]).forEach((dataPointType) => {
+  // Determine which KPI types actually appear in the fixture by checking
+  // whether extractValueForType returns a non-empty value. This ensures we
+  // consider every KPI present in the fixture. If none are detectable, fall
+  // back to the full set of known DATA_POINT_TYPES for backward compatibility.
+  const allTypes = Object.values(DATA_POINT_TYPES) as DataPointType[];
+  const presentTypes = allTypes.filter((t) => {
+    const v = extractValueForType(t, fixture);
+    return v != null && v !== '';
+  });
+
+  const typesToConsider = presentTypes.length > 0 ? presentTypes : allTypes;
+
+  typesToConsider.forEach((dataPointType) => {
     const originalValue = extractValueForType(dataPointType, fixture);
     const scenario = scenarioByType.get(dataPointType);
 
@@ -1050,13 +1156,119 @@ function buildExpectedByType(
     result[dataPointType] = originalValue;
   });
 
+  // Also include any KPIs found in the fixture that are not represented by a
+  // DataPointType entry. This ensures the returned map contains keys for
+  // dotted-path KPIs (e.g. "general.general.fiscalYearEnd") so callers that
+  // inspect fixture-level KPIs can find the original values.
+  try {
+    const fixtureKpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
+    fixtureKpis.forEach((k) => {
+      const asMap = result as Record<string, string>;
+      if (!Object.prototype.hasOwnProperty.call(asMap, k.name)) {
+        asMap[k.name] = k.value == null ? '' : String(k.value);
+      }
+    });
+  } catch {
+    // If extraction fails for any reason, silently continue and return the
+    // DataPointType-based result as before.
+  }
+
   return result;
+}
+
+type MyMap = Record<string, string>;
+
+/** buildMyMap
+ *
+ */
+function buildMyMap(): MyMap {
+  return {
+    extendedDateFiscalYearEnd: 'general.general.fiscalYearEnd',
+    extendedEnumYesNoIsNfrdMandatory: 'general.general.isNfrdMandatory',
+    extendedDecimalNumberOfEmployees: 'general.general.numberOfEmployees',
+    extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports: 'general.general.areAllGroupEntitiesCovered',
+    extendedEnumFiscalYearDeviation: 'general.general.fiscalYearDeviation',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalGrossCarryingAmount',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
+
+    extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling:
+      'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
+  };
+}
+
+// /**
+//  * Supports dot notation paths like:
+//  * "general.general.fiscalYearEnd"
+//  */
+// function getNestedValue(obj: any, path: string): any {
+//   return path.split('.').reduce((acc, part) => {
+//     if (acc && typeof acc === 'object') {
+//       return acc[part];
+//     }
+//     return undefined;
+//   }, obj);
+// }
+
+/**
+ *
+ * @param extracted_KPIs
+ */
+function toKpiMap(extracted_KPIs: KPI[]): Record<string, string | number | null> {
+  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value as string | number | null])) as Record<
+    string,
+    string | number | null
+  >;
+}
+
+/** resolveExpectedValue
+ *
+ * @param key
+ * @param expectedValuesByType
+ * @param kpis
+ * @param myMap
+ */
+function resolveExpectedValue(
+  key: string,
+  expectedValuesByType: Record<string, string>,
+  // fixture: EutaxonomyFinancialsData,
+  kpis: KPI[],
+  myMap: MyMap
+): string {
+  if (key in expectedValuesByType) {
+    return expectedValuesByType[key];
+  }
+
+  const fixturePath = myMap[key];
+  if (!fixturePath) {
+    throw new Error(`No mapping found for key: ${key}`);
+  }
+
+  const kpiMap = toKpiMap(kpis);
+
+  // const value = getNestedValue(fixture, fixturePath);
+  const value = kpiMap[fixturePath];
+
+  return value !== undefined && value !== null ? String(value) : '';
 }
 
 /**
  * Verifies that after finishing the judgement, the active dataset returned by the backend API
  * contains the expected values for each data point based on its accepted source.
  *
+ * @param overview
  * @param scenarios        QA scenario configurations defining accepted sources and expected values.
  * @param fixture          The original fixture data uploaded before the judgement.
  * @param companyId        The company ID used to query the active dataset.
@@ -1064,19 +1276,36 @@ function buildExpectedByType(
  * @param judgeToken       Bearer token for authentication.
  */
 function verifyJudgementDataStoredCorrectly(
+  overview: DataPointOverview,
   scenarios: QaScenarioConfig[],
   fixture: EutaxonomyFinancialsData,
   companyId: string,
   reportingPeriod: string,
   judgeToken: string
 ): void {
+  cy.log(`scenarios: ${JSON.stringify(scenarios)}`);
+  cy.pause();
+
+  cy.log(`fixture: ${JSON.stringify(fixture)}`);
+  cy.pause();
+
+  // Extract and log all KPI name/value pairs found in the fixture
+  const kpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
+  cy.log(`extracted KPIs (${kpis.length}): ${JSON.stringify(kpis)}`);
+
+  cy.pause();
+  // const fixtureTypes = allTypes.filter((t) => hasFieldForType(t, fixture));
+  // cy.log(`fixtureTypes: ${JSON.}`)
+
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
   cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
 
-  // cy.pause();
+  cy.pause();
 
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
+
+  const myMap = buildMyMap();
 
   cy.request({
     method: 'GET',
@@ -1087,11 +1316,18 @@ function verifyJudgementDataStoredCorrectly(
     expect(response.status, 'GET eutaxonomy-financials status').to.eq(200);
     const data = (response.body as { data: EutaxonomyFinancialsData }).data;
 
-    (Object.values(DATA_POINT_TYPES) as DataPointType[]).forEach((dataPointType) => {
-      const expected = expectedValuesByType[dataPointType];
-      const actual = extractValueForType(dataPointType, data);
-      cy.log(`[verify] ${dataPointType}: expected="${expected}", actual="${actual}"`);
-      expect(actual, `stored value for ${dataPointType}`).to.eq(expected);
+    const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
+
+    cy.log(`flatOverview: ${JSON.stringify(flatOverview)}`);
+    cy.pause();
+
+    Object.keys(flatOverview).forEach((key) => {
+      // const expected = (expectedValuesByType as Record<string, string>)[key];
+      const expected = resolveExpectedValue(key, expectedValuesByType, kpis, myMap);
+      const actual = extractValueForType(key, data);
+      cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
+      expect(actual, `stored value for ${key}`).to.eq(expected);
+      cy.pause();
     });
   });
 }
