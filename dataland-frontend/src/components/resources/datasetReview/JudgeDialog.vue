@@ -344,7 +344,6 @@ const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
   if (isPatching.value) return true;
   if (allQaReports.value.length === 0) return true;
   if (!currentQaReport.value) return true;
-  if (currentQaReport.value.verdict !== QaReportDataPointVerdict.QaAccepted) return true;
   if (!currentQaReport.value.correctedData) return true;
   return false;
 });
