@@ -3,6 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": [
     "--name", "opencode-devcontainer",
+    "--workdir", "/workspaces/dataland"
   ],
   "containerUser": "vscode",
   "remoteUser": "vscode",
