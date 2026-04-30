@@ -135,14 +135,14 @@ export const FRAMEWORK_DOC = {
 };
 
 export const API_DOC_LINKS: DocumentationLink[] = [
-  { label: 'Backend API', url: 'https://dataland.com/api/swagger-ui/index.html' },
-  { label: 'Document Manager', url: 'https://dataland.com/documents/swagger-ui/index.html' },
-  { label: 'Community Manager', url: 'https://dataland.com/community/swagger-ui/index.html' },
-  { label: 'Quality Assurance', url: 'https://dataland.com/qa/swagger-ui/index.html' },
-  { label: 'Users', url: 'https://dataland.com/users/swagger-ui/index.html' },
-  { label: 'Data Sourcing', url: 'https://dataland.com/data-sourcing/swagger-ui/index.html' },
-  { label: 'Accounting', url: 'https://dataland.com/accounting/swagger-ui/index.html' },
-  { label: 'Specifications', url: 'https://dataland.com/specifications/swagger-ui/index.html' },
+  { label: 'Backend API', url: '/api/swagger-ui/index.html' },
+  { label: 'Document Manager', url: '/documents/swagger-ui/index.html' },
+  { label: 'Community Manager', url: '/community/swagger-ui/index.html' },
+  { label: 'Quality Assurance', url: '/qa/swagger-ui/index.html' },
+  { label: 'Users', url: '/users/swagger-ui/index.html' },
+  { label: 'Data Sourcing', url: '/data-sourcing/swagger-ui/index.html' },
+  { label: 'Accounting', url: '/accounting/swagger-ui/index.html' },
+  { label: 'Specifications', url: '/specifications/swagger-ui/index.html' },
 ];
 
 export const FEATURE_CARDS: FeatureCard[] = [
