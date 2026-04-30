@@ -2,8 +2,11 @@
   "name": "Dataland Development",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": [
-    "--name", "opencode-devcontainer"
+    "--name", "opencode-devcontainer",
   ],
+  "containerUser": "vscode",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker": {
       "dockerDashComposeVersion": "v2"
