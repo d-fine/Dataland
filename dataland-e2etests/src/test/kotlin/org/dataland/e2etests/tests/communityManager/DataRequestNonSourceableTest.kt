@@ -64,8 +64,6 @@ class DataRequestNonSourceableTest {
             dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
             reportingPeriod = "2023",
             reason = "This dataset is non-sourceable.",
-            bypassQa = true,
-            currentlyActive = true,
         )
 
     private fun postTwoDataRequestForSameUserAndReturnRequestIds(): Pair<UUID, UUID> {
@@ -103,7 +101,11 @@ class DataRequestNonSourceableTest {
 
     private fun postSourceabilityInfo(sourceabilityInfo: NonSourceabilityRequest) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(sourceabilityInfo)
+        apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
+            nonSourceabilityRequest = sourceabilityInfo,
+            bypassQa = true,
+            currentlyActive = true,
+        )
     }
 
     @Test
@@ -143,8 +145,6 @@ class DataRequestNonSourceableTest {
                 dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
                 reportingPeriod = "2024",
                 reason = "This dataset is non-sourceable.",
-                bypassQa = true,
-                currentlyActive = true,
             )
 
         postSourceabilityInfo(sourceabilityInfoRequest2024)

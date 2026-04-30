@@ -166,12 +166,14 @@ class MetaDataController(
 
     override fun postNonSourceabilityOfADataset(
         nonSourceabilityRequest: NonSourceabilityRequest,
+        bypassQa: Boolean,
+        currentlyActive: Boolean,
     ): ResponseEntity<NonSourceabilityInformationResponse> {
         val authentication = DatalandAuthentication.fromContext()
-        if (nonSourceabilityRequest.bypassQa && !authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)) {
+        if (bypassQa && !authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)) {
             throw AccessDeniedException("bypassQa=true requires ROLE_ADMIN.")
         }
-        val result = nonSourceabilityInformationManager.processNonSourceabilityRequest(nonSourceabilityRequest)
+        val result = nonSourceabilityInformationManager.processNonSourceabilityRequest(nonSourceabilityRequest, bypassQa, currentlyActive)
         return ResponseEntity.ok(result.response)
     }
 
