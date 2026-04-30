@@ -1,6 +1,9 @@
 {
   "name": "Dataland Development",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "runArgs": [
+    "--name", "opencode-devcontainer"
+  ],
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker": {
       "dockerDashComposeVersion": "v2"
