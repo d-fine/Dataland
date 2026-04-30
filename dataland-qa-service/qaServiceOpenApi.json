@@ -7400,11 +7400,11 @@
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "type": "number"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/AmountWithCurrency"
+          },
+          "relativeShareInPercent": {
+            "type": "number"
           }
         }
       },
@@ -7576,11 +7576,11 @@
               "type": "string"
             }
           },
-          "share": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
-          },
           "relativeEligibleShareInPercent": {
             "type": "number"
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number"
@@ -7656,26 +7656,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673CapexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -7790,26 +7782,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673OpexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -7869,26 +7853,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673RevenueAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },

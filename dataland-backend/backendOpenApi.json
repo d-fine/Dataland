@@ -16926,10 +16926,6 @@
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
@@ -16937,6 +16933,10 @@
                 "$ref": "#/components/schemas/AmountWithCurrency"
               }
             ]
+          },
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -16975,6 +16975,10 @@
               "type": "string"
             }
           },
+          "relativeEligibleShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
           "share": {
             "nullable": true,
             "allOf": [
@@ -16982,10 +16986,6 @@
                 "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
               }
             ]
-          },
-          "relativeEligibleShareInPercent": {
-            "type": "number",
-            "nullable": true
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number",
@@ -17132,7 +17132,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17141,14 +17141,6 @@
       "EutaxonomyNonFinancials202673CapexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
@@ -17156,17 +17148,12 @@
                 "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
+          },
+          "relativeShareInPercent": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -17452,7 +17439,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17461,14 +17448,6 @@
       "EutaxonomyNonFinancials202673OpexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
@@ -17476,17 +17455,12 @@
                 "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
+          },
+          "relativeShareInPercent": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -17621,7 +17595,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
               }
             ]
           }
@@ -17630,14 +17604,6 @@
       "EutaxonomyNonFinancials202673RevenueAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
@@ -17645,17 +17611,12 @@
                 "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
+          },
+          "relativeShareInPercent": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -22710,15 +22671,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
           "companyName": {
             "type": "string",
             "description": "The official name of the company.",
             "example": "ABC Corporation"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
