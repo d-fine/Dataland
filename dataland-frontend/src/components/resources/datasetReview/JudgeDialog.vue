@@ -199,6 +199,7 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
+  availableDocuments?: DocumentOption[]; //this is removed
 }>();
 
 const emit = defineEmits<{
@@ -211,22 +212,33 @@ const errorModalHeader = ref('Error updating data point');
 const errorModalMessage = ref('Failed to update data point judgement.');
 const errorModalDetails = ref<string | undefined>(undefined);
 
+// ===== Dataset review =====
+
+const datasetJudgementId = computed(() => props.datasetReviewId);
+const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
+
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
-
 // available company documents from query
+//*
 const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
 const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo?.value ?? [];
+  const availableDocuments3 = props.availableDocuments ?? [];
   return docs
-    .filter(
-      (doc: DocumentMetaInfoResponse) =>
-        doc.reportingPeriod == null || doc.reportingPeriod === datasetJudgement.value?.reportingPeriod
-    )
+    .filter((doc: DocumentMetaInfoResponse) => {
+      if (doc.reportingPeriod == null) {
+        return true;
+      } else if (datasetJudgement.value?.reportingPeriod != undefined) {
+        return parseInt(doc.reportingPeriod) >= parseInt(datasetJudgement.value?.reportingPeriod);
+      } else {
+        return true;
+      }
+    })
     .map((doc: DocumentMetaInfoResponse) => {
       const label = doc.documentName ?? doc.documentId;
-      return {
+      return <DocumentOption>{
         label: label,
         value: label,
         dataSource: {
@@ -235,13 +247,10 @@ const availableDocuments = computed<DocumentOption[]>(() => {
           publicationDate: doc.publicationDate ?? null,
         },
       };
-    });
+    })
+    .concat(availableDocuments3);
 });
-
-// ===== Dataset review =====
-
-const datasetJudgementId = computed(() => props.datasetReviewId);
-const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
+// */
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgementDetailsForDataPointMutation();
