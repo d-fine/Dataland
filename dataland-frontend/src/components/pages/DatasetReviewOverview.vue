@@ -151,12 +151,9 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
-import {
-  type GetStoredDataRequestsQueryParams,
-  useGetStoredDataRequestsQuery,
-} from '@/api-queries/community/request/useGetRequestsQuery.ts';
+//import { useGetRequestByDataRequestIdQuery } from '@/api-queries/data-sourcing/request/useGetRequestByDataRequestId.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
-import { RequestStatus } from '@clients/communitymanager';
+//import { RequestState } from '@clients/datasourcingservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -203,21 +200,17 @@ const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
 const companyId = computed(() => dataMetaInformation.value?.companyId);
-const filters = ref<GetStoredDataRequestsQueryParams>({
-  dataType: [dataTypeRef.value],
-  datalandCompanyId: companyId.value,
-  reportingPeriods: [reportingPeriodRef.value],
-});
-
+/*
 const {
   data: datasetRequest,
   isPending: isDatasetRequestPending,
   isError: isDatasetRequestError,
-} = useGetStoredDataRequestsQuery(filters);
+} = useGetRequestByDataRequestIdQuery(datasetJudgementIdRef);
 const hasValidRequestState = computed(() => {
-  return datasetRequest.value?.some((request) => request.requestStatus === RequestStatus.Open) ?? false;
+  const requestState = datasetRequest.value?.state;
+  return requestState === RequestState.Processing || requestState === RequestState.Open;
 });
-
+*/
 const {
   data: companyData,
   isPending: isCompanyDataPending,
@@ -255,11 +248,11 @@ const isViewingNewestPendingObject = computed(() => {
 
 const reviewWarnings = computed(() => {
   const warnings: string[] = [];
-
+  /*
   if (!isDatasetRequestPending.value && !isDatasetRequestError.value && !hasValidRequestState.value) {
     warnings.push('The related data request is no longer Open or Processing.');
   }
-
+  */
   if (!isCompanyDataPending.value && !isCompanyDataError.value && !hasAssignedSector.value) {
     warnings.push('The company has no assigned sector.');
   }
