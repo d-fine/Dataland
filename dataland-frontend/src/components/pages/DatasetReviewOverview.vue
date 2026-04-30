@@ -86,7 +86,7 @@
               <div
                 v-for="warning in reviewWarnings"
                 :key="warning.id"
-                class="p-3 mb-2 border-round bg-yellow-100 text-yellow-900"
+                class="p-3 mb-2 border-round bg-yellow-100 border-2 border-primary"
               >
                 {{ warning.message }}
               </div>
@@ -143,7 +143,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState, QaStatus } from '@clients/qaservice';
+import { DatasetJudgementState, QaStatus, DatasetJudgementResponseDataTypeEnum } from '@clients/qaservice';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
@@ -154,7 +154,6 @@ import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
-import { DatasetJudgementResponseDataTypeEnum } from '@clients/qaservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -317,7 +316,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
   if (isRequestCountReady.value && !hasValidRequestState.value) {
     warnings.push({
       id: 'invalid-request-state',
-      message: 'The related data request is no longer Open or Processing.',
+      message: 'There is no related data request with status Open or Processing.',
     });
   }
 
