@@ -85,10 +85,10 @@
             <div v-if="reviewWarnings.length" class="mb-3">
               <div
                 v-for="warning in reviewWarnings"
-                :key="warning"
+                :key="warning.id"
                 class="p-3 mb-2 border-round bg-yellow-100 text-yellow-900"
               >
-                {{ warning }}
+                {{ warning.message }}
               </div>
             </div>
             <DatasetReviewComparisonTable
@@ -216,58 +216,62 @@ const {
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
 } = useGetCompanyInformationQuery(companyId);
-const hasAssignedSector = computed(() => {
-  return !!companyData.value?.companyInformation.sector;
-});
 
-const objectsWithSamePeriodAndType = computed(() =>
+type ReviewWarning = {
+  id: string;
+  message: string;
+};
+
+const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
+
+const hasAssignedSector = computed(() => !!companyData.value?.companyInformation.sector);
+
+// Cached base list: all datasets for this company with the same framework and reporting period
+const matchingDatasets = computed(() =>
   (companyData.value?.dataRegisteredByDataland ?? []).filter(
     (entry) => entry.reportingPeriod === reportingPeriodRef.value && entry.dataType === dataTypeRef.value
   )
 );
 
-const acceptedObjectsWithSamePeriodAndType = computed(() =>
-  objectsWithSamePeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Accepted)
+// Derived from matchingDatasets — no redundant re-filtering
+const hasAcceptedMatchingDataset = computed(() =>
+  matchingDatasets.value.some((entry) => entry.qaStatus === QaStatus.Accepted)
 );
 
-const hasAcceptedObjectWithSamePeriodAndType = computed(() => acceptedObjectsWithSamePeriodAndType.value.length > 0);
-
-const pendingObjectsWithSamePeriodAndType = computed(() =>
-  objectsWithSamePeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
+const pendingMatchingDatasets = computed(() =>
+  matchingDatasets.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
 );
 
-const hasMultiplePendingObjects = computed(() => pendingObjectsWithSamePeriodAndType.value.length > 1);
+const hasMultiplePendingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
 
-const isViewingNewestPendingObject = computed(() => {
-  const viewedObject = pendingObjectsWithSamePeriodAndType.value.find((entry) => entry.dataId === dataIdRef.value);
-  return (
-    !!viewedObject &&
-    pendingObjectsWithSamePeriodAndType.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime)
-  );
+const isViewingNewestPendingDataset = computed(() => {
+  const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === dataIdRef.value);
+  return !!viewedObject && pendingMatchingDatasets.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime);
 });
 
-const reviewWarnings = computed(() => {
-  const warnings: string[] = [];
+const reviewWarnings = computed((): ReviewWarning[] => {
+  const warnings: ReviewWarning[] = [];
   /*
   if (!isDatasetRequestPending.value && !isDatasetRequestError.value && !hasValidRequestState.value) {
-    warnings.push('The related data request is no longer Open or Processing.');
+    warnings.push({ id: 'invalid-request-state', message: 'The related data request is no longer Open or Processing.' });
   }
   */
-  if (!isCompanyDataPending.value && !isCompanyDataError.value && !hasAssignedSector.value) {
-    warnings.push('The company has no assigned sector.');
+  if (isCompanyDataReady.value && !hasAssignedSector.value) {
+    warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.' });
   }
 
-  if (!isCompanyDataPending.value && !isCompanyDataError.value && hasAcceptedObjectWithSamePeriodAndType.value) {
-    warnings.push('There is already an accepted dataset with the same reporting period and framework.');
+  if (isCompanyDataReady.value && hasAcceptedMatchingDataset.value) {
+    warnings.push({
+      id: 'accepted-duplicate',
+      message: 'There is already an accepted dataset with the same reporting period and framework.',
+    });
   }
 
-  if (
-    !isCompanyDataPending.value &&
-    !isCompanyDataError.value &&
-    hasMultiplePendingObjects.value &&
-    !isViewingNewestPendingObject.value
-  ) {
-    warnings.push('There are multiple pending datasets. You are not reviewing the newest upload.');
+  if (isCompanyDataReady.value && hasMultiplePendingDatasets.value && !isViewingNewestPendingDataset.value) {
+    warnings.push({
+      id: 'not-newest-pending',
+      message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
+    });
   }
 
   return warnings;
