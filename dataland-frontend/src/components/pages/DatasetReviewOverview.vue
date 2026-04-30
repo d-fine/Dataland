@@ -154,6 +154,7 @@ import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
+import { DatasetJudgementResponseDataTypeEnum } from '@clients/qaservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -201,9 +202,59 @@ const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = u
 
 const companyIdRef = computed(() => dataMetaInformation.value?.companyId);
 
+const isInitialLoading = computed(() => {
+  const hasDataId = !!dataIdRef.value;
+  return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
+});
+const frameworkNameAsString = computed(() =>
+  dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
+);
+
+const dataPointsTotal = computed(() => {
+  const dataPoints = datasetReview.value?.dataPoints ?? {};
+  return Object.keys(dataPoints).length;
+});
+
+const dataPointsLeftToReview = computed(() => {
+  const dataPoints = datasetReview.value?.dataPoints ?? {};
+  return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
+});
+
+const canFinishReview = computed(() => dataPointsLeftToReview.value === 0);
+
+const isAssignedToCurrentUser = computed(() => {
+  if (!datasetReview.value) return false;
+  return datasetReview.value.qaJudgeUserId === currentUserId.value;
+});
+
+const kpiRows = ref<CellRow[]>([]);
+
+/**
+ * QARG precheck section.
+ * Checking request state is open or processing
+ * Checking assigned company sector
+ * Checking duplicate datasets (pending and accepted)
+ */
+
+const EU_TAXONOMY_FRAMEWORK_FAMILY: DatasetJudgementResponseDataTypeEnum[] = [
+  DatasetJudgementResponseDataTypeEnum.EutaxonomyFinancials,
+  DatasetJudgementResponseDataTypeEnum.EutaxonomyFinancials202673,
+  DatasetJudgementResponseDataTypeEnum.EutaxonomyNonFinancials,
+  DatasetJudgementResponseDataTypeEnum.EutaxonomyNonFinancials202673,
+];
+
+const groupedDataTypeRef = computed<string[] | undefined>(() => {
+  if (!dataTypeRef.value) return undefined;
+  const currentType = dataTypeRef.value;
+  if (EU_TAXONOMY_FRAMEWORK_FAMILY.includes(currentType)) {
+    return EU_TAXONOMY_FRAMEWORK_FAMILY;
+  }
+  return [dataTypeRef.value];
+});
+
 const filters = computed<RequestSearchFilterString>(() => ({
   companyId: companyIdRef.value,
-  dataTypes: dataTypeRef.value ? [dataTypeRef.value] : undefined,
+  dataTypes: groupedDataTypeRef.value,
   reportingPeriods: reportingPeriodRef.value ? [reportingPeriodRef.value] : undefined,
   requestStates: [RequestState.Open, RequestState.Processing],
 }));
@@ -230,7 +281,8 @@ const hasAssignedSector = computed(() => !!companyData.value?.companyInformation
 
 const matchingDatasetsWithPeriodAndType = computed(() =>
   (companyData.value?.dataRegisteredByDataland ?? []).filter(
-    (entry) => entry.reportingPeriod === reportingPeriodRef.value && entry.dataType === dataTypeRef.value
+    (entry) =>
+      entry.reportingPeriod === reportingPeriodRef.value && (groupedDataTypeRef.value ?? []).includes(entry.dataType)
   )
 );
 
@@ -248,6 +300,11 @@ const isViewingNewestPendingDataset = computed(() => {
   const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === dataIdRef.value);
   return !!viewedObject && pendingMatchingDatasets.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime);
 });
+
+/**
+ * QARG precheck warnings section
+ * Each warning has an ID and a message to be displayed to the user.
+ */
 
 type ReviewWarning = {
   id: string;
@@ -275,6 +332,13 @@ const reviewWarnings = computed((): ReviewWarning[] => {
     });
   }
 
+  if (isCompanyDataReady.value && hasMultiplePendingDatasets.value && isViewingNewestPendingDataset.value) {
+    warnings.push({
+      id: 'pending-duplicate',
+      message: 'There are multiple pending datasets. You are reviewing the newest upload.',
+    });
+  }
+
   if (isCompanyDataReady.value && hasMultiplePendingDatasets.value && !isViewingNewestPendingDataset.value) {
     warnings.push({
       id: 'not-newest-pending',
@@ -284,33 +348,6 @@ const reviewWarnings = computed((): ReviewWarning[] => {
 
   return warnings;
 });
-
-const isInitialLoading = computed(() => {
-  const hasDataId = !!dataIdRef.value;
-  return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
-});
-const frameworkNameAsString = computed(() =>
-  dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
-);
-
-const dataPointsTotal = computed(() => {
-  const dataPoints = datasetReview.value?.dataPoints ?? {};
-  return Object.keys(dataPoints).length;
-});
-
-const dataPointsLeftToReview = computed(() => {
-  const dataPoints = datasetReview.value?.dataPoints ?? {};
-  return Object.values(dataPoints).filter((dataPoint) => dataPoint.acceptedSource === null).length;
-});
-
-const canFinishReview = computed(() => dataPointsLeftToReview.value === 0);
-
-const isAssignedToCurrentUser = computed(() => {
-  if (!datasetReview.value) return false;
-  return datasetReview.value.qaJudgeUserId === currentUserId.value;
-});
-
-const kpiRows = ref<CellRow[]>([]);
 
 /**
  * Callback function to receive the list of KPI rows from the ComparisonTable child component.
