@@ -92,7 +92,7 @@ export const PARTNER_STORY_DETAILS: PartnerStoryDetail[] = [
         lines: [
           'First Cloud enables the creation of regulatory ESG reports based on the integrated Dataland data.',
           'Based on the provided ESG data, the principal adverse impacts (PAI indicators) are determined in accordance with the regulatory technical standards (RTS) and transferred to the corresponding standard reports.',
-          "In addition, First Cloud calculates the taxonomy metrics for the preparation of taxonomy reports in accordance with the relevant EU taxonomy reporting templates set out in Annex X to Commission Delegated Regulation (EU) 2021/2178 and Annex XII to Commission Delegated Regulation (EU) 2022/1214.",
+          'In addition, First Cloud calculates the taxonomy metrics for the preparation of taxonomy reports in accordance with the relevant EU taxonomy reporting templates set out in Annex X to Commission Delegated Regulation (EU) 2021/2178 and Annex XII to Commission Delegated Regulation (EU) 2022/1214.',
           'The automated calculation and transfer into the reports reduces manual effort and increases the consistency of the results.',
         ],
       },
