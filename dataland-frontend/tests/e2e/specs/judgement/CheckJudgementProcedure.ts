@@ -247,14 +247,14 @@ describeIf(
         });
 
         cy.log(`here we are`);
-        cy.pause();
+        // cy.pause();
 
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
 
         cy.log(`overview: ${JSON.stringify(overview)}`);
         cy.log(`overview: ${JSON.stringify(overview.dataPointsWithQaReports)}`);
         cy.log(`overview: ${JSON.stringify(overview.dataPointsWithoutQaReports)}`);
-        cy.pause();
+        // cy.pause();
 
         verifyJudgementDataStoredCorrectly(
           overview,
@@ -1284,23 +1284,23 @@ function verifyJudgementDataStoredCorrectly(
   judgeToken: string
 ): void {
   cy.log(`scenarios: ${JSON.stringify(scenarios)}`);
-  cy.pause();
+  // cy.pause();
 
   cy.log(`fixture: ${JSON.stringify(fixture)}`);
-  cy.pause();
+  // cy.pause();
 
   // Extract and log all KPI name/value pairs found in the fixture
   const kpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
   cy.log(`extracted KPIs (${kpis.length}): ${JSON.stringify(kpis)}`);
 
-  cy.pause();
+  // cy.pause();
   // const fixtureTypes = allTypes.filter((t) => hasFieldForType(t, fixture));
   // cy.log(`fixtureTypes: ${JSON.}`)
 
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
   cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
 
-  cy.pause();
+  // cy.pause();
 
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
@@ -1319,7 +1319,7 @@ function verifyJudgementDataStoredCorrectly(
     const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
 
     cy.log(`flatOverview: ${JSON.stringify(flatOverview)}`);
-    cy.pause();
+    // cy.pause();
 
     Object.keys(flatOverview).forEach((key) => {
       // const expected = (expectedValuesByType as Record<string, string>)[key];
@@ -1327,7 +1327,7 @@ function verifyJudgementDataStoredCorrectly(
       const actual = extractValueForType(key, data);
       cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
       expect(actual, `stored value for ${key}`).to.eq(expected);
-      cy.pause();
+      // cy.pause();
     });
   });
 }
