@@ -433,6 +433,22 @@ describe('JudgeDialog component tests', () => {
   // 3. Accept buttons call the correct endpoints with the correct input
   // ---------------------------------------------------------------------------
   describe('Accept buttons and API calls', () => {
+    // Construct judgement by removing correctedData from the QA reports
+    const judgementWithoutCorrectedData: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          qaReports: baseDatasetJudgement.dataPoints[dataPointTypeId].qaReports.map((qaReport) => {
+            const qaReportWithoutCorrectedData = { ...qaReport };
+            delete qaReportWithoutCorrectedData.correctedData;
+            return qaReportWithoutCorrectedData;
+          }),
+        },
+      },
+    };
+
     it('calls PATCH with AcceptedDataPointSource.Original when accepting the original datapoint', () => {
       mountJudgeDialog();
       cy.wait('@getOriginalDataPoint');
@@ -449,6 +465,18 @@ describe('JudgeDialog component tests', () => {
         expect(interception.request.body.reporterUserIdOfAcceptedQaReport).to.be.undefined;
         expect(interception.request.body.customDataPoint).to.be.undefined;
       });
+    });
+
+    it('enables the accept-report button when the current QA report has corrected data', () => {
+      mountJudgeDialog();
+
+      cy.get('[data-test="accept-report-button"]').should('not.be.disabled');
+    });
+
+    it('disables the accept-report button when the current QA report has no corrected data', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithoutCorrectedData });
+
+      cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
 
     it('calls PATCH with AcceptedDataPointSource.Qa and reporter userId when accepting the QA report', () => {
