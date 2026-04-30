@@ -14,7 +14,7 @@
         <div class="card py-4 px-0 mb-4 border-round-xl surface-card">
           <div class="flex justify-content-between align-items-start">
             <CompanyInformationBanner
-              :companyId="companyId ?? ''"
+              :companyId="companyIdRef ?? ''"
               :show-single-data-request-button="false"
               :show-add-to-portfolio-button="false"
               class="w-12"
@@ -151,9 +151,9 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
-//import { useGetRequestByDataRequestIdQuery } from '@/api-queries/data-sourcing/request/useGetRequestByDataRequestId.ts';
+import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
-//import { RequestState } from '@clients/datasourcingservice';
+import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -199,47 +199,47 @@ const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
 
 const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
 
-const companyId = computed(() => dataMetaInformation.value?.companyId);
-/*
+const companyIdRef = computed(() => dataMetaInformation.value?.companyId);
+
+const filters = computed<RequestSearchFilterString>(() => ({
+  companyId: companyIdRef.value,
+  dataTypes: dataTypeRef.value ? [dataTypeRef.value] : undefined,
+  reportingPeriods: reportingPeriodRef.value ? [reportingPeriodRef.value] : undefined,
+  requestStates: [RequestState.Open, RequestState.Processing],
+}));
+
 const {
-  data: datasetRequest,
-  isPending: isDatasetRequestPending,
-  isError: isDatasetRequestError,
-} = useGetRequestByDataRequestIdQuery(datasetJudgementIdRef);
+  data: requestCount,
+  isPending: isRequestCountPending,
+  isError: isRequestCountError,
+} = usePostEnhancedRequestsSearchCountQuery(filters);
 const hasValidRequestState = computed(() => {
-  const requestState = datasetRequest.value?.state;
-  return requestState === RequestState.Processing || requestState === RequestState.Open;
+  return (requestCount.value ?? 0) > 0;
 });
-*/
+
 const {
   data: companyData,
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
-} = useGetCompanyInformationQuery(companyId);
+} = useGetCompanyInformationQuery(companyIdRef);
 
-type ReviewWarning = {
-  id: string;
-  message: string;
-};
-
+const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
 const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
 
 const hasAssignedSector = computed(() => !!companyData.value?.companyInformation.sector);
 
-// Cached base list: all datasets for this company with the same framework and reporting period
-const matchingDatasets = computed(() =>
+const matchingDatasetsWithPeriodAndType = computed(() =>
   (companyData.value?.dataRegisteredByDataland ?? []).filter(
     (entry) => entry.reportingPeriod === reportingPeriodRef.value && entry.dataType === dataTypeRef.value
   )
 );
 
-// Derived from matchingDatasets — no redundant re-filtering
 const hasAcceptedMatchingDataset = computed(() =>
-  matchingDatasets.value.some((entry) => entry.qaStatus === QaStatus.Accepted)
+  matchingDatasetsWithPeriodAndType.value.some((entry) => entry.qaStatus === QaStatus.Accepted)
 );
 
 const pendingMatchingDatasets = computed(() =>
-  matchingDatasets.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
+  matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
 );
 
 const hasMultiplePendingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
@@ -249,13 +249,21 @@ const isViewingNewestPendingDataset = computed(() => {
   return !!viewedObject && pendingMatchingDatasets.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime);
 });
 
+type ReviewWarning = {
+  id: string;
+  message: string;
+};
+
 const reviewWarnings = computed((): ReviewWarning[] => {
   const warnings: ReviewWarning[] = [];
-  /*
-  if (!isDatasetRequestPending.value && !isDatasetRequestError.value && !hasValidRequestState.value) {
-    warnings.push({ id: 'invalid-request-state', message: 'The related data request is no longer Open or Processing.' });
+
+  if (isRequestCountReady.value && !hasValidRequestState.value) {
+    warnings.push({
+      id: 'invalid-request-state',
+      message: 'The related data request is no longer Open or Processing.',
+    });
   }
-  */
+
   if (isCompanyDataReady.value && !hasAssignedSector.value) {
     warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.' });
   }
