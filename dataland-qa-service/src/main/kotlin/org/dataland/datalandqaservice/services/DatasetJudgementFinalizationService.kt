@@ -74,11 +74,12 @@ class DatasetJudgementFinalizationService
 
             val reviewTasks =
                 dataPoints.map { dataPoint ->
-                    uploadReplacementDataPointIfNeeded(dataPoint, companyId, reportingPeriod)
                     buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
                 }
 
             dataPointQaReviewManager.reviewDataPoints(reviewTasks)
+
+            dataPoints.forEach { uploadReplacementDataPointIfNeeded(it, companyId, reportingPeriod) }
         }
 
         /**
