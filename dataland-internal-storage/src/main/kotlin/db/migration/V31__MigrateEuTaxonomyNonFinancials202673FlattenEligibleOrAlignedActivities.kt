@@ -30,7 +30,7 @@ class V31__MigrateEuTaxonomyNonFinancials202673FlattenEligibleOrAlignedActivitie
     fun flattenEligibleOrAlignedActivities(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         listOf("revenue", "capex", "opex").forEach { kpi ->
-            val kpiObject = dataTableEntity.dataJsonObject.getOrJavaNull(kpi) as? JSONObject? ?: return@forEach
+            val kpiObject = dataset.getOrJavaNull(kpi) as? JSONObject ?: return@forEach
             flattenActivitiesInKpi(kpiObject)
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
