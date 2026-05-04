@@ -341,10 +341,12 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
 });
 
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
-  return isPatching.value
-      || allQaReports.value.length === 0
-      || !currentQaReport.value
-      || !currentQaReport.value.correctedData
+  return (
+    isPatching.value ||
+    allQaReports.value.length === 0 ||
+    !currentQaReport.value ||
+    !currentQaReport.value.correctedData
+  );
 });
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {
