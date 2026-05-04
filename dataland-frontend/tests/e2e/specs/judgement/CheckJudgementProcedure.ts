@@ -149,7 +149,7 @@ function stripAssuranceFromFixture(
   fixture: FixtureData<EutaxonomyFinancialsData>
 ): FixtureData<EutaxonomyFinancialsData> {
   // Deep-clone so we never mutate the original fixture object
-  const clone = structuredClone(fixture) as FixtureData<EutaxonomyFinancialsData>;
+  const clone = structuredClone(fixture);
 
   try {
     const t = clone.t as unknown as {
