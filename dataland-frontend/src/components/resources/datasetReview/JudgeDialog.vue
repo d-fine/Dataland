@@ -199,7 +199,7 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
-  availableDocuments?: DocumentOption[]; //this is removed
+  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -220,18 +220,20 @@ const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId
 // v-model:visible from parent
 const isOpen = defineModel<boolean>('isOpen');
 // available company documents from query
-//*
 const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
 const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo?.value ?? [];
-  const availableDocuments3 = props.availableDocuments ?? [];
-  return docs
+  const datasetDocuments = props.availableDocuments ?? [];
+  const datasetFileReferences = new Set(datasetDocuments.map((d) => d.dataSource?.fileReference).filter(Boolean));
+  const reportingPeriod = datasetJudgement.value?.reportingPeriod;
+  const reportingPeriodNumber = reportingPeriod != null ? parseInt(reportingPeriod) : null;
+  const companyDocs = docs
     .filter((doc: DocumentMetaInfoResponse) => {
       if (doc.reportingPeriod == null) {
         return true;
-      } else if (datasetJudgement.value?.reportingPeriod != undefined) {
-        return parseInt(doc.reportingPeriod) >= parseInt(datasetJudgement.value?.reportingPeriod);
+      } else if (reportingPeriodNumber != null) {
+        return parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
       } else {
         return true;
       }
@@ -248,9 +250,9 @@ const availableDocuments = computed<DocumentOption[]>(() => {
         },
       };
     })
-    .concat(availableDocuments3);
+    .filter((doc) => !datasetFileReferences.has(doc.dataSource?.fileReference));
+  return [...datasetDocuments, ...companyDocs];
 });
-// */
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgementDetailsForDataPointMutation();
