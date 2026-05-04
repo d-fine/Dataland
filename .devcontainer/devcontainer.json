@@ -1,19 +1,25 @@
 {
-  "name": "Dataland Development",
+  "name": "Dataland Rootless Sandbox",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": [
     "--name", "opencode-devcontainer",
-    "--workdir", "/workspaces/dataland"
+    "--workdir", "/workspaces/dataland",
+    "--add-host", "local-dev.dataland.com:127.0.0.1",
+    "--add-host", "dataland-admin:127.0.0.1"
   ],
   "containerUser": "vscode",
   "remoteUser": "vscode",
   "updateRemoteUserUID": true,
+  "remoteEnv": {
+    "DOCKER_HOST": "unix:///run/user/1000/docker.sock"
+  },
   "mounts": [
     "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly"
   ],
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker": {
-      "dockerDashComposeVersion": "v2"
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "rootless": "true",
     },
     "ghcr.io/devcontainers/features/java": {
       "version": "21",
@@ -25,5 +31,4 @@
     },
     "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
   },
-  "postCreateCommand": "sudo sh -c 'echo \"127.0.0.1 local-dev.dataland.com dataland-admin\" >> /etc/hosts' && git config --global --add safe.directory /workspaces/dataland && sudo rm /etc/sudoers.d/vscode"
 }
