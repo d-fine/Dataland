@@ -1,6 +1,6 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
-import { type DataMetaInformation, QaStatus, type StoredCompany } from '@clients/backend';
+import { type DataMetaInformation, DataTypeEnum, QaStatus, type StoredCompany } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
@@ -19,7 +19,7 @@ describe('DatasetReviewOverview page details', () => {
   const datasetJudgementId = 'test-judgement-id';
   const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
   const reportingPeriod = '2021';
-  const framework = 'sfdr';
+  const framework = DataTypeEnum.Sfdr;
 
   const mockMetaInfo: DataMetaInformation = {
     dataId: dataId,
@@ -93,10 +93,18 @@ describe('DatasetReviewOverview page details', () => {
     datasetJudgementStatusCode?: number;
     datasetJudgementNetworkError?: boolean;
     forceDatasetJudgementError?: boolean;
+    companyInfo?: StoredCompany;
+    requestCount?: number;
   }): void {
     const datasetJudgementResponse =
       options?.datasetJudgementResponse === undefined ? baseDatasetJudgement : options.datasetJudgementResponse;
-
+    cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
+      statusCode: 200,
+      body: options?.requestCount ?? 1,
+    });
+    if (options?.companyInfo) {
+      cy.intercept('GET', `**/api/companies/${companyId}`, options.companyInfo);
+    }
     cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
 
@@ -348,6 +356,126 @@ describe('DatasetReviewOverview page details', () => {
       modalBody: 'Are you sure you want to mark this dataset review as finished?',
       expectedUrlSuffix: `/qa/dataset-judgements/${baseDatasetJudgement.dataSetJudgementId}/state`,
       expectedStateParam: 'datasetJudgementState=Finished',
+    });
+  });
+
+  describe('QARG pre-check warnings', () => {
+    const viewedDataEntry = { ...mockMetaInfo, uploadTime: 2000 };
+    const olderDataEntry = { ...mockMetaInfo, dataId: 'older-data-id', uploadTime: 1000 };
+    const newerDataEntry = { ...mockMetaInfo, dataId: 'newer-data-id', uploadTime: 3000 };
+    const acceptedDataEntry = { ...mockMetaInfo, dataId: 'accepted-data-id', qaStatus: QaStatus.Accepted };
+
+    it('shows an error warning when there is no related data request with status Open or Processing', () => {
+      mountPage({ requestCount: 0 });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+    });
+
+    it('shows a warning when the company has no assigned sector', () => {
+      const companyWithoutSector = {
+        ...mockCompanyInfo,
+        companyInformation: { ...mockCompanyInfo.companyInformation, sector: undefined },
+      };
+      mountPage({ companyInfo: companyWithoutSector });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="review-warning-missing-sector"]').should('be.visible');
+    });
+
+    it('shows a warning when there is already an accepted dataset for the same period and framework', () => {
+      const companyWithAcceptedDataset = { ...mockCompanyInfo, dataRegisteredByDataland: [acceptedDataEntry] };
+      mountPage({ companyInfo: companyWithAcceptedDataset });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+    });
+
+    it('shows an info message when there are multiple pending datasets and the current one is the newest', () => {
+      const companyWithMultiplePending = {
+        ...mockCompanyInfo,
+        dataRegisteredByDataland: [viewedDataEntry, olderDataEntry],
+      };
+      mountPage({ companyInfo: companyWithMultiplePending });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+    });
+
+    it('shows an error when there are multiple pending datasets and the current one is not the newest', () => {
+      const companyWithMultiplePending = {
+        ...mockCompanyInfo,
+        dataRegisteredByDataland: [viewedDataEntry, newerDataEntry],
+      };
+      mountPage({ companyInfo: companyWithMultiplePending });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="review-warning-not-newest-pending"]').should('be.visible');
+    });
+
+    it('shows no warnings when everything is fine', () => {
+      mountPage();
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test^="review-warning-"]').should('not.exist');
+    });
+
+    describe('EU taxonomy framework family', () => {
+      const euTaxonomyFramework = DataTypeEnum.EutaxonomyFinancials;
+      const otherEuTaxonomyFramework = DataTypeEnum.EutaxonomyFinancials202673;
+
+      const euTaxonomyDatasetJudgement: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataType: euTaxonomyFramework,
+      };
+
+      const acceptedOtherEuTaxonomyEntry = {
+        ...acceptedDataEntry,
+        dataId: 'other-accepted-data-id',
+        dataType: otherEuTaxonomyFramework,
+      };
+      const viewedEuTaxonomyEntry = { ...viewedDataEntry, dataType: euTaxonomyFramework };
+      const olderOtherEuTaxonomyEntry = {
+        ...olderDataEntry,
+        dataId: 'other-pending-data-id',
+        dataType: otherEuTaxonomyFramework,
+      };
+
+      it('shows a warning when there is an accepted dataset of another EU taxonomy framework', () => {
+        const companyWithAcceptedOtherEuTaxonomy = {
+          ...mockCompanyInfo,
+          dataRegisteredByDataland: [acceptedOtherEuTaxonomyEntry],
+        };
+        mountPage({
+          companyInfo: companyWithAcceptedOtherEuTaxonomy,
+          datasetJudgementResponse: euTaxonomyDatasetJudgement,
+        });
+        cy.wait('@getDatasetJudgement');
+
+        cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+      });
+
+      it('shows a warning when there are multiple pending EU taxonomy datasets across different types', () => {
+        const companyWithMultiplePendingEuTaxonomy = {
+          ...mockCompanyInfo,
+          dataRegisteredByDataland: [viewedEuTaxonomyEntry, olderOtherEuTaxonomyEntry],
+        };
+        mountPage({
+          companyInfo: companyWithMultiplePendingEuTaxonomy,
+          datasetJudgementResponse: euTaxonomyDatasetJudgement,
+        });
+        cy.wait('@getDatasetJudgement');
+
+        cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+      });
+
+      it('does not show accepted-duplicate warning when the accepted dataset belongs to a different framework family', () => {
+        const companyWithAcceptedSfdr = { ...mockCompanyInfo, dataRegisteredByDataland: [acceptedDataEntry] };
+        mountPage({ companyInfo: companyWithAcceptedSfdr, datasetJudgementResponse: euTaxonomyDatasetJudgement });
+        cy.wait('@getDatasetJudgement');
+
+        cy.get('[data-test="review-warning-accepted-duplicate"]').should('not.exist');
+      });
     });
   });
 });

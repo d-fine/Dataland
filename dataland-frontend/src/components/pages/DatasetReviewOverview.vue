@@ -86,6 +86,7 @@
               <div
                 v-for="warning in reviewWarnings"
                 :key="warning.id"
+                :data-test="`review-warning-${warning.id}`"
                 class="p-3 mb-2 border-round border-2"
                 :class="{
                   'bg-green-100 border-green-700': warning.type === 'info',
