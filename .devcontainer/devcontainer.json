@@ -25,5 +25,5 @@
     },
     "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
   },
-  "postCreateCommand": "sudo sh -c 'echo \"127.0.0.1 local-dev.dataland.com dataland-admin\" >> /etc/hosts' && git config --global --add safe.directory /workspaces/dataland"
+  "postCreateCommand": "sudo sh -c 'echo \"127.0.0.1 local-dev.dataland.com dataland-admin\" >> /etc/hosts' && git config --global --add safe.directory /workspaces/dataland && sudo rm /etc/sudoers.d/vscode"
 }
