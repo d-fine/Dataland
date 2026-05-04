@@ -17,7 +17,6 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import type { Interception } from 'cypress/types/net-stubbing';
 
-// const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000); // 1sec instead of default 10 secs
 const shortTimeoutInMs = Number(750);
 
 enum IconState {
@@ -101,7 +100,7 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Custom,
-      customValue: '400400400.23', // '{"value":"400400400.23", "currency":"EUR"}',
+      customValue: '400400400.23',
       customDataPoint: '400400400.23',
     },
   },
@@ -132,8 +131,19 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
 ];
 
 /**
- * Removes the assurance datapoint from the dataset. The data point does not match the standard format and creates known issues with the judge modal
- * @param fixture
+ * Returns a deep-cloned fixture with the EU taxonomy "assurance" data point removed.
+ *
+ * This helper is used for E2E stability: the assurance field is known to have a
+ * non-standard structure that can interfere with the judge modal flow.
+ *
+ * Behavior:
+ * - never mutates the input fixture (deep clone via JSON serialization)
+ * - removes `t.general.general.assurance` if present
+ * - removes `t.general.assurance` if present
+ * - if the fixture shape differs unexpectedly, it fails gracefully and returns the clone unchanged
+ *
+ * @param fixture Source fixture to sanitize before upload/use in tests.
+ * @returns A sanitized deep clone of the fixture without assurance fields (when found).
  */
 function stripAssuranceFromFixture(
   fixture: FixtureData<EutaxonomyFinancialsData>
@@ -149,18 +159,14 @@ function stripAssuranceFromFixture(
       } & Record<string, unknown>;
     };
 
-    // Remove nested "assurance" under general.general.assurance
     if (t?.general?.general && Object.prototype.hasOwnProperty.call(t.general.general, 'assurance')) {
       delete (t.general.general as Record<string, unknown>)['assurance'];
     }
 
-    // Remove top-level "assurance" under general.assurance
     if (t?.general && Object.prototype.hasOwnProperty.call(t.general, 'assurance')) {
       delete (t.general as Record<string, unknown>)['assurance'];
     }
-  } catch {
-    // If the structure is different for some fixture, ignore and leave it as-is
-  }
+  } catch {}
 
   return clone;
 }
@@ -180,8 +186,6 @@ describeIf(
     before(function () {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then((jsonContent) => {
         const rawFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
-
-        // Strip Assurance from every prepared fixture we’ll potentially use
         preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
       });
 
@@ -227,7 +231,7 @@ describeIf(
       changeJudgeAssignment(dataSetId);
     });
 
-    it.only('Check judge modal selects expected values and stores them after finishing review', () => {
+    it('Check judge modal selects expected values and stores them after finishing review', () => {
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
         judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
@@ -246,15 +250,7 @@ describeIf(
           expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
         });
 
-        cy.log(`here we are`);
-        // cy.pause();
-
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-
-        cy.log(`overview: ${JSON.stringify(overview)}`);
-        cy.log(`overview: ${JSON.stringify(overview.dataPointsWithQaReports)}`);
-        cy.log(`overview: ${JSON.stringify(overview.dataPointsWithoutQaReports)}`);
-        // cy.pause();
 
         verifyJudgementDataStoredCorrectly(
           overview,
@@ -376,7 +372,10 @@ function selectNextDataPointToJudge(dataPointTypeId: string): void {
 }
 
 /**
- * This function is only a debug helper which can be deleted later
+ * Navigates to the currently selected data point in the judge modal.
+ *
+ * Used after selecting an entry in the "Next datapoint" section to open that
+ * data point for review.
  */
 function goToSelectedDataPoint(): void {
   cy.get('[data-test="next-datapoint-section"]').within(() => {
@@ -396,7 +395,6 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
   cy.log(
     `[patch] body.acceptedSource=${String(interception.request.body?.acceptedSource)} | expected=${String(judgement.acceptedSource)}`
   );
-  // cy.pause();
 
   const body = interception.request.body ?? {};
 
@@ -424,9 +422,16 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
 }
 
 /**
- * Clicks the "Next" button in the Judge modal to navigate to the next QA report entry, and verifies that the label has changed.
- * @param targetReporterName
- * @param currentLabel
+ * Advances to the next QA report entry in the judge modal and continues recursive navigation.
+ *
+ * The helper clicks the "next" control in the corrected datapoint section, verifies that the
+ * current reporter label changed, and then calls `navigateToProperQaReportRecursively(...)`.
+ *
+ * Throws an error when no further entry can be opened (next button disabled), which indicates
+ * that the target reporter was not found in the remaining QA reports.
+ *
+ * @param targetReporterName Reporter label that recursive navigation is trying to find.
+ * @param currentLabel Current reporter label before clicking "next"; used to assert progress.
  */
 function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): void {
   cy.log('Clicking next button...');
@@ -456,6 +461,13 @@ function goToNextReportAndRecurse(targetReporterName: string, currentLabel: stri
  * the target reporter label is found.
  *
  * Failure behaviour: should throw if no further QA entry exists (next button disabled) and target was not found.
+ *
+ * The function reads the current reporter label and:
+ * - clicks `accept-report-button` when the label matches `targetReporterName`
+ * - otherwise advances to the next report entry via `goToNextReportAndRecurse(...)`
+ *
+ * @param targetReporterName Reporter label to find and accept in the QA report sequence.
+ * @throws {Error} Propagates an error if no further report entry is available before the target is found.
  */
 export function navigateToProperQaReportRecursively(targetReporterName: string): void {
   cy.get('[data-test="qa-current-reporter-label"]')
@@ -483,29 +495,25 @@ function makeJudgementDecision(judgement: QaJudgement): void {
 
   if (judgement.customValue != null) {
     cy.log(`customValue is not null`);
-    // cy.pause();
     cy.get('[data-test="custom-value-field"]').click();
     cy.get('[data-test="custom-value-field"]').clear();
     cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Original) {
-    // cy.log(`acceptedSource: original`);
-    // cy.pause();
+    cy.log(`acceptedSource: original`);
     cy.get('[data-test="accept-original-button"]').click();
     return;
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Custom) {
     cy.log(`acceptedSource: Custom`);
-    // cy.pause();
     cy.get('[data-test="accept-custom-button"]').click();
     return;
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Qa) {
     cy.log(`acceptedSource: Qa`);
-    // cy.pause();
     const target = judgement.reporterUserNameOfAcceptedQaReport;
     cy.log(`target: "${target}"`);
 
@@ -673,12 +681,8 @@ function judgeDataPointsWithoutQaReports(
   judgeToken: string,
   overview: DataPointOverview
 ): void {
-  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports); //.filter(
-  //([dataPointType]) => !UNPATCHABLE_DATA_POINT_TYPES.includes(dataPointType)
-  // );
+  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
 
-  cy.log(`dataPointEntries: ${JSON.stringify(dataPointEntries)}`);
-  // cy.pause();
   if (dataPointEntries.length === 0) return;
 
   // 1) Open the judge modal on the first datapoint without QA
@@ -702,11 +706,8 @@ function judgeDataPointsWithoutQaReports(
     };
 
     // 3 Make the judgement decision (click the button) and check if the decision is actually made
-    // const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
     cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as('patchDatapoint');
-    // cy.log(`[expected] dataPointId=${dataPointId}`);
-    // cy.intercept('PATCH', '**/qa/dataset-judgements/**/data-points/**').as('patchDatapoint');
-    // cy.log(`[judge/no-qa] applying judgement, acceptedSource=${judgement.acceptedSource}`);
+
     makeJudgementDecision(judgement);
     cy.wait('@patchDatapoint').then((interception) => {
       checkPATCHDataPointsCalledCorrectly(interception, judgement);
@@ -714,12 +715,9 @@ function judgeDataPointsWithoutQaReports(
       cy.log(`[judge/no-qa] PATCH finished for index=${index}, dataPointType=${dataPointType}`);
       console.log('[judge/no-qa] context', { index, dataPointType, judgement });
     });
-    // cy.pause();
     cy.wait(shortTimeoutInMs); // This waiting time is crucial in order to run the e2e tests, patching the correct URL!
-    // cy.pause();
   });
 
-  // cy.pause();
   checkOriginalDataPointsAccepted(dataPointEntries, overview);
 }
 
@@ -737,9 +735,8 @@ function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string
   ).should('be.visible');
 
   cy.log(
-    `Check succeeded!! There are exactly ${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
+    `Check succeeded! There are exactly ${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
   );
-  // cy.pause();
 
   dataPointEntries.forEach(([, dataPointId]) => {
     checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
@@ -779,9 +776,6 @@ function judgeDataPointsWithQaReports(
 
   // 2) Loop through QA scenarios, using the modal + helpers
   scenarios.forEach((scenario, index) => {
-    cy.log(`message 1/2 loop through QA scenarios, index: ${index + 1}, datapointType: ${scenario.dataPointType}`);
-    // cy.pause();
-
     if (index > 0) {
       selectNextDataPointToJudge(scenario.dataPointType);
       goToSelectedDataPoint();
@@ -792,20 +786,14 @@ function judgeDataPointsWithQaReports(
     cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${scenario.dataPointType}**`).as('patchDatapoint');
     makeJudgementDecision(judgement);
 
-    cy.log(`message 2/2 loop through QA scenarios, index: ${index + 1}, datapointType: ${scenario.dataPointType}`);
-    // cy.pause();
-
     cy.wait('@patchDatapoint').then((interception) => {
       cy.log(
         `[patch] body.acceptedSource=${String(interception.request.body?.acceptedSource)} | expected=${String(judgement.acceptedSource)}`
       );
       cy.log(`[patch] url=${interception.request.url}`);
-      // cy.pause();
       cy.wait(shortTimeoutInMs);
-      //checkPATCHDataPointsCalledCorrectly(interception, judgement);
     });
     cy.log(`patched`);
-    // cy.pause();
   });
 
   // 3) Reload and assert icons as before
@@ -917,7 +905,7 @@ function finishJudgement(dataSetId: string): void {
  * Safely parses a JSON string and extracts the 'value' property if it exists.
  * If the value is an object, it is stringified via JSON to avoid [object Object].
  *
- * @param raw - The raw JSON string to be parsed.
+ * @param raw The raw JSON string to be parsed.
  * @returns The extracted value as a string, or the original string if parsing fails.
  */
 function parseJsonValue(raw?: string): string | undefined {
@@ -951,9 +939,15 @@ function parseJsonValue(raw?: string): string | undefined {
 }
 
 /**
- * Extract value from get endpoint
- * @param dataPointType
- * @param data
+ * Resolves the comparable string value for a backend data-point type from `EutaxonomyFinancialsData`.
+ *
+ * Used in judgement assertions to read the stored value for a known
+ * QA data-point key (for example `extendedDateFiscalYearEnd` or
+ * `extendedDecimalNumberOfEmployees`).
+ *
+ * @param dataPointType Backend data-point type identifier to resolve.
+ * @param data          EUTaxonomy financial dataset returned by the API.
+ * @returns             Normalized string value for the requested type, or `''` if not resolvable.
  */
 function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsData): string {
   switch (dataPointType) {
@@ -1012,8 +1006,16 @@ function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsDa
 type KPI = { name: string; value: string | number | null };
 
 /**
- * Extract KPI name/value pairs from an arbitrary fixture.
+ * Extracts KPI name/value pairs from a fixture as dotted-path name/value pairs.
+ *
  * A KPI node is any object that has an own `value` property.
+ *
+ * @param fixture Arbitrary input object (or subtree) to scan for KPI nodes.
+ * @param options Optional traversal settings:
+ * - `rootKey`: start from `fixture[rootKey]` when available; otherwise use `fixture`.
+ * - `includeArrayIndex`: include numeric array segments in generated KPI paths.
+ * @returns Flat list of `{ name, value }` KPI entries where `name` is a dotted path
+ * and `value` is normalized to `string | number | null`.
  */
 function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArrayIndex?: boolean }): KPI[] {
   const out: KPI[] = [];
@@ -1103,6 +1105,25 @@ function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArra
  * @param scenarios
  * @param fixture
  */
+/**
+ * Builds the expected stored value per data-point type based on QA scenarios and fixture defaults.
+ *
+ * For each considered `DataPointType`, the expected value is resolved by accepted source:
+ * - `Original` (or missing scenario/source): use the value extracted from the fixture
+ * - `Custom`: use parsed custom judgement value, falling back to original fixture value
+ * - `Qa`: use the accepted QA report's corrected value (by reporter role), falling back to original
+ *
+ * Type selection:
+ * - Prefer only data-point types that are detectable in the fixture (`extractValueForType(...) !== ''`)
+ * - If none are detectable, fall back to all known `DATA_POINT_TYPES` for compatibility
+ *
+ * Additionally, KPI dotted-path entries discovered via `extractKpis(...)` are appended when not
+ * already present in the result map, preserving original fixture values for those keys.
+ *
+ * @param scenarios Scenario configuration indexed by `dataPointType`, including QA reports and judgement.
+ * @param fixture Source EU Taxonomy dataset used to derive original fallback values.
+ * @returns Map of expected values keyed by `DataPointType` (plus optional KPI dotted-path keys).
+ */
 function buildExpectedByType(
   scenarios: QaScenarioConfig[],
   fixture: EutaxonomyFinancialsData
@@ -1112,10 +1133,6 @@ function buildExpectedByType(
 
   const result = {} as Record<DataPointType, string>;
 
-  // Determine which KPI types actually appear in the fixture by checking
-  // whether extractValueForType returns a non-empty value. This ensures we
-  // consider every KPI present in the fixture. If none are detectable, fall
-  // back to the full set of known DATA_POINT_TYPES for backward compatibility.
   const allTypes = Object.values(DATA_POINT_TYPES) as DataPointType[];
   const presentTypes = allTypes.filter((t) => {
     const v = extractValueForType(t, fixture);
@@ -1178,8 +1195,10 @@ function buildExpectedByType(
 
 type MyMap = Record<string, string>;
 
-/** buildMyMap
+/**
+ * Builds the mapping from backend data-point type IDs to fixture KPI paths.
  *
+ * @returns Record where each key is a data-point type and each value is its dotted fixture path.
  */
 function buildMyMap(): MyMap {
   return {
@@ -1209,41 +1228,32 @@ function buildMyMap(): MyMap {
   };
 }
 
-// /**
-//  * Supports dot notation paths like:
-//  * "general.general.fiscalYearEnd"
-//  */
-// function getNestedValue(obj: any, path: string): any {
-//   return path.split('.').reduce((acc, part) => {
-//     if (acc && typeof acc === 'object') {
-//       return acc[part];
-//     }
-//     return undefined;
-//   }, obj);
-// }
-
 /**
+ * Converts extracted KPI entries into a map keyed by KPI name.
  *
- * @param extracted_KPIs
+ * @param extracted_KPIs KPI list with dotted-path names and normalized values.
+ * @returns Lookup map of KPI name to value.
  */
 function toKpiMap(extracted_KPIs: KPI[]): Record<string, string | number | null> {
-  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value as string | number | null])) as Record<
+  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value])) as Record<
     string,
     string | number | null
   >;
 }
 
-/** resolveExpectedValue
+/**
+ * Resolves the expected value for a backend data-point key.
  *
- * @param key
- * @param expectedValuesByType
- * @param kpis
- * @param myMap
+ * @param key Data-point type key from the overview map.
+ * @param expectedValuesByType Expected values keyed directly by backend data-point type.
+ * @param kpis Extracted fixture KPIs used as fallback lookup values.
+ * @param myMap Mapping from backend data-point type to fixture KPI dotted path.
+ * @returns Expected value as string (empty string when mapped KPI value is missing).
+ * @throws {Error} If no backend-key-to-KPI-path mapping exists for `key`.
  */
 function resolveExpectedValue(
   key: string,
   expectedValuesByType: Record<string, string>,
-  // fixture: EutaxonomyFinancialsData,
   kpis: KPI[],
   myMap: MyMap
 ): string {
@@ -1258,21 +1268,23 @@ function resolveExpectedValue(
 
   const kpiMap = toKpiMap(kpis);
 
-  // const value = getNestedValue(fixture, fixturePath);
   const value = kpiMap[fixturePath];
 
   return value !== undefined && value !== null ? String(value) : '';
 }
 
 /**
- * Verifies that after finishing the judgement, the active dataset returned by the backend API
- * contains the expected values for each data point based on its accepted source.
+ * Verifies that judged data points are persisted with the expected values.
  *
- * @param overview
+ * The helper derives expected values from QA scenarios and fixture defaults, fetches the
+ * stored EU taxonomy financials for the given company/reporting period, and compares each
+ * data point in the overview against the persisted backend value.
+ *
+ * @param overview         Data-point IDs (with and without QA reports) used to determine which keys to verify.
  * @param scenarios        QA scenario configurations defining accepted sources and expected values.
- * @param fixture          The original fixture data uploaded before the judgement.
- * @param companyId        The company ID used to query the active dataset.
- * @param reportingPeriod  The reporting period used to query the active dataset.
+ * @param fixture          Original uploaded fixture data used as a baseline/fallback for expectations.
+ * @param companyId        Company ID used to query the active dataset.
+ * @param reportingPeriod  Reporting period used to query the active dataset.
  * @param judgeToken       Bearer token for authentication.
  */
 function verifyJudgementDataStoredCorrectly(
@@ -1283,24 +1295,9 @@ function verifyJudgementDataStoredCorrectly(
   reportingPeriod: string,
   judgeToken: string
 ): void {
-  cy.log(`scenarios: ${JSON.stringify(scenarios)}`);
-  // cy.pause();
-
-  cy.log(`fixture: ${JSON.stringify(fixture)}`);
-  // cy.pause();
-
   // Extract and log all KPI name/value pairs found in the fixture
   const kpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
-  cy.log(`extracted KPIs (${kpis.length}): ${JSON.stringify(kpis)}`);
-
-  // cy.pause();
-  // const fixtureTypes = allTypes.filter((t) => hasFieldForType(t, fixture));
-  // cy.log(`fixtureTypes: ${JSON.}`)
-
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
-  cy.log(`[verify] expected values: ${JSON.stringify(expectedValuesByType)}`);
-
-  // cy.pause();
 
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
@@ -1318,16 +1315,12 @@ function verifyJudgementDataStoredCorrectly(
 
     const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
 
-    cy.log(`flatOverview: ${JSON.stringify(flatOverview)}`);
-    // cy.pause();
-
     Object.keys(flatOverview).forEach((key) => {
       // const expected = (expectedValuesByType as Record<string, string>)[key];
       const expected = resolveExpectedValue(key, expectedValuesByType, kpis, myMap);
       const actual = extractValueForType(key, data);
       cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
       expect(actual, `stored value for ${key}`).to.eq(expected);
-      // cy.pause();
     });
   });
 }
