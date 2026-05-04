@@ -149,7 +149,7 @@ function stripAssuranceFromFixture(
   fixture: FixtureData<EutaxonomyFinancialsData>
 ): FixtureData<EutaxonomyFinancialsData> {
   // Deep-clone so we never mutate the original fixture object
-  const clone = JSON.parse(JSON.stringify(fixture)) as FixtureData<EutaxonomyFinancialsData>;
+  const clone = structuredClone(fixture) as FixtureData<EutaxonomyFinancialsData>;
 
   try {
     const t = clone.t as unknown as {
@@ -159,11 +159,11 @@ function stripAssuranceFromFixture(
       } & Record<string, unknown>;
     };
 
-    if (t?.general?.general && Object.prototype.hasOwnProperty.call(t.general.general, 'assurance')) {
+    if (t?.general?.general && Object.hasOwn(t.general.general, 'assurance')) {
       delete (t.general.general as Record<string, unknown>)['assurance'];
     }
 
-    if (t?.general && Object.prototype.hasOwnProperty.call(t.general, 'assurance')) {
+    if (t?.general && Object.hasOwn(t.general, 'assurance')) {
       delete (t.general as Record<string, unknown>)['assurance'];
     }
   } catch {}
@@ -424,7 +424,7 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
 /**
  * Advances to the next QA report entry in the judge modal and continues recursive navigation.
  *
- * The helper clicks the "next" control in the corrected datapoint section, verifies that the
+ * The helper clicks the "next" control in the corrected data point section, verifies that the
  * current reporter label changed, and then calls `navigateToProperQaReportRecursively(...)`.
  *
  * Throws an error when no further entry can be opened (next button disabled), which indicates
@@ -685,7 +685,7 @@ function judgeDataPointsWithoutQaReports(
 
   if (dataPointEntries.length === 0) return;
 
-  // 1) Open the judge modal on the first datapoint without QA
+  // 1) Open the judge modal on the first data point without QA
   const [, firstDataPointId] = dataPointEntries[0];
   cy.get(`[data-test="data-point-row-${firstDataPointId}"]`).find('button.kpi-link').click();
   cy.get('[data-test="judge-modal"]').should('be.visible');
@@ -767,7 +767,7 @@ function judgeDataPointsWithQaReports(
 
   if (scenarios.length === 0) return;
 
-  // 1) Open judge modal for the first datapoint with QA
+  // 1) Open judge modal for the first data point with QA
   const firstScenario = scenarios[0];
   const firstDataPointTypeId = overview.dataPointsWithQaReports[firstScenario.dataPointType];
 
@@ -939,13 +939,13 @@ function parseJsonValue(raw?: string): string | undefined {
 }
 
 /**
- * Resolves the comparable string value for a backend data-point type from `EutaxonomyFinancialsData`.
+ * Resolves the comparable string value for a backend data point type from `EutaxonomyFinancialsData`.
  *
  * Used in judgement assertions to read the stored value for a known
- * QA data-point key (for example `extendedDateFiscalYearEnd` or
+ * QA data point key (for example `extendedDateFiscalYearEnd` or
  * `extendedDecimalNumberOfEmployees`).
  *
- * @param dataPointType Backend data-point type identifier to resolve.
+ * @param dataPointType Backend data point type identifier to resolve.
  * @param data          EUTaxonomy financial dataset returned by the API.
  * @returns             Normalized string value for the requested type, or `''` if not resolvable.
  */
@@ -1044,13 +1044,13 @@ function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArra
    */
   function pushIfValue(node: unknown, path: string[]): boolean {
     if (node == null || typeof node !== 'object') return false;
-    if (!Object.prototype.hasOwnProperty.call(node, 'value')) return false;
+    if (!Object.hasOwn(node, 'value')) return false;
 
     const nodeRec = node as Record<string, unknown>;
     let v = nodeRec['value'];
 
     // prefer inner .value when present and primitive-ish
-    if (v && typeof v === 'object' && Object.prototype.hasOwnProperty.call(v, 'value')) {
+    if (v && typeof v === 'object' && Object.hasOwn(v, 'value')) {
       const inner = (v as Record<string, unknown>)['value'];
       if (
         inner === null ||
@@ -1106,7 +1106,7 @@ function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArra
  * @param fixture
  */
 /**
- * Builds the expected stored value per data-point type based on QA scenarios and fixture defaults.
+ * Builds the expected stored value per data point type based on QA scenarios and fixture defaults.
  *
  * For each considered `DataPointType`, the expected value is resolved by accepted source:
  * - `Original` (or missing scenario/source): use the value extracted from the fixture
@@ -1114,7 +1114,7 @@ function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArra
  * - `Qa`: use the accepted QA report's corrected value (by reporter role), falling back to original
  *
  * Type selection:
- * - Prefer only data-point types that are detectable in the fixture (`extractValueForType(...) !== ''`)
+ * - Prefer only data point types that are detectable in the fixture (`extractValueForType(...) !== ''`)
  * - If none are detectable, fall back to all known `DATA_POINT_TYPES` for compatibility
  *
  * Additionally, KPI dotted-path entries discovered via `extractKpis(...)` are appended when not
@@ -1160,8 +1160,14 @@ function buildExpectedByType(
 
     if (acceptedSource === AcceptedDataPointSource.Qa) {
       const acceptedReporterId = scenario.judgement.reporterUserIdOfAcceptedQaReport;
-      const acceptedRole: QaRole | undefined =
-        acceptedReporterId === reviewer_userId ? 'reviewer' : acceptedReporterId === admin_userId ? 'admin' : undefined;
+
+      let acceptedRole: QaRole | undefined;
+
+      if (acceptedReporterId === reviewer_userId) {
+        acceptedRole = 'reviewer';
+      } else if (acceptedReporterId === admin_userId) {
+        acceptedRole = 'admin';
+      }
 
       const acceptedQaReport = acceptedRole ? scenario.qaReports.find((r) => r.role === acceptedRole) : undefined;
       const qaValue = parseJsonValue(acceptedQaReport?.correctedValue);
@@ -1181,7 +1187,7 @@ function buildExpectedByType(
     const fixtureKpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
     fixtureKpis.forEach((k) => {
       const asMap = result as Record<string, string>;
-      if (!Object.prototype.hasOwnProperty.call(asMap, k.name)) {
+      if (!Object.hasOwn(asMap, k.name)) {
         asMap[k.name] = k.value == null ? '' : String(k.value);
       }
     });
@@ -1193,14 +1199,14 @@ function buildExpectedByType(
   return result;
 }
 
-type MyMap = Record<string, string>;
+type DataPointPathMap = Record<string, string>;
 
 /**
- * Builds the mapping from backend data-point type IDs to fixture KPI paths.
+ * Builds the mapping from backend data point type IDs to fixture KPI paths.
  *
- * @returns Record where each key is a data-point type and each value is its dotted fixture path.
+ * @returns Record where each key is a data point type and each value is its dotted fixture path.
  */
-function buildMyMap(): MyMap {
+function buildDataPointPathMap(): DataPointPathMap {
   return {
     extendedDateFiscalYearEnd: 'general.general.fiscalYearEnd',
     extendedEnumYesNoIsNfrdMandatory: 'general.general.isNfrdMandatory',
@@ -1234,20 +1240,17 @@ function buildMyMap(): MyMap {
  * @param extracted_KPIs KPI list with dotted-path names and normalized values.
  * @returns Lookup map of KPI name to value.
  */
-function toKpiMap(extracted_KPIs: KPI[]): Record<string, string | number | null> {
-  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value])) as Record<
-    string,
-    string | number | null
-  >;
+function toKpiMap(extracted_KPIs: KPI[]): Record<string, KPI['value']> {
+  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value])) as Record<string, KPI['value']>;
 }
 
 /**
- * Resolves the expected value for a backend data-point key.
+ * Resolves the expected value for a backend data point key.
  *
- * @param key Data-point type key from the overview map.
- * @param expectedValuesByType Expected values keyed directly by backend data-point type.
+ * @param key Datapoint type key from the overview map.
+ * @param expectedValuesByType Expected values keyed directly by backend data point type.
  * @param kpis Extracted fixture KPIs used as fallback lookup values.
- * @param myMap Mapping from backend data-point type to fixture KPI dotted path.
+ * @param dataPointPathMap Mapping from backend data point type to fixture KPI dotted path.
  * @returns Expected value as string (empty string when mapped KPI value is missing).
  * @throws {Error} If no backend-key-to-KPI-path mapping exists for `key`.
  */
@@ -1255,13 +1258,13 @@ function resolveExpectedValue(
   key: string,
   expectedValuesByType: Record<string, string>,
   kpis: KPI[],
-  myMap: MyMap
+  dataPointPathMap: DataPointPathMap
 ): string {
   if (key in expectedValuesByType) {
     return expectedValuesByType[key];
   }
 
-  const fixturePath = myMap[key];
+  const fixturePath = dataPointPathMap[key];
   if (!fixturePath) {
     throw new Error(`No mapping found for key: ${key}`);
   }
@@ -1280,7 +1283,7 @@ function resolveExpectedValue(
  * stored EU taxonomy financials for the given company/reporting period, and compares each
  * data point in the overview against the persisted backend value.
  *
- * @param overview         Data-point IDs (with and without QA reports) used to determine which keys to verify.
+ * @param overview         Data point IDs (with and without QA reports) used to determine which keys to verify.
  * @param scenarios        QA scenario configurations defining accepted sources and expected values.
  * @param fixture          Original uploaded fixture data used as a baseline/fallback for expectations.
  * @param companyId        Company ID used to query the active dataset.
@@ -1302,7 +1305,7 @@ function verifyJudgementDataStoredCorrectly(
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
 
-  const myMap = buildMyMap();
+  const dataPointPathMap = buildDataPointPathMap();
 
   cy.request({
     method: 'GET',
@@ -1316,8 +1319,7 @@ function verifyJudgementDataStoredCorrectly(
     const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
 
     Object.keys(flatOverview).forEach((key) => {
-      // const expected = (expectedValuesByType as Record<string, string>)[key];
-      const expected = resolveExpectedValue(key, expectedValuesByType, kpis, myMap);
+      const expected = resolveExpectedValue(key, expectedValuesByType, kpis, dataPointPathMap);
       const actual = extractValueForType(key, data);
       cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
       expect(actual, `stored value for ${key}`).to.eq(expected);
