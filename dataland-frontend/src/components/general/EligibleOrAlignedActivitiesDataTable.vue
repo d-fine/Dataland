@@ -7,6 +7,7 @@ type Self = InstanceType<typeof BaseActivitiesDataTable>;
 
 type EligibleOrAlignedActivityRow = Record<string, unknown> & {
   activityName?: string;
+  relativeEligibleShareInPercent?: number | null;
   substantialContributionToClimateChangeMitigationInPercent?: number;
   substantialContributionToClimateChangeAdaptationInPercent?: number;
   substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent?: number;
@@ -18,6 +19,12 @@ type EligibleOrAlignedActivityRow = Record<string, unknown> & {
 const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfiguration'] = {
   createAdditionalMainColumnDefinitions(this: Self) {
     return [
+      {
+        field: `${this.kpiKeyOfTable}EligiblePercent`,
+        header: this.humanizeHeaderName(`${this.kpiKeyOfTable}EligiblePercent`),
+        group: '_kpi',
+        groupIndex: 2,
+      },
       ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
       {
         field: 'enablingActivity',
@@ -49,12 +56,19 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
       substantialContributionCriteria: this.getEnvironmentalObjectivesLength(),
       _enablingActivity: 1,
       _transitionalActivity: 1,
+      _kpi: 3,
     };
   },
   createMainColumnDataForRow(this: Self, activity: Record<string, unknown>) {
     const typedActivity = activity as EligibleOrAlignedActivityRow;
     return [
       ...this.createBaseMainColumnDataForRow(activity),
+      {
+        activity: typedActivity.activityName ?? '',
+        group: '_kpi',
+        field: '${this.kpiKeyOfTable}EligiblePercent',
+        content: formatPercentageNumberAsString(typedActivity.relativeEligibleShareInPercent ?? undefined),
+      },
       ...this.createActivityGroupData<number | undefined>(
         typedActivity.activityName as string,
         'substantialContributionCriteria',
