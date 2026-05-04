@@ -11,4 +11,3 @@ declare namespace Cypress {
    */
   function expose<T = unknown>(key: string, value: T): void;
 }
-
