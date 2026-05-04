@@ -11,6 +11,7 @@ import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
+import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Shared test data =====
 
@@ -179,6 +180,7 @@ function mountJudgeDialog(options?: {
   dataPointTypeId?: string;
   kpiRows?: CellRow[];
   availableDocuments?: DocumentOption[];
+  companyDocuments?: DocumentMetaInfoResponse[];
 }): void {
   const judgement = options?.datasetJudgement ?? baseDatasetJudgement;
 
@@ -216,6 +218,11 @@ function mountJudgeDialog(options?: {
       });
     }
   }).as('patchJudgementDetail');
+
+  cy.intercept('GET', `**/?companyId=${judgement.companyId}`, {
+    statusCode: 200,
+    body: options?.companyDocuments ?? [],
+  }).as('getCompanyDocuments');
 
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
@@ -836,13 +843,82 @@ describe('JudgeDialog component tests', () => {
       });
 
       it('shows no documents in the dropdown when none are provided', () => {
-        mountJudgeDialog({ availableDocuments: [] });
+        mountJudgeDialog({ availableDocuments: [], companyDocuments: [] });
 
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
 
         cy.contains('Annual Report 2023').should('not.exist');
         cy.contains('Sustainability Report').should('not.exist');
+      });
+
+      it('shows company documents from the API in addition to dataset documents', () => {
+        const companyOnlyDoc: DocumentMetaInfoResponse = {
+          documentId: 'api-ref-001',
+          documentName: 'Company Policy 2023',
+          reportingPeriod: '2023',
+          publicationDate: '2023-06-01',
+          uploaderId: 'uploader-1',
+        };
+        mountJudgeDialog({ companyDocuments: [companyOnlyDoc] });
+        cy.wait('@getCompanyDocuments');
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+
+        cy.contains('Annual Report 2023').should('be.visible');
+        cy.contains('Sustainability Report').should('be.visible');
+        cy.contains('Company Policy 2023').should('be.visible');
+      });
+
+      it('does not show a duplicate when the API returns a document already present in the dataset prop', () => {
+        const duplicateDoc: DocumentMetaInfoResponse = {
+          documentId: 'ref-123',
+          documentName: 'Annual Report 2023',
+          reportingPeriod: '2023',
+          publicationDate: '2023-01-01',
+          uploaderId: 'uploader-1',
+        };
+        mountJudgeDialog({ companyDocuments: [duplicateDoc] });
+        cy.wait('@getCompanyDocuments');
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+
+        cy.get('.p-select-overlay').contains('Annual Report 2023').should('have.length', 1);
+      });
+
+      it('filters out API documents with a reporting period earlier than the dataset', () => {
+        const oldDoc: DocumentMetaInfoResponse = {
+          documentId: 'api-ref-old',
+          documentName: 'Old Report 2022',
+          reportingPeriod: '2022',
+          publicationDate: '2022-12-31',
+          uploaderId: 'uploader-1',
+        };
+        mountJudgeDialog({ availableDocuments: [], companyDocuments: [oldDoc] });
+        cy.wait('@getCompanyDocuments');
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+
+        cy.contains('Old Report 2022').should('not.exist');
+      });
+
+      it('includes API documents with no reporting period regardless of dataset period', () => {
+        const noperiodDoc: DocumentMetaInfoResponse = {
+          documentId: 'api-ref-nop',
+          documentName: 'Timeless Policy',
+          publicationDate: '2020-01-01',
+          uploaderId: 'uploader-1',
+        };
+        mountJudgeDialog({ availableDocuments: [], companyDocuments: [noperiodDoc] });
+        cy.wait('@getCompanyDocuments');
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+
+        cy.contains('Timeless Policy').should('be.visible');
       });
 
       it('pre-selects the correct document when only fileReference is present', () => {
