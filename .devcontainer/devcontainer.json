@@ -8,6 +8,9 @@
   "containerUser": "vscode",
   "remoteUser": "vscode",
   "updateRemoteUserUID": true,
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly"
+  ],
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker": {
       "dockerDashComposeVersion": "v2"
