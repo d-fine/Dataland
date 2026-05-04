@@ -82,11 +82,16 @@
                 </div>
               </div>
             </div>
-            <div v-if="reviewWarnings.length" class="mb-3">
+            <div v-if="reviewWarnings.length > 0" class="mb-3">
               <div
                 v-for="warning in reviewWarnings"
                 :key="warning.id"
-                class="p-3 mb-2 border-round bg-yellow-100 border-2 border-primary"
+                class="p-3 mb-2 border-round border-2"
+                :class="{
+                  'bg-green-100 border-green-700': warning.type === 'info',
+                  'bg-yellow-100 border-yellow-700': warning.type === 'warning',
+                  'bg-red-100 border-red-700': warning.type === 'error',
+                }"
               >
                 {{ warning.message }}
               </div>
@@ -143,7 +148,8 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState, QaStatus, DatasetJudgementResponseDataTypeEnum } from '@clients/qaservice';
+import { DatasetJudgementState, QaStatus } from '@clients/qaservice';
+import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/Frameworks.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
@@ -235,13 +241,6 @@ const kpiRows = ref<CellRow[]>([]);
  * Checking duplicate datasets (pending and accepted)
  */
 
-const EU_TAXONOMY_FRAMEWORK_FAMILY: DatasetJudgementResponseDataTypeEnum[] = [
-  DatasetJudgementResponseDataTypeEnum.EutaxonomyFinancials,
-  DatasetJudgementResponseDataTypeEnum.EutaxonomyFinancials202673,
-  DatasetJudgementResponseDataTypeEnum.EutaxonomyNonFinancials,
-  DatasetJudgementResponseDataTypeEnum.EutaxonomyNonFinancials202673,
-];
-
 const groupedDataTypeRef = computed<string[] | undefined>(() => {
   if (!dataTypeRef.value) return undefined;
   const currentType = dataTypeRef.value;
@@ -263,9 +262,6 @@ const {
   isPending: isRequestCountPending,
   isError: isRequestCountError,
 } = usePostEnhancedRequestsSearchCountQuery(filters);
-const hasValidRequestState = computed(() => {
-  return (requestCount.value ?? 0) > 0;
-});
 
 const {
   data: companyData,
@@ -275,6 +271,10 @@ const {
 
 const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
 const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
+
+const hasValidRequestState = computed(() => {
+  return (requestCount.value ?? 0) > 0;
+});
 
 const hasAssignedSector = computed(() => !!companyData.value?.companyInformation.sector);
 
@@ -293,7 +293,7 @@ const pendingMatchingDatasets = computed(() =>
   matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
 );
 
-const hasMultiplePendingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
+const hasMultiplePendingMatchingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
 
 const isViewingNewestPendingDataset = computed(() => {
   const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === dataIdRef.value);
@@ -308,6 +308,7 @@ const isViewingNewestPendingDataset = computed(() => {
 type ReviewWarning = {
   id: string;
   message: string;
+  type: 'info' | 'warning' | 'error';
 };
 
 const reviewWarnings = computed((): ReviewWarning[] => {
@@ -317,32 +318,38 @@ const reviewWarnings = computed((): ReviewWarning[] => {
     warnings.push({
       id: 'invalid-request-state',
       message: 'There is no related data request with status Open or Processing.',
+      type: 'error',
     });
   }
 
-  if (isCompanyDataReady.value && !hasAssignedSector.value) {
-    warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.' });
-  }
+  if (isCompanyDataReady.value) {
+    if (!hasAssignedSector.value) {
+      warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.', type: 'warning' });
+    }
 
-  if (isCompanyDataReady.value && hasAcceptedMatchingDataset.value) {
-    warnings.push({
-      id: 'accepted-duplicate',
-      message: 'There is already an accepted dataset with the same reporting period and framework.',
-    });
-  }
+    if (hasAcceptedMatchingDataset.value) {
+      warnings.push({
+        id: 'accepted-duplicate',
+        message: 'There is already an accepted dataset with the same reporting period and framework.',
+        type: 'warning',
+      });
+    }
 
-  if (isCompanyDataReady.value && hasMultiplePendingDatasets.value && isViewingNewestPendingDataset.value) {
-    warnings.push({
-      id: 'pending-duplicate',
-      message: 'There are multiple pending datasets. You are reviewing the newest upload.',
-    });
-  }
-
-  if (isCompanyDataReady.value && hasMultiplePendingDatasets.value && !isViewingNewestPendingDataset.value) {
-    warnings.push({
-      id: 'not-newest-pending',
-      message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
-    });
+    if (hasMultiplePendingMatchingDatasets.value) {
+      if (isViewingNewestPendingDataset.value) {
+        warnings.push({
+          id: 'pending-duplicate',
+          message: 'There are multiple pending datasets. You are reviewing the newest upload.',
+          type: 'info',
+        });
+      } else {
+        warnings.push({
+          id: 'not-newest-pending',
+          message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
+          type: 'error',
+        });
+      }
+    }
   }
 
   return warnings;
