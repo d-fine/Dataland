@@ -366,7 +366,8 @@ describe('DatasetReviewOverview page details', () => {
     const acceptedDataEntry = { ...mockMetaInfo, dataId: 'accepted-data-id', qaStatus: QaStatus.Accepted };
 
     it('shows an error warning when there is no related data request with status Open or Processing', () => {
-      mountPage({ requestCount: 0 });
+      const companyWithNoWarnings = { ...mockCompanyInfo, dataRegisteredByDataland: [] };
+      mountPage({ requestCount: 0, companyInfo: companyWithNoWarnings });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
@@ -414,7 +415,8 @@ describe('DatasetReviewOverview page details', () => {
     });
 
     it('shows no warnings when everything is fine', () => {
-      mountPage();
+      const companyWithNoWarnings = { ...mockCompanyInfo, dataRegisteredByDataland: [] };
+      mountPage({ companyInfo: companyWithNoWarnings });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test^="review-warning-"]').should('not.exist');
