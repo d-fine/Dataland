@@ -89,7 +89,7 @@
                 :data-test="`review-warning-${warning.id}`"
                 class="p-3 mb-2 border-round border-2"
                 :class="{
-                  'bg-green-100 border-green-700': warning.type === 'info',
+                  'bg-gray-100 border-gray-700': warning.type === 'info',
                   'bg-yellow-100 border-yellow-700': warning.type === 'warning',
                   'bg-red-100 border-red-700': warning.type === 'error',
                 }"
