@@ -849,7 +849,7 @@ describe('JudgeDialog component tests', () => {
         });
       });
 
-      it('shows no documents in the dropdown when the API returns none', () => {
+      it('shows no documents in the dropdown when there are no documents related to the company', () => {
         mountJudgeDialog({ companyDocuments: [] });
 
         cy.get('[data-test="custom-document-field"]').click();
