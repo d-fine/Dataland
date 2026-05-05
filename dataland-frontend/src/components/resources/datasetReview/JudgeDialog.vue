@@ -238,7 +238,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
       const label = doc.documentName ?? doc.documentId;
       return <DocumentOption>{
         label: label,
-        value: label,
+        value: doc.documentId,
         dataSource: {
           fileName: label,
           fileReference: doc.documentId,
