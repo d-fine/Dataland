@@ -222,7 +222,7 @@ const isOpen = defineModel<boolean>('isOpen');
 const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
 const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
 const availableDocuments = computed<DocumentOption[]>(() => {
-  const docs = allDocumentMetaInfo?.value ?? [];
+  const docs = allDocumentMetaInfo.value ?? [];
   const reportingPeriod = datasetJudgement.value?.reportingPeriod;
   const reportingPeriodNumber = reportingPeriod != null ? parseInt(reportingPeriod) : null;
   return docs
@@ -241,7 +241,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
         value: label,
         dataSource: {
           fileName: doc.documentName ?? null,
-          fileReference: doc.documentId,
+          fileReference: doc.documentId ?? null,
           publicationDate: doc.publicationDate ?? null,
         },
       };

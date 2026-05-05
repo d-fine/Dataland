@@ -794,7 +794,7 @@ describe('JudgeDialog component tests', () => {
     // 7. Custom data point field: access to correct documents
     // ---------------------------------------------------------------------------
     describe('Custom data point document access', () => {
-      it('shows the available documents in the document select dropdown', () => {
+      it('shows the relevant company documents in the document select dropdown', () => {
         const docs: DocumentMetaInfoResponse[] = [
           {
             documentId: 'ref-123',

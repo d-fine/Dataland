@@ -24,14 +24,14 @@ export function useGetDocumentMetaInfoByCompanyIdQuery(
       const { documentController } = apiClientProvider.apiClients;
       const id = companyId.value;
       if (!id) throw new Error('companyId is undefined');
-      const { data } = await documentController.searchForDocumentMetaInformation(
+      const response = await documentController.searchForDocumentMetaInformation(
         id,
         undefined,
         undefined,
         undefined,
         undefined
       );
-      return data;
+      return response.data;
     },
   });
 }
