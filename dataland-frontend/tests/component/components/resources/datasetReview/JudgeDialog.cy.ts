@@ -932,7 +932,6 @@ describe('JudgeDialog component tests', () => {
         const docsWithReferenceOnly: DocumentMetaInfoResponse[] = [
           {
             documentId: 'ref-789',
-            documentName: 'Monthly Report',
             publicationDate: '2023-01-01',
             uploaderId: 'u1',
           },
