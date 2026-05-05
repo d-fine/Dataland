@@ -1,8 +1,10 @@
 {
   "name": "Dataland Opencode Sandbox",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "runArgs": [
-    "--name", "opencode-devcontainer",
+    "--name", "opencode-sandbox",
     "--workdir", "/workspaces/dataland",
     "--add-host", "local-dev.dataland.com:127.0.0.1",
     "--add-host", "dataland-admin:127.0.0.1"
@@ -14,7 +16,12 @@
     "DOCKER_HOST": "unix:///run/user/1000/docker.sock"
   },
   "mounts": [
-    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly"
+    // Disable write access to the devcontainer setup itself
+    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly",
+
+    // Persist opencode share and XDG state data across devcontainer rebuilds
+    "source=dataland-opencode-local-share,target=/home/vscode/.local/share/opencode,type=volume",
+    "source=dataland-opencode-local-state,target=/home/vscode/.local/state/opencode,type=volume",
   ],
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -32,9 +39,6 @@
     "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
   },
 
-  // Add necessary dependencies for cypress
-  "onCreateCommand": "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*",
+  "postCreateCommand": "cd /workspaces/dataland/dataland-frontend && npx --yes cypress install && npx --yes cypress verify && sudo -n rm -f /etc/sudoers.d/vscode || true"
 
-  // Remove sudo access from the container
-  "postCreateCommand": "cd /workspaces/dataland/dataland-frontend && npx --yes cypress install && npx --yes cypress verify && sudo -n rm -f /etc/sudoers.d/vscode || true",
 }
