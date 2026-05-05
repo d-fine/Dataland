@@ -343,9 +343,11 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
   return (
     isPatching.value ||
-    allQaReports.value.length === 0 ||
-    !currentQaReport.value ||
-    !currentQaReport.value.correctedData
+    allQaReports.value.length === 0 ||  // QA reports array should not be empty
+    !currentQaReport.value ||  // current QA report should not be null
+    !currentQaReport.value.correctedData ||  // correctedData should not be null
+    !currentQaReport.value.correctedData.value ||  // Value field of correctedData should not be null
+    Object.keys(currentQaReport.value.correctedData).length === 0  // correctedData should not be empty "{}"
   );
 });
 
