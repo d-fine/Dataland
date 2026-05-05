@@ -479,6 +479,51 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
 
+    const judgementWithCorrectedDataWithNullValue: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          qaReports: baseDatasetJudgement.dataPoints[dataPointTypeId].qaReports.map((qaReport) => ({
+            ...qaReport,
+            correctedData: JSON.stringify({
+              ...correctedDataPoint,
+              value: null,
+            }),
+          })),
+        },
+      },
+    };
+
+    it('disables the accept-report button when the current QA report has corrected data with null as value', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithCorrectedDataWithNullValue });
+
+      cy.get('[data-test="accept-report-button"]').should('be.disabled');
+    });
+
+
+    const judgementWithEmptyBodyCorrectedData: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          qaReports: baseDatasetJudgement.dataPoints[dataPointTypeId].qaReports.map((qaReport) => ({
+            ...qaReport,
+            correctedData: '{}',
+          })),
+        },
+      },
+    };
+
+    it('disables the accept-report button when the current QA report has an empty body', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithEmptyBodyCorrectedData });
+
+      cy.get('[data-test="accept-report-button"]').should('be.disabled');
+    });
+
+
     it('calls PATCH with AcceptedDataPointSource.Qa and reporter userId when accepting the QA report', () => {
       mountJudgeDialog();
 
