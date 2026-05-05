@@ -223,6 +223,7 @@ function formDataToJson(): void {
 
 /**
  * Parses the JSON from jsonValue and updates the form data accordingly. If the JSON is invalid, the form data is left unchanged.
+ * The document field is resolved by matching against availableDocuments using either the value, the fileName, or the fileReference.
  * @returns Nothing
  */
 function jsonToFormData(): void {
