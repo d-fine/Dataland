@@ -7,7 +7,6 @@ import type { DatasetJudgementResponse, DataPointJudgement } from '@clients/qase
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
-import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
@@ -120,24 +119,6 @@ const kpiRows: CellRow[] = [
   },
 ];
 
-const availableDocuments: DocumentOption[] = [
-  {
-    label: 'Annual Report 2023',
-    value: 'annual-report-2023',
-    dataSource: { fileName: 'AnnualReport2023.pdf', fileReference: 'ref-123' },
-  },
-  {
-    label: 'Sustainability Report',
-    value: 'sustainability-report',
-    dataSource: { fileName: 'SustainabilityReport.pdf', fileReference: 'ref-456' },
-  },
-  {
-    label: 'Monthly Report',
-    value: 'monthly-report',
-    dataSource: { fileName: null, fileReference: 'ref-789' },
-  },
-];
-
 const overflowTestCases = [
   {
     description: 'shows and hides the overflow popover for original comment',
@@ -179,7 +160,6 @@ function mountJudgeDialog(options?: {
   patchErrorResponse?: object;
   dataPointTypeId?: string;
   kpiRows?: CellRow[];
-  availableDocuments?: DocumentOption[];
   companyDocuments?: DocumentMetaInfoResponse[];
 }): void {
   const judgement = options?.datasetJudgement ?? baseDatasetJudgement;
@@ -238,7 +218,6 @@ function mountJudgeDialog(options?: {
       datasetReviewId: datasetJudgementId,
       dataPointTypeId: options?.dataPointTypeId ?? dataPointTypeId,
       kpiRows: options?.kpiRows ?? kpiRows,
-      availableDocuments: options?.availableDocuments ?? availableDocuments,
       isOpen: true,
     },
     global: {
@@ -816,7 +795,25 @@ describe('JudgeDialog component tests', () => {
     // ---------------------------------------------------------------------------
     describe('Custom data point document access', () => {
       it('shows the available documents in the document select dropdown', () => {
-        mountJudgeDialog();
+        const docs: DocumentMetaInfoResponse[] = [
+          {
+            documentId: 'ref-123',
+            documentName: 'Annual Report 2023',
+            reportingPeriod: '2023',
+            publicationDate: '2023-01-01',
+            uploaderId: 'u1',
+          },
+          {
+            documentId: 'ref-456',
+            documentName: 'Sustainability Report',
+            reportingPeriod: '2023',
+            publicationDate: '2023-01-01',
+            uploaderId: 'u1',
+          },
+          { documentId: 'ref-789', documentName: 'Monthly Report', publicationDate: '2023-01-01', uploaderId: 'u1' },
+        ];
+        mountJudgeDialog({ companyDocuments: docs });
+        cy.wait('@getCompanyDocuments');
 
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
@@ -827,7 +824,17 @@ describe('JudgeDialog component tests', () => {
       });
 
       it('uses the selected document dataSource when building the custom datapoint JSON', () => {
-        mountJudgeDialog();
+        const docs: DocumentMetaInfoResponse[] = [
+          {
+            documentId: 'ref-123',
+            documentName: 'Annual Report 2023',
+            reportingPeriod: '2023',
+            publicationDate: '2023-01-01',
+            uploaderId: 'u1',
+          },
+        ];
+        mountJudgeDialog({ companyDocuments: docs });
+        cy.wait('@getCompanyDocuments');
 
         cy.get('[data-test="custom-value-field"]').clear().type('doc-test-value');
         cy.get('[data-test="custom-document-field"]').click();
@@ -838,12 +845,12 @@ describe('JudgeDialog component tests', () => {
 
         cy.wait('@patchJudgementDetail').then((interception) => {
           const parsed = JSON.parse(interception.request.body.customDataPoint);
-          expect(parsed.dataSource.fileName).to.eq('AnnualReport2023.pdf');
+          expect(parsed.dataSource.fileName).to.eq('Annual Report 2023');
         });
       });
 
-      it('shows no documents in the dropdown when none are provided', () => {
-        mountJudgeDialog({ availableDocuments: [], companyDocuments: [] });
+      it('shows no documents in the dropdown when the API returns none', () => {
+        mountJudgeDialog({ companyDocuments: [] });
 
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
@@ -852,7 +859,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Sustainability Report').should('not.exist');
       });
 
-      it('shows company in addition to dataset documents', () => {
+      it('shows company documents in the dropdown', () => {
         const companyOnlyDoc: DocumentMetaInfoResponse = {
           documentId: 'api-ref-001',
           documentName: 'Company Policy 2023',
@@ -866,26 +873,7 @@ describe('JudgeDialog component tests', () => {
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
 
-        cy.contains('Annual Report 2023').should('be.visible');
-        cy.contains('Sustainability Report').should('be.visible');
         cy.contains('Company Policy 2023').should('be.visible');
-      });
-
-      it('does not show a duplicate when company document is already a dataset document', () => {
-        const duplicateDoc: DocumentMetaInfoResponse = {
-          documentId: 'ref-123',
-          documentName: 'Annual Report 2023',
-          reportingPeriod: '2023',
-          publicationDate: '2023-01-01',
-          uploaderId: 'uploader-1',
-        };
-        mountJudgeDialog({ companyDocuments: [duplicateDoc] });
-        cy.wait('@getCompanyDocuments');
-
-        cy.get('[data-test="custom-document-field"]').click();
-        cy.get('.p-select-overlay').should('be.visible');
-
-        cy.get('.p-select-overlay').contains('Annual Report 2023').should('have.length', 1);
       });
 
       it('filters out company documents with a reporting period earlier than the dataset', () => {
@@ -896,7 +884,7 @@ describe('JudgeDialog component tests', () => {
           publicationDate: '2022-12-31',
           uploaderId: 'uploader-1',
         };
-        mountJudgeDialog({ availableDocuments: [], companyDocuments: [oldDoc] });
+        mountJudgeDialog({ companyDocuments: [oldDoc] });
         cy.wait('@getCompanyDocuments');
 
         cy.get('[data-test="custom-document-field"]').click();
@@ -912,7 +900,7 @@ describe('JudgeDialog component tests', () => {
           publicationDate: '2020-01-01',
           uploaderId: 'uploader-1',
         };
-        mountJudgeDialog({ availableDocuments: [], companyDocuments: [noperiodDoc] });
+        mountJudgeDialog({ companyDocuments: [noperiodDoc] });
         cy.wait('@getCompanyDocuments');
 
         cy.get('[data-test="custom-document-field"]').click();
@@ -941,16 +929,17 @@ describe('JudgeDialog component tests', () => {
           },
         };
 
-        const docsWithReferenceOnly: DocumentOption[] = [
+        const docsWithReferenceOnly: DocumentMetaInfoResponse[] = [
           {
-            label: 'Monthly Report',
-            // value must match fileName ?? fileReference
-            value: 'ref-789',
-            dataSource: { fileName: null, fileReference: 'ref-789' },
+            documentId: 'ref-789',
+            documentName: 'Monthly Report',
+            publicationDate: '2023-01-01',
+            uploaderId: 'u1',
           },
         ];
 
-        mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, availableDocuments: docsWithReferenceOnly });
+        mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, companyDocuments: docsWithReferenceOnly });
+        cy.wait('@getCompanyDocuments');
         cy.get('[data-test="custom-document-field"]').should('contain', 'Monthly Report');
       });
     });

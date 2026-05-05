@@ -94,14 +94,12 @@
               data-test="datasetReviewComparisonTable"
               @row-click="onComparisonTableRowClicked"
               @kpi-rows-built="onKpiRowsBuilt"
-              @documents-built="onDocumentsBuilt"
             />
             <JudgeDialog
               v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId && isAssignedToCurrentUser"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
               :kpi-rows="kpiRows"
-              :available-documents="availableDocuments"
               v-model:is-open="isJudgeDialogOpen"
             />
           </div>
@@ -141,7 +139,6 @@ import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/da
 import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -152,15 +149,6 @@ const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 const isJudgeDialogOpen = ref(false);
 const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
-const availableDocuments = ref<DocumentOption[]>([]);
-
-/**
- * Callback function to receive the list of available documents for a data point from the ComparisonTable child component.
- * @param documents
- */
-function onDocumentsBuilt(documents: DocumentOption[]): void {
-  availableDocuments.value = documents;
-}
 
 /**
  * Callback function to handle clicks on rows in the ComparisonTable child component. Opens the JudgeDialog for the clicked data point.

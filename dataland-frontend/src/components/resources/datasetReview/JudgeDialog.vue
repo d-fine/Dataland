@@ -199,7 +199,6 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
-  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -224,19 +223,16 @@ const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.
 const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo?.value ?? [];
-  const datasetDocuments = props.availableDocuments ?? [];
-  const datasetFileReferences = new Set(datasetDocuments.map((d) => d.dataSource?.fileReference).filter(Boolean));
   const reportingPeriod = datasetJudgement.value?.reportingPeriod;
   const reportingPeriodNumber = reportingPeriod != null ? parseInt(reportingPeriod) : null;
-  const companyDocs = docs
+  return docs
     .filter((doc: DocumentMetaInfoResponse) => {
       if (doc.reportingPeriod == null) {
         return true;
       } else if (reportingPeriodNumber != null) {
         return parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
-      } else {
-        return true;
       }
+      return false;
     })
     .map((doc: DocumentMetaInfoResponse) => {
       const label = doc.documentName ?? doc.documentId;
@@ -249,9 +245,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
           publicationDate: doc.publicationDate ?? null,
         },
       };
-    })
-    .filter((doc) => !datasetFileReferences.has(doc.dataSource?.fileReference));
-  return [...datasetDocuments, ...companyDocs];
+    });
 });
 
 // ===== Accept Button mutations  =====
