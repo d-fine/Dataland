@@ -1,5 +1,5 @@
 {
-  "name": "Dataland Rootless Sandbox",
+  "name": "Dataland Opencode Sandbox",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": [
     "--name", "opencode-devcontainer",
@@ -31,4 +31,10 @@
     },
     "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
   },
+
+  // Add necessary dependencies for cypress
+  "onCreateCommand": "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*",
+
+  // Remove sudo access from the container
+  "postCreateCommand": "cd /workspaces/dataland/dataland-frontend && npx --yes cypress install && npx --yes cypress verify && sudo -n rm -f /etc/sudoers.d/vscode || true",
 }
