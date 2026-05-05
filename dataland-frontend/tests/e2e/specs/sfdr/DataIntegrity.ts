@@ -28,7 +28,7 @@ before(function () {
  * @param companyId the company associated to the data uploaded via form
  */
 function validateFormUploadedData(companyId: string): void {
-  cy.visit('/companies/' + companyId + '/frameworks/' + DataTypeEnum.Sfdr);
+  cy.visitAndCheckAppMount('/companies/' + companyId + '/frameworks/' + DataTypeEnum.Sfdr);
 
   MLDT.getSectionHead('Environmental').should('have.attr', 'data-section-expanded', 'true');
   MLDT.getSectionHead('Biodiversity').should('have.attr', 'data-section-expanded', 'true');
