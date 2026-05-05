@@ -16,16 +16,12 @@ export function useGetDocumentMetaInfoByCompanyIdQuery(
 ): UseQueryReturnType<DocumentMetaInfoResponse[], Error> {
   const apiClientProvider = useApiClient();
   const queryKey = computed(() => documentKeys.listByCompanyId(companyId.value));
-  const enabled = computed(() => !!companyId.value);
   return useQuery<DocumentMetaInfoResponse[], Error>({
     queryKey,
-    enabled,
     queryFn: async () => {
       const { documentController } = apiClientProvider.apiClients;
-      const id = companyId.value;
-      if (!id) throw new Error('companyId is undefined');
       const response = await documentController.searchForDocumentMetaInformation(
-        id,
+        companyId.value,
         undefined,
         undefined,
         undefined,
