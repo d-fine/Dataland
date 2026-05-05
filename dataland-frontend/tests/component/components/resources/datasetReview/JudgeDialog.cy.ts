@@ -939,7 +939,7 @@ describe('JudgeDialog component tests', () => {
 
         mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, companyDocuments: docsWithReferenceOnly });
         cy.wait('@getCompanyDocuments');
-        cy.get('[data-test="custom-document-field"]').should('contain', 'Monthly Report');
+        cy.get('[data-test="custom-document-field"]').should('contain', 'ref-789');
       });
     });
   });
