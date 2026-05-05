@@ -852,7 +852,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Sustainability Report').should('not.exist');
       });
 
-      it('shows company documents from the API in addition to dataset documents', () => {
+      it('shows company in addition to dataset documents', () => {
         const companyOnlyDoc: DocumentMetaInfoResponse = {
           documentId: 'api-ref-001',
           documentName: 'Company Policy 2023',
@@ -871,7 +871,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Company Policy 2023').should('be.visible');
       });
 
-      it('does not show a duplicate when the API returns a document already present in the dataset prop', () => {
+      it('does not show a duplicate when company document is already a dataset document', () => {
         const duplicateDoc: DocumentMetaInfoResponse = {
           documentId: 'ref-123',
           documentName: 'Annual Report 2023',
@@ -888,7 +888,7 @@ describe('JudgeDialog component tests', () => {
         cy.get('.p-select-overlay').contains('Annual Report 2023').should('have.length', 1);
       });
 
-      it('filters out API documents with a reporting period earlier than the dataset', () => {
+      it('filters out company documents with a reporting period earlier than the dataset', () => {
         const oldDoc: DocumentMetaInfoResponse = {
           documentId: 'api-ref-old',
           documentName: 'Old Report 2022',
@@ -905,7 +905,7 @@ describe('JudgeDialog component tests', () => {
         cy.contains('Old Report 2022').should('not.exist');
       });
 
-      it('includes API documents with no reporting period regardless of dataset period', () => {
+      it('includes company documents with no reporting period regardless of dataset period', () => {
         const noperiodDoc: DocumentMetaInfoResponse = {
           documentId: 'api-ref-nop',
           documentName: 'Timeless Policy',

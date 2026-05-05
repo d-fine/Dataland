@@ -1,8 +1,8 @@
 import { computed, type Ref } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
-import { useApiClient } from '@/utils/useApiClient.ts';
+import { useApiClient } from '@/utils/useApiClient';
 import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { documentKeys } from '@/api-queries/document-manager/document/documentKeys.ts';
+import { documentKeys } from '@/api-queries/document-manager/document/documentKeys';
 
 /**
  * Fetch meta information of documents related to a company by its company id.
@@ -15,22 +15,23 @@ export function useGetDocumentMetaInfoByCompanyIdQuery(
   companyId: Ref<string | undefined>
 ): UseQueryReturnType<DocumentMetaInfoResponse[], Error> {
   const apiClientProvider = useApiClient();
-
-  return useQuery({
-    queryKey: computed(() => documentKeys.listByCompanyId(companyId.value)),
+  const queryKey = computed(() => documentKeys.listByCompanyId(companyId.value));
+  const enabled = computed(() => !!companyId.value);
+  return useQuery<DocumentMetaInfoResponse[], Error>({
+    queryKey,
+    enabled,
     queryFn: async () => {
+      const { documentController } = apiClientProvider.apiClients;
       const id = companyId.value;
       if (!id) throw new Error('companyId is undefined');
-      const apiController = apiClientProvider.apiClients.documentController;
-      const response = await apiController.searchForDocumentMetaInformation(
+      const { data } = await documentController.searchForDocumentMetaInformation(
         id,
         undefined,
         undefined,
         undefined,
         undefined
       );
-      return response.data;
+      return data;
     },
-    enabled: computed(() => !!companyId.value),
   });
 }
