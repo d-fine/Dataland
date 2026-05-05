@@ -502,7 +502,6 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
 
-
     const judgementWithEmptyBodyCorrectedData: DatasetJudgementResponse = {
       ...baseDatasetJudgement,
       dataPoints: {
@@ -522,7 +521,6 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
-
 
     it('calls PATCH with AcceptedDataPointSource.Qa and reporter userId when accepting the QA report', () => {
       mountJudgeDialog();
