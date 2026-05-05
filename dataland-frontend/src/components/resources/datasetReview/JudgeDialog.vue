@@ -240,7 +240,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
         label: label,
         value: doc.documentId,
         dataSource: {
-          fileName: label,
+          fileName: doc.documentName ?? null,
           fileReference: doc.documentId,
           publicationDate: doc.publicationDate ?? null,
         },

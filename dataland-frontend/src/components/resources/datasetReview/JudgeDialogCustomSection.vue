@@ -228,6 +228,14 @@ function formDataToJson(): void {
 function jsonToFormData(): void {
   const parsed = parseDataPointJsonToFormData(jsonValue.value);
   if (parsed !== null) {
+    if (parsed.document) {
+      const matchingDoc = props.availableDocuments?.find(
+        (doc) => doc.value === parsed.document || doc.dataSource?.fileName === parsed.document
+      );
+      if (matchingDoc) {
+        parsed.document = matchingDoc.value;
+      }
+    }
     formData.value = parsed;
   }
 }
