@@ -48,3 +48,11 @@ tls.crt
 
 # local logging data
 /dataland-loki/data
+
+# OpenCode
+.opencode/
+!.opencode/opencode.jsonc
+!.opencode/tui.jsonc
+!.opencode/skills/
+!.opencode/agents/
+.local/
