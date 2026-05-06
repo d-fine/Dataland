@@ -20,12 +20,7 @@ export function useGetDocumentMetaInfoByCompanyIdQuery(
     queryKey,
     queryFn: async () => {
       const { documentController } = apiClientProvider.apiClients;
-      const response = await documentController.searchForDocumentMetaInformation(
-        companyId.value,
-        undefined,
-        undefined,
-        undefined
-      );
+      const response = await documentController.searchForDocumentMetaInformation(companyId.value);
       return response.data;
     },
   });
