@@ -19,6 +19,7 @@ import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTa
 import type { Interception } from 'cypress/types/net-stubbing';
 
 const shortTimeoutInMs = Number(750);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 enum IconState {
   Accepted,
@@ -45,7 +46,6 @@ interface QaJudgement {
   acceptedSource?: AcceptedDataPointSource;
   reporterUserIdOfAcceptedQaReport?: string;
   reporterUserNameOfAcceptedQaReport?: string;
-  customDataPoint?: string;
   customValue?: string;
 }
 
@@ -102,7 +102,6 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     judgement: {
       acceptedSource: AcceptedDataPointSource.Custom,
       customValue: '400400400.23',
-      customDataPoint: '400400400.23',
     },
   },
   {
@@ -238,17 +237,34 @@ describeIf(
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         finishJudgement(uploadedDataMetaInfo.dataId);
 
-        cy.wait(shortTimeoutInMs * 4); // allow backend processing (adjust as needed)
+        // cy.wait(shortTimeoutInMs * 4); // allow backend processing (adjust as needed)
+        //
+        // cy.request({
+        //   method: 'GET',
+        //   url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
+        //   headers: { Authorization: `Bearer ${tokens.adminToken}` },
+        // }).then((response) => {
+        //   expect(response.status).to.eq(200); // qaStatus value sometimes varies in case; normalize to be robust
+        //   const qaStatus = String(response.body?.qaStatus ?? '').toLowerCase();
+        //   expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
+        // });
 
-        cy.request({
-          method: 'GET',
-          url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
-          headers: { Authorization: `Bearer ${tokens.adminToken}` },
-        }).then((response) => {
-          expect(response.status).to.eq(200); // qaStatus value sometimes varies in case; normalize to be robust
-          const qaStatus = String(response.body?.qaStatus ?? '').toLowerCase();
-          expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
-        });
+        cy.waitUntil(
+          () =>
+            cy
+              .request({
+                method: 'GET',
+                url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
+                headers: { Authorization: `Bearer ${tokens.adminToken}` },
+                failOnStatusCode: false, // don't fail the test while the backend is still processing
+              })
+              .then((resp) => {
+                if (resp.status !== 200) return false;
+                const qaStatus = String(resp.body?.qaStatus ?? '').toLowerCase();
+                return qaStatus === 'accepted';
+              }),
+          { timeout: longTimeoutInMs, interval: shortTimeoutInMs } // adjust to environment; 20s total, poll every 500ms
+        );
 
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
 
@@ -410,10 +426,10 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
     );
   }
 
-  if (judgement.customDataPoint == null) {
-    expect(body.customDataPoint ?? null, 'customDataPoint in request body').to.eq(null);
+  if (judgement.customValue == null) {
+    expect(body.customValue ?? null, 'customValue in request body').to.eq(null);
   } else {
-    expect(body.customDataPoint, 'customDataPoint in request body').to.eq(judgement.customDataPoint);
+    expect(body.customValue, 'customValue in request body').to.eq(judgement.customValue);
   }
 }
 
@@ -865,8 +881,8 @@ function buildQaIconForAction(
  * Determines the expected icon state for the custom column based on the judgement configuration.
  *
  * Rules:
- * - If no customDataPoint is set -> IconState.None
- * - If customDataPoint is set:
+ * - If no customValue is set -> IconState.None
+ * - If customValue is set:
  *   - and acceptedSource = 'Custom' -> IconState.Accepted
  *   - otherwise -> IconState.Rejected
  *
@@ -874,7 +890,7 @@ function buildQaIconForAction(
  * @return          The icon state representing an accepted, rejected, or absent custom data point.
  */
 function buildCustomIcon(judgement: QaJudgement): IconState {
-  if (!judgement.customDataPoint) {
+  if (!judgement.customValue) {
     return IconState.None;
   }
   return judgement.acceptedSource === AcceptedDataPointSource.Custom ? IconState.Accepted : IconState.Rejected;
@@ -977,7 +993,7 @@ function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyF
     }
 
     if (acceptedSource === AcceptedDataPointSource.Custom) {
-      const custom = parseJsonValue(scenario.judgement.customValue ?? scenario.judgement.customDataPoint);
+      const custom = parseJsonValue(scenario.judgement.customValue);
       result[dataPointType] = custom ?? originalValue;
       return;
     }
