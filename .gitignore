@@ -49,8 +49,10 @@ tls.crt
 # local logging data
 /dataland-loki/data
 
-# OpenCode
-.opencode/
+# Ignore the contents of .opencode (has node_modules etc)
+.opencode/*
+
+# Allow opencode configs, skills and agents
 !.opencode/opencode.jsonc
 !.opencode/tui.jsonc
 !.opencode/skills/
