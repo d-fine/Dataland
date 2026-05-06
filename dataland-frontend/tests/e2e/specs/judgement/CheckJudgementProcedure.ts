@@ -237,33 +237,19 @@ describeIf(
         judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
         finishJudgement(uploadedDataMetaInfo.dataId);
 
-        // cy.wait(shortTimeoutInMs * 4); // allow backend processing (adjust as needed)
-        //
-        // cy.request({
-        //   method: 'GET',
-        //   url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
-        //   headers: { Authorization: `Bearer ${tokens.adminToken}` },
-        // }).then((response) => {
-        //   expect(response.status).to.eq(200); // qaStatus value sometimes varies in case; normalize to be robust
-        //   const qaStatus = String(response.body?.qaStatus ?? '').toLowerCase();
-        //   expect(qaStatus, 'dataset qaStatus').to.eq('accepted');
-        // });
-
-        cy.waitUntil(
-          () =>
-            cy
-              .request({
-                method: 'GET',
-                url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
-                headers: { Authorization: `Bearer ${tokens.adminToken}` },
-                failOnStatusCode: false, // don't fail the test while the backend is still processing
-              })
-              .then((resp) => {
-                if (resp.status !== 200) return false;
-                const qaStatus = String(resp.body?.qaStatus ?? '').toLowerCase();
-                return qaStatus === 'accepted';
-              }),
-          { timeout: longTimeoutInMs, interval: shortTimeoutInMs } // adjust to environment; 20s total, poll every 500ms
+        cy.waitUntil(() =>
+          cy
+            .request({
+              method: 'GET',
+              url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
+              headers: { Authorization: `Bearer ${tokens.adminToken}` },
+              failOnStatusCode: false,
+            })
+            .then((resp) => {
+              if (resp.status !== 200) return false;
+              const qaStatus = String(resp.body?.qaStatus ?? '').toLowerCase();
+              return qaStatus === 'accepted';
+            })
         );
 
         const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
