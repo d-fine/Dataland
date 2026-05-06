@@ -155,7 +155,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
-import { DatasetJudgementState, QaStatus } from '@clients/qaservice';
+import { DatasetJudgementState } from '@clients/qaservice';
 import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/Frameworks.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
@@ -167,6 +167,8 @@ import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
+import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
+import { type DataMetaInformationSearchFilter, QaStatus } from '@clients/backend';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -257,18 +259,24 @@ const groupedDataTypeRef = computed<string[] | undefined>(() => {
   return [dataTypeRef.value];
 });
 
-const filters = computed<RequestSearchFilterString>(() => ({
+const requestSearchFilters = computed<RequestSearchFilterString>(() => ({
   companyId: companyIdRef.value,
   dataTypes: groupedDataTypeRef.value,
   reportingPeriods: reportingPeriodRef.value ? [reportingPeriodRef.value] : undefined,
   requestStates: [RequestState.Open, RequestState.Processing],
 }));
 
+const metaDataSearchFilters = computed<DataMetaInformationSearchFilter>(() => ({
+  companyId: companyIdRef.value,
+  reportingPeriod: reportingPeriodRef.value,
+  onlyActive: false,
+}));
+
 const {
-  data: requestCount,
+  data: filteredRequestCount,
   isPending: isRequestCountPending,
   isError: isRequestCountError,
-} = usePostEnhancedRequestsSearchCountQuery(filters);
+} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters);
 
 const {
   data: companyData,
@@ -276,21 +284,25 @@ const {
   isError: isCompanyDataError,
 } = useGetCompanyInformationQuery(companyIdRef);
 
+const {
+  data: filteredMetaData,
+  isPending: isMetaDataPending,
+  isError: isMetaDataError,
+} = usePostMetaDataFiltersQuery(metaDataSearchFilters);
+
 const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
 const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
+const isMetaDataReady = computed(() => !isMetaDataPending.value && !isMetaDataError.value);
 
 const hasValidRequestState = computed(() => {
-  return (requestCount.value ?? 0) > 0;
+  return (filteredRequestCount.value ?? 0) > 0;
 });
 
-const hasAssignedSector = computed(() => !!companyData.value?.companyInformation.sector);
+const hasAssignedSector = computed(() => !!companyData.value?.sector);
 
-const matchingDatasetsWithPeriodAndType = computed(() =>
-  (companyData.value?.dataRegisteredByDataland ?? []).filter(
-    (entry) =>
-      entry.reportingPeriod === reportingPeriodRef.value && (groupedDataTypeRef.value ?? []).includes(entry.dataType)
-  )
-);
+const matchingDatasetsWithPeriodAndType = computed(() => {
+  return (filteredMetaData.value ?? []).filter((entry) => groupedDataTypeRef.value?.includes(entry.dataType));
+});
 
 const acceptedMatchingDatasets = computed(() =>
   matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Accepted)
@@ -332,11 +344,11 @@ const reviewWarnings = computed((): ReviewWarning[] => {
     });
   }
 
-  if (isCompanyDataReady.value) {
-    if (!hasAssignedSector.value) {
-      warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.', type: 'warning' });
-    }
+  if (isCompanyDataReady.value && !hasAssignedSector.value) {
+    warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.', type: 'warning' });
+  }
 
+  if (isMetaDataReady.value) {
     if (hasAcceptedMatchingDataset.value) {
       warnings.push({
         id: 'accepted-duplicate',
