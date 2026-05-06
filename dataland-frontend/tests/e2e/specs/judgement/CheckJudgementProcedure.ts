@@ -15,6 +15,7 @@ import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 import type { Interception } from 'cypress/types/net-stubbing';
 
 const shortTimeoutInMs = Number(750);
@@ -939,211 +940,39 @@ function parseJsonValue(raw?: string): string | undefined {
 }
 
 /**
- * Resolves the comparable string value for a backend data point type from `EutaxonomyFinancialsData`.
+ * Extracts the scalar value for a given data point type from an EU taxonomy financials dataset.
  *
- * Used in judgement assertions to read the stored value for a known
- * QA data point key (for example `extendedDateFiscalYearEnd` or
- * `extendedDecimalNumberOfEmployees`).
- *
- * @param dataPointType Backend data point type identifier to resolve.
- * @param data          EUTaxonomy financial dataset returned by the API.
- * @returns             Normalized string value for the requested type, or `''` if not resolvable.
+ * @param dataPointType Data point type key used to look up the field path in the path map.
+ * @param data          EU taxonomy financials dataset to extract the value from.
+ * @returns             The extracted value as a string, or an empty string if the path is not mapped.
  */
 function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsData): string {
-  switch (dataPointType) {
-    case DATA_POINT_TYPES.fiscalYearEnd:
-      return String(data.general?.general?.fiscalYearEnd?.value ?? '');
-    case DATA_POINT_TYPES.isNfrdMandatory:
-      return String(data.general?.general?.isNfrdMandatory?.value ?? '');
-    case DATA_POINT_TYPES.numberOfEmployees:
-      return String(data.general?.general?.numberOfEmployees?.value ?? '');
-    case 'extendedEnumFiscalYearDeviation':
-      return String(data.general?.general?.fiscalYearDeviation?.value ?? '');
-    case 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports':
-      return String(data.general?.general?.areAllGroupEntitiesCovered?.value ?? '');
-
-    case DATA_POINT_TYPES.greenAssetRatioTotal:
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.value ?? ''
-      );
-
-    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible':
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-          ?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible?.value ?? ''
-      );
-
-    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned':
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-          ?.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned?.value ?? ''
-      );
-
-    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds':
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds?.value ?? ''
-      );
-
-    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional':
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional?.value ?? ''
-      );
-
-    case 'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling':
-      return String(
-        data.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-          ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling?.value ?? ''
-      );
-  }
-  // Ensure a string is always returned for any (possibly unknown) dataPointType
-  return '';
+  const path = buildDataPointPathMap()[dataPointType];
+  if (!path) return '';
+  return String(getFieldValueFromFrameworkDataset(`${path}.value`, data) ?? '');
 }
 
-// Generic KPI extraction utility: traverses the fixture and returns dotted-path
-// KPI name / value pairs for any node that has an own "value" property.
-type KPI = { name: string; value: string | number | null };
-
 /**
- * Extracts KPI name/value pairs from a fixture as dotted-path name/value pairs.
+ * Builds a map of expected data point values by type, derived from QA scenarios and the original fixture.
  *
- * A KPI node is any object that has an own `value` property.
+ * For each data point type in the path map:
+ * - Uses the original fixture value if no scenario exists or the accepted source is `Original`.
+ * - Uses the custom value from the scenario if the accepted source is `Custom`.
+ * - Uses the corrected value of the accepted QA reporter if the accepted source is `Qa`.
  *
- * @param fixture Arbitrary input object (or subtree) to scan for KPI nodes.
- * @param options Optional traversal settings:
- * - `rootKey`: start from `fixture[rootKey]` when available; otherwise use `fixture`.
- * - `includeArrayIndex`: include numeric array segments in generated KPI paths.
- * @returns Flat list of `{ name, value }` KPI entries where `name` is a dotted path
- * and `value` is normalized to `string | number | null`.
+ * @param scenarios QA scenario configurations defining accepted sources and expected values.
+ * @param fixture   Original uploaded fixture used as baseline/fallback values.
+ * @returns         A record mapping each data point type to its expected string value.
  */
-function extractKpis(fixture: unknown, options?: { rootKey?: string; includeArrayIndex?: boolean }): KPI[] {
-  const out: KPI[] = [];
-  const root =
-    options?.rootKey &&
-    fixture &&
-    typeof fixture === 'object' &&
-    options.rootKey in (fixture as Record<string, unknown>)
-      ? (fixture as Record<string, unknown>)[options.rootKey]
-      : fixture;
-
-  const normalize = (v: unknown): string | number | null => {
-    if (v === null || v === undefined) return null;
-    if (typeof v === 'number') return v;
-    if (typeof v === 'string') return v;
-    if (typeof v === 'boolean') return String(v);
-    try {
-      return JSON.stringify(v);
-    } catch {
-      return null;
-    }
-  };
-
-  /**
-   * If `node` contains a value property, push it to the result and return true.
-   */
-  function pushIfValue(node: unknown, path: string[]): boolean {
-    if (node == null || typeof node !== 'object') return false;
-    if (!Object.hasOwn(node, 'value')) return false;
-
-    const nodeRec = node as Record<string, unknown>;
-    let v = nodeRec['value'];
-
-    // prefer inner .value when present and primitive-ish
-    if (v && typeof v === 'object' && Object.hasOwn(v, 'value')) {
-      const inner = (v as Record<string, unknown>)['value'];
-      if (
-        inner === null ||
-        inner === undefined ||
-        typeof inner === 'number' ||
-        typeof inner === 'string' ||
-        typeof inner === 'boolean'
-      ) {
-        v = inner;
-      }
-    }
-
-    out.push({ name: path.join('.'), value: normalize(v) });
-    return true;
-  }
-
-  /**
-   * Recursively walk the fixture tree and collect KPI nodes.
-   */
-  function walk(node: unknown, path: string[]): void {
-    if (node == null) return;
-    if (pushIfValue(node, path)) return;
-
-    if (Array.isArray(node)) {
-      node.forEach((item, idx) => {
-        if (options?.includeArrayIndex) {
-          path.push(String(idx));
-          walk(item, path);
-          path.pop();
-        } else {
-          walk(item, path);
-        }
-      });
-      return;
-    }
-
-    if (typeof node === 'object') {
-      for (const key of Object.keys(node as Record<string, unknown>)) {
-        path.push(key);
-        walk((node as Record<string, unknown>)[key], path);
-        path.pop();
-      }
-    }
-  }
-
-  walk(root, []);
-  return out;
-}
-
-/** This function returns the selected value for each KPI, based on the indicated AcceptedDataPointSource
- *
- * @param scenarios
- * @param fixture
- */
-/**
- * Builds the expected stored value per data point type based on QA scenarios and fixture defaults.
- *
- * For each considered `DataPointType`, the expected value is resolved by accepted source:
- * - `Original` (or missing scenario/source): use the value extracted from the fixture
- * - `Custom`: use parsed custom judgement value, falling back to original fixture value
- * - `Qa`: use the accepted QA report's corrected value (by reporter role), falling back to original
- *
- * Type selection:
- * - Prefer only data point types that are detectable in the fixture (`extractValueForType(...) !== ''`)
- * - If none are detectable, fall back to all known `DATA_POINT_TYPES` for compatibility
- *
- * Additionally, KPI dotted-path entries discovered via `extractKpis(...)` are appended when not
- * already present in the result map, preserving original fixture values for those keys.
- *
- * @param scenarios Scenario configuration indexed by `dataPointType`, including QA reports and judgement.
- * @param fixture Source EU Taxonomy dataset used to derive original fallback values.
- * @returns Map of expected values keyed by `DataPointType` (plus optional KPI dotted-path keys).
- */
-function buildExpectedByType(
-  scenarios: QaScenarioConfig[],
-  fixture: EutaxonomyFinancialsData
-): Record<DataPointType, string> {
+function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyFinancialsData): Record<string, string> {
   const scenarioByType = new Map<DataPointType, QaScenarioConfig>();
   scenarios.forEach((s) => scenarioByType.set(s.dataPointType, s));
 
-  const result = {} as Record<DataPointType, string>;
+  const result: Record<string, string> = {};
 
-  const allTypes = Object.values(DATA_POINT_TYPES) as DataPointType[];
-  const presentTypes = allTypes.filter((t) => {
-    const v = extractValueForType(t, fixture);
-    return v != null && v !== '';
-  });
-
-  const typesToConsider = presentTypes.length > 0 ? presentTypes : allTypes;
-
-  typesToConsider.forEach((dataPointType) => {
+  Object.keys(buildDataPointPathMap()).forEach((dataPointType) => {
     const originalValue = extractValueForType(dataPointType, fixture);
-    const scenario = scenarioByType.get(dataPointType);
+    const scenario = scenarioByType.get(dataPointType as DataPointType);
 
     const acceptedSource = scenario?.judgement.acceptedSource;
     if (!scenario || acceptedSource == null || acceptedSource === AcceptedDataPointSource.Original) {
@@ -1162,7 +991,6 @@ function buildExpectedByType(
       const acceptedReporterId = scenario.judgement.reporterUserIdOfAcceptedQaReport;
 
       let acceptedRole: QaRole | undefined;
-
       if (acceptedReporterId === reviewer_userId) {
         acceptedRole = 'reviewer';
       } else if (acceptedReporterId === admin_userId) {
@@ -1179,34 +1007,17 @@ function buildExpectedByType(
     result[dataPointType] = originalValue;
   });
 
-  // Also include any KPIs found in the fixture that are not represented by a
-  // DataPointType entry. This ensures the returned map contains keys for
-  // dotted-path KPIs (e.g. "general.general.fiscalYearEnd") so callers that
-  // inspect fixture-level KPIs can find the original values.
-  try {
-    const fixtureKpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
-    fixtureKpis.forEach((k) => {
-      const asMap = result as Record<string, string>;
-      if (!Object.hasOwn(asMap, k.name)) {
-        asMap[k.name] = k.value == null ? '' : String(k.value);
-      }
-    });
-  } catch {
-    // If extraction fails for any reason, silently continue and return the
-    // DataPointType-based result as before.
-  }
-
   return result;
 }
 
-type DataPointPathMap = Record<string, string>;
-
 /**
- * Builds the mapping from backend data point type IDs to fixture KPI paths.
+ * Returns a map of EU taxonomy financials data point type IDs to their dot-notation field paths.
  *
- * @returns Record where each key is a data point type and each value is its dotted fixture path.
+ * Used to resolve where a given data point type is located within an `EutaxonomyFinancialsData` object.
+ *
+ * @returns A record mapping data point type IDs to their field paths.
  */
-function buildDataPointPathMap(): DataPointPathMap {
+function buildDataPointPathMap(): Record<string, string> {
   return {
     extendedDateFiscalYearEnd: 'general.general.fiscalYearEnd',
     extendedEnumYesNoIsNfrdMandatory: 'general.general.isNfrdMandatory',
@@ -1235,45 +1046,18 @@ function buildDataPointPathMap(): DataPointPathMap {
 }
 
 /**
- * Converts extracted KPI entries into a map keyed by KPI name.
+ * Looks up the expected value for a data point key in the precomputed expectations map.
  *
- * @param extracted_KPIs KPI list with dotted-path names and normalized values.
- * @returns Lookup map of KPI name to value.
+ * @param key                  Data point type key to look up.
+ * @param expectedValuesByType Map of data point type keys to their expected values.
+ * @returns                    The expected value string for the given key.
+ * @throws {Error}             If no mapping exists for the given key.
  */
-function toKpiMap(extracted_KPIs: KPI[]): Record<string, KPI['value']> {
-  return Object.fromEntries(extracted_KPIs.map((kpi) => [kpi.name, kpi.value])) as Record<string, KPI['value']>;
-}
-
-/**
- * Resolves the expected value for a backend data point key.
- *
- * @param key Datapoint type key from the overview map.
- * @param expectedValuesByType Expected values keyed directly by backend data point type.
- * @param kpis Extracted fixture KPIs used as fallback lookup values.
- * @param dataPointPathMap Mapping from backend data point type to fixture KPI dotted path.
- * @returns Expected value as string (empty string when mapped KPI value is missing).
- * @throws {Error} If no backend-key-to-KPI-path mapping exists for `key`.
- */
-function resolveExpectedValue(
-  key: string,
-  expectedValuesByType: Record<string, string>,
-  kpis: KPI[],
-  dataPointPathMap: DataPointPathMap
-): string {
+function resolveExpectedValue(key: string, expectedValuesByType: Record<string, string>): string {
   if (key in expectedValuesByType) {
     return expectedValuesByType[key];
   }
-
-  const fixturePath = dataPointPathMap[key];
-  if (!fixturePath) {
-    throw new Error(`No mapping found for key: ${key}`);
-  }
-
-  const kpiMap = toKpiMap(kpis);
-
-  const value = kpiMap[fixturePath];
-
-  return value !== undefined && value !== null ? String(value) : '';
+  throw new Error(`No mapping found for data point key: ${key}`);
 }
 
 /**
@@ -1298,14 +1082,10 @@ function verifyJudgementDataStoredCorrectly(
   reportingPeriod: string,
   judgeToken: string
 ): void {
-  // Extract and log all KPI name/value pairs found in the fixture
-  const kpis = extractKpis(fixture, { rootKey: undefined, includeArrayIndex: false });
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
 
   // Allow the message queue to process data point replacements posted during finalization.
   cy.wait(shortTimeoutInMs * 4);
-
-  const dataPointPathMap = buildDataPointPathMap();
 
   cy.request({
     method: 'GET',
@@ -1319,7 +1099,7 @@ function verifyJudgementDataStoredCorrectly(
     const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
 
     Object.keys(flatOverview).forEach((key) => {
-      const expected = resolveExpectedValue(key, expectedValuesByType, kpis, dataPointPathMap);
+      const expected = resolveExpectedValue(key, expectedValuesByType);
       const actual = extractValueForType(key, data);
       cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
       expect(actual, `stored value for ${key}`).to.eq(expected);
