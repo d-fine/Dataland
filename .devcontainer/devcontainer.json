@@ -21,8 +21,9 @@
     "source=dataland-opencode-local-state,target=/home/vscode/.local/state/opencode,type=volume",
   ],
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "version": "latest",
+      "dockerDashComposeVersion": "latest"
     },
     "ghcr.io/devcontainers/features/java": {
       "version": "21",
