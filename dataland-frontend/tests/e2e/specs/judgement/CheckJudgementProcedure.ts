@@ -19,7 +19,6 @@ import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTa
 import type { Interception } from 'cypress/types/net-stubbing';
 
 const shortTimeoutInMs = Number(750);
-const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 enum IconState {
   Accepted,
