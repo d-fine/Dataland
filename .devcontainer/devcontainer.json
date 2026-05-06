@@ -17,7 +17,7 @@
   },
   "mounts": [
     // Disable write access to the devcontainer setup itself
-//    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly",
 
     // Persist opencode share and XDG state data across devcontainer rebuilds
     "source=dataland-opencode-local-share,target=/home/vscode/.local/share/opencode,type=volume",
