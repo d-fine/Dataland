@@ -8,14 +8,14 @@ source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
   echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
-  echo "  --start: Start the development stack"
+  echo "  --start: Start the development stack (uses container backend by default)"
   echo "  --stop: Stop the development stack"
-  echo "  --reset: Reset and restart the development stack from scratch"
+  echo "  --reset: Reset and restart the development stack from scratch (uses container backend by default)"
   echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
   echo "  --dev-env: Load environments/.env.dev before starting/resetting"
   echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
   echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
-  echo "  --container-backend: Run backend in Docker container instead of via Gradle bootRun"
+  echo "  --container-backend: Explicitly run backend in Docker container (this is enabled by default for --reset and --start as well)"
   echo ""
   echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
 }
@@ -127,10 +127,12 @@ parse_arguments() {
         do_stop=true
         do_reset=true
         do_start=true
+        container_backend=true
         shift
         ;;
       --start)
         do_start=true
+        container_backend=true
         shift
         ;;
       --local-frontend)
