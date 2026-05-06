@@ -95,6 +95,12 @@
                 }"
               >
                 {{ warning.message }}
+                <div v-if="warning.links && warning.links.length > 0" class="mt-1">
+                  <span class="font-semibold">Other datasets:</span>
+                  <div v-for="link in warning.links" :key="link.url">
+                    <a :href="link.url" target="_blank" class="underline">{{ link.label }}</a>
+                  </div>
+                </div>
               </div>
             </div>
             <DatasetReviewComparisonTable
@@ -286,9 +292,11 @@ const matchingDatasetsWithPeriodAndType = computed(() =>
   )
 );
 
-const hasAcceptedMatchingDataset = computed(() =>
-  matchingDatasetsWithPeriodAndType.value.some((entry) => entry.qaStatus === QaStatus.Accepted)
+const acceptedMatchingDatasets = computed(() =>
+  matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Accepted)
 );
+
+const hasAcceptedMatchingDataset = computed(() => acceptedMatchingDatasets.value.length > 0);
 
 const pendingMatchingDatasets = computed(() =>
   matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
@@ -310,6 +318,7 @@ type ReviewWarning = {
   id: string;
   message: string;
   type: 'info' | 'warning' | 'error';
+  links?: { label: string; url: string }[];
 };
 
 const reviewWarnings = computed((): ReviewWarning[] => {
@@ -333,6 +342,9 @@ const reviewWarnings = computed((): ReviewWarning[] => {
         id: 'accepted-duplicate',
         message: 'There is already an accepted dataset with the same reporting period and framework.',
         type: 'warning',
+        links: acceptedMatchingDatasets.value
+          .filter((entry) => !!entry.ref)
+          .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
       });
     }
 
@@ -342,12 +354,18 @@ const reviewWarnings = computed((): ReviewWarning[] => {
           id: 'pending-duplicate',
           message: 'There are multiple pending datasets. You are reviewing the newest upload.',
           type: 'info',
+          links: pendingMatchingDatasets.value
+            .filter((entry) => !!entry.ref)
+            .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       } else {
         warnings.push({
           id: 'not-newest-pending',
           message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
           type: 'error',
+          links: pendingMatchingDatasets.value
+            .filter((entry) => !!entry.ref)
+            .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       }
     }
