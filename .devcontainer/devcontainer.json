@@ -12,9 +12,6 @@
   "containerUser": "vscode",
   "remoteUser": "vscode",
   "updateRemoteUserUID": true,
-  "remoteEnv": {
-    "DOCKER_HOST": "unix:///run/user/1000/docker.sock"
-  },
   "mounts": [
     // Disable write access to the devcontainer setup itself
     "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly",
