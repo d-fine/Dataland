@@ -3532,7 +3532,7 @@
 							"publicationDate": null
 						},
 						"comment": "copy neural monitor",
-						"quality": "Incomplete"
+						"quality": "Reported"
 					},
 					"scope2GhgEmissionsInTonnes": {
 						"value": 42982.33,

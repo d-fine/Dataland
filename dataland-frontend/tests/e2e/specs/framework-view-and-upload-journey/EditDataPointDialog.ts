@@ -102,7 +102,7 @@ describeIf(
       cy.get('[data-test="quality-select"]')
         .should('be.visible')
         .find('.p-select-label, .p-dropdown-label')
-        .should('contain', 'Incomplete');
+        .should('contain', 'Reported');
 
       cy.get('[data-test="quality-select"]').click();
       cy.get('[aria-label="Reported"]').click();
