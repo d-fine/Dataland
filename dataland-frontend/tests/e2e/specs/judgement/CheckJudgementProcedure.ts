@@ -148,7 +148,6 @@ const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
 function stripAssuranceFromFixture(
   fixture: FixtureData<EutaxonomyFinancialsData>
 ): FixtureData<EutaxonomyFinancialsData> {
-  // Deep-clone so we never mutate the original fixture object
   const clone = structuredClone(fixture);
 
   try {
@@ -392,10 +391,6 @@ function goToSelectedDataPoint(): void {
 function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgement: QaJudgement): void {
   expect(interception.response?.statusCode, 'PATCH status code').to.eq(200);
 
-  cy.log(
-    `[patch] body.acceptedSource=${String(interception.request.body?.acceptedSource)} | expected=${String(judgement.acceptedSource)}`
-  );
-
   const body = interception.request.body ?? {};
 
   if (judgement.acceptedSource == null) {
@@ -425,7 +420,7 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
  * Advances to the next QA report entry in the judge modal and continues recursive navigation.
  *
  * The helper clicks the "next" control in the corrected data point section, verifies that the
- * current reporter label changed, and then calls `navigateToProperQaReportRecursively(...)`.
+ * current reporter label changed, and then calls `navigateToQaReport(...)`.
  *
  * Throws an error when no further entry can be opened (next button disabled), which indicates
  * that the target reporter was not found in the remaining QA reports.
@@ -452,7 +447,7 @@ function goToNextReportAndRecurse(targetReporterName: string, currentLabel: stri
     .invoke('text')
     .should('not.equal', currentLabel) // 3. Simplified assertion
     .then(() => {
-      navigateToProperQaReportRecursively(targetReporterName);
+      navigateToQaReport(targetReporterName);
     });
 }
 
@@ -469,11 +464,11 @@ function goToNextReportAndRecurse(targetReporterName: string, currentLabel: stri
  * @param targetReporterName Reporter label to find and accept in the QA report sequence.
  * @throws {Error} Propagates an error if no further report entry is available before the target is found.
  */
-export function navigateToProperQaReportRecursively(targetReporterName: string): void {
+export function navigateToQaReport(targetReporterName: string): void {
   cy.get('[data-test="qa-current-reporter-label"]')
     .invoke('text')
     .then((txt) => {
-      const current = txt.trim(); // Good practice to trim immediately
+      const current = txt.trim();
       cy.log(`Current QA label: "${current}" | Target: "${targetReporterName}"`);
 
       if (current === targetReporterName) {
@@ -521,7 +516,7 @@ function makeJudgementDecision(judgement: QaJudgement): void {
       throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
     }
 
-    navigateToProperQaReportRecursively(target);
+    navigateToQaReport(target);
   }
 }
 
@@ -997,7 +992,6 @@ function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsDa
           ?.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling?.value ?? ''
       );
   }
-  // Ensure a string is always returned for any (possibly unknown) dataPointType
   return '';
 }
 

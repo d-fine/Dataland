@@ -117,8 +117,6 @@ class DataPointMetaInformationManager
          */
         @Transactional
         fun updateCurrentlyActiveDataPointBulk(tasks: List<UpdateCurrentlyActiveDataPointTask>) {
-            logger.info("Called function")
-
             val dataPointDimensions = tasks.map { it.dataPointDimensions }
             require(dataPointDimensions.toSet().size == tasks.size) {
                 "The data point dimensions must be unique for each task."
@@ -137,11 +135,7 @@ class DataPointMetaInformationManager
                 dataPointMetaInformationRepositoryInterface
                     .findAllById(tasks.mapNotNull { it.newActiveDataId })
                     .associateBy { it.dataPointId }
-
-            logger.info("STARTING FOR LOOP:")
-
             for (task in tasks) {
-                logger.info("\n\n\n")
                 logger.info(
                     "Updating currently active data point for ${task.dataPointDimensions} " +
                         "(correlation ID: ${task.correlationId}) and (datapoint ID: ${task.newActiveDataId}).",

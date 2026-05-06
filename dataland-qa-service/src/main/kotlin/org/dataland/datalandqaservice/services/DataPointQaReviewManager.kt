@@ -258,9 +258,6 @@ class DataPointQaReviewManager
             val allCompanyIds = reviewEntitiesWithCorrelationIds.map { it.first.companyId }.distinct()
             val allDataPointTypes = reviewEntitiesWithCorrelationIds.map { it.first.dataPointType }.distinct()
             val allReportingPeriods = reviewEntitiesWithCorrelationIds.map { it.first.reportingPeriod }.distinct()
-
-            logger.info("all data point Ids: ${reviewEntitiesWithCorrelationIds.map { it.first.dataPointId }}")
-
             val activeDataPoints =
                 dataPointQaReviewRepository
                     .getActiveDataPointsForAllTriplets(allCompanyIds, allDataPointTypes, allReportingPeriods)
@@ -283,11 +280,7 @@ class DataPointQaReviewManager
                         BasicDataDimensions(reviewEntity.companyId, "", reviewEntity.reportingPeriod), true,
                     )
 
-                logger.info(
-                    "Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}" +
-                        " and currently active dataId ${qaStatusChangeMessage.currentlyActiveDataId}.",
-                )
-
+                logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}")
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     body = objectMapper.writeValueAsString(qaStatusChangeMessage),
                     type = MessageType.QA_STATUS_UPDATED,
