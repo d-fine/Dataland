@@ -24,7 +24,6 @@ export function useGetDocumentMetaInfoByCompanyIdQuery(
         companyId.value,
         undefined,
         undefined,
-        undefined,
         undefined
       );
       return response.data;
