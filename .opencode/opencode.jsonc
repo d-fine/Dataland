@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Default model
+  "model": "github-copilot/gpt-5.4",
+
+  // Blacklist free opencode models
+  "provider": {
+    "opencode": {
+      "blacklist": ["big-pickle", "hy3-preview-free", "minimax-m2.5-free", "nemotron-3-super-free"],
+    }
+  },
+}
