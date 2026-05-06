@@ -20,7 +20,7 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
-const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 5000);
 
 /**
  * Uploads data for a given company for specified years using a generic framework.
@@ -71,9 +71,7 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
   cy.get('[data-test="add-portfolio"]').click();
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
   cy.get('[data-test="company-identifiers-input"]').type(`${company1.companyId},${company2.companyId}`);
-  cy.intercept('POST', '**/api/portfolios/**').as('addCompanies');
   cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-  cy.wait('@addCompanies', { timeout: longTimeoutInMs });
   cy.get('[data-test="portfolio-dialog-save-button"]').click();
 }
 
@@ -109,7 +107,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(longTimeoutInMs);
+    cy.wait(mediumTimeoutInMs);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -118,7 +116,7 @@ function testDownloadPortfolio({
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 
-      cy.readFile(filePathStr, { timeout: longTimeoutInMs }).should('exist');
+      cy.readFile(filePathStr, { timeout: mediumTimeoutInMs }).should('exist');
 
       cy.task('getFileSize', filePathStr).then((size) => {
         expect(size).to.be.greaterThan(5000);
