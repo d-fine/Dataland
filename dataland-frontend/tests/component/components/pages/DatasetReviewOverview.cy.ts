@@ -9,27 +9,40 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
 import type Keycloak from 'keycloak-js';
 
+const dataId = 'test-data-id';
+const datasetJudgementId = 'test-judgement-id';
+const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
+const reportingPeriod = '2021';
+const framework = DataTypeEnum.Sfdr;
+const url = 'testUrl';
+
+const mockMetaInfo: DataMetaInformation = {
+  dataId: dataId,
+  companyId: companyId,
+  dataType: framework,
+  uploadTime: Date.now(),
+  reportingPeriod: reportingPeriod,
+  currentlyActive: true,
+  qaStatus: QaStatus.Pending,
+  ref: url,
+};
+/**
+ * Verifies that all links within a warning element have the expected href.
+ * @param subject - The Cypress chainable of the warning element to check links within.
+ */
+function checkWarningLinks(subject: Cypress.Chainable<JQuery<HTMLElement>>): void {
+  subject.within(() => {
+    cy.get('a').each((link) => {
+      cy.wrap(link).should('have.attr', 'href', mockMetaInfo.ref);
+    });
+  });
+}
+
 describe('DatasetReviewOverview page details', () => {
   const keycloakMockWithJudge = minimalKeycloakMock({
     userId: 'current-judge-id',
     roles: [KEYCLOAK_ROLE_JUDGE],
   });
-
-  const dataId = 'test-data-id';
-  const datasetJudgementId = 'test-judgement-id';
-  const companyId = '9af067dc-8280-4172-8974-1ae363c56260';
-  const reportingPeriod = '2021';
-  const framework = DataTypeEnum.Sfdr;
-
-  const mockMetaInfo: DataMetaInformation = {
-    dataId: dataId,
-    companyId: companyId,
-    dataType: framework,
-    uploadTime: Date.now(),
-    reportingPeriod: reportingPeriod,
-    currentlyActive: true,
-    qaStatus: QaStatus.Pending,
-  };
 
   const mockCompanyInfo: StoredCompany = {
     companyId: companyId,
@@ -105,10 +118,10 @@ describe('DatasetReviewOverview page details', () => {
     });
     cy.intercept('GET', `**/api/companies/${companyId}/info`, options?.companyInfo ?? mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
-    cy.intercept('POST', '**/api/metadata/search', {
+    cy.intercept('POST', '**/api/metadata/filters', {
       statusCode: 200,
       body: options?.metaData ?? [mockMetaInfo],
-    });
+    }).as('getMetaDataFilters');
 
     const detailJudgementUrl = `**/qa/dataset-judgements/${datasetJudgementId}`;
     const listJudgeUrlMatcher = /\/qa\/dataset-judgements\?.*/;
@@ -365,7 +378,11 @@ describe('DatasetReviewOverview page details', () => {
     const viewedDataEntry = { ...mockMetaInfo, uploadTime: 2000 };
     const olderDataEntry = { ...mockMetaInfo, dataId: 'older-data-id', uploadTime: 1000 };
     const newerDataEntry = { ...mockMetaInfo, dataId: 'newer-data-id', uploadTime: 3000 };
-    const acceptedDataEntry = { ...mockMetaInfo, dataId: 'accepted-data-id', qaStatus: QaStatus.Accepted };
+    const acceptedDataEntry = {
+      ...mockMetaInfo,
+      dataId: 'accepted-data-id',
+      qaStatus: QaStatus.Accepted,
+    };
 
     it('shows an error warning when there is no related data request with status Open or Processing', () => {
       mountPage({ requestCount: 0 });
@@ -388,27 +405,34 @@ describe('DatasetReviewOverview page details', () => {
     it('shows a warning when there is already an accepted dataset for the same period and framework', () => {
       mountPage({ metaData: [viewedDataEntry, acceptedDataEntry] });
       cy.wait('@getDatasetJudgement');
+      cy.wait('@getMetaDataFilters');
 
-      cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+      const warning = cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+      checkWarningLinks(warning);
     });
 
     it('shows an info message when there are multiple pending datasets and the current one is the newest', () => {
       mountPage({ metaData: [viewedDataEntry, olderDataEntry] });
       cy.wait('@getDatasetJudgement');
+      cy.wait('@getMetaDataFilters');
 
-      cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+      const warning = cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+      checkWarningLinks(warning);
     });
 
     it('shows an error when there are multiple pending datasets and the current one is not the newest', () => {
       mountPage({ metaData: [viewedDataEntry, newerDataEntry] });
       cy.wait('@getDatasetJudgement');
+      cy.wait('@getMetaDataFilters');
 
-      cy.get('[data-test="review-warning-not-newest-pending"]').should('be.visible');
+      const warning = cy.get('[data-test="review-warning-not-newest-pending"]').should('be.visible');
+      checkWarningLinks(warning);
     });
 
     it('shows no warnings when everything is fine', () => {
       mountPage({ metaData: [] });
       cy.wait('@getDatasetJudgement');
+      cy.wait('@getMetaDataFilters');
 
       cy.get('[data-test^="review-warning-"]').should('not.exist');
     });
@@ -440,8 +464,10 @@ describe('DatasetReviewOverview page details', () => {
           datasetJudgementResponse: euTaxonomyDatasetJudgement,
         });
         cy.wait('@getDatasetJudgement');
+        cy.wait('@getMetaDataFilters');
 
-        cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+        const warning = cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
+        checkWarningLinks(warning);
       });
 
       it('shows a warning when there are multiple pending EU taxonomy datasets across different types', () => {
@@ -450,8 +476,10 @@ describe('DatasetReviewOverview page details', () => {
           datasetJudgementResponse: euTaxonomyDatasetJudgement,
         });
         cy.wait('@getDatasetJudgement');
+        cy.wait('@getMetaDataFilters');
 
-        cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+        const warning = cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
+        checkWarningLinks(warning);
       });
 
       it('does not show accepted-duplicate warning when the accepted dataset belongs to a different framework family', () => {
@@ -460,6 +488,7 @@ describe('DatasetReviewOverview page details', () => {
           datasetJudgementResponse: euTaxonomyDatasetJudgement,
         });
         cy.wait('@getDatasetJudgement');
+        cy.wait('@getMetaDataFilters');
 
         cy.get('[data-test="review-warning-accepted-duplicate"]').should('not.exist');
       });
