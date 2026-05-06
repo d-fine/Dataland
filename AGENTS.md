@@ -11,14 +11,20 @@
 - Use Gradle project paths for backend and mixed modules: `./gradlew :dataland-backend:test`.
 - Frontend package commands should usually be run from the package directory or via `npm --prefix ./<package> run <script>`.
 - Follow the nearest `AGENTS.md` file for package-specific instructions. Nested files override root guidance when they are more specific.
-- Package-specific `AGENTS.md` files currently exist for `dataland-frontend/`, `dataland-website/`, `dataland-sharedElements/`, `dataland-e2etests/`, and `dataland-keycloak/dataland_theme/login/`.
+- Package-specific `AGENTS.md` files currently exist for `dataland-frontend/`, `dataland-website/`, `dataland-sharedElements/`, `dataland-e2etests/`, `dataland-keycloak/dataland_theme/login/`, and `dataland-framework-toolbox/`; consult them when working in those directories.
 
 # Where To Look First
 
 - CI behavior and command truth source: `.github/workflows/CI.yaml`
+- Workflow helper sources: `testing/` and `build-utils/`
 - Broad local smoke checks: `./runBasicChecks.sh` and `./runBasicChecks.sh short`
 - OpenAPI verification script: `testing/verifyOpenApiFiles.sh`
 - Fake fixture verification script: `testing/verify_that_fake_fixtures_are_up_to_date.sh`
+
+# Agentic AI Workflow
+
+- For ambiguous, cross-module, or architecture-heavy work, prefer a planning pass before editing.
+- For read-heavy investigation or review, prefer subagents so the main implementation thread stays focused.
 
 # Common Commands
 
@@ -55,6 +61,9 @@
   - Run `./gradlew detekt` when touching production Kotlin code, shared code, or multiple backend modules.
 - Cross-cutting or uncertain changes:
   - Prefer `./runBasicChecks.sh short` before finishing.
+- `./runBasicChecks.sh` must be run from the repository root.
+- `./runBasicChecks.sh short` skips setup steps and is useful when generated clients and local state are already in place.
+- Full `./runBasicChecks.sh` assumes the backend is not already running locally.
 
 # Never Do These By Default
 
@@ -103,6 +112,7 @@
 - Several services publish OpenAPI specs that are used to generate clients for other modules.
 - If you change controller contracts, request or response models, or generated API client inputs, expect local generated artifacts to become stale.
 - Regenerate the producing service spec first, then regenerate clients in affected consumer modules.
+- Common downstream consumers to keep in mind are `dataland-frontend` and `dataland-e2etests`, both of which have dedicated regeneration workflows.
 - Do not manually patch generated clients to work around stale specifications. Regenerate first.
 - Do not manually patch generated OpenAPI JSON as a substitute for updating the producing service code.
 - Common commands:
@@ -116,5 +126,6 @@
 # Troubleshooting
 
 - If a frontend or test module fails after backend API changes, regenerate the relevant OpenAPI specs and clients before debugging further.
+- `dataland-website` output is consumed by the frontend build, so website changes can require frontend verification as well.
 - If you are unsure which checks approximate CI best, use `./runBasicChecks.sh short` for a faster pass or `./runBasicChecks.sh` for the fuller workflow.
 - When editing only one area of the monorepo, avoid unnecessary repo-wide runs unless the change affects shared contracts, generated code, or multiple modules.
