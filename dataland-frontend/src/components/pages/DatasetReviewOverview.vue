@@ -370,7 +370,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
           message: 'There are multiple pending datasets. You are reviewing the newest upload.',
           type: 'info',
           links: pendingMatchingDatasets.value
-            .filter((entry) => !!entry.ref)
+            .filter((entry) => !!entry.ref && entry.dataId !== dataIdRef.value)
             .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       } else {
@@ -379,7 +379,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
           message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
           type: 'error',
           links: pendingMatchingDatasets.value
-            .filter((entry) => !!entry.ref)
+            .filter((entry) => !!entry.ref && entry.dataId !== dataIdRef.value)
             .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       }
