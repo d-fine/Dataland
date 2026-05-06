@@ -457,6 +457,46 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
         children: [
           {
             type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+            explanation:
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
+          },
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
+          },
+          {
+            type: 'cell',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
             explanation:
               'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
@@ -581,46 +621,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
-            explanation:
-              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
-                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
-                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label:
               'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Use of Proceeds',
             explanation:
@@ -642,26 +642,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
-                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
-          },
-          {
-            type: 'cell',
             label:
               'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
             explanation:
@@ -680,6 +660,26 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
+          },
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -706,6 +706,46 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+            explanation:
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
+          },
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
+          },
           {
             type: 'cell',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
@@ -832,46 +872,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
-            explanation:
-              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
-                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
-                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label:
               'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Use of Proceeds',
             explanation:
@@ -893,26 +893,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
-                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
-                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
-          },
-          {
-            type: 'cell',
             label:
               'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
             explanation:
@@ -931,6 +911,26 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional',
+          },
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                    ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling?.value
+                ),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                  ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling',
           },
           {
             type: 'cell',
@@ -1096,44 +1096,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Nuclear Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
-                ),
-                'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
-            label: 'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Fossil Gas Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
-                ),
-                'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label: 'Share of Turnover-based KPI in Percent - Of which Transitional',
             explanation: 'Taxonomy-aligned and Transitional Proportion of Turnover-based KPI',
             shouldDisplay: (): boolean => true,
@@ -1172,87 +1134,41 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Turnover-based Non-Assessed Exposures',
-            explanation: 'Proportion of Turnover-based KPI of which non-assessed exposures',
+            label: 'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Nuclear Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposures?.value
+                    ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
                 ),
-                'Turnover-based Non-Assessed Exposures',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased?.turnoverBasedNonAssessedExposures
+                'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
+                  ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposures',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
-            explanation:
-              'Proportion of Turnover-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            label: 'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Fossil Gas Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
-                    ?.value
+                    ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
                 ),
-                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                  ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-            explanation:
-              'Proportion of Turnover-based KPI of which non-assessed exposures considered non-material by the reporting entity',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-                    ?.value
-                ),
-                'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-            explanation:
-              'Proportion of Turnover-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-                    ?.value
-                ),
-                'Turnover-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
         ],
       },
@@ -1396,6 +1312,99 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
       },
       {
         type: 'section',
+        label: 'Breakdown of the Numerator of the KPI for Non-Assessed Exposures - Turnover-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Turnover-based Non-Assessed Exposures',
+            explanation: 'Proportion of Turnover-based KPI of which non-assessed exposures',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposures?.value
+                ),
+                'Turnover-based Non-Assessed Exposures',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposures
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposures',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+            explanation:
+              'Proportion of Turnover-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+            explanation:
+              'Proportion of Turnover-based KPI of which non-assessed exposures considered non-material by the reporting entity',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+            explanation:
+              'Proportion of Turnover-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
+          },
+        ],
+      },
+      {
+        type: 'section',
         label: 'Breakdown of the Numerator of the KPI - CapEx-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
@@ -1477,44 +1486,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
-                ),
-                'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
-            label: 'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
-                ),
-                'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label: 'Share of CapEx-based KPI in Percent - Of which Transitional',
             explanation: 'Taxonomy-aligned and Transitional Proportion of CapEx-based KPI',
             shouldDisplay: (): boolean => true,
@@ -1553,87 +1524,41 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'CapEx-based Non-Assessed Exposures',
-            explanation: 'Proportion of CapEx-based KPI of which non-assessed exposures',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased?.capexBasedNonAssessedExposures
-                    ?.value
-                ),
-                'CapEx-based Non-Assessed Exposures',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased?.capexBasedNonAssessedExposures
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposures',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
-            explanation:
-              'Proportion of CapEx-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            label: 'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
-                    ?.value
+                    ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
                 ),
-                'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                  ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-            explanation:
-              'Proportion of CapEx-based KPI of which non-assessed exposures considered non-material by the reporting entity',
+            label: 'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-                    ?.value
+                    ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
                 ),
-                'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+                'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+                  ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-            explanation:
-              'Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-                    ?.value
-                ),
-                'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
         ],
       },
@@ -1771,6 +1696,99 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Breakdown of the Numerator of the KPI for Non-Assessed Exposures - CapEx-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'CapEx-based Non-Assessed Exposures',
+            explanation: 'Proportion of CapEx-based KPI of which non-assessed exposures',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposures?.value
+                ),
+                'CapEx-based Non-Assessed Exposures',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposures
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposures',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+            explanation:
+              'Proportion of CapEx-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+            explanation:
+              'Proportion of CapEx-based KPI of which non-assessed exposures considered non-material by the reporting entity',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+            explanation:
+              'Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
         ],
       },
@@ -2125,44 +2143,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Nuclear Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
-                ),
-                'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
-            label: 'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Fossil Gas Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
-                ),
-                'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label: 'Share of Turnover-based KPI in Percent - Of which Transitional',
             explanation: 'Taxonomy-aligned and Transitional Proportion of Turnover-based KPI',
             shouldDisplay: (): boolean => true,
@@ -2201,88 +2181,41 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Turnover-based Non-Assessed Exposures',
-            explanation: 'Proportion of Turnover-based KPI of which non-assessed exposures',
+            label: 'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Nuclear Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposures?.value
+                    ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
                 ),
-                'Turnover-based Non-Assessed Exposures',
+                'Share of Turnover-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposures
+                  ?.shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposures',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
-            explanation:
-              'Proportion of Turnover-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            label: 'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of Turnover-based KPI exposed towards Fossil Gas Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
-                    ?.value
+                    ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
                 ),
-                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                'Share of Turnover-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                  ?.shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-            explanation:
-              'Proportion of Turnover-based KPI of which non-assessed exposures considered non-material by the reporting entity',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-                    ?.value
-                ),
-                'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
-            explanation:
-              'Proportion of Turnover-based KPI of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
-                    ?.value
-                ),
-                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiTurnoverBased
-                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
         ],
       },
@@ -2426,6 +2359,99 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
       },
       {
         type: 'section',
+        label: 'Breakdown of the Numerator of the KPI for Non-Assessed Exposures - Turnover-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Turnover-based Non-Assessed Exposures',
+            explanation: 'Proportion of Turnover-based KPI of which non-assessed exposures',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposures?.value
+                ),
+                'Turnover-based Non-Assessed Exposures',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposures
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposures',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+            explanation:
+              'Proportion of Turnover-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
+            explanation:
+              'Proportion of Turnover-based KPI of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+            explanation:
+              'Proportion of Turnover-based KPI of which non-assessed exposures considered non-material by the reporting entity',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                    ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+                    ?.value
+                ),
+                'Turnover-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+                  ?.turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBasedTurnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
+          },
+        ],
+      },
+      {
+        type: 'section',
         label: 'Breakdown of the Numerator of the KPI - CapEx-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
@@ -2508,44 +2534,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
-                ),
-                'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
-            label: 'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
-                ),
-                'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
-          },
-          {
-            type: 'cell',
             label: 'Share of CapEx-based KPI in Percent - Of which Transitional',
             explanation: 'Taxonomy-aligned and Transitional Proportion of CapEx-based KPI',
             shouldDisplay: (): boolean => true,
@@ -2584,87 +2572,41 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'CapEx-based Non-Assessed Exposures',
-            explanation: 'Proportion of CapEx-based KPI of which non-assessed exposures',
+            label: 'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposures?.value
+                    ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned?.value
                 ),
-                'CapEx-based Non-Assessed Exposures',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased?.capexBasedNonAssessedExposures
+                'Share of CapEx-based KPI Exposed towards Nuclear Activities in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
+                  ?.shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposures',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned',
           },
           {
             type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
-            explanation:
-              'Proportion of CapEx-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            label: 'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
+            explanation: 'Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
                   dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
-                    ?.value
+                    ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned?.value
                 ),
-                'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                'Share of CapEx-based KPI Exposed towards Fossil Gas Activities in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                  ?.shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-            explanation:
-              'Proportion of CapEx-based KPI of which non-assessed exposures considered non-material by the reporting entity',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-                    ?.value
-                ),
-                'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-            explanation:
-              'Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                    ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-                    ?.value
-                ),
-                'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
-                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiCapexBased
-                  ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBasedShareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned',
           },
         ],
       },
@@ -2805,6 +2747,99 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
         ],
       },
+      {
+        type: 'section',
+        label: 'Breakdown of the Numerator of the KPI for Non-Assessed Exposures - CapEx-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'CapEx-based Non-Assessed Exposures',
+            explanation: 'Proportion of CapEx-based KPI of which non-assessed exposures',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposures?.value
+                ),
+                'CapEx-based Non-Assessed Exposures',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposures
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposures',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+            explanation:
+              'Proportion of CapEx-based KPI of which exposures financing non-assessed non-material activities of counterparties',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Exposures Financing Non-Assessed Non-Material Activities of Counterparties',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+            explanation:
+              'Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Exposures to Counterparties Reporting no Taxonomy-eligible Activities',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+            explanation:
+              'Proportion of CapEx-based KPI of which non-assessed exposures considered non-material by the reporting entity',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                    ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+                    ?.value
+                ),
+                'CapEx-based Non-Assessed Exposures - Of which Non-Assessed Exposures Considered Non-Material by the Reporting Entity',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+                  ?.capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBasedCapexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity',
+          },
+        ],
+      },
     ],
   },
   {
@@ -2851,6 +2886,50 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -2979,50 +3058,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
-            explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-                    ?.value
-                ),
-                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
-            explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-                    ?.value
-                ),
-                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3175,26 +3210,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'Turnover-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
-            explanation:
-              "Taxonomy-eligible Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Fossil Gas Activities",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                    ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible?.value
-                ),
-                'Turnover-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
-                  ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
-          },
-          {
-            type: 'cell',
             label: 'Turnover-based Proportion of Assets Exposed towards Nuclear Activities - Aligned',
             explanation:
               "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Nuclear Activities",
@@ -3212,6 +3227,26 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned',
+          },
+          {
+            type: 'cell',
+            label: 'Turnover-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
+            explanation:
+              "Taxonomy-eligible Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Fossil Gas Activities",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible?.value
+                ),
+                'Turnover-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3273,6 +3308,50 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3398,50 +3477,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
-            explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-                    ?.value
-                ),
-                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
-            explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-                    ?.value
-                ),
-                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3593,26 +3628,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
-            label: 'CapEx-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
-            explanation:
-              "Taxonomy-eligible CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Fossil Gas Activities",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                    ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible?.value
-                ),
-                'CapEx-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
-                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
-                  ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
-          },
-          {
-            type: 'cell',
             label: 'CapEx-based Proportion of Assets Exposed towards Nuclear Activities - Aligned',
             explanation:
               "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Nuclear Activities",
@@ -3630,6 +3645,26 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned',
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
+            explanation:
+              "Taxonomy-eligible CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) which are exposed towards Fossil Gas Activities",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible?.value
+                ),
+                'CapEx-based Proportion of Assets Exposed towards Fossil Gas Activities - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -3692,6 +3727,50 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -3824,50 +3903,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           {
             type: 'cell',
             label:
-              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
-            explanation:
-              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesTurnoverBased
-                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-                    ?.value
-                ),
-                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
-                dataset.investmentFirms?.otherServicesTurnoverBased
-                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
-          },
-          {
-            type: 'cell',
-            label:
-              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
-            explanation:
-              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesTurnoverBased
-                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-                    ?.value
-                ),
-                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
-                dataset.investmentFirms?.otherServicesTurnoverBased
-                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
-          },
-          {
-            type: 'cell',
-            label:
               'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             explanation:
               'Taxonomy-aligned and transitional Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
@@ -3951,27 +3986,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           {
             type: 'cell',
             label:
-              'Turnover-based Proportion of Revenue from Operation of an OTF of which Fossil Gas Activities - Eligible',
-            explanation:
-              'Taxonomy-eligible Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Fossil Gas Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesTurnoverBased
-                    ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible?.value
-                ),
-                'Turnover-based Proportion of Revenue from Operation of an OTF of which Fossil Gas Activities - Eligible',
-                dataset.investmentFirms?.otherServicesTurnoverBased
-                  ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible',
-          },
-          {
-            type: 'cell',
-            label:
               'Turnover-based Proportion of Revenue from Operation of an OTF of which Nuclear Activities - Aligned',
             explanation:
               'Taxonomy-aligned Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Nuclear Activities',
@@ -3989,6 +4003,27 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned',
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue from Operation of an OTF of which Fossil Gas Activities - Eligible',
+            explanation:
+              'Taxonomy-eligible Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Fossil Gas Activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible?.value
+                ),
+                'Turnover-based Proportion of Revenue from Operation of an OTF of which Fossil Gas Activities - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible',
           },
           {
             type: 'cell',
@@ -4052,6 +4087,50 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
               'extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
           },
           {
             type: 'cell',
@@ -4184,50 +4263,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           {
             type: 'cell',
             label:
-              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
-            explanation:
-              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesCapexBased
-                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-                    ?.value
-                ),
-                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
-                dataset.investmentFirms?.otherServicesCapexBased
-                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
-          },
-          {
-            type: 'cell',
-            label:
-              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
-            explanation:
-              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesCapexBased
-                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-                    ?.value
-                ),
-                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
-                dataset.investmentFirms?.otherServicesCapexBased
-                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned',
-          },
-          {
-            type: 'cell',
-            label:
               'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             explanation:
               'Taxonomy-aligned and transitional CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
@@ -4308,6 +4343,26 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
           },
           {
             type: 'cell',
+            label: 'CapEx-based Proportion of Revenue from Operation of an OTF of which Nuclear Activities - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue from Operation of an OTF which are exposed towards Nuclear Activities',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned?.value
+                ),
+                'CapEx-based Proportion of Revenue from Operation of an OTF of which Nuclear Activities - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned
+              ),
+            uploadComponentName: 'PercentageExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned',
+          },
+          {
+            type: 'cell',
             label:
               'CapEx-based Proportion of Revenue from Operation of an OTF of which Fossil Gas Activities - Eligible',
             explanation:
@@ -4326,26 +4381,6 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible',
-          },
-          {
-            type: 'cell',
-            label: 'CapEx-based Proportion of Revenue from Operation of an OTF of which Nuclear Activities - Aligned',
-            explanation:
-              'Taxonomy-aligned CapEx-based Proportion of Revenue from Operation of an OTF which are exposed towards Nuclear Activities',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.otherServicesCapexBased
-                    ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned?.value
-                ),
-                'CapEx-based Proportion of Revenue from Operation of an OTF of which Nuclear Activities - Aligned',
-                dataset.investmentFirms?.otherServicesCapexBased
-                  ?.capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned
-              ),
-            uploadComponentName: 'PercentageExtendedDataPointFormField',
-            dataPointTypeId:
-              'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned',
           },
           {
             type: 'cell',
