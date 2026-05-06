@@ -346,17 +346,11 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
  * @returns True if corrected data is invalid.
  */
 function isQaReportCorrectedDataInvalid(): boolean {
-  return !currentQaReport.value ||
-    !currentQaCorrectedData.value ||
-    currentQaCorrectedData.value.value == null
+  return !currentQaReport.value || !currentQaCorrectedData.value || currentQaCorrectedData.value.value == null;
 }
 
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
-  return (
-    isPatching.value ||
-    allQaReports.value.length === 0 ||
-    isQaReportCorrectedDataInvalid()
-  );
+  return isPatching.value || allQaReports.value.length === 0 || isQaReportCorrectedDataInvalid();
 });
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {
