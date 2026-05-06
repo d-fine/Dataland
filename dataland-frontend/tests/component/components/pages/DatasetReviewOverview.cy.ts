@@ -95,6 +95,7 @@ describe('DatasetReviewOverview page details', () => {
     forceDatasetJudgementError?: boolean;
     companyInfo?: StoredCompany;
     requestCount?: number;
+    metaData?: DataMetaInformation[];
   }): void {
     const datasetJudgementResponse =
       options?.datasetJudgementResponse === undefined ? baseDatasetJudgement : options.datasetJudgementResponse;
@@ -102,11 +103,12 @@ describe('DatasetReviewOverview page details', () => {
       statusCode: 200,
       body: options?.requestCount ?? 1,
     });
-    if (options?.companyInfo) {
-      cy.intercept('GET', `**/api/companies/${companyId}`, options.companyInfo);
-    }
-    cy.intercept('GET', `**/api/companies/${companyId}/info`, mockCompanyInfo);
+    cy.intercept('GET', `**/api/companies/${companyId}/info`, options?.companyInfo ?? mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
+    cy.intercept('POST', '**/api/metadata/search', {
+      statusCode: 200,
+      body: options?.metaData ?? [mockMetaInfo],
+    });
 
     const detailJudgementUrl = `**/qa/dataset-judgements/${datasetJudgementId}`;
     const listJudgeUrlMatcher = /\/qa\/dataset-judgements\?.*/;
@@ -366,8 +368,7 @@ describe('DatasetReviewOverview page details', () => {
     const acceptedDataEntry = { ...mockMetaInfo, dataId: 'accepted-data-id', qaStatus: QaStatus.Accepted };
 
     it('shows an error warning when there is no related data request with status Open or Processing', () => {
-      const companyWithNoWarnings = { ...mockCompanyInfo, dataRegisteredByDataland: [] };
-      mountPage({ requestCount: 0, companyInfo: companyWithNoWarnings });
+      mountPage({ requestCount: 0 });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
@@ -385,38 +386,28 @@ describe('DatasetReviewOverview page details', () => {
     });
 
     it('shows a warning when there is already an accepted dataset for the same period and framework', () => {
-      const companyWithAcceptedDataset = { ...mockCompanyInfo, dataRegisteredByDataland: [acceptedDataEntry] };
-      mountPage({ companyInfo: companyWithAcceptedDataset });
+      mountPage({ metaData: [viewedDataEntry, acceptedDataEntry] });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-accepted-duplicate"]').should('be.visible');
     });
 
     it('shows an info message when there are multiple pending datasets and the current one is the newest', () => {
-      const companyWithMultiplePending = {
-        ...mockCompanyInfo,
-        dataRegisteredByDataland: [viewedDataEntry, olderDataEntry],
-      };
-      mountPage({ companyInfo: companyWithMultiplePending });
+      mountPage({ metaData: [viewedDataEntry, olderDataEntry] });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
     });
 
     it('shows an error when there are multiple pending datasets and the current one is not the newest', () => {
-      const companyWithMultiplePending = {
-        ...mockCompanyInfo,
-        dataRegisteredByDataland: [viewedDataEntry, newerDataEntry],
-      };
-      mountPage({ companyInfo: companyWithMultiplePending });
+      mountPage({ metaData: [viewedDataEntry, newerDataEntry] });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-not-newest-pending"]').should('be.visible');
     });
 
     it('shows no warnings when everything is fine', () => {
-      const companyWithNoWarnings = { ...mockCompanyInfo, dataRegisteredByDataland: [] };
-      mountPage({ companyInfo: companyWithNoWarnings });
+      mountPage({ metaData: [] });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test^="review-warning-"]').should('not.exist');
@@ -444,12 +435,8 @@ describe('DatasetReviewOverview page details', () => {
       };
 
       it('shows a warning when there is an accepted dataset of another EU taxonomy framework', () => {
-        const companyWithAcceptedOtherEuTaxonomy = {
-          ...mockCompanyInfo,
-          dataRegisteredByDataland: [acceptedOtherEuTaxonomyEntry],
-        };
         mountPage({
-          companyInfo: companyWithAcceptedOtherEuTaxonomy,
+          metaData: [viewedEuTaxonomyEntry, acceptedOtherEuTaxonomyEntry],
           datasetJudgementResponse: euTaxonomyDatasetJudgement,
         });
         cy.wait('@getDatasetJudgement');
@@ -458,12 +445,8 @@ describe('DatasetReviewOverview page details', () => {
       });
 
       it('shows a warning when there are multiple pending EU taxonomy datasets across different types', () => {
-        const companyWithMultiplePendingEuTaxonomy = {
-          ...mockCompanyInfo,
-          dataRegisteredByDataland: [viewedEuTaxonomyEntry, olderOtherEuTaxonomyEntry],
-        };
         mountPage({
-          companyInfo: companyWithMultiplePendingEuTaxonomy,
+          metaData: [viewedEuTaxonomyEntry, olderOtherEuTaxonomyEntry],
           datasetJudgementResponse: euTaxonomyDatasetJudgement,
         });
         cy.wait('@getDatasetJudgement');
@@ -472,8 +455,10 @@ describe('DatasetReviewOverview page details', () => {
       });
 
       it('does not show accepted-duplicate warning when the accepted dataset belongs to a different framework family', () => {
-        const companyWithAcceptedSfdr = { ...mockCompanyInfo, dataRegisteredByDataland: [acceptedDataEntry] };
-        mountPage({ companyInfo: companyWithAcceptedSfdr, datasetJudgementResponse: euTaxonomyDatasetJudgement });
+        mountPage({
+          metaData: [viewedEuTaxonomyEntry, acceptedDataEntry],
+          datasetJudgementResponse: euTaxonomyDatasetJudgement,
+        });
         cy.wait('@getDatasetJudgement');
 
         cy.get('[data-test="review-warning-accepted-duplicate"]').should('not.exist');

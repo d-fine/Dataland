@@ -168,7 +168,7 @@ import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sour
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
-import { type DataMetaInformationSearchFilter, QaStatus } from '@clients/backend';
+import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -266,11 +266,14 @@ const requestSearchFilters = computed<RequestSearchFilterString>(() => ({
   requestStates: [RequestState.Open, RequestState.Processing],
 }));
 
-const metaDataSearchFilters = computed<DataMetaInformationSearchFilter>(() => ({
-  companyId: companyIdRef.value,
-  reportingPeriod: reportingPeriodRef.value,
-  onlyActive: false,
-}));
+const metaDataSearchFilters = computed<DataMetaInformationSearchFilter[]>(() =>
+  (groupedDataTypeRef.value ?? []).map((dataType) => ({
+    companyId: companyIdRef.value,
+    dataType: dataType as DataTypeEnum,
+    reportingPeriod: reportingPeriodRef.value,
+    onlyActive: false,
+  }))
+);
 
 const {
   data: filteredRequestCount,
@@ -301,7 +304,7 @@ const hasValidRequestState = computed(() => {
 const hasAssignedSector = computed(() => !!companyData.value?.sector);
 
 const matchingDatasetsWithPeriodAndType = computed(() => {
-  return (filteredMetaData.value ?? []).filter((entry) => groupedDataTypeRef.value?.includes(entry.dataType));
+  return filteredMetaData.value ?? [];
 });
 
 const acceptedMatchingDatasets = computed(() =>

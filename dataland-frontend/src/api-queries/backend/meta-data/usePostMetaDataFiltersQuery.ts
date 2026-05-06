@@ -9,11 +9,11 @@ import type { DataMetaInformation, DataMetaInformationSearchFilter } from '@clie
  *
  * Uses POST /meta-data/search.
  *
- * @param filters - Reactive request search filters.
+ * @param filters - Reactive array of request search filters.
  * @returns Query result containing the meta data of the matching datasets.
  */
 export function usePostMetaDataFiltersQuery(
-  filters: Readonly<Ref<DataMetaInformationSearchFilter>>
+  filters: Readonly<Ref<DataMetaInformationSearchFilter[]>>
 ): UseQueryReturnType<DataMetaInformation[], Error> {
   const apiClientProvider = useApiClient();
 
@@ -22,9 +22,9 @@ export function usePostMetaDataFiltersQuery(
   return useQuery<DataMetaInformation[], Error>({
     queryKey,
     queryFn: async () => {
-      const response = await apiClientProvider.backendClients.metaDataController.postListOfDataMetaInfoFilters([
-        filters.value,
-      ]);
+      const response = await apiClientProvider.backendClients.metaDataController.postListOfDataMetaInfoFilters(
+        filters.value
+      );
 
       return response.data;
     },
