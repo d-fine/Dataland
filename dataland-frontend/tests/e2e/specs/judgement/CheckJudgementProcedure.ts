@@ -1075,6 +1075,8 @@ function verifyJudgementDataStoredCorrectly(
 ): void {
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
 
+  const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
+
   cy.waitUntil(() =>
     cy
       .request({
@@ -1082,17 +1084,17 @@ function verifyJudgementDataStoredCorrectly(
         url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
         qs: { companyId, reportingPeriod },
         headers: { Authorization: `Bearer ${judgeToken}` },
+        failOnStatusCode: false,
       })
       .then((response) => {
-        expect(response.status, 'GET eutaxonomy-financials status').to.eq(200);
+        if (response.status !== 200) return false;
         const data = (response.body as { data: EutaxonomyFinancialsData }).data;
 
-        const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
-        Object.keys(flatOverview).forEach((key) => {
+        return Object.keys(flatOverview).every((key) => {
           const expected = expectedValuesByType[key];
           const actual = extractValueForType(key, data);
           cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
-          expect(actual, `stored value for ${key}`).to.eq(expected);
+          return actual === expected;
         });
       })
   );
