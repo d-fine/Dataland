@@ -13,10 +13,12 @@ import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
@@ -34,6 +36,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -69,8 +72,11 @@ class AssembledDataManagerTest {
 
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
+    private val inputCalculatedFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecificationCalculation.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
+    private val numericDataPoint = "./json/frameworkTemplate/numericDataPointWithExtendedDocumentReference.json"
+    private val calculatedDataPointSpec = "./json/specifications/dataPointWithCalculation.json"
 
     private val dataPointManager =
         DataPointManager(
@@ -85,6 +91,8 @@ class AssembledDataManagerTest {
     private lateinit var assembledDataManager: AssembledDataManager
     private lateinit var specificationService: SpecificationService
     private lateinit var dataPointUtils: DataPointUtils
+    private lateinit var internalStorageAdapter: InternalStorageAdapter
+    private lateinit var dataPointCalculator: DataPointCalculator
 
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
@@ -100,6 +108,9 @@ class AssembledDataManagerTest {
     private val simpleFrameworkSpecification =
         TestResourceFileReader
             .getKotlinObject<SimpleFrameworkSpecification>(inputSimpleFrameworkSpecification)
+    private val calculatedFrameworkSpecification =
+        TestResourceFileReader
+            .getKotlinObject<FrameworkSpecification>(inputCalculatedFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
@@ -121,7 +132,9 @@ class AssembledDataManagerTest {
         dataCompositionService = DataCompositionService(specificationService)
         datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
         dataPointUtils = DataPointUtils(specificationClient, metaDataManager, specificationService)
-        dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, storageClient, datasetAssembler)
+        internalStorageAdapter = InternalStorageAdapter(storageClient)
+        dataPointCalculator = DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter)
+        dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter, datasetAssembler, dataPointCalculator)
         assembledDataManager =
             AssembledDataManager(
                 dataManager, messageQueuePublications, dataPointValidator,
@@ -251,6 +264,35 @@ class AssembledDataManagerTest {
                 assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId),
             )
         }
+    }
+
+    @Test
+    fun `check that a dataset containing calculated fields is correctly delivered`() {
+        val sourceOneType = "extendedDecimalScope1GhgEmissionsInTonnes"
+        val sourceTwoType = "extendedDecimalScope2GhgEmissionsInTonnes"
+        val resultType = "extendedDecimalScope1And2GhgEmissionsInTonnes"
+        val sourceOneId = "Id1"
+        val sourceTwoId = "Id2"
+
+        doReturn(calculatedFrameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
+
+        val dataPointMap = mapOf(sourceOneType to sourceOneId, sourceTwoType to sourceTwoId)
+        val dataPointSpec = TestResourceFileReader.getKotlinObject<DataPointTypeSpecification>(calculatedDataPointSpec)
+        val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
+        val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
+        val dataPointDimensions = BasicDataPointDimensions(companyId, resultType, reportingPeriod)
+        whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(null)
+        doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(),any())
+        doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
+        setMockData(dataPointMap, dataContentMap)
+        val dynamicDataset =
+            assertDoesNotThrow {
+                assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
+            }
+        assert(!dynamicDataset.isNullOrEmpty())
+        // ToDo not a good check as it does not confirm the datapoint being there
+        assert(dynamicDataset!!.contains("scope1And2GhgEmissionsInTonnes"))
     }
 
     private fun setMockData(

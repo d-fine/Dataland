@@ -4,7 +4,9 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +27,8 @@ class SpecificationService
         private val specificationControllerApi: SpecificationControllerApi,
     ) {
         // Variables to store known classifications since specifications do not change during runtime
-        private val cachedDatapointTypes = ConcurrentHashMap<String, Boolean>()
+        private val cachedDatapointTypes = ConcurrentHashMap<DataPointType, Boolean>()
+        private val cachedDataPointSpecifications = ConcurrentHashMap<DataPointType, DataPointTypeSpecification>()
         private val assembledFrameworks = mutableSetOf<String>()
         private val nonAssembledFrameworks = mutableSetOf<String>()
 
@@ -136,4 +139,11 @@ class SpecificationService
                     "The specified framework $framework is not known to the specification service.",
                 )
             }
+
+        fun getDataPointSpecifications(dataPointTypes: List<DataPointType>): Map<DataPointType, DataPointTypeSpecification> {
+            (dataPointTypes subtract cachedDataPointSpecifications.keys).forEach {
+                cachedDataPointSpecifications[it] = specificationControllerApi.getDataPointTypeSpecification(it)
+            }
+            return cachedDataPointSpecifications.filterKeys { it in dataPointTypes }
+        }
     }

@@ -1,0 +1,24 @@
+{
+  "id" : "extendedDecimalScope1And2GhgEmissionsInTonnes",
+  "name" : "Scope 1 and 2 GHG emissions",
+  "businessDefinition" : "Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : null,
+  "calculationRules": [
+    {
+      "inputs": [
+        "extendedDecimalScope1GhgEmissionsInTonnes",
+        "extendedDecimalScope2GhgEmissionsInTonnes"
+      ],
+      "calculationMethod": "Sum"
+    },
+    {
+      "inputs": [
+        "example1",
+        "example2"
+      ],
+      "calculationMethod": "Division"
+    }
+  ]
+}

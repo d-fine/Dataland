@@ -6,9 +6,14 @@ import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
+
+// ToDo find better way of sharing typealiases
+typealias DataPointType = String
+typealias DataPointId = String
 
 /**
  * Service to determine the category of a given data type string, relevant constituents of datasets and similar tasks
@@ -25,7 +30,7 @@ class DataCompositionService
          * @return a set of all relevant data point types
          * @throws InvalidInputApiException if the data type is not known
          */
-        fun getRelevantDataPointTypes(dataType: String): Collection<String> =
+        fun getRelevantDataPointTypes(dataType: String): Collection<DataPointType> =
             when {
                 specificationService.isDataPointType(dataType) -> setOf(dataType)
                 specificationService.isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType)
@@ -42,7 +47,7 @@ class DataCompositionService
          * @param framework the name of the framework for which the data point type composition is requested
          * @return a set of all relevant data point types
          */
-        private fun getContainedDataPointTypes(framework: String): Collection<String> {
+        private fun getContainedDataPointTypes(framework: String): Collection<DataPointType> {
             val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
@@ -70,5 +75,13 @@ class DataCompositionService
                     specificationService.isDataPointType(dimensions.dataPointType)
             }
 
-        // add function to determine if a datapoint can be calculated from another data point
+        fun getAvailableCalculationRules(dataPointTypes: Collection<DataPointType>): Map<DataPointType, Collection<CalculationRule>> {
+            val availableRules = mutableMapOf<DataPointType, Collection<CalculationRule>>()
+            specificationService.getDataPointSpecifications(dataPointTypes.toList()).forEach { (dataPointType, specification) ->
+                if (specification.calculationRules != null) {
+                    availableRules[dataPointType] = specification.calculationRules
+                }
+            }
+            return availableRules
+        }
     }

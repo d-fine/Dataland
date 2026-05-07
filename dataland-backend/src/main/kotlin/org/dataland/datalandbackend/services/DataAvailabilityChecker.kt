@@ -43,7 +43,7 @@ class DataAvailabilityChecker
 
             return if (dimensionsToProcess.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-                return query.resultList
+                query.resultList
                     .filterIsInstance<DataMetaInformationEntity>()
                     .map { it.toApiModel() }
             } else {
@@ -70,10 +70,35 @@ class DataAvailabilityChecker
 
             return if (dimensionsToProcess.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
-                return query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
+                query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
             } else {
                 emptyList()
             }
+        }
+
+        /**
+         * Retrieves all non-available data point types from a given list for a specific [reportingPeriod] and [companyId]
+         * @param dataPointTypes the list of data point types to check
+         * @param reportingPeriod the fixed value of the reporting period
+         * @param companyId the fixed value of the company ID
+         * @return the subset of unavailable data point type from the input list
+         */
+
+        fun getMissingDataPointTypes(
+            dataPointTypes: Collection<DataPointType>,
+            reportingPeriod: String,
+            companyId: String,
+        ): Collection<DataPointType> {
+            val relevantDimensions =
+                dataPointTypes.map {
+                    BasicDataPointDimensions(
+                        companyId = companyId,
+                        reportingPeriod = reportingPeriod,
+                        dataPointType = it,
+                    )
+                }
+            val availableTypes = getMetaDataOfActiveDataPoints(relevantDimensions).map { it.dataPointType }
+            return dataPointTypes - availableTypes.toSet()
         }
 
         /**

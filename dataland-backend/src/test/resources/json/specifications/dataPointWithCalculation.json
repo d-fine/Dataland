@@ -1,44 +1,35 @@
 {
   "dataPointType": {
-    "id": "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
-    "ref": "https://dataland.com/specifications/data-point-types/extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
+    "id": "extendedDecimalScope1And2GhgEmissionsInTonnes",
+    "ref": "https://dataland.com/specifications/data-point-types/extendedDecimalScope1And2GhgEmissionsInTonnes"
   },
-  "name": "Scope 2 GHG emissions (market-based)",
-  "businessDefinition": "Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).",
+  "name": "Scope 1 and 2 GHG emissions",
+  "businessDefinition": "Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).",
   "dataPointBaseType": {
     "id": "extendedDecimal",
     "ref": "https://dataland.com/specifications/data-point-base-types/extendedDecimal"
   },
   "usedBy": [
     {
-      "id": "pcaf",
-      "ref": "https://dataland.com/specifications/frameworks/pcaf"
-    },
-    {
       "id": "sfdr",
       "ref": "https://dataland.com/specifications/frameworks/sfdr"
     }
   ],
-  "constraints": [
-    "min:0"
-  ],
+  "constraints": null,
   "calculationRules": [
     {
       "inputs": [
-        "DataPoint1",
-        "DataPoint2",
-        "DataPoint3"
+        "extendedDecimalScope1GhgEmissionsInTonnes",
+        "extendedDecimalScope2GhgEmissionsInTonnes"
       ],
-      "aggregationFunction": "DataPoint1+DataPoint2+DataPoint3",
-      "partialCalculation": true
+      "calculationMethod": "Sum"
     },
     {
       "inputs": [
-        "DataPoint4",
-        "DataPoint5"
+        "example1",
+        "example2"
       ],
-      "aggregationFunction": "Devision",
-      "partialCalculation": false
+      "calculationMethod": "Division"
     }
   ]
 }

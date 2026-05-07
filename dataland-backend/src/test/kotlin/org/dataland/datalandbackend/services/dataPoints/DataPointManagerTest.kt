@@ -95,7 +95,7 @@ class DataPointManagerTest {
     }
 
     @Test
-    fun `test that a datapoint is casted to the correct class on retrieval`() {
+    fun `test that a datapoint is cast to the correct class on retrieval`() {
         val dummyDataPoint = "{\"value\": \"0.5\", \"currency\": \"USD\"}"
         val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
         val dummyDataPointId = IdUtils.generateUUID()

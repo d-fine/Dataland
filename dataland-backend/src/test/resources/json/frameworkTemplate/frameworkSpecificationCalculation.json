@@ -1,0 +1,10 @@
+{
+  "framework": {
+    "id": "sfdr",
+    "ref": "https://dummy.com/specifications/frameworks/dummy-framework"
+  },
+  "name": "DummyFramework",
+  "businessDefinition": "DummyFramework",
+  "schema": "{\"general\":{\"general\":{\"fiscalYearDeviation\":{\"id\":\"extendedEnumFiscalYearDeviationDummy\",\"ref\":\"https://dummy.com/specifications/data-points/extendedEnumFiscalYearDeviation\"}}},\"environmental\":{\"greenhouseGasEmissions\":{\"scope1GhgEmissionsInTonnes\":{\"id\":\"extendedDecimalScope1GhgEmissionsInTonnes\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalScope1GhgEmissionsInTonnes\",\"aliasExport\":\"SCOPE_1_GHG_EMISSIONS_IN_T\"},\"scope2GhgEmissionsInTonnes\":{\"id\":\"extendedDecimalScope2GhgEmissionsInTonnes\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalScope2GhgEmissionsInTonnes\",\"aliasExport\":\"SCOPE_2_GHG_EMISSIONS_IN_T\"},\"scope1And2GhgEmissionsInTonnes\":{\"id\":\"extendedDecimalScope1And2GhgEmissionsInTonnes\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalScope1And2GhgEmissionsInTonnes\",\"aliasExport\":\"SCOPE_1_2_GHG_EMISSIONS_IN_T\"}}}}",
+  "referencedReportJsonPath": "general.general.referencedReports"
+}
