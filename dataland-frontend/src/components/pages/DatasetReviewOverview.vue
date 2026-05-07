@@ -271,13 +271,15 @@ const metaDataSearchFilters = computed<DataMetaInformationSearchFilter[]>(() =>
   }))
 );
 
-const enabled = computed(() => !!companyIdRef.value && !!dataTypeRef.value && !!reportingPeriodRef.value);
+const arePrecheckQueriesEnabled = computed(
+  () => !!companyIdRef.value && !!dataTypeRef.value && !!reportingPeriodRef.value
+);
 
 const {
   data: filteredRequestCount,
   isPending: isRequestCountPending,
   isError: isRequestCountError,
-} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled });
+} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled: arePrecheckQueriesEnabled });
 
 const {
   data: companyData,
@@ -289,7 +291,7 @@ const {
   data: filteredMetaData,
   isPending: isMetaDataPending,
   isError: isMetaDataError,
-} = usePostMetaDataFiltersQuery(metaDataSearchFilters, { enabled });
+} = usePostMetaDataFiltersQuery(metaDataSearchFilters, { enabled: arePrecheckQueriesEnabled });
 
 const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
 const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
