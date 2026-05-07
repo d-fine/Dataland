@@ -66,7 +66,7 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
       {
         activity: typedActivity.activityName ?? '',
         group: '_kpi',
-        field: '${this.kpiKeyOfTable}EligiblePercent',
+        field: `${this.kpiKeyOfTable}EligiblePercent`,
         content: formatPercentageNumberAsString(typedActivity.relativeEligibleShareInPercent ?? undefined),
       },
       ...this.createActivityGroupData<number | undefined>(
