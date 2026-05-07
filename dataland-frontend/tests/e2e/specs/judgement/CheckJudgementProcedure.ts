@@ -148,12 +148,7 @@ function stripAssuranceFromFixture(
   const clone = structuredClone(fixture);
 
   try {
-    const t = clone.t as unknown as {
-      general?: {
-        assurance?: unknown;
-        general?: { assurance?: unknown } & Record<string, unknown>;
-      } & Record<string, unknown>;
-    };
+    const t = clone.t;
 
     if (t?.general?.general && Object.hasOwn(t.general.general, 'assurance')) {
       delete (t.general.general as Record<string, unknown>)['assurance'];
