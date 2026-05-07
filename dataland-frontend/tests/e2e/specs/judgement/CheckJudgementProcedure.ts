@@ -18,8 +18,6 @@ import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 import type { Interception } from 'cypress/types/net-stubbing';
 
-const shortTimeoutInMs = Number(750);
-
 enum IconState {
   Accepted,
   Rejected,
@@ -712,7 +710,15 @@ function judgeDataPointsWithoutQaReports(
       cy.log(`[judge/no-qa] PATCH finished for index=${index}, dataPointType=${dataPointType}`);
       console.log('[judge/no-qa] context', { index, dataPointType, judgement });
     });
-    cy.wait(shortTimeoutInMs); // This waiting time is crucial in order to run the e2e tests, patching the correct URL!
+
+    const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
+
+    cy.waitUntil(() =>
+      cy
+        .get(`[data-test="data-point-row-${dataPointId}"] td`)
+        .eq(1)
+        .then(($td) => $td.find('.accepted-check').length > 0)
+    );
   });
 
   checkOriginalDataPointsAccepted(dataPointEntries, overview);
@@ -788,8 +794,18 @@ function judgeDataPointsWithQaReports(
         `[patch] body.acceptedSource=${String(interception.request.body?.acceptedSource)} | expected=${String(judgement.acceptedSource)}`
       );
       cy.log(`[patch] url=${interception.request.url}`);
-      cy.wait(shortTimeoutInMs);
     });
+
+    const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
+
+    cy.waitUntil(() =>
+      cy.get(`[data-test="data-point-row-${dataPointId}"] td`).then(($tds) => {
+        const accepted = $tds.eq(1).find('.accepted-check').length > 0;
+        const rejected = $tds.eq(1).find('.rejected-check').length > 0;
+        return accepted || rejected;
+      })
+    );
+
     cy.log(`patched`);
   });
 
@@ -1064,27 +1080,27 @@ function verifyJudgementDataStoredCorrectly(
 ): void {
   const expectedValuesByType = buildExpectedByType(scenarios, fixture);
 
-  // Allow the message queue to process data point replacements posted during finalization.
-  cy.wait(shortTimeoutInMs * 4);
+  cy.waitUntil(() =>
+    cy
+      .request({
+        method: 'GET',
+        url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
+        qs: { companyId, reportingPeriod },
+        headers: { Authorization: `Bearer ${judgeToken}` },
+      })
+      .then((response) => {
+        expect(response.status, 'GET eutaxonomy-financials status').to.eq(200);
+        const data = (response.body as { data: EutaxonomyFinancialsData }).data;
 
-  cy.request({
-    method: 'GET',
-    url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
-    qs: { companyId, reportingPeriod },
-    headers: { Authorization: `Bearer ${judgeToken}` },
-  }).then((response) => {
-    expect(response.status, 'GET eutaxonomy-financials status').to.eq(200);
-    const data = (response.body as { data: EutaxonomyFinancialsData }).data;
-
-    const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
-
-    Object.keys(flatOverview).forEach((key) => {
-      const expected = expectedValuesByType[key];
-      const actual = extractValueForType(key, data);
-      cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
-      expect(actual, `stored value for ${key}`).to.eq(expected);
-    });
-  });
+        const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
+        Object.keys(flatOverview).forEach((key) => {
+          const expected = expectedValuesByType[key];
+          const actual = extractValueForType(key, data);
+          cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
+          expect(actual, `stored value for ${key}`).to.eq(expected);
+        });
+      })
+  );
 }
 
 /**
