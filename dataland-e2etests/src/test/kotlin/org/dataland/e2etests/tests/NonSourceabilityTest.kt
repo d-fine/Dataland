@@ -41,14 +41,15 @@ class NonSourceabilityTest {
 
         asAdmin {
             apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
-                NonSourceabilityRequest(
-                    companyId = companyId,
-                    dataType = DataTypeEnum.sfdr,
-                    reportingPeriod = testReportingPeriod,
-                    reason = NO_PUBLIC_SOURCE_REASON,
-                    bypassQa = true,
-                    currentlyActive = true,
-                ),
+                nonSourceabilityRequest =
+                    NonSourceabilityRequest(
+                        companyId = companyId,
+                        dataType = DataTypeEnum.sfdr,
+                        reportingPeriod = testReportingPeriod,
+                        reason = NO_PUBLIC_SOURCE_REASON,
+                    ),
+                bypassQa = true,
+                currentlyActive = true,
             )
         }
 
@@ -146,14 +147,15 @@ class NonSourceabilityTest {
         val createdEntry =
             asAdmin {
                 apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
-                    NonSourceabilityRequest(
-                        companyId = ctx.companyId,
-                        dataType = ctx.dataType,
-                        reportingPeriod = ctx.reportingPeriod,
-                        reason = NO_PUBLIC_SOURCE_REASON,
-                        bypassQa = false,
-                        currentlyActive = false,
-                    ),
+                    nonSourceabilityRequest =
+                        NonSourceabilityRequest(
+                            companyId = ctx.companyId,
+                            dataType = ctx.dataType,
+                            reportingPeriod = ctx.reportingPeriod,
+                            reason = NO_PUBLIC_SOURCE_REASON,
+                        ),
+                    bypassQa = false,
+                    currentlyActive = false,
                 )
             }
         assertEquals(
@@ -328,14 +330,15 @@ class NonSourceabilityTest {
         val createdEntry =
             asAdmin {
                 apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
-                    NonSourceabilityRequest(
-                        companyId = ctx.companyId,
-                        dataType = ctx.dataType,
-                        reportingPeriod = ctx.reportingPeriod,
-                        reason = NO_PUBLIC_SOURCE_REASON,
-                        bypassQa = true,
-                        currentlyActive = true,
-                    ),
+                    nonSourceabilityRequest =
+                        NonSourceabilityRequest(
+                            companyId = ctx.companyId,
+                            dataType = ctx.dataType,
+                            reportingPeriod = ctx.reportingPeriod,
+                            reason = NO_PUBLIC_SOURCE_REASON,
+                        ),
+                    bypassQa = true,
+                    currentlyActive = true,
                 )
             }
         assertEquals(

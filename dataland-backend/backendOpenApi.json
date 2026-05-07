@@ -617,6 +617,28 @@
         "summary": "Submit a non-sourceability request for a dataset.",
         "description": "Creates a NonSourceabilityInformation entry. With bypassQa\u003dfalse (default) and currentlyActive\u003dfalse the entry enters QA review. With bypassQa\u003dtrue and currentlyActive\u003dtrue (admin only) it is immediately activated. With bypassQa\u003dtrue and currentlyActive\u003dfalse (admin only) the active entry is deactivated (triple marked as sourceable again).",
         "operationId": "postNonSourceabilityOfADataset",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "description": "When true the entry skips QA review and is immediately activated. Requires ROLE_ADMIN.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "currentlyActive",
+            "in": "query",
+            "description": "When true the triple is marked as non-sourceable; false reverses an active entry.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8558,9 +8580,7 @@
       },
       "NonSourceabilityRequest": {
         "required": [
-          "bypassQa",
           "companyId",
-          "currentlyActive",
           "dataType",
           "reason",
           "reportingPeriod"
@@ -8584,14 +8604,6 @@
             "type": "string",
             "description": "The reason why there is no source available",
             "example": "Parent Uploaded"
-          },
-          "bypassQa": {
-            "type": "boolean",
-            "description": "When true the non-sourceability entry is immediately activated without QA review. Requires ROLE_ADMIN."
-          },
-          "currentlyActive": {
-            "type": "boolean",
-            "description": "When true the triple is treated as non-sourceable; when false the entry is inactive. Must be false when bypassQa\u003dfalse (the QA service sets this to true upon approval). When bypassQa\u003dtrue, signals whether the intent is to mark the triple as non-sourceable (true) or sourceable again (false)."
           }
         }
       },
