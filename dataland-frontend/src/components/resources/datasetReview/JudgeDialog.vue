@@ -65,7 +65,7 @@
         :data="currentQaCorrectedData"
         empty-text="No QA reports available."
         accept-label="ACCEPT REVIEWED"
-        :accept-disabled="isPatching || allQaReports.length === 0 || !currentQaReport"
+        :accept-disabled="isQaReportAcceptButtonDisabled"
         accept-data-test="accept-report-button"
         data-test="corrected-datapoint-section"
         :show-nav="allQaReports.length > 0"
@@ -338,6 +338,19 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
   const list = allQaReports.value;
   if (!list.length) return null;
   return list[currentQaReportIndex.value] ?? list[0];
+});
+
+/**
+ * Check if the QA report has invalid corrected data.
+ *
+ * @returns True if corrected data is invalid.
+ */
+function isQaReportCorrectedDataInvalid(): boolean {
+  return !currentQaReport.value || !currentQaCorrectedData.value || currentQaCorrectedData.value.value == null;
+}
+
+const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
+  return isPatching.value || allQaReports.value.length === 0 || isQaReportCorrectedDataInvalid();
 });
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {

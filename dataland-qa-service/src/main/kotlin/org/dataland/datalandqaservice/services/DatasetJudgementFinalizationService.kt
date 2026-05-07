@@ -140,7 +140,7 @@ class DatasetJudgementFinalizationService
             return acceptedReport.correctedData ?: throw InvalidInputApiException(
                 summary = "QA report has no corrected data.",
                 message =
-                    "The accepted QA report for data point ${dataPoint.dataPointId} " +
+                    "The accepted QA report for data point ${dataPoint.dataPointType} " +
                         "contains no corrected data to upload.",
             )
         }

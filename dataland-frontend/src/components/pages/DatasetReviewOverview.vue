@@ -164,11 +164,13 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
+  
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
 import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
 import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -477,7 +479,7 @@ const finishReview = (): void => {
           }, 3200);
         },
         onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + error.message;
+          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + formatAxiosErrorMessage(error);
         },
       });
     } // Implement action here in seperate ticket
