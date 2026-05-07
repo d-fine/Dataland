@@ -53,7 +53,5 @@ tls.crt
 .opencode/*
 
 # Allow opencode configs, skills and agents
-!.opencode/opencode.jsonc
-!.opencode/tui.jsonc
 !.opencode/skills/
 !.opencode/agents/
