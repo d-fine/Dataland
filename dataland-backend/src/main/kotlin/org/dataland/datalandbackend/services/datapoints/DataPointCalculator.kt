@@ -105,16 +105,12 @@ class DataPointCalculator
             method: String,
             dataPointDimensions: BasicDataPointDimensions,
         ): UploadedDataPoint =
-            UploadedDataPoint(
-                dataPoint =
                     applyTransformation(
-                        inputs = inputs.map { it.dataPoint },
+                        inputs = inputs,
+                        targetType = dataPointDimensions.dataPointType,
                         method = method,
-                    ),
-                dataPointType = dataPointDimensions.dataPointType,
-                reportingPeriod = dataPointDimensions.reportingPeriod,
-                companyId = dataPointDimensions.companyId,
-            )
+                    )
+
 
         fun getCalculatedData(
             datasetDimensions: Collection<BasicDatasetDimensions>,
