@@ -4,5 +4,6 @@
   "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L).",
   "dataPointBaseTypeId" : "plainSfdrHighImpactClimateSectors",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

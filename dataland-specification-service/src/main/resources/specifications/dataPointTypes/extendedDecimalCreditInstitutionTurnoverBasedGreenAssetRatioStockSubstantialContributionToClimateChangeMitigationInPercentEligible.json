@@ -4,5 +4,6 @@
   "businessDefinition" : "Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

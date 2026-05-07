@@ -4,5 +4,6 @@
   "businessDefinition" : "Number of females on the board of directors of the company",
   "dataPointBaseTypeId" : "extendedInteger",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

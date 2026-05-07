@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.specific.specification.elements
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.dataland.datalandspecification.specifications.CalculationRule
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.specification.FrameworkBuilder
@@ -70,6 +71,7 @@ class CategoryBuilder(
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
                 dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
                 constraints = component.getConstraints(),
+                calculationRules = component.calculationRules,
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
@@ -101,6 +103,7 @@ class CategoryBuilder(
         businessDefinition: String,
         dataPointBaseTypeId: String,
         constraints: List<String>?,
+        calculationRules: List<CalculationRule>?,
     ): DataPointType {
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."
@@ -117,6 +120,7 @@ class CategoryBuilder(
                 dataPointBaseTypeId = dataPointBaseTypeId,
                 frameworkOwnership = setOf(builder.framework.identifier),
                 constraints = constraints,
+                calculationRules = calculationRules,
             )
         val existingDataPointType = builder.database.dataPointTypes[id]
         val combinedDataPointType =

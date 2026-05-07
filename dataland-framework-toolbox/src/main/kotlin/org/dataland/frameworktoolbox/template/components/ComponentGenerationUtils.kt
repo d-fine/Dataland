@@ -81,6 +81,7 @@ open class ComponentGenerationUtils {
 
         component.isNullable = row.mandatoryField == TemplateYesNo.No
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
+        component.calculationRules = FieldCalculationParser.parse(row.fieldCalculation)
     }
 
     /**

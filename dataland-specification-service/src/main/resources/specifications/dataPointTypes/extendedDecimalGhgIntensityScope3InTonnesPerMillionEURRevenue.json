@@ -4,5 +4,6 @@
   "businessDefinition" : "Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

@@ -4,5 +4,6 @@
   "businessDefinition" : "Absolute value of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

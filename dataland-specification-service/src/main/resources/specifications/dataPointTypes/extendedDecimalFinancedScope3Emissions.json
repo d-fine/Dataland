@@ -4,5 +4,6 @@
   "businessDefinition" : "The scope 3 emissions of financed companies.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

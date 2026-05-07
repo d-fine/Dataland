@@ -4,5 +4,6 @@
   "businessDefinition" : "Absolute value of the OpEx that is associated with non taxonomy-aligned but eligible activities",
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

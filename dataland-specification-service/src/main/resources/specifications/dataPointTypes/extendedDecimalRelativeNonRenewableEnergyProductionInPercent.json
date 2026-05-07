@@ -4,5 +4,6 @@
   "businessDefinition" : "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

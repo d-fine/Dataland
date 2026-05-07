@@ -4,5 +4,6 @@
   "businessDefinition" : "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
   "dataPointBaseTypeId" : "extendedEnumCompanyExchangeStatus",
   "frameworkOwnership" : [ "pcaf" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

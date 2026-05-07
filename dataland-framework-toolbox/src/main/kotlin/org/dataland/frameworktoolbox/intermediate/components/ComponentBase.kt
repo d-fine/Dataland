@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.dataland.datalandspecification.specifications.CalculationRule
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
@@ -120,6 +121,12 @@ open class ComponentBase(
      * Specifies which kind of document-support (Datapoint-type) is desired for this component
      */
     var documentSupport: DocumentSupport = NoDocumentSupport
+
+    /**
+     * Calculation rules describing how this data point can be derived from other data points.
+     * `null` indicates that no calculation rules are defined.
+     */
+    var calculationRules: List<CalculationRule>? = null
 
     /**
      * Obtain an example for this component

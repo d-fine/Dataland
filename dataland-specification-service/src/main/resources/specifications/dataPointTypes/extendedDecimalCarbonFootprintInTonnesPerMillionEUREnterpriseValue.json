@@ -4,5 +4,6 @@
   "businessDefinition" : "Tonnes of GHG emissions per million EUR enterprise value.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

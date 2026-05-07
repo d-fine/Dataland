@@ -4,5 +4,6 @@
   "businessDefinition" : "Does the company have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

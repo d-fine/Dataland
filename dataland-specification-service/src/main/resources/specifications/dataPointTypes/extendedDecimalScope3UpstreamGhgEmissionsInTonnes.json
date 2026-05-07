@@ -4,5 +4,6 @@
   "businessDefinition" : "Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

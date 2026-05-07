@@ -4,5 +4,6 @@
   "businessDefinition" : "Estimation of Market capitalization in EUR calculated as: number of shares * price per share",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

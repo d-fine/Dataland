@@ -720,6 +720,30 @@
             "items": {
               "type": "string"
             }
+          },
+          "calculationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CalculationRule"
+            }
+          }
+        }
+      },
+      "CalculationRule": {
+        "required": [
+          "calculationMethod",
+          "inputs"
+        ],
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "calculationMethod": {
+            "type": "string"
           }
         }
       },

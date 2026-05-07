@@ -4,5 +4,6 @@
   "businessDefinition" : "Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

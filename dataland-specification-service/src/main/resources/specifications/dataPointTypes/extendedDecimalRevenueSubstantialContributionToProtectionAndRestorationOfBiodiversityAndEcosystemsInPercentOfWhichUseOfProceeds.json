@@ -4,5 +4,6 @@
   "businessDefinition" : "Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

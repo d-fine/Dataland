@@ -4,5 +4,6 @@
   "businessDefinition" : "Relative share of the OpEx that is associated with non taxonomy-aligned but eligible activities",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

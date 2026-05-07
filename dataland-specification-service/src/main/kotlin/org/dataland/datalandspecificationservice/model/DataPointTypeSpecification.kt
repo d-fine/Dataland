@@ -1,6 +1,7 @@
 package org.dataland.datalandspecificationservice.model
 
 import org.dataland.datalandspecification.database.SpecificationDatabase
+import org.dataland.datalandspecification.specifications.CalculationRule
 import org.dataland.datalandspecification.specifications.DataPointType
 
 /**
@@ -33,6 +34,7 @@ fun DataPointType.toDto(
             database.dataPointBaseTypes[this.dataPointBaseTypeId]?.getRef(
                 baseUrl,
             ) ?: error("Data point type id ${this.dataPointBaseTypeId} does not exist in the database."),
+        calculationRules = this.calculationRules,
     )
 
 /**
@@ -45,4 +47,5 @@ data class DataPointTypeSpecification(
     val dataPointBaseType: IdWithRef,
     val usedBy: List<IdWithRef>,
     val constraints: List<String>? = null,
+    val calculationRules: List<CalculationRule>? = null,
 )

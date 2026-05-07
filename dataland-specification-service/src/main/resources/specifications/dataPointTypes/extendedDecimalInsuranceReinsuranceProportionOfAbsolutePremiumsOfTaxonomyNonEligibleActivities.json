@@ -4,5 +4,6 @@
   "businessDefinition" : "Proportion of Total of Absolute Premiums of Taxonomy-non-eligible Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

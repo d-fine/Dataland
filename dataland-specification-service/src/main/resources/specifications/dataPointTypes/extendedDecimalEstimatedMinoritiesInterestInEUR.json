@@ -4,5 +4,6 @@
   "businessDefinition" : "Estimation of Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

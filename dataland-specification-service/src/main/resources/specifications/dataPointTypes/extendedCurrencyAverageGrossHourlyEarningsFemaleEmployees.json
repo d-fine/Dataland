@@ -4,5 +4,6 @@
   "businessDefinition" : "Average gross hourly earnings of female employees",
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

@@ -4,5 +4,6 @@
   "businessDefinition" : "The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - Turnover-based in Percent.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

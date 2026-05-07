@@ -4,5 +4,6 @@
   "businessDefinition" : "Estimation of Sum of total equity and total debt in EUR as listed on the balance sheet",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

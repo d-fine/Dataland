@@ -4,5 +4,6 @@
   "businessDefinition" : "Has the company been involved in corruption-related legal proceedings?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

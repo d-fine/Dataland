@@ -4,5 +4,6 @@
   "businessDefinition" : "Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

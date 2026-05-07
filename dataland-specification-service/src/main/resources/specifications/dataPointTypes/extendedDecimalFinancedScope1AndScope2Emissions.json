@@ -4,5 +4,6 @@
   "businessDefinition" : "The sum of scope 1 and scope 2 emissions of financed companies.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

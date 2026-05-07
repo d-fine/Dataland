@@ -4,5 +4,6 @@
   "businessDefinition" : "Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }

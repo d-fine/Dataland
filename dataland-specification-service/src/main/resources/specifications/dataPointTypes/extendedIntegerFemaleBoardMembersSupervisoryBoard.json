@@ -4,5 +4,6 @@
   "businessDefinition" : "Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company",
   "dataPointBaseTypeId" : "extendedInteger",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

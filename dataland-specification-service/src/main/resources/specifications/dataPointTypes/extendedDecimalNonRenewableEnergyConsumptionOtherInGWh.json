@@ -4,5 +4,6 @@
   "businessDefinition" : "Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : [ "min:0" ]
+  "constraints" : [ "min:0" ],
+  "calculationRules" : null
 }

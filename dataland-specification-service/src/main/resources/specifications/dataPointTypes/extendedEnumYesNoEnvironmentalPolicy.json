@@ -4,5 +4,6 @@
   "businessDefinition" : "Does the company have an environmental policy? If yes, please share the policy with us.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

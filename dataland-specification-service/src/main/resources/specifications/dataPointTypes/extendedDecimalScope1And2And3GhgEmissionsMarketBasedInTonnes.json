@@ -4,5 +4,6 @@
   "businessDefinition" : "Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null
+  "constraints" : null,
+  "calculationRules" : null
 }

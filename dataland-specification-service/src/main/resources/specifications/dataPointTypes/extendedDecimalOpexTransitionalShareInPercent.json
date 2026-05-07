@@ -4,5 +4,6 @@
   "businessDefinition" : "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73" ],
-  "constraints" : [ "between:0,100" ]
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : null
 }
