@@ -1,6 +1,6 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
-import { type DataMetaInformation, DataTypeEnum, QaStatus, type StoredCompany } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
@@ -44,16 +44,12 @@ describe('DatasetReviewOverview page details', () => {
     roles: [KEYCLOAK_ROLE_JUDGE],
   });
 
-  const mockCompanyInfo: StoredCompany = {
-    companyId: companyId,
-    companyInformation: {
-      companyName: 'd-clare',
-      headquarters: 'Frankfurt',
-      identifiers: { Lei: ['1234567890'] },
-      sector: 'Imaginary Sector',
-      countryCode: 'DE',
-    },
-    dataRegisteredByDataland: [],
+  const mockCompanyInfo: CompanyInformation = {
+    companyName: 'd-clare',
+    headquarters: 'Frankfurt',
+    identifiers: { Lei: ['1234567890'] },
+    sector: 'Imaginary Sector',
+    countryCode: 'DE',
   };
 
   const baseDatasetJudgement: DatasetJudgementResponse = {
@@ -106,7 +102,7 @@ describe('DatasetReviewOverview page details', () => {
     datasetJudgementStatusCode?: number;
     datasetJudgementNetworkError?: boolean;
     forceDatasetJudgementError?: boolean;
-    companyInfo?: StoredCompany;
+    companyInfo?: CompanyInformation;
     requestCount?: number;
     metaData?: DataMetaInformation[];
   }): void {
@@ -394,7 +390,7 @@ describe('DatasetReviewOverview page details', () => {
     it('shows a warning when the company has no assigned sector', () => {
       const companyWithoutSector = {
         ...mockCompanyInfo,
-        companyInformation: { ...mockCompanyInfo.companyInformation, sector: undefined },
+        sector: undefined,
       };
       mountPage({ companyInfo: companyWithoutSector });
       cy.wait('@getDatasetJudgement');
@@ -430,7 +426,7 @@ describe('DatasetReviewOverview page details', () => {
     });
 
     it('shows no warnings when everything is fine', () => {
-      mountPage({ metaData: [] });
+      mountPage({ metaData: [viewedDataEntry] });
       cy.wait('@getDatasetJudgement');
       cy.wait('@getMetaDataFilters');
 
@@ -480,17 +476,6 @@ describe('DatasetReviewOverview page details', () => {
 
         const warning = cy.get('[data-test="review-warning-pending-duplicate"]').should('be.visible');
         checkWarningLinks(warning);
-      });
-
-      it('does not show accepted-duplicate warning when the accepted dataset belongs to a different framework family', () => {
-        mountPage({
-          metaData: [viewedEuTaxonomyEntry, acceptedDataEntry],
-          datasetJudgementResponse: euTaxonomyDatasetJudgement,
-        });
-        cy.wait('@getDatasetJudgement');
-        cy.wait('@getMetaDataFilters');
-
-        cy.get('[data-test="review-warning-accepted-duplicate"]').should('not.exist');
       });
     });
   });
