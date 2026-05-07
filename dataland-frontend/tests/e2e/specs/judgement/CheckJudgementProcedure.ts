@@ -984,7 +984,7 @@ function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyF
     const acceptedSource = scenario?.judgement.acceptedSource;
     if (!scenario || acceptedSource == null || acceptedSource === AcceptedDataPointSource.Original) {
       result[dataPointType] = originalValue;
-      cy.log(`data point: ${dataPointType}, value: ${result[dataPointType]} (original)`);
+      console.log(`data point: ${dataPointType}, value: ${result[dataPointType]} (original)`);
       return;
     }
 
@@ -1093,7 +1093,7 @@ function verifyJudgementDataStoredCorrectly(
         return Object.keys(flatOverview).every((key) => {
           const expected = expectedValuesByType[key];
           const actual = extractValueForType(key, data);
-          cy.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
+          console.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
           return actual === expected;
         });
       })
