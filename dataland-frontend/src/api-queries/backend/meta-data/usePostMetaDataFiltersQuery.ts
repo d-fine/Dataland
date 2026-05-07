@@ -1,5 +1,5 @@
 import { type Ref, computed } from 'vue';
-import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
+import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { metaDataKeys } from '@/api-queries/backend/meta-data/metaDataKeys.ts';
 import type { DataMetaInformation, DataMetaInformationSearchFilter } from '@clients/backend';
@@ -10,10 +10,12 @@ import type { DataMetaInformation, DataMetaInformationSearchFilter } from '@clie
  * Uses POST /meta-data/search.
  *
  * @param filters - Reactive array of request search filters.
+ * @param options - Additional query options (e.g. enabled).
  * @returns Query result containing the meta data of the matching datasets.
  */
 export function usePostMetaDataFiltersQuery(
-  filters: Readonly<Ref<DataMetaInformationSearchFilter[]>>
+  filters: Readonly<Ref<DataMetaInformationSearchFilter[]>>,
+  options?: Omit<UseQueryOptions<DataMetaInformation[], Error>, 'queryKey' | 'queryFn'>
 ): UseQueryReturnType<DataMetaInformation[], Error> {
   const apiClientProvider = useApiClient();
 
@@ -28,5 +30,6 @@ export function usePostMetaDataFiltersQuery(
 
       return response.data;
     },
+    ...options,
   });
 }

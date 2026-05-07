@@ -10,7 +10,7 @@ import type { CompanyInformation } from '@clients/backend';
  * @param {Ref<string|undefined>} companyId - Reactive reference containing the company id; query runs when truthy.
  * @returns {UseQueryReturnType<CompanyInformation, Error>} Query result containing the company information.
  */
-export function useGetCompanyInformationQuery(
+export function useGetCompanyInformationByIdInfoQuery(
   companyId: Ref<string | undefined>
 ): UseQueryReturnType<CompanyInformation, Error> {
   const apiClientProvider = useApiClient();

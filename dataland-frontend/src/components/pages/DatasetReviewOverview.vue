@@ -98,7 +98,7 @@
                 <div v-if="warning.links && warning.links.length > 0" class="mt-1">
                   <span class="font-semibold">Other datasets:</span>
                   <div v-for="link in warning.links" :key="link.url">
-                    <a :href="link.url" target="_blank" class="underline">{{ link.label }}</a>
+                    <a :href="link.url" target="_blank" rel="noopener noreferrer" class="underline">{{ link.label }}</a>
                   </div>
                 </div>
               </div>
@@ -164,9 +164,8 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
-  
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
-import { useGetCompanyInformationQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationQuery.ts';
+import { useGetCompanyInformationByIdInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
 import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
@@ -210,17 +209,17 @@ const {
   datasetJudgementId: datasetJudgementIdRef,
 });
 
-const dataIdRef = computed(() => datasetReview.value?.datasetId);
+const datasetIdRef = computed(() => datasetReview.value?.datasetId);
 const dataTypeRef = computed(() => datasetReview.value?.dataType);
 const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
 
-const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
+const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(datasetIdRef);
 
 const companyIdRef = computed(() => dataMetaInformation.value?.companyId);
 
 const isInitialLoading = computed(() => {
-  const hasDataId = !!dataIdRef.value;
-  return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
+  const hasDatasetId = !!datasetIdRef.value;
+  return isDatasetReviewPending.value || (hasDatasetId && isDataMetaInformationPending.value);
 });
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
@@ -245,12 +244,7 @@ const isAssignedToCurrentUser = computed(() => {
 
 const kpiRows = ref<CellRow[]>([]);
 
-/**
- * QARG precheck section.
- * Checking request state is open or processing
- * Checking assigned company sector
- * Checking duplicate datasets (pending and accepted)
- */
+// QARG Precheck Section.
 
 const groupedDataTypeRef = computed<string[] | undefined>(() => {
   if (!dataTypeRef.value) return undefined;
@@ -277,23 +271,25 @@ const metaDataSearchFilters = computed<DataMetaInformationSearchFilter[]>(() =>
   }))
 );
 
+const enabled = computed(() => !!companyIdRef.value && !!dataTypeRef.value && !!reportingPeriodRef.value);
+
 const {
   data: filteredRequestCount,
   isPending: isRequestCountPending,
   isError: isRequestCountError,
-} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters);
+} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled });
 
 const {
   data: companyData,
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
-} = useGetCompanyInformationQuery(companyIdRef);
+} = useGetCompanyInformationByIdInfoQuery(companyIdRef);
 
 const {
   data: filteredMetaData,
   isPending: isMetaDataPending,
   isError: isMetaDataError,
-} = usePostMetaDataFiltersQuery(metaDataSearchFilters);
+} = usePostMetaDataFiltersQuery(metaDataSearchFilters, { enabled });
 
 const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
 const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
@@ -322,14 +318,11 @@ const pendingMatchingDatasets = computed(() =>
 const hasMultiplePendingMatchingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
 
 const isViewingNewestPendingDataset = computed(() => {
-  const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === dataIdRef.value);
+  const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === datasetIdRef.value);
   return !!viewedObject && pendingMatchingDatasets.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime);
 });
 
-/**
- * QARG precheck warnings section
- * Each warning has an ID and a message to be displayed to the user.
- */
+//QARG Precheck Warnings Section
 
 type ReviewWarning = {
   id: string;
@@ -372,7 +365,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
           message: 'There are multiple pending datasets. You are reviewing the newest upload.',
           type: 'info',
           links: pendingMatchingDatasets.value
-            .filter((entry) => !!entry.ref && entry.dataId !== dataIdRef.value)
+            .filter((entry) => !!entry.ref && entry.dataId !== datasetIdRef.value)
             .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       } else {
@@ -381,7 +374,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
           message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
           type: 'error',
           links: pendingMatchingDatasets.value
-            .filter((entry) => !!entry.ref && entry.dataId !== dataIdRef.value)
+            .filter((entry) => !!entry.ref && entry.dataId !== datasetIdRef.value)
             .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
         });
       }
