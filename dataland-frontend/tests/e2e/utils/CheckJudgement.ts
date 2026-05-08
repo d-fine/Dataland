@@ -84,7 +84,7 @@ export function navigateToQaReport(targetReporterName: string): Cypress.Chainabl
 /**
  * Helper used by `navigateToQaReport` as the callback for `cy.waitUntil`.
  * Extracted to reduce nested anonymous functions inside the exported function.
- * Only interacts with visible next buttons; throws if the button is disabled or not found.
+ * Scrolls the next button into view before clicking; throws if the button is disabled.
  */
 function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> {
   return cy
@@ -95,9 +95,10 @@ function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> 
         return cy.wrap(true);
       }
 
-      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]:visible').then(($next) => {
+      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($next) => {
         const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
         if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+        cy.wrap($next).scrollIntoView();
         cy.wrap($next).click();
         return cy
           .get('[data-test="qa-current-reporter-label"]')
