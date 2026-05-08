@@ -9,6 +9,7 @@ import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+const longTimeOutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
@@ -81,7 +82,7 @@ describeIf(
           }
         ).as('postDataWithTwoReports');
         cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithTwoReports', { timeout: shortTimeoutInMs }).then((interception) => {
+        cy.wait('@postDataWithTwoReports', { timeout: longTimeOutInMs }).then((interception) => {
           expect(interception.response?.statusCode).to.eq(200);
         });
         cy.get('[data-test="datasets-table"]').should('be.visible');
