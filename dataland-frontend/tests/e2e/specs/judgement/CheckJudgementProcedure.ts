@@ -424,8 +424,6 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
  * @param currentLabel Current reporter label before clicking "next"; used to assert progress.
  */
 function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): Cypress.Chainable<void> {
-  cy.log('Clicking next button...');
-
   return cy
     .get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]')
     .then(($buttons) => {
@@ -472,10 +470,8 @@ export function navigateToQaReport(targetReporterName: string): Cypress.Chainabl
     .invoke('text')
     .then((txt) => {
       const current = txt.trim();
-      cy.log(`Current QA label: "${current}" | Target: "${targetReporterName}"`);
 
       if (current === targetReporterName) {
-        cy.log('Label matched! Clicking accept-report-button');
         return cy.get('[data-test="accept-report-button"]').scrollIntoView();
       } else {
         return goToNextReportAndRecurse(targetReporterName, current).then(() => {
@@ -491,31 +487,24 @@ export function navigateToQaReport(targetReporterName: string): Cypress.Chainabl
  * @param judgement Judgement configuration defining source selection and optional custom value.
  */
 function makeJudgementDecision(judgement: QaJudgement): void {
-  cy.log(`customValue: "${judgement.customValue}"`);
-
   if (judgement.customValue != null) {
-    cy.log(`customValue is not null`);
     cy.get('[data-test="custom-value-field"]').click();
     cy.get('[data-test="custom-value-field"]').clear();
     cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Original) {
-    cy.log(`acceptedSource: original`);
     cy.get('[data-test="accept-original-button"]').click();
     return;
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Custom) {
-    cy.log(`acceptedSource: Custom`);
     cy.get('[data-test="accept-custom-button"]').click();
     return;
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Qa) {
-    cy.log(`acceptedSource: Qa`);
     const target = judgement.reporterUserNameOfAcceptedQaReport;
-    cy.log(`target: "${target}"`);
 
     if (!target) {
       throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
@@ -692,10 +681,6 @@ function judgeDataPointsWithoutQaReports(
 
   // 2 Loop through all datapoints without QA reports and patch them as accepted original
   dataPointEntries.forEach(([dataPointType], index) => {
-    cy.log(
-      `[judge/no-qa] iteration=${index + 1}/${dataPointEntries.length}, index=${index}, dataPointType=${dataPointType}`
-    );
-
     if (index > 0) {
       selectNextDataPointToJudge(dataPointType);
       goToSelectedDataPoint();
@@ -738,10 +723,6 @@ function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string
   cy.contains(
     `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
   ).should('be.visible');
-
-  cy.log(
-    `Check succeeded! There are exactly ${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
-  );
 
   dataPointEntries.forEach(([, dataPointId]) => {
     checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
