@@ -31,7 +31,7 @@ prepare_loki_volume() {
   # permissive permissions upfront
   log_step "Preparing Loki volume"
 
-  loki_dirs=(
+  local loki_dirs=(
     "${LOKI_VOLUME}"
     "${LOKI_VOLUME}/chunks"
     "${LOKI_VOLUME}/compactor"
@@ -41,6 +41,7 @@ prepare_loki_volume() {
     "${LOKI_VOLUME}/wal"
     "${LOKI_VOLUME}/health-check-log"
   )
+
   mkdir -p "${loki_dirs[@]}"
   chmod 777 "${loki_dirs[@]}"
 
