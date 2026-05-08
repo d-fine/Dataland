@@ -2,7 +2,13 @@
 
 retrieve_ssl_certificates() {
   mkdir -p ./local/certs
-  scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
+
+  local scp_args=()
+  if [[ "${SILENT:-false}" == true ]]; then
+    scp_args+=(-q)
+  fi
+
+  scp "${scp_args[@]}" ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 }
 
 generate_self_signed_certificates() {

@@ -7,20 +7,44 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--container-backend]"
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]"
   echo "  --start: Start the development stack (uses container backend by default)"
   echo "  --stop: Stop the development stack"
   echo "  --reset: Reset and restart the development stack from scratch (uses container backend by default)"
   echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
   echo "  --dev-env: Load environments/.env.dev before starting/resetting"
   echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-  echo "  --simple: Shortcut for --dev-env --self-signed-certs --container-backend"
-  echo "  --container-backend: Explicitly run backend in Docker container (this is enabled by default for --reset and --start as well)"
+  echo "  --simple: Shortcut for --dev-env --self-signed-certs"
+  echo "  --no-container-backend: Run backend without containers"
+  echo "  --silent: Suppress subcommand output"
   echo ""
   echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
 }
 
 rebuild_gradle_dockerfile() {
+  rm -f ./*github_env.log
+  run_step "Rebuilding Gradle base image" ./build-utils/base_rebuild_gradle_dockerfile.sh
+}
+
+prepare_loki_volume() {
+  # In WSL we get permission errors on local loki volume subdirs which is circumvented by preparing them and setting
+  # permissive permissions upfront
+  log_step "Preparing Loki volume"
+
+  loki_dirs=(
+    "${LOKI_VOLUME}"
+    "${LOKI_VOLUME}/chunks"
+    "${LOKI_VOLUME}/compactor"
+    "${LOKI_VOLUME}/rules"
+    "${LOKI_VOLUME}/index"
+    "${LOKI_VOLUME}/index_cache"
+    "${LOKI_VOLUME}/wal"
+    "${LOKI_VOLUME}/health-check-log"
+  )
+  mkdir -p "${loki_dirs[@]}"
+  chmod 777 "${loki_dirs[@]}"
+
+  log_step_done "Preparing Loki volume"
   rm ./*github_env.log || true
   ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
@@ -39,8 +63,7 @@ start_development_stack() {
   local self_signed="$2"
   local container_backend="$3"
 
-  set -x
-  ./verifyEnvironmentVariables.sh
+  run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   setup_certificates "$self_signed"
   assemble_all_projects
   rebuild_gradle_dockerfile
@@ -62,14 +85,18 @@ start_development_stack() {
   fi
 
   stop_and_cleanup_containers
+  prepare_loki_volume
   start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
-  wait_for_admin_proxy
+  wait_for_admin_proxy "${compose_profiles[@]}"
 
   if [[ "$container_backend" = false ]]; then
+    log_success "Local stack services started. Launching backend locally."
     start_backend
+    return
   fi
-  set +x
+
+  log_success "Local stack started."
 }
 
 check_backend_not_running() {
@@ -81,17 +108,16 @@ check_backend_not_running() {
 }
 
 assemble_all_projects() {
-  ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
+  run_step "Assembling projects" ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
 }
 
 reset_development_stack() {
   local self_signed="$1"
 
-  set -x
-  ./verifyEnvironmentVariables.sh
+  run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   check_backend_not_running
   clear_docker_completely
-  ./gradlew clean
+  run_step "Cleaning Gradle outputs" ./gradlew clean
   assemble_all_projects
   rebuild_gradle_dockerfile
   source_github_env_log
@@ -99,7 +125,6 @@ reset_development_stack() {
   rebuild_postgres_image
   rebuild_keycloak_image
   initialize_keycloak
-  set +x
 }
 
 parse_arguments() {
@@ -110,7 +135,8 @@ parse_arguments() {
   local do_start=false
   
   local self_signed=false
-  local container_backend=false
+  local container_backend=true
+  SILENT=false
 
   if [[ $# -eq 0 ]]; then
     print_usage
@@ -127,16 +153,14 @@ parse_arguments() {
         do_stop=true
         do_reset=true
         do_start=true
-        container_backend=true
         shift
         ;;
       --start)
         do_start=true
-        container_backend=true
         shift
         ;;
       --local-frontend)
-        echo "Launching in local frontend mode."
+        log_info "Launching in local frontend mode"
         local_frontend=true
         shift
         ;;
@@ -151,11 +175,14 @@ parse_arguments() {
       --simple)
         dev_env=true
         self_signed=true
-        container_backend=true
         shift
         ;;
-      --container-backend)
-        container_backend=true
+      --no-container-backend)
+        container_backend=false
+        shift
+        ;;
+      --silent)
+        SILENT=true
         shift
         ;;
       *)
