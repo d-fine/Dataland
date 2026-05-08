@@ -62,7 +62,7 @@ const baseDatasetJudgement: DatasetJudgementResponse = {
   datasetId: 'dataset-id',
   companyId: 'company-id',
   reportingPeriod: '2023',
-  dataType: 'sfdr' as DatasetJudgementResponse['dataType'],
+  dataType: 'sfdr',
   judgementState: DatasetJudgementState.Pending,
   qaReporters: [
     {
@@ -223,7 +223,7 @@ function mountJudgeDialog(options?: {
 
   const mount = getMountingFunction();
   const keycloakMock = minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] });
-  const keycloakPromise = Promise.resolve(keycloakMock as unknown as Keycloak);
+  const keycloakPromise = Promise.resolve(keycloakMock);
   const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
   mount(JudgeDialog, {
@@ -683,7 +683,7 @@ describe('JudgeDialog component tests', () => {
           ...baseDatasetJudgement.dataPoints,
           [dataPointTypeId]: {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            dataPointId: '' as DataPointJudgement['dataPointId'],
+            dataPointId: '',
           },
         },
       };
