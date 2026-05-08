@@ -79,30 +79,36 @@ export function checkPATCHDataPointsCalledCorrectly(interception: Interception, 
  */
 export function navigateToQaReport(targetReporterName: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy
-    .waitUntil(() =>
-      cy
-        .get('[data-test="qa-current-reporter-label"]')
-        .invoke('text')
-        .then((currentLabel): Cypress.Chainable<boolean> => {
-          if (currentLabel.trim() === targetReporterName) {
-            return cy.wrap(true);
-          }
-
-          return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
-            const $visible = $buttons.filter(':visible');
-            const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
-            const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
-            if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-            cy.wrap($next).click({ force: $visible.length === 0 });
-            return cy
-              .get('[data-test="qa-current-reporter-label"]')
-              .invoke('text')
-              .should('not.equal', currentLabel.trim())
-              .then(() => false);
-          });
-        })
-    )
+    .waitUntil(() => waitUntilCheck(targetReporterName))
     .then(() => cy.get('[data-test="accept-report-button"]').scrollIntoView());
+}
+
+/**
+ * Helper used by `navigateToQaReport` as the callback for `cy.waitUntil`.
+ * Extracted to reduce nested anonymous functions inside the exported function.
+ */
+function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> {
+  return cy
+    .get('[data-test="qa-current-reporter-label"]')
+    .invoke('text')
+    .then((currentLabel): Cypress.Chainable<boolean> => {
+      if (currentLabel.trim() === targetReporterName) {
+        return cy.wrap(true);
+      }
+
+      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
+        const $visible = $buttons.filter(':visible');
+        const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+        const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+        if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+        cy.wrap($next).click({ force: $visible.length === 0 });
+        return cy
+          .get('[data-test="qa-current-reporter-label"]')
+          .invoke('text')
+          .should('not.equal', currentLabel.trim())
+          .then(() => false);
+      });
+    });
 }
 
 /**
