@@ -711,9 +711,6 @@ function judgeDataPointsWithoutQaReports(
     makeJudgementDecision(judgement);
     cy.wait('@patchDatapoint').then((interception) => {
       checkPATCHDataPointsCalledCorrectly(interception, judgement);
-      cy.log(`url: ${interception.request.url}`);
-      cy.log(`[judge/no-qa] PATCH finished for index=${index}, dataPointType=${dataPointType}`);
-      console.log('[judge/no-qa] context', { index, dataPointType, judgement });
     });
 
     const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
@@ -994,7 +991,6 @@ function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyF
     const acceptedSource = scenario?.judgement.acceptedSource;
     if (!scenario || acceptedSource == null || acceptedSource === AcceptedDataPointSource.Original) {
       result[dataPointType] = originalValue;
-      console.log(`data point: ${dataPointType}, value: ${result[dataPointType]} (original)`);
       return;
     }
 
