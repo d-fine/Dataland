@@ -13,10 +13,22 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import {
+  selectNextDataPointToJudge,
+  goToSelectedDataPoint,
+  checkPATCHDataPointsCalledCorrectly,
+  makeJudgementDecision,
+} from '@e2e/utils/CheckJudgement';
+import type { QaReport, QaJudgement, QaScenarioConfig, DataPointOverview } from '@e2e/utils/CheckJudgementJson.ts';
+import {
+  QA_SCENARIO_CONFIG,
+  DATA_POINT_PATH_MAP,
+  stripAssuranceFromFixture,
+  parseJsonValue,
+  extractValueForType,
+} from '@e2e/utils/CheckJudgementJson.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
-import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
-import type { Interception } from 'cypress/types/net-stubbing';
 
 enum IconState {
   Accepted,
@@ -33,134 +45,7 @@ type QaTokens = {
   judgeToken: string;
 };
 
-interface QaReport {
-  role: QaRole;
-  verdict: QaReportDataPointVerdict;
-  correctedValue?: string;
-}
-
-interface QaJudgement {
-  acceptedSource?: AcceptedDataPointSource;
-  reporterUserIdOfAcceptedQaReport?: string;
-  reporterUserNameOfAcceptedQaReport?: string;
-  customValue?: string;
-}
-
-interface QaScenarioConfig {
-  dataPointType: DataPointType;
-  qaReports: QaReport[];
-  judgement: QaJudgement;
-}
-
-interface DataPointOverview {
-  dataPointsWithQaReports: Record<string, string>;
-  dataPointsWithoutQaReports: Record<string, string>;
-  amountOfDataPointsToReview: number;
-}
-
-const DATA_POINT_TYPES = {
-  fiscalYearEnd: 'extendedDateFiscalYearEnd',
-  greenAssetRatioTotal:
-    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
-  isNfrdMandatory: 'extendedEnumYesNoIsNfrdMandatory',
-  numberOfEmployees: 'extendedDecimalNumberOfEmployees',
-} as const;
-
-type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
-type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
-
 const apiBaseUrl = getBaseUrl();
-
-const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
-  {
-    dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Original,
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
-    qaReports: [
-      {
-        role: 'reviewer',
-        verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"5453445343", "currency":"EUR"}',
-      },
-      {
-        role: 'admin',
-        verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"74568964325", "currency":"EUR"}',
-      },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Custom,
-      customValue: '400400400.23',
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"No"}' },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Qa,
-      reporterUserIdOfAcceptedQaReport: reviewer_userId,
-      reporterUserNameOfAcceptedQaReport: 'Data Reviewer',
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.numberOfEmployees,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"2409600.75"}' },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Qa,
-      reporterUserIdOfAcceptedQaReport: admin_userId,
-      reporterUserNameOfAcceptedQaReport: 'Data Admin',
-    },
-  },
-];
-
-/**
- * Returns a deep-cloned fixture with the EU taxonomy "assurance" data point removed.
- *
- * This helper is used for E2E stability: the assurance field is known to have a
- * non-standard structure that can interfere with the judge modal flow.
- *
- * Behavior:
- * - never mutates the input fixture (deep clone via JSON serialization)
- * - removes `t.general.general.assurance` if present
- * - removes `t.general.assurance` if present
- * - if the fixture shape differs unexpectedly, it fails gracefully and returns the clone unchanged
- *
- * @param fixture Source fixture to sanitize before upload/use in tests.
- * @returns A sanitized deep clone of the fixture without assurance fields (when found).
- */
-function stripAssuranceFromFixture(
-  fixture: FixtureData<EutaxonomyFinancialsData>
-): FixtureData<EutaxonomyFinancialsData> {
-  const clone = structuredClone(fixture);
-
-  try {
-    const t = clone.t;
-
-    if (t?.general?.general && Object.hasOwn(t.general.general, 'assurance')) {
-      delete (t.general.general as Record<string, unknown>)['assurance'];
-    }
-
-    if (t?.general && Object.hasOwn(t.general, 'assurance')) {
-      delete (t.general as Record<string, unknown>)['assurance'];
-    }
-  } catch {}
-
-  return clone;
-}
 
 describeIf(
   'As a user, I expect to be able to go through the full judgement process',
@@ -345,167 +230,6 @@ function uploadQaReportForDataPoint(
       ...(verdict === QaReportDataPointVerdict.QaRejected && correctedValue ? { correctedData: correctedValue } : {}),
     },
   });
-}
-
-/**
- * Selects the given data point type in the judge modal's "Next datapoint" dropdown.
- *
- * @param dataPointTypeId The data point type ID (e.g. DATA_POINT_TYPES.numberOfEmployees).
- */
-function selectNextDataPointToJudge(dataPointTypeId: string): void {
-  cy.get('[data-test="next-datapoint-section"]').within(() => {
-    cy.get('[data-test="next-datapoint-select"]').click();
-  });
-
-  // Store the selector in a variable to keep the code clean
-  const optionSelector = `[data-test="next-datapoint-option-${dataPointTypeId}"]`;
-
-  // Split the chain into two separate Cypress commands
-  cy.get(optionSelector).scrollIntoView();
-  cy.get(optionSelector).click({ force: true });
-}
-
-/**
- * Navigates to the currently selected data point in the judge modal.
- *
- * Used after selecting an entry in the "Next datapoint" section to open that
- * data point for review.
- */
-function goToSelectedDataPoint(): void {
-  cy.get('[data-test="next-datapoint-section"]').within(() => {
-    cy.get('[data-test="go-to-datapoint-button"]').click();
-  });
-}
-
-/**
- * Helper that checks that the PATCH request to update a data point is called with the expected request body based on the judgement configuration.
- *
- * @param interception The Cypress interception object containing request and response details of the PATCH request.
- * @param judgement    The judgement configuration used to determine the expected request body values.
- */
-function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgement: QaJudgement): void {
-  expect(interception.response?.statusCode, 'PATCH status code').to.eq(200);
-
-  const body = interception.request.body ?? {};
-
-  if (judgement.acceptedSource == null) {
-    expect(body.acceptedSource ?? null, 'acceptedSource in request body').to.eq(null);
-  } else {
-    expect(body.acceptedSource, 'acceptedSource in request body').to.eq(judgement.acceptedSource);
-  }
-
-  if (judgement.reporterUserIdOfAcceptedQaReport == null) {
-    expect(body.reporterUserIdOfAcceptedQaReport ?? null, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
-      null
-    );
-  } else {
-    expect(body.reporterUserIdOfAcceptedQaReport, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
-      judgement.reporterUserIdOfAcceptedQaReport
-    );
-  }
-
-  if (judgement.customValue == null) {
-    expect(body.customValue ?? null, 'customValue in request body').to.eq(null);
-  } else {
-    expect(body.customValue, 'customValue in request body').to.eq(judgement.customValue);
-  }
-}
-
-/**
- * Advances to the next QA report entry in the judge modal and continues recursive navigation.
- *
- * The helper clicks the "next" control in the corrected data point section, verifies that the
- * current reporter label changed, and then calls `navigateToQaReport(...)`.
- *
- * Throws an error when no further entry can be opened (next button disabled), which indicates
- * that the target reporter was not found in the remaining QA reports.
- *
- * @param targetReporterName Reporter label that recursive navigation is trying to find.
- * @param currentLabel Current reporter label before clicking "next"; used to assert progress.
- */
-function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): Cypress.Chainable<void> {
-  cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
-    const $visible = $buttons.filter(':visible');
-    const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
-    const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
-
-    if (isDisabled) {
-      throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-    }
-
-    // Click the next button (do not return the cy command from inside the .then)
-    cy.wrap($next).click({ force: $visible.length === 0 });
-  });
-
-  // Start a new Cypress chain for the assertion and return it
-  return cy
-    .get('[data-test="qa-current-reporter-label"]')
-    .invoke('text')
-    .should('not.equal', currentLabel)
-    .then(() => undefined) as unknown as Cypress.Chainable<void>;
-}
-
-/**
- * This function is used inside makeJudgementDecision to recursively scan QA report entries in the Judge modal until
- * the target reporter label is found.
- *
- * Failure behaviour: should throw if no further QA entry exists (next button disabled) and target was not found.
- *
- * The function reads the current reporter label and:
- * - clicks `accept-report-button` when the label matches `targetReporterName`
- * - otherwise advances to the next report entry via `goToNextReportAndRecurse(...)`
- *
- * @param targetReporterName Reporter label to find and accept in the QA report sequence.
- * @throws {Error} Propagates an error if no further report entry is available before the target is found.
- */
-export function navigateToQaReport(targetReporterName: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  return cy
-    .get('[data-test="qa-current-reporter-label"]')
-    .invoke('text')
-    .then((txt) => {
-      const current = txt.trim();
-
-      if (current === targetReporterName) {
-        return cy.get('[data-test="accept-report-button"]').scrollIntoView();
-      } else {
-        return goToNextReportAndRecurse(targetReporterName, current).then(() => {
-          return navigateToQaReport(targetReporterName);
-        });
-      }
-    });
-}
-
-/**
- * Helper that executes the UI interaction needed to apply a judgement in the open Judge modal.
- *
- * @param judgement Judgement configuration defining source selection and optional custom value.
- */
-function makeJudgementDecision(judgement: QaJudgement): void {
-  if (judgement.customValue != null) {
-    cy.get('[data-test="custom-value-field"]').click();
-    cy.get('[data-test="custom-value-field"]').clear();
-    cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
-  }
-
-  if (judgement.acceptedSource === AcceptedDataPointSource.Original) {
-    cy.get('[data-test="accept-original-button"]').click();
-    return;
-  }
-
-  if (judgement.acceptedSource === AcceptedDataPointSource.Custom) {
-    cy.get('[data-test="accept-custom-button"]').click();
-    return;
-  }
-
-  if (judgement.acceptedSource === AcceptedDataPointSource.Qa) {
-    const target = judgement.reporterUserNameOfAcceptedQaReport;
-
-    if (!target) {
-      throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
-    }
-
-    navigateToQaReport(target).click();
-  }
 }
 
 /**
@@ -890,56 +614,6 @@ function finishJudgement(dataSetId: string): void {
 }
 
 /**
- * Safely parses a JSON string and extracts the 'value' property if it exists.
- * If the value is an object, it is stringified via JSON to avoid [object Object].
- *
- * @param raw The raw JSON string to be parsed.
- * @returns The extracted value as a string, or the original string if parsing fails.
- */
-function parseJsonValue(raw?: string): string | undefined {
-  if (raw == null) return undefined;
-
-  try {
-    const parsed: unknown = JSON.parse(raw);
-
-    if (typeof parsed !== 'object' || parsed === null || !('value' in parsed)) {
-      return raw;
-    }
-
-    const val = (parsed as { value?: unknown }).value;
-
-    if (val == null) {
-      return raw;
-    }
-
-    if (typeof val === 'string') {
-      return val;
-    }
-
-    if (typeof val === 'number' || typeof val === 'boolean') {
-      return val.toString();
-    }
-
-    return JSON.stringify(val);
-  } catch {
-    return raw;
-  }
-}
-
-/**
- * Extracts the scalar value for a given data point type from an EU taxonomy financials dataset.
- *
- * @param dataPointType Data point type key used to look up the field path in the path map.
- * @param data          EU taxonomy financials dataset to extract the value from.
- * @returns             The extracted value as a string, or an empty string if the path is not mapped.
- */
-function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsData): string {
-  const path = (DATA_POINT_PATH_MAP as Record<string, string>)[dataPointType];
-  if (!path) return '';
-  return String(getFieldValueFromFrameworkDataset(`${path}.value`, data) ?? '');
-}
-
-/**
  * Builds a map of expected data point values by type, derived from QA scenarios and the original fixture.
  *
  * For each data point type in the path map:
@@ -951,7 +625,10 @@ function extractValueForType(dataPointType: string, data: EutaxonomyFinancialsDa
  * @param fixture   Original uploaded fixture used as baseline/fallback values.
  * @returns         A record mapping each data point type to its expected string value.
  */
-function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyFinancialsData): Record<string, string> {
+export function buildExpectedByType(
+  scenarios: QaScenarioConfig[],
+  fixture: EutaxonomyFinancialsData
+): Record<string, string> {
   const scenarioByType = new Map<string, QaScenarioConfig>();
   scenarios.forEach((s) => scenarioByType.set(s.dataPointType, s));
 
@@ -996,39 +673,6 @@ function buildExpectedByType(scenarios: QaScenarioConfig[], fixture: EutaxonomyF
 
   return result;
 }
-
-/**
- * Returns a map of EU taxonomy financials data point type IDs to their dot-notation field paths.
- *
- * Used to resolve where a given data point type is located within an `EutaxonomyFinancialsData` object.
- *
- * @returns A record mapping data point type IDs to their field paths.
- */
-const DATA_POINT_PATH_MAP = {
-  extendedDateFiscalYearEnd: 'general.general.fiscalYearEnd',
-  extendedEnumYesNoIsNfrdMandatory: 'general.general.isNfrdMandatory',
-  extendedDecimalNumberOfEmployees: 'general.general.numberOfEmployees',
-  extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports: 'general.general.areAllGroupEntitiesCovered',
-  extendedEnumFiscalYearDeviation: 'general.general.fiscalYearDeviation',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalGrossCarryingAmount',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
-
-  extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling:
-    'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
-} as const;
 
 /**
  * Verifies that judged data points are persisted with the expected values.
