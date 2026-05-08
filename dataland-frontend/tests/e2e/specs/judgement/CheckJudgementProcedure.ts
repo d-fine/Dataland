@@ -16,7 +16,7 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import {
   selectNextDataPointToJudge,
   goToSelectedDataPoint,
-  checkPATCHDataPointsCalledCorrectly,
+  checkPatchDataPointsCalledCorrectly,
   makeJudgementDecision,
 } from '@e2e/utils/CheckJudgement';
 import type { QaReport, QaJudgement, QaScenarioConfig, DataPointOverview } from '@e2e/utils/CheckJudgementJson.ts';
@@ -413,7 +413,7 @@ function judgeDataPointsWithoutQaReports(
 
     makeJudgementDecision(judgement);
     cy.wait('@patchDatapoint').then((interception) => {
-      checkPATCHDataPointsCalledCorrectly(interception, judgement);
+      checkPatchDataPointsCalledCorrectly(interception, judgement);
     });
 
     const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];

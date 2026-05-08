@@ -12,12 +12,10 @@ export function selectNextDataPointToJudge(dataPointTypeId: string): void {
     cy.get('[data-test="next-datapoint-select"]').click();
   });
 
-  // Store the selector in a variable to keep the code clean
   const optionSelector = `[data-test="next-datapoint-option-${dataPointTypeId}"]`;
 
-  // Split the chain into two separate Cypress commands
   cy.get(optionSelector).scrollIntoView();
-  cy.get(optionSelector).click({ force: true });
+  cy.get(optionSelector).click();
 }
 
 /**
@@ -38,7 +36,7 @@ export function goToSelectedDataPoint(): void {
  * @param interception The Cypress interception object containing request and response details of the PATCH request.
  * @param judgement    The judgement configuration used to determine the expected request body values.
  */
-export function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgement: QaJudgement): void {
+export function checkPatchDataPointsCalledCorrectly(interception: Interception, judgement: QaJudgement): void {
   expect(interception.response?.statusCode, 'PATCH status code').to.eq(200);
 
   const body = interception.request.body ?? {};
@@ -86,6 +84,7 @@ export function navigateToQaReport(targetReporterName: string): Cypress.Chainabl
 /**
  * Helper used by `navigateToQaReport` as the callback for `cy.waitUntil`.
  * Extracted to reduce nested anonymous functions inside the exported function.
+ * Only interacts with visible next buttons; throws if the button is disabled or not found.
  */
 function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> {
   return cy
@@ -96,12 +95,10 @@ function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> 
         return cy.wrap(true);
       }
 
-      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
-        const $visible = $buttons.filter(':visible');
-        const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]:visible').then(($next) => {
         const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
         if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-        cy.wrap($next).click({ force: $visible.length === 0 });
+        cy.wrap($next).click();
         return cy
           .get('[data-test="qa-current-reporter-label"]')
           .invoke('text')
