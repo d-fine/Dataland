@@ -46,8 +46,6 @@ prepare_loki_volume() {
   chmod 777 "${loki_dirs[@]}"
 
   log_step_done "Preparing Loki volume"
-  rm ./*github_env.log || true
-  ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
 
 start_health_check() {
