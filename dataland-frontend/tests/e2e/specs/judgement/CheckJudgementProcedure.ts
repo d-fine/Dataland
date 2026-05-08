@@ -788,8 +788,6 @@ function judgeDataPointsWithQaReports(
         return accepted || rejected;
       })
     );
-
-    cy.log(`patched`);
   });
 
   // 3) Reload and assert icons as before
