@@ -424,31 +424,25 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
  * @param currentLabel Current reporter label before clicking "next"; used to assert progress.
  */
 function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): Cypress.Chainable<void> {
+  cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
+    const $visible = $buttons.filter(':visible');
+    const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+    const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+
+    if (isDisabled) {
+      throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+    }
+
+    // Click the next button (do not return the cy command from inside the .then)
+    cy.wrap($next).click({ force: $visible.length === 0 });
+  });
+
+  // Start a new Cypress chain for the assertion and return it
   return cy
-    .get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]')
-    .then(($buttons) => {
-      const $visible = $buttons.filter(':visible');
-      const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
-      const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
-
-      if (isDisabled) {
-        throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-      }
-
-      // Ensure this then returns a Chainable<void>
-      return cy
-        .wrap($next)
-        .click({ force: $visible.length === 0 })
-        .then(() => undefined);
-    })
-    .then(() =>
-      // wait for the label to change before resolving; ensure this returns Chainable<void>
-      cy
-        .get('[data-test="qa-current-reporter-label"]')
-        .invoke('text')
-        .should('not.equal', currentLabel)
-        .then(() => undefined)
-    ) as unknown as Cypress.Chainable<void>;
+    .get('[data-test="qa-current-reporter-label"]')
+    .invoke('text')
+    .should('not.equal', currentLabel)
+    .then(() => undefined) as unknown as Cypress.Chainable<void>;
 }
 
 /**
