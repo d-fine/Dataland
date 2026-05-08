@@ -423,27 +423,34 @@ function checkPATCHDataPointsCalledCorrectly(interception: Interception, judgeme
  * @param targetReporterName Reporter label that recursive navigation is trying to find.
  * @param currentLabel Current reporter label before clicking "next"; used to assert progress.
  */
-function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): void {
+function goToNextReportAndRecurse(targetReporterName: string, currentLabel: string): Cypress.Chainable<void> {
   cy.log('Clicking next button...');
 
-  cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($buttons) => {
-    const $visible = $buttons.filter(':visible');
-    const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
-    const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+  return cy
+    .get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]')
+    .then(($buttons) => {
+      const $visible = $buttons.filter(':visible');
+      const $next = $visible.length > 0 ? $visible.first() : $buttons.first();
+      const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
 
-    if (isDisabled) {
-      throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-    }
+      if (isDisabled) {
+        throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+      }
 
-    cy.wrap($next).click({ force: $visible.length === 0 });
-  });
-
-  cy.get('[data-test="qa-current-reporter-label"]')
-    .invoke('text')
-    .should('not.equal', currentLabel) // 3. Simplified assertion
-    .then(() => {
-      navigateToQaReport(targetReporterName);
-    });
+      // Ensure this then returns a Chainable<void>
+      return cy
+        .wrap($next)
+        .click({ force: $visible.length === 0 })
+        .then(() => undefined);
+    })
+    .then(() =>
+      // wait for the label to change before resolving; ensure this returns Chainable<void>
+      cy
+        .get('[data-test="qa-current-reporter-label"]')
+        .invoke('text')
+        .should('not.equal', currentLabel)
+        .then(() => undefined)
+    ) as unknown as Cypress.Chainable<void>;
 }
 
 /**
@@ -459,8 +466,9 @@ function goToNextReportAndRecurse(targetReporterName: string, currentLabel: stri
  * @param targetReporterName Reporter label to find and accept in the QA report sequence.
  * @throws {Error} Propagates an error if no further report entry is available before the target is found.
  */
-export function navigateToQaReport(targetReporterName: string): void {
-  cy.get('[data-test="qa-current-reporter-label"]')
+export function navigateToQaReport(targetReporterName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy
+    .get('[data-test="qa-current-reporter-label"]')
     .invoke('text')
     .then((txt) => {
       const current = txt.trim();
@@ -468,9 +476,11 @@ export function navigateToQaReport(targetReporterName: string): void {
 
       if (current === targetReporterName) {
         cy.log('Label matched! Clicking accept-report-button');
-        cy.get('[data-test="accept-report-button"]').click();
+        return cy.get('[data-test="accept-report-button"]').scrollIntoView();
       } else {
-        goToNextReportAndRecurse(targetReporterName, current);
+        return goToNextReportAndRecurse(targetReporterName, current).then(() => {
+          return navigateToQaReport(targetReporterName);
+        });
       }
     });
 }
@@ -511,7 +521,7 @@ function makeJudgementDecision(judgement: QaJudgement): void {
       throw new Error('Qa judgement requires reporterUserNameOfAcceptedQaReport for modal matching');
     }
 
-    navigateToQaReport(target);
+    navigateToQaReport(target).click();
   }
 }
 
@@ -1093,7 +1103,6 @@ function verifyJudgementDataStoredCorrectly(
         return Object.keys(flatOverview).every((key) => {
           const expected = expectedValuesByType[key];
           const actual = extractValueForType(key, data);
-          console.log(`[verify] ${key}: actual="${actual}" expected="${expected}"`);
           return actual === expected;
         });
       })
