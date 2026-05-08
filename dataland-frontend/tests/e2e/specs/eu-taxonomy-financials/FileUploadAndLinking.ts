@@ -1,4 +1,3 @@
-import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { type CompanyAssociatedDataEutaxonomyFinancialsData, DataTypeEnum } from '@clients/backend';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -67,6 +66,7 @@ describeIf(
           `${TEST_PDF_FILE_NAME}2`
         );
 
+        cy.intercept({ method: 'POST', url: `**/documents/` }).as('postDocument');
         cy.intercept(
           {
             method: 'POST',
@@ -82,6 +82,12 @@ describeIf(
           }
         ).as('postDataWithTwoReports');
         cy.get('button[data-test="submitButton"]').click();
+        cy.wait('@postDocument', { timeout: shortTimeoutInMs })
+          .its('response.statusCode')
+          .should('be.oneOf', [200, 201], 'First document upload should succeed');
+        cy.wait('@postDocument', { timeout: shortTimeoutInMs })
+          .its('response.statusCode')
+          .should('be.oneOf', [200, 201], 'Second document upload should succeed');
         cy.wait('@postDataWithTwoReports', { timeout: longTimeOutInMs }).then((interception) => {
           expect(interception.response?.statusCode).to.eq(200);
         });
