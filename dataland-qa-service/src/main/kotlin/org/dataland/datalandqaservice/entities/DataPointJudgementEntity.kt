@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
@@ -17,7 +18,10 @@ import java.util.UUID
  */
 @Suppress("LongParameterList")
 @Entity
-@Table(name = "dataset_judgement_entity_data_point_judgement")
+@Table(
+    name = "dataset_judgement_entity_data_point_judgement",
+    indexes = [Index(name = "idx_datapoint_dataset_judgment_id", columnList = "dataset_judgement_id")],
+)
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,

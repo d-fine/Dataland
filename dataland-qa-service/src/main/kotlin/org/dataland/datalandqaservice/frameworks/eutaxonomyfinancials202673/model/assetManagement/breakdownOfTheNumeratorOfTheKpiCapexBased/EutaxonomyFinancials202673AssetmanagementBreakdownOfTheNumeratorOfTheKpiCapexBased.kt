@@ -19,22 +19,11 @@ data class EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfThe
     @field:Valid()
     val shareOfCapexBasedKpiInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val shareOfCapexBasedKpiInPercentOfWhichTransitional: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfCapexBasedKpiInPercentOfWhichEnabling: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val capexBasedNonAssessedExposures: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )
