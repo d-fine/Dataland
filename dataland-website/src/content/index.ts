@@ -149,10 +149,10 @@ export const CUSTOMER_STORY_SUMMARIES: CustomerStorySummary[] = [
   },
   {
     logo: '/static/logos/logo_nordlb.svg',
-    title: 'Primary source of EU Taxonomy data with automated delivery',
+    title: 'Primary source of EU Taxonomy KPIs with automated delivery',
     primaryTag: 'Bank',
     secondaryTags: ['EU Taxo', 'API integration'],
-    text: 'Primary source of EU Taxonomy data with automated delivery',
+    text: 'Primary source of EU Taxonomy KPIs with automated delivery',
     link: '/product#nordlb',
   },
   {

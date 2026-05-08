@@ -71,10 +71,14 @@ class NonSourceabilityInformationManager(
      * or if bypassQa=true, currentlyActive=fals` and no active entry exists to reverse.
      */
     @Transactional
-    fun processNonSourceabilityRequest(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
+    fun processNonSourceabilityRequest(
+        request: NonSourceabilityRequest,
+        bypassQa: Boolean,
+        currentlyActive: Boolean,
+    ): ProcessNonSourceabilityResult.Success {
         companyQueryManager.assertCompanyIdExists(request.companyId)
 
-        if (!request.bypassQa && request.currentlyActive) {
+        if (!bypassQa && currentlyActive) {
             throw InvalidInputApiException(
                 summary = "Invalid non-sourceability request.",
                 message =
@@ -100,10 +104,10 @@ class NonSourceabilityInformationManager(
             )
         }
 
-        return if (request.bypassQa && !request.currentlyActive) {
+        return if (bypassQa && !currentlyActive) {
             processReversal(request)
         } else {
-            processStandardOrBypassCreate(request)
+            processStandardOrBypassCreate(request, bypassQa, currentlyActive)
         }
     }
 
@@ -159,7 +163,11 @@ class NonSourceabilityInformationManager(
      * bypassQa=true/currentlyActive=true (admin bypass mark as non-sourceable).
      * Creates a new entry and emits the appropriate lifecycle event.
      */
-    private fun processStandardOrBypassCreate(request: NonSourceabilityRequest): ProcessNonSourceabilityResult.Success {
+    private fun processStandardOrBypassCreate(
+        request: NonSourceabilityRequest,
+        bypassQa: Boolean,
+        currentlyActive: Boolean,
+    ): ProcessNonSourceabilityResult.Success {
         val hasActiveEntry =
             nonSourceabilityDataRepository
                 .findActiveForTuple(
@@ -178,7 +186,7 @@ class NonSourceabilityInformationManager(
         }
 
         val userId = DatalandAuthentication.fromContext().userId
-        val qaStatus = if (request.bypassQa) QaStatus.Accepted else QaStatus.Pending
+        val qaStatus = if (bypassQa) QaStatus.Accepted else QaStatus.Pending
         val entity =
             NonSourceabilityInformationEntity(
                 companyId = request.companyId,
@@ -187,9 +195,9 @@ class NonSourceabilityInformationManager(
                 qaStatus = qaStatus,
                 uploaderUserId = userId,
                 uploadTime = Instant.now().toEpochMilli(),
-                currentlyActive = request.currentlyActive,
+                currentlyActive = currentlyActive,
                 reason = request.reason,
-                bypassQa = request.bypassQa,
+                bypassQa = bypassQa,
             )
 
         val saved = nonSourceabilityDataRepository.save(entity)
@@ -198,13 +206,13 @@ class NonSourceabilityInformationManager(
         TransactionSynchronizationManager.registerSynchronization(
             object : TransactionSynchronization {
                 override fun afterCommit() {
-                    emitLifecycleEvent(saved, request.bypassQa)
+                    emitLifecycleEvent(saved, bypassQa)
                 }
             },
         )
         logger.info(
             "NonSourceabilityInformation persisted with id=$nonSourceabilityId, " +
-                "bypassQa=${request.bypassQa}, qaStatus=$qaStatus",
+                "bypassQa=$bypassQa, qaStatus=$qaStatus",
         )
         return ProcessNonSourceabilityResult.Success(saved.toResponse())
     }

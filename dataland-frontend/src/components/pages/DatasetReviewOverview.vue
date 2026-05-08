@@ -142,6 +142,7 @@ import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 
 const props = defineProps<{
   datasetJudgementId: string;
@@ -300,7 +301,7 @@ const finishReview = (): void => {
           }, 3200);
         },
         onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + error.message;
+          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + formatAxiosErrorMessage(error);
         },
       });
     } // Implement action here in seperate ticket
