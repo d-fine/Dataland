@@ -8,9 +8,9 @@ source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
   echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]"
-  echo "  --start: Start the development stack (uses container backend by default)"
+  echo "  --start: Start the development stack"
   echo "  --stop: Stop the development stack"
-  echo "  --reset: Reset and restart the development stack from scratch (uses container backend by default)"
+  echo "  --reset: Reset and restart the development stack from scratch"
   echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
   echo "  --dev-env: Load environments/.env.dev before starting/resetting"
   echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
