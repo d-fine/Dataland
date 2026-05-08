@@ -4,10 +4,9 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.capex.alignedShare
     .EutaxonomyNonFinancials202673CapexAlignedShare
-import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.capex.eligibleOrAlignedActivities
-    .EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.capex.eligibleShare
     .EutaxonomyNonFinancials202673CapexEligibleShare
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials202673.model.capex.nonAssessedShare
@@ -43,6 +42,5 @@ data class EutaxonomyNonFinancials202673Capex(
     val transitionalShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val nonAssessedShare: EutaxonomyNonFinancials202673CapexNonAssessedShare? = null,
-    @field:Valid()
-    val eligibleOrAlignedActivities: EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities? = null,
+    val eligibleOrAlignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity?>? = null,
 )

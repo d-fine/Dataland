@@ -362,7 +362,7 @@
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
-					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
 						"value": 78.04,
 						"dataSource": {
 							"page": "504-1028",
@@ -374,7 +374,7 @@
 						"comment": "bypass digital driver",
 						"quality": "NoDataFound"
 					},
-					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
 						"value": 59.92,
 						"dataSource": {
 							"page": "156-560",
@@ -386,7 +386,7 @@
 						"comment": "index digital system",
 						"quality": "Reported"
 					},
-					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 3.1,
 						"dataSource": {
 							"page": "229-1016",
@@ -398,7 +398,7 @@
 						"comment": "input haptic microchip",
 						"quality": "NoDataFound"
 					},
-					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 						"value": 79.34,
 						"dataSource": {
 							"page": "942",
@@ -410,7 +410,7 @@
 						"comment": "hack wireless hard drive",
 						"quality": "Incomplete"
 					},
-					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 65.84,
 						"dataSource": {
 							"page": "644-740",
@@ -422,7 +422,7 @@
 						"comment": "bypass multi-byte transmitter",
 						"quality": "Estimated"
 					},
-					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 						"value": 99.04,
 						"dataSource": {
 							"page": "689",
@@ -434,7 +434,7 @@
 						"comment": "bypass bluetooth sensor",
 						"quality": "Estimated"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 						"value": 16.37,
 						"dataSource": {
 							"page": "725",
@@ -446,7 +446,7 @@
 						"comment": "navigate mobile card",
 						"quality": "Reported"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 54.17,
 						"dataSource": {
 							"page": "59",
@@ -470,7 +470,7 @@
 						"comment": "input bluetooth bus",
 						"quality": "Incomplete"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
 						"value": 6.29,
 						"dataSource": {
 							"page": "918",
@@ -482,7 +482,7 @@
 						"comment": "bypass mobile system",
 						"quality": "Reported"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
 						"value": 43.61,
 						"dataSource": {
 							"page": "839-1029",
@@ -508,7 +508,7 @@
 					}
 				},
 				"capexBasedGreenAssetRatioStock": {
-					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
 						"value": 60.7,
 						"dataSource": {
 							"page": "1106-1181",
@@ -520,7 +520,7 @@
 						"comment": "connect haptic interface",
 						"quality": "Audited"
 					},
-					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
 						"value": 84.02,
 						"dataSource": {
 							"page": "810",
@@ -532,7 +532,7 @@
 						"comment": "generate neural sensor",
 						"quality": "Estimated"
 					},
-					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 0.96,
 						"dataSource": {
 							"page": "635-879",
@@ -544,7 +544,7 @@
 						"comment": "connect digital alarm",
 						"quality": "Reported"
 					},
-					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 						"value": 57.94,
 						"dataSource": {
 							"page": "676-680",
@@ -556,7 +556,7 @@
 						"comment": "quantify primary array",
 						"quality": "Audited"
 					},
-					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 48.14,
 						"dataSource": {
 							"page": "866-957",
@@ -568,7 +568,7 @@
 						"comment": "reboot online program",
 						"quality": "Incomplete"
 					},
-					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 						"value": 16.39,
 						"dataSource": {
 							"page": "307-402",
@@ -580,7 +580,7 @@
 						"comment": "bypass haptic bandwidth",
 						"quality": "Audited"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 						"value": 47.61,
 						"dataSource": {
 							"page": "114",
@@ -592,7 +592,7 @@
 						"comment": "program cross-platform monitor",
 						"quality": "NoDataFound"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 89.73,
 						"dataSource": {
 							"page": "891",
@@ -616,7 +616,7 @@
 						"comment": "generate virtual transmitter",
 						"quality": "Incomplete"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
 						"value": 36.14,
 						"dataSource": {
 							"page": "257-1069",
@@ -628,7 +628,7 @@
 						"comment": "navigate primary circuit",
 						"quality": "NoDataFound"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
 						"value": 27.46,
 						"dataSource": {
 							"page": "806-937",
@@ -744,7 +744,7 @@
 						"comment": "index mobile driver",
 						"quality": "Audited"
 					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
 						"value": 75.57,
 						"dataSource": {
 							"page": "686",
@@ -756,7 +756,7 @@
 						"comment": "compress redundant matrix",
 						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
 						"value": 19.89,
 						"dataSource": {
 							"page": "1016-1282",
@@ -768,7 +768,7 @@
 						"comment": "reboot wireless driver",
 						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 14.07,
 						"dataSource": {
 							"page": "723",
@@ -780,7 +780,7 @@
 						"comment": "compress 1080p monitor",
 						"quality": "Audited"
 					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 74.35,
 						"dataSource": {
 							"page": "275",
@@ -791,8 +791,10 @@
 						},
 						"comment": "override back-end alarm",
 						"quality": "Incomplete"
-					},
-					"turnoverBasedNonAssessedExposures": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 93.78,
 						"dataSource": {
 							"page": "604-1134",
@@ -804,7 +806,7 @@
 						"comment": "synthesize mobile bus",
 						"quality": "Audited"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 94.42,
 						"dataSource": {
 							"page": "704-925",
@@ -816,7 +818,7 @@
 						"comment": "connect multi-byte bus",
 						"quality": "Estimated"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 82.21,
 						"dataSource": {
 							"page": "352-1206",
@@ -828,7 +830,7 @@
 						"comment": "program virtual protocol",
 						"quality": "Audited"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
 						"value": 88.38,
 						"dataSource": {
 							"page": "998-1166",
@@ -839,10 +841,8 @@
 						},
 						"comment": "calculate primary matrix",
 						"quality": "Audited"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 26.37,
 						"dataSource": {
 							"page": "604",
@@ -854,7 +854,7 @@
 						"comment": "input optical pixel",
 						"quality": "Audited"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 49.81,
 						"dataSource": {
 							"page": "818-881",
@@ -865,8 +865,10 @@
 						},
 						"comment": "navigate auxiliary circuit",
 						"quality": "Estimated"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+					"turnoverBasedNonAssessedExposures": {
 						"value": 93.96,
 						"dataSource": {
 							"page": "481-1290",
@@ -878,7 +880,7 @@
 						"comment": "program mobile microchip",
 						"quality": "NoDataFound"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 75.57,
 						"dataSource": {
 							"page": "165",
@@ -890,7 +892,7 @@
 						"comment": "input 1080p monitor",
 						"quality": "NoDataFound"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 31.35,
 						"dataSource": {
 							"page": "859",
@@ -902,7 +904,7 @@
 						"comment": "connect wireless bus",
 						"quality": "Estimated"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 81.25,
 						"dataSource": {
 							"page": "915-1239",
@@ -964,7 +966,7 @@
 						"comment": "compress mobile port",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
 						"value": 93.42,
 						"dataSource": {
 							"page": "527",
@@ -976,7 +978,7 @@
 						"comment": "index cross-platform feed",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
 						"value": 1.67,
 						"dataSource": {
 							"page": "800-803",
@@ -988,7 +990,7 @@
 						"comment": "back up multi-byte system",
 						"quality": "Audited"
 					},
-					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 40.35,
 						"dataSource": {
 							"page": "686",
@@ -1000,7 +1002,7 @@
 						"comment": "compress cross-platform bandwidth",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 59.1,
 						"dataSource": {
 							"page": "800",
@@ -1011,8 +1013,10 @@
 						},
 						"comment": "calculate open-source panel",
 						"quality": "Estimated"
-					},
-					"capexBasedNonAssessedExposures": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 39.41,
 						"dataSource": {
 							"page": "518-632",
@@ -1024,7 +1028,7 @@
 						"comment": "parse cross-platform monitor",
 						"quality": "Reported"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 10.44,
 						"dataSource": {
 							"page": "518-988",
@@ -1036,7 +1040,7 @@
 						"comment": "transmit open-source pixel",
 						"quality": "Reported"
 					},
-					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 81.78,
 						"dataSource": {
 							"page": "15",
@@ -1048,7 +1052,7 @@
 						"comment": "program solid state array",
 						"quality": "NoDataFound"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
 						"value": 60.51,
 						"dataSource": {
 							"page": "199-1291",
@@ -1059,10 +1063,8 @@
 						},
 						"comment": "generate primary array",
 						"quality": "Audited"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 75.36,
 						"dataSource": {
 							"page": "538-946",
@@ -1074,7 +1076,7 @@
 						"comment": "parse haptic port",
 						"quality": "Reported"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 4.22,
 						"dataSource": {
 							"page": "1015",
@@ -1085,8 +1087,10 @@
 						},
 						"comment": "input open-source application",
 						"quality": "Reported"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+					"capexBasedNonAssessedExposures": {
 						"value": 24.11,
 						"dataSource": {
 							"page": "572",
@@ -1098,7 +1102,7 @@
 						"comment": "hack virtual panel",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 47.78,
 						"dataSource": {
 							"page": "543",
@@ -1110,7 +1114,7 @@
 						"comment": "hack cross-platform port",
 						"quality": "Incomplete"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 28.89,
 						"dataSource": {
 							"page": "1053",
@@ -1122,7 +1126,7 @@
 						"comment": "reboot virtual protocol",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 51.82,
 						"dataSource": {
 							"page": "524",
@@ -1364,7 +1368,7 @@
 						"comment": "calculate wireless system",
 						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
 						"value": 59.26,
 						"dataSource": {
 							"page": "885-1220",
@@ -1376,7 +1380,7 @@
 						"comment": "transmit mobile firewall",
 						"quality": "Audited"
 					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
 						"value": 62.52,
 						"dataSource": {
 							"page": "194",
@@ -1388,7 +1392,7 @@
 						"comment": "synthesize open-source transmitter",
 						"quality": "Estimated"
 					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 46.01,
 						"dataSource": {
 							"page": "610",
@@ -1400,7 +1404,7 @@
 						"comment": "back up cross-platform capacitor",
 						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 65.93,
 						"dataSource": {
 							"page": "791-1159",
@@ -1411,8 +1415,10 @@
 						},
 						"comment": "override mobile hard drive",
 						"quality": "NoDataFound"
-					},
-					"turnoverBasedNonAssessedExposures": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 49.37,
 						"dataSource": {
 							"page": "82-197",
@@ -1424,7 +1430,7 @@
 						"comment": "index primary matrix",
 						"quality": "Audited"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 99.15,
 						"dataSource": {
 							"page": "288",
@@ -1436,7 +1442,7 @@
 						"comment": "input online program",
 						"quality": "Incomplete"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 54.1,
 						"dataSource": {
 							"page": "999-1298",
@@ -1448,7 +1454,7 @@
 						"comment": "quantify multi-byte capacitor",
 						"quality": "Estimated"
 					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
 						"value": 41.74,
 						"dataSource": {
 							"page": "310-454",
@@ -1459,10 +1465,8 @@
 						},
 						"comment": "quantify 1080p application",
 						"quality": "Audited"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 99.93,
 						"dataSource": {
 							"page": "20-521",
@@ -1474,7 +1478,7 @@
 						"comment": "index neural circuit",
 						"quality": "Estimated"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 82.62,
 						"dataSource": {
 							"page": "890",
@@ -1485,8 +1489,10 @@
 						},
 						"comment": "parse 1080p card",
 						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+					"turnoverBasedNonAssessedExposures": {
 						"value": 18.07,
 						"dataSource": {
 							"page": "960-1139",
@@ -1498,7 +1504,7 @@
 						"comment": "override neural matrix",
 						"quality": "Incomplete"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 70.14,
 						"dataSource": {
 							"page": "91",
@@ -1510,7 +1516,7 @@
 						"comment": "parse bluetooth port",
 						"quality": "Estimated"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 39.9,
 						"dataSource": {
 							"page": "297-515",
@@ -1522,7 +1528,7 @@
 						"comment": "compress redundant system",
 						"quality": "NoDataFound"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 67.78,
 						"dataSource": {
 							"page": "1018-1038",
@@ -1584,7 +1590,7 @@
 						"comment": "reboot primary panel",
 						"quality": "Audited"
 					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
 						"value": 20.77,
 						"dataSource": {
 							"page": "394-689",
@@ -1596,7 +1602,7 @@
 						"comment": "copy back-end driver",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
 						"value": 19.77,
 						"dataSource": {
 							"page": "910",
@@ -1608,7 +1614,7 @@
 						"comment": "compress digital transmitter",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 56.33,
 						"dataSource": {
 							"page": "14-943",
@@ -1620,7 +1626,7 @@
 						"comment": "compress open-source interface",
 						"quality": "Incomplete"
 					},
-					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 77.17,
 						"dataSource": {
 							"page": "1169",
@@ -1631,8 +1637,10 @@
 						},
 						"comment": "synthesize wireless feed",
 						"quality": "Estimated"
-					},
-					"capexBasedNonAssessedExposures": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 99.28,
 						"dataSource": {
 							"page": "1100-1221",
@@ -1644,7 +1652,7 @@
 						"comment": "copy primary interface",
 						"quality": "Estimated"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 62.3,
 						"dataSource": {
 							"page": "384-1169",
@@ -1656,7 +1664,7 @@
 						"comment": "connect mobile application",
 						"quality": "Incomplete"
 					},
-					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 						"value": 46.03,
 						"dataSource": {
 							"page": "88",
@@ -1668,7 +1676,7 @@
 						"comment": "input digital system",
 						"quality": "Incomplete"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
 						"value": 44.01,
 						"dataSource": {
 							"page": "1094",
@@ -1679,10 +1687,8 @@
 						},
 						"comment": "parse wireless protocol",
 						"quality": "Estimated"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 58.11,
 						"dataSource": {
 							"page": "1124",
@@ -1694,7 +1700,7 @@
 						"comment": "back up 1080p hard drive",
 						"quality": "Reported"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 25.46,
 						"dataSource": {
 							"page": "837",
@@ -1705,8 +1711,10 @@
 						},
 						"comment": "compress online monitor",
 						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+					"capexBasedNonAssessedExposures": {
 						"value": 48.85,
 						"dataSource": {
 							"page": "471",
@@ -1718,7 +1726,7 @@
 						"comment": "synthesize redundant bandwidth",
 						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 47.21,
 						"dataSource": {
 							"page": "698",
@@ -1730,7 +1738,7 @@
 						"comment": "calculate cross-platform sensor",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 52,
 						"dataSource": {
 							"page": "967",
@@ -1742,7 +1750,7 @@
 						"comment": "back up multi-byte driver",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 74.44,
 						"dataSource": {
 							"page": "603-1267",
@@ -1784,7 +1792,7 @@
 						"quality": "NoDataFound",
 						"currency": "EUR"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 44.96,
 						"dataSource": {
 							"page": "14-1232",
@@ -1796,7 +1804,7 @@
 						"comment": "override optical alarm",
 						"quality": "Audited"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 88.24,
 						"dataSource": {
 							"page": "591-1209",
@@ -1808,7 +1816,7 @@
 						"comment": "generate primary system",
 						"quality": "Estimated"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 20.04,
 						"dataSource": {
 							"page": "330-1100",
@@ -1820,7 +1828,7 @@
 						"comment": "quantify primary pixel",
 						"quality": "Audited"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 56.23,
 						"dataSource": {
 							"page": "186",
@@ -1832,7 +1840,7 @@
 						"comment": "parse open-source pixel",
 						"quality": "Estimated"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 55.57,
 						"dataSource": {
 							"page": "38",
@@ -1844,7 +1852,7 @@
 						"comment": "parse optical capacitor",
 						"quality": "Reported"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 85.96,
 						"dataSource": {
 							"page": "23",
@@ -1856,7 +1864,7 @@
 						"comment": "compress haptic protocol",
 						"quality": "Audited"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 30.27,
 						"dataSource": {
 							"page": "259",
@@ -1868,7 +1876,7 @@
 						"comment": "generate haptic card",
 						"quality": "NoDataFound"
 					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 83.89,
 						"dataSource": {
 							"page": "445-1262",
@@ -1964,7 +1972,7 @@
 						"comment": "calculate solid state protocol",
 						"quality": "Reported"
 					},
-					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
 						"value": 59.67,
 						"dataSource": {
 							"page": "394",
@@ -1976,7 +1984,7 @@
 						"comment": "index redundant monitor",
 						"quality": "Incomplete"
 					},
-					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
 						"value": 87.04,
 						"dataSource": {
 							"page": "50",
@@ -2028,7 +2036,7 @@
 						"quality": "NoDataFound",
 						"currency": "KWD"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 52.42,
 						"dataSource": {
 							"page": "303",
@@ -2040,7 +2048,7 @@
 						"comment": "index multi-byte circuit",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 18.38,
 						"dataSource": {
 							"page": "1158",
@@ -2052,7 +2060,7 @@
 						"comment": "navigate cross-platform alarm",
 						"quality": "Reported"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 83.81,
 						"dataSource": {
 							"page": "855-1150",
@@ -2064,7 +2072,7 @@
 						"comment": "transmit 1080p program",
 						"quality": "Estimated"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 55.01,
 						"dataSource": {
 							"page": "124",
@@ -2076,7 +2084,7 @@
 						"comment": "input auxiliary program",
 						"quality": "NoDataFound"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 80.32,
 						"dataSource": {
 							"page": "86-321",
@@ -2088,7 +2096,7 @@
 						"comment": "program cross-platform program",
 						"quality": "NoDataFound"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 47.33,
 						"dataSource": {
 							"page": "270-401",
@@ -2100,7 +2108,7 @@
 						"comment": "calculate digital system",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 94.6,
 						"dataSource": {
 							"page": "371-649",
@@ -2112,7 +2120,7 @@
 						"comment": "quantify neural matrix",
 						"quality": "Estimated"
 					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 37.53,
 						"dataSource": {
 							"page": "706",
@@ -2208,7 +2216,7 @@
 						"comment": "quantify solid state capacitor",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
 						"value": 0.85,
 						"dataSource": {
 							"page": "1155-1231",
@@ -2220,7 +2228,7 @@
 						"comment": "calculate multi-byte alarm",
 						"quality": "Reported"
 					},
-					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
 						"value": 46.46,
 						"dataSource": {
 							"page": "987",
@@ -2272,7 +2280,7 @@
 						"quality": "Audited",
 						"currency": "AUD"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 7.62,
 						"dataSource": {
 							"page": "1017",
@@ -2284,7 +2292,7 @@
 						"comment": "input digital monitor",
 						"quality": "Estimated"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 53.86,
 						"dataSource": {
 							"page": "242-310",
@@ -2296,7 +2304,7 @@
 						"comment": "bypass neural microchip",
 						"quality": "NoDataFound"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 46.36,
 						"dataSource": {
 							"page": "624-1044",
@@ -2308,7 +2316,7 @@
 						"comment": "bypass primary interface",
 						"quality": "Audited"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 32.39,
 						"dataSource": {
 							"page": "91-424",
@@ -2320,7 +2328,7 @@
 						"comment": "connect optical transmitter",
 						"quality": "Incomplete"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 3.42,
 						"dataSource": {
 							"page": "229",
@@ -2332,7 +2340,7 @@
 						"comment": "hack back-end sensor",
 						"quality": "Estimated"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 12.16,
 						"dataSource": {
 							"page": "167-385",
@@ -2344,7 +2352,7 @@
 						"comment": "copy digital capacitor",
 						"quality": "Audited"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 3.1,
 						"dataSource": {
 							"page": "1053",
@@ -2356,7 +2364,7 @@
 						"comment": "reboot bluetooth sensor",
 						"quality": "NoDataFound"
 					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 16.57,
 						"dataSource": {
 							"page": "338",
@@ -2416,7 +2424,7 @@
 						"comment": "reboot online microchip",
 						"quality": "NoDataFound"
 					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
 						"value": 64.21,
 						"dataSource": {
 							"page": "393-713",
@@ -2428,7 +2436,7 @@
 						"comment": "input back-end transmitter",
 						"quality": "NoDataFound"
 					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
 						"value": 67.52,
 						"dataSource": {
 							"page": "1129",
@@ -2480,7 +2488,7 @@
 						"quality": "NoDataFound",
 						"currency": "SSP"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 66.82,
 						"dataSource": {
 							"page": "1076-1107",
@@ -2492,7 +2500,7 @@
 						"comment": "hack back-end driver",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 36.19,
 						"dataSource": {
 							"page": "816",
@@ -2504,7 +2512,7 @@
 						"comment": "transmit digital hard drive",
 						"quality": "Audited"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 30.28,
 						"dataSource": {
 							"page": "176-617",
@@ -2516,7 +2524,7 @@
 						"comment": "hack redundant pixel",
 						"quality": "Audited"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 65.64,
 						"dataSource": {
 							"page": "933-1109",
@@ -2528,7 +2536,7 @@
 						"comment": "quantify wireless microchip",
 						"quality": "NoDataFound"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 66.38,
 						"dataSource": {
 							"page": "737-955",
@@ -2540,7 +2548,7 @@
 						"comment": "program auxiliary protocol",
 						"quality": "NoDataFound"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 77.41,
 						"dataSource": {
 							"page": "1142-1198",
@@ -2552,7 +2560,7 @@
 						"comment": "calculate wireless application",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 31.55,
 						"dataSource": {
 							"page": "979-1248",
@@ -2564,7 +2572,7 @@
 						"comment": "connect auxiliary application",
 						"quality": "NoDataFound"
 					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 33.56,
 						"dataSource": {
 							"page": "368-542",
@@ -2624,7 +2632,7 @@
 						"comment": "calculate neural circuit",
 						"quality": "Incomplete"
 					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
 						"value": 98.98,
 						"dataSource": {
 							"page": "274",
@@ -2636,7 +2644,7 @@
 						"comment": "input 1080p application",
 						"quality": "Estimated"
 					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
 						"value": 56.7,
 						"dataSource": {
 							"page": "6-1256",

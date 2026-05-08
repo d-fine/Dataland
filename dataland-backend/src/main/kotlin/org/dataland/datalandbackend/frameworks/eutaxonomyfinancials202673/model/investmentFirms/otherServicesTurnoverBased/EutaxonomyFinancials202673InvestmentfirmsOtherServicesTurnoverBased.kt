@@ -50,6 +50,42 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesTurnoverBased(
         CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
+        description = """Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+        ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+        ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
         description = """Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation""",
         example = """{
       "value" : 13.52, 
@@ -155,42 +191,6 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesTurnoverBased(
         ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-        ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-        ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Taxonomy-aligned and transitional Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives""",
         example = """{
       "value" : 13.52, 
@@ -261,23 +261,6 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesTurnoverBased(
     val turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Taxonomy-eligible Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Fossil Gas Activities""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Taxonomy-aligned Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Nuclear Activities""",
         example = """{
       "value" : 13.52, 
@@ -293,6 +276,23 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesTurnoverBased(
     )
     @field:Valid()
     val turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned: ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Taxonomy-eligible Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Fossil Gas Activities""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Taxonomy-aligned Turnover-based Proportion of Revenue from Operation of an OTF which are exposed towards Fossil Gas Activities""",
