@@ -7400,11 +7400,11 @@
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "type": "number"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/AmountWithCurrency"
+          },
+          "relativeShareInPercent": {
+            "type": "number"
           }
         }
       },
@@ -7576,11 +7576,11 @@
               "type": "string"
             }
           },
-          "share": {
-            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
-          },
           "relativeEligibleShareInPercent": {
             "type": "number"
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
           },
           "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number"
@@ -7656,26 +7656,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673CapexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673CapexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -7790,26 +7782,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673OpexAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673OpexEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -7869,26 +7853,18 @@
             "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueNonAssessedShare"
           },
           "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
           }
         }
       },
       "EutaxonomyNonFinancials202673RevenueAlignedShare": {
         "type": "object",
         "properties": {
-          "relativeShareInPercent": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "absoluteShare": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "EutaxonomyNonFinancials202673RevenueEligibleOrAlignedActivities": {
-        "type": "object",
-        "properties": {
-          "eligibleOrAlignedActivities": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity"
+          },
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -8975,11 +8951,17 @@
           "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
           },
+          "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased"
+          },
           "breakdownOfTheNumeratorOfTheKpiCapexBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiCapexBased"
           },
           "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
+          },
+          "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased"
           }
         }
       },
@@ -9012,18 +8994,23 @@
           "shareOfCapexBasedKpiInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "shareOfCapexBasedKpiInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "shareOfCapexBasedKpiInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+        "type": "object",
+        "properties": {
           "capexBasedNonAssessedExposures": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9034,6 +9021,23 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedNonAssessedExposures": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -9099,28 +9103,16 @@
           "shareOfTurnoverBasedKpiInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedNonAssessedExposures": {
+          "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+          "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -9191,6 +9183,12 @@
       "EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioStock": {
         "type": "object",
         "properties": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9209,19 +9207,13 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedNonAssessedExposures": {
@@ -9255,6 +9247,12 @@
       "EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRatioStock": {
         "type": "object",
         "properties": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9273,19 +9271,13 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+          "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedNonAssessedExposures": {
@@ -9362,11 +9354,17 @@
           "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
           },
+          "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased"
+          },
           "breakdownOfTheNumeratorOfTheKpiCapexBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBased"
           },
           "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
+          },
+          "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased"
           }
         }
       },
@@ -9399,28 +9397,50 @@
           "shareOfCapexBasedKpiInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "shareOfCapexBasedKpiInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "shareOfCapexBasedKpiInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+        "type": "object",
+        "properties": {
           "capexBasedNonAssessedExposures": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+          "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+          "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedNonAssessedExposures": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -9486,28 +9506,16 @@
           "shareOfTurnoverBasedKpiInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedNonAssessedExposures": {
+          "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+          "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -9576,6 +9584,12 @@
           "capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9592,12 +9606,6 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
@@ -9621,10 +9629,10 @@
           "capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+          "capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+          "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
@@ -9640,6 +9648,12 @@
           },
           "turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -9657,12 +9671,6 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
@@ -9686,10 +9694,10 @@
           "turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+          "turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+          "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
@@ -9705,6 +9713,12 @@
           },
           "capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -9724,12 +9738,6 @@
           "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9742,10 +9750,10 @@
           "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+          "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+          "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
@@ -9761,6 +9769,12 @@
           },
           "turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -9780,12 +9794,6 @@
           "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -9798,10 +9806,10 @@
           "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+          "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+          "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
