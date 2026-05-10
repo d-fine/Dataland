@@ -5,10 +5,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
-import org.dataland.datalandbackend.services.datapoints.mergeComments
+import org.dataland.datalandbackend.services.datapoints.createComment
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
-import org.dataland.datalandbackend.services.datapoints.sumOfExtendedDataPoints
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Test
@@ -25,6 +25,7 @@ class DataPointConversionTest {
     private val anotherNumericDataPoint = "./json/dataPoints/anotherNumericDataPointForTestingTransformations.json"
     private val dataPointWithoutValue = "./json/dataPoints/dataPointWithoutValue.json"
 
+    //ToDo clean up the source files for the tests
     companion object {
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -40,9 +41,9 @@ class DataPointConversionTest {
         @JvmStatic
         fun provideComments(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(listOf("", ""), "This data point was calculated as the sum of: dummy, dummy"),
-                //Arguments.of(listOf(""), null),
-                //Arguments.of(listOf("First", "", "Last"), "First, Last"),
+                Arguments.of(listOf("Input1", "Input2"), "DummyMethod",
+                    "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input."),
+                //ToDo add further test cases as more methods become available
             )
 
 
@@ -52,10 +53,10 @@ class DataPointConversionTest {
     fun `check that summation of data points works as expected`() {
         val firstInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
         val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPoint)
-        val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
+        val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
         val inputs = listOf(firstInput, secondInput)
         val result = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(applyTransformation(inputs, "dummy", "Sum").dataPoint)
-        assert(result.value == BigDecimal.valueOf(1.0))
+        assert(result.value == BigDecimal.valueOf(2.0))
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
         assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
@@ -64,20 +65,35 @@ class DataPointConversionTest {
 
     @Test
     fun `check that summation of data points throws the expected exceptions`() {
-        assertThrows<InvalidFormatException> { sumOfExtendedDataPoints(listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint))), "dummy") }
+        assertThrows<InvalidFormatException> {
+            DataPointConversion.SUM.convert(
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint))),
+                "dummy",
+            )
+        }
         assertThrows<IllegalArgumentException> {
-            sumOfExtendedDataPoints(listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue))), "dummy")
+            DataPointConversion.SUM.convert(
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue))),
+                "dummy",
+            )
+        }
+    }
+
+    @Test
+    fun `check that an unknown conversion method is rejected`() {
+        assertThrows<IllegalArgumentException> {
+            applyTransformation(emptyList(), "dummy", "NotARealMethod")
         }
     }
 
     @ParameterizedTest
     @MethodSource("provideComments")
-    fun `check that merging of comments works as expected`(
+    fun `check that creation of comments works as expected`(
         inputs: List<String>,
-        expected: String?,
+        method: String,
+        expected: String,
     ) {
-        val uploadedDatePoints = inputs.map { createUploadedDataPoint(it) }
-        assert(mergeComments(uploadedDatePoints) == expected)
+        assert(createComment(inputs, method) == expected)
     }
 
     @ParameterizedTest
@@ -89,12 +105,11 @@ class DataPointConversionTest {
         assert(mergeQuality(inputs) == expected)
     }
 
-    fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint {
-        return UploadedDataPoint(
+    fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint =
+        UploadedDataPoint(
             dataPoint = dataPoint,
             companyId = "dummy",
             reportingPeriod = "dummy",
-            dataPointType = "dummy"
+            dataPointType = "dummy",
         )
-    }
 }

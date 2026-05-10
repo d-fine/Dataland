@@ -61,8 +61,13 @@ class DataPointCalculator
             return removeDataPointsWithoutValue(allStoredDataPoints.values)
         }
 
+        /**
+         * Attempts to calculate the values for the [dataPointTypes] and the fixed [reportingPeriod] and [companyId].
+         * If multiple calculation rules are possible the first one with all sources available will be used.
+         * @return A list of all calculated data points (is empty if no calculation was possible)
+         */
         private fun calculateDataPoints(
-            dataPointTypes: Collection<String>,
+            dataPointTypes: Collection<DataPointType>,
             companyId: String,
             reportingPeriod: String,
             correlationId: String,
@@ -71,7 +76,7 @@ class DataPointCalculator
             val allSourceTypes = potentialCalculations.values.flatten().flatMap { it.inputs }
             val allSourceData = getAvailableSourceData(allSourceTypes, reportingPeriod, companyId, correlationId)
             val allAvailableSourceTypes = allSourceData.map { it.dataPointType }
-            val result = mutableListOf<UploadedDataPoint>()
+            val calculatedDataPoints = mutableListOf<UploadedDataPoint>()
             potentialCalculations.forEach { (dataPointType, calculationRules) ->
                 calculationRules.forEach { calculationRule ->
                     if (allAvailableSourceTypes.containsAll(calculationRule.inputs)) {
@@ -85,7 +90,7 @@ class DataPointCalculator
                             calculationRule.inputs.map { sourceType ->
                                 allSourceData.single { it.dataPointType == sourceType }
                             }
-                        result
+                        calculatedDataPoints
                             .add(
                                 calculateSingleDataPoint(
                                     inputs = orderedInputs,
@@ -97,7 +102,7 @@ class DataPointCalculator
                     }
                 }
             }
-            return result
+            return calculatedDataPoints
         }
 
         private fun calculateSingleDataPoint(
@@ -105,13 +110,20 @@ class DataPointCalculator
             method: String,
             dataPointDimensions: BasicDataPointDimensions,
         ): UploadedDataPoint =
-                    applyTransformation(
-                        inputs = inputs,
-                        targetType = dataPointDimensions.dataPointType,
-                        method = method,
-                    )
+            applyTransformation(
+                inputs = inputs,
+                targetType = dataPointDimensions.dataPointType,
+                method = method,
+            )
 
-
+        /**
+         * Derives the missing data points for each of the given dataset dimensions and returns them grouped per dimension.
+         * For every dimension only the data point types that are not already available are calculated;
+         * dimensions for which nothing could be derived are omitted from the result.
+         * @param datasetDimensions the dataset dimensions for which calculated data should be produced
+         * @param correlationId correlation id propagated to downstream calls for tracing
+         * @return a map from each dataset dimension to the list of newly calculated data points
+         */
         fun getCalculatedData(
             datasetDimensions: Collection<BasicDatasetDimensions>,
             correlationId: String,

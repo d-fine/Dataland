@@ -75,6 +75,12 @@ class DataCompositionService
                     specificationService.isDataPointType(dimensions.dataPointType)
             }
 
+        /**
+         * Returns the calculation rules available for each of the given data point types.
+         * Types whose specification declares no calculation rules are omitted from the result.
+         * @param dataPointTypes the data point types to look up
+         * @return a map from data point type to its declared calculation rules
+         */
         fun getAvailableCalculationRules(dataPointTypes: Collection<DataPointType>): Map<DataPointType, Collection<CalculationRule>> {
             val availableRules = mutableMapOf<DataPointType, Collection<CalculationRule>>()
             specificationService.getDataPointSpecifications(dataPointTypes.toList()).forEach { (dataPointType, specification) ->

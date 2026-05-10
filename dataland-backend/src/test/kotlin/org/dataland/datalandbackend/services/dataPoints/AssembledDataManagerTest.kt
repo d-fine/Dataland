@@ -134,7 +134,11 @@ class AssembledDataManagerTest {
         dataPointUtils = DataPointUtils(specificationClient, metaDataManager, specificationService)
         internalStorageAdapter = InternalStorageAdapter(storageClient)
         dataPointCalculator = DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter)
-        dataDeliveryService = DataDeliveryService(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter, datasetAssembler, dataPointCalculator)
+        dataDeliveryService =
+            DataDeliveryService(
+                dataCompositionService, dataAvailabilityChecker,
+                internalStorageAdapter, datasetAssembler, dataPointCalculator,
+            )
         assembledDataManager =
             AssembledDataManager(
                 dataManager, messageQueuePublications, dataPointValidator,
@@ -283,7 +287,7 @@ class AssembledDataManagerTest {
         val dataPointDimensions = BasicDataPointDimensions(companyId, resultType, reportingPeriod)
         whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(null)
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(),any())
+        doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
         setMockData(dataPointMap, dataContentMap)
         val dynamicDataset =

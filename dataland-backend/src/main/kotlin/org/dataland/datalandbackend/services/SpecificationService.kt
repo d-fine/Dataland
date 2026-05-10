@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
-import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -140,6 +139,12 @@ class SpecificationService
                 )
             }
 
+        /**
+         * Returns the specifications for the given data point types.
+         * Specifications not yet present in the in-memory cache are fetched from the specification service and cached for future calls.
+         * @param dataPointTypes the data point types whose specifications should be retrieved
+         * @return a map from each requested data point type to its specification
+         */
         fun getDataPointSpecifications(dataPointTypes: List<DataPointType>): Map<DataPointType, DataPointTypeSpecification> {
             (dataPointTypes subtract cachedDataPointSpecifications.keys).forEach {
                 cachedDataPointSpecifications[it] = specificationControllerApi.getDataPointTypeSpecification(it)
