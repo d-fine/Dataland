@@ -25,7 +25,7 @@ class DataPointConversionTest {
     private val anotherNumericDataPoint = "./json/dataPoints/anotherNumericDataPointForTestingTransformations.json"
     private val dataPointWithoutValue = "./json/dataPoints/dataPointWithoutValue.json"
 
-    //ToDo clean up the source files for the tests
+    // ToDo clean up the source files for the tests
     companion object {
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -41,12 +41,12 @@ class DataPointConversionTest {
         @JvmStatic
         fun provideComments(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(listOf("Input1", "Input2"), "DummyMethod",
-                    "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input."),
-                //ToDo add further test cases as more methods become available
+                Arguments.of(
+                    listOf("Input1", "Input2"), "DummyMethod",
+                    "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input.",
+                ),
+                // ToDo add further test cases as more methods become available
             )
-
-
     }
 
     @Test
