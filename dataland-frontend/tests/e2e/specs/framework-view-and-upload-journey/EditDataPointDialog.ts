@@ -1,4 +1,4 @@
-import { DataTypeEnum, type SfdrData, type StoredCompany } from '@clients/backend';
+import { DataTypeEnum, QualityOptions, type SfdrData, type StoredCompany } from '@clients/backend';
 import { getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
@@ -121,7 +121,7 @@ describeIf(
         .should('contain', expectedScope1GhgEmissionsQuality);
 
       cy.get('[data-test="quality-select"]').click();
-      cy.get(`[aria-label="${expectedScope1GhgEmissionsQuality}"]`).click();
+      cy.get(`[aria-label="${QualityOptions.Incomplete}"]`).click();
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
