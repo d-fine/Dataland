@@ -64,7 +64,7 @@ const disableRightArrow = computed(() => {
 
 const toggleScrollLock = (lock: boolean): void => {
   if (lock) {
-    document.addEventListener('touchmove', preventDefault, { passive: false });
+    document.addEventListener('touchmove', preventDefault, { passive: false } as EventListenerOptions);
   } else {
     document.removeEventListener('touchmove', preventDefault, { passive: false } as EventListenerOptions);
   }

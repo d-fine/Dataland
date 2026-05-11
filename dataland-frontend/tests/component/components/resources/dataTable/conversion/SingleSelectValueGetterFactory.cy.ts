@@ -1,6 +1,7 @@
 import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { type Field } from '@/utils/GenericFrameworkTypes';
 import { singleSelectValueGetterFactory } from '@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory';
@@ -35,7 +36,7 @@ describe('Unit test for the SingleSelectValueGetterFactory', () => {
   it('The human-readable name of the field should be displayed otherwise', () => {
     const dataset = { data: 'NoDeviation' };
     const value = singleSelectValueGetterFactory('data', field)(dataset);
-    expect(value).to.deep.equal({
+    expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: 'No Deviation',
     });
@@ -43,7 +44,7 @@ describe('Unit test for the SingleSelectValueGetterFactory', () => {
   it('The raw value of the input should be displayed as a string if the option is unknown', () => {
     const dataset = { data: 'Hello there' };
     const value = singleSelectValueGetterFactory('data', field)(dataset);
-    expect(value).to.deep.equal({
+    expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: 'Hello there',
     });

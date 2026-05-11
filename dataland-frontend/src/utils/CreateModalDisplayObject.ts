@@ -1,6 +1,7 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { type Component } from 'vue';
 import { type ExtendedDataPoint } from '@/utils/DataPoint.ts';
@@ -39,7 +40,7 @@ export function createModalDisplayObject<T>({
   };
   const activityList = activities.value ?? [];
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
       label: `Show ${activityList.length} activit${activityList.length === 1 ? 'y' : 'ies'}`,

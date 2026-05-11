@@ -22,7 +22,7 @@ import {
   type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
-import { type DataMetaInformation } from '@clients/backend';
+import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
 import { isDatapointCommentConsideredMissing } from '@/components/resources/dataTable/conversion/DataPoints';
 
 export default defineComponent({
@@ -75,7 +75,7 @@ export default defineComponent({
       };
     },
     isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
-      const dataSource = this.dataPointProperties.dataSource;
+      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
       const quality = this.dataPointProperties.quality;
 
       return (

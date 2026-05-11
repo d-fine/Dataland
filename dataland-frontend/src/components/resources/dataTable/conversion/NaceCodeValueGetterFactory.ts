@@ -3,6 +3,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import MultiSelectModal from '@/components/resources/dataTable/modals/MultiSelectModal.vue';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
@@ -40,7 +41,7 @@ export function formatNaceCodesForDatatable(
   if (!naceCodes || naceCodes.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${naceCodes.length} NACE code${naceCodes.length > 1 ? 's' : ''}`,

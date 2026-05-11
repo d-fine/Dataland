@@ -79,7 +79,7 @@ describe('Check the portfolio details view', function (): void {
           ...(jsonContent as EnrichedPortfolio),
           // as unknown as Set<string> cast required to ensure proper json is created
           sharedUserIds: [] as unknown as Set<string>,
-        };
+        } as EnrichedPortfolio;
       })
       .then(() => {
         nonMemberConfigurationParameters = {
@@ -96,7 +96,7 @@ describe('Check the portfolio details view', function (): void {
           ...portfolioFixtureWithoutMonitoring,
           isMonitored: true,
           monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
-        };
+        } as EnrichedPortfolio;
         memberConfigurationParametersWithMonitoring = {
           inheritedRoleMap: datalandMemberInheritedRoleMap,
           keycloakRoles: ['ROLE_USER'],
@@ -118,7 +118,7 @@ describe('Check the portfolio details view', function (): void {
           ...portfolioFixtureWithoutMonitoring,
           // as unknown as Set<string> cast required to ensure proper json is created
           sharedUserIds: ['user-1', 'user-2'] as unknown as Set<string>,
-        };
+        } as EnrichedPortfolio;
       });
     cy.fixture('largeEnrichedPortfolio.json')
       .then(function (jsonContent) {

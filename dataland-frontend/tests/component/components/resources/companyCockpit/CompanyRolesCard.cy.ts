@@ -269,7 +269,7 @@ describe('Company Roles Card Tests', () => {
     keycloakRoles: string[];
   }[] = [
     {
-      allowedRoles: Object.values(CompanyRole),
+      allowedRoles: Object.values(CompanyRole) as CompanyRole[],
       userRole: CompanyRole.CompanyOwner,
       keycloakRoles: [],
     },
@@ -289,7 +289,7 @@ describe('Company Roles Card Tests', () => {
       keycloakRoles: [],
     },
     {
-      allowedRoles: Object.values(CompanyRole),
+      allowedRoles: Object.values(CompanyRole) as CompanyRole[],
       userRole: null,
       keycloakRoles: [KEYCLOAK_ROLE_ADMIN],
     },
@@ -327,12 +327,12 @@ describe('Company Roles Card Tests', () => {
   );
 
   for (const { testCase, role } of permissionScenarios) {
-    const buttonState = getButtonState(testCase, role);
+    const buttonState = getButtonState(testCase, role as CompanyRole);
     const userRoleLabel = getUserRoleLabel(testCase);
 
     it(`As a ${userRoleLabel} on the ${role} card, the Add User button should be ${buttonState}`, () => {
-      mockCompanyRoleAssignments([generateCompanyRoleAssignment(role, dummyCompanyId)]);
-      mountCompanyRolesCard(role, testCase.userRole, true, testCase.keycloakRoles);
+      mockCompanyRoleAssignments([generateCompanyRoleAssignment(role as CompanyRole, dummyCompanyId)]);
+      mountCompanyRolesCard(role as CompanyRole, testCase.userRole, true, testCase.keycloakRoles);
       cy.wait('@getRoleAssignments');
 
       validateButtonState(buttonState);

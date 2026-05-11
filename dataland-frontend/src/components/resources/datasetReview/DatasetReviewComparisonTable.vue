@@ -242,7 +242,9 @@ const props = defineProps<{
 const totalNumberOfColumns = computed(() => (props.datasetReview.qaReporters?.length ?? 0) + 3);
 const frameworkDefinition = computed(() => getFrontendFrameworkDefinition(props.framework));
 const viewConfig = computed(() => frameworkDefinition.value?.getFrameworkViewConfiguration());
-const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(() => viewConfig.value?.configuration);
+const mldtConfig = computed<MLDTConfig<FrameworkData> | undefined>(
+  () => viewConfig.value?.configuration as MLDTConfig<FrameworkData> | undefined
+);
 
 const vTooltip = Tooltip;
 

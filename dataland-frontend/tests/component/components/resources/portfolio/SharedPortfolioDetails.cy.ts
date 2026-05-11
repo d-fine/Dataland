@@ -77,7 +77,7 @@ describe('Check the portfolio details view', function (): void {
           ...portfolioFixtureWithoutMonitoring,
           isMonitored: true,
           monitoredFrameworks: new Set(['sfdr', 'eutaxonomy']),
-        };
+        } as EnrichedPortfolio;
         adminConfigurationParametersWithoutMonitoring = {
           keycloakRoles: ['ROLE_ADMIN'],
           portfolioResponse: portfolioFixtureWithoutMonitoring,

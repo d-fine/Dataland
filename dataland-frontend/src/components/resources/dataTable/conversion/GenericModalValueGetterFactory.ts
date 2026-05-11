@@ -3,6 +3,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
@@ -50,7 +51,7 @@ function getDisplayValueForModal(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${field.label}`,

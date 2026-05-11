@@ -55,7 +55,7 @@ export default defineComponent({
   data() {
     return {
       dataId: '',
-      qaStatus: QaStatus.Pending,
+      qaStatus: QaStatus.Pending as QaStatus,
       message: '',
       reviewSubmitted: false,
       reviewSuccessful: false,
@@ -101,6 +101,10 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.w-30 {
+  width: 30vw;
+}
+
 .flex-direction-column {
   flex-direction: column;
 }

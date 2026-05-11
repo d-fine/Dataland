@@ -2,6 +2,7 @@ import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
@@ -48,7 +49,7 @@ export function formatListOfStringsForDatatable(
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${input.length} value${input.length > 1 ? 's' : ''}`,

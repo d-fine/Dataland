@@ -96,7 +96,7 @@ export default defineComponent({
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       isPrivateFramework: null as null | boolean,
-      isCompanyOwner: false,
+      isCompanyOwner: false as boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
       getDatasetStatus,
     };

@@ -11,6 +11,8 @@ import {
   generateSfdrQaReportPreparedFixtures,
 } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes';
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -26,7 +28,7 @@ export function exportCustomMocks(): void {
     '../testing/data/DataAndMetaInfoMocksForOneCompany.json',
     JSON.stringify(
       metaInfoDataForOneCompany.map((metaInfo) => {
-        return { metaInfo: metaInfo, data: {} };
+        return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<FrameworkData>;
       }),
       null,
       '\t'

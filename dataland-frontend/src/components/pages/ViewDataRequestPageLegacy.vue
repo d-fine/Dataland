@@ -422,7 +422,7 @@ export default defineComponent({
         try {
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
-            RequestStatus.Open,
+            RequestStatus.Open as RequestStatus,
             undefined,
             undefined,
             undefined,
@@ -448,7 +448,7 @@ export default defineComponent({
       try {
         await patchDataRequest(
           this.requestId,
-          RequestStatus.Withdrawn,
+          RequestStatus.Withdrawn as RequestStatus,
           undefined,
           undefined,
           undefined,

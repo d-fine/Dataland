@@ -108,7 +108,7 @@ import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
-import { type CompanyAssociatedDataSfdrData, DataTypeEnum, type SfdrData } from '@clients/backend';
+import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from '@clients/backend';
 import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
@@ -215,7 +215,7 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      referencedReportsForPrefill: {},
+      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
       listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},

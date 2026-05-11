@@ -75,5 +75,5 @@ export function createDataAndMetaInfoMock<T extends FrameworkData>(
   metaInfo: DataMetaInformation,
   dataset: T
 ): DataAndMetaInformation<T> {
-  return { metaInfo: metaInfo, data: dataset };
+  return { metaInfo: metaInfo, data: dataset } as DataAndMetaInformation<T>;
 }

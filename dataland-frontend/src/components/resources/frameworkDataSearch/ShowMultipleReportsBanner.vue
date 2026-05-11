@@ -35,7 +35,7 @@ export default defineComponent({
   },
   data() {
     return {
-      indexOfNewestReportingPeriod: -1,
+      indexOfNewestReportingPeriod: -1 as number,
     };
   },
   props: {

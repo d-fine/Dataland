@@ -185,7 +185,7 @@ onMounted(() => {
   }
 
   if (!selectedFramework.value) {
-    selectedFramework.value = availableFrameworks.value[0]?.value;
+    selectedFramework.value = availableFrameworks.value[0]?.value as DataTypeEnum | undefined;
   }
 });
 

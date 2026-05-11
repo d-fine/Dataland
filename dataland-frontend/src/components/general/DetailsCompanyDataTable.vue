@@ -45,7 +45,7 @@ export default defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
-      kpiKeyOfTable: '',
+      kpiKeyOfTable: '' as string,
       keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized: ['isInHouseProductionOrIsContractProcessing', 'sectors'] as string[],
       humanizeString: humanizeStringOrNumber,

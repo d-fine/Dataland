@@ -1,6 +1,7 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import ListOfBaseDataPointModal from '@/components/resources/dataTable/modals/ListOfBaseDataPointModal.vue';
@@ -23,7 +24,7 @@ export function formatListOfBaseDataPoint(
   if (!baseDataPoints || baseDataPoints.length === 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? 's' : ''}`,

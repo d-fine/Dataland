@@ -35,7 +35,7 @@ export default defineComponent({
     return {
       reportingPeriods: [] as Array<string>,
       referencedReportsList: [] as Array<{ [p: string]: CompanyReport }>,
-      indexOfNewestReportingPeriod: 9999,
+      indexOfNewestReportingPeriod: 9999 as number,
     };
   },
   methods: {

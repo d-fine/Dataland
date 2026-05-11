@@ -78,7 +78,7 @@ export function getDataPointGetterFactory<
       return {
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: displayValue,
-      };
+      } as AvailableMLDTDisplayObjectTypes;
     }
   };
 }
@@ -124,11 +124,13 @@ export function wrapDisplayValueWithDatapointInformation(
  * @returns boolean value
  */
 function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties | null | undefined): boolean {
-  return !!(
+  if (
     dataPointProperties?.quality != undefined ||
     !isDatapointCommentConsideredMissing(dataPointProperties) ||
     (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0)
-  );
+  )
+    return true;
+  return false;
 }
 
 /**

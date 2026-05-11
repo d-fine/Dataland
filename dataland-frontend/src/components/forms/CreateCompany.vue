@@ -270,7 +270,7 @@ export default defineComponent({
     sector: null as null | string,
     website: '',
     checkCustomInputs,
-    identifiers: {},
+    identifiers: {} as { [key: string]: Array<string> },
     enteredCompanyAlternativeName: '',
     allCountryCodes: getAllCountryCodes(),
     postCompanyProcessed: false,

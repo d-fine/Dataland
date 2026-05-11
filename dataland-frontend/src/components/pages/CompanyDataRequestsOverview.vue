@@ -208,7 +208,7 @@ export default defineComponent({
       availableAccessStatus: [] as Array<SelectableItem>,
       selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: 'requestStatus',
+      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
       sortOrder: 1,
     };
   },

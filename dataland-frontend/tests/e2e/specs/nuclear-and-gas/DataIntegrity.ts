@@ -28,6 +28,11 @@ type UploadedDatasetContext = {
   dataType: string;
 };
 
+type DatasetsComparisonContext = {
+  datasetFromPrefillRequest: NuclearAndGasData;
+  reuploadedDatasetFromBackend: NuclearAndGasData;
+};
+
 /**
  * Creates a company, assigns ownership to the admin and uploads the initial Nuclear and Gas dataset.
  *
@@ -156,7 +161,7 @@ describeIf(
                   return {
                     datasetFromPrefillRequest,
                     reuploadedDatasetFromBackend,
-                  };
+                  } as DatasetsComparisonContext;
                 });
               }
             );

@@ -4,6 +4,7 @@ import {
 } from '@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory';
 import { MLDTDisplayComponentName } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { HighImpactClimateSector } from '@/api-models/HighImpactClimateSector';
+import { type ExtendedDataPointBigDecimal } from '@clients/backend';
 
 describe('Unit test for the HighImpactClimateGetterFactory', () => {
   it('Should display the name of sectors if they exist', () => {
@@ -12,11 +13,11 @@ describe('Unit test for the HighImpactClimateGetterFactory', () => {
         highImpactClimateSectorEnergyConsumptionInGWh: {
           value: 12345,
           quality: 'Estimated',
-        },
+        } as ExtendedDataPointBigDecimal,
         highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: {
           value: 54,
           quality: 'Estimated',
-        },
+        } as ExtendedDataPointBigDecimal,
       },
     };
 

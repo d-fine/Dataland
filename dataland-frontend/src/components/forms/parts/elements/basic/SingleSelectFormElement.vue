@@ -118,7 +118,7 @@ export default defineComponent({
   },
   computed: {
     convertedInputOptions(): DropdownOption[] {
-      return convertOptionTypeToDropdownOptions(this.options);
+      return convertOptionTypeToDropdownOptions(this.options as OptionType);
     },
     displayOptions(): DropdownOption[] {
       const returnOptions = [...this.convertedInputOptions];

@@ -1,6 +1,6 @@
 import { DatalandPreset } from '@/assets/theme/dataland-theme.ts';
 import { defaultConfig, plugin } from '@formkit/vue';
-import { createPinia } from 'pinia';
+import { createPinia, type PiniaPlugin } from 'pinia';
 import { PiniaSharedState } from 'pinia-shared-state';
 import PrimeVue from 'primevue/config';
 import DialogService from 'primevue/dialogservice';
@@ -26,7 +26,7 @@ function instantiateVueApp(): void {
     PiniaSharedState({
       enable: true,
       type: 'native',
-    })
+    }) as PiniaPlugin
   );
   app.use(VueQueryPlugin, { queryClient });
   app.use(plugin, defaultConfig);

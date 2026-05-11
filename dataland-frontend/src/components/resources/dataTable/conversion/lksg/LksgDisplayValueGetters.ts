@@ -1,6 +1,7 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
@@ -149,7 +150,7 @@ export function formatLksgMostImportantProductsForDisplay(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -186,7 +187,7 @@ export function formatLksgProcurementCategoriesForDisplay(
   }
   convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -224,7 +225,7 @@ export function formatLksgSubcontractingCompaniesForDisplay(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -258,7 +259,7 @@ export function formatLksgProductionSitesForDisplay(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -315,7 +316,7 @@ export function formatLksgRisksOrViolationsForDisplay(
   if (input) {
     const convertedValueForModal = convertLksgRiskOrViolationPositionForDisplay(input);
 
-    return {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${fieldLabel}`,
@@ -377,7 +378,7 @@ export function formatLksgGrievanceMechanismsForDisplay(
   if (input) {
     const humanizedInput = convertLksGrievanceMechanismsForDisplay(input);
 
-    return {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${fieldLabel}`,

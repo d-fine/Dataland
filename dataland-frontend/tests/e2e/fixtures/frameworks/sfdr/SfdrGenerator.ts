@@ -19,7 +19,7 @@ export class SfdrGenerator extends Generator {
             highImpactClimateSectorEnergyConsumptionInGWh: this.randomExtendedDataPoint(generateFloat()),
             highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue:
               this.randomExtendedDataPoint(generateFloat()),
-          },
+          } as SfdrHighImpactClimateSectorEnergyConsumption,
         ])
       )
     );

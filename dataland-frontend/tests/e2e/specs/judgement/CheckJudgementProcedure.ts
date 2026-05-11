@@ -322,7 +322,7 @@ function initializeDataPointOverviewForDataset(
         dataPointsWithQaReports: dataPointsWithQaReports,
         dataPointsWithoutQaReports: dataPointsWithoutQaReports,
         amountOfDataPointsToReview: Object.keys(allDataPoints).length,
-      };
+      } as DataPointOverview;
     });
 }
 

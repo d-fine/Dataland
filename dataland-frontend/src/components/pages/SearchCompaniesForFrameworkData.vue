@@ -71,6 +71,7 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { parseQueryParamArray } from '@/utils/QueryParserUtils';
+import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -118,7 +119,7 @@ export default defineComponent({
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
-      },
+      } as FrameworkDataSearchFilterInterface,
       isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
       currentPage: 0,
