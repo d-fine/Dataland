@@ -28,7 +28,7 @@ before(function () {
  * @param companyId the company associated to the data uploaded via form
  */
 function validateFormUploadedData(companyId: string): void {
-  cy.intercept(`**/api/data/${DataTypeEnum.Sfdr}/companies/**`).as('fetchSfdrData');
+  cy.intercept(`**/api/data/${DataTypeEnum.Sfdr}/companies/${companyId}`).as('fetchSfdrData');
   cy.visitAndCheckAppMount('/companies/' + companyId + '/frameworks/' + DataTypeEnum.Sfdr);
   cy.wait('@fetchSfdrData', { timeout: mediumTimeoutInMs });
 
