@@ -41,7 +41,13 @@ export default defineConfigWithVueTs(
           fixStyle: 'inline-type-imports',
         },
       ],
-
+      '@typescript-eslint/consistent-type-assertions': [
+          'error',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'error',
 
       '@typescript-eslint/explicit-function-return-type': [
