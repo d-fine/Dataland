@@ -6,6 +6,7 @@ import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/Framewo
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
+import { formatNumberToReadableFormat } from '@/utils/Formatter.ts';
 
 const dataType = DataTypeEnum.Sfdr;
 let storedCompany: StoredCompany;
@@ -57,11 +58,24 @@ describeIf(
   () => {
     const reportingPeriod = '2021';
     let SfdrFixtureWithNoNullFields: FixtureData<SfdrData>;
+    let expectedScope1GhgEmissions: string;
+    let expectedScope1GhgEmissionsQuality: string;
+    let expectedAverageGrossHourlyEarningsMale: string;
 
     before(() => {
       cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then((jsonContent) => {
         const preparedFixturesSfdr = jsonContent as Array<FixtureData<SfdrData>>;
         SfdrFixtureWithNoNullFields = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedFixturesSfdr);
+
+        expectedScope1GhgEmissions = formatNumberToReadableFormat(
+          SfdrFixtureWithNoNullFields.t.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value
+        );
+        expectedScope1GhgEmissionsQuality =
+          SfdrFixtureWithNoNullFields.t.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.quality ??
+          '';
+        expectedAverageGrossHourlyEarningsMale = formatNumberToReadableFormat(
+          SfdrFixtureWithNoNullFields.t.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees?.value
+        );
       });
 
       getAdminToken().then((token: string) => {
@@ -96,16 +110,18 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input').should('be.visible').should('have.value', '44,493.33');
+          cy.get('[data-test="big-decimal-input"] input')
+            .should('be.visible')
+            .should('have.value', expectedScope1GhgEmissions);
         });
 
       cy.get('[data-test="quality-select"]')
         .should('be.visible')
         .find('.p-select-label, .p-dropdown-label')
-        .should('contain', 'Reported');
+        .should('contain', expectedScope1GhgEmissionsQuality);
 
       cy.get('[data-test="quality-select"]').click();
-      cy.get('[aria-label="Reported"]').click();
+      cy.get(`[aria-label="${expectedScope1GhgEmissionsQuality}"]`).click();
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
@@ -157,7 +173,9 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="currency-value-input"] input').should('exist').should('have.value', '2,845,636,777.93');
+          cy.get('[data-test="currency-value-input"] input')
+            .should('exist')
+            .should('have.value', expectedAverageGrossHourlyEarningsMale);
 
           cy.get('[data-test="currency"]').should('exist');
         });
@@ -178,7 +196,10 @@ describeIf(
       });
 
       saveDataPoint();
-      verifyFieldValue('Average Gross Hourly Earnings Male Employees', '1,234.56');
+      verifyFieldValue(
+        'Average Gross Hourly Earnings Male Employees',
+        formatNumberToReadableFormat(parseFloat(newValue))
+      );
     });
   }
 );

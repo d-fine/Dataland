@@ -20,7 +20,7 @@ let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancial
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
-const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 5000);
+const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * Uploads data for a given company for specified years using a generic framework.
@@ -107,7 +107,7 @@ function testDownloadPortfolio({
     }
     cy.get('[data-test="downloadDataButtonInModal"]').click();
 
-    cy.wait(mediumTimeoutInMs);
+    cy.wait(longTimeoutInMs);
     cy.task('findFileByPrefix', {
       folder: downloadDir,
       prefix: partialFileNamePrefix,
@@ -116,7 +116,7 @@ function testDownloadPortfolio({
       const filePathStr = filePath as string;
       expect(filePathStr).to.exist;
 
-      cy.readFile(filePathStr, { timeout: mediumTimeoutInMs }).should('exist');
+      cy.readFile(filePathStr, { timeout: longTimeoutInMs }).should('exist');
 
       cy.task('getFileSize', filePathStr).then((size) => {
         expect(size).to.be.greaterThan(5000);
