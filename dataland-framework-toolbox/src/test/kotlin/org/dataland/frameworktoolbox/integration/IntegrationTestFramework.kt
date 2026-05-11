@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.integration
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
-import org.dataland.frameworktoolbox.utils.DatalandRepository
 import java.io.File
 
 /**
@@ -27,16 +26,4 @@ class IntegrationTestFramework :
                 FrameworkGenerationFeatures.FakeFixtures,
             ),
         order = 0,
-    ) {
-    override fun beforeFrontendTypecheck(datalandProject: DatalandRepository) {
-        // Adding 'integrationTesting' to the backend's DataTypeEnum changes the inlined enums of
-        // every downstream service that exposes a DataTypeEnum-typed parameter (e.g.
-        // dataland-community-manager's GetDataRequestsDataTypeEnum). Regenerate every service's
-        // OpenAPI spec and all clients so the frontend's generated clients agree on enum members
-        // before the typecheck runs.
-        datalandProject.gradleInterface.executeGradleTasks(
-            listOf("generateOpenApiDocs", "generateClients"),
-            force = true,
-        )
-    }
-}
+    )

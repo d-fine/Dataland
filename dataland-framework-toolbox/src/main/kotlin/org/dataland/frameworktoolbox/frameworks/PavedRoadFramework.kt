@@ -351,15 +351,6 @@ abstract class PavedRoadFramework(
     }
 
     /**
-     * Hook executed after every framework artifact has been written but before the frontend typecheck runs.
-     * Subclasses may override this to perform additional preparation (e.g. regenerating downstream
-     * services' OpenAPI specs) so that the typecheck observes a consistent set of generated clients.
-     */
-    protected open fun beforeFrontendTypecheck(datalandProject: DatalandRepository) {
-        // Empty as it's just a customization endpoint
-    }
-
-    /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
     open fun compileFramework(datalandProject: DatalandRepository) {
@@ -388,7 +379,6 @@ abstract class PavedRoadFramework(
         compileTranslations(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
-        beforeFrontendTypecheck(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
         diagnostics.finalizeDiagnosticStream()
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")

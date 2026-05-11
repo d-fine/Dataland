@@ -65,10 +65,6 @@ Check the cloud provider's dashboard for manually created backups and images. De
 - [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the
   internal wiki.
 
-## Package-lock maintenance
-
-Run the npm task "updatepackagelock" for both npm scripts sections.
-
 ## Check RabbitMQ dead letter queue and disk space
 
 - [ ] Clear up disk space on all servers by removing unused docker images.
