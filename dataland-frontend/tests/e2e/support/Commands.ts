@@ -243,6 +243,7 @@ function closeCookieBannerIfItExists(): void {
 }
 
 Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
+Cypress.Commands.add('closeCookieBannerIfItExists', closeCookieBannerIfItExists);
 Cypress.Commands.add('visitAndCheckExternalAdminPage', visitAndCheckExternalAdminPage);
 Cypress.Commands.add('waitForPageLoad', waitForPageLoad);
 Cypress.Commands.add('ensureLoggedInAsReader', ensureLoggedInAsReader);

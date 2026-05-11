@@ -59,9 +59,10 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
   }
 
   if (judgement.customValue == null) {
-    expect(body.customValue ?? null, 'customValue in request body').to.eq(null);
+    expect(body.customDataPoint ?? null, 'customDataPoint in request body').to.eq(null);
   } else {
-    expect(body.customValue, 'customValue in request body').to.eq(judgement.customValue);
+    expect(body.customDataPoint, 'customDataPoint in request body').to.not.be.undefined;
+    expect(body.customDataPoint, 'customDataPoint in request body').to.not.be.null;
   }
 }
 

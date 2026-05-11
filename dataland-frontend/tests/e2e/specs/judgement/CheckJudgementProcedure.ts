@@ -174,7 +174,7 @@ function createJudgementAndOpenReviewPage(
     .then((response) => {
       expect(response.status).to.eq(201);
       const dataSetJudgementId = response.body?.dataSetJudgementId as string;
-      cy.visit(`/qualityassurance/review/${dataSetJudgementId}`);
+      cy.visitAndCheckAppMount(`/qualityassurance/review/${dataSetJudgementId}`);
       cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
       return cy.wrap(dataSetJudgementId, { log: false });
     });
@@ -441,6 +441,7 @@ function judgeDataPointsWithoutQaReports(
  */
 function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string]>, overview: DataPointOverview): void {
   cy.reload();
+  cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(
     `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
@@ -512,6 +513,7 @@ function judgeDataPointsWithQaReports(
 
   // 3) Reload and assert icons as before
   cy.reload();
+  cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(`0 / ${overview.amountOfDataPointsToReview} data points to review`).should('be.visible');
 
