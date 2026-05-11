@@ -16,6 +16,12 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesCapexBased(
     val capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex:
         QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
+    val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
@@ -34,12 +40,6 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesCapexBased(
     val capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
@@ -51,10 +51,10 @@ data class EutaxonomyFinancials202673InvestmentfirmsOtherServicesCapexBased(
     val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
+    val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned:
+    val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned:
