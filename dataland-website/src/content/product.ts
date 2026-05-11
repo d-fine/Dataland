@@ -135,14 +135,14 @@ export const FRAMEWORK_DOC = {
 };
 
 export const API_DOC_LINKS: DocumentationLink[] = [
-  { label: 'Backend API', url: 'https://dataland.com/api/swagger-ui/index.html' },
-  { label: 'Document Manager', url: 'https://dataland.com/documents/swagger-ui/index.html' },
-  { label: 'Community Manager', url: 'https://dataland.com/community/swagger-ui/index.html' },
-  { label: 'Quality Assurance', url: 'https://dataland.com/qa/swagger-ui/index.html' },
-  { label: 'Users', url: 'https://dataland.com/users/swagger-ui/index.html' },
-  { label: 'Data Sourcing', url: 'https://dataland.com/data-sourcing/swagger-ui/index.html' },
-  { label: 'Accounting', url: 'https://dataland.com/accounting/swagger-ui/index.html' },
-  { label: 'Specifications', url: 'https://dataland.com/specifications/swagger-ui/index.html' },
+  { label: 'Backend API', url: '/api/swagger-ui/index.html' },
+  { label: 'Document Manager', url: '/documents/swagger-ui/index.html' },
+  { label: 'Community Manager', url: '/community/swagger-ui/index.html' },
+  { label: 'Quality Assurance', url: '/qa/swagger-ui/index.html' },
+  { label: 'Users', url: '/users/swagger-ui/index.html' },
+  { label: 'Data Sourcing', url: '/data-sourcing/swagger-ui/index.html' },
+  { label: 'Accounting', url: '/accounting/swagger-ui/index.html' },
+  { label: 'Specifications', url: '/specifications/swagger-ui/index.html' },
 ];
 
 export const FEATURE_CARDS: FeatureCard[] = [
@@ -336,7 +336,7 @@ export const CUSTOMER_STORIES_DETAILED: CustomerStoryDetail[] = [
     logoClassName: 'scale-[0.96]',
     primaryTag: 'Bank',
     secondaryTags: ['EU Taxo', 'API integration', 'Lean model', 'Efficiency'],
-    title: 'Primary source of EU Taxonomy data with automated delivery',
+    title: 'Primary source of EU Taxonomy KPIs with automated delivery',
     summary:
       "NORD/LB uses ESG indicators across several regulatory and internal reporting processes. The bank selected Dataland for EU Taxonomy reporting because it provides high-quality, disclosure-based indicators at a competitive price while allowing the bank to retrieve only the specific datasets required for its reporting workflows. Instead of purchasing large bundled ESG data packages, NORD/LB requests and obtains EU Taxonomy data exactly for the companies it needs. The datasets are now integrated directly into the bank's internal systems via API, replacing an earlier manual data retrieval process.",
     challenge:

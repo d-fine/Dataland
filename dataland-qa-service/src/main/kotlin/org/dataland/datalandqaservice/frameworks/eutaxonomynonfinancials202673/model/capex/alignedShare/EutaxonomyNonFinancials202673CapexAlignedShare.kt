@@ -10,7 +10,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  * The QA-model for the AlignedShare section
  */
 data class EutaxonomyNonFinancials202673CapexAlignedShare(
+    val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
     val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
 )

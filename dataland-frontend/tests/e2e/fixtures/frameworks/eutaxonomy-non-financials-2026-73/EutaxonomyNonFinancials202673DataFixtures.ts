@@ -63,8 +63,8 @@ export function generateEutaxonomyNonFinancials202673Data(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       alignedShare: {
-        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
@@ -87,11 +87,9 @@ export function generateEutaxonomyNonFinancials202673Data(
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      eligibleOrAlignedActivities: {
-        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
-        ),
-      },
+      eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+      ),
     },
     capex: {
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
@@ -99,8 +97,8 @@ export function generateEutaxonomyNonFinancials202673Data(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       alignedShare: {
-        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
@@ -123,11 +121,9 @@ export function generateEutaxonomyNonFinancials202673Data(
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      eligibleOrAlignedActivities: {
-        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
-        ),
-      },
+      eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+      ),
     },
     opex: {
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
@@ -135,8 +131,8 @@ export function generateEutaxonomyNonFinancials202673Data(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       alignedShare: {
-        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+        relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
@@ -159,11 +155,9 @@ export function generateEutaxonomyNonFinancials202673Data(
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      eligibleOrAlignedActivities: {
-        eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
-        ),
-      },
+      eligibleOrAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateEligibleOrAlignedActivity(), 0, 10)
+      ),
     },
   };
 }
