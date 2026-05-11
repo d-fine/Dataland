@@ -13,6 +13,40 @@ import java.math.BigDecimal
 data class EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioStock(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
+        description = """Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
         description = """Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation""",
         example = """{
       "value" : 13.52, 
@@ -117,40 +151,6 @@ data class EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioS
         ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Taxonomy-aligned Use of Proceeds Share substantially contributing to any of the six Environmental Objectives""",
         example = """{
       "value" : 13.52, 
@@ -168,23 +168,6 @@ data class EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioS
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Taxonomy-aligned and transitional Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
         example = """{
       "value" : 13.52, 
@@ -200,6 +183,23 @@ data class EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioS
     )
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional: ExtendedDataPoint<BigDecimal?>? = null,
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives""",
+        example = """{
+      "value" : 13.52, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Proportion of CapEx-based Green Asset Ratio of which non-assessed exposures""",

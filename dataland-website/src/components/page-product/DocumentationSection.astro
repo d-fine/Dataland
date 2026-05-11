@@ -90,7 +90,7 @@ const apiLinkDotClass = 'w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shri
         <div class={apiLinksGridClass}>
           {
             apiLinks.map((doc) => (
-              <a href={doc.url} target="_blank" rel="noopener noreferrer" class={apiLinkClass}>
+              <a href={doc.url} target="_blank" rel="noopener noreferrer" class={apiLinkClass} data-test="api-link">
                 <span class={apiLinkDotClass} aria-hidden="true" />
                 {doc.label}
               </a>

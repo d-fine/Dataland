@@ -23,8 +23,8 @@
         "relativeShareInPercent" : "extendedDecimalRevenueEligibleShareRelativeShareInPercent"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "extendedDecimalRevenueAlignedShareRelativeShareInPercent",
-        "absoluteShare" : "extendedCurrencyRevenueAlignedShareAbsoluteShare"
+        "absoluteShare" : "extendedCurrencyRevenueAlignedShareAbsoluteShare",
+        "relativeShareInPercent" : "extendedDecimalRevenueAlignedShareRelativeShareInPercent"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentAligned",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentAligned",
@@ -37,9 +37,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalRevenueNonAssessedShareRelativeShareInPercent"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentRevenueEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
-      }
+      "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentRevenueEligibleOrAlignedActivities"
     },
     "capex" : {
       "totalAmount" : "extendedCurrencyCapexTotalAmount",
@@ -47,8 +45,8 @@
         "relativeShareInPercent" : "extendedDecimalCapexEligibleShareRelativeShareInPercent"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "extendedDecimalCapexAlignedShareRelativeShareInPercent",
-        "absoluteShare" : "extendedCurrencyCapexAlignedShareAbsoluteShare"
+        "absoluteShare" : "extendedCurrencyCapexAlignedShareAbsoluteShare",
+        "relativeShareInPercent" : "extendedDecimalCapexAlignedShareRelativeShareInPercent"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentAligned",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentAligned",
@@ -61,9 +59,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalCapexNonAssessedShareRelativeShareInPercent"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentCapexEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
-      }
+      "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentCapexEligibleOrAlignedActivities"
     },
     "opex" : {
       "totalAmount" : "extendedCurrencyOpexTotalAmount",
@@ -71,8 +67,8 @@
         "relativeShareInPercent" : "extendedDecimalOpexEligibleShareRelativeShareInPercent"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "extendedDecimalOpexAlignedShareRelativeShareInPercent",
-        "absoluteShare" : "extendedCurrencyOpexAlignedShareAbsoluteShare"
+        "absoluteShare" : "extendedCurrencyOpexAlignedShareAbsoluteShare",
+        "relativeShareInPercent" : "extendedDecimalOpexAlignedShareRelativeShareInPercent"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "extendedDecimalOpexSubstantialContributionToClimateChangeMitigationInPercentAligned",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "extendedDecimalOpexSubstantialContributionToClimateChangeAdaptationInPercentAligned",
@@ -85,9 +81,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalOpexNonAssessedShareRelativeShareInPercent"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentOpexEligibleOrAlignedActivitiesEligibleOrAlignedActivities"
-      }
+      "eligibleOrAlignedActivities" : "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentOpexEligibleOrAlignedActivities"
     }
   }
 }
