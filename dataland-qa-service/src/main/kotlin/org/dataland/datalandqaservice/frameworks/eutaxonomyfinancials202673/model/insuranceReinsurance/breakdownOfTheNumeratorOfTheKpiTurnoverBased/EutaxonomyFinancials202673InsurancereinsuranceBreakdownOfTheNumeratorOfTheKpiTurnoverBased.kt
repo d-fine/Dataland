@@ -19,22 +19,11 @@ data class EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumerator
     @field:Valid()
     val shareOfTurnoverBasedKpiInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val shareOfTurnoverBasedKpiInPercentOfWhichTransitional: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiInPercentOfWhichEnabling: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedNonAssessedExposures: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

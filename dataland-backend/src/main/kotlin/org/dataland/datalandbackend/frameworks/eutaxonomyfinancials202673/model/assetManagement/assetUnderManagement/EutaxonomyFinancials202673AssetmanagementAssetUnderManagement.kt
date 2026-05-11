@@ -13,6 +13,7 @@ import java.math.BigDecimal
  */
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancials202673AssetmanagementAssetUnderManagement(
+    @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """The value of all Asset under Management (AuM) - monetary amount.""",

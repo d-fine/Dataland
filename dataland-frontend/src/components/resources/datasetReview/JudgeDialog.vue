@@ -190,6 +190,8 @@ import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGe
 import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { type AxiosError } from 'axios';
+import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 
@@ -197,7 +199,6 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
-  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -210,14 +211,42 @@ const errorModalHeader = ref('Error updating data point');
 const errorModalMessage = ref('Failed to update data point judgement.');
 const errorModalDetails = ref<string | undefined>(undefined);
 
-// v-model:visible from parent
-const isOpen = defineModel<boolean>('isOpen');
-const availableDocuments = computed(() => props.availableDocuments ?? []);
-
 // ===== Dataset review =====
 
 const datasetJudgementId = computed(() => props.datasetReviewId);
 const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
+
+// v-model:visible from parent
+const isOpen = defineModel<boolean>('isOpen');
+// available company documents from query
+const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
+const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
+const availableDocuments = computed<DocumentOption[]>(() => {
+  const docs = allDocumentMetaInfo.value ?? [];
+  const reportingPeriod = datasetJudgement.value?.reportingPeriod;
+  const reportingPeriodNumber = reportingPeriod != null ? parseInt(reportingPeriod) : null;
+  return docs
+    .filter((doc: DocumentMetaInfoResponse) => {
+      if (doc.reportingPeriod == null) {
+        return true;
+      } else if (reportingPeriodNumber != null) {
+        return parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
+      }
+      return false;
+    })
+    .map((doc: DocumentMetaInfoResponse) => {
+      const label = doc.documentName ?? doc.documentId;
+      return <DocumentOption>{
+        label: label,
+        value: label,
+        dataSource: {
+          fileName: doc.documentName ?? null,
+          fileReference: doc.documentId ?? null,
+          publicationDate: doc.publicationDate ?? null,
+        },
+      };
+    });
+});
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgementDetailsForDataPointMutation();
