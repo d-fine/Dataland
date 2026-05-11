@@ -11,6 +11,12 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRatioStock(
     @field:Valid()
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
@@ -25,19 +31,13 @@ data class EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRat
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional:
+    val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedNonAssessedExposures: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
