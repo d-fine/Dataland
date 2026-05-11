@@ -233,8 +233,6 @@ import { type FormKitNode } from '@formkit/core';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 import { reset } from '@formkit/core';
 
-const INITIAL_IDENTIFIERS: { [key: string]: string[] } = {};
-
 export default defineComponent({
   name: 'CreateCompany',
   components: {
@@ -272,7 +270,7 @@ export default defineComponent({
     sector: null as null | string,
     website: '',
     checkCustomInputs,
-    identifiers: { ...INITIAL_IDENTIFIERS },
+    identifiers: {},
     enteredCompanyAlternativeName: '',
     allCountryCodes: getAllCountryCodes(),
     postCompanyProcessed: false,

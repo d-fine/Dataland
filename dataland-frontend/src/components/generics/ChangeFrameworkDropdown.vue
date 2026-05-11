@@ -59,7 +59,7 @@ const element = useTemplateRef('chooseFrameworkDropdown');
  * @param event The mouse pointer event anywhere
  */
 function handleClickOutside(event: MouseEvent): void {
-  if (!element.value?.contains(event?.target instanceof Node ? event.target : null)) {
+  if (!element.value?.contains(event?.target)) {
     dropdownExtended.value = false;
   }
 }

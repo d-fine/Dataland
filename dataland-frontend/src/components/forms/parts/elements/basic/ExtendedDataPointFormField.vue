@@ -135,8 +135,6 @@ import SingleSelectFormElement from '@/components/forms/parts/elements/basic/Sin
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
-const INITIAL_DATA_POINT: Record<string, unknown> = {};
-
 export default defineComponent({
   name: 'ExtendedDataPointFormField',
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, ToggleSwitch, Checkbox },
@@ -163,7 +161,7 @@ export default defineComponent({
       qualityValue: null as null | string,
       commentValue: '',
       currentReportValue: undefined as string | undefined,
-      dataPoint: { ...INITIAL_DATA_POINT },
+      dataPoint: {},
       currentValue: undefined as string | undefined,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,

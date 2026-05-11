@@ -56,7 +56,7 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
     return [
       ...this.createBaseMainColumnDataForRow(activity),
       ...this.createActivityGroupData<number | undefined>(
-        typedActivity.activityName ?? '',
+        typedActivity.activityName,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:

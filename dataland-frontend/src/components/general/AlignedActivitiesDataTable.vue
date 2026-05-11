@@ -79,7 +79,7 @@ const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfigur
     return [
       ...this.createBaseMainColumnDataForRow(activity),
       ...this.createActivityGroupData<number | undefined>(
-        typedActivity.activityName ?? '',
+        typedActivity.activityName,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:
@@ -98,7 +98,7 @@ const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfigur
         formatPercentageNumberAsString
       ),
       ...this.createActivityGroupData<YesNo | undefined>(
-        typedActivity.activityName ?? '',
+        typedActivity.activityName,
         'dnshCriteria',
         {
           dnshToClimateChangeMitigation: typedActivity.dnshToClimateChangeMitigation,
