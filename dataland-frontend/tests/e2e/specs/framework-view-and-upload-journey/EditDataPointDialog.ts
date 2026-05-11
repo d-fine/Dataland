@@ -121,7 +121,11 @@ describeIf(
         .should('contain', expectedScope1GhgEmissionsQuality);
 
       cy.get('[data-test="quality-select"]').click();
-      cy.get(`[aria-label="${QualityOptions.Incomplete}"]`).click();
+      cy.get('.p-select-overlay')
+        .should('be.visible')
+        .within(() => {
+          cy.get(`[aria-label="${QualityOptions.Incomplete}"]`).click();
+        });
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
@@ -145,7 +149,10 @@ describeIf(
           cy.get('span[meta-info]').click();
         });
 
-      cy.contains('span.table-left-label', 'Quality').closest('th').next('td').should('contain', 'Reported');
+      cy.contains('span.table-left-label', 'Quality')
+        .closest('th')
+        .next('td')
+        .should('contain', QualityOptions.Incomplete);
     });
 
     it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
