@@ -38,31 +38,31 @@
         "capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned" : "CI_CAPEX_BASED_GAR_SECTOR_GAS_ALIGNED"
       },
       "turnoverBasedGreenAssetRatioStock" : {
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ELIGIBLE",
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ALIGNED",
         "substantialContributionToClimateChangeMitigationInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_CCM_PCT_ALIGNED",
         "substantialContributionToClimateChangeAdaptationInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_CCA_PCT_ALIGNED",
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_WTR_PCT_ALIGNED",
         "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_CE_PCT_ALIGNED",
         "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_PPC_PCT_ALIGNED",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_BIO_PCT_ALIGNED",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ELIGIBLE",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ALIGNED",
         "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_USE_OF_PROCEEDS",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ENABLING",
         "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_TRANSITIONAL",
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling" : "CI_TURNOVER_BASED_GAR_STOCK_SC_TO_ANY_PCT_ENABLING",
         "turnoverBasedNonAssessedExposures" : "CI_TURNOVER_BASED_GAR_STOCK_NON_ASSESSED"
       },
       "capexBasedGreenAssetRatioStock" : {
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ELIGIBLE",
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ALIGNED",
         "substantialContributionToClimateChangeMitigationInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_CCM_PCT_ALIGNED",
         "substantialContributionToClimateChangeAdaptationInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_CCA_PCT_ALIGNED",
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_WTR_PCT_ALIGNED",
         "substantialContributionToTransitionToACircularEconomyInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_CE_PCT_ALIGNED",
         "substantialContributionToPollutionPreventionAndControlInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_PPC_PCT_ALIGNED",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_BIO_PCT_ALIGNED",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ELIGIBLE",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ALIGNED",
         "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_USE_OF_PROCEEDS",
-        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ENABLING",
         "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_TRANSITIONAL",
+        "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling" : "CI_CAPEX_BASED_GAR_STOCK_SC_TO_ANY_PCT_ENABLING",
         "capexBasedNonAssessedExposures" : "CI_CAPEX_BASED_GAR_STOCK_NON_ASSESSED"
       }
     },
@@ -77,14 +77,10 @@
         "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible" : "AM_TURNOVER_BASED_NUCLEAR_PCT_ELIGIBLE",
         "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible" : "AM_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "shareOfTurnoverBasedKpiInPercentAligned" : "AM_TURNOVER_BASED_PCT_ALIGNED",
-        "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "AM_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
-        "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "AM_TURNOVER_BASED_GAS_PCT_ALIGNED",
         "shareOfTurnoverBasedKpiInPercentOfWhichTransitional" : "AM_TURNOVER_BASED_PCT_TRANSITIONAL",
         "shareOfTurnoverBasedKpiInPercentOfWhichEnabling" : "AM_TURNOVER_BASED_PCT_ENABLING",
-        "turnoverBasedNonAssessedExposures" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED",
-        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
-        "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
-        "turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
+        "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "AM_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
+        "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "AM_TURNOVER_BASED_GAS_PCT_ALIGNED"
       },
       "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased" : {
         "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned" : "AM_TURNOVER_BASED_SC_TO_CCM_PCT_ALIGNED",
@@ -94,19 +90,21 @@
         "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned" : "AM_TURNOVER_BASED_SC_TO_PPC_PCT_ALIGNED",
         "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "AM_TURNOVER_BASED_SC_TO_BIO_PCT_ALIGNED"
       },
+      "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased" : {
+        "turnoverBasedNonAssessedExposures" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED",
+        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
+        "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
+        "turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "AM_TURNOVER_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
+      },
       "breakdownOfTheNumeratorOfTheKpiCapexBased" : {
         "shareOfCapexBasedKpiInPercentEligible" : "AM_CAPEX_BASED_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible" : "AM_CAPEX_BASED_NUCLEAR_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible" : "AM_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiInPercentAligned" : "AM_CAPEX_BASED_PCT_ALIGNED",
-        "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "AM_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
-        "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "AM_CAPEX_BASED_GAS_PCT_ALIGNED",
         "shareOfCapexBasedKpiInPercentOfWhichTransitional" : "AM_CAPEX_BASED_PCT_TRANSITIONAL",
         "shareOfCapexBasedKpiInPercentOfWhichEnabling" : "AM_CAPEX_BASED_PCT_ENABLING",
-        "capexBasedNonAssessedExposures" : "AM_CAPEX_BASED_PCT_NON_ASSESSED",
-        "capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
-        "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
-        "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
+        "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "AM_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
+        "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "AM_CAPEX_BASED_GAS_PCT_ALIGNED"
       },
       "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased" : {
         "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned" : "AM_CAPEX_BASED_SC_TO_CCM_PCT_ALIGNED",
@@ -115,6 +113,12 @@
         "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned" : "AM_CAPEX_BASED_SC_TO_CE_PCT_ALIGNED",
         "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned" : "AM_CAPEX_BASED_SC_TO_PPC_PCT_ALIGNED",
         "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "AM_CAPEX_BASED_SC_TO_BIO_PCT_ALIGNED"
+      },
+      "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased" : {
+        "capexBasedNonAssessedExposures" : "AM_CAPEX_BASED_PCT_NON_ASSESSED",
+        "capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
+        "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
+        "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "AM_CAPEX_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
       }
     },
     "insuranceReinsurance" : {
@@ -141,14 +145,10 @@
         "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible" : "IR_TURNOVER_BASED_NUCLEAR_PCT_ELIGIBLE",
         "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible" : "IR_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "shareOfTurnoverBasedKpiInPercentAligned" : "IR_TURNOVER_BASED_PCT_ALIGNED",
-        "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "IR_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
-        "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "IR_TURNOVER_BASED_GAS_PCT_ALIGNED",
         "shareOfTurnoverBasedKpiInPercentOfWhichTransitional" : "IR_TURNOVER_BASED_PCT_TRANSITIONAL",
         "shareOfTurnoverBasedKpiInPercentOfWhichEnabling" : "IR_TURNOVER_BASED_PCT_ENABLING",
-        "turnoverBasedNonAssessedExposures" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED",
-        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
-        "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
-        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
+        "shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "IR_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
+        "shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "IR_TURNOVER_BASED_GAS_PCT_ALIGNED"
       },
       "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased" : {
         "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned" : "IR_TURNOVER_BASED_SC_TO_CCM_PCT_ALIGNED",
@@ -158,19 +158,21 @@
         "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned" : "IR_TURNOVER_BASED_SC_TO_PPC_PCT_ALIGNED",
         "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "IR_TURNOVER_BASED_SC_TO_BIO_PCT_ALIGNED"
       },
+      "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased" : {
+        "turnoverBasedNonAssessedExposures" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED",
+        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
+        "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP",
+        "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IR_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE"
+      },
       "breakdownOfTheNumeratorOfTheKpiCapexBased" : {
         "shareOfCapexBasedKpiInPercentEligible" : "IR_CAPEX_BASED_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible" : "IR_CAPEX_BASED_NUCLEAR_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible" : "IR_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "shareOfCapexBasedKpiInPercentAligned" : "IR_CAPEX_BASED_PCT_ALIGNED",
-        "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "IR_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
-        "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "IR_CAPEX_BASED_GAS_PCT_ALIGNED",
         "shareOfCapexBasedKpiInPercentOfWhichTransitional" : "IR_CAPEX_BASED_PCT_TRANSITIONAL",
         "shareOfCapexBasedKpiInPercentOfWhichEnabling" : "IR_CAPEX_BASED_PCT_ENABLING",
-        "capexBasedNonAssessedExposures" : "IR_CAPEX_BASED_PCT_NON_ASSESSED",
-        "capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
-        "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
-        "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP"
+        "shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned" : "IR_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
+        "shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned" : "IR_CAPEX_BASED_GAS_PCT_ALIGNED"
       },
       "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased" : {
         "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned" : "IR_CAPEX_BASED_SC_TO_CCM_PCT_ALIGNED",
@@ -179,20 +181,26 @@
         "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned" : "IR_CAPEX_BASED_SC_TO_CE_PCT_ALIGNED",
         "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned" : "IR_CAPEX_BASED_SC_TO_PPC_PCT_ALIGNED",
         "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "IR_CAPEX_BASED_SC_TO_BIO_PCT_ALIGNED"
+      },
+      "breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased" : {
+        "capexBasedNonAssessedExposures" : "IR_CAPEX_BASED_PCT_NON_ASSESSED",
+        "capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_CP",
+        "capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP",
+        "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IR_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE"
       }
     },
     "investmentFirms" : {
       "dealingOnOwnAccountServicesTurnoverBased" : {
         "turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount" : "IF_OWN_ACCOUNT_TURNOVER_BASED_TOTAL_ASSETS",
         "turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover" : "IF_OWN_ACCOUNT_TURNOVER_BASED_COVERED_ASSETS",
+        "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_ELIGIBLE",
+        "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_CCM_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_CCA_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_WTR_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_CE_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_PPC_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_BIO_ALIGNED",
-        "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_ELIGIBLE",
-        "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_ALIGNED",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_TRANSITIONAL",
         "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling" : "IF_OWN_ACCOUNT_TURNOVER_BASED_SC_TO_ANY_ENABLING",
         "turnoverBasedNonAssessedExposures" : "IF_OWN_ACCOUNT_TURNOVER_BASED_PCT_NON_ASSESSED",
@@ -200,21 +208,21 @@
         "turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "IF_OWN_ACCOUNT_TURNOVER_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP",
         "turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IF_OWN_ACCOUNT_TURNOVER_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
         "turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible" : "IF_OWN_ACCOUNT_TURNOVER_BASED_NUCLEAR_PCT_ELIGIBLE",
-        "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible" : "IF_OWN_ACCOUNT_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
+        "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible" : "IF_OWN_ACCOUNT_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned" : "IF_OWN_ACCOUNT_TURNOVER_BASED_GAS_PCT_ALIGNED"
       },
       "dealingOnOwnAccountServicesCapexBased" : {
         "capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount" : "IF_OWN_ACCOUNT_CAPEX_BASED_TOTAL_ASSETS",
         "capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex" : "IF_OWN_ACCOUNT_CAPEX_BASED_COVERED_ASSETS",
+        "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_ELIGIBLE",
+        "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_CCM_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_CCA_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_WTR_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_CE_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_PPC_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_BIO_ALIGNED",
-        "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_ELIGIBLE",
-        "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_ALIGNED",
         "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_TRANSITIONAL",
         "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling" : "IF_OWN_ACCOUNT_CAPEX_BASED_SC_TO_ANY_ENABLING",
         "capexBasedNonAssessedExposures" : "IF_OWN_ACCOUNT_CAPEX_BASED_PCT_NON_ASSESSED",
@@ -222,46 +230,46 @@
         "capexBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "IF_OWN_ACCOUNT_CAPEX_BASED_PCT_NON_ASSESSED_NO_ELIGIBLE_CP",
         "capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity" : "IF_OWN_ACCOUNT_CAPEX_BASED_PCT_NON_ASSESSED_NON_MATERIAL_RE",
         "capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible" : "IF_OWN_ACCOUNT_CAPEX_BASED_NUCLEAR_PCT_ELIGIBLE",
-        "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible" : "IF_OWN_ACCOUNT_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
+        "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible" : "IF_OWN_ACCOUNT_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned" : "IF_OWN_ACCOUNT_CAPEX_BASED_GAS_PCT_ALIGNED"
       },
       "otherServicesTurnoverBased" : {
         "turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount" : "IF_OTHER_TURNOVER_BASED_TOTAL_REVENUE",
         "turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover" : "IF_OTHER_TURNOVER_BASED_COVERED_REVENUE",
+        "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_ELIGIBLE",
+        "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_CCM_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_CCA_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_WTR_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_CE_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_PPC_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_BIO_ALIGNED",
-        "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_ELIGIBLE",
-        "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_ALIGNED",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_TRANSITIONAL",
         "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling" : "IF_OTHER_TURNOVER_BASED_SC_TO_ANY_ENABLING",
         "turnoverBasedNonAssessedExposures" : "IF_OTHER_TURNOVER_BASED_PCT_NON_ASSESSED",
         "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible" : "IF_OTHER_TURNOVER_BASED_NUCLEAR_PCT_ELIGIBLE",
-        "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible" : "IF_OTHER_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned" : "IF_OTHER_TURNOVER_BASED_NUCLEAR_PCT_ALIGNED",
+        "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible" : "IF_OTHER_TURNOVER_BASED_GAS_PCT_ELIGIBLE",
         "turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned" : "IF_OTHER_TURNOVER_BASED_GAS_PCT_ALIGNED"
       },
       "otherServicesCapexBased" : {
         "capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount" : "IF_OTHER_CAPEX_BASED_TOTAL_REVENUE",
         "capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex" : "IF_OTHER_CAPEX_BASED_COVERED_REVENUE",
+        "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_ELIGIBLE",
+        "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_CCM_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_CCA_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_WTR_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_CE_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_PPC_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_BIO_ALIGNED",
-        "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_ELIGIBLE",
-        "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_ALIGNED",
         "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_TRANSITIONAL",
         "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling" : "IF_OTHER_CAPEX_BASED_SC_TO_ANY_ENABLING",
         "capexBasedNonAssessedExposures" : "IF_OTHER_CAPEX_BASED_PCT_NON_ASSESSED",
         "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible" : "IF_OTHER_CAPEX_BASED_NUCLEAR_PCT_ELIGIBLE",
-        "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible" : "IF_OTHER_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned" : "IF_OTHER_CAPEX_BASED_NUCLEAR_PCT_ALIGNED",
+        "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible" : "IF_OTHER_CAPEX_BASED_GAS_PCT_ELIGIBLE",
         "capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned" : "IF_OTHER_CAPEX_BASED_GAS_PCT_ALIGNED"
       }
     }

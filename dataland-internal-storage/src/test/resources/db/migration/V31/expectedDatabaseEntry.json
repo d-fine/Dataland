@@ -1,0 +1,58 @@
+{
+  "revenue": {
+    "totalAmount": {
+      "value": 1000000.0,
+      "currency": "EUR",
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": null
+    },
+    "eligibleOrAlignedActivities": {
+      "value": [
+        {
+          "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+          "naceCodes": ["E.38.11"],
+          "relativeEligibleShareInPercent": 80,
+          "share": {
+            "absoluteShare": {"amount": 100.5, "currency": "EUR"},
+            "relativeShareInPercent": 25
+          },
+          "enablingActivity": "No",
+          "transitionalActivity": "Yes"
+        }
+      ],
+      "quality": "Reported",
+      "comment": "Test comment",
+      "dataSource": null
+    }
+  },
+  "capex": {
+    "eligibleOrAlignedActivities": {
+      "value": [
+        {
+          "activityName": "InfrastructureForRailTransport",
+          "naceCodes": ["C27.9"],
+          "relativeEligibleShareInPercent": 50,
+          "share": {
+            "absoluteShare": {"amount": 200.0, "currency": "USD"},
+            "relativeShareInPercent": 10
+          },
+          "enablingActivity": "Yes",
+          "transitionalActivity": "No"
+        }
+      ],
+      "quality": "Estimated",
+      "comment": null,
+      "dataSource": null
+    }
+  },
+  "opex": {
+    "eligibleOrAlignedActivities": {
+      "value": [],
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": null
+    }
+  }
+}
+
