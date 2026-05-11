@@ -14,7 +14,7 @@
         <div class="card py-4 px-0 mb-4 border-round-xl surface-card">
           <div class="flex justify-content-between align-items-start">
             <CompanyInformationBanner
-              :companyId="companyId ?? ''"
+              :companyId="companyIdRef ?? ''"
               :show-single-data-request-button="false"
               :show-add-to-portfolio-button="false"
               class="w-12"
@@ -82,6 +82,27 @@
                 </div>
               </div>
             </div>
+            <div v-if="reviewWarnings.length > 0" class="mb-3">
+              <div
+                v-for="warning in reviewWarnings"
+                :key="warning.id"
+                :data-test="`review-warning-${warning.id}`"
+                class="p-3 mb-2 border-round border-2"
+                :class="{
+                  'bg-gray-100 border-gray-700': warning.type === 'info',
+                  'bg-yellow-100 border-yellow-700': warning.type === 'warning',
+                  'bg-red-100 border-red-700': warning.type === 'error',
+                }"
+              >
+                {{ warning.message }}
+                <div v-if="warning.links && warning.links.length > 0" class="mt-1">
+                  <span class="font-semibold">Other datasets:</span>
+                  <div v-for="link in warning.links" :key="link.url">
+                    <a :href="link.url" target="_blank" rel="noopener noreferrer" class="underline">{{ link.label }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
             <DatasetReviewComparisonTable
               v-if="datasetReview"
               :framework="dataMetaInformation!.dataType"
@@ -94,14 +115,12 @@
               data-test="datasetReviewComparisonTable"
               @row-click="onComparisonTableRowClicked"
               @kpi-rows-built="onKpiRowsBuilt"
-              @documents-built="onDocumentsBuilt"
             />
             <JudgeDialog
               v-if="isJudgeDialogOpen && judgeDialogDataPointTypeId && isAssignedToCurrentUser"
               :dataset-review-id="props.datasetJudgementId"
               :data-point-type-id="judgeDialogDataPointTypeId ?? ''"
               :kpi-rows="kpiRows"
-              :available-documents="availableDocuments"
               v-model:is-open="isJudgeDialogOpen"
             />
           </div>
@@ -135,13 +154,18 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetJudgementState } from '@clients/qaservice';
+import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/Frameworks.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
 import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import type { DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
+import { useGetCompanyInformationByIdInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
+import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
+import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
+import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 
 const props = defineProps<{
@@ -153,15 +177,6 @@ const currentUserId = ref<string | undefined>(undefined);
 const hideEmptyFields = ref(true);
 const isJudgeDialogOpen = ref(false);
 const judgeDialogDataPointTypeId = ref<string | undefined>(undefined);
-const availableDocuments = ref<DocumentOption[]>([]);
-
-/**
- * Callback function to receive the list of available documents for a data point from the ComparisonTable child component.
- * @param documents
- */
-function onDocumentsBuilt(documents: DocumentOption[]): void {
-  availableDocuments.value = documents;
-}
 
 /**
  * Callback function to handle clicks on rows in the ComparisonTable child component. Opens the JudgeDialog for the clicked data point.
@@ -172,7 +187,6 @@ function onComparisonTableRowClicked(row: CellRow): void {
   isJudgeDialogOpen.value = true;
 }
 
-const dataIdRef = computed(() => datasetReview.value?.datasetId);
 const datasetJudgementIdRef = computed(() => props.datasetJudgementId);
 
 const {
@@ -183,12 +197,17 @@ const {
   datasetJudgementId: datasetJudgementIdRef,
 });
 
-const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(dataIdRef);
+const datasetIdRef = computed(() => datasetReview.value?.datasetId);
+const dataTypeRef = computed(() => datasetReview.value?.dataType);
+const reportingPeriodRef = computed(() => datasetReview.value?.reportingPeriod);
 
-const companyId = computed(() => dataMetaInformation.value?.companyId);
+const { data: dataMetaInformation, isPending: isDataMetaInformationPending } = useDataMetaInfoQuery(datasetIdRef);
+
+const companyIdRef = computed(() => dataMetaInformation.value?.companyId);
+
 const isInitialLoading = computed(() => {
-  const hasDataId = !!dataIdRef.value;
-  return isDatasetReviewPending.value || (hasDataId && isDataMetaInformationPending.value);
+  const hasDatasetId = !!datasetIdRef.value;
+  return isDatasetReviewPending.value || (hasDatasetId && isDataMetaInformationPending.value);
 });
 const frameworkNameAsString = computed(() =>
   dataMetaInformation.value ? humanizeStringOrNumber(dataMetaInformation.value.dataType) : '—'
@@ -212,6 +231,148 @@ const isAssignedToCurrentUser = computed(() => {
 });
 
 const kpiRows = ref<CellRow[]>([]);
+
+// QARG Precheck Section.
+
+const groupedDataTypeRef = computed<string[] | undefined>(() => {
+  if (!dataTypeRef.value) return undefined;
+  const currentType = dataTypeRef.value;
+  if (EU_TAXONOMY_FRAMEWORK_FAMILY.includes(currentType)) {
+    return EU_TAXONOMY_FRAMEWORK_FAMILY;
+  }
+  return [dataTypeRef.value];
+});
+
+const requestSearchFilters = computed<RequestSearchFilterString>(() => ({
+  companyId: companyIdRef.value,
+  dataTypes: groupedDataTypeRef.value,
+  reportingPeriods: reportingPeriodRef.value ? [reportingPeriodRef.value] : undefined,
+  requestStates: [RequestState.Open, RequestState.Processing],
+}));
+
+const metaDataSearchFilters = computed<DataMetaInformationSearchFilter[]>(() =>
+  (groupedDataTypeRef.value ?? []).map((dataType) => ({
+    companyId: companyIdRef.value,
+    dataType: dataType as DataTypeEnum,
+    reportingPeriod: reportingPeriodRef.value,
+    onlyActive: false,
+  }))
+);
+
+const arePrecheckQueriesEnabled = computed(
+  () => !!companyIdRef.value && !!dataTypeRef.value && !!reportingPeriodRef.value
+);
+
+const {
+  data: filteredRequestCount,
+  isPending: isRequestCountPending,
+  isError: isRequestCountError,
+} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled: arePrecheckQueriesEnabled });
+
+const {
+  data: companyData,
+  isPending: isCompanyDataPending,
+  isError: isCompanyDataError,
+} = useGetCompanyInformationByIdInfoQuery(companyIdRef);
+
+const {
+  data: filteredMetaData,
+  isPending: isMetaDataPending,
+  isError: isMetaDataError,
+} = usePostMetaDataFiltersQuery(metaDataSearchFilters, { enabled: arePrecheckQueriesEnabled });
+
+const isRequestCountReady = computed(() => !isRequestCountPending.value && !isRequestCountError.value);
+const isCompanyDataReady = computed(() => !isCompanyDataPending.value && !isCompanyDataError.value);
+const isMetaDataReady = computed(() => !isMetaDataPending.value && !isMetaDataError.value);
+
+const hasValidRequestState = computed(() => {
+  return (filteredRequestCount.value ?? 0) > 0;
+});
+
+const hasAssignedSector = computed(() => !!companyData.value?.sector);
+
+const matchingDatasetsWithPeriodAndType = computed(() => {
+  return filteredMetaData.value ?? [];
+});
+
+const acceptedMatchingDatasets = computed(() =>
+  matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Accepted)
+);
+
+const hasAcceptedMatchingDataset = computed(() => acceptedMatchingDatasets.value.length > 0);
+
+const pendingMatchingDatasets = computed(() =>
+  matchingDatasetsWithPeriodAndType.value.filter((entry) => entry.qaStatus === QaStatus.Pending)
+);
+
+const hasMultiplePendingMatchingDatasets = computed(() => pendingMatchingDatasets.value.length > 1);
+
+const isViewingNewestPendingDataset = computed(() => {
+  const viewedObject = pendingMatchingDatasets.value.find((entry) => entry.dataId === datasetIdRef.value);
+  return !!viewedObject && pendingMatchingDatasets.value.every((entry) => viewedObject.uploadTime >= entry.uploadTime);
+});
+
+//QARG Precheck Warnings Section
+
+type ReviewWarning = {
+  id: string;
+  message: string;
+  type: 'info' | 'warning' | 'error';
+  links?: { label: string; url: string }[];
+};
+
+const reviewWarnings = computed((): ReviewWarning[] => {
+  const warnings: ReviewWarning[] = [];
+
+  if (isRequestCountReady.value && !hasValidRequestState.value) {
+    warnings.push({
+      id: 'invalid-request-state',
+      message: 'There is no related data request with status Open or Processing.',
+      type: 'error',
+    });
+  }
+
+  if (isCompanyDataReady.value && !hasAssignedSector.value) {
+    warnings.push({ id: 'missing-sector', message: 'The company has no assigned sector.', type: 'warning' });
+  }
+
+  if (isMetaDataReady.value) {
+    if (hasAcceptedMatchingDataset.value) {
+      warnings.push({
+        id: 'accepted-duplicate',
+        message: 'There is already an accepted dataset with the same reporting period and framework.',
+        type: 'warning',
+        links: acceptedMatchingDatasets.value
+          .filter((entry) => !!entry.ref)
+          .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
+      });
+    }
+
+    if (hasMultiplePendingMatchingDatasets.value) {
+      if (isViewingNewestPendingDataset.value) {
+        warnings.push({
+          id: 'pending-duplicate',
+          message: 'There are multiple pending datasets. You are reviewing the newest upload.',
+          type: 'info',
+          links: pendingMatchingDatasets.value
+            .filter((entry) => !!entry.ref && entry.dataId !== datasetIdRef.value)
+            .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
+        });
+      } else {
+        warnings.push({
+          id: 'not-newest-pending',
+          message: 'There are multiple pending datasets. You are not reviewing the newest upload.',
+          type: 'error',
+          links: pendingMatchingDatasets.value
+            .filter((entry) => !!entry.ref && entry.dataId !== datasetIdRef.value)
+            .map((entry) => ({ label: entry.dataId, url: entry.ref! })),
+        });
+      }
+    }
+  }
+
+  return warnings;
+});
 
 /**
  * Callback function to receive the list of KPI rows from the ComparisonTable child component.

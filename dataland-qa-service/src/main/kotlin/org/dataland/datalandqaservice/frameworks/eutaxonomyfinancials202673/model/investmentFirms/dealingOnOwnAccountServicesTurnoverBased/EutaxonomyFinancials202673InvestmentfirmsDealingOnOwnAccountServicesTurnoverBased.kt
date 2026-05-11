@@ -15,6 +15,12 @@ data class EutaxonomyFinancials202673InvestmentfirmsDealingOnOwnAccountServicesT
     val turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover:
         QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
@@ -31,12 +37,6 @@ data class EutaxonomyFinancials202673InvestmentfirmsDealingOnOwnAccountServicesT
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
         QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
@@ -58,9 +58,9 @@ data class EutaxonomyFinancials202673InvestmentfirmsDealingOnOwnAccountServicesT
     @field:Valid()
     val turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

@@ -8,6 +8,12 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.
     .breakdownOfTheNumeratorOfTheKpiCapexBased
     .EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBased
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.insuranceReinsurance
+    .breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+    .EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.insuranceReinsurance
+    .breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+    .EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.insuranceReinsurance
     .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
     .EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.insuranceReinsurance
@@ -35,9 +41,15 @@ data class EutaxonomyFinancials202673InsuranceReinsurance(
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
         EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
     @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased:
+        EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased? = null,
+    @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiCapexBased:
         EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiCapexBased? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
         EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
+    @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased:
+        EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased? = null,
 )

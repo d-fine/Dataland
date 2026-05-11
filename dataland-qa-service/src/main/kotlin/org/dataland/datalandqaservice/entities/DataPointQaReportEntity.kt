@@ -6,6 +6,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
@@ -16,7 +17,10 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
  * The database entity for storing metadata regarding QA reports uploaded to dataland
  */
 @Entity
-@Table(name = "data_point_qa_reports")
+@Table(
+    name = "data_point_qa_reports",
+    indexes = [Index(name = "idx_datapoint_id", columnList = "data_point_id")],
+)
 data class DataPointQaReportEntity(
     @Id
     @Column(name = "qa_report_id")
