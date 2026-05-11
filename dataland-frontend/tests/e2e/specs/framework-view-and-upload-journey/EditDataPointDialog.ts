@@ -205,7 +205,7 @@ describeIf(
       saveDataPoint();
       verifyFieldValue(
         'Average Gross Hourly Earnings Male Employees',
-        formatNumberToReadableFormat(parseFloat(newValue))
+        formatNumberToReadableFormat(Number.parseFloat(newValue))
       );
     });
   }
