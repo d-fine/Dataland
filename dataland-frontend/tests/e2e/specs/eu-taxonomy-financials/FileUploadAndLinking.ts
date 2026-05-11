@@ -1,3 +1,4 @@
+import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { type CompanyAssociatedDataEutaxonomyFinancialsData, DataTypeEnum } from '@clients/backend';
 import { assertDefined } from '@/utils/TypeScriptUtils';
