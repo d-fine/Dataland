@@ -469,8 +469,6 @@ function judgeDataPointsWithQaReports(
 ): void {
   const scenarios = QA_SCENARIO_CONFIG;
 
-  if (scenarios.length === 0) return;
-
   // 1) Open judge modal for the first data point with QA
   const firstScenario = scenarios[0];
   const firstDataPointTypeId = overview.dataPointsWithQaReports[firstScenario.dataPointType];
@@ -625,33 +623,25 @@ function finishJudgement(dataSetId: string): void {
  * @param fixture   Original uploaded fixture used as baseline/fallback values.
  * @returns         A record mapping each data point type to its expected string value.
  */
-export function buildExpectedByType(
+export function buildDatasetExpectationFromQaScenario(
   scenarios: QaScenarioConfig[],
   fixture: EutaxonomyFinancialsData
 ): Record<string, string> {
-  const scenarioByType = new Map<string, QaScenarioConfig>();
-  scenarios.forEach((s) => scenarioByType.set(s.dataPointType, s));
+  const scenarioByDatapointType = new Map<string, QaScenarioConfig>();
+  scenarios.forEach((s) => scenarioByDatapointType.set(s.dataPointType, s));
 
   const result: Record<string, string> = {};
 
   Object.keys(DATA_POINT_PATH_MAP).forEach((dataPointType) => {
     const originalValue = extractValueForType(dataPointType, fixture);
-    const scenario = scenarioByType.get(dataPointType);
+    const scenario = scenarioByDatapointType.get(dataPointType);
 
     const acceptedSource = scenario?.judgement.acceptedSource;
-    if (!scenario || acceptedSource == null || acceptedSource === AcceptedDataPointSource.Original) {
-      result[dataPointType] = originalValue;
-      return;
-    }
-
     if (acceptedSource === AcceptedDataPointSource.Custom) {
-      const custom = parseJsonValue(scenario.judgement.customValue);
+      const custom = parseJsonValue(scenario!.judgement.customValue);
       result[dataPointType] = custom ?? originalValue;
-      return;
-    }
-
-    if (acceptedSource === AcceptedDataPointSource.Qa) {
-      const acceptedReporterId = scenario.judgement.reporterUserIdOfAcceptedQaReport;
+    } else if (acceptedSource === AcceptedDataPointSource.Qa) {
+      const acceptedReporterId = scenario!.judgement.reporterUserIdOfAcceptedQaReport;
 
       let acceptedRole: QaRole | undefined;
 
@@ -661,14 +651,13 @@ export function buildExpectedByType(
         acceptedRole = 'admin';
       }
 
-      const acceptedQaReport = acceptedRole ? scenario.qaReports.find((r) => r.role === acceptedRole) : undefined;
+      const acceptedQaReport = acceptedRole ? scenario!.qaReports.find((r) => r.role === acceptedRole) : undefined;
       const qaValue = parseJsonValue(acceptedQaReport?.correctedValue);
 
       result[dataPointType] = qaValue ?? originalValue;
-      return;
+    } else {
+      result[dataPointType] = originalValue;
     }
-
-    result[dataPointType] = originalValue;
   });
 
   return result;
@@ -696,7 +685,7 @@ function verifyJudgementDataStoredCorrectly(
   reportingPeriod: string,
   judgeToken: string
 ): void {
-  const expectedValuesByType = buildExpectedByType(scenarios, fixture);
+  const expectedValuesByType = buildDatasetExpectationFromQaScenario(scenarios, fixture);
 
   const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
 

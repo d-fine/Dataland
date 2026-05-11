@@ -1,6 +1,7 @@
 import type { Interception } from 'cypress/types/net-stubbing';
 import { AcceptedDataPointSource } from '@clients/qaservice';
 import type { QaJudgement } from '@e2e/utils/CheckJudgementJson.ts';
+import { recurse } from 'cypress-recurse';
 
 /**
  * Selects the given data point type in the judge modal's "Next datapoint" dropdown.
@@ -67,7 +68,7 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
 /**
  * Scans QA report entries in the Judge modal until the target reporter label is found.
  *
- * Before each iteration the function reads the current reporter label:
+ * On each iteration the function reads the current reporter label:
  * - if it matches `targetReporterName`, the loop stops and the function returns
  * - if the next button is disabled, an error is thrown
  * - otherwise the "next" button is clicked and the function waits for the label to change.
@@ -76,37 +77,21 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
  * @throws {Error} When no further report entry is available before the target is found.
  */
 export function navigateToQaReport(targetReporterName: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  return cy
-    .waitUntil(() => waitUntilCheck(targetReporterName))
-    .then(() => cy.get('[data-test="accept-report-button"]').scrollIntoView());
-}
-
-/**
- * Helper used by `navigateToQaReport` as the callback for `cy.waitUntil`.
- * Extracted to reduce nested anonymous functions inside the exported function.
- * Scrolls the next button into view before clicking; throws if the button is disabled.
- */
-function waitUntilCheck(targetReporterName: string): Cypress.Chainable<boolean> {
-  return cy
-    .get('[data-test="qa-current-reporter-label"]')
-    .invoke('text')
-    .then((currentLabel): Cypress.Chainable<boolean> => {
-      if (currentLabel.trim() === targetReporterName) {
-        return cy.wrap(true);
-      }
-
-      return cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($next) => {
-        const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
-        if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
-        cy.wrap($next).scrollIntoView();
-        cy.wrap($next).click();
-        return cy
-          .get('[data-test="qa-current-reporter-label"]')
-          .invoke('text')
-          .should('not.equal', currentLabel.trim())
-          .then(() => false);
-      });
-    });
+  return recurse(
+    () => cy.get('[data-test="qa-current-reporter-label"]').invoke('text'),
+    (label) => label.trim() === targetReporterName,
+    {
+      post({ value: currentLabel }) {
+        cy.get('[data-test="corrected-datapoint-section"] [data-test="qa-next-button"]').then(($next) => {
+          const isDisabled = $next.prop('disabled') === true || $next.is(':disabled');
+          if (isDisabled) throw new Error(`Reporter "${targetReporterName}" not found. No more entries.`);
+          cy.wrap($next).scrollIntoView();
+          cy.wrap($next).click();
+          cy.get('[data-test="qa-current-reporter-label"]').invoke('text').should('not.equal', currentLabel.trim());
+        });
+      },
+    }
+  ).then(() => cy.get('[data-test="accept-report-button"]').scrollIntoView());
 }
 
 /**
