@@ -72,7 +72,7 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
   cy.get('[data-test="company-identifiers-input"]').type(`${company1.companyId},${company2.companyId}`);
   cy.get('[data-test="portfolio-dialog-add-companies"]').click();
-  cy.get('[data-test="portfolio-dialog-save-button"]').click();
+  cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled').click();
 }
 
 /**
