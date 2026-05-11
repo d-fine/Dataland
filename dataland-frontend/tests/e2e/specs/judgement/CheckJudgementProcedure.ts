@@ -65,8 +65,9 @@ describeIf(
     let overview: DataPointOverview;
 
     before(function () {
-      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then((jsonContent) => {
-        const rawFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+      cy.fixture<FixtureData<EutaxonomyFinancialsData>[]>(
+        'CompanyInformationWithEutaxonomyFinancialsPreparedFixtures'
+      ).then((rawFixtures) => {
         preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
       });
 
@@ -167,14 +168,14 @@ function createJudgementAndOpenReviewPage(
 ): Cypress.Chainable<string> {
   loginAsJudge();
   return cy
-    .request({
+    .request<{ dataSetJudgementId: string }>({
       method: 'POST',
       url: `${apiBaseUrl}/qa/dataset-judgements/${uploadedDataMetaInfo.dataId}`,
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
       expect(response.status).to.eq(201);
-      const dataSetJudgementId = response.body?.dataSetJudgementId as string;
+      const dataSetJudgementId = response.body?.dataSetJudgementId;
       cy.visitAndCheckAppMount(`/qualityassurance/review/${dataSetJudgementId}`);
       cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
       return cy.wrap(dataSetJudgementId, { log: false });
@@ -252,7 +253,7 @@ function initializeDataPointOverviewForDataset(
   QA_SCENARIO_CONFIG.forEach((entry) => qaConfigByType.set(entry.dataPointType, entry));
 
   return cy
-    .request({
+    .request<{ data: Record<string, string> }>({
       method: 'GET',
       url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
       headers: { Authorization: `Bearer ${adminToken}` },
@@ -264,9 +265,9 @@ function initializeDataPointOverviewForDataset(
 
       Object.entries(allDataPoints).forEach(([dataPointType, dataPointId]) => {
         if (qaConfigByType.has(dataPointType)) {
-          dataPointsWithQaReports[dataPointType] = dataPointId as string;
+          dataPointsWithQaReports[dataPointType] = dataPointId;
         } else {
-          dataPointsWithoutQaReports[dataPointType] = dataPointId as string;
+          dataPointsWithoutQaReports[dataPointType] = dataPointId;
         }
       });
 
@@ -672,7 +673,7 @@ function verifyJudgementDataStoredCorrectly(
 
   cy.waitUntil(() =>
     cy
-      .request({
+      .request<{ data: EutaxonomyFinancialsData }>({
         method: 'GET',
         url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
         qs: { companyId, reportingPeriod },
@@ -681,7 +682,7 @@ function verifyJudgementDataStoredCorrectly(
       })
       .then((response) => {
         if (response.status !== 200) return false;
-        const data = (response.body as { data: EutaxonomyFinancialsData }).data;
+        const data = response.body.data;
 
         return Object.keys(flatOverview).every((key) => {
           const expected = expectedValuesByType[key];
