@@ -30,9 +30,9 @@ import {
   QA_SCENARIO_CONFIG,
   DATA_POINT_PATH_MAP,
   stripAssuranceFromFixture,
-  parseJsonValue,
   extractValueForType,
-} from '@e2e/utils/CheckJudgementJson.ts';
+} from './JudgementTestConfig.ts';
+import { parseJsonValue } from '@e2e/utils/JsonUtils.ts';
 import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
@@ -604,7 +604,7 @@ function finishJudgement(dataSetId: string): void {
  * @param fixture   Original uploaded fixture used as baseline/fallback values.
  * @returns         A record mapping each data point type to its expected string value.
  */
-export function buildDatasetExpectationFromQaScenario(
+function buildDatasetExpectationFromQaScenario(
   scenarios: QaScenarioConfig[],
   fixture: EutaxonomyFinancialsData
 ): Record<string, string> {
