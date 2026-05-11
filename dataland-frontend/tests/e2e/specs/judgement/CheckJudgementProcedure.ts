@@ -19,7 +19,13 @@ import {
   checkPatchDataPointsCalledCorrectly,
   makeJudgementDecision,
 } from '@e2e/utils/CheckJudgement';
-import type { QaReport, QaJudgement, QaScenarioConfig, DataPointOverview } from '@e2e/utils/CheckJudgementJson.ts';
+import type {
+  QaReport,
+  QaJudgement,
+  QaScenarioConfig,
+  DataPointOverview,
+  QaRole,
+} from '@e2e/utils/CheckJudgementJson.ts';
 import {
   QA_SCENARIO_CONFIG,
   DATA_POINT_PATH_MAP,
@@ -35,8 +41,6 @@ enum IconState {
   Rejected,
   None,
 }
-
-type QaRole = 'reviewer' | 'admin';
 
 type QaTokens = {
   reviewerToken: string;
@@ -408,11 +412,11 @@ function judgeDataPointsWithoutQaReports(
       acceptedSource: AcceptedDataPointSource.Original,
     };
 
-    // 3 Make the judgement decision (click the button) and check if the decision is actually made
-    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as('patchDatapoint');
+    const alias = `patchDatapoint_${dataPointType}`;
+    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(alias);
 
     makeJudgementDecision(judgement);
-    cy.wait('@patchDatapoint').then((interception) => {
+    cy.wait(`@${alias}`).then((interception) => {
       checkPatchDataPointsCalledCorrectly(interception, judgement);
     });
 
@@ -485,14 +489,14 @@ function judgeDataPointsWithQaReports(
 
     const judgement = scenario.judgement;
 
-    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${scenario.dataPointType}**`).as('patchDatapoint');
+    const patchDataPointAlias = `patchDatapoint_${scenario.dataPointType}`;
+    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${scenario.dataPointType}**`).as(
+      patchDataPointAlias
+    );
     makeJudgementDecision(judgement);
 
-    cy.wait('@patchDatapoint').then((interception) => {
-      cy.log(
-        `[patch] body.acceptedSource=${String(interception.request.body?.acceptedSource)} | expected=${String(judgement.acceptedSource)}`
-      );
-      cy.log(`[patch] url=${interception.request.url}`);
+    cy.wait(`@${patchDataPointAlias}`).then((interception) => {
+      checkPatchDataPointsCalledCorrectly(interception, judgement);
     });
 
     const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
