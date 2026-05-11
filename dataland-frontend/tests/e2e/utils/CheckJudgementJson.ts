@@ -189,10 +189,6 @@ export function parseJsonValue(raw?: string): string | undefined {
       return val;
     }
 
-    if (typeof val === 'number' || typeof val === 'boolean') {
-      return val.toString();
-    }
-
     return JSON.stringify(val);
   } catch {
     return raw;

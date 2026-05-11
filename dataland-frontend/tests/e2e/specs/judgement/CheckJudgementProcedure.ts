@@ -33,6 +33,7 @@ import {
   parseJsonValue,
   extractValueForType,
 } from '@e2e/utils/CheckJudgementJson.ts';
+import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
@@ -112,10 +113,10 @@ describeIf(
     });
 
     it('Check judge modal selects expected values and stores them after finishing review', () => {
-      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
-        judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+        judgeDataPointsWithoutQaReports(overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
-        judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+        judgeDataPointsWithQaReports(overview);
         finishJudgement(uploadedDataMetaInfo.dataId);
 
         cy.waitUntil(() =>
@@ -381,54 +382,60 @@ function changeJudgeAssignment(dataSetId: string): void {
 }
 
 /**
- * Patches all data points without QA reports as accepted original.
+ * Iterates over a list of data point entries, opens the judge modal on the first one,
+ * and applies a judgement decision for each entry.
  *
- * @param datasetJudgementId The dataset judgement id to update.
- * @param judgeToken         Bearer token for the judge user.
- * @param overview           DataPointOverview containing data point IDs and counts.
+ * @param entries      Tuples of [dataPointType, dataPointId] to judge.
+ * @param getJudgement Returns the judgement to apply for a given dataPointType.
+ * @param onPatchWait  Optional callback invoked with the PATCH interception and dataPointType after each decision.
  */
-function judgeDataPointsWithoutQaReports(
-  datasetJudgementId: string,
-  judgeToken: string,
-  overview: DataPointOverview
+function judgeDataPointLoop(
+  entries: Array<[string, string]>,
+  getJudgement: (dataPointType: string) => QaJudgement,
+  onPatchWait?: (interception: Interception, dataPointType: string) => void
 ): void {
-  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
+  if (entries.length === 0) return;
 
-  if (dataPointEntries.length === 0) return;
-
-  // 1) Open the judge modal on the first data point without QA
-  const [, firstDataPointId] = dataPointEntries[0];
+  const [, firstDataPointId] = entries[0];
   cy.get(`[data-test="data-point-row-${firstDataPointId}"]`).find('button.kpi-link').click();
   cy.get('[data-test="judge-modal"]').should('be.visible');
 
-  // 2 Loop through all datapoints without QA reports and patch them as accepted original
-  dataPointEntries.forEach(([dataPointType], index) => {
+  entries.forEach(([dataPointType, dataPointId], index) => {
     if (index > 0) {
       selectNextDataPointToJudge(dataPointType);
       goToSelectedDataPoint();
     }
 
-    const judgement: QaJudgement = {
-      acceptedSource: AcceptedDataPointSource.Original,
-    };
+    const judgement = getJudgement(dataPointType);
 
     const alias = `patchDatapoint_${dataPointType}`;
     cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(alias);
-
     makeJudgementDecision(judgement);
-    cy.wait(`@${alias}`).then((interception) => {
-      checkPatchDataPointsCalledCorrectly(interception, judgement);
-    });
-
-    const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
+    cy.wait(`@${alias}`).then((interception) => onPatchWait?.(interception, dataPointType));
 
     cy.waitUntil(() =>
       cy
         .get(`[data-test="data-point-row-${dataPointId}"] td`)
         .eq(1)
-        .then(($td) => $td.find('.accepted-check').length > 0)
+        .then(($td) => $td.find('.accepted-check').length > 0 || $td.find('.rejected-check').length > 0)
     );
   });
+}
+
+/**
+ * Patches all data points without QA reports as accepted original.
+ *
+ * @param overview DataPointOverview containing data point IDs and counts.
+ */
+function judgeDataPointsWithoutQaReports(overview: DataPointOverview): void {
+  const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
+  const judgement: QaJudgement = { acceptedSource: AcceptedDataPointSource.Original };
+
+  judgeDataPointLoop(
+    dataPointEntries,
+    () => judgement,
+    (interception) => checkPatchDataPointsCalledCorrectly(interception, judgement)
+  );
 
   checkOriginalDataPointsAccepted(dataPointEntries, overview);
 }
@@ -463,55 +470,23 @@ function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
  * Patches QA-report data points according to the configured QA scenarios, reloads once,
  * and verifies the expected icons for each data point row.
  *
- * @param datasetJudgementId The dataset judgement id to update.
- * @param judgeToken         Bearer token for the judge user.
- * @param overview           DataPointOverview containing data point IDs and counts.
+ * @param overview DataPointOverview containing data point IDs and counts.
  */
-function judgeDataPointsWithQaReports(
-  datasetJudgementId: string,
-  judgeToken: string,
-  overview: DataPointOverview
-): void {
+function judgeDataPointsWithQaReports(overview: DataPointOverview): void {
   const scenarios = QA_SCENARIO_CONFIG;
+  const entries: Array<[string, string]> = scenarios.map((s) => [
+    s.dataPointType,
+    overview.dataPointsWithQaReports[s.dataPointType],
+  ]);
+  const scenarioByType = new Map<string, QaScenarioConfig>(scenarios.map((s) => [s.dataPointType, s]));
 
-  // 1) Open judge modal for the first data point with QA
-  const firstScenario = scenarios[0];
-  const firstDataPointTypeId = overview.dataPointsWithQaReports[firstScenario.dataPointType];
+  judgeDataPointLoop(
+    entries,
+    (dataPointType) => scenarioByType.get(dataPointType)!.judgement,
+    (interception, dataPointType) =>
+      checkPatchDataPointsCalledCorrectly(interception, scenarioByType.get(dataPointType)!.judgement)
+  );
 
-  cy.get(`[data-test="data-point-row-${firstDataPointTypeId}"]`).find('button.kpi-link').click();
-  cy.get('[data-test="judge-modal"]').should('be.visible');
-
-  // 2) Loop through QA scenarios, using the modal + helpers
-  scenarios.forEach((scenario, index) => {
-    if (index > 0) {
-      selectNextDataPointToJudge(scenario.dataPointType);
-      goToSelectedDataPoint();
-    }
-
-    const judgement = scenario.judgement;
-
-    const patchDataPointAlias = `patchDatapoint_${scenario.dataPointType}`;
-    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${scenario.dataPointType}**`).as(
-      patchDataPointAlias
-    );
-    makeJudgementDecision(judgement);
-
-    cy.wait(`@${patchDataPointAlias}`).then((interception) => {
-      checkPatchDataPointsCalledCorrectly(interception, judgement);
-    });
-
-    const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
-
-    cy.waitUntil(() =>
-      cy.get(`[data-test="data-point-row-${dataPointId}"] td`).then(($tds) => {
-        const accepted = $tds.eq(1).find('.accepted-check').length > 0;
-        const rejected = $tds.eq(1).find('.rejected-check').length > 0;
-        return accepted || rejected;
-      })
-    );
-  });
-
-  // 3) Reload and assert icons as before
   cy.reload();
   cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
