@@ -32,7 +32,7 @@ fi
 STEP_LINE_ACTIVE=false
 STEP_LINE_DESCRIPTION=''
 
-step_line_commit_plain() {
+_step_line_commit_plain() {
   if [[ "$STEP_LINE_ACTIVE" == true ]]; then
     printf '\r\033[2K%b==>%b %s\n' "$COLOR_BLUE" "$COLOR_RESET" "$STEP_LINE_DESCRIPTION"
     STEP_LINE_ACTIVE=false
@@ -40,7 +40,7 @@ step_line_commit_plain() {
   fi
 }
 
-status_line_clear() {
+_status_line_clear() {
   if [[ "$STATUS_LINE_ACTIVE" == true ]]; then
     printf '\r\033[2K'
 
@@ -55,7 +55,7 @@ status_line_clear() {
 }
 
 log_step() {
-  status_line_clear
+  _status_line_clear
 
   if [[ -t 1 && "$SILENT" == true ]]; then
     STEP_LINE_ACTIVE=true
@@ -68,38 +68,38 @@ log_step() {
 }
 
 log_info() {
-  step_line_commit_plain
-  status_line_clear
+  _step_line_commit_plain
+  _status_line_clear
   printf '%b[i]%b %s\n' "$COLOR_CYAN" "$COLOR_RESET" "$1"
 }
 
 log_success() {
-  step_line_commit_plain
-  status_line_clear
+  _step_line_commit_plain
+  _status_line_clear
   printf '%b[ok]%b %s\n' "$COLOR_GREEN" "$COLOR_RESET" "$1"
 }
 
 log_warn() {
-  step_line_commit_plain
-  status_line_clear
+  _step_line_commit_plain
+  _status_line_clear
   printf '%b[warn]%b %s\n' "$COLOR_YELLOW" "$COLOR_RESET" "$1"
 }
 
 log_error() {
-  step_line_commit_plain
-  status_line_clear
+  _step_line_commit_plain
+  _status_line_clear
   printf '%b[error]%b %s\n' "$COLOR_RED" "$COLOR_RESET" "$1" >&2
 }
 
 status_line_print() {
-  step_line_commit_plain
+  _step_line_commit_plain
 
   if [[ ! -t 1 || "$SILENT" != true ]]; then
     log_info "$1"
     return
   fi
 
-  status_line_clear
+  _status_line_clear
   STATUS_LINE_ACTIVE=true
 
   local message="$1"
@@ -116,7 +116,7 @@ status_line_print() {
 }
 
 log_step_done() {
-  status_line_clear
+  _status_line_clear
 
   if [[ "$STEP_LINE_ACTIVE" == true && "$STEP_LINE_DESCRIPTION" == "$1" ]]; then
     printf '\r\033[2K%b==>%b %s %b[%s]%b\n' "$COLOR_BLUE" "$COLOR_RESET" "$1" "$COLOR_GREEN" "$CHECK_MARK" "$COLOR_RESET"
