@@ -74,7 +74,7 @@ class PreApprovalServiceTest {
         val service = PreApprovalService(autoPreApprovalEnabled = true)
         val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
-        assertEquals(AcceptedDataPointSource.Qa, runWorkflow(service, reports))
+        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
     }
 
     @Test
@@ -86,7 +86,7 @@ class PreApprovalServiceTest {
                 buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaAccepted),
             )
 
-        assertEquals(AcceptedDataPointSource.Qa, runWorkflow(service, reports))
+        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
     }
 
     @Test
@@ -116,7 +116,7 @@ class PreApprovalServiceTest {
                 buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted, uploadTime = 2000L),
             )
 
-        assertEquals(AcceptedDataPointSource.Qa, runWorkflow(service, reports))
+        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
     }
 
     @Test
