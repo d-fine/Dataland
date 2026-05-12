@@ -27,9 +27,8 @@ type EligibleOrAlignedActivity = {
 
 /**
  * Formats the eligible-or-aligned activities component for the display in the multi-layer-data-table.
- * The existing aligned-activities modal is reused here because the 2026/73 activity shape is closest to the
- * aligned-activities structure. The KPI percentage column is mapped to the eligible share percentage while the KPI
- * amount column still shows the aligned absolute share from the regular share object.
+ * Displays three KPI columns per activity: the aligned absolute amount, the aligned share in percent,
+ * and the eligible share in percent.
  *
  * @param eligibleOrAlignedActivities the list of activity objects wrapped in an extended datapoint
  * @param fieldLabel the label of the respective field in the framework
@@ -55,8 +54,9 @@ export function formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForT
 
   const adjustedHeaders = {
     ...euTaxonomyNonFinancialsModalColumnHeaders.alignedActivities,
-    [kpiType]: `${typeLabels[kpiType]} (aligned)`,
-    [`${kpiType}Percent`]: `${typeLabels[kpiType]} eligible (%)`,
+    [kpiType]: `Aligned ${typeLabels[kpiType]}`,
+    [`${kpiType}Percent`]: `Aligned ${typeLabels[kpiType]} (%)`,
+    [`${kpiType}EligiblePercent`]: `Eligible ${typeLabels[kpiType]} (%)`,
   };
 
   const customColumnHeaders = {
@@ -64,20 +64,8 @@ export function formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForT
     [tableKey]: adjustedHeaders,
   };
 
-  const mappedActivities: ExtendedDataPoint<EligibleOrAlignedActivity[]> = {
-    ...eligibleOrAlignedActivities,
-    value:
-      eligibleOrAlignedActivities.value?.map((activity) => ({
-        ...activity,
-        share: {
-          ...activity.share,
-          relativeShareInPercent: activity.relativeEligibleShareInPercent ?? activity.share?.relativeShareInPercent,
-        },
-      })) ?? [],
-  };
-
   return createModalDisplayObject({
-    activities: mappedActivities,
+    activities: eligibleOrAlignedActivities,
     fieldLabel,
     kpiType,
     tableKey,

@@ -135,11 +135,10 @@ class DataPointMetaInformationManager
                 dataPointMetaInformationRepositoryInterface
                     .findAllById(tasks.mapNotNull { it.newActiveDataId })
                     .associateBy { it.dataPointId }
-
             for (task in tasks) {
                 logger.info(
                     "Updating currently active data point for ${task.dataPointDimensions} " +
-                        "(correlation ID: ${task.correlationId}).",
+                        "(correlation ID: ${task.correlationId}) and (datapoint ID: ${task.newActiveDataId}).",
                 )
                 val currentlyActive = currentlyActiveEntityByDimension[task.dataPointDimensions]
                 val newlyActive = newlyActiveDataEntities[task.newActiveDataId]
@@ -148,6 +147,7 @@ class DataPointMetaInformationManager
                         "Currently and newly active IDs are ${currentlyActive?.dataPointId} and " +
                             "${task.newActiveDataId} (correlation ID: ${task.correlationId}).",
                     )
+
                 if (currentlyActive?.dataPointId == newlyActive?.dataPointId) {
                     logger.info(
                         "No update of the currently active flag required " +
@@ -199,9 +199,7 @@ class DataPointMetaInformationManager
 
         /**
          * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods provided
-         * @param companyIds the IDs of the companies to filter by
-         * @param dataPointTypes the data point types to filter by
-         * @param reportingPeriods the reporting periods to filter by
+         * @param dataDimensionFilter the data with company IDs, data point types, and reporting periods to filter by
          * @return a list of all active data point meta information entities
          */
         fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =

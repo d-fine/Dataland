@@ -81,40 +81,6 @@ data class EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumerator
     val shareOfCapexBasedKpiInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Taxonomy-aligned and Transitional Proportion of CapEx-based KPI""",
         example = """{
       "value" : 13.52, 
@@ -149,7 +115,7 @@ data class EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumerator
     val shareOfCapexBasedKpiInPercentOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Proportion of CapEx-based KPI of which non-assessed exposures""",
+        description = """Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Nuclear Activities""",
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
@@ -163,10 +129,10 @@ data class EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumerator
     } """,
     )
     @field:Valid()
-    val capexBasedNonAssessedExposures: ExtendedDataPoint<BigDecimal?>? = null,
+    val shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Proportion of CapEx-based KPI of which exposures financing non-assessed non-material activities of counterparties""",
+        description = """Taxonomy-aligned Proportion of CapEx-based KPI exposed towards Fossil Gas Activities""",
         example = """{
       "value" : 13.52, 
       "quality" : "Reported",
@@ -180,42 +146,5 @@ data class EutaxonomyFinancials202673InsurancereinsuranceBreakdownOfTheNumerator
     } """,
     )
     @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-        ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Proportion of CapEx-based KPI of which non-assessed exposures considered non-material by the reporting entity""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-        ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Proportion of CapEx-based KPI of which exposures to counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73""",
-        example = """{
-      "value" : 13.52, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
-        ExtendedDataPoint<BigDecimal?>? = null,
+    val shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 )

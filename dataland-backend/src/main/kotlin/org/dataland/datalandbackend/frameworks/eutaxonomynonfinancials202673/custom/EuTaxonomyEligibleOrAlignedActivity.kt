@@ -15,8 +15,8 @@ data class EuTaxonomyEligibleOrAlignedActivity(
     @JsonProperty(required = true)
     val activityName: Activity,
     val naceCodes: List<String>?,
-    val share: RelativeAndAbsoluteFinancialShare?,
     val relativeEligibleShareInPercent: BigDecimal?,
+    val share: RelativeAndAbsoluteFinancialShare?,
     val substantialContributionToClimateChangeMitigationInPercent: BigDecimal?,
     val substantialContributionToClimateChangeAdaptationInPercent: BigDecimal?,
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal?,
