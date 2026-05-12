@@ -13,11 +13,11 @@ describe('Unit test for the HighImpactClimateGetterFactory', () => {
         highImpactClimateSectorEnergyConsumptionInGWh: {
           value: 12345,
           quality: 'Estimated',
-        } as ExtendedDataPointBigDecimal,
+        },
         highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: {
           value: 54,
           quality: 'Estimated',
-        } as ExtendedDataPointBigDecimal,
+        },
       },
     };
 
