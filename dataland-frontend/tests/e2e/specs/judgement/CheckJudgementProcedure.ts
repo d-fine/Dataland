@@ -13,6 +13,27 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import {
+  selectNextDataPointToJudge,
+  goToSelectedDataPoint,
+  checkPatchDataPointsCalledCorrectly,
+  makeJudgementDecision,
+} from '@e2e/utils/CheckJudgement';
+import type {
+  QaReport,
+  QaJudgement,
+  QaScenarioConfig,
+  DataPointOverview,
+  QaRole,
+} from '@e2e/utils/CheckJudgementJson.ts';
+import {
+  QA_SCENARIO_CONFIG,
+  DATA_POINT_PATH_MAP,
+  stripAssuranceFromFixture,
+  extractValueForType,
+} from './JudgementTestConfig.ts';
+import { parseJsonValue } from '@e2e/utils/JsonUtils.ts';
+import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
@@ -22,8 +43,6 @@ enum IconState {
   None,
 }
 
-type QaRole = 'reviewer' | 'admin';
-
 type QaTokens = {
   reviewerToken: string;
   adminToken: string;
@@ -31,101 +50,7 @@ type QaTokens = {
   judgeToken: string;
 };
 
-interface QaReport {
-  role: QaRole;
-  verdict: QaReportDataPointVerdict;
-  correctedValue?: string;
-}
-
-interface QaJudgement {
-  acceptedSource?: AcceptedDataPointSource;
-  reporterUserIdOfAcceptedQaReport?: string;
-  customDataPoint?: string;
-}
-
-interface QaScenarioConfig {
-  dataPointType: DataPointType;
-  qaReports: QaReport[];
-  judgement: QaJudgement;
-}
-
-interface DataPointOverview {
-  dataPointsWithQaReports: Record<string, string>;
-  dataPointsWithoutQaReports: Record<string, string>;
-  amountOfDataPointsToReview: number;
-}
-
-interface PatchDataPointOptions extends QaJudgement {
-  dataPointType: string;
-}
-
-const DATA_POINT_TYPES = {
-  fiscalYearEnd: 'extendedDateFiscalYearEnd',
-  greenAssetRatioTotal:
-    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
-  isNfrdMandatory: 'extendedEnumYesNoIsNfrdMandatory',
-  numberOfEmployees: 'extendedDecimalNumberOfEmployees',
-} as const;
-
-type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
-type DataPointType = (typeof DATA_POINT_TYPES)[DataPointTypeKey];
-
 const apiBaseUrl = getBaseUrl();
-
-const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
-  {
-    dataPointType: DATA_POINT_TYPES.fiscalYearEnd,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Original,
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.greenAssetRatioTotal,
-    qaReports: [
-      {
-        role: 'reviewer',
-        verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"5453445343", "currency":"EUR"}',
-      },
-      {
-        role: 'admin',
-        verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"74568964325", "currency":"EUR"}',
-      },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Custom,
-      customDataPoint: '{"value":"400400400.23", "currency":"EUR"}',
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"No"}' },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Qa,
-      reporterUserIdOfAcceptedQaReport: reviewer_userId,
-      customDataPoint: '{"value":"No"}',
-    },
-  },
-  {
-    dataPointType: DATA_POINT_TYPES.numberOfEmployees,
-    qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"2409600.75"}' },
-    ],
-    judgement: {
-      acceptedSource: AcceptedDataPointSource.Qa,
-      reporterUserIdOfAcceptedQaReport: admin_userId,
-    },
-  },
-];
 
 describeIf(
   'As a user, I expect to be able to go through the full judgement process',
@@ -140,8 +65,10 @@ describeIf(
     let overview: DataPointOverview;
 
     before(function () {
-      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+      cy.fixture<FixtureData<EutaxonomyFinancialsData>[]>(
+        'CompanyInformationWithEutaxonomyFinancialsPreparedFixtures'
+      ).then((rawFixtures) => {
+        preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
       });
 
       getAdminToken().then((token: string) => {
@@ -186,12 +113,38 @@ describeIf(
       changeJudgeAssignment(dataSetId);
     });
 
-    it('Check accepting sources on judgement page and finishing with acceptance works as expected', () => {
-      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then((dataSetJudgementId) => {
-        judgeDataPointsWithoutQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+    it('Check judge modal selects expected values and stores them after finishing review', () => {
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+        judgeDataPointsWithoutQaReports(overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
-        judgeDataPointsWithQaReports(dataSetJudgementId, tokens.judgeToken, overview);
+        judgeDataPointsWithQaReports(overview);
         finishJudgement(uploadedDataMetaInfo.dataId);
+
+        cy.waitUntil(() =>
+          cy
+            .request({
+              method: 'GET',
+              url: `${apiBaseUrl}/api/metadata/${uploadedDataMetaInfo.dataId}`,
+              headers: { Authorization: `Bearer ${tokens.adminToken}` },
+              failOnStatusCode: false,
+            })
+            .then((resp) => {
+              if (resp.status !== 200) return false;
+              const qaStatus = String(resp.body?.qaStatus ?? '').toLowerCase();
+              return qaStatus === 'accepted';
+            })
+        );
+
+        const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+
+        verifyJudgementDataStoredCorrectly(
+          overview,
+          QA_SCENARIO_CONFIG,
+          euTaxonomyData.t,
+          storedCompany.companyId,
+          uploadedDataMetaInfo.reportingPeriod,
+          tokens.judgeToken
+        );
       });
     });
 
@@ -215,15 +168,15 @@ function createJudgementAndOpenReviewPage(
 ): Cypress.Chainable<string> {
   loginAsJudge();
   return cy
-    .request({
+    .request<{ dataSetJudgementId: string }>({
       method: 'POST',
       url: `${apiBaseUrl}/qa/dataset-judgements/${uploadedDataMetaInfo.dataId}`,
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
       expect(response.status).to.eq(201);
-      const dataSetJudgementId = response.body?.dataSetJudgementId as string;
-      cy.visit(`/qualityassurance/review/${dataSetJudgementId}`);
+      const dataSetJudgementId = response.body?.dataSetJudgementId;
+      cy.visitAndCheckAppMount(`/qualityassurance/review/${dataSetJudgementId}`);
       cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
       return cy.wrap(dataSetJudgementId, { log: false });
     });
@@ -300,7 +253,7 @@ function initializeDataPointOverviewForDataset(
   QA_SCENARIO_CONFIG.forEach((entry) => qaConfigByType.set(entry.dataPointType, entry));
 
   return cy
-    .request({
+    .request<{ data: Record<string, string> }>({
       method: 'GET',
       url: `${apiBaseUrl}/api/metadata/${dataMetaInfo.dataId}/data-points`,
       headers: { Authorization: `Bearer ${adminToken}` },
@@ -312,9 +265,9 @@ function initializeDataPointOverviewForDataset(
 
       Object.entries(allDataPoints).forEach(([dataPointType, dataPointId]) => {
         if (qaConfigByType.has(dataPointType)) {
-          dataPointsWithQaReports[dataPointType] = dataPointId as string;
+          dataPointsWithQaReports[dataPointType] = dataPointId;
         } else {
-          dataPointsWithoutQaReports[dataPointType] = dataPointId as string;
+          dataPointsWithoutQaReports[dataPointType] = dataPointId;
         }
       });
 
@@ -322,7 +275,7 @@ function initializeDataPointOverviewForDataset(
         dataPointsWithQaReports: dataPointsWithQaReports,
         dataPointsWithoutQaReports: dataPointsWithoutQaReports,
         amountOfDataPointsToReview: Object.keys(allDataPoints).length,
-      } as DataPointOverview;
+      };
     });
 }
 
@@ -430,25 +383,60 @@ function changeJudgeAssignment(dataSetId: string): void {
 }
 
 /**
+ * Iterates over a list of data point entries, opens the judge modal on the first one,
+ * and applies a judgement decision for each entry.
+ *
+ * @param entries      Tuples of [dataPointType, dataPointId] to judge.
+ * @param getJudgement Returns the judgement to apply for a given dataPointType.
+ * @param onPatchWait  Optional callback invoked with the PATCH interception and dataPointType after each decision.
+ */
+function judgeDataPointLoop(
+  entries: Array<[string, string]>,
+  getJudgement: (dataPointType: string) => QaJudgement,
+  onPatchWait?: (interception: Interception, dataPointType: string) => void
+): void {
+  if (entries.length === 0) return;
+
+  const [, firstDataPointId] = entries[0];
+  cy.get(`[data-test="data-point-row-${firstDataPointId}"]`).find('button.kpi-link').click();
+  cy.get('[data-test="judge-modal"]').should('be.visible');
+
+  entries.forEach(([dataPointType, dataPointId], index) => {
+    if (index > 0) {
+      selectNextDataPointToJudge(dataPointType);
+      goToSelectedDataPoint();
+    }
+
+    const judgement = getJudgement(dataPointType);
+
+    const alias = `patchDatapoint_${dataPointType}`;
+    cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(alias);
+    makeJudgementDecision(judgement);
+    cy.wait(`@${alias}`).then((interception) => onPatchWait?.(interception, dataPointType));
+
+    cy.waitUntil(() =>
+      cy
+        .get(`[data-test="data-point-row-${dataPointId}"] td`)
+        .eq(1)
+        .then(($td) => $td.find('.accepted-check').length > 0 || $td.find('.rejected-check').length > 0)
+    );
+  });
+}
+
+/**
  * Patches all data points without QA reports as accepted original.
  *
- * @param datasetJudgementId The dataset judgement id to update.
- * @param judgeToken         Bearer token for the judge user.
- * @param overview           DataPointOverview containing data point IDs and counts.
+ * @param overview DataPointOverview containing data point IDs and counts.
  */
-function judgeDataPointsWithoutQaReports(
-  datasetJudgementId: string,
-  judgeToken: string,
-  overview: DataPointOverview
-): void {
+function judgeDataPointsWithoutQaReports(overview: DataPointOverview): void {
   const dataPointEntries = Object.entries(overview.dataPointsWithoutQaReports);
+  const judgement: QaJudgement = { acceptedSource: AcceptedDataPointSource.Original };
 
-  dataPointEntries.forEach(([dataPointType]) => {
-    patchDataPoint(datasetJudgementId, judgeToken, {
-      dataPointType,
-      acceptedSource: AcceptedDataPointSource.Original,
-    });
-  });
+  judgeDataPointLoop(
+    dataPointEntries,
+    () => judgement,
+    (interception) => checkPatchDataPointsCalledCorrectly(interception, judgement)
+  );
 
   checkOriginalDataPointsAccepted(dataPointEntries, overview);
 }
@@ -461,6 +449,7 @@ function judgeDataPointsWithoutQaReports(
  */
 function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string]>, overview: DataPointOverview): void {
   cy.reload();
+  cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(
     `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
@@ -482,27 +471,29 @@ function tryFinishingJudgementBeforeAllDataPointsReviewed(): void {
  * Patches QA-report data points according to the configured QA scenarios, reloads once,
  * and verifies the expected icons for each data point row.
  *
- * @param datasetJudgementId The dataset judgement id to update.
- * @param judgeToken         Bearer token for the judge user.
- * @param overview           DataPointOverview containing data point IDs and counts.
+ * @param overview DataPointOverview containing data point IDs and counts.
  */
-function judgeDataPointsWithQaReports(
-  datasetJudgementId: string,
-  judgeToken: string,
-  overview: DataPointOverview
-): void {
-  QA_SCENARIO_CONFIG.forEach((scenario) => {
-    patchDataPoint(datasetJudgementId, judgeToken, {
-      dataPointType: scenario.dataPointType,
-      ...scenario.judgement,
-    });
-  });
+function judgeDataPointsWithQaReports(overview: DataPointOverview): void {
+  const scenarios = QA_SCENARIO_CONFIG;
+  const entries: Array<[string, string]> = scenarios.map((s) => [
+    s.dataPointType,
+    overview.dataPointsWithQaReports[s.dataPointType],
+  ]);
+  const scenarioByType = new Map<string, QaScenarioConfig>(scenarios.map((s) => [s.dataPointType, s]));
+
+  judgeDataPointLoop(
+    entries,
+    (dataPointType) => scenarioByType.get(dataPointType)!.judgement,
+    (interception, dataPointType) =>
+      checkPatchDataPointsCalledCorrectly(interception, scenarioByType.get(dataPointType)!.judgement)
+  );
 
   cy.reload();
+  cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(`0 / ${overview.amountOfDataPointsToReview} data points to review`).should('be.visible');
 
-  QA_SCENARIO_CONFIG.forEach((scenario) => {
+  scenarios.forEach((scenario) => {
     const dataPointId = overview.dataPointsWithQaReports[scenario.dataPointType];
     const expectedIcons = buildExpectedIconsForScenario(scenario);
     checkRowIcons(dataPointId, expectedIcons);
@@ -570,8 +561,8 @@ function buildQaIconForAction(
  * Determines the expected icon state for the custom column based on the judgement configuration.
  *
  * Rules:
- * - If no customDataPoint is set -> IconState.None
- * - If customDataPoint is set:
+ * - If no customValue is set -> IconState.None
+ * - If customValue is set:
  *   - and acceptedSource = 'Custom' -> IconState.Accepted
  *   - otherwise -> IconState.Rejected
  *
@@ -579,7 +570,7 @@ function buildQaIconForAction(
  * @return          The icon state representing an accepted, rejected, or absent custom data point.
  */
 function buildCustomIcon(judgement: QaJudgement): IconState {
-  if (!judgement.customDataPoint) {
+  if (!judgement.customValue) {
     return IconState.None;
   }
   return judgement.acceptedSource === AcceptedDataPointSource.Custom ? IconState.Accepted : IconState.Rejected;
@@ -603,27 +594,103 @@ function finishJudgement(dataSetId: string): void {
 }
 
 /**
- * Patches a datapoint with the given accepted source, reporter user id, and custom datapoint value.
+ * Builds a map of expected data point values by type, derived from QA scenarios and the original fixture.
  *
- * @param datasetJudgementId The dataset for which the datapoint should be patched.
- * @param token              Authentication token.
- * @param options            Options for patching the datapoint, including:
- *                           - dataPointType
- *                           - judgement-related fields (acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint)
+ * For each data point type in the path map:
+ * - Uses the original fixture value if no scenario exists or the accepted source is `Original`.
+ * - Uses the custom value from the scenario if the accepted source is `Custom`.
+ * - Uses the corrected value of the accepted QA reporter if the accepted source is `Qa`.
+ *
+ * @param scenarios QA scenario configurations defining accepted sources and expected values.
+ * @param fixture   Original uploaded fixture used as baseline/fallback values.
+ * @returns         A record mapping each data point type to its expected string value.
  */
-function patchDataPoint(datasetJudgementId: string, token: string, options: PatchDataPointOptions): void {
-  cy.request({
-    method: 'PATCH',
-    url: `${apiBaseUrl}/qa/dataset-judgements/${datasetJudgementId}/data-points/${options.dataPointType}`,
-    headers: { Authorization: `Bearer ${token}` },
-    body: {
-      acceptedSource: options.acceptedSource,
-      reporterUserIdOfAcceptedQaReport: options.reporterUserIdOfAcceptedQaReport,
-      customDataPoint: options.customDataPoint,
-    },
-  })
-    .its('status')
-    .should('eq', 200);
+function buildDatasetExpectationFromQaScenario(
+  scenarios: QaScenarioConfig[],
+  fixture: EutaxonomyFinancialsData
+): Record<string, string> {
+  const scenarioByDatapointType = new Map<string, QaScenarioConfig>();
+  scenarios.forEach((s) => scenarioByDatapointType.set(s.dataPointType, s));
+
+  const result: Record<string, string> = {};
+
+  Object.keys(DATA_POINT_PATH_MAP).forEach((dataPointType) => {
+    const originalValue = extractValueForType(dataPointType, fixture);
+    const scenario = scenarioByDatapointType.get(dataPointType);
+
+    const acceptedSource = scenario?.judgement.acceptedSource;
+    if (acceptedSource === AcceptedDataPointSource.Custom) {
+      const custom = parseJsonValue(scenario!.judgement.customValue);
+      result[dataPointType] = custom ?? originalValue;
+    } else if (acceptedSource === AcceptedDataPointSource.Qa) {
+      const acceptedReporterId = scenario!.judgement.reporterUserIdOfAcceptedQaReport;
+
+      let acceptedRole: QaRole | undefined;
+
+      if (acceptedReporterId === reviewer_userId) {
+        acceptedRole = 'reviewer';
+      } else if (acceptedReporterId === admin_userId) {
+        acceptedRole = 'admin';
+      }
+
+      const acceptedQaReport = acceptedRole ? scenario!.qaReports.find((r) => r.role === acceptedRole) : undefined;
+      const qaValue = parseJsonValue(acceptedQaReport?.correctedValue);
+
+      result[dataPointType] = qaValue ?? originalValue;
+    } else {
+      result[dataPointType] = originalValue;
+    }
+  });
+
+  return result;
+}
+
+/**
+ * Verifies that judged data points are persisted with the expected values.
+ *
+ * The helper derives expected values from QA scenarios and fixture defaults, fetches the
+ * stored EU taxonomy financials for the given company/reporting period, and compares each
+ * data point in the overview against the persisted backend value.
+ *
+ * @param overview         Data point IDs (with and without QA reports) used to determine which keys to verify.
+ * @param scenarios        QA scenario configurations defining accepted sources and expected values.
+ * @param fixture          Original uploaded fixture data used as a baseline/fallback for expectations.
+ * @param companyId        Company ID used to query the active dataset.
+ * @param reportingPeriod  Reporting period used to query the active dataset.
+ * @param judgeToken       Bearer token for authentication.
+ */
+function verifyJudgementDataStoredCorrectly(
+  overview: DataPointOverview,
+  scenarios: QaScenarioConfig[],
+  fixture: EutaxonomyFinancialsData,
+  companyId: string,
+  reportingPeriod: string,
+  judgeToken: string
+): void {
+  const expectedValuesByType = buildDatasetExpectationFromQaScenario(scenarios, fixture);
+
+  const flatOverview = { ...overview.dataPointsWithQaReports, ...overview.dataPointsWithoutQaReports };
+
+  cy.waitUntil(() =>
+    cy
+      .request<{ data: EutaxonomyFinancialsData }>({
+        method: 'GET',
+        url: `${apiBaseUrl}/api/data/eutaxonomy-financials/`,
+        qs: { companyId, reportingPeriod },
+        headers: { Authorization: `Bearer ${judgeToken}` },
+        failOnStatusCode: false,
+      })
+      .then((response) => {
+        if (response.status !== 200) return false;
+        const data = response.body.data;
+
+        return Object.keys(flatOverview).every((key) => {
+          const expected = expectedValuesByType[key];
+          const actual = extractValueForType(key, data);
+          return actual === expected;
+        });
+      })
+  );
 }
 
 /**

@@ -36,7 +36,9 @@
           @click="emit('prev')"
           data-test="qa-prev-button"
         />
-        <div>{{ navLabel }}</div>
+        <div data-test="qa-current-reporter-label">
+          {{ navLabel }}
+        </div>
         <PrimeButton
           icon="pi pi-chevron-right"
           variant="text"

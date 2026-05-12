@@ -3,10 +3,9 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { AcceptedDataPointSource, DatasetJudgementState, QaReportDataPointVerdict } from '@clients/qaservice';
-import type { DatasetJudgementResponse, DataPointJudgement } from '@clients/qaservice';
+import type { DatasetJudgementResponse } from '@clients/qaservice';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
-import type Keycloak from 'keycloak-js';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
@@ -62,7 +61,7 @@ const baseDatasetJudgement: DatasetJudgementResponse = {
   datasetId: 'dataset-id',
   companyId: 'company-id',
   reportingPeriod: '2023',
-  dataType: 'sfdr' as DatasetJudgementResponse['dataType'],
+  dataType: 'sfdr',
   judgementState: DatasetJudgementState.Pending,
   qaReporters: [
     {
@@ -210,7 +209,7 @@ function mountJudgeDialog(options?: {
 
   const mount = getMountingFunction();
   const keycloakMock = minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] });
-  const keycloakPromise = Promise.resolve(keycloakMock as unknown as Keycloak);
+  const keycloakPromise = Promise.resolve(keycloakMock);
   const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
   mount(JudgeDialog, {
@@ -550,8 +549,8 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-original-button"]').click();
       cy.wait('@patchJudgementDetail');
 
-      cy.get('[data-test="dialog-title"]').should('contain.text', 'KPI Beta Label');
-      cy.get('[data-test="dialog-title"]').should('not.contain.text', 'KPI Alpha Label');
+      cy.get('[data-test^="judge-dialog-header-"]').should('contain.text', 'KPI Beta Label');
+      cy.get('[data-test^="judge-dialog-header-"]').should('not.contain.text', 'KPI Alpha Label');
     });
 
     it('calls PATCH with AcceptedDataPointSource.Custom and JSON content when accepting from JSON mode', () => {
@@ -740,7 +739,7 @@ describe('JudgeDialog component tests', () => {
           ...baseDatasetJudgement.dataPoints,
           [dataPointTypeId]: {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            dataPointId: '' as DataPointJudgement['dataPointId'],
+            dataPointId: '',
           },
         },
       };
@@ -1319,14 +1318,14 @@ describe('JudgeDialog component tests', () => {
     it('updates the dialog title to the selected KPI after clicking Go To', () => {
       mountJudgeDialog();
 
-      cy.get('[data-test="dialog-title"]').should('have.text', 'KPI Alpha Label');
+      cy.get('[data-test^="judge-dialog-header-"]').should('have.text', 'KPI Alpha Label');
 
       cy.get('[data-test="next-datapoint-select"]').click();
       cy.get('.p-select-overlay').should('be.visible');
       cy.contains('KPI Beta Label').click();
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
-      cy.get('[data-test="dialog-title"]').should('have.text', 'KPI Beta Label');
+      cy.get('[data-test^="judge-dialog-header-"]').should('have.text', 'KPI Beta Label');
     });
 
     it('shows all KPIs in the dropdown when no KPIs have been reviewed yet', () => {
