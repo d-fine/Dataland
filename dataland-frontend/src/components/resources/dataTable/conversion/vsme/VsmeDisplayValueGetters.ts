@@ -84,7 +84,7 @@ export function formatVsmeSubsidiaryForDisplay(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,
@@ -121,7 +121,7 @@ export function formatVsmePollutionEmissionForDisplay(
     convertedValueForModal = convertVsmePollutionEmissionToListForModal(input);
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${fieldLabel}`,

@@ -51,7 +51,7 @@ function getDisplayValueForModal(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return {
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
     displayValue: {
       label: `Show ${field.label}`,
