@@ -31,7 +31,7 @@ run_step() {
   log_step_done "$description"
 }
 
-docker_compose() {
+run_docker_compose() {
   run_quiet_command docker compose "$@"
 }
 
@@ -53,8 +53,8 @@ determine_compose_profiles() {
 
 stop_and_cleanup_containers() {
   log_step "Cleaning up existing containers"
-  docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
+  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
+  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
 }
 
 start_configured_services() {
@@ -65,7 +65,7 @@ start_configured_services() {
   while read -r service; do
     [[ -n "$service" ]] || continue
     log_step "Starting service $service"
-    docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"} "$service"
+    run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"} "$service"
   done < ./localContainer.conf
 }
 
@@ -75,7 +75,7 @@ start_all_services() {
   local compose_profiles=("$@")
 
   log_step "Starting development stack"
-  docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"}
+  run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"}
 }
 
 start_docker_services() {
@@ -98,9 +98,9 @@ start_docker_services() {
 
 clear_docker_completely() {
   log_step "Clearing Docker state"
-  docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  docker_compose --profile init down
-  docker_compose down --remove-orphans
+  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
+  run_docker_compose --profile init down
+  run_docker_compose down --remove-orphans
   run_quiet_command docker volume prune --force --all
 }
 
@@ -138,7 +138,7 @@ rebuild_keycloak_image() {
 
 initialize_keycloak() {
   log_step "Initializing Keycloak"
-  docker_compose --profile init up --build -d
+  run_docker_compose --profile init up --build -d
 
   while true; do
     local keycloak_logs
@@ -151,13 +151,13 @@ initialize_keycloak() {
     sleep 5
   done
 
-  docker_compose --profile init down
+  run_docker_compose --profile init down
   log_step_done "Initializing Keycloak"
 }
 
 stop_development_stack() {
   log_step "Stopping development stack"
-  docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
+  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
 }
 
 wait_for_admin_proxy() {
