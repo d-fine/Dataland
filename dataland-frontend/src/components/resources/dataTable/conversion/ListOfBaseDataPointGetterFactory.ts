@@ -24,7 +24,7 @@ export function formatListOfBaseDataPoint(
   if (!baseDataPoints || baseDataPoints.length === 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    return {
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? 's' : ''}`,
