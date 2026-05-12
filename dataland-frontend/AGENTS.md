@@ -14,7 +14,6 @@
 - Lint files: `npm run lint`
 - Lint in CI mode: `npm run lintci`
 - Type-check: `npm run typecheck`
-- Build production bundle: `npm run build`
 - Check dependencies: `npm run checkdependencies`
 - Run component tests: `npm run testcomponent`
 - Check Cypress E2E TypeScript compilation: `npm run checkcypresscompilation`
@@ -26,7 +25,6 @@
 - For most code changes, run:
   - `npm run lint`
   - `npm run typecheck`
-  - `npm run build`
 - Before finishing, prefer CI-style verification with:
   - `npm run lintci`
   - `npm run formatci`
