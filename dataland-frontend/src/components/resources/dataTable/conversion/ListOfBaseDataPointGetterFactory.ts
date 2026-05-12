@@ -1,7 +1,6 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import ListOfBaseDataPointModal from '@/components/resources/dataTable/modals/ListOfBaseDataPointModal.vue';
