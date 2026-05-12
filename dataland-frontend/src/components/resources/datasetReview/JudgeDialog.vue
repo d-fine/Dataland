@@ -12,7 +12,10 @@
     <!-- Header -->
     <template #header>
       <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; flex: 1">
-        <span data-test="dialog-title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)">
+        <span
+          :data-test="`judge-dialog-header-${currentDataPointTypeId}`"
+          style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)"
+        >
           {{ currentDataPointLabel }}
         </span>
         <span
@@ -224,19 +227,20 @@ const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(com
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo.value ?? [];
   const reportingPeriod = datasetJudgement.value?.reportingPeriod;
-  const reportingPeriodNumber = reportingPeriod != null ? parseInt(reportingPeriod) : null;
+  const reportingPeriodNumber =
+    reportingPeriod === null || reportingPeriod === undefined ? null : Number.parseInt(reportingPeriod, 10);
   return docs
     .filter((doc: DocumentMetaInfoResponse) => {
       if (doc.reportingPeriod == null) {
         return true;
       } else if (reportingPeriodNumber != null) {
-        return parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
+        return Number.parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
       }
       return false;
     })
     .map((doc: DocumentMetaInfoResponse) => {
       const label = doc.documentName ?? doc.documentId;
-      return <DocumentOption>{
+      return {
         label: label,
         value: label,
         dataSource: {
@@ -244,7 +248,7 @@ const availableDocuments = computed<DocumentOption[]>(() => {
           fileReference: doc.documentId ?? null,
           publicationDate: doc.publicationDate ?? null,
         },
-      };
+      } as DocumentOption;
     });
 });
 

@@ -76,7 +76,7 @@ describeIf(
         cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
       }
     });
-    it('Check if an reviewer user can access the corresponding page', () => {
+    it('Check if a reviewer user can access the corresponding page', () => {
       cy.ensureLoggedInAsReviewer();
       for (const page of reviewerOnlyPages) {
         cy.visit(page);
