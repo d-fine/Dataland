@@ -101,8 +101,7 @@ services:
     depends_on:
       api-key-manager-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     <<: *uncritical-constants-env
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
@@ -141,8 +140,7 @@ services:
     depends_on:
       accounting-service-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
@@ -234,8 +232,7 @@ services:
     depends_on:
       document-manager-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     logging:
       <<: *loki-logging
   document-manager-db:
@@ -268,8 +265,7 @@ services:
     depends_on:
       backend-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
@@ -315,8 +311,7 @@ services:
     volumes:
       - ./.git:/app/.git
     depends_on:
-      keycloak-initializer:
-        condition: service_completed_successfully
+
       backend:
         condition: service_started
     <<: *uncritical-constants-env
@@ -390,8 +385,7 @@ services:
     depends_on:
       internal-storage-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -582,8 +576,7 @@ services:
     depends_on:
       qa-service-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -627,8 +620,7 @@ services:
     depends_on:
       user-service-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     logging:
       <<: *loki-logging
   user-service-db:
@@ -655,9 +647,7 @@ services:
     networks:
       - internal
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
-    depends_on:
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
@@ -692,8 +682,7 @@ services:
     depends_on:
       community-manager-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -726,9 +715,7 @@ services:
       - "8489"
     networks:
       - internal
-    depends_on:
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     <<: *uncritical-constants-env
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
@@ -747,8 +734,7 @@ services:
     depends_on:
       email-service-db:
         condition: service_healthy
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     environment:
       <<: *rabbit-mq-user-and-pass
       JAVA_TOOL_OPTIONS: *java-tool-options
@@ -787,9 +773,7 @@ services:
     image: ${EXTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_external_storage_test:${DATALAND_EXTERNAL_STORAGE_TEST_VERSION}}
     networks:
       - internal
-    depends_on:
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     environment:
       <<: *rabbit-mq-user-and-pass
       JAVA_TOOL_OPTIONS: *java-tool-options
@@ -852,9 +836,7 @@ services:
     image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_TEST_VERSION}}
     expose:
       - "8080"
-    depends_on:
-      keycloak-initializer:
-        condition: service_completed_successfully
+
     <<: *uncritical-constants-env
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
