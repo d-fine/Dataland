@@ -23,7 +23,7 @@ print_usage() {
 
 rebuild_gradle_dockerfile() {
   rm -f ./*github_env.log
-  run_step "Rebuilding Gradle base image" ./build-utils/base_rebuild_gradle_dockerfile.sh
+  ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
 
 start_health_check() {
@@ -41,14 +41,14 @@ start_development_stack() {
   local container_backend="$3"
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
-  setup_certificates "$self_signed"
-  assemble_all_projects
-  rebuild_gradle_dockerfile
-  source_github_env_log
-  source_uncritical_environment
-  rebuild_docker_images
-  source_github_env_log
-  source_uncritical_environment
+  run_step "Setting up SSL certificates" setup_certificates "$self_signed"
+  run_step "Assembling projects" assemble_all_projects
+  run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
+  run_step "Loading generated GitHub environment" source_github_env_log
+  run_step "Loading uncritical environment" source_uncritical_environment
+  run_step "Building Docker images" rebuild_docker_images
+  run_step "Reloading generated GitHub environment" source_github_env_log
+  run_step "Reloading uncritical environment" source_uncritical_environment
 
   local compose_profiles
   read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
@@ -61,13 +61,13 @@ start_development_stack() {
     export BACKEND_URL="http://host.docker.internal:8080/api/"
   fi
 
-  stop_and_cleanup_containers
-  start_docker_services "$container_backend" "${compose_profiles[@]}"
+  run_step "Cleaning up existing containers" stop_and_cleanup_containers
+  run_step "Starting Docker services" start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
-  wait_for_admin_proxy "${compose_profiles[@]}"
+  run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
 
   if [[ "$container_backend" = false ]]; then
-    log_success "Local stack services started. Launching backend locally."
+    log_step "Starting backend locally"
     start_backend
     return
   fi
@@ -84,7 +84,7 @@ check_backend_not_running() {
 }
 
 assemble_all_projects() {
-  run_step "Assembling projects" ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
+  ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
 }
 
 reset_development_stack() {
@@ -92,15 +92,15 @@ reset_development_stack() {
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   check_backend_not_running
-  clear_docker_completely
+  run_step "Clearing Docker state" clear_docker_completely
   run_step "Cleaning Gradle outputs" ./gradlew clean
-  assemble_all_projects
-  rebuild_gradle_dockerfile
-  source_github_env_log
-  source_uncritical_environment
-  rebuild_postgres_image
-  rebuild_keycloak_image
-  initialize_keycloak
+  run_step "Assembling projects" assemble_all_projects
+  run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
+  run_step "Loading generated GitHub environment" source_github_env_log
+  run_step "Loading uncritical environment" source_uncritical_environment
+  run_step "Rebuilding Postgres image" rebuild_postgres_image
+  run_step "Rebuilding Keycloak image" rebuild_keycloak_image
+  run_step "Initializing Keycloak" initialize_keycloak
 }
 
 parse_arguments() {
@@ -178,7 +178,7 @@ parse_arguments() {
   fi
 
   if [[ "$do_stop" = true ]]; then
-    stop_development_stack
+    run_step "Stopping development stack" stop_development_stack
   fi
 
   if [[ "$do_reset" = true ]]; then

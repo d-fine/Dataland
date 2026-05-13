@@ -19,14 +19,12 @@ generate_self_signed_certificates() {
     return 0
   fi
   
-  log_step "Generating self-signed SSL certificates"
   MSYS_NO_PATHCONV=1 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
     -keyout ./local/certs/privkey.pem \
     -out ./local/certs/fullchain.pem \
     -subj "/C=DE/ST=Hessen/L=Frankfurt/O=DatalandTest/CN=local-dev.dataland.com"
   cp ./local/certs/fullchain.pem ./local/certs/cert.pem
   cp ./local/certs/fullchain.pem ./local/certs/chain.pem
-  log_success "Self-signed SSL certificates generated"
 }
 
 setup_certificates() {

@@ -57,10 +57,8 @@ determine_compose_profiles() {
 }
 
 stop_and_cleanup_containers() {
-  log_step "Cleaning up existing containers"
   run_docker_compose "${development_profiles[@]}" down
   run_docker_compose "${development_profiles[@]}" pull --ignore-pull-failures
-  log_success "Cleaning up existing containers"
 }
 
 start_configured_services() {
@@ -70,9 +68,7 @@ start_configured_services() {
 
   while read -r service; do
     [[ -n "$service" ]] || continue
-    log_step "Starting service $service"
     run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"} "$service"
-    log_success "Starting service $service"
   done < ./localContainer.conf
 }
 
@@ -81,9 +77,7 @@ start_all_services() {
   shift
   local compose_profiles=("$@")
 
-  log_step "Starting development stack"
   run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"}
-  log_success "Starting development stack"
 }
 
 start_docker_services() {
@@ -105,11 +99,9 @@ start_docker_services() {
 }
 
 clear_docker_completely() {
-  log_step "Clearing Docker state"
   run_docker_compose "${development_profiles[@]}" --profile init down
   run_docker_compose down --remove-orphans
   run_quiet_command docker volume prune --force --all
-  log_success "Clearing Docker state"
 }
 
 rebuild_docker_images() {
@@ -130,24 +122,21 @@ rebuild_docker_images() {
     LOCAL=true "$rebuild_script" &> "./$log_folder/$(basename "$rebuild_script").log" &
   done
 
-  log_step "Building Docker images"
   log_info "Detailed build logs: $log_folder"
   wait
-  log_success "Building Docker images"
 }
 
 rebuild_postgres_image() {
-  run_step "Rebuilding Postgres image" ./build-utils/rebuild_postgres_image.sh
+  ./build-utils/rebuild_postgres_image.sh
   source_github_env_log
 }
 
 rebuild_keycloak_image() {
-  run_step "Rebuilding Keycloak image" ./build-utils/rebuild_keycloak_image.sh
+  ./build-utils/rebuild_keycloak_image.sh
   source_github_env_log
 }
 
 initialize_keycloak() {
-  log_step "Initializing Keycloak"
   run_docker_compose --profile init up --build -d
 
   while true; do
@@ -162,19 +151,16 @@ initialize_keycloak() {
   done
 
   run_docker_compose --profile init down
-  log_success "Initializing Keycloak"
 }
 
 stop_development_stack() {
-  log_step "Stopping development stack"
   run_docker_compose "${development_profiles[@]}" down
-  log_success "Stopping development stack"
 }
 
 wait_for_admin_proxy() {
   local compose_profiles=("$@")
 
   if [[ -s ./localContainer.conf ]]; then
-    run_step "Waiting for admin-proxy" run_docker_compose "${compose_profiles[@]}" up -d --wait admin-proxy
+    run_docker_compose "${compose_profiles[@]}" up -d --wait admin-proxy
   fi
 }
