@@ -33,7 +33,6 @@ run_step() {
 
   log_step "$description"
   run_quiet_command "$@"
-  log_success "$description"
 }
 
 run_docker_compose() {
