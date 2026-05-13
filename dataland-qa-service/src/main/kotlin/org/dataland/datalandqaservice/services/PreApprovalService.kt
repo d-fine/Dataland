@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class PreApprovalService(
-    @Value("\${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:false}")
+    @Value("\${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:true}")
     private val autoPreApprovalEnabled: Boolean,
 ) {
     /**
@@ -30,14 +30,11 @@ class PreApprovalService(
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
 
             // Check if all QA reports are QaAccepted
-            val latestReportPerReporter =
-                dataPoint.qaReports
-                    .groupBy { it.reporterUserId }
-                    .map { (_, reports) -> reports.maxBy { it.uploadTime } }
+            val qaReportsForDataPoint = dataPoint.qaReports
 
             val allQaReportsAccepted =
-                latestReportPerReporter.isNotEmpty() &&
-                    latestReportPerReporter.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
+                qaReportsForDataPoint.isNotEmpty() &&
+                    qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
 
             val allChecksPass =
                 listOf(
