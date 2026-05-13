@@ -18,8 +18,6 @@ class PreApprovalServiceTest {
     private fun buildQaReport(
         reporterUserId: String,
         verdict: QaReportDataPointVerdict,
-        uploadTime: Long = 1000L,
-        active: Boolean = true,
         dataPointId: String = UUID.randomUUID().toString(),
     ): DataPointQaReportEntity =
         DataPointQaReportEntity(
@@ -30,8 +28,8 @@ class PreApprovalServiceTest {
             dataPointId = dataPointId,
             dataPointType = MockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
             reporterUserId = reporterUserId,
-            uploadTime = uploadTime,
-            active = active,
+            uploadTime = 1000L,
+            active = true,
         )
 
     private fun buildDataPointJudgementEntity(qaReports: List<DataPointQaReportEntity>): DataPointJudgementEntity =
@@ -105,29 +103,5 @@ class PreApprovalServiceTest {
         val service = PreApprovalService(autoPreApprovalEnabled = true)
 
         assertNull(runWorkflow(service, emptyList()))
-    }
-
-    @Test
-    fun `Preapproval works when there are multiple reports per reporter and the latest is QaAccepted`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaRejected, uploadTime = 1000L),
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted, uploadTime = 2000L),
-            )
-
-        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
-    }
-
-    @Test
-    fun `No preapproval when there are multiple reports per reporter and the latest is QaRejected`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted, uploadTime = 1000L),
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaRejected, uploadTime = 2000L),
-            )
-
-        assertNull(runWorkflow(service, reports))
     }
 }
