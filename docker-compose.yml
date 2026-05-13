@@ -181,8 +181,6 @@ services:
         depends_on:
           data-sourcing-service-db:
             condition: service_healthy
-          keycloak-initializer:
-            condition: service_completed_successfully
         <<: *uncritical-constants-env
         environment:
           <<: *rabbit-mq-user-and-pass
