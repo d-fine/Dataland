@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -8,6 +9,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Pr
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -32,9 +34,12 @@ class PreApprovalServiceTest {
             active = true,
         )
 
-    private fun buildDataPointJudgementEntity(qaReports: List<DataPointQaReportEntity>): DataPointJudgementEntity =
+    private fun buildDataPointJudgementEntity(
+        qaReports: List<DataPointQaReportEntity>,
+        dataPointType: String = MockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+    ): DataPointJudgementEntity =
         DataPointJudgementEntity(
-            dataPointType = MockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+            dataPointType = dataPointType,
             dataPointId = UUID.randomUUID().toString(),
             qaReports = qaReports.toMutableList(),
             acceptedSource = null,
@@ -57,51 +62,165 @@ class PreApprovalServiceTest {
             .acceptedSource
     }
 
-    @Test
-    fun `No preapproval when environment variable is set to false`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = false)
-        val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+    @Nested
+    inner class GeneralPreApprovalTests {
+        @Test
+        fun `No preapproval when environment variable is set to false`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = false)
+            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
 
-        val result = service.runPreApprovalWorkflow(entity)
+            val result = service.runPreApprovalWorkflow(entity)
 
-        assertNull(result.dataPoints.first().acceptedSource)
+            assertNull(result.dataPoints.first().acceptedSource)
+        }
+
+        @Test
+        fun `Preapproval works when environment variable is true, there is only 1 reporter and report is QaAccepted`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `Preapproval works when environment variable is true, there are 2 reporter and all reports are QaAccepted`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports =
+                listOf(
+                    buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
+                    buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaAccepted),
+                )
+
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `No preapproval when there are two reports with mixed verdicts`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports =
+                listOf(
+                    buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
+                    buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaRejected),
+                )
+
+            assertNull(runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `No preapproval when there are no QA reports`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+
+            assertNull(runWorkflow(service, emptyList()))
+        }
     }
 
-    @Test
-    fun `Preapproval works when environment variable is true, there is only 1 reporter and report is QaAccepted`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+    @Nested
+    inner class ExemptFieldsTests {
+        @Test
+        fun `No preapproval for exempt field even if all reports are QaAccepted`() {
+            val exemptField = "exempt-field-type"
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = exemptField)
+            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+            entity.dataPoints.clear()
+            entity.dataPoints.add(dataPoint)
 
-        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
-    }
+            val result = service.runPreApprovalWorkflow(entity)
 
-    @Test
-    fun `Preapproval works when environment variable is true, there are 2 reporter and all reports are QaAccepted`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
-                buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaAccepted),
+            assertNull(result.dataPoints.first().acceptedSource)
+        }
+
+        @Test
+        fun `Preapproval works for non-exempt field when all reports are QaAccepted`() {
+            val nonExemptField = "non-exempt-field-type"
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf("some-exempt-field-type")),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = nonExemptField)
+            val entity =
+                MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().apply {
+                    dataPoints.clear()
+                    dataPoints.add(dataPoint)
+                }
+
+            val result = service.runPreApprovalWorkflow(entity)
+
+            assertEquals(AcceptedDataPointSource.Original, result.dataPoints.first().acceptedSource)
+        }
+
+        @Test
+        fun `All qualifying fields are auto-accepted when exempt fields list is empty`() {
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = emptyMap(),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `Only non-exempt fields are auto-accepted when multiple fields are present`() {
+            val exemptField = "exempt-field-type"
+            val nonExemptField = "non-exempt-field-type"
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+            entity.dataPoints.clear()
+            entity.dataPoints.add(buildDataPointJudgementEntity(reports, dataPointType = exemptField))
+            entity.dataPoints.add(buildDataPointJudgementEntity(reports, dataPointType = nonExemptField))
+
+            val result = service.runPreApprovalWorkflow(entity)
+
+            assertNull(result.dataPoints.first { it.dataPointType == exemptField }.acceptedSource)
+            assertEquals(
+                AcceptedDataPointSource.Original,
+                result.dataPoints.first { it.dataPointType == nonExemptField }.acceptedSource,
             )
+        }
 
-        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
-    }
+        @Test
+        fun `Qualifying fields are auto-accepted when exempt fields list contains only non-existent fields`() {
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf("non-existent-field")),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
-    @Test
-    fun `No preapproval when there are two reports with mixed verdicts`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
-                buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaRejected),
-            )
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
 
-        assertNull(runWorkflow(service, reports))
-    }
+        @Test
+        fun `Exempt field in one framework does not block preapproval for the same field in another framework`() {
+            val fieldName = "shared-field-type"
+            val service =
+                PreApprovalService(
+                    autoPreApprovalEnabled = true,
+                    exemptFields = mapOf(DataTypeEnum.vsme to setOf(fieldName)),
+                )
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = fieldName)
+            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+            entity.dataPoints.clear()
+            entity.dataPoints.add(dataPoint)
 
-    @Test fun `No preapproval when there are no QA reports`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val result = service.runPreApprovalWorkflow(entity)
 
-        assertNull(runWorkflow(service, emptyList()))
+            assertEquals(AcceptedDataPointSource.Original, result.dataPoints.first().acceptedSource)
+        }
     }
 }
