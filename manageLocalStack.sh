@@ -26,28 +26,6 @@ rebuild_gradle_dockerfile() {
   run_step "Rebuilding Gradle base image" ./build-utils/base_rebuild_gradle_dockerfile.sh
 }
 
-prepare_loki_volume() {
-  # In WSL we get permission errors on local loki volume subdirs which is circumvented by preparing them and setting
-  # permissive permissions upfront
-  log_step "Preparing Loki volume"
-
-  local loki_dirs=(
-    "${LOKI_VOLUME}"
-    "${LOKI_VOLUME}/chunks"
-    "${LOKI_VOLUME}/compactor"
-    "${LOKI_VOLUME}/rules"
-    "${LOKI_VOLUME}/index"
-    "${LOKI_VOLUME}/index_cache"
-    "${LOKI_VOLUME}/wal"
-    "${LOKI_VOLUME}/health-check-log"
-  )
-
-  mkdir -p "${loki_dirs[@]}"
-  chmod 777 "${loki_dirs[@]}"
-
-  log_success "Preparing Loki volume"
-}
-
 start_health_check() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
   ./health-check/healthCheck.sh &
@@ -84,7 +62,6 @@ start_development_stack() {
   fi
 
   stop_and_cleanup_containers
-  prepare_loki_volume
   start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
   wait_for_admin_proxy "${compose_profiles[@]}"
