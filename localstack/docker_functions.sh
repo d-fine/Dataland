@@ -28,7 +28,7 @@ run_step() {
 
   log_step "$description"
   run_quiet_command "$@"
-  log_step_done "$description"
+  log_success "$description"
 }
 
 run_docker_compose() {
@@ -55,6 +55,7 @@ stop_and_cleanup_containers() {
   log_step "Cleaning up existing containers"
   run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
   run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
+  log_success "Cleaning up existing containers"
 }
 
 start_configured_services() {
@@ -66,6 +67,7 @@ start_configured_services() {
     [[ -n "$service" ]] || continue
     log_step "Starting service $service"
     run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"} "$service"
+    log_success "Starting service $service"
   done < ./localContainer.conf
 }
 
@@ -76,6 +78,7 @@ start_all_services() {
 
   log_step "Starting development stack"
   run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"}
+  log_success "Starting development stack"
 }
 
 start_docker_services() {
@@ -102,6 +105,7 @@ clear_docker_completely() {
   run_docker_compose --profile init down
   run_docker_compose down --remove-orphans
   run_quiet_command docker volume prune --force --all
+  log_success "Clearing Docker state"
 }
 
 rebuild_docker_images() {
@@ -111,19 +115,21 @@ rebuild_docker_images() {
 
   for rebuild_script in ./build-utils/rebuild*.sh; do
     # Limit concurrent rebuilds to keep Docker and Gradle resource usage manageable locally.
+    if [[ "$SILENT" != true && $(jobs -r | wc -l) -ge $max_parallel ]]; then
+      log_info "Waiting for free build slot ($max_parallel parallel max)"
+    fi
+
     while [[ $(jobs -r | wc -l) -ge $max_parallel ]]; do
-      status_line_print "Waiting for free build slot ($max_parallel parallel max)"
       sleep 1
     done
 
-    status_line_clear
     LOCAL=true "$rebuild_script" &> "./$log_folder/$(basename "$rebuild_script").log" &
   done
 
   log_step "Building Docker images"
   log_info "Detailed build logs: $log_folder"
   wait
-  log_step_done "Building Docker images"
+  log_success "Building Docker images"
 }
 
 rebuild_postgres_image() {
@@ -147,17 +153,18 @@ initialize_keycloak() {
     if grep -q "Initialization of Keycloak finished\." <<< "$keycloak_logs"; then
       break
     fi
-    status_line_print "Waiting for Keycloak to finish initialization"
+    log_info "Waiting for Keycloak to finish initialization"
     sleep 5
   done
 
   run_docker_compose --profile init down
-  log_step_done "Initializing Keycloak"
+  log_success "Initializing Keycloak"
 }
 
 stop_development_stack() {
   log_step "Stopping development stack"
   run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
+  log_success "Stopping development stack"
 }
 
 wait_for_admin_proxy() {

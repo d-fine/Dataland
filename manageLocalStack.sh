@@ -45,7 +45,7 @@ prepare_loki_volume() {
   mkdir -p "${loki_dirs[@]}"
   chmod 777 "${loki_dirs[@]}"
 
-  log_step_done "Preparing Loki volume"
+  log_success "Preparing Loki volume"
 }
 
 start_health_check() {
@@ -100,8 +100,8 @@ start_development_stack() {
 
 check_backend_not_running() {
   if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
-    echo "ERROR: The backend is currently running. This will prevent the new backend from starting."
-    echo "Shut down the running process and restart the script."
+    log_error "The backend is currently running. This will prevent the new backend from starting."
+    log_info "Shut down the running process and restart the script."
     exit 1
   fi
 }
@@ -185,7 +185,7 @@ parse_arguments() {
         shift
         ;;
       *)
-        echo "Unknown option: $1"
+        log_error "Unknown option: $1"
         print_usage
         exit 1
         ;;
