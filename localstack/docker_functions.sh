@@ -59,7 +59,7 @@ determine_compose_profiles() {
 stop_and_cleanup_containers() {
   log_step "Cleaning up existing containers"
   run_docker_compose "${development_profiles[@]}" down
-  run_docker_compose "${development_profiles[@]}" pull --ignore-pull-failures #--include-deps
+  run_docker_compose "${development_profiles[@]}" pull --ignore-pull-failures
   log_success "Cleaning up existing containers"
 }
 
