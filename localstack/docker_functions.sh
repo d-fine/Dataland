@@ -2,6 +2,11 @@
 source "$(dirname "${BASH_SOURCE[0]}")/logging_functions.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
 
+# manageLocalStack always loads the base stack plus the local override that swaps Loki to a named Docker volume.
+compose_files=(-f docker-compose.yml -f docker-compose.local.yml)
+# These profiles cover the full local dev stack for cleanup/start-stop operations regardless of current frontend/backend mode.
+development_profiles=(--profile development --profile developmentContainerFrontend --profile developmentContainerBackend)
+
 # Suppress successful command output when silent mode is enabled, but replay captured output on failure.
 run_quiet_command() {
   if [[ "$SILENT" != true ]]; then
@@ -32,7 +37,7 @@ run_step() {
 }
 
 run_docker_compose() {
-  run_quiet_command docker compose "$@"
+  run_quiet_command docker compose "${compose_files[@]}" "$@"
 }
 
 determine_compose_profiles() {
@@ -53,8 +58,8 @@ determine_compose_profiles() {
 
 stop_and_cleanup_containers() {
   log_step "Cleaning up existing containers"
-  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
+  run_docker_compose "${development_profiles[@]}" down
+  run_docker_compose "${development_profiles[@]}" pull --ignore-pull-failures #--include-deps
   log_success "Cleaning up existing containers"
 }
 
@@ -101,8 +106,7 @@ start_docker_services() {
 
 clear_docker_completely() {
   log_step "Clearing Docker state"
-  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  run_docker_compose --profile init down
+  run_docker_compose "${development_profiles[@]}" --profile init down
   run_docker_compose down --remove-orphans
   run_quiet_command docker volume prune --force --all
   log_success "Clearing Docker state"
@@ -149,7 +153,7 @@ initialize_keycloak() {
   while true; do
     local keycloak_logs
     # The init container exits on completion, so poll its logs for the success marker instead of health.
-    keycloak_logs=$(docker compose --profile init logs --no-color 2>&1 || true)
+    keycloak_logs=$(docker compose "${compose_files[@]}" --profile init logs --no-color 2>&1 || true)
     if grep -q "Initialization of Keycloak finished\." <<< "$keycloak_logs"; then
       break
     fi
@@ -163,7 +167,7 @@ initialize_keycloak() {
 
 stop_development_stack() {
   log_step "Stopping development stack"
-  run_docker_compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
+  run_docker_compose "${development_profiles[@]}" down
   log_success "Stopping development stack"
 }
 
@@ -171,6 +175,6 @@ wait_for_admin_proxy() {
   local compose_profiles=("$@")
 
   if [[ -s ./localContainer.conf ]]; then
-    run_step "Waiting for admin-proxy" docker compose "${compose_profiles[@]}" up -d --wait admin-proxy
+    run_step "Waiting for admin-proxy" run_docker_compose "${compose_profiles[@]}" up -d --wait admin-proxy
   fi
 }
