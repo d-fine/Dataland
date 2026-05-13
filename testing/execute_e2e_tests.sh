@@ -12,7 +12,7 @@ for i in 1 2 3; do
   }
 done
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
-timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
+timeout 3600 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
 # Check and validate that all docker containers are indeed healthy
 health_check_results=$(get_services_that_are_not_healthy_but_should_be_in_compose_profile testing)
