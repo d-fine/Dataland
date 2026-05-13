@@ -39,4 +39,4 @@
 - Do not introduce new `@ts-nocheck` directives in modified files.
 - Prefer existing shared components, composables, stores, and framework configuration patterns before adding new ones.
 - Keep styling aligned with PrimeVue defaults unless there is a clear need for custom scoped styles.
-- This package depends on `dataland-sharedElements` and on generated OpenAPI clients. Changes in either may require rebuilding this package.
+- This package depends on `dataland-sharedElements`, `dataland-website` and on generated OpenAPI clients. Changes in either may require rebuilding this package.
