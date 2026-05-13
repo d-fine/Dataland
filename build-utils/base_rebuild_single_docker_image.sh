@@ -92,4 +92,22 @@ else
   docker_parameter=(--context=default buildx build -f "$dockerfile" . -t "$full_image_reference")
 fi
 echo "rebuilding image $full_image_reference"
-docker "${docker_parameter[@]}" "${docker_build_args[@]}" "${docker_build_environment_parameters[@]}"
+
+success=false
+for i in 1 2 3; do
+  echo "Attempt $i to build and push Docker image..."
+  # The 'if' statement safely catches the exit code without triggering 'set -e'
+  if docker "${docker_parameter[@]}" "${docker_build_args[@]}" "${docker_build_environment_parameters[@]}"; then
+    success=true
+    break
+  else
+    echo "Build/push failed. Waiting 15 seconds before retrying..."
+    sleep 15
+  fi
+done
+
+# If all 3 attempts fail, manually trigger the exit code to stop the CI
+if [ "$success" = false ]; then
+  echo "Error: Failed to build and push $full_image_reference after 3 attempts."
+  exit 1
+fi
