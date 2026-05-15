@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -65,7 +66,7 @@ class DatasetJudgementServiceTest {
             datasetJudgementSupportService,
             creationServiceClass,
             datasetJudgementFinalizationService,
-            PreApprovalService(autoPreApprovalEnabled = false),
+            PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig()),
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest

@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -66,7 +67,7 @@ class PreApprovalServiceTest {
     inner class GeneralPreApprovalTests {
         @Test
         fun `No preapproval when environment variable is set to false`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = false)
+            val service = PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
             val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
 
             val result = service.runPreApprovalWorkflow(entity)
@@ -76,7 +77,7 @@ class PreApprovalServiceTest {
 
         @Test
         fun `Preapproval works when environment variable is true, there is only 1 reporter and report is QaAccepted`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
             assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
@@ -84,7 +85,7 @@ class PreApprovalServiceTest {
 
         @Test
         fun `Preapproval works when environment variable is true, there are 2 reporter and all reports are QaAccepted`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
             val reports =
                 listOf(
                     buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
@@ -96,7 +97,7 @@ class PreApprovalServiceTest {
 
         @Test
         fun `No preapproval when there are two reports with mixed verdicts`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
             val reports =
                 listOf(
                     buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
@@ -108,7 +109,7 @@ class PreApprovalServiceTest {
 
         @Test
         fun `No preapproval when there are no QA reports`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
 
             assertNull(runWorkflow(service, emptyList()))
         }
@@ -122,7 +123,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf(exemptField))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
             val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = exemptField)
@@ -141,7 +142,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf("some-exempt-field-type")),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf("some-exempt-field-type"))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
             val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = nonExemptField)
@@ -161,7 +162,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = emptyMap(),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(emptyMap()),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
@@ -175,7 +176,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf(exemptField))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
             val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
@@ -197,7 +198,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = mapOf(DataTypeEnum.sfdr to setOf("non-existent-field")),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf("non-existent-field"))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
@@ -210,7 +211,7 @@ class PreApprovalServiceTest {
             val service =
                 PreApprovalService(
                     autoPreApprovalEnabled = true,
-                    exemptFields = mapOf(DataTypeEnum.vsme to setOf(fieldName)),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.vsme to setOf(fieldName))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
             val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = fieldName)

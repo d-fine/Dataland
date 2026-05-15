@@ -1,0 +1,8 @@
+dataland:
+  qa-service:
+    preapproval:
+      exempt-fields:
+        sfdr:
+          - scope1GhgEmissionsInTonnes
+
+
