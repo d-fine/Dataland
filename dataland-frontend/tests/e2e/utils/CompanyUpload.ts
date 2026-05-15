@@ -7,6 +7,7 @@ import {
 } from '@clients/backend';
 import { faker } from '@faker-js/faker';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import { isAxiosError } from 'axios';
 
 /**
  * Fills the company for a company with the specified name with dummy values.
@@ -81,8 +82,23 @@ export async function uploadCompanyViaApi(
   token: string,
   companyInformation: CompanyInformation
 ): Promise<StoredCompany> {
-  const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-    companyInformation
-  );
-  return data.data;
+  const api = new CompanyDataControllerApi(new Configuration({ accessToken: token }));
+  try {
+    const data = await api.postCompany(companyInformation);
+    return data.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error) && error.response?.status === 400) {
+      const identifiers = companyInformation.identifiers ?? {};
+      for (const [type, values] of Object.entries(identifiers)) {
+        const value = (values as string[] | undefined)?.[0];
+        if (value) {
+          const companyIdResponse = await api.getCompanyIdByIdentifier(type as IdentifierType, value);
+          const companyId = companyIdResponse.data.companyId;
+          const storedCompanyResponse = await api.getCompanyById(companyId);
+          return storedCompanyResponse.data;
+        }
+      }
+    }
+    throw error;
+  }
 }
