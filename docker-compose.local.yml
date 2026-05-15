@@ -1,8 +1,0 @@
-services:
-  loki:
-    volumes:
-      - local_loki_data:/loki
-
-volumes:
-  local_loki_data:
-    driver: local

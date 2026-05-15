@@ -2,8 +2,6 @@
 source "$(dirname "${BASH_SOURCE[0]}")/logging_functions.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
 
-# manageLocalStack always loads the base stack plus the local override that swaps Loki to a named Docker volume.
-compose_files=(-f docker-compose.yml -f docker-compose.local.yml)
 # These profiles cover the full local dev stack for cleanup/start-stop operations regardless of current frontend/backend mode.
 development_profiles=(--profile development --profile developmentContainerFrontend --profile developmentContainerBackend)
 
@@ -36,7 +34,7 @@ run_step() {
 }
 
 run_docker_compose() {
-  run_quiet_command docker compose "${compose_files[@]}" "$@"
+  run_quiet_command docker compose "$@"
 }
 
 determine_compose_profiles() {
@@ -141,7 +139,7 @@ initialize_keycloak() {
   while true; do
     local keycloak_logs
     # The init container exits on completion, so poll its logs for the success marker instead of health.
-    keycloak_logs=$(docker compose "${compose_files[@]}" --profile init logs --no-color 2>&1 || true)
+    keycloak_logs=$(docker compose --profile init logs --no-color 2>&1 || true)
     if grep -q "Initialization of Keycloak finished\." <<< "$keycloak_logs"; then
       break
     fi
