@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Pr
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -57,51 +58,54 @@ class PreApprovalServiceTest {
             .acceptedSource
     }
 
-    @Test
-    fun `No preapproval when environment variable is set to false`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = false)
-        val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+    @Nested
+    inner class GeneralPreApprovalTests {
+        @Test
+        fun `No preapproval when environment variable is set to false`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = false)
+            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
 
-        val result = service.runPreApprovalWorkflow(entity)
+            val result = service.runPreApprovalWorkflow(entity)
 
-        assertNull(result.dataPoints.first().acceptedSource)
-    }
+            assertNull(result.dataPoints.first().acceptedSource)
+        }
 
-    @Test
-    fun `Preapproval works when environment variable is true, there is only 1 reporter and report is QaAccepted`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+        @Test
+        fun `Preapproval works when environment variable is true, there is only 1 reporter and report is QaAccepted`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
-        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
-    }
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
 
-    @Test
-    fun `Preapproval works when environment variable is true, there are 2 reporter and all reports are QaAccepted`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
-                buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaAccepted),
-            )
+        @Test
+        fun `Preapproval works when environment variable is true, there are 2 reporter and all reports are QaAccepted`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports =
+                listOf(
+                    buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
+                    buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaAccepted),
+                )
 
-        assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
-    }
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
 
-    @Test
-    fun `No preapproval when there are two reports with mixed verdicts`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
-        val reports =
-            listOf(
-                buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
-                buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaRejected),
-            )
+        @Test
+        fun `No preapproval when there are two reports with mixed verdicts`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
+            val reports =
+                listOf(
+                    buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted),
+                    buildQaReport(dummyReporter2, QaReportDataPointVerdict.QaRejected),
+                )
 
-        assertNull(runWorkflow(service, reports))
-    }
+            assertNull(runWorkflow(service, reports))
+        }
 
-    @Test fun `No preapproval when there are no QA reports`() {
-        val service = PreApprovalService(autoPreApprovalEnabled = true)
+        @Test fun `No preapproval when there are no QA reports`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true)
 
-        assertNull(runWorkflow(service, emptyList()))
+            assertNull(runWorkflow(service, emptyList()))
+        }
     }
 }
