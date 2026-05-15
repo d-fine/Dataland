@@ -1,7 +1,7 @@
 package org.dataland.datalandspecificationservice.model
 
 import org.dataland.datalandspecification.database.SpecificationDatabase
-import org.dataland.datalandspecification.specifications.CalculationRule
+import org.dataland.datalandbackendutils.model.CalculationRule
 import org.dataland.datalandspecification.specifications.DataPointType
 
 /**

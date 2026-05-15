@@ -1,4 +1,4 @@
-package org.dataland.datalandspecification.specifications
+package org.dataland.datalandbackendutils.model
 
 /**
  * A calculation rule defines how the value of a data point can be computed from a set of input data points.

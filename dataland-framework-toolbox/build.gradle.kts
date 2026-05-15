@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.gradle.tooling)
     implementation(libs.freemarker)
     implementation(project(":dataland-specification-lib"))
+    implementation(project(":dataland-backend-utils"))
     implementation(kotlin("reflect"))
     testImplementation(kotlin("test"))
 }
