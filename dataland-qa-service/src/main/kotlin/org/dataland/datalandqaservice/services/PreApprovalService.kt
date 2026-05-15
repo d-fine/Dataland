@@ -61,7 +61,7 @@ class PreApprovalService(
      *         `false` otherwise
      */
     private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports
+        val qaReportsForDataPoint = dataPoint.qaReports.filter { it.active }
 
         return qaReportsForDataPoint.isNotEmpty() &&
             qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
