@@ -18,7 +18,7 @@ class PreApprovalService(
 ) {
     /**
      * Runs the pre-approval workflow on the given DatasetJudgementEntity.
-     * If the feature flag is enabled, data points where all active QA reports (latest per reporter)
+     * If the feature flag is enabled, data points where all active QA reports
      * have the verdict QaAccepted are automatically pre-approved.
      *
      * The logic is structured so that for each data point multiple checks can be added easily:
@@ -57,7 +57,7 @@ class PreApprovalService(
      *         `false` otherwise
      */
     private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports
+        val qaReportsForDataPoint = dataPoint.qaReports.filter { it.active }
 
         return qaReportsForDataPoint.isNotEmpty() &&
             qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
