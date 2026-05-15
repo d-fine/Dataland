@@ -31,6 +31,13 @@ start_health_check() {
   ./health-check/healthCheck.sh &
 }
 
+prepare_loki_bind_mounts() {
+  # Docker creates missing bind-mount source directories as root before the container starts.
+  # Create both Loki bind-mount paths as the local user first so files written into the
+  # project directory stay accessible to local tooling.
+  mkdir -p "${LOKI_VOLUME}/health-check-log"
+}
+
 start_backend() {
   ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
 }
@@ -62,6 +69,7 @@ start_development_stack() {
   fi
 
   run_step "Cleaning up existing containers" stop_and_cleanup_containers
+  run_step "Preparing Loki bind mounts" prepare_loki_bind_mounts
   run_step "Starting Docker services" start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
   run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
