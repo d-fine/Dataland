@@ -74,10 +74,11 @@ class DataPointCalculator
             val potentialCalculations = dataCompositionService.getAvailableCalculationRules(dataPointTypes)
             val allSourceTypes = potentialCalculations.values.flatten().flatMap { it.inputs }
             val allSourceData = getAvailableSourceData(allSourceTypes, reportingPeriod, companyId, correlationId)
-            val allAvailableSourceTypes = allSourceData.map { it.dataPointType }
+            val allSourceDataByType = allSourceData.associateBy { it.dataPointType }
+            val allAvailableSourceTypes = allSourceDataByType.keys
             val calculatedDataPoints = mutableListOf<UploadedDataPoint>()
-            potentialCalculations.forEach { (dataPointType, calculationRules) ->
-                calculationRules.forEach { calculationRule ->
+            potentialCalculations.forEach potentialCalculationLoop@{ (dataPointType, calculationRules) ->
+                calculationRules.forEach calculationRulesLoop@{ calculationRule ->
                     if (allAvailableSourceTypes.containsAll(calculationRule.inputs)) {
                         val targetDimensions =
                             BasicDataPointDimensions(
@@ -87,17 +88,22 @@ class DataPointCalculator
                             )
                         val orderedInputs =
                             calculationRule.inputs.map { sourceType ->
-                                allSourceData.single { it.dataPointType == sourceType }
+                                allSourceDataByType.getValue(sourceType)
                             }
-                        calculatedDataPoints
-                            .add(
+                        val calculatedDataPoint =
+                            try {
                                 calculateSingleDataPoint(
                                     inputs = orderedInputs,
                                     method = calculationRule.calculationMethod,
                                     dataPointDimensions = targetDimensions,
-                                ),
-                            )
-                        return@forEach
+                                )
+                            } catch (exception: IllegalArgumentException) {
+                                // Skip this rule and continue with the next
+                                return@calculationRulesLoop
+                            }
+                        // Rule was successfully applied, add the calculated data point to the result and do not attempt further rules for this type
+                        calculatedDataPoints.add(calculatedDataPoint)
+                        return@potentialCalculationLoop
                     }
                 }
             }
