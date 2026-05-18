@@ -295,6 +295,8 @@ jobs:
             testGroup: 4
           - testExecutor: "CYPRESS"
             testGroup: 5
+          - testExecutor: "CYPRESS"
+            testGroup: 6
           - testExecutor: "E2ETESTS"
             testGroup: 0
           - testExecutor: "RESTARTABILITY"
