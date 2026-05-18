@@ -12,7 +12,6 @@ import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -32,13 +31,13 @@ class DataPointCalculator
             val result = mutableListOf<UploadedDataPoint>()
             dataPoints.forEach { uploadedDataPoint ->
                 try {
-                    // ToDo flexibler den cast gestalten
-                    val castedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(uploadedDataPoint.dataPoint)
+                    // Cast to Any? since the value can be of any type and we only want to check for nullability here, the actual type is not relevant
+                    val castedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(uploadedDataPoint.dataPoint)
                     if (castedDataPoint.value != null) {
                         result.add(uploadedDataPoint)
                     }
                 } catch (ignore: Exception) {
-                    // Skipping data point as it cannot be cast into the expected type
+                    // Skipping data point as it cannot be cast into an extended data point
                 }
             }
             return result
