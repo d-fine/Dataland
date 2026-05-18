@@ -162,7 +162,10 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
 /**
  * Merges the given list of [ExtendedDocumentReference] into a single reference.
  */
-internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference {
+internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? {
+    if (inputs.isEmpty()) {
+        return null
+    }
     val usedReference = inputs.map { it.fileReference }.toSet().minOf { it }
     return ExtendedDocumentReference(
         fileReference = usedReference,
