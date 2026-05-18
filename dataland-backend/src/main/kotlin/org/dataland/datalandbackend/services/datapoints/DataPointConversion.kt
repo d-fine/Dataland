@@ -28,6 +28,7 @@ enum class DataPointConversion(
             targetType: DataPointType,
         ): UploadedDataPoint {
             val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
+            require(dataPoints.isNotEmpty()) { "At least one data point must be provided for summation." }
             require(dataPoints.none { it.value == null }) { "Data points for summation must not have null value fields." }
             val calculatedDataPoint =
                 ExtendedDataPoint(
