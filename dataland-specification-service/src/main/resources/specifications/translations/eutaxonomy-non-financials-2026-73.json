@@ -21,8 +21,8 @@
         "relativeShareInPercent" : "REV_ELIGIBLE_PCT"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "REV_ALIGNED_PCT",
-        "absoluteShare" : "REV_ALIGNED_ABS"
+        "absoluteShare" : "REV_ALIGNED_ABS",
+        "relativeShareInPercent" : "REV_ALIGNED_PCT"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "REV_SC_TO_CCM_PCT_ALIGNED",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "REV_SC_TO_CCA_PCT_ALIGNED",
@@ -35,9 +35,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "REV_NON_ASSESSED_PCT"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "REV_ELIGIBLE_ALIGNED_ACTIVITIES"
-      }
+      "eligibleOrAlignedActivities" : "REV_ELIGIBLE_ALIGNED_ACTIVITIES"
     },
     "capex" : {
       "totalAmount" : "CAPEX_TOTAL_AMOUNT",
@@ -45,8 +43,8 @@
         "relativeShareInPercent" : "CAPEX_ELIGIBLE_PCT"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "CAPEX_ALIGNED_PCT",
-        "absoluteShare" : "CAPEX_ALIGNED_ABS"
+        "absoluteShare" : "CAPEX_ALIGNED_ABS",
+        "relativeShareInPercent" : "CAPEX_ALIGNED_PCT"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "CAPEX_SC_TO_CCM_PCT_ALIGNED",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "CAPEX_SC_TO_CCA_PCT_ALIGNED",
@@ -59,9 +57,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "CAPEX_NON_ASSESSED_PCT"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "CAPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
-      }
+      "eligibleOrAlignedActivities" : "CAPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
     },
     "opex" : {
       "totalAmount" : "OPEX_TOTAL_AMOUNT",
@@ -69,8 +65,8 @@
         "relativeShareInPercent" : "OPEX_ELIGIBLE_PCT"
       },
       "alignedShare" : {
-        "relativeShareInPercent" : "OPEX_ALIGNED_PCT",
-        "absoluteShare" : "OPEX_ALIGNED_ABS"
+        "absoluteShare" : "OPEX_ALIGNED_ABS",
+        "relativeShareInPercent" : "OPEX_ALIGNED_PCT"
       },
       "substantialContributionToClimateChangeMitigationInPercentAligned" : "OPEX_SC_TO_CCM_PCT_ALIGNED",
       "substantialContributionToClimateChangeAdaptationInPercentAligned" : "OPEX_SC_TO_CCA_PCT_ALIGNED",
@@ -83,9 +79,7 @@
       "nonAssessedShare" : {
         "relativeShareInPercent" : "OPEX_NON_ASSESSED_PCT"
       },
-      "eligibleOrAlignedActivities" : {
-        "eligibleOrAlignedActivities" : "OPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
-      }
+      "eligibleOrAlignedActivities" : "OPEX_ELIGIBLE_ALIGNED_ACTIVITIES"
     }
   }
 }

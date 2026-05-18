@@ -1,0 +1,23 @@
+{
+  "revenue": {
+    "totalAmount": {
+      "value": 500000.0,
+      "currency": "EUR",
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": null
+    }
+  },
+  "capex": {
+    "eligibleShare": {
+      "relativeShareInPercent": {
+        "value": 42.0,
+        "quality": "Reported",
+        "comment": null,
+        "dataSource": null
+      }
+    }
+  },
+  "opex": null
+}
+

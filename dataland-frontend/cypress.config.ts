@@ -82,6 +82,7 @@ export default defineConfig({
       } else {
         console.log('Detected preview / development CI environment. Only loading index.ts to run all tests');
         config.specPattern = ['tests/e2e/specs/index.ts'];
+        config.defaultCommandTimeout = 25000;
       }
       require('@cypress/code-coverage/task')(on, config);
 

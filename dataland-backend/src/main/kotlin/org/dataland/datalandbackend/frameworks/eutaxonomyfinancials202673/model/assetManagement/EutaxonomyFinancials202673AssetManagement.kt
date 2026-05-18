@@ -8,6 +8,12 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.
     .breakdownOfTheNumeratorOfTheKpiCapexBased
     .EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiCapexBased
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.assetManagement
+    .breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+    .EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.assetManagement
+    .breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+    .EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.assetManagement
     .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
     .EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.assetManagement
@@ -31,9 +37,15 @@ data class EutaxonomyFinancials202673AssetManagement(
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
         EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
     @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased:
+        EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased? = null,
+    @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiCapexBased:
         EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiCapexBased? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
         EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
+    @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased:
+        EutaxonomyFinancials202673AssetmanagementBreakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased? = null,
 )
