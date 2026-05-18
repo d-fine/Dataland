@@ -315,7 +315,6 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
-      JAVA_TOOL_OPTIONS: *java-tool-options
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_JUDGE_PASSWORD: ${KEYCLOAK_JUDGE_PASSWORD}
