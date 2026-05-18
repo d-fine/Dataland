@@ -3,7 +3,7 @@ package org.dataland.frameworktoolbox.specific.specification.elements
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.dataland.datalandspecification.specifications.CalculationRule
+import org.dataland.datalandbackendutils.model.CalculationRule
 import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.specification.FrameworkBuilder

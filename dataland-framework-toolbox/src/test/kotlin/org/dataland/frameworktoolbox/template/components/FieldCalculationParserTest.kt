@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.template.components
 
-import org.dataland.datalandspecification.specifications.CalculationRule
+import org.dataland.datalandbackendutils.model.CalculationRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
