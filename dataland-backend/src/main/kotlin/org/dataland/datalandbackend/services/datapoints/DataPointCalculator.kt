@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.InternalStorageAdapter
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -26,6 +27,7 @@ class DataPointCalculator
         private val dataCompositionService: DataCompositionService,
         private val dataAvailabilityChecker: DataAvailabilityChecker,
         private val internalStorageAdapter: InternalStorageAdapter,
+        private val specificationService: SpecificationService,
     ) {
         private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> {
             val result = mutableListOf<UploadedDataPoint>()
@@ -114,12 +116,15 @@ class DataPointCalculator
             inputs: Collection<UploadedDataPoint>,
             method: String,
             dataPointDimensions: BasicDataPointDimensions,
-        ): UploadedDataPoint =
-            applyTransformation(
+        ): UploadedDataPoint {
+            val specs = specificationService.getDataPointSpecifications(inputs.map { it.dataPointType })
+            return applyTransformation(
                 inputs = inputs,
                 targetType = dataPointDimensions.dataPointType,
                 method = method,
+                specs = specs,
             )
+        }
 
         /**
          * Derives the missing data points for each of the given dataset dimensions and returns them grouped per dimension.
