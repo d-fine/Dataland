@@ -46,10 +46,8 @@ describeIf(
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
       cy.ensureLoggedInAsReader();
-      cy.intercept('GET', '**/community/company-role-assignments**').as('companyRoleAssignments');
       cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
       cy.get('h1').should('contain', testCompanyName);
-      cy.wait('@companyRoleAssignments', { timeout: mediumTimeoutInMs });
       cy.get('[data-test=toggleShowAll]').scrollIntoView();
       cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
       cy.scrollTo('top');

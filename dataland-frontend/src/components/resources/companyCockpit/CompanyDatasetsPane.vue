@@ -201,6 +201,11 @@ watch(
   }
 );
 
+watch(companyRoleAssignmentsRef, async (newAssignments) => {
+  if (!newAssignments?.length) return;
+  await setLocalRights();
+});
+
 onMounted(async () => {
   await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
 });
