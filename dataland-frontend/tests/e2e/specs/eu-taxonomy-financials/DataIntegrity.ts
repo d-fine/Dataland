@@ -8,7 +8,7 @@ import {
   type EutaxonomyFinancialsData,
   EutaxonomyFinancialsDataControllerApi,
 } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
@@ -39,7 +39,7 @@ async function createCompanyAndUploadDataset(
   testCompanyName: string,
   reportingPeriod: string
 ): Promise<UploadedDatasetContext> {
-  const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+  const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
   await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
   const dataMetaInformation = await uploadFrameworkDataForPublicToolboxFramework(
     EuTaxonomyFinancialsBaseFrameworkDefinition,

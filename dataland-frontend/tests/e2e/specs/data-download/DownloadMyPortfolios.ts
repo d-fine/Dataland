@@ -6,7 +6,7 @@ import {
   type StoredCompany,
 } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
@@ -50,7 +50,7 @@ function uploadDataForCompany(token: string, company: StoredCompany, years: stri
  * @return {Promise<Object>} A promise that resolves to the created company object.
  */
 function setupCompanyWithData(token: string, companyName: string, years: string[]): Promise<StoredCompany> {
-  return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
+  return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
     return assignCompanyOwnershipToDatalandAdmin(token, company.companyId)
       .then(() => uploadDataForCompany(token, company, years))
       .then(() => company);

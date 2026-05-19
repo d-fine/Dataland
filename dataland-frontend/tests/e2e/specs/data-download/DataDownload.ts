@@ -1,7 +1,7 @@
 import { DataTypeEnum, ExportFileType, type LksgData, type StoredCompany } from '@clients/backend';
 import { getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -167,7 +167,7 @@ describeIf(
       getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
           (newStoredCompany) => {
             storedCompany = newStoredCompany;
             return uploadFrameworkDataForPublicToolboxFramework(

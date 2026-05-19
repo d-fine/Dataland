@@ -2,7 +2,7 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { type DataMetaInformation, DataTypeEnum, type StoredCompany } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import * as MLDT from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
@@ -203,7 +203,7 @@ describeIf(
         .then((token: string) => {
           tokenForAdminUser = token;
 
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+          return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         })
         .then((storedCompany) => {
           storedTestCompany = storedCompany;

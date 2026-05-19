@@ -4,7 +4,7 @@ import { type CompanyAssociatedDataEutaxonomyFinancialsData, DataTypeEnum } from
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
@@ -24,7 +24,7 @@ describeIf(
       let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
       getAdminToken().then(async (token: string) => {
-        const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
+        const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
         storedCompanyId = storedCompany.companyId;
         cy.ensureLoggedInAsAdmin();
 

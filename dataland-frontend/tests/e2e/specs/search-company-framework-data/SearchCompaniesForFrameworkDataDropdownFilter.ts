@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from '@e2e/utils/EuTaxonomyFinancialsUpload';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type SfdrData } from '@clients/backend';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import { getBaseUrl } from '@e2e/utils/Cypress';
@@ -227,7 +227,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyName = preFix + companyNameMarker;
           const sector = 'SectorWithNoDataset';
           getAdminToken().then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+            return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.intercept({ url: '**/api/companies*', times: 1 }).as('searchCompanyInitial');
           cy.visit(`/companies`).wait('@searchCompanyInitial');
@@ -251,7 +251,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyName = 'ThisCompanyShouldNeverBeFound12349876';
           const sector = 'ThisSectorShouldNeverAppearInDropdown';
           getAdminToken().then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+            return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
           cy.intercept('**/api/companies/meta-information').as('getFilterOptions');
@@ -359,7 +359,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyName = 'CompanyWithEuFinancial' + companyNameMarker;
           getAdminToken().then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+              return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadFrameworkDataForPublicToolboxFramework(
                   EuTaxonomyFinancialsBaseFrameworkDefinition,
                   token,

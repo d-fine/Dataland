@@ -5,7 +5,7 @@ import { type SingleRequest } from '@clients/datasourcingservice';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
@@ -64,7 +64,7 @@ describeIf(
      */
     function uploadCompanyWithoutData(): void {
       getAdminToken().then(async (token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
           memberStoredCompany = storedCompany;
         });
       });
@@ -76,7 +76,7 @@ describeIf(
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
       getAdminToken().then(async (token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           testStoredCompany = storedCompany;
           return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
         });

@@ -1,5 +1,5 @@
 import { getBaseUrl } from '@e2e/utils/Cypress';
-import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi, uploadCompanyViaForm } from '@e2e/utils/CompanyUpload';
 import { getAdminToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
@@ -92,8 +92,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
         getAdminToken().then(async (token: string): Promise<void> => {
-          await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
-          storedCompanyForManyDatasetsCompany = await uploadCompanyViaApi(
+          await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload));
+          storedCompanyForManyDatasetsCompany = await getOrUploadCompanyViaApi(
             token,
             generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany)
           );

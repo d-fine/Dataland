@@ -7,7 +7,7 @@ import {
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
@@ -83,7 +83,7 @@ function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string,
  */
 function createOwnedCompany(token: string): Promise<{ token: string; companyId: string }> {
   const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
-  return uploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
+  return getOrUploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
     return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
       return { token: token, companyId: storedCompany.companyId };
     });

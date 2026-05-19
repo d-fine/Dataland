@@ -73,32 +73,39 @@ export function generateDummyCompanyInformation(companyName: string, sector = 'I
 }
 
 /**
- * Uses the Dataland API to create a new company with the provided CompanyInformation
+ * Uses the Dataland API to get an existing company or create a new one if it doesn't exist
  * @param token the bearer token used to authorize the API requests
- * @param companyInformation information about the company to create
+ * @param companyInformation information about the company to get or create
  * @returns a promise on the requested company
  */
-export async function uploadCompanyViaApi(
+export async function getOrUploadCompanyViaApi(
   token: string,
   companyInformation: CompanyInformation
 ): Promise<StoredCompany> {
   const api = new CompanyDataControllerApi(new Configuration({ accessToken: token }));
+
+  // Try to get the company by identifier first
+  const identifiers = companyInformation.identifiers ?? {};
+  for (const [type, values] of Object.entries(identifiers)) {
+    const value = (values as string[] | undefined)?.[0];
+    if (value) {
+      try {
+        const companyIdResponse = await api.getCompanyIdByIdentifier(type as IdentifierType, value);
+        const companyId = companyIdResponse.data.companyId;
+        const storedCompanyResponse = await api.getCompanyById(companyId);
+        return storedCompanyResponse.data;
+      } catch (error: unknown) {
+        // Company not found by this identifier, continue to next identifier or upload
+        continue;
+      }
+    }
+  }
+
+  // If company not found, upload it
   try {
     const data = await api.postCompany(companyInformation);
     return data.data;
   } catch (error: unknown) {
-    if (isAxiosError(error) && error.response?.status === 400) {
-      const identifiers = companyInformation.identifiers ?? {};
-      for (const [type, values] of Object.entries(identifiers)) {
-        const value = (values as string[] | undefined)?.[0];
-        if (value) {
-          const companyIdResponse = await api.getCompanyIdByIdentifier(type as IdentifierType, value);
-          const companyId = companyIdResponse.data.companyId;
-          const storedCompanyResponse = await api.getCompanyById(companyId);
-          return storedCompanyResponse.data;
-        }
-      }
-    }
     throw error;
   }
 }
