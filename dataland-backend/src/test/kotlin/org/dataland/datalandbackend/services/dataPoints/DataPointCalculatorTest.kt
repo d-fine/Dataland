@@ -167,7 +167,7 @@ class DataPointCalculatorTest {
     }
 
     @Test
-    fun `check that dimensions for which no calculation is possible are omitted from the result`() {
+    fun `check that dimensions for which no calculation rule exists are omitted from the result`() {
         doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         // No calculation rules defined for the missing type
         doReturn(emptyMap<String, Collection<CalculationRule>>()).whenever(dataCompositionService).getAvailableCalculationRules(any())
