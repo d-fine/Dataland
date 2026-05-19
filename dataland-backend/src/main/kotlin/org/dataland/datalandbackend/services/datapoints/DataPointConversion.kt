@@ -118,8 +118,23 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
         ): UploadedDataPoint {
-            require(inputs.size == 1) { "Exactly one data point must be provided for identity rule." }
-            return inputs.first().copy(dataPointType = targetType)
+            require(inputs.size == 1) { "Exactly one data point must be provided for the identity rule." }
+            val dataPoint = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(it.dataPoint) }.first()
+
+            val calculatedDataPoint =
+                ExtendedDataPoint(
+                    value = dataPoint.value,
+                    quality = dataPoint.quality,
+                    comment = createComment(getOrderedSourceNames(inputs, specs), this.name),
+                    dataSource = dataPoint.dataSource,
+                )
+
+            return UploadedDataPoint(
+                dataPoint = defaultObjectMapper.writeValueAsString(calculatedDataPoint),
+                reportingPeriod = inputs.first().reportingPeriod,
+                companyId = inputs.first().companyId,
+                dataPointType = targetType,
+            )
         }
     }, ;
 
