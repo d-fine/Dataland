@@ -70,6 +70,13 @@ class DataPointQaReviewManager
         }
 
         /**
+         * Saves QA review entries for a list of data points without sending any QA status change messages.
+         */
+        @Transactional
+        fun saveDataPointReviewEntitiesOnly(tasks: List<ReviewDataPointTask>): List<DataPointQaReviewEntity> =
+            createDataPointReviewEntities(tasks).map { it.first }
+
+        /**
          * All data required for the reviewDataPointFromMessages function (i.e., the message and the correlationId)
          */
         data class DataPointUploadedMessageWithCorrelationId(
