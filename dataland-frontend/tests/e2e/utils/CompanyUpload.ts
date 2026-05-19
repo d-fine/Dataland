@@ -86,7 +86,7 @@ export async function getOrUploadCompanyViaApi(
   // Try to get the company by identifier first
   const identifiers = companyInformation.identifiers ?? {};
   for (const [type, values] of Object.entries(identifiers)) {
-    const value = (values as string[] | undefined)?.[0];
+    const value = values?.[0];
     if (value) {
       try {
         const companyIdResponse = await api.getCompanyIdByIdentifier(type as IdentifierType, value);
