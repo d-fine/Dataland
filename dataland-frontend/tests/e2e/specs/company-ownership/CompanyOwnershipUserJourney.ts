@@ -8,7 +8,6 @@ import { CompanyRole } from '@clients/communitymanager';
 import { type StoredCompany } from '@clients/backend';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
-const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
  * This method verifies that the summary panel for each framework is presented as expected
@@ -17,9 +16,7 @@ function checkFrameworks(): void {
   for (const frameworkName of FRAMEWORKS_WITH_UPLOAD_FORM) {
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     cy.get(frameworkSummaryPanelSelector).should('exist');
-    cy.get(`[data-test="${frameworkName}-provide-data-button"]`, {
-      timeout: longTimeoutInMs,
-    }).should('exist');
+    cy.get(`[data-test="${frameworkName}-provide-data-button"]`).should('exist');
   }
 }
 
@@ -49,8 +46,10 @@ describeIf(
 
     it('Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user', () => {
       cy.ensureLoggedInAsReader();
+      cy.intercept('GET', '**/community/company-role-assignments**').as('companyRoleAssignments');
       cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
       cy.get('h1').should('contain', testCompanyName);
+      cy.wait('@companyRoleAssignments', { timeout: mediumTimeoutInMs });
       cy.get('[data-test=toggleShowAll]').scrollIntoView();
       cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
       cy.scrollTo('top');
