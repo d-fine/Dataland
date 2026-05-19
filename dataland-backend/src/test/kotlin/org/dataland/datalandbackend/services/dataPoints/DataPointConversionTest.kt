@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.dataPoints
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -24,6 +23,7 @@ class DataPointConversionTest {
     private val nonNumericDataPoint = "./json/dataPoints/nonNumericDataPoint.json"
     private val anotherNumericDataPoint = "./json/dataPoints/anotherNumericDataPointForTestingTransformations.json"
     private val dataPointWithoutValue = "./json/dataPoints/dataPointWithoutValue.json"
+    private val zeroNumericDataPoint = "./json/dataPoints/zeroNumericDataPoint.json"
 
     // ToDo clean up the source files for the tests
     companion object {
@@ -55,7 +55,7 @@ class DataPointConversionTest {
         val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPoint)
         val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
         val inputs = listOf(firstInput, secondInput)
-        val result = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(applyTransformation(inputs, "dummy", "Sum").dataPoint)
+        val result = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(applyTransformation(inputs, "dummy", "Sum", emptyMap()).dataPoint)
         assert(result.value == BigDecimal.valueOf(2.0))
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
@@ -65,16 +65,164 @@ class DataPointConversionTest {
 
     @Test
     fun `check that summation of data points throws the expected exceptions`() {
-        assertThrows<InvalidFormatException> {
+        assertThrows<IllegalArgumentException> {
             DataPointConversion.SUM.convert(
-                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint))),
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
                 "dummy",
+                emptyMap(),
             )
         }
         assertThrows<IllegalArgumentException> {
             DataPointConversion.SUM.convert(
-                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue))),
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
                 "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.SUM.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+    }
+
+    @Test
+    fun `check that division of data points works as expected`() {
+        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
+        val result =
+            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
+                applyTransformation(listOf(numerator, denominator), "dummy", "Division", emptyMap()).dataPoint,
+            )
+        assert(result.value == BigDecimal("0.3333333333"))
+    }
+
+    @Test
+    fun `check that division of data points throws the expected exceptions`() {
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION.convert(
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+    }
+
+    @Test
+    fun `check that division by percent of data points works as expected`() {
+        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
+        val result =
+            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
+                applyTransformation(listOf(numerator, denominator), "dummy", "DivisionByPercent", emptyMap()).dataPoint,
+            )
+        assert(result.value == BigDecimal("33.3333333333"))
+    }
+
+    @Test
+    fun `check that division by percent of data points throws the expected exceptions`() {
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION_BY_PERCENT.convert(
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION_BY_PERCENT.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION_BY_PERCENT.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION_BY_PERCENT.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
+            )
+        }
+    }
+
+    @Test
+    fun `check that identity conversion works as expected`() {
+        val input = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
+        val result = applyTransformation(listOf(input), "targetType", "Identity", emptyMap())
+        assert(result.dataPoint == input.dataPoint)
+        assert(result.dataPointType == "targetType")
+        assert(result.companyId == input.companyId)
+        assert(result.reportingPeriod == input.reportingPeriod)
+    }
+
+    @Test
+    fun `check that identity conversion throws the expected exceptions`() {
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.IDENTITY.convert(emptyList(), "dummy", emptyMap())
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.IDENTITY.convert(
+                listOf(
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                ),
+                "dummy",
+                emptyMap(),
             )
         }
     }
@@ -82,7 +230,7 @@ class DataPointConversionTest {
     @Test
     fun `check that an unknown conversion method is rejected`() {
         assertThrows<IllegalArgumentException> {
-            applyTransformation(emptyList(), "dummy", "NotARealMethod")
+            applyTransformation(emptyList(), "dummy", "NotARealMethod", emptyMap())
         }
     }
 

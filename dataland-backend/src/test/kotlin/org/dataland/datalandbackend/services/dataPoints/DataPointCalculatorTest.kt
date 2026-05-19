@@ -46,6 +46,9 @@ class DataPointCalculatorTest {
     private val dataPointWithoutValueJson =
         TestResourceFileReader
             .getJsonString("./json/dataPoints/dataPointWithoutValue.json")
+    private val zeroNumericDataPointJson =
+        TestResourceFileReader
+            .getJsonString("./json/dataPoints/zeroNumericDataPoint.json")
 
     private val datasetDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
@@ -214,8 +217,7 @@ class DataPointCalculatorTest {
 
         doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         // First rule uses division by zero (will throw IllegalArgumentException), second rule sums
-        val divisionJson = """{"value": 0.0}"""
-        val zeroDivisor = makeUploadedDataPoint(sourceTypeB, divisionJson)
+        val zeroDivisor = makeUploadedDataPoint(sourceTypeB, zeroNumericDataPointJson)
         doReturn(
             mapOf<String, Collection<CalculationRule>>(
                 targetType to
