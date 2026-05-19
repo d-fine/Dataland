@@ -8,7 +8,7 @@ success=false
 for i in 1 2 3 4; do
   echo "Attempt $i to pull Docker images..."
   docker compose --project-name dala-e2e-test --profile testing pull -q && success=true && break || {
-    echo "Pull failed. Waiting 15 seconds before retrying..."
+    echo "Pull failed. Waiting 30 seconds before retrying..."
     sleep 30
   }
 done
