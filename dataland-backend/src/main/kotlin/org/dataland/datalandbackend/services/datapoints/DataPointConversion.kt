@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -26,6 +27,7 @@ enum class DataPointConversion(
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
         ): UploadedDataPoint {
             val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
             require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
@@ -34,7 +36,7 @@ enum class DataPointConversion(
                 ExtendedDataPoint(
                     value = dataPoints.sumOf { it.value!! },
                     quality = mergeQuality(dataPoints.map { it.quality }),
-                    comment = createComment(inputs.map { it.dataPointType }, "Sum"),
+                    comment = createComment(inputs, specs, this.name),
                     dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                 )
             return UploadedDataPoint(
@@ -50,6 +52,7 @@ enum class DataPointConversion(
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
         ): UploadedDataPoint {
             val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
             require(dataPoints.none { it.value == null }) { "Data points for division must not have null value fields." }
@@ -64,7 +67,7 @@ enum class DataPointConversion(
                             CALCULATION_ROUNDING_MODE,
                         ),
                     quality = mergeQuality(dataPoints.map { it.quality }),
-                    comment = createComment(inputs.map { it.dataPointType }, "Division"),
+                    comment = createComment(inputs, specs, this.name),
                     dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                 )
 
@@ -81,6 +84,7 @@ enum class DataPointConversion(
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
         ): UploadedDataPoint {
             val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
             require(dataPoints.none { it.value == null }) { "Data points for division by percent must not have null value fields." }
@@ -100,7 +104,7 @@ enum class DataPointConversion(
                 ExtendedDataPoint(
                     value = result,
                     quality = mergeQuality(dataPoints.map { it.quality }),
-                    comment = createComment(inputs.map { it.dataPointType }, "Division by percent"),
+                    comment = createComment(inputs, specs, this.name),
                     dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                 )
 
@@ -117,9 +121,25 @@ enum class DataPointConversion(
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
         ): UploadedDataPoint {
-            require(inputs.size == 1) { "Exactly one data point must be provided for identity rule." }
-            return inputs.first().copy(dataPointType = targetType)
+            require(inputs.size == 1) { "Exactly one data point must be provided for the identity rule." }
+            val dataPoint = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(it.dataPoint) }.first()
+
+            val calculatedDataPoint =
+                ExtendedDataPoint(
+                    value = dataPoint.value,
+                    quality = dataPoint.quality,
+                    comment = createComment(inputs, specs, this.name),
+                    dataSource = dataPoint.dataSource,
+                )
+
+            return UploadedDataPoint(
+                dataPoint = defaultObjectMapper.writeValueAsString(calculatedDataPoint),
+                reportingPeriod = inputs.first().reportingPeriod,
+                companyId = inputs.first().companyId,
+                dataPointType = targetType,
+            )
         }
     }, ;
 
@@ -132,6 +152,7 @@ enum class DataPointConversion(
     abstract fun convert(
         inputs: Collection<UploadedDataPoint>,
         targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
     ): UploadedDataPoint
 
     companion object {
@@ -176,14 +197,17 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
 }
 
 /**
- * Creates a comment for the resulting data point indicating the [source] and [method] used to create it
+ * Creates a comment for the resulting data point indicating the [sources] and [method] used to create it
  */
 internal fun createComment(
-    source: Collection<DataPointType>,
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
     method: String,
-): String =
-    "This data point was calculated applying the method \"$method\" using: " +
-        source.joinToString(", ") { it } + " as input."
+): String {
+    val sourceNames = inputs.map { specs.getValue(it.dataPointType).name }
+    return "This data point was calculated applying the method \"$method\" using: " +
+        sourceNames.joinToString(", ") { it } + " as input."
+}
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].
@@ -192,4 +216,5 @@ fun applyTransformation(
     inputs: Collection<UploadedDataPoint>,
     targetType: DataPointType,
     method: String,
-): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType)
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType, specs)
