@@ -7,7 +7,6 @@ import {
 } from '@clients/backend';
 import { faker } from '@faker-js/faker';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
-import { isAxiosError } from 'axios';
 
 /**
  * Fills the company for a company with the specified name with dummy values.
@@ -95,8 +94,6 @@ export async function getOrUploadCompanyViaApi(
         const storedCompanyResponse = await api.getCompanyById(companyId);
         return storedCompanyResponse.data;
       } catch (error: unknown) {
-        // Company not found by this identifier, continue to next identifier or upload
-        continue;
       }
     }
   }
