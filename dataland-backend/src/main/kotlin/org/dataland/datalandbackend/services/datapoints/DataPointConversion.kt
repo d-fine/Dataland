@@ -104,7 +104,7 @@ enum class DataPointConversion(
                 ExtendedDataPoint(
                     value = result,
                     quality = mergeQuality(dataPoints.map { it.quality }),
-                    comment = createComment(inputs, specs, this.name),
+                    comment = createComment(inputs, specs, "Division by percent"),
                     dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                 )
 
