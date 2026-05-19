@@ -107,8 +107,9 @@ class DatasetJudgementFinalizationServiceTest {
         assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
         assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
 
+        verify(dataPointQaReviewManager, never()).reviewDataPoints(any())
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
-        verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(tasksCaptor.capture())
         val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
         assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
         assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
@@ -148,8 +149,9 @@ class DatasetJudgementFinalizationServiceTest {
         assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
         assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
 
+        verify(dataPointQaReviewManager, never()).reviewDataPoints(any())
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
-        verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(tasksCaptor.capture())
         val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
         assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
         assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
