@@ -1,5 +1,41 @@
 #!/usr/bin/env bash
+source "$(dirname "${BASH_SOURCE[0]}")/logging_functions.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
+
+# These profiles cover the full local dev stack for cleanup/start-stop operations regardless of current frontend/backend mode.
+development_profiles=(--profile development --profile developmentContainerFrontend --profile developmentContainerBackend)
+
+# Suppress successful command output when silent mode is enabled, but replay captured output on failure.
+run_quiet_command() {
+  if [[ "$SILENT" != true ]]; then
+    "$@"
+    return
+  fi
+
+  local output_file
+  output_file=$(mktemp)
+
+  if "$@" >"$output_file" 2>&1; then
+    rm -f "$output_file"
+    return 0
+  fi
+
+  cat "$output_file" >&2
+  rm -f "$output_file"
+  return 1
+}
+
+run_step() {
+  local description="$1"
+  shift
+
+  log_step "$description"
+  run_quiet_command "$@"
+}
+
+run_docker_compose() {
+  run_quiet_command docker compose "$@"
+}
 
 determine_compose_profiles() {
   local local_frontend="$1"
@@ -18,8 +54,8 @@ determine_compose_profiles() {
 }
 
 stop_and_cleanup_containers() {
-  docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend pull --ignore-pull-failures --include-deps
+  run_docker_compose "${development_profiles[@]}" down
+  run_docker_compose "${development_profiles[@]}" pull --ignore-pull-failures
 }
 
 start_configured_services() {
@@ -28,8 +64,8 @@ start_configured_services() {
   local compose_profiles=("$@")
 
   while read -r service; do
-    echo "Starting service $service"
-    docker compose "${compose_profiles[@]}" up -d --build $wait_flag "$service"
+    [[ -n "$service" ]] || continue
+    run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"} "$service"
   done < ./localContainer.conf
 }
 
@@ -38,8 +74,7 @@ start_all_services() {
   shift
   local compose_profiles=("$@")
 
-  echo "Starting stack in mode development."
-  docker compose "${compose_profiles[@]}" up -d --build $wait_flag
+  run_docker_compose "${compose_profiles[@]}" up -d --build ${wait_flag:+"$wait_flag"}
 }
 
 start_docker_services() {
@@ -53,7 +88,7 @@ start_docker_services() {
   fi
 
   if [[ -s ./localContainer.conf ]]; then
-    echo "Starting only configured services."
+    log_info "Starting only services listed in localContainer.conf"
     start_configured_services "$wait_flag" "${compose_profiles[@]}"
   else
     start_all_services "$wait_flag" "${compose_profiles[@]}"
@@ -61,11 +96,9 @@ start_docker_services() {
 }
 
 clear_docker_completely() {
-  echo "Clearing Docker..."
-  docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  docker compose --profile init down
-  docker compose down --remove-orphans
-  docker volume prune --force --all
+  run_docker_compose "${development_profiles[@]}" --profile init down
+  run_docker_compose down --remove-orphans
+  run_quiet_command docker volume prune --force --all
 }
 
 rebuild_docker_images() {
@@ -74,17 +107,19 @@ rebuild_docker_images() {
   mkdir -p "$log_folder"
 
   for rebuild_script in ./build-utils/rebuild*.sh; do
+    # Limit concurrent rebuilds to keep Docker and Gradle resource usage manageable locally.
+    if [[ "$SILENT" != true && $(jobs -r | wc -l) -ge $max_parallel ]]; then
+      log_info "Waiting for free build slot ($max_parallel parallel max)"
+    fi
+
     while [[ $(jobs -r | wc -l) -ge $max_parallel ]]; do
-      echo "Waiting for builds to finish. Running at most $max_parallel in parallel."
       sleep 1
     done
 
-    echo "Executing rebuild script $rebuild_script"
     LOCAL=true "$rebuild_script" &> "./$log_folder/$(basename "$rebuild_script").log" &
   done
 
-  echo "Waiting for all build processes to terminate."
-  echo "Progress may be monitored using the logs in $log_folder"
+  log_info "Detailed build logs: $log_folder"
   wait
 }
 
@@ -99,32 +134,30 @@ rebuild_keycloak_image() {
 }
 
 initialize_keycloak() {
-  echo "Initializing Keycloak..."
-  docker compose --profile init up --build -d
+  run_docker_compose --profile init up --build -d
 
   while true; do
-    if docker compose --profile init logs --no-color | grep -q "Initialization of Keycloak finished."; then
+    local keycloak_logs
+    # The init container exits on completion, so poll its logs for the success marker instead of health.
+    keycloak_logs=$(docker compose --profile init logs --no-color 2>&1 || true)
+    if grep -q "Initialization of Keycloak finished\." <<< "$keycloak_logs"; then
       break
     fi
-    echo "Waiting for Keycloak to finish initializing..."
+    log_info "Waiting for Keycloak to finish initialization"
     sleep 5
   done
 
-  docker compose --profile init down
+  run_docker_compose --profile init down
 }
 
 stop_development_stack() {
-  set -x
-  docker compose --profile development --profile developmentContainerFrontend --profile developmentContainerBackend down
-  set +x
+  run_docker_compose "${development_profiles[@]}" down
 }
 
 wait_for_admin_proxy() {
+  local compose_profiles=("$@")
+
   if [[ -s ./localContainer.conf ]]; then
-    until docker ps | grep admin-proxy | grep -q \(healthy\)
-    do
-      echo "Waiting for admin-proxy to be healthy as it is required for executing the backend."
-      sleep 5
-    done
+    run_docker_compose "${compose_profiles[@]}" up -d --wait admin-proxy
   fi
 }
