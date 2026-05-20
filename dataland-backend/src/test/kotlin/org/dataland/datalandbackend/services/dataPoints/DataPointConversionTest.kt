@@ -4,12 +4,15 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
 import org.dataland.datalandbackend.services.datapoints.createComment
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -39,14 +42,51 @@ class DataPointConversionTest {
             )
 
         @JvmStatic
-        fun provideComments(): Stream<Arguments> =
-            Stream.of(
+        fun provideComments(): Stream<Arguments> {
+            val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
+            val input1 =
+                UploadedDataPoint(
+                    dataPoint = "dummy",
+                    companyId = "dummy",
+                    reportingPeriod = "dummy",
+                    dataPointType = "type1",
+                )
+            val input2 =
+                UploadedDataPoint(
+                    dataPoint = "dummy",
+                    companyId = "dummy",
+                    reportingPeriod = "dummy",
+                    dataPointType = "type2",
+                )
+            val specs =
+                mapOf(
+                    "type1" to
+                        DataPointTypeSpecification(
+                            dataPointType = dummyRef,
+                            name = "Input1",
+                            businessDefinition = "dummy",
+                            dataPointBaseType = dummyRef,
+                            usedBy = emptyList(),
+                        ),
+                    "type2" to
+                        DataPointTypeSpecification(
+                            dataPointType = dummyRef,
+                            name = "Input2",
+                            businessDefinition = "dummy",
+                            dataPointBaseType = dummyRef,
+                            usedBy = emptyList(),
+                        ),
+                )
+            return Stream.of(
                 Arguments.of(
-                    listOf("Input1", "Input2"), "DummyMethod",
+                    listOf(input1, input2),
+                    specs,
+                    "DummyMethod",
                     "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input.",
                 ),
                 // ToDo add further test cases as more methods become available
             )
+        }
     }
 
     @Test
@@ -55,7 +95,13 @@ class DataPointConversionTest {
         val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPoint)
         val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
         val inputs = listOf(firstInput, secondInput)
-        val result = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(applyTransformation(inputs, "dummy", "Sum", emptyMap()).dataPoint)
+        val result =
+            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
+                applyTransformation(
+                    inputs,
+                    "dummy", "Sum", emptyMap(),
+                ).dataPoint,
+            )
         assert(result.value == BigDecimal.valueOf(2.0))
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
@@ -237,11 +283,12 @@ class DataPointConversionTest {
     @ParameterizedTest
     @MethodSource("provideComments")
     fun `check that creation of comments works as expected`(
-        inputs: List<String>,
+        inputs: Collection<UploadedDataPoint>,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
         method: String,
         expected: String,
     ) {
-        assert(createComment(inputs, method) == expected)
+        assert(createComment(inputs, specs, method) == expected)
     }
 
     @ParameterizedTest

@@ -197,7 +197,7 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
 }
 
 /**
- * Creates a comment for the resulting data point indicating the [sources] and [method] used to create it
+ * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it
  */
 internal fun createComment(
     inputs: Collection<UploadedDataPoint>,
