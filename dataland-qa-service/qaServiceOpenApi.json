@@ -4536,14 +4536,10 @@
         ]
       },
       "PreApprovalConfig": {
-        "required": [
-          "samplingProbability"
-        ],
         "type": "object",
         "properties": {
           "samplingProbability": {
             "type": "number",
-            "description": "The probability with which a datapoint is excluded from pre-approval to be reviewed manually, between 0.0 and 1.0.",
             "format": "double"
           }
         }
