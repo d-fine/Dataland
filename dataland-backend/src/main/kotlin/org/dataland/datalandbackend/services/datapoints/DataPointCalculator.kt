@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -101,9 +100,6 @@ class DataPointCalculator
                                     dataPointDimensions = targetDimensions,
                                 )
                             } catch (exception: IllegalArgumentException) {
-                                // Skip this rule and continue with the next
-                                return@calculationRulesLoop
-                            } catch (exception: JsonProcessingException) {
                                 // Skip this rule and continue with the next
                                 return@calculationRulesLoop
                             }
