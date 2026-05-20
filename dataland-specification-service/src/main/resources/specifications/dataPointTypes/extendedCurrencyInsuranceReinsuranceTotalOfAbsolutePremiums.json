@@ -5,5 +5,8 @@
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyAlignedActivities", "extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities", "extendedCurrencyInsuranceReinsuranceTotalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities" ],
+    "calculationMethod" : "Sum"
+  } ]
 }
