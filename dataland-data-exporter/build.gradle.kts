@@ -97,7 +97,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateBackendClient")
 }
 
-tasks.getByName("runKtlintCheckOverMainSourceSet") {
+tasks.named("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateBackendClient")
 }
 
@@ -122,6 +122,6 @@ tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data/CompanyInformationWithSfdrPreparedFixtures.json")
     into(layout.buildDirectory.dir("resources/test"))
 }
-tasks.getByName("processTestResources") {
+tasks.named("processTestResources") {
     dependsOn("getTestData")
 }
