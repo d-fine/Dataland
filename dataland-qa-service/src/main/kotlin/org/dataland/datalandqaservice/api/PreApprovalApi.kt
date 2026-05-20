@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -61,6 +62,6 @@ interface PreApprovalApi {
     )
     @PreAuthorize("hasRole('ROLE_JUDGE')")
     fun patchPreApprovalConfig(
-        @RequestBody newConfig: PreApprovalConfig,
+        @Valid @RequestBody newConfig: PreApprovalConfig,
     ): ResponseEntity<PreApprovalConfig>
 }
