@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.dataland.datalandbackendutils.model.CalculationRule
+import org.dataland.datalandspecification.specifications.CalculationRule
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
