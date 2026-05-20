@@ -1,7 +1,6 @@
 package org.dataland.datalandspecification.specifications
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import org.dataland.datalandbackendutils.model.CalculationRule
 import org.dataland.datalandspecification.database.SetOrderedJsonSerializer
 import org.dataland.datalandspecification.database.SpecificationDatabase
 

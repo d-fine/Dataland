@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.template.components
 
-import org.dataland.datalandbackendutils.model.CalculationRule
+import org.dataland.datalandspecification.specifications.CalculationRule
 
 
 /**

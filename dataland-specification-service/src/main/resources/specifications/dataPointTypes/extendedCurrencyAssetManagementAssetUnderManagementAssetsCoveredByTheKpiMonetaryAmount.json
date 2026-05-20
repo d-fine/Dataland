@@ -5,14 +5,11 @@
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : [
-    {
-      "inputs" : [ "extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount", "extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent" ],
-      "calculationMethod" : "DivisionByPercent"
-    },
-    {
-      "inputs" : [ "extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount", "extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedInPercent" ],
-      "calculationMethod" : "DivisionByPercent"
-    }
-  ]
+  "calculationRules" : [ {
+    "inputs" : [ "extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount", "extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent" ],
+    "calculationMethod" : "DivisionByPercent"
+  }, {
+    "inputs" : [ "extendedCurrencyAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount", "extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedInPercent" ],
+    "calculationMethod" : "DivisionByPercent"
+  } ]
 }

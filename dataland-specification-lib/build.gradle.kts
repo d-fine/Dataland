@@ -22,7 +22,6 @@ plugins {
 dependencies {
     implementation(libs.jackson.module.kotlin)
     implementation(libs.slf4j.api)
-    implementation(project(":dataland-backend-utils"))
 }
 
 jacoco {
