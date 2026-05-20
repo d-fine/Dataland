@@ -17,24 +17,21 @@ class PreApprovalService(
     private val autoPreApprovalEnabled: Boolean,
 ) {
     /**
-     * Runs the pre-approval workflow on the given DatasetJudgementEntity.
-     * If the feature flag is enabled, data points where all active QA reports
-     * have the verdict QaAccepted are automatically pre-approved.
+     * Pre-approves datapoints of a given DatasetJudgementEntity.
      *
-     * The logic is structured so that for each data point multiple checks can be added easily:
-     *  - each check sets a Boolean
-     *  - at the end all Booleans are combined
+     * If the feature flag is enabled, data points where all active QA reports
+     * have the verdict QaAccepted are pre-approved.
+     * If automatic pre-approval is disbaled, the given DatasetJudgementEntity
+     * is returned unchanged.
      */
-    fun runPreApprovalWorkflow(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
+    fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
 
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
 
-            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
-
             val allChecksPass =
                 listOf(
-                    allQaReportsAccepted,
+                    areAllQaReportsAccepted(dataPoint),
                 ).all { it }
 
             if (allChecksPass) {
