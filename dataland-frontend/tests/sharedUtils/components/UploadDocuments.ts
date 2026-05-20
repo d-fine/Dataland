@@ -50,7 +50,7 @@ export class UploadDocuments {
   }
 
   errorMessage(): Cypress.Chainable {
-    return cy.get(`${this.uploadDocumentsSelector} .p-fileupload .p-message[data-p-severity="error"]`);
+    return cy.get(`${this.uploadDocumentsSelector} .p-fileupload .p-message-error`);
   }
   dismissErrorMessage(): void {
     this.errorMessage().find('.p-message-close-button').click();
