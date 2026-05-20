@@ -3,6 +3,6 @@ dataland:
     preapproval:
       exempt-fields:
         sfdr:
-          - extendedDecimalScope1GhgEmissionsInTonnes
+          - extendedDecimalScope2GhgEmissionsInTonnes
 
 
