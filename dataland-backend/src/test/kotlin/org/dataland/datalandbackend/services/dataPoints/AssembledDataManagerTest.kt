@@ -133,7 +133,8 @@ class AssembledDataManagerTest {
         datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
         dataPointUtils = DataPointUtils(specificationClient, metaDataManager, specificationService)
         internalStorageAdapter = InternalStorageAdapter(storageClient)
-        dataPointCalculator = DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter, specificationService)
+        dataPointCalculator =
+            DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter, specificationService)
         dataDeliveryService =
             DataDeliveryService(
                 dataCompositionService, dataAvailabilityChecker,
