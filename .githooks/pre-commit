@@ -25,5 +25,14 @@ else
 
 fi
 
+# Fallback to load npx and node node via fnm in non-interactive shells (like IntelliJ in WSL)
+if ! command -v npx &> /dev/null; then
+  export PATH="$HOME/.local/share/fnm:$HOME/.fnm:$PATH"
+
+  if command -v fnm &> /dev/null; then
+    eval "$(fnm env)"
+  fi
+fi
+
 echo "Starting eslint hook"
 cd dataland-frontend && npx --prefix ./dataland-frontend lint-staged
