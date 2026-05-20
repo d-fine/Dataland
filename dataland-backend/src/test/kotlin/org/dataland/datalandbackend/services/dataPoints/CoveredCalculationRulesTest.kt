@@ -27,7 +27,7 @@ class CoveredCalculationRulesTest {
                 try {
                     DataPointConversion.byId(rule.calculationMethod)
                     false
-                } catch (e: IllegalArgumentException) {
+                } catch (_: IllegalArgumentException) {
                     true
                 }
             }
