@@ -46,8 +46,9 @@ describe('As a user I want to be able to register for an account and be able to 
     cy.get('#password-confirm').should('exist').type(randomHexPassword, { force: true });
 
     cy.get("input[type='submit']").should('exist').click();
-
-    cy.get('#accept_terms', { timeout: 60000 }).should('exist').click();
+    cy.url().should('not.include', 'registration');
+    cy.url().should('include', 'TERMS_AND_CONDITIONS');
+    cy.get('#accept_terms', { timeout: 60000 }).should('be.visible').click();
     cy.get('#accept_privacy').should('exist').click();
     cy.get("button[name='accept_button']").should('exist').click();
 
