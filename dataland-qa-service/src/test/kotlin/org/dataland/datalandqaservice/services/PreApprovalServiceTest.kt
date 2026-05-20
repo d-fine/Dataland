@@ -6,12 +6,14 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
 class PreApprovalServiceTest {
@@ -222,6 +224,62 @@ class PreApprovalServiceTest {
             val result = service.runPreApprovalWorkflow(entity)
 
             assertEquals(AcceptedDataPointSource.Original, result.dataPoints.first().acceptedSource)
+        }
+    }
+
+    @Nested
+    inner class SamplingTests {
+        @Test
+        fun `Sampling probability 1 - no datapoints are preapproved`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+            service.patchConfig(PreApprovalConfig(samplingProbability = 1.0))
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+
+            assertNull(runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `Sampling probability 0, datapoint is not on exempt list and has report QaAccepted - datapoint gets preapproved`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+            service.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
+
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports))
+        }
+
+        @Test
+        fun `getConfig returns samplingProbability`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+            service.patchConfig(PreApprovalConfig(samplingProbability = 0.42))
+
+            assertEquals(0.42, service.getConfig().samplingProbability)
+        }
+
+        @Test
+        fun `patchConfig updates samplingProbability and returns updated config`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+            val updated = service.patchConfig(PreApprovalConfig(samplingProbability = 0.7))
+
+            assertEquals(0.7, updated.samplingProbability)
+            assertEquals(0.7, service.getConfig().samplingProbability)
+        }
+
+        @Test
+        fun `patchConfig throws an error when samplingProbability is below 0`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+
+            assertThrows<IllegalArgumentException> {
+                service.patchConfig(PreApprovalConfig(samplingProbability = -0.1))
+            }
+        }
+
+        @Test
+        fun `patchConfig throws an error when samplingProbability is above 1`() {
+            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
+
+            assertThrows<IllegalArgumentException> {
+                service.patchConfig(PreApprovalConfig(samplingProbability = 1.1))
+            }
         }
     }
 }
