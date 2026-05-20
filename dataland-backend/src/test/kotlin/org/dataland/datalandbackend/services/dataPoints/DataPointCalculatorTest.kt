@@ -6,11 +6,12 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.InternalStorageAdapter
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.CalculationRule
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -25,6 +26,7 @@ class DataPointCalculatorTest {
     private val dataCompositionService = mock<DataCompositionService>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
     private val internalStorageAdapter = mock<InternalStorageAdapter>()
+    private val specificationService = mock<SpecificationService>()
 
     private lateinit var dataPointCalculator: DataPointCalculator
 
@@ -64,7 +66,11 @@ class DataPointCalculatorTest {
 
     @BeforeEach
     fun setUp() {
-        dataPointCalculator = DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter)
+        dataPointCalculator =
+            DataPointCalculator(
+                dataCompositionService, dataAvailabilityChecker,
+                internalStorageAdapter, specificationService,
+            )
     }
 
     @Test
