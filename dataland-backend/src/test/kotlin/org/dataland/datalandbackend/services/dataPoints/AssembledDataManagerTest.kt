@@ -38,8 +38,10 @@ import org.dataland.specificationservice.openApiClient.api.SpecificationControll
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -54,6 +56,7 @@ import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.math.BigDecimal
 import java.time.Instant
 import java.util.Optional
 
@@ -290,14 +293,41 @@ class AssembledDataManagerTest {
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
+        val decimalBaseType = IdWithRef(id = "extendedDecimal", ref = "")
+        doReturn(
+            DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = sourceOneType, ref = ""),
+                name = sourceOneType,
+                businessDefinition = "",
+                dataPointBaseType = decimalBaseType,
+                usedBy = emptyList(),
+            ),
+        ).whenever(specificationClient).getDataPointTypeSpecification(sourceOneType)
+        doReturn(
+            DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = sourceTwoType, ref = ""),
+                name = sourceTwoType,
+                businessDefinition = "",
+                dataPointBaseType = decimalBaseType,
+                usedBy = emptyList(),
+            ),
+        ).whenever(specificationClient).getDataPointTypeSpecification(sourceTwoType)
         setMockData(dataPointMap, dataContentMap)
         val dynamicDataset =
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
         assert(!dynamicDataset.isNullOrEmpty())
-        // ToDo not a good check as it does not confirm the datapoint being there
-        assert(dynamicDataset!!.contains("scope1And2GhgEmissionsInTonnes"))
+        val assembledDatasetNode = defaultObjectMapper.readTree(dynamicDataset!!)
+        val calculatedDataPointNode =
+            assembledDatasetNode
+                .path("environmental")
+                .path("greenhouseGasEmissions")
+                .path("scope1And2GhgEmissionsInTonnes")
+        assert(!calculatedDataPointNode.isMissingNode) {
+            "Expected calculated data point 'scope1And2GhgEmissionsInTonnes' to be present in the assembled dataset"
+        }
+        assertTrue(BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()) == 0)
     }
 
     private fun setMockData(
