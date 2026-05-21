@@ -54,12 +54,11 @@ class PreApprovalService(
      * @return `true` if all QA reports are QaAccepted and there is at least one report,
      *         `false` otherwise
      */
-    private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports
-
-        return qaReportsForDataPoint.isNotEmpty() &&
-            qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
-    }
+    private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean =
+        dataPoint.qaReports.toList().let { qaReportsForDataPoint ->
+            qaReportsForDataPoint.isNotEmpty() &&
+                qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
+        }
 
     /**
      * Checks whether the given data point is not on the exempt fields list for its framework.
