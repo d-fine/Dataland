@@ -29,7 +29,6 @@ class DatasetJudgementService
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val datasetJudgementCreationService: DatasetJudgementCreationService,
         private val datasetJudgementFinalizationService: DatasetJudgementFinalizationService,
-        private val preApprovalService: PreApprovalService,
     ) {
         /**
          * Creates and stores a new dataset judgement for the given dataset ID.
@@ -67,9 +66,8 @@ class DatasetJudgementService
                     datasetId,
                     datatypeToDatapointIds,
                 )
-            val preApprovedEntity = preApprovalService.runPreApprovalWorkflow(datasetJudgementEntity)
 
-            return datasetJudgementRepository.save(preApprovedEntity).toDatasetJudgementResponse()
+            return datasetJudgementRepository.save(datasetJudgementEntity).toDatasetJudgementResponse()
         }
 
         /**

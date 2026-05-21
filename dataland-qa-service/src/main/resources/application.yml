@@ -3,6 +3,44 @@ dataland:
     preapproval:
       exempt-fields:
         sfdr:
-          - extendedDecimalScope1GhgEmissionsInTonnes
+          - extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption
+          - extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure
+          - extendedDecimalScope3UpstreamGhgEmissionsInTonnes
+          - extendedDecimalScope3DownstreamGhgEmissionsInTonnes
+          - extendedDecimalRateOfAccidents
+          - extendedDecimalEmissionsOfAirPollutantsInTonnes
+          - extendedEnumYesNoLandDegradationDesertificationSoilSealingExposure
+          - extendedDecimalWaterConsumptionInCubicMeters
+          - extendedDecimalEmissionsOfInorganicPollutantsInTonnes
+          - extendedDecimalWorkdaysLostInDays
+          - extendedEnumYesNoThreatenedSpeciesExposure
+          - extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy
+          - extendedEnumYesNoProtectedAreasExposure
+          - extendedDecimalEmissionsToWaterInTonnes
+          - extendedEnumYesNoFossilFuelSectorExposure
+          - extendedEnumYesNoViolationOfTaxRulesAndRegulation
+          - extendedEnumYesNoGrievanceHandlingMechanism
+          - extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption
+          - extendedEnumYesNoIloCoreLabourStandards
+          - extendedEnumYesNoControversialWeaponsExposure
+          - extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes
+          - extendedEnumYesNoHumanRightsLegalProceedings
+          - extendedEnumYesNoManufactureOfAgrochemicalPesticidesProducts
+          - extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations
+          - extendedEnumYesNoRareOrEndangeredEcosystemsExposure
+          - extendedEnumYesNoSupplierCodeOfConduct
+          - extendedEnumYesNoBiodiversityProtectionPolicy
+          - extendedEnumYesNoHumanRightsDueDiligencePolicy
+          - extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling
+          - extendedDecimalTotalRevenueInEUR
+          - extendedDecimalRenewableEnergyProductionInGWh
+          - extendedIntegerMaleBoardMembersBoardOfDirectors
+          - extendedDecimalUnadjustedGenderPayGapInPercent
+          - extendedIntegerFemaleBoardMembersSupervisoryBoard
+          - extendedIntegerMaleBoardMembersSupervisoryBoard
+          - extendedDecimalNonRenewableEnergyConsumptionInGWh
+          - extendedIntegerFemaleBoardMembersBoardOfDirectors
+          - extendedDecimalHazardousAndRadioactiveWasteInTonnes
+          - extendedDecimalTotalHighImpactClimateSectorEnergyConsumptionInGWh
 
 

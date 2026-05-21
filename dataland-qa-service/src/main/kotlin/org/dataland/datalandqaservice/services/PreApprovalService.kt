@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service
 import kotlin.random.Random
 
 /**
- * Service responsible for automatically pre-approving data points in a dataset judgement
- * when all QA reports have the verdict QaAccepted.
+ * Service responsible for automatically pre-approving data points in a dataset judgement.
  */
 @Service
 class PreApprovalService(
@@ -41,27 +40,21 @@ class PreApprovalService(
     }
 
     /**
-     * Runs the pre-approval workflow on the given DatasetJudgementEntity.
-     * If the feature flag is enabled, data points where all active QA reports
-     * have the verdict QaAccepted are automatically pre-approved.
+     * Pre-approves datapoints of a given DatasetJudgementEntity.
      *
-     * The logic is structured so that for each data point multiple checks can be added easily:
-     *  - each check sets a Boolean
-     *  - at the end all Booleans are combined
+     * If the feature flag is enabled, data points where all QA reports have the verdict QaAccepted are pre-approved.
+     * If the feature flag is disabled, the given DatasetJudgementEntity is returned unchanged.
      */
-    fun runPreApprovalWorkflow(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
+    fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
 
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
-            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
-            val isNotExemptField = isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType)
-            val isNotSelectedBySampling = !isSelectedBySampling()
 
             val allChecksPass =
                 listOf(
-                    allQaReportsAccepted,
-                    isNotExemptField,
-                    isNotSelectedBySampling,
+                    areAllQaReportsAccepted(dataPoint),
+                    isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType),
+                    !isSelectedBySampling(),
                 ).all { it }
 
             if (allChecksPass) {
@@ -83,12 +76,11 @@ class PreApprovalService(
      * @return `true` if all QA reports are QaAccepted and there is at least one report,
      *         `false` otherwise
      */
-    private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports.filter { it.active }
-
-        return qaReportsForDataPoint.isNotEmpty() &&
-            qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
-    }
+    private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean =
+        dataPoint.qaReports.toList().let { qaReportsForDataPoint ->
+            qaReportsForDataPoint.isNotEmpty() &&
+                qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
+        }
 
     /**
      * Checks whether the given data point is not on the exempt fields list for its framework.
@@ -100,10 +92,10 @@ class PreApprovalService(
     private fun isDataPointNotExempt(
         dataPoint: DataPointJudgementEntity,
         dataType: DataTypeEnum,
-    ): Boolean {
-        val exemptFieldsForFramework = exemptFieldsConfig.exemptFields[dataType] ?: emptySet()
-        return dataPoint.dataPointType !in exemptFieldsForFramework
-    }
+    ): Boolean =
+        !exemptFieldsConfig.exemptFields
+            .getOrDefault(dataType, emptySet())
+            .contains(dataPoint.dataPointType)
 
     /**
      * Determines whether a data point is selected by the sampling algorithm.

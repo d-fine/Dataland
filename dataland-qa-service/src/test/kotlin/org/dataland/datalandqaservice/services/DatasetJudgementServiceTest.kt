@@ -58,6 +58,7 @@ class DatasetJudgementServiceTest {
         DatasetJudgementCreationService(
             datasetJudgementSupportService,
             keycloakUserService,
+            PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig()),
         )
 
     private val service =
@@ -66,7 +67,6 @@ class DatasetJudgementServiceTest {
             datasetJudgementSupportService,
             creationServiceClass,
             datasetJudgementFinalizationService,
-            PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig()),
         )
 
     private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
