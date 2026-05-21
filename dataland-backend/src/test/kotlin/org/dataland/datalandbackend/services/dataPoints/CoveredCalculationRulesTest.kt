@@ -1,27 +1,38 @@
 package org.dataland.datalandbackend.services.dataPoints
 
-import org.dataland.datalandbackend.services.DataCompositionService
-import org.dataland.datalandbackend.services.SpecificationService
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.hibernate.validator.internal.util.Contracts.assertTrue
 import org.junit.jupiter.api.Test
+import java.io.File
+
+private data class RawCalculationRule(
+    val inputs: List<String>,
+    val calculationMethod: String,
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+private data class RawDataPointType(
+    val calculationRules: List<RawCalculationRule>? = null,
+)
 
 class CoveredCalculationRulesTest {
     @Test
     fun `check that all calculation rules specified in the framework toolbox are also implemented`() {
-        val specificationControllerApi = SpecificationControllerApi()
-        val specificationService = SpecificationService(specificationControllerApi)
-        val dataCompositionService = DataCompositionService(specificationService)
+        val objectMapper = jacksonObjectMapper()
+        val dataPointTypesFolder =
+            File("../dataland-specification-service/src/main/resources/specifications/dataPointTypes")
 
-        val frameworkIds = specificationControllerApi.listFrameworkSpecifications().map { it.framework.id }
-        val dataPointTypes = frameworkIds.flatMap { dataCompositionService.getRelevantDataPointTypes(it) }.distinct()
-        val specs = specificationService.getDataPointSpecifications(dataPointTypes)
+        val specifiedCalculationRules =
+            dataPointTypesFolder
+                .listFiles { f -> f.extension == "json" }
+                .orEmpty()
+                .flatMap { file ->
+                    objectMapper.readValue<RawDataPointType>(file).calculationRules.orEmpty()
+                }.distinctBy { it.calculationMethod }
 
-        // get all calculation rules specified in the framework toolbox
-        val specifiedCalculationRules = specs.values.flatMap { it.calculationRules.orEmpty() }.distinct()
-
-        // Collect unimplemented rules
         val unimplementedRules =
             specifiedCalculationRules.filter { rule ->
                 try {
@@ -32,7 +43,6 @@ class CoveredCalculationRulesTest {
                 }
             }
 
-        // Assert that there are no unimplemented calculation rules
         assertTrue(
             unimplementedRules.isEmpty(),
             "The following calculation rules are specified in the framework toolbox but not implemented:" +
