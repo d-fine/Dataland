@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services.dataPoints
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -22,6 +23,19 @@ import java.math.BigDecimal
 import java.util.stream.Stream
 
 class DataPointConversionTest {
+    private val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
+    private val dummySpecs =
+        mapOf(
+            "dummy" to
+                DataPointTypeSpecification(
+                    dataPointType = dummyRef,
+                    name = "dummy",
+                    businessDefinition = "dummy",
+                    dataPointBaseType = dummyRef,
+                    usedBy = emptyList(),
+                ),
+        )
+
     private val numericDataPoint = "./json/dataPoints/numericDataPointWithExtendedDocumentReference.json"
     private val nonNumericDataPoint = "./json/dataPoints/nonNumericDataPoint.json"
     private val anotherNumericDataPoint = "./json/dataPoints/anotherNumericDataPointForTestingTransformations.json"
@@ -99,7 +113,7 @@ class DataPointConversionTest {
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
                 applyTransformation(
                     inputs,
-                    "dummy", "Sum", emptyMap(),
+                    "dummy", "Sum", dummySpecs,
                 ).dataPoint,
             )
         assert(result.value == BigDecimal.valueOf(2.0))
@@ -115,17 +129,17 @@ class DataPointConversionTest {
             DataPointConversion.SUM.convert(
                 listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
-        assertThrows<IllegalArgumentException> {
+        assertThrows<JsonProcessingException> {
             DataPointConversion.SUM.convert(
                 listOf(
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint)),
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -135,7 +149,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
     }
@@ -146,7 +160,7 @@ class DataPointConversionTest {
         val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
-                applyTransformation(listOf(numerator, denominator), "dummy", "Division", emptyMap()).dataPoint,
+                applyTransformation(listOf(numerator, denominator), "dummy", "Division", dummySpecs).dataPoint,
             )
         assert(result.value == BigDecimal("0.3333333333"))
     }
@@ -157,7 +171,7 @@ class DataPointConversionTest {
             DataPointConversion.DIVISION.convert(
                 listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -168,7 +182,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -178,7 +192,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -188,7 +202,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
     }
@@ -199,7 +213,7 @@ class DataPointConversionTest {
         val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
-                applyTransformation(listOf(numerator, denominator), "dummy", "DivisionByPercent", emptyMap()).dataPoint,
+                applyTransformation(listOf(numerator, denominator), "dummy", "DivisionByPercent", dummySpecs).dataPoint,
             )
         assert(result.value == BigDecimal("33.3333333333"))
     }
@@ -210,7 +224,7 @@ class DataPointConversionTest {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
                 listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -221,7 +235,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -231,7 +245,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
         assertThrows<IllegalArgumentException> {
@@ -241,7 +255,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
     }
@@ -249,8 +263,11 @@ class DataPointConversionTest {
     @Test
     fun `check that identity conversion works as expected`() {
         val input = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
-        val result = applyTransformation(listOf(input), "targetType", "Identity", emptyMap())
-        assert(result.dataPoint == input.dataPoint)
+        val result = applyTransformation(listOf(input), "targetType", "Identity", dummySpecs)
+        val inputDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(input.dataPoint)
+        val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(result.dataPoint)
+        assert(resultDataPoint.value == inputDataPoint.value)
+        assert(resultDataPoint.dataSource == inputDataPoint.dataSource)
         assert(result.dataPointType == "targetType")
         assert(result.companyId == input.companyId)
         assert(result.reportingPeriod == input.reportingPeriod)
@@ -259,7 +276,7 @@ class DataPointConversionTest {
     @Test
     fun `check that identity conversion throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
-            DataPointConversion.IDENTITY.convert(emptyList(), "dummy", emptyMap())
+            DataPointConversion.IDENTITY.convert(emptyList(), "dummy", dummySpecs)
         }
         assertThrows<IllegalArgumentException> {
             DataPointConversion.IDENTITY.convert(
@@ -268,7 +285,7 @@ class DataPointConversionTest {
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
                 ),
                 "dummy",
-                emptyMap(),
+                dummySpecs,
             )
         }
     }
@@ -276,7 +293,7 @@ class DataPointConversionTest {
     @Test
     fun `check that an unknown conversion method is rejected`() {
         assertThrows<IllegalArgumentException> {
-            applyTransformation(emptyList(), "dummy", "NotARealMethod", emptyMap())
+            applyTransformation(emptyList(), "dummy", "NotARealMethod", dummySpecs)
         }
     }
 
