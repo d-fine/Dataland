@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
- * Service responsible for automatically pre-approving data points in a dataset judgement
- * when all QA reports have the verdict QaAccepted.
+ * Service responsible for automatically pre-approving data points in a dataset judgement.
  */
 @Service
 class PreApprovalService(
@@ -20,25 +19,20 @@ class PreApprovalService(
     private val exemptFieldsConfig: PreApprovalExemptFieldsConfig,
 ) {
     /**
-     * Runs the pre-approval workflow on the given DatasetJudgementEntity.
-     * If the feature flag is enabled, data points where all active QA reports
-     * have the verdict QaAccepted are automatically pre-approved.
+     * Pre-approves datapoints of a given DatasetJudgementEntity.
      *
-     * The logic is structured so that for each data point multiple checks can be added easily:
-     *  - each check sets a Boolean
-     *  - at the end all Booleans are combined
+     * If the feature flag is enabled, data points where all QA reports have the verdict QaAccepted are pre-approved.
+     * If the feature flag is disabled, the given DatasetJudgementEntity is returned unchanged.
      */
-    fun runPreApprovalWorkflow(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
+    fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
 
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
-            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
-            val isNotExemptField = isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType)
 
             val allChecksPass =
                 listOf(
-                    allQaReportsAccepted,
-                    isNotExemptField,
+                    areAllQaReportsAccepted(dataPoint),
+                    isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType),
                 ).all { it }
 
             if (allChecksPass) {
@@ -61,7 +55,7 @@ class PreApprovalService(
      *         `false` otherwise
      */
     private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports.filter { it.active }
+        val qaReportsForDataPoint = dataPoint.qaReports
 
         return qaReportsForDataPoint.isNotEmpty() &&
             qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }

@@ -58,22 +58,20 @@ class PreApprovalServiceTest {
         entity.dataPoints.clear()
         entity.dataPoints.add(dataPoint)
         return service
-            .runPreApprovalWorkflow(entity)
+            .preApproveDataPoints(entity)
             .dataPoints
             .first()
             .acceptedSource
     }
 
     @Nested
-    inner class GeneralPreApprovalTests {
+    inner class ReportConsensusTests {
         @Test
         fun `No preapproval when environment variable is set to false`() {
             val service = PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
-            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+            val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 
-            val result = service.runPreApprovalWorkflow(entity)
-
-            assertNull(result.dataPoints.first().acceptedSource)
+            assertNull(runWorkflow(service, reports))
         }
 
         @Test
@@ -171,7 +169,7 @@ class PreApprovalServiceTest {
             entity.dataPoints.add(buildDataPointJudgementEntity(reports, dataPointType = exemptField))
             entity.dataPoints.add(buildDataPointJudgementEntity(reports, dataPointType = nonExemptField))
 
-            val result = service.runPreApprovalWorkflow(entity)
+            val result = service.preApproveDataPoints(entity)
 
             assertNull(result.dataPoints.first { it.dataPointType == exemptField }.acceptedSource)
             assertEquals(
