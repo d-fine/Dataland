@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
- * Service responsible for automatically pre-approving data points in a dataset judgement
- * when all QA reports have the verdict QaAccepted.
+ * Service responsible for automatically pre-approving data points in a dataset judgement.
  */
 @Service
 class PreApprovalService(
@@ -19,10 +18,8 @@ class PreApprovalService(
     /**
      * Pre-approves datapoints of a given DatasetJudgementEntity.
      *
-     * If the feature flag is enabled, data points where all active QA reports
-     * have the verdict QaAccepted are pre-approved.
-     * If automatic pre-approval is disbaled, the given DatasetJudgementEntity
-     * is returned unchanged.
+     * If the feature flag is enabled, data points where all QA reports have the verdict QaAccepted are pre-approved.
+     * If the feature flag is disabled, the given DatasetJudgementEntity is returned unchanged.
      */
     fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
@@ -54,7 +51,7 @@ class PreApprovalService(
      *         `false` otherwise
      */
     private fun areAllQaReportsAccepted(dataPoint: DataPointJudgementEntity): Boolean {
-        val qaReportsForDataPoint = dataPoint.qaReports.filter { it.active }
+        val qaReportsForDataPoint = dataPoint.qaReports
 
         return qaReportsForDataPoint.isNotEmpty() &&
             qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
