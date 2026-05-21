@@ -733,7 +733,6 @@ jobs:
   merge-artefacts:
     runs-on: ubuntu-latest
     needs:
-      - sonar
       - e2e-tests
       - backend-static-analysis
       - backend-unit-tests
