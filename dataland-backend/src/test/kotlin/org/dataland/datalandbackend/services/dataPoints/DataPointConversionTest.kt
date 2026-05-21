@@ -98,7 +98,6 @@ class DataPointConversionTest {
                     "DummyMethod",
                     "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input.",
                 ),
-                // ToDo add further test cases as more methods become available
             )
         }
     }
