@@ -57,9 +57,9 @@ dependencies {
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8483/accounting/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8491/accounting/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8491"))
     }
     outputFileName.set("$projectDir/accountingServiceOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())

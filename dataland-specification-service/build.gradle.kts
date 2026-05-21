@@ -42,9 +42,9 @@ dependencies {
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8489/specifications/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8493/specifications/v3/api-docs")
     customBootRun {
-        args.set(listOf("--server.port=8489"))
+        args.set(listOf("--server.port=8493"))
     }
     outputFileName.set("$projectDir/specificationServiceOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())

@@ -61,9 +61,9 @@ dependencies {
 
 openApi {
     outputFileName.set("$projectDir/dataSourcingServiceOpenApi.json")
-    apiDocsUrl.set("http://localhost:8483/data-sourcing/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8492/data-sourcing/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8492"))
     }
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
