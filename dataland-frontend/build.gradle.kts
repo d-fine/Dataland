@@ -17,6 +17,10 @@ node {
     version.set("24.9.0")
 }
 
+tasks.named<NpmTask>("npmInstall") {
+    args.set(listOf("ci"))
+}
+
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
 val backendClientOutputDir =
     layout.buildDirectory
@@ -31,8 +35,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.register<NpmTask>("npmInstallFrontend") {
     group = "build"
     description = "Runs npm install for the frontend"
-    args.set(listOf("install"))
+    args.set(listOf("ci"))
     inputs.file("package.json")
+    inputs.file("package-lock.json")
     outputs.dir("node_modules/@dataland/shared-elements")
 }
 

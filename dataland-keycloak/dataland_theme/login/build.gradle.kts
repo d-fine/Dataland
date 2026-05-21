@@ -8,6 +8,10 @@ node {
     version.set("24.9.0")
 }
 
+tasks.named<com.github.gradle.node.npm.task.NpmTask>("npmInstall") {
+    args.set(listOf("ci"))
+}
+
 tasks.register("buildTheme") {
     dependsOn("npm_run_build")
     dependsOn("copyTemplates")

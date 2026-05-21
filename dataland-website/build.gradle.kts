@@ -16,6 +16,10 @@ node {
     version.set("24.9.0")
 }
 
+tasks.named<NpmTask>("npmInstall") {
+    args.set(listOf("ci"))
+}
+
 tasks.withType<NpmTask> {
     if (name != "npmInstallWebsite") {
         dependsOn("npmInstallWebsite")
@@ -29,8 +33,9 @@ tasks.named<NpmTask>("npm_run_build") {
 tasks.register<NpmTask>("npmInstallWebsite") {
     group = "build"
     description = "Installs npm dependencies for dataland-website"
-    args.set(listOf("install"))
+    args.set(listOf("ci"))
     inputs.file("package.json")
+    inputs.file("package-lock.json")
     outputs.dir("node_modules/@dataland/shared-elements")
 }
 

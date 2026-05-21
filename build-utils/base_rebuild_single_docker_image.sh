@@ -84,7 +84,7 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
 
 if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then
   echo "Running in Github Actions - using gha-type cache and --push flag"
-  docker_build_environment_parameters=(--push --cache-to "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name" --cache-from "type=gha,scope=$GITHUB_REF_NAME-$docker_image_name")
+  docker_build_environment_parameters=(--push --cache-to "type=gha,scope=$docker_image_name,mode=max" --cache-from "type=gha,scope=$docker_image_name")
   docker_parameter=(buildx build -f "$dockerfile" . -t "$full_image_reference")
 else
   echo "Running outside Github Actions - using no cache and no --push flag"
