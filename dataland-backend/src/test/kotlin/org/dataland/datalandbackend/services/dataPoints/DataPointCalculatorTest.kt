@@ -12,6 +12,8 @@ import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -64,6 +66,15 @@ class DataPointCalculatorTest {
         reportingPeriod = reportingPeriod,
     )
 
+    private fun makeStubSpec(dataPointType: String) =
+        DataPointTypeSpecification(
+            dataPointType = IdWithRef(id = dataPointType, ref = ""),
+            name = dataPointType,
+            businessDefinition = "",
+            dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
+            usedBy = emptyList(),
+        )
+
     @BeforeEach
     fun setUp() {
         dataPointCalculator =
@@ -71,6 +82,12 @@ class DataPointCalculatorTest {
                 dataCompositionService, dataAvailabilityChecker,
                 internalStorageAdapter, specificationService,
             )
+        doReturn(
+            mapOf(
+                sourceTypeA to makeStubSpec(sourceTypeA),
+                sourceTypeB to makeStubSpec(sourceTypeB),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(any())
     }
 
     @Test
