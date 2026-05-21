@@ -77,8 +77,8 @@ class PreApprovalService(
     private fun isDataPointNotExempt(
         dataPoint: DataPointJudgementEntity,
         dataType: DataTypeEnum,
-    ): Boolean {
-        val exemptFieldsForFramework = exemptFieldsConfig.exemptFields[dataType] ?: emptySet()
-        return dataPoint.dataPointType !in exemptFieldsForFramework
-    }
+    ): Boolean =
+        !exemptFieldsConfig.exemptFields
+            .getOrDefault(dataType, emptySet())
+            .contains(dataPoint.dataPointType)
 }

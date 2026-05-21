@@ -51,8 +51,9 @@ class PreApprovalServiceTest {
     private fun runWorkflow(
         service: PreApprovalService,
         reports: List<DataPointQaReportEntity>,
+        dataPointType: String = MockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
     ): AcceptedDataPointSource? {
-        val dataPoint = buildDataPointJudgementEntity(reports)
+        val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = dataPointType)
         val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
         entity.dataPoints.clear()
         entity.dataPoints.add(dataPoint)
@@ -126,14 +127,8 @@ class PreApprovalServiceTest {
                     exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf(exemptField))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
-            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = exemptField)
-            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
-            entity.dataPoints.clear()
-            entity.dataPoints.add(dataPoint)
 
-            val result = service.runPreApprovalWorkflow(entity)
-
-            assertNull(result.dataPoints.first().acceptedSource)
+            assertNull(runWorkflow(service, reports, dataPointType = exemptField))
         }
 
         @Test
@@ -145,16 +140,8 @@ class PreApprovalServiceTest {
                     exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf("some-exempt-field-type"))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
-            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = nonExemptField)
-            val entity =
-                MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().apply {
-                    dataPoints.clear()
-                    dataPoints.add(dataPoint)
-                }
 
-            val result = service.runPreApprovalWorkflow(entity)
-
-            assertEquals(AcceptedDataPointSource.Original, result.dataPoints.first().acceptedSource)
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports, dataPointType = nonExemptField))
         }
 
         @Test
@@ -214,14 +201,8 @@ class PreApprovalServiceTest {
                     exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.vsme to setOf(fieldName))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
-            val dataPoint = buildDataPointJudgementEntity(reports, dataPointType = fieldName)
-            val entity = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
-            entity.dataPoints.clear()
-            entity.dataPoints.add(dataPoint)
 
-            val result = service.runPreApprovalWorkflow(entity)
-
-            assertEquals(AcceptedDataPointSource.Original, result.dataPoints.first().acceptedSource)
+            assertEquals(AcceptedDataPointSource.Original, runWorkflow(service, reports, dataPointType = fieldName))
         }
     }
 }
