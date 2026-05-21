@@ -2,7 +2,7 @@ import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qase
 import { admin_userId, reviewer_userId } from '@e2e/utils/Cypress.ts';
 import { DATA_POINT_TYPES, type QaScenarioConfig } from '@e2e/utils/CheckJudgementJson.ts';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type EutaxonomyFinancialsData } from '@clients/backend';
+import { QualityOptions, type EutaxonomyFinancialsData } from '@clients/backend';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 
 export const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
@@ -22,12 +22,12 @@ export const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       {
         role: 'reviewer',
         verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"5453445343", "currency":"EUR"}',
+        correctedValue: JSON.stringify({ value: '5453445343', currency: 'EUR', quality: QualityOptions.Reported }),
       },
       {
         role: 'admin',
         verdict: QaReportDataPointVerdict.QaRejected,
-        correctedValue: '{"value":"74568964325", "currency":"EUR"}',
+        correctedValue: JSON.stringify({ value: '74568964325', currency: 'EUR', quality: QualityOptions.Reported }),
       },
     ],
     judgement: {
@@ -38,7 +38,11 @@ export const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
   {
     dataPointType: DATA_POINT_TYPES.isNfrdMandatory,
     qaReports: [
-      { role: 'reviewer', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"No"}' },
+      {
+        role: 'reviewer',
+        verdict: QaReportDataPointVerdict.QaRejected,
+        correctedValue: JSON.stringify({ value: 'No', quality: QualityOptions.Reported }),
+      },
       { role: 'admin', verdict: QaReportDataPointVerdict.QaAccepted },
     ],
     judgement: {
@@ -51,7 +55,11 @@ export const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
     dataPointType: DATA_POINT_TYPES.numberOfEmployees,
     qaReports: [
       { role: 'reviewer', verdict: QaReportDataPointVerdict.QaAccepted },
-      { role: 'admin', verdict: QaReportDataPointVerdict.QaRejected, correctedValue: '{"value":"2409600.75"}' },
+      {
+        role: 'admin',
+        verdict: QaReportDataPointVerdict.QaRejected,
+        correctedValue: JSON.stringify({ value: '2409600.75', quality: QualityOptions.Reported }),
+      },
     ],
     judgement: {
       acceptedSource: AcceptedDataPointSource.Qa,
