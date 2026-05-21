@@ -1,5 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service
 class PreApprovalService(
     @Value("\${dataland.qa-service.auto-preapproval-qa-accepted-datapoints}")
     private val autoPreApprovalEnabled: Boolean,
+    private val exemptFieldsConfig: PreApprovalExemptFieldsConfig,
 ) {
     /**
      * Pre-approves datapoints of a given DatasetJudgementEntity.
@@ -29,6 +32,7 @@ class PreApprovalService(
             val allChecksPass =
                 listOf(
                     areAllQaReportsAccepted(dataPoint),
+                    isDataPointEligible(dataPoint, datasetJudgementEntity.dataType),
                 ).all { it }
 
             if (allChecksPass) {
@@ -55,4 +59,19 @@ class PreApprovalService(
             qaReportsForDataPoint.isNotEmpty() &&
                 qaReportsForDataPoint.all { it.verdict == QaReportDataPointVerdict.QaAccepted }
         }
+
+    /**
+     * Checks whether the given data point is not on the exempt fields list for its framework.
+     *
+     * @param dataPoint the data point to check
+     * @param dataType the framework (data type) of the current review
+     * @return `true` if the data point is not exempt, `false` if it is exempt
+     */
+    private fun isDataPointEligible(
+        dataPoint: DataPointJudgementEntity,
+        dataType: DataTypeEnum,
+    ): Boolean =
+        !exemptFieldsConfig.exemptFields
+            .getOrDefault(dataType, emptySet())
+            .contains(dataPoint.dataPointType)
 }
