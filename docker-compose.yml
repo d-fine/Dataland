@@ -10,7 +10,7 @@
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
 x-java-memory-limits:
-  JAVA_TOOL_OPTIONS: &java-tool-options "-Xms128m -Xmx384m" # Forces Spring Boot to stay lean and not consume more memory than necessary, which is especially important for the testing profile where all services run together
+  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-}" # Forces Spring Boot to stay lean and not consume more memory than necessary, which is especially important for the testing profile where all services run together. Set JAVA_TOOL_OPTIONS="-Xms128m -Xmx384m" in CI to apply memory limits.
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
