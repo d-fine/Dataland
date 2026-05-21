@@ -109,5 +109,5 @@ export default defineConfigWithVueTs(
     rules: {
       '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     },
-  },
+  }
 );

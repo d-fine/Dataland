@@ -93,8 +93,7 @@ export async function getOrUploadCompanyViaApi(
         const companyId = companyIdResponse.data.companyId;
         const storedCompanyResponse = await api.getCompanyById(companyId);
         return storedCompanyResponse.data;
-      } catch {
-      }
+      } catch {}
     }
   }
 

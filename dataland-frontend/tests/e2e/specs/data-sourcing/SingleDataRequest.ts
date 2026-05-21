@@ -64,9 +64,11 @@ describeIf(
      */
     function uploadCompanyWithoutData(): void {
       getAdminToken().then(async (token: string) => {
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then((storedCompany) => {
-          memberStoredCompany = storedCompany;
-        });
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then(
+          (storedCompany) => {
+            memberStoredCompany = storedCompany;
+          }
+        );
       });
     }
 
@@ -76,10 +78,12 @@ describeIf(
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
       getAdminToken().then(async (token: string) => {
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          testStoredCompany = storedCompany;
-          return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
-        });
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
+          (storedCompany) => {
+            testStoredCompany = storedCompany;
+            return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
+          }
+        );
       });
     }
 

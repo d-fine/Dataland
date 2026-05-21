@@ -359,15 +359,17 @@ describe('As a user, I expect the search functionality on the /companies page to
           const companyName = 'CompanyWithEuFinancial' + companyNameMarker;
           getAdminToken().then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-              return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-                return uploadFrameworkDataForPublicToolboxFramework(
-                  EuTaxonomyFinancialsBaseFrameworkDefinition,
-                  token,
-                  storedCompany.companyId,
-                  fixtureData.reportingPeriod,
-                  fixtureData.t
-                );
-              });
+              return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then(
+                (storedCompany) => {
+                  return uploadFrameworkDataForPublicToolboxFramework(
+                    EuTaxonomyFinancialsBaseFrameworkDefinition,
+                    token,
+                    storedCompany.companyId,
+                    fixtureData.reportingPeriod,
+                    fixtureData.t
+                  );
+                }
+              );
             });
           });
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');

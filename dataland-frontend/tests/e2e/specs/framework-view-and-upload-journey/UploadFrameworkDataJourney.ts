@@ -1,5 +1,9 @@
 import { getBaseUrl } from '@e2e/utils/Cypress';
-import { generateDummyCompanyInformation, getOrUploadCompanyViaApi, uploadCompanyViaForm } from '@e2e/utils/CompanyUpload';
+import {
+  generateDummyCompanyInformation,
+  getOrUploadCompanyViaApi,
+  uploadCompanyViaForm,
+} from '@e2e/utils/CompanyUpload';
 import { getAdminToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
