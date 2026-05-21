@@ -1,0 +1,45 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Default shared model for this repository.
+  "model": "github-copilot/claude-sonnet-4.6",
+
+  // Load only the root shared guidance globally; package-specific AGENTS.md files are referenced from there.
+  "instructions": ["AGENTS.md"],
+
+  // Blacklist unreliable free OpenCode models for shared team usage.
+  "provider": {
+    "opencode": {
+      "blacklist": ["big-pickle", "hy3-preview-free", "minimax-m2.5-free", "nemotron-3-super-free"]
+    }
+  },
+
+  // Keep common destructive commands gated even though build sessions stay flexible by default.
+  "permission": {
+    "bash": {
+      "git push*": "ask",
+      "git reset --hard*": "deny",
+      "git checkout --*": "deny",
+      "rm -rf *": "ask"
+    }
+  },
+
+  // Large monorepo: preserve more room for compaction and ignore noisy generated folders.
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 16000
+  },
+
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      ".gradle/**",
+      ".opencode/node_modules/**",
+      "**/node_modules/**",
+      "**/build/**",
+      "**/coverage/**",
+      "log/**"
+    ]
+  }
+}

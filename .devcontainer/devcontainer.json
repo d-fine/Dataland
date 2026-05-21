@@ -1,0 +1,43 @@
+{
+  "name": "Dataland Opencode Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--workdir", "/workspaces/dataland",
+    "--add-host", "local-dev.dataland.com:127.0.0.1",
+    "--add-host", "dataland-admin:127.0.0.1",
+    "--env-file", "environments/.env.dev"
+  ],
+  "containerUser": "vscode",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
+  "mounts": [
+    // Disable write access to the devcontainer setup itself
+    "source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind,readonly",
+
+    // Persist opencode share and XDG state data across devcontainer rebuilds
+    "source=dataland-opencode-local-share,target=/home/vscode/.local/share/opencode,type=volume",
+    "source=dataland-opencode-local-state,target=/home/vscode/.local/state/opencode,type=volume",
+  ],
+  "features": {
+    // Use docker-in-docker instead of docker-outside-of-docker to sandbox possible docker containers inside this
+    // devcontainer from the host
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+    },
+    "ghcr.io/devcontainers/features/java": {
+      "version": "21",
+      "installGradle": "false",
+      "jdkDistro": "tem"
+    },
+    "ghcr.io/devcontainers/features/node": {
+      "version": "24"
+    },
+    "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
+  },
+
+  "postCreateCommand": "cd /workspaces/dataland/dataland-frontend && npx --yes cypress install && npx --yes cypress verify",
+  "postStartCommand": "sudo -n rm -f /etc/sudoers.d/vscode || true"
+
+}

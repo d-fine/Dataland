@@ -26,7 +26,7 @@ tasks.withType<NpmTask> {
     }
 }
 
-tasks.named<NpmTask>("npm_run_build") {
+tasks.register("npm_run_build") {
     dependsOn("npmBuild")
 }
 
