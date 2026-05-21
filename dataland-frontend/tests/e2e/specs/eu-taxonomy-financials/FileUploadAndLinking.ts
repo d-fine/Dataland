@@ -46,6 +46,7 @@ describeIf(
         cy.get('div.form-field:contains("Assurance")').find('div.p-select').click();
         cy.get('.p-select-option').contains('None').click();
         cy.get('div.form-field:contains("Assurance")').find('.p-select-label').should('have.text', 'None');
+        cy.get('.p-select-overlay').should('not.exist');
 
         cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').within(() => {
           cy.get('#dataPointIsAvailableSwitch').click();
@@ -58,7 +59,7 @@ describeIf(
           .find(`[data-test="dataReport"]`)
           .find('.p-select-label')
           .should('have.text', TEST_PDF_FILE_NAME);
-
+        cy.get('.p-select-overlay').should('not.exist');
         cy.get(
           'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
         ).within(() => {
