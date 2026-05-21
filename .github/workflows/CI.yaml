@@ -203,8 +203,8 @@ jobs:
           cache: gradle
       - name: Build shared codebase outputs
         run: |
-          ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
-          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
+          ./gradlew assemble npmSetup npmInstall generateClients npm_run_build \
+          -x detekt -x ktlintCheck -x jacocoTestReport \
           --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
