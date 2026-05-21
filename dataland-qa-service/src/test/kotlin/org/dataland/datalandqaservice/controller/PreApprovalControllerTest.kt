@@ -17,13 +17,13 @@ class PreApprovalControllerTest {
     @Test
     fun `getPreApprovalConfig delegates to service and returns expected body`() {
         val config = PreApprovalConfig(samplingProbability = 0.5)
-        whenever(preApprovalService.getConfig()).thenReturn(config)
+        whenever(preApprovalService.config).thenReturn(config)
 
         val result = controller.getPreApprovalConfig()
 
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(config, result.body)
-        verify(preApprovalService).getConfig()
+        verify(preApprovalService).config
     }
 
     @Test

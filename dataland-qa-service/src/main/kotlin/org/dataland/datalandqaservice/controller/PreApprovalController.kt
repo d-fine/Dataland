@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class PreApprovalController(
     @Autowired private val preApprovalService: PreApprovalService,
 ) : PreApprovalApi {
-    override fun getPreApprovalConfig(): ResponseEntity<PreApprovalConfig> = ResponseEntity.ok(preApprovalService.getConfig())
+    override fun getPreApprovalConfig(): ResponseEntity<PreApprovalConfig> = ResponseEntity.ok(preApprovalService.config)
 
     override fun patchPreApprovalConfig(newConfig: PreApprovalConfig): ResponseEntity<PreApprovalConfig> =
         ResponseEntity.ok(preApprovalService.patchConfig(newConfig))

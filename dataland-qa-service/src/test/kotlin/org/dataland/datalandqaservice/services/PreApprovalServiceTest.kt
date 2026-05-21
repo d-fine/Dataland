@@ -252,7 +252,7 @@ class PreApprovalServiceTest {
             val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
             service.patchConfig(PreApprovalConfig(samplingProbability = 0.42))
 
-            assertEquals(0.42, service.getConfig().samplingProbability)
+            assertEquals(0.42, service.config.samplingProbability)
         }
 
         @Test
@@ -261,7 +261,7 @@ class PreApprovalServiceTest {
             val updated = service.patchConfig(PreApprovalConfig(samplingProbability = 0.7))
 
             assertEquals(0.7, updated.samplingProbability)
-            assertEquals(0.7, service.getConfig().samplingProbability)
+            assertEquals(0.7, service.config.samplingProbability)
         }
 
         @Test

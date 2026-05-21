@@ -21,12 +21,9 @@ class PreApprovalService(
     private val autoPreApprovalEnabled: Boolean,
     private val exemptFieldsConfig: PreApprovalExemptFieldsConfig,
 ) {
-    private var config: PreApprovalConfig = PreApprovalConfig()
-
-    /**
-     * Returns the current pre-approval configuration.
-     */
-    fun getConfig(): PreApprovalConfig = config
+    private var _config: PreApprovalConfig = PreApprovalConfig()
+    val config: PreApprovalConfig
+        get() = _config
 
     /**
      * Updates the pre-approval configuration with the given patch and returns the updated config.
@@ -39,8 +36,8 @@ class PreApprovalService(
         require(newConfig.samplingProbability <= 1.0) {
             "samplingProbability must be <= 1.0, but was ${newConfig.samplingProbability}"
         }
-        config = newConfig
-        return config
+        _config = newConfig
+        return _config
     }
 
     /**
@@ -117,7 +114,7 @@ class PreApprovalService(
      *         `false` otherwise
      */
     private fun isSelectedBySampling(): Boolean {
-        val samplingProbability = getConfig().samplingProbability
+        val samplingProbability = _config.samplingProbability
         return Random.nextDouble() <= samplingProbability
     }
 }
