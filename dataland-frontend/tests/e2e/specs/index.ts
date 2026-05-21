@@ -16,7 +16,7 @@ if (testGroupingDisabled) {
 
 /**
  * Test grouping overview
- * 1 - 5      : Traditional E2E-Tests
+ * 1 - 8      : Traditional E2E-Tests
  * 101 - 102  : Restartability E2E-Tests
  */
 
@@ -34,24 +34,13 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./landing-page');
   require('./swagger-ui');
   require('./user-api-key');
-  require('./framework-view-and-upload-journey');
   require('./sfdr');
   require('./lksg');
-  require('./company-cockpit');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
-  require('./eu-taxonomy-financials');
-  require('./eutaxonomy-financials-2026-73');
-  require('./eu-taxonomy-non-financials');
-  require('./eutaxonomy-non-financials-2026-73');
-  require('./vsme');
-  require('./pcaf');
-  require('./company-ownership');
-  require('./user-experience');
-  require('./portfolios');
-  require('./data-sourcing');
-  require('./judgement');
+  require('./framework-view-and-upload-journey');
+  require('./company-cockpit');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
@@ -67,9 +56,31 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
-  require('./quality-assurance');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 5) {
-  require('./data-download');
+  require('./quality-assurance');
+}
+
+if (testGroupingDisabled || cypressTestGroup === 6) {
+  require('./data-download/DataDownload');
+  require('./data-download/CompanyReportDownload');
+}
+
+if (testGroupingDisabled || cypressTestGroup === 7) {
+  require('./data-download/DownloadMyPortfolios');
+}
+
+if (testGroupingDisabled || cypressTestGroup === 8) {
+  require('./eu-taxonomy-financials');
+  require('./eutaxonomy-financials-2026-73');
+  require('./eu-taxonomy-non-financials');
+  require('./eutaxonomy-non-financials-2026-73');
+  require('./vsme');
+  require('./pcaf');
+  require('./company-ownership');
+  require('./user-experience');
+  require('./portfolios');
+  require('./data-sourcing');
+  require('./judgement');
 }

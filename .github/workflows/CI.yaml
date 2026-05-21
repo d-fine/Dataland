@@ -179,7 +179,7 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
-  gradle-based-tests:
+  build-codebase:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
@@ -187,7 +187,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
-          task: "gradle-based-tests"
+          task: "build-codebase"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -201,17 +201,88 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - name: assemble project
-        run: ./gradlew assemble --no-daemon --stacktrace
+      - name: Build shared codebase outputs
+        run: |
+          ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
+          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
+          --no-daemon --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload compiled codebase
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: compiled-codebase
+          include-hidden-files: true
+          path: |
+            ./.gradle
+            ./**/build
+            ./dataland-frontend/node_modules
+            ./dataland-website/node_modules
+            ./dataland-keycloak/dataland_theme/login/node_modules
+            !./.gradle/daemon
+            !./.gradle/workers
+            !./.gradle/vcs
+  backend-static-analysis:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "backend-static-analysis"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Execute linting and detekt
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
-        if: always()
+  backend-unit-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "backend-unit-tests"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Execute unit tests for all spring services
         run: |
           sudo apt update && sudo apt install libreoffice
           #TODO: look into a more elegant solution for the line below
           ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-accounting-service:test :dataland-data-sourcing-service:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-user-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
-        if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
@@ -226,18 +297,155 @@ jobs:
           DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
           DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
+      - name: Upload Test and Coverage Reports
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: GradleReports-Backend
+          path: |
+            ./**/build/reports
+            ./**/coverage
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: JaCoCoResultsUnitTests-Backend
+          path: ./**/*.exec
+      - uses: ./.github/workflows/dockerLogs
+        if: always()
+        with:
+          subfolder: 'unit-tests-backend'
+  frontend-validation:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "frontend-validation"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
-        if: always()
       - name: Frontend type checking
         run: ./gradlew :dataland-frontend:npm_run_typecheck  dataland-frontend:npm_run_checkcypresscompilation --no-daemon --stacktrace
         if: always()
+      - name: Upload Frontend Reports
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: GradleReports-Frontend
+          path: |
+            ./dataland-frontend/build/reports
+            ./dataland-frontend/coverage
+  website-validation:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "website-validation"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Website linting and type checking
         run: ./gradlew :dataland-website:npm_run_lintci :dataland-website:npm_run_formatci :dataland-website:npm_run_typecheck --no-daemon --stacktrace
+      - name: Upload Website Reports
         if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: GradleReports-Website
+          path: ./dataland-website/build/reports
+  keycloak-theme-validation:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "keycloak-theme-validation"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
-        if: always()
+  repo-generated-files-validation:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    needs:
+      - build-codebase
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "repo-generated-files-validation"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        with:
+          name: compiled-codebase
       - name: Verify that Fake Fixtures are Up-To-Date
         if: always()
         run: testing/verify_that_fake_fixtures_are_up_to_date.sh
@@ -262,20 +470,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
-          name: GradleReports
+          name: GradleReports-GeneratedFiles
           path: |
             ./**/build/reports
             ./**/coverage
-      - name: Upload JaCoCo Exec Results
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
-        with:
-          name: JaCoCoResultsUnitTests-Gradle
-          path: ./**/*.exec
-      - uses: ./.github/workflows/dockerLogs
-        if: always()
-        with:
-          subfolder: 'unit-tests-backend'
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -295,6 +493,12 @@ jobs:
             testGroup: 4
           - testExecutor: "CYPRESS"
             testGroup: 5
+          - testExecutor: "CYPRESS"
+            testGroup: 6
+          - testExecutor: "CYPRESS"
+            testGroup: 7
+          - testExecutor: "CYPRESS"
+            testGroup: 8
           - testExecutor: "E2ETESTS"
             testGroup: 0
           - testExecutor: "RESTARTABILITY"
@@ -432,7 +636,13 @@ jobs:
     if: ${{ !cancelled() }}
     needs:
       - e2e-tests
-      - gradle-based-tests
+      - build-codebase
+      - backend-static-analysis
+      - backend-unit-tests
+      - frontend-validation
+      - website-validation
+      - keycloak-theme-validation
+      - repo-generated-files-validation
       - frontend-component-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
@@ -477,14 +687,10 @@ jobs:
           pattern: lcovResults-*
           path: fe-coverage
           merge-multiple: true
-      - name: Prepare Repo for Sonar
-        if: ${{ !cancelled() }}
-        run: |
-          ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
-          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
-          --no-daemon --stacktrace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
+        name: compiled-codebase
+        with:
+          name: compiled-codebase
       - name: jacocoTestReport
         if: ${{ !cancelled() }}
         # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
@@ -524,7 +730,12 @@ jobs:
     needs:
       - sonar
       - e2e-tests
-      - gradle-based-tests
+      - backend-static-analysis
+      - backend-unit-tests
+      - frontend-validation
+      - website-validation
+      - keycloak-theme-validation
+      - repo-generated-files-validation
       - frontend-component-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
