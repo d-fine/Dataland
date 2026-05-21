@@ -55,26 +55,41 @@ describeIf(
           cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
           TEST_PDF_FILE_NAME
         );
+        cy.task('log', 'Asserting some-document in totalGrossCarryingAmount');
+
         cy.get(`[data-test="totalGrossCarryingAmount"]`)
           .find(`[data-test="dataReport"]`)
           .find('.p-select-label')
           .should('have.text', TEST_PDF_FILE_NAME);
         cy.get('.p-select-overlay').should('not.exist');
+
         cy.get(
           'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
         ).within(() => {
           cy.get('#dataPointIsAvailableSwitch').click();
         });
+
         selectItemFromDropdownByValue(
           cy
             .get(`[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"]`)
             .find(`[data-test="dataReport"]`),
           `${TEST_PDF_FILE_NAME}2`
         );
-        cy.get(`[data-test="totalGrossCarryingAmount"]`)
+
+        cy.task('log', 'Asserting some-document2 in totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible');
+
+        cy.get(`[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"]`)
           .find(`[data-test="dataReport"]`)
           .find('.p-select-label')
           .should('have.text', `${TEST_PDF_FILE_NAME}2`);
+
+        cy.task('log', 'Asserting some-document in totalGrossCarryingAmount');
+
+        cy.get(`[data-test="totalGrossCarryingAmount"]`)
+          .find(`[data-test="dataReport"]`)
+          .find('.p-select-label')
+          .should('have.text', TEST_PDF_FILE_NAME);
+        cy.get('.p-select-overlay').should('not.exist');
 
         cy.intercept(
           {
