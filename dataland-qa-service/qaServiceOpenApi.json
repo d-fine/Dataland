@@ -1697,6 +1697,144 @@
         ]
       }
     },
+    "/pre-approval/config": {
+      "get": {
+        "tags": [
+          "pre-approval-controller"
+        ],
+        "summary": "Get the current pre-approval configuration.",
+        "description": "Get the current pre-approval configuration.",
+        "operationId": "getPreApprovalConfig",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins and judges can access pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "pre-approval-controller"
+        ],
+        "summary": "Update the pre-approval configuration.",
+        "description": "Updates the pre-approval configuration. The sampling probability must be between 0.0 and 1.0.",
+        "operationId": "patchPreApprovalConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreApprovalConfig"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid configuration values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins and judges can modify pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/dataset-judgements/{datasetJudgementId}/state": {
       "patch": {
         "tags": [
@@ -4122,144 +4260,6 @@
           }
         }
       }
-    },
-    "/pre-approval/config": {
-      "get": {
-        "tags": [
-          "pre-approval-controller"
-        ],
-        "summary": "Get the current pre-approval configuration.",
-        "description": "Returns the current pre-approval configuration.",
-        "operationId": "getPreApprovalConfig",
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins and judges can access pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "pre-approval-controller"
-        ],
-        "summary": "Update the pre-approval configuration.",
-        "description": "Updates the pre-approval configuration. The sampling probability must be between 0.0 and 1.0.",
-        "operationId": "patchPreApprovalConfig",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PreApprovalConfig"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully updated pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid configuration values.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins and judges can modify pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
     }
   },
   "components": {
@@ -4534,15 +4534,6 @@
           "FinishedWithDatasetAcceptance",
           "FinishedWithDatasetRejection"
         ]
-      },
-      "PreApprovalConfig": {
-        "type": "object",
-        "properties": {
-          "samplingProbability": {
-            "type": "number",
-            "format": "double"
-          }
-        }
       },
       "QaReportDataPointVerdict": {
         "type": "string",
@@ -10049,6 +10040,22 @@
       },
       "JsonNode": {
         "type": "object"
+      },
+      "PreApprovalConfig": {
+        "required": [
+          "samplingProbability"
+        ],
+        "type": "object",
+        "properties": {
+          "samplingProbability": {
+            "maximum": 1.0,
+            "exclusiveMaximum": false,
+            "minimum": 0.0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "format": "double"
+          }
+        }
       },
       "JudgementDetailsPatch": {
         "type": "object",
