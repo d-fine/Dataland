@@ -18,7 +18,7 @@ node {
 }
 
 tasks.named<NpmTask>("npmInstall") {
-    args.set(listOf("ci"))
+    npmCommand.set(listOf("ci"))
 }
 
 tasks.register<NpmTask>("npmInstallSharedElements") {

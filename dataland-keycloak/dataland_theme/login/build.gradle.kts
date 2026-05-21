@@ -9,7 +9,7 @@ node {
 }
 
 tasks.named<com.github.gradle.node.npm.task.NpmTask>("npmInstall") {
-    args.set(listOf("ci"))
+    npmCommand.set(listOf("ci"))
 }
 
 tasks.register("buildTheme") {
