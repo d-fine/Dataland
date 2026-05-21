@@ -55,8 +55,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - name: Frontend component testing
         run: timeout -v 30m ./testing/execute_frontend_component_tests.sh
 # Uncomment the lines below to enable debug logging for investigating flaky component tests.
@@ -104,8 +102,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - name: Execute framework-toolbox to list all frameworks
         id: listFrameworks
         run: |
@@ -144,8 +140,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - name: Build framework '${{ matrix.framework }}'
         run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
         env:
@@ -181,8 +175,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
@@ -213,8 +205,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - name: Build shared codebase outputs
         run: |
           ./gradlew assemble npmSetup npmInstall generateClients npm_run_build \
@@ -261,8 +251,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -292,8 +280,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -358,8 +344,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -400,8 +384,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -437,8 +419,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -468,8 +448,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           name: compiled-codebase
@@ -694,8 +672,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@39fdf500b386709a9a4a769f717dad447ac345b9 # v6
-        with:
-          cache-provider: basic
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         name: JaCoCoResultsUnitTests
         with:
