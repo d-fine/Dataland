@@ -42,8 +42,6 @@ export default defineConfigWithVueTs(
         },
       ],
 
-      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
-
       '@typescript-eslint/no-explicit-any': 'error',
 
       '@typescript-eslint/explicit-function-return-type': [
@@ -105,5 +103,11 @@ export default defineConfigWithVueTs(
       ],
     },
   },
-  skipFormatting
+  skipFormatting,
+  {
+    name: 'type-assertion-override',
+    rules: {
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    },
+  },
 );
