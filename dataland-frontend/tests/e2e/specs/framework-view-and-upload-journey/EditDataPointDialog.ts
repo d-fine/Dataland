@@ -140,7 +140,7 @@ describeIf(
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="yes-no-select"]').should('be.visible');
-          cy.get('[data-test="yes-no-select"]').find('[aria-pressed="true"]').should('contain', 'No');
+          cy.get('[data-test="yes-no-select"]').contains('button', 'No').should('have.attr', 'aria-pressed', 'true');
           cy.get('[data-test="yes-no-select"]').contains('Yes').click();
         });
 

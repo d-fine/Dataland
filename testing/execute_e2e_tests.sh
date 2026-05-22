@@ -3,9 +3,27 @@ set -euxo pipefail
 source "$(dirname "$0")"/../deployment/docker_utils.sh
 
 #Start E2E Test and wait for E2E Test completion
-docker compose --project-name dala-e2e-test --profile testing pull -q
+# Retry the image pull to tolerate transient ghcr.io network issues.
+max_attempts=4
+for attempt in $(seq 1 "$max_attempts"); do
+  echo "Pulling Docker images (attempt $attempt/$max_attempts)..."
+
+  if docker compose --project-name dala-e2e-test --profile testing pull -q; then
+    break  # Success
+  fi
+
+  if [ "$attempt" -eq "$max_attempts" ]; then
+    echo "Error: Failed to pull Docker images after $max_attempts attempts."
+    exit 1  # Failure
+  fi
+
+  echo "Pull failed. Waiting 30 seconds before retrying..."
+  sleep 30  # Retry
+done
+
+
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
-timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
+timeout 3600 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
 # Check and validate that all docker containers are indeed healthy
 health_check_results=$(get_services_that_are_not_healthy_but_should_be_in_compose_profile testing)

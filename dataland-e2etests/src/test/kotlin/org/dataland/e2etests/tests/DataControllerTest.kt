@@ -231,9 +231,13 @@ class DataControllerTest {
             "2022" to "2024",
         ).forEach { (reportingPeriod, latestAvailableReportingPeriod) ->
             uploadLksgDataset(companyId, reportingPeriod)
+            val expectedDescription = "Test Description $latestAvailableReportingPeriod"
             assertEquals(
-                "Test Description $latestAvailableReportingPeriod",
-                ApiAwait.waitForData {
+                expectedDescription,
+                ApiAwait.waitForData(
+                    timeoutInSeconds = 20,
+                    condition = { it == expectedDescription },
+                ) {
                     apiAccessor.dataControllerApiForLksgData.getLatestAvailableCompanyAssociatedLksgData(companyId).let {
                         it.data.social
                             ?.childLabor
