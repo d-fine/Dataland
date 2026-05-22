@@ -10,7 +10,7 @@ import {
   loginAsJudge,
   logout,
 } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { admin_userId, getBaseUrl, reviewer_userId } from '@e2e/utils/Cypress';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import {
@@ -73,7 +73,7 @@ describeIf(
 
       getAdminToken().then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
-        return uploadCompanyViaApi(token, testCompany).then((newCompany) => {
+        return getOrUploadCompanyViaApi(token, testCompany).then((newCompany) => {
           storedCompany = newCompany;
         });
       });

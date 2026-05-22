@@ -4,7 +4,7 @@ import { type DataMetaInformation, type DataTypeEnum, type StoredCompany } from 
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -142,7 +142,7 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
    * @returns created company from backend.
    */
   private createCompany(token: string, testCompanyName: string): Promise<StoredCompany> {
-    return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+    return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
   }
 
   /**

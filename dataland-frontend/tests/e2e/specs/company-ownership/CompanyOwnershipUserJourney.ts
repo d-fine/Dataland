@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { reader_userId } from '@e2e/utils/Cypress';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { FRAMEWORKS_WITH_UPLOAD_FORM } from '@/utils/Constants';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
@@ -38,7 +38,7 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       testCompanyName = 'Company-Created-In-Company-Owner-Test-' + uniqueCompanyMarker;
       getAdminToken().then(async (token: string) => {
-        storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+        storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         await assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
       });
       cy.wait('@postCompanyOwner', { timeout: mediumTimeoutInMs });

@@ -22,7 +22,7 @@ describe('Component tests for the UploadDocumentsForm', () => {
         .should('not.have.css', 'display', 'none')
         .should('contain.text', 'tooLarge.pdf: Invalid file size, file size should be smaller than 100 MB.');
       uploadDocuments.dismissErrorMessage();
-      uploadDocuments.errorMessage().should('have.css', 'display', 'none');
+      uploadDocuments.errorMessage().should('not.exist');
     });
   });
 });

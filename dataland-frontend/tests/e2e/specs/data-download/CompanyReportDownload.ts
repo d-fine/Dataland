@@ -3,7 +3,7 @@ import { type LksgData, type StoredCompany } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getAdminToken, getUploaderToken } from '@e2e/utils/Auth.ts';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
@@ -36,7 +36,7 @@ describeIf(
       getAdminToken().then((token: string) => {
         const uniqueCompanyMarker = Date.now().toString();
         const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
           (newStoredCompany) => {
             storedCompany = newStoredCompany;
           }

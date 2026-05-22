@@ -10,7 +10,7 @@ import {
   type RiskPositionType,
   type StoredCompany,
 } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
@@ -114,7 +114,7 @@ describeIf(
       fixture: FixtureData<LksgData>,
       assignOwnership: boolean
     ): Promise<UploadedLksgContext> {
-      const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+      const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
       if (assignOwnership) {
         await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
       }

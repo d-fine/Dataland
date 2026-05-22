@@ -103,5 +103,11 @@ export default defineConfigWithVueTs(
       ],
     },
   },
-  skipFormatting
+  skipFormatting,
+  {
+    name: 'type-assertion-override',
+    rules: {
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    },
+  }
 );

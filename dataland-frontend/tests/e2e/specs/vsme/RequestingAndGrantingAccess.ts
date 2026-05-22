@@ -2,7 +2,7 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { DataTypeEnum, type StoredCompany, type VsmeData } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { uploadVsmeFrameworkData } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 
@@ -86,7 +86,7 @@ describeIf(
       });
 
       getAdminToken().then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
           .then((storedCompany) => {
             storedTestCompany = storedCompany;
             return uploadVsmeFrameworkData(
