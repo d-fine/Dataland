@@ -200,7 +200,7 @@ watch(
     await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
   }
 );
-
+/** Added to fix flakyness in CompanyOwnershipUserJourney to eliminate race condition */
 watch(companyRoleAssignmentsRef, async (newAssignments) => {
   if (!newAssignments?.length) return;
   await setLocalRights();
