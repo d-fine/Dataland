@@ -71,6 +71,10 @@ class DataPointQaReviewManager
 
         /**
          * Saves QA review entries for a list of data points without sending any QA status change messages.
+         *
+         * Use this for Rejected datapoints that will be superseded by a replacement upload, to avoid a
+         * race condition where the status change message is processed after the replacement datapoint is created
+         * and overwrites the correct setting.
          */
         @Transactional
         fun saveDataPointReviewEntitiesOnly(tasks: List<ReviewDataPointTask>): List<DataPointQaReviewEntity> =

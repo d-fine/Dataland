@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
+import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.KArgumentCaptor
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
@@ -47,7 +49,7 @@ class DatasetJudgementFinalizationServiceTest {
     }
 
     private fun verifyReviewTasksCaptor(
-        tasksCaptor: org.mockito.kotlin.KArgumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>,
+        tasksCaptor: KArgumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>,
         expectedQaStatus: QaStatus,
     ) {
         val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
@@ -187,5 +189,40 @@ class DatasetJudgementFinalizationServiceTest {
 
         verify(dataPointControllerApi, never()).postDataPoint(any(), any())
         verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
+    }
+
+    @Test
+    fun `handleAcceptance with mixed sources routes each data point to the correct review path`() {
+        val correctedData = """{"value": 99}"""
+
+        dummyDatasetJudgement.dataPoints.forEach { it.acceptedSource = AcceptedDataPointSource.Original }
+
+        dummyDatasetJudgement.dataPoints.add(
+            MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
+                it.acceptedSource = AcceptedDataPointSource.Custom
+                it.customValue = MockDatasetJudgementEntityForTest.CUSTOM_VALUE
+            },
+        )
+
+        dummyDatasetJudgement.dataPoints.add(
+            MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
+                it.acceptedSource = AcceptedDataPointSource.Qa
+                it.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+                it.qaReports.first().correctedData = correctedData
+                it.qaReports.first().verdict = QaReportDataPointVerdict.QaRejected
+            },
+        )
+
+        service.handleAcceptance(dummyDatasetJudgement)
+
+        val acceptedTasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
+        verify(dataPointQaReviewManager).reviewDataPoints(acceptedTasksCaptor.capture())
+        assertEquals(1, acceptedTasksCaptor.firstValue.size)
+
+        val rejectedTasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(rejectedTasksCaptor.capture())
+        assertEquals(2, rejectedTasksCaptor.firstValue.size)
+
+        verify(dataPointControllerApi, org.mockito.kotlin.times(2)).postDataPoint(any(), any())
     }
 }

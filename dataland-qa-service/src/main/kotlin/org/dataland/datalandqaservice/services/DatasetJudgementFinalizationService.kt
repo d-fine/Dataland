@@ -72,17 +72,17 @@ class DatasetJudgementFinalizationService
             val correlationId = UUID.randomUUID().toString()
             val timestamp = Instant.now().toEpochMilli()
 
-            val (originalTasks, replacementTasks) =
+            val (acceptedTasks, rejectedTasks) =
                 dataPoints
                     .map { dataPoint ->
                         buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
                     }.partition { it.qaStatus == QaStatus.Accepted }
 
-            if (originalTasks.isNotEmpty()) {
-                dataPointQaReviewManager.reviewDataPoints(originalTasks)
+            if (acceptedTasks.isNotEmpty()) {
+                dataPointQaReviewManager.reviewDataPoints(acceptedTasks)
             }
-            if (replacementTasks.isNotEmpty()) {
-                dataPointQaReviewManager.saveDataPointReviewEntitiesOnly(replacementTasks)
+            if (rejectedTasks.isNotEmpty()) {
+                dataPointQaReviewManager.saveDataPointReviewEntitiesOnly(rejectedTasks)
             }
             dataPoints.forEach { uploadReplacementDataPointIfNeeded(it, companyId, reportingPeriod) }
         }
