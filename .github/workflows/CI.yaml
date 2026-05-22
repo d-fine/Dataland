@@ -295,6 +295,8 @@ jobs:
             testGroup: 4
           - testExecutor: "CYPRESS"
             testGroup: 5
+          - testExecutor: "CYPRESS"
+            testGroup: 6
           - testExecutor: "E2ETESTS"
             testGroup: 0
           - testExecutor: "RESTARTABILITY"
@@ -391,6 +393,7 @@ jobs:
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
           LOGGING_OPTIONS_MAX_SIZE: "1G"
           LOGGING_OPTIONS_MAX_FILE: 1
+          JAVA_TOOL_OPTIONS: "-Xms128m -Xmx384m"
           GRAFANA_ADMIN: "admin"
           GRAFANA_PASSWORD: "password"
           LOKI_VOLUME: "./dataland-loki/data"

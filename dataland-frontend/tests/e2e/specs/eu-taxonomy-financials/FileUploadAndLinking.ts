@@ -46,6 +46,8 @@ describeIf(
         cy.get('div.form-field:contains("Assurance")').find('div.p-select').click();
         cy.get('.p-select-option').contains('None').click();
 
+        cy.get('.p-select-overlay').should('not.exist');
+
         cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').within(() => {
           cy.get('#dataPointIsAvailableSwitch').click();
         });
@@ -53,6 +55,8 @@ describeIf(
           cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
           TEST_PDF_FILE_NAME
         );
+
+        cy.get('.p-select-overlay').should('not.exist');
 
         cy.get(
           'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
