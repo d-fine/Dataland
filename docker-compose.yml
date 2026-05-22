@@ -870,6 +870,7 @@ services:
     restart: always
     profiles: [ "production", "testing", "development" ]
     image: ${LOKI_IMAGE:-ghcr.io/d-fine/dataland/dataland_loki:${DATALAND_LOKI_VERSION}}
+    user: "${LOKI_USER}"
     expose:
       - "3100"
     environment:

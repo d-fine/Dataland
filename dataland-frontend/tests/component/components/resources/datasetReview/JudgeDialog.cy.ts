@@ -464,7 +464,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
 
-    const judgementWithCorrectedDataWithNullValue: DatasetJudgementResponse = {
+    const judgementWithCorrectedDataWithNullQuality: DatasetJudgementResponse = {
       ...baseDatasetJudgement,
       dataPoints: {
         ...baseDatasetJudgement.dataPoints,
@@ -474,15 +474,15 @@ describe('JudgeDialog component tests', () => {
             ...qaReport,
             correctedData: JSON.stringify({
               ...correctedDataPoint,
-              value: null,
+              quality: null,
             }),
           })),
         },
       },
     };
 
-    it('disables the accept-report button when the current QA report has corrected data with null as value', () => {
-      mountJudgeDialog({ datasetJudgement: judgementWithCorrectedDataWithNullValue });
+    it('disables the accept-report button when the current QA report has corrected data with null as quality', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithCorrectedDataWithNullQuality });
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
