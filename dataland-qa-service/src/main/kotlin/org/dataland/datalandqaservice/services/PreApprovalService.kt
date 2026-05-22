@@ -26,24 +26,20 @@ class PreApprovalService(
 
     /**
      * Updates the pre-approval configuration with the given patch and returns the updated config.
-     * @throws IllegalArgumentException if samplingProbability is outside [0.0, 1.0]
      */
     fun patchConfig(newConfig: PreApprovalConfig): PreApprovalConfig {
-        require(newConfig.samplingProbability >= 0.0) {
-            "samplingProbability must be >= 0.0, but was ${newConfig.samplingProbability}"
-        }
-        require(newConfig.samplingProbability <= 1.0) {
-            "samplingProbability must be <= 1.0, but was ${newConfig.samplingProbability}"
-        }
         _config = newConfig
         return _config
     }
 
     /**
-     * Pre-approves datapoints of a given DatasetJudgementEntity.
+     * Pre-approves data points of a given DatasetJudgementEntity.
      *
-     * If the feature flag is enabled, data points where all QA reports have the verdict QaAccepted are pre-approved.
      * If the feature flag is disabled, the given DatasetJudgementEntity is returned unchanged.
+     * If the feature flag is enabled, data points that pass several checks are pre-approved:
+     * - all QA reports have the verdict QaAccepted
+     * - data point is not on list of exempt fields
+     * -
      */
     fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
@@ -51,11 +47,9 @@ class PreApprovalService(
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
 
             val allChecksPass =
-                listOf(
-                    areAllQaReportsAccepted(dataPoint),
-                    isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType),
-                    !isSelectedBySampling(),
-                ).all { it }
+                areAllQaReportsAccepted(dataPoint) &&
+                    isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType) &&
+                    !isRandomDrawBelowSamplingProbability()
 
             if (allChecksPass) {
                 dataPoint.acceptedSource = AcceptedDataPointSource.Original
@@ -98,15 +92,13 @@ class PreApprovalService(
             .contains(dataPoint.dataPointType)
 
     /**
-     * Determines whether a data point is selected by the sampling algorithm.
-     * A data point is selected (and thus excluded from auto pre-approval) if a random number
-     * between 0 and 1 is less than or equal to the configured sampling probability.
+     * Checks whether a random draw is below the configured sampling probability.
      *
-     * @return `true` if the data point is selected by sampling (should NOT be pre-approved),
+     * @return `true` if a random number between 0 and 1 is smaller than the configured sampling probability,
      *         `false` otherwise
      */
-    private fun isSelectedBySampling(): Boolean {
+    private fun isRandomDrawBelowSamplingProbability(): Boolean {
         val samplingProbability = _config.samplingProbability
-        return Random.nextDouble() <= samplingProbability
+        return Random.nextDouble() < samplingProbability
     }
 }
