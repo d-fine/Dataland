@@ -25,17 +25,20 @@ docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/. ./coverage/
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/. ./cypress/${CYPRESS_TEST_GROUP}/ || true
 docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/. ./reports/${CYPRESS_TEST_GROUP}/ || true
 
-mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
-docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
-docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API_KEY_MANAGER_DB_PASSWORD} pg_dump --username api_key_manager api_key_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/api-key-manager-db.sql || true
-docker exec -i dala-e2e-test-data-sourcing-service-db-1 /bin/bash -c "PGPASSWORD=${DATA_SOURCING_SERVICE_DB_PASSWORD} pg_dump --username data_sourcing_service data_sourcing_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/data-sourcing-service-db.sql || true
-docker exec -i dala-e2e-test-accounting-service-db-1 /bin/bash -c "PGPASSWORD=${ACCOUNTING_SERVICE_DB_PASSWORD} pg_dump --username accounting_service accounting_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/accounting-service-db.sql || true
-docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/internal-storage-db.sql || true
-docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
-docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
-docker exec -i dala-e2e-test-community-manager-db-1 /bin/bash -c "PGPASSWORD=${COMMUNITY_MANAGER_DB_PASSWORD} pg_dump --username community_manager community_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/community-manager-db.sql || true
-docker exec -i dala-e2e-test-email-service-db-1 /bin/bash -c "PGPASSWORD=${EMAIL_SERVICE_DB_PASSWORD} pg_dump --username email_service email_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/email-service-db.sql || true
-docker exec -i dala-e2e-test-user-service-db-1 /bin/bash -c "PGPASSWORD=${USER_SERVICE_DB_PASSWORD} pg_dump --username user_service user_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/user-service-db.sql || true
+TEST_EXIT_CODE=$(docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1)
+if [[ "$TEST_EXIT_CODE" -ne 0 ]]; then
+  mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
+  docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
+  docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API_KEY_MANAGER_DB_PASSWORD} pg_dump --username api_key_manager api_key_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/api-key-manager-db.sql || true
+  docker exec -i dala-e2e-test-data-sourcing-service-db-1 /bin/bash -c "PGPASSWORD=${DATA_SOURCING_SERVICE_DB_PASSWORD} pg_dump --username data_sourcing_service data_sourcing_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/data-sourcing-service-db.sql || true
+  docker exec -i dala-e2e-test-accounting-service-db-1 /bin/bash -c "PGPASSWORD=${ACCOUNTING_SERVICE_DB_PASSWORD} pg_dump --username accounting_service accounting_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/accounting-service-db.sql || true
+  docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/internal-storage-db.sql || true
+  docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
+  docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
+  docker exec -i dala-e2e-test-community-manager-db-1 /bin/bash -c "PGPASSWORD=${COMMUNITY_MANAGER_DB_PASSWORD} pg_dump --username community_manager community_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/community-manager-db.sql || true
+  docker exec -i dala-e2e-test-email-service-db-1 /bin/bash -c "PGPASSWORD=${EMAIL_SERVICE_DB_PASSWORD} pg_dump --username email_service email_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/email-service-db.sql || true
+  docker exec -i dala-e2e-test-user-service-db-1 /bin/bash -c "PGPASSWORD=${USER_SERVICE_DB_PASSWORD} pg_dump --username user_service user_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/user-service-db.sql || true
+fi
 
 # Stop services to make JaCoCo write the Coverage Reports and copy them to pwd
 services="backend api-key-manager data-sourcing-service document-manager internal-storage qa-service community-manager email-service external-storage data-exporter specification-service user-service accounting-service"
@@ -63,7 +66,5 @@ pg_isready -d user_service -h "localhost" -p 5441
 pg_isready -d data_sourcing_service -h "localhost" -p 5442
 pg_isready -d accounting_service -h "localhost" -p 5443
 
-# Check execution success of Test Container
-TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
 echo "Docker E2E Testcontainer exited with code $TEST_EXIT_CODE"
 exit $((TEST_EXIT_CODE))

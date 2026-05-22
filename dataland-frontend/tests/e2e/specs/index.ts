@@ -56,19 +56,24 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
+  require('./data-sourcing');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 5) {
   require('./quality-assurance');
+  require('./judgement');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 6) {
   require('./data-download/DataDownload');
   require('./data-download/CompanyReportDownload');
+  require('./company-ownership');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 7) {
   require('./data-download/DownloadMyPortfolios');
+  require('./user-experience');
+  require('./portfolios');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 8) {
@@ -78,9 +83,4 @@ if (testGroupingDisabled || cypressTestGroup === 8) {
   require('./eutaxonomy-non-financials-2026-73');
   require('./vsme');
   require('./pcaf');
-  require('./company-ownership');
-  require('./user-experience');
-  require('./portfolios');
-  require('./data-sourcing');
-  require('./judgement');
 }
