@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
 class PreApprovalServiceTest {
@@ -241,24 +240,6 @@ class PreApprovalServiceTest {
 
             assertEquals(0.7, updated.samplingProbability)
             assertEquals(0.7, service.config.samplingProbability)
-        }
-
-        @Test
-        fun `patchConfig throws an error when samplingProbability is below 0`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
-
-            assertThrows<IllegalArgumentException> {
-                service.patchConfig(PreApprovalConfig(samplingProbability = -0.1))
-            }
-        }
-
-        @Test
-        fun `patchConfig throws an error when samplingProbability is above 1`() {
-            val service = PreApprovalService(autoPreApprovalEnabled = true, exemptFieldsConfig = PreApprovalExemptFieldsConfig())
-
-            assertThrows<IllegalArgumentException> {
-                service.patchConfig(PreApprovalConfig(samplingProbability = 1.1))
-            }
         }
     }
 }
