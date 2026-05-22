@@ -72,17 +72,36 @@ export function generateDummyCompanyInformation(companyName: string, sector = 'I
 }
 
 /**
- * Uses the Dataland API to create a new company with the provided CompanyInformation
+ * Uses the Dataland API to get an existing company or create a new one if it doesn't exist
  * @param token the bearer token used to authorize the API requests
- * @param companyInformation information about the company to create
+ * @param companyInformation information about the company to get or create
  * @returns a promise on the requested company
  */
-export async function uploadCompanyViaApi(
+export async function getOrUploadCompanyViaApi(
   token: string,
   companyInformation: CompanyInformation
 ): Promise<StoredCompany> {
-  const data = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postCompany(
-    companyInformation
-  );
-  return data.data;
+  const api = new CompanyDataControllerApi(new Configuration({ accessToken: token }));
+
+  // Try to get the company by identifier first
+  const identifiers = companyInformation.identifiers ?? {};
+  for (const [type, values] of Object.entries(identifiers)) {
+    const value = values?.[0];
+    if (value) {
+      try {
+        const companyIdResponse = await api.getCompanyIdByIdentifier(type as IdentifierType, value);
+        const companyId = companyIdResponse.data.companyId;
+        const storedCompanyResponse = await api.getCompanyById(companyId);
+        return storedCompanyResponse.data;
+      } catch {}
+    }
+  }
+
+  // If company not found, upload it
+  try {
+    const data = await api.postCompany(companyInformation);
+    return data.data;
+  } catch (error: unknown) {
+    throw error;
+  }
 }

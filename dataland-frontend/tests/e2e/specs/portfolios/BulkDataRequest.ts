@@ -4,7 +4,7 @@ import { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { verifyOnSingleRequestPage } from '@sharedUtils/components/DataRequest.ts';
@@ -104,7 +104,7 @@ describeIf(
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${Date.now()}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         testCompanyName = companyToUpload.companyName;
-        await uploadCompanyViaApi(token, companyToUpload);
+        await getOrUploadCompanyViaApi(token, companyToUpload);
       });
     });
 

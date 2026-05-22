@@ -1,7 +1,7 @@
 import { doThingsInChunks, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
 import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
 import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
 import {
@@ -93,7 +93,7 @@ describe(
           it(`Upload data for framework ${frameworkIdentifier}`, () => {
             cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
-                const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                const storedCompany = await getOrUploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadGenericFrameworkData(
                   token,
                   storedCompany.companyId,
@@ -134,7 +134,7 @@ describe(
           it(`Upload data for framework ${DataTypeEnum.Vsme}`, () => {
             cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
-                const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                const storedCompany = await getOrUploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
                 await uploadVsmeFrameworkData(
                   token,
                   storedCompany.companyId,

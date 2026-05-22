@@ -2,38 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Kochton",
-			"headquartersPostalCode": "12235",
-			"sector": "models",
+			"headquarters": "Bednarburgh",
+			"headquartersPostalCode": "37783-0713",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"YbnCrZuZpyiP6eUmWfQY"
+					"LmPvXXYeJxZ39PfAZS9Z"
 				],
 				"Isin": [
-					"OhBqvuC7vOeX"
+					"xatOKm3hKSW2",
+					"zabX6u6nyi8h"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"0MiLPFVLA"
+				"Duns": [
+					"PQi0atPOE"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"T2BKlB2Xr"
+				],
+				"CompanyRegistrationNumber": [
+					"S7bQOmHJ4ECZhoX"
+				]
 			},
-			"countryCode": "TD",
-			"companyContactDetails": [
-				"Marilie_Quigley88@example.com",
-				"Katelynn_Jakubowski@example.com"
-			],
+			"countryCode": "CI",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Boyer, Mills and Hagenes",
-				"Kunze, Satterfield and Sipes",
-				"Murphy Inc",
-				"Stehr - Kuhic"
+				"Rohan - Hilll",
+				"Schroeder Inc"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://aged-formamide.info/",
-			"fiscalYearEnd": "11-Nov",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://pink-pile.info",
+			"fiscalYearEnd": "27-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -110,6 +110,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]

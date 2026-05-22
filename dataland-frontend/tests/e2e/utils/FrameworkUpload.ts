@@ -6,7 +6,7 @@ import {
   VsmeDataControllerApi,
 } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
-import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { admin_userId } from '@e2e/utils/Cypress';
@@ -94,7 +94,7 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
   reportingPeriod: string,
   bypassQa = true
 ): Promise<UploadIds> {
-  return uploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
+  return getOrUploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
     return uploadFrameworkDataForPublicToolboxFramework(
       frameworkDefinition,
       token,
