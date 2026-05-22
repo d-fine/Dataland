@@ -202,7 +202,7 @@ watch(
 );
 
 watch(companyRoleAssignmentsRef, async (newAssignments) => {
-  if (!newAssignments?.length || isUserCompanyOwnerOrUploader.value) return;
+  if (!newAssignments?.length) return;
   await setLocalRights();
 });
 

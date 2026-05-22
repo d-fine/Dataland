@@ -3,15 +3,25 @@ set -euxo pipefail
 source "$(dirname "$0")"/../deployment/docker_utils.sh
 
 #Start E2E Test and wait for E2E Test completion
-# Try to pull images up to 4 times to handle ghcr.io network blips
-success=false
-for i in 1 2 3 4; do
-  echo "Attempt $i to pull Docker images..."
-  docker compose --project-name dala-e2e-test --profile testing pull -q && success=true && break || {
-    echo "Pull failed. Waiting 30 seconds before retrying..."
-    sleep 30
-  }
+# Retry the image pull to tolerate transient ghcr.io network issues.
+max_attempts=4
+for attempt in $(seq 1 "$max_attempts"); do
+  echo "Pulling Docker images (attempt $attempt/$max_attempts)..."
+
+  if docker compose --project-name dala-e2e-test --profile testing pull -q; then
+    break  # Success
+  fi
+
+  if [ "$attempt" -eq "$max_attempts" ]; then
+    echo "Error: Failed to pull Docker images after $max_attempts attempts."
+    exit 1  # Failure
+  fi
+
+  echo "Pull failed. Waiting 30 seconds before retrying..."
+  sleep 30  # Retry
 done
+
+
 
 # If all 3 attempts fail, manually trigger the exit code to stop the CI
 if [ "$success" = false ]; then
