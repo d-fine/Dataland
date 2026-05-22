@@ -48,7 +48,7 @@ class PreApprovalService(
 
             val allChecksPass =
                 areAllQaReportsAccepted(dataPoint) &&
-                    isDataPointNotExempt(dataPoint, datasetJudgementEntity.dataType) &&
+                    isDataPointEligible(dataPoint, datasetJudgementEntity.dataType) &&
                     !isRandomDrawBelowSamplingProbability()
 
             if (allChecksPass) {
@@ -83,7 +83,7 @@ class PreApprovalService(
      * @param dataType the framework (data type) of the current review
      * @return `true` if the data point is not exempt, `false` if it is exempt
      */
-    private fun isDataPointNotExempt(
+    private fun isDataPointEligible(
         dataPoint: DataPointJudgementEntity,
         dataType: DataTypeEnum,
     ): Boolean =
