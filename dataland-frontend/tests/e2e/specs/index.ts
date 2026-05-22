@@ -51,7 +51,6 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./user-experience');
   require('./portfolios');
   require('./data-sourcing');
-  require('./judgement');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
@@ -67,9 +66,13 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
-  require('./quality-assurance');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 5) {
   require('./data-download');
+}
+
+if (testGroupingDisabled || cypressTestGroup === 6) {
+  require('./quality-assurance');
+  require('./judgement');
 }

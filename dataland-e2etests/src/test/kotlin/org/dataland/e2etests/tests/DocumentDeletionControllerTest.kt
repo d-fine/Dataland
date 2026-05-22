@@ -283,17 +283,18 @@ endobj"""
                     "2023",
                     false,
                 ).dataId
-
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            Awaitility
+                .await()
+                .atMost(10000, TimeUnit.MILLISECONDS)
+                .pollInterval(500, TimeUnit.MILLISECONDS)
+                .ignoreExceptions()
+                .untilAsserted {
+                    apiAccessor.qaServiceControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataId))
+                }
+        }
         qaStatus?.let {
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
-                Awaitility
-                    .await()
-                    .atMost(10000, TimeUnit.MILLISECONDS)
-                    .pollInterval(500, TimeUnit.MILLISECONDS)
-                    .ignoreExceptions()
-                    .untilAsserted {
-                        apiAccessor.qaServiceControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataId))
-                    }
                 apiAccessor.qaServiceControllerApi.changeQaStatus(dataId, it)
                 awaitUntilQaStatusEquals(dataId, it)
             }
