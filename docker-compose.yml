@@ -9,6 +9,8 @@
 
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
+x-java-memory-limits:
+  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-}" # Forces Spring Boot to stay lean and not consume more memory than necessary, which is especially important for the testing profile where all services run together. Set JAVA_TOOL_OPTIONS="-Xms128m -Xmx384m" in CI to apply memory limits.
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
@@ -21,6 +23,10 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
+x-postgres-healthcheck: &postgres-healthcheck
+  interval: 10s
+  timeout: 5s
+  retries: 5
 x-logging: &loki-logging
   driver: json-file
   options:
@@ -93,9 +99,12 @@ services:
     expose:
       - "8080"
     depends_on:
-      - api-key-manager-db
+      api-key-manager-db:
+        condition: service_healthy
+
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
@@ -114,6 +123,9 @@ services:
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U api_key_manager" ]
     logging:
       <<: *loki-logging
   accounting-service:
@@ -126,10 +138,13 @@ services:
     expose:
       - "8080"
     depends_on:
-      - accounting-service-db
+      accounting-service-db:
+        condition: service_healthy
+
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -149,6 +164,9 @@ services:
       POSTGRES_USER: accounting_service
       POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       PGUSER: accounting_service
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U accounting_service" ]
     logging:
       <<: *loki-logging
   data-sourcing-service:
@@ -161,10 +179,12 @@ services:
         expose:
           - "8080"
         depends_on:
-          - data-sourcing-service-db
+          data-sourcing-service-db:
+            condition: service_healthy
         <<: *uncritical-constants-env
         environment:
           <<: *rabbit-mq-user-and-pass
+          JAVA_TOOL_OPTIONS: *java-tool-options
           DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -184,6 +204,9 @@ services:
           POSTGRES_USER: data_sourcing_service
           POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           PGUSER: data_sourcing_service
+        healthcheck:
+          <<: *postgres-healthcheck
+          test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
         logging:
           <<: *loki-logging
   document-manager:
@@ -198,13 +221,16 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
-      - document-manager-db
+      document-manager-db:
+        condition: service_healthy
+
     logging:
       <<: *loki-logging
   document-manager-db:
@@ -220,6 +246,9 @@ services:
       POSTGRES_USER: document_manager
       POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGUSER: document_manager
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U document_manager" ]
     logging:
       <<: *loki-logging
   backend:
@@ -232,10 +261,13 @@ services:
     expose:
       - "8080"
     depends_on:
-      - backend-db
+      backend-db:
+        condition: service_healthy
+
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
@@ -264,6 +296,9 @@ services:
       -c shared_buffers=1GB
       -c temp_buffers=512MB
       -c max_stack_depth=7680kB
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U backend" ]
     logging:
       <<: *loki-logging
   e2etests:
@@ -273,6 +308,10 @@ services:
       - external
     volumes:
       - ./.git:/app/.git
+    depends_on:
+
+      backend:
+        condition: service_started
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
@@ -335,12 +374,15 @@ services:
       - internal-storage-db
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION:-1}
     depends_on:
-      - internal-storage-db
+      internal-storage-db:
+        condition: service_healthy
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -358,6 +400,9 @@ services:
       POSTGRES_USER: internal_storage
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGUSER: internal_storage
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U internal_storage" ]
     logging:
       <<: *loki-logging
   keycloak-db:
@@ -373,6 +418,9 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       PGUSER: keycloak
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
     logging:
       <<: *loki-logging
   keycloak:
@@ -389,7 +437,8 @@ services:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
-      - keycloak-db
+      keycloak-db:
+        condition: service_healthy
     logging:
       <<: *loki-logging
   keycloak-initializer:
@@ -515,6 +564,7 @@ services:
       - "8080"
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -522,7 +572,9 @@ services:
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:-false}
     depends_on:
-      - qa-service-db
+      qa-service-db:
+        condition: service_healthy
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -540,6 +592,9 @@ services:
       POSTGRES_USER: qa_service
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U qa_service" ]
     logging:
       <<: *loki-logging
   user-service:
@@ -554,13 +609,16 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
     depends_on:
-      - user-service-db
+      user-service-db:
+        condition: service_healthy
+
     logging:
       <<: *loki-logging
   user-service-db:
@@ -576,6 +634,9 @@ services:
       POSTGRES_USER: user_service
       POSTGRES_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       PGUSER: user_service
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U user_service" ]
     logging:
       <<: *loki-logging
   batch-manager:
@@ -584,7 +645,9 @@ services:
     networks:
       - internal
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
+
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
       GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
       GET_ALL_NORTHDATA_COMPANIES_FLAG_FILE: /config/perform_northdata_full_golden_copy_download_flag
@@ -608,13 +671,16 @@ services:
       - "8080"
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
     depends_on:
-      - community-manager-db
+      community-manager-db:
+        condition: service_healthy
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -634,6 +700,9 @@ services:
       PGUSER: community_manager
     command:
       -c max_stack_depth=7680kB
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U community_manager" ]
     logging:
       <<: *loki-logging
   specification-service:
@@ -644,8 +713,10 @@ services:
       - "8489"
     networks:
       - internal
+
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
       <<: *loki-logging
@@ -659,9 +730,14 @@ services:
       - internal
       - email-service-db
     depends_on:
-      - email-service-db
+      email-service-db:
+        condition: service_healthy
+
     environment:
-      <<: [ *mailjet-api-id-and-secret, *rabbit-mq-user-and-pass ]
+      <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
+      MAILJET_API_SECRET: ${MAILJET_API_SECRET}
+      MAILJET_API_ID: ${MAILJET_API_ID}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
@@ -684,6 +760,9 @@ services:
       POSTGRES_USER: email_service
       POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGUSER: email_service
+    healthcheck:
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U email_service" ]
     logging:
       <<: *loki-logging
   external-storage:
@@ -692,8 +771,10 @@ services:
     image: ${EXTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_external_storage_test:${DATALAND_EXTERNAL_STORAGE_TEST_VERSION}}
     networks:
       - internal
+
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
@@ -726,6 +807,7 @@ services:
       - "8080"
     environment:
       <<: *dummy-eurodat-db-settings
+      JAVA_TOOL_OPTIONS: *java-tool-options
     logging:
       <<: *loki-logging
   dummy-eurodat-db:
@@ -740,9 +822,8 @@ services:
     environment:
       <<: *dummy-eurodat-db-settings
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
+      <<: *postgres-healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U eurodat_db_user" ]
     logging:
       <<: *loki-logging
   data-exporter:
@@ -753,8 +834,10 @@ services:
     image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_TEST_VERSION}}
     expose:
       - "8080"
+
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}

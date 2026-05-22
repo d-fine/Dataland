@@ -24,8 +24,8 @@ describe('Component test for ViewFrameworkBase', () => {
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
-        assert(component.isDataProcessedSuccessfully);
-        expect(component.dataMetaInformation.length).to.equal(9);
+        cy.wrap(component).its('isDataProcessedSuccessfully').should('be.true');
+        cy.wrap(component).its('dataMetaInformation').its('length').should('equal', 9);
       });
     });
   });
@@ -43,7 +43,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
-        assert(component.isDataProcessedSuccessfully);
+        cy.wrap(component).its('isDataProcessedSuccessfully').should('be.true');
         cy.get('button[data-test=downloadDataButton]').should('exist').click();
       });
     });
