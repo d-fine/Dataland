@@ -213,6 +213,7 @@ jobs:
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
           SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
           SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
+          AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${{ vars.AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
