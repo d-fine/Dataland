@@ -41,10 +41,12 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
@@ -317,17 +319,21 @@ class AssembledDataManagerTest {
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
-        assert(!dynamicDataset.isNullOrEmpty())
-        val assembledDatasetNode = defaultObjectMapper.readTree(dynamicDataset!!)
+        assertNotNull(dynamicDataset)
+        assertTrue(dynamicDataset.isNotEmpty())
+        val assembledDatasetNode = defaultObjectMapper.readTree(dynamicDataset)
         val calculatedDataPointNode =
             assembledDatasetNode
                 .path("environmental")
                 .path("greenhouseGasEmissions")
                 .path("scope1And2GhgEmissionsInTonnes")
-        assert(!calculatedDataPointNode.isMissingNode) {
+        assertFalse(calculatedDataPointNode.isMissingNode) {
             "Expected calculated data point 'scope1And2GhgEmissionsInTonnes' to be present in the assembled dataset"
         }
-        assertTrue(BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()) == 0)
+        assertEquals(
+            BigDecimal("1"), calculatedDataPointNode.path("value").decimalValue(),
+            "Calculated value should be 1.0 (0.5 + 0.5)",
+        )
     }
 
     private fun setMockData(
