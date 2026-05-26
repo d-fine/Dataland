@@ -86,13 +86,6 @@ export default defineConfig({
       }
       require('@cypress/code-coverage/task')(on, config);
 
-      on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'chromium') {
-          launchOptions.args.push('--disable-dev-shm-usage');
-        }
-        return launchOptions;
-      });
-
       on('task', {
         setToken(keySet: Record<string, unknown>) {
           Object.entries(keySet).forEach(([key, value]) => {
