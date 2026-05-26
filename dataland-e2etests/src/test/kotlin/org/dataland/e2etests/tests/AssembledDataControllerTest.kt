@@ -24,9 +24,8 @@ class AssembledDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val reportingPeriod = "2025"
 
-        val scope1Value = BigDecimal("1")
-        val scope2Value = BigDecimal("2")
-        val expectedSum = BigDecimal("3")
+        val scope1 = BigDecimal("1.0")
+        val scope2 = BigDecimal("2.0")
 
         val sfdrData =
             SfdrData(
@@ -34,8 +33,8 @@ class AssembledDataControllerTest {
                     SfdrEnvironmental(
                         greenhouseGasEmissions =
                             SfdrEnvironmentalGreenhouseGasEmissions(
-                                scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = scope1Value),
-                                scope2GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = scope2Value),
+                                scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = scope1),
+                                scope2GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = scope2),
                                 scope1And2GhgEmissionsInTonnes = null,
                             ),
                     ),
@@ -59,9 +58,8 @@ class AssembledDataControllerTest {
 
             assertNotNull(calculatedField, "Calculated field scope1And2GhgEmissionsInTonnes should be present")
             assertEquals(
-                expectedSum,
-                calculatedField!!.value,
-                "Expected calculated sum $expectedSum but got ${calculatedField.value}",
+                0, BigDecimal("3.0").compareTo(calculatedField!!.value),
+                "Expected 3.0 as calculated sum but got ${calculatedField.value}",
             )
         }
     }
