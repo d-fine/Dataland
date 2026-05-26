@@ -77,7 +77,9 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
   cy.get('[data-test="add-portfolio"]').click();
   cy.task('log', '[createPortfolio] Dialog opened, typing portfolio name and company identifiers');
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
-  cy.get('[data-test="company-identifiers-input"]').type(`${company1.companyId},${company2.companyId}`);
+  cy.get('[data-test="company-identifiers-input"]')
+    .invoke('val', `${company1.companyId},${company2.companyId}`)
+    .trigger('input');
   cy.get('[data-test="company-identifiers-input"]')
     .invoke('val')
     .then((val) => {
