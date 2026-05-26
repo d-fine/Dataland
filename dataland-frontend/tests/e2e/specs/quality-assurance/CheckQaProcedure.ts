@@ -6,7 +6,7 @@ import {
 } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAdminToken, getUploaderToken, loginAsAdmin, loginAsUploader } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
@@ -36,7 +36,7 @@ describeIf(
 
       getAdminToken().then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
-        return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
+        return getOrUploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });
     });
 

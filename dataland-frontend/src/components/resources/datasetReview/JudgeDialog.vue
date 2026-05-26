@@ -12,7 +12,10 @@
     <!-- Header -->
     <template #header>
       <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; flex: 1">
-        <span data-test="dialog-title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)">
+        <span
+          :data-test="`judge-dialog-header-${currentDataPointTypeId}`"
+          style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold)"
+        >
           {{ currentDataPointLabel }}
         </span>
         <span
@@ -65,7 +68,7 @@
         :data="currentQaCorrectedData"
         empty-text="No QA reports available."
         accept-label="ACCEPT REVIEWED"
-        :accept-disabled="isPatching || allQaReports.length === 0 || !currentQaReport"
+        :accept-disabled="isQaReportAcceptButtonDisabled"
         accept-data-test="accept-report-button"
         data-test="corrected-datapoint-section"
         :show-nav="allQaReports.length > 0"
@@ -190,6 +193,8 @@ import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGe
 import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { type AxiosError } from 'axios';
+import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 // ===== Props & emits =====
 
@@ -197,7 +202,6 @@ const props = defineProps<{
   datasetReviewId: string;
   dataPointTypeId: string;
   kpiRows: CellRow[];
-  availableDocuments?: DocumentOption[];
 }>();
 
 const emit = defineEmits<{
@@ -210,14 +214,43 @@ const errorModalHeader = ref('Error updating data point');
 const errorModalMessage = ref('Failed to update data point judgement.');
 const errorModalDetails = ref<string | undefined>(undefined);
 
-// v-model:visible from parent
-const isOpen = defineModel<boolean>('isOpen');
-const availableDocuments = computed(() => props.availableDocuments ?? []);
-
 // ===== Dataset review =====
 
 const datasetJudgementId = computed(() => props.datasetReviewId);
 const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId: datasetJudgementId });
+
+// v-model:visible from parent
+const isOpen = defineModel<boolean>('isOpen');
+// available company documents from query
+const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
+const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
+const availableDocuments = computed<DocumentOption[]>(() => {
+  const docs = allDocumentMetaInfo.value ?? [];
+  const reportingPeriod = datasetJudgement.value?.reportingPeriod;
+  const reportingPeriodNumber =
+    reportingPeriod === null || reportingPeriod === undefined ? null : Number.parseInt(reportingPeriod, 10);
+  return docs
+    .filter((doc: DocumentMetaInfoResponse) => {
+      if (doc.reportingPeriod == null) {
+        return true;
+      } else if (reportingPeriodNumber != null) {
+        return Number.parseInt(doc.reportingPeriod) >= reportingPeriodNumber;
+      }
+      return false;
+    })
+    .map((doc: DocumentMetaInfoResponse) => {
+      const label = doc.documentName ?? doc.documentId;
+      return {
+        label: label,
+        value: label,
+        dataSource: {
+          fileName: doc.documentName ?? null,
+          fileReference: doc.documentId ?? null,
+          publicationDate: doc.publicationDate ?? null,
+        },
+      } as DocumentOption;
+    });
+});
 
 // ===== Accept Button mutations  =====
 const { mutate: patchJudgementDetail, isPending: isPatching } = usePatchJudgementDetailsForDataPointMutation();
@@ -338,6 +371,19 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
   const list = allQaReports.value;
   if (!list.length) return null;
   return list[currentQaReportIndex.value] ?? list[0];
+});
+
+/**
+ * Check if the QA report has invalid corrected data.
+ *
+ * @returns True if corrected data is invalid.
+ */
+function isQaReportCorrectedDataInvalid(): boolean {
+  return !currentQaReport.value || !currentQaCorrectedData.value || currentQaCorrectedData.value.quality == null;
+}
+
+const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
+  return isPatching.value || allQaReports.value.length === 0 || isQaReportCorrectedDataInvalid();
 });
 
 const qaReportersById = computed<Record<string, QaReporter>>(() => {

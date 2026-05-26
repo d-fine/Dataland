@@ -91,6 +91,10 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomCurrencyDataPoint(0),
       },
       turnoverBasedGreenAssetRatioStock: {
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
@@ -107,19 +111,19 @@ export function generateEutaxonomyFinancials202673Data(
         ),
         substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       capexBasedGreenAssetRatioStock: {
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
@@ -136,22 +140,18 @@ export function generateEutaxonomyFinancials202673Data(
         ),
         substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
     },
     assetManagement: {
       assetUnderManagement: {
-        totalAssetUnderManagementMonetaryAmount: dataGenerator.randomCurrencyDataPoint(),
+        totalAssetUnderManagementMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
         assetsCoveredByTheKpiInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         assetsCoveredByTheKpiMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
       },
@@ -167,25 +167,18 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfTurnoverBasedKpiInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
         shareOfTurnoverBasedKpiInPercentOfWhichTransitional: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         shareOfTurnoverBasedKpiInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
+        shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
       },
       breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased: {
         shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
@@ -201,6 +194,15 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
+      breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased: {
+        turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
       breakdownOfTheNumeratorOfTheKpiCapexBased: {
         shareOfCapexBasedKpiInPercentEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
@@ -214,25 +216,18 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfCapexBasedKpiInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
         shareOfCapexBasedKpiInPercentOfWhichTransitional: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         shareOfCapexBasedKpiInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
+        shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
       },
       breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased: {
         shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
@@ -246,6 +241,15 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
+      breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased: {
+        capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
     },
@@ -294,25 +298,18 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfTurnoverBasedKpiInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
         shareOfTurnoverBasedKpiInPercentOfWhichTransitional: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         shareOfTurnoverBasedKpiInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
+        shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
       },
       breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased: {
         shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
@@ -328,6 +325,15 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
+      breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased: {
+        turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
       breakdownOfTheNumeratorOfTheKpiCapexBased: {
         shareOfCapexBasedKpiInPercentEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
@@ -341,25 +347,18 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfCapexBasedKpiInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
         shareOfCapexBasedKpiInPercentOfWhichTransitional: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         shareOfCapexBasedKpiInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
+        shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
       },
       breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased: {
         shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
@@ -375,6 +374,15 @@ export function generateEutaxonomyFinancials202673Data(
         shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
+      breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased: {
+        capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
     },
     investmentFirms: {
       dealingOnOwnAccountServicesTurnoverBased: {
@@ -382,6 +390,10 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomCurrencyDataPoint(0),
         turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover:
           dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned:
@@ -393,10 +405,6 @@ export function generateEutaxonomyFinancials202673Data(
         turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
@@ -412,10 +420,10 @@ export function generateEutaxonomyFinancials202673Data(
         turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: dataGenerator.randomExtendedDataPoint(
+        turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned: dataGenerator.randomExtendedDataPoint(
+        turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned: dataGenerator.randomExtendedDataPoint(
@@ -427,6 +435,10 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomCurrencyDataPoint(0),
         capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex:
           dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned:
@@ -438,10 +450,6 @@ export function generateEutaxonomyFinancials202673Data(
         capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
@@ -457,10 +465,10 @@ export function generateEutaxonomyFinancials202673Data(
         capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: dataGenerator.randomExtendedDataPoint(
+        capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned: dataGenerator.randomExtendedDataPoint(
+        capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
         capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned: dataGenerator.randomExtendedDataPoint(
@@ -472,6 +480,10 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomCurrencyDataPoint(0),
         turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover:
           dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
@@ -484,10 +496,6 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
@@ -495,9 +503,9 @@ export function generateEutaxonomyFinancials202673Data(
         turnoverBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
@@ -507,6 +515,10 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomCurrencyDataPoint(0),
         capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex:
           dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
@@ -519,10 +531,6 @@ export function generateEutaxonomyFinancials202673Data(
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
@@ -530,9 +538,9 @@ export function generateEutaxonomyFinancials202673Data(
         capexBasedNonAssessedExposures: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
-          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),

@@ -25,6 +25,7 @@ class DatasetJudgementCreationService
     constructor(
         private val datasetJudgementSupportService: DatasetJudgementSupportService,
         private val keycloakUserService: KeycloakUserService,
+        private val preApprovalService: PreApprovalService,
     ) {
         /**
          * Helper method to create a dataset judgement entity from the given QA reports, dataset metadata, and data points.
@@ -69,7 +70,7 @@ class DatasetJudgementCreationService
                 dataPointTypeToQaReports,
             )
 
-            return datasetJudgementEntity
+            return preApprovalService.preApproveDataPoints(datasetJudgementEntity)
         }
 
         /**

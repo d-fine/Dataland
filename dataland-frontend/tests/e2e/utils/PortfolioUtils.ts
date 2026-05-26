@@ -1,6 +1,6 @@
 import { getAdminToken } from '@e2e/utils/Auth.ts';
 import { NotificationFrequency, PortfolioControllerApi, Configuration } from '@clients/userservice';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 
 /**
  * Creates a new portfolio by utilizing an API. The method obtains an access token through Keycloak authentication
@@ -9,7 +9,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 export function createPortfolio(): void {
   getAdminToken().then(async (token) => {
     const companyToUpload = generateDummyCompanyInformation('Dummy Company');
-    const companyId = (await uploadCompanyViaApi(token, companyToUpload)).companyId;
+    const companyId = (await getOrUploadCompanyViaApi(token, companyToUpload)).companyId;
 
     const dummyPortfolioUpload = {
       portfolioName: 'Dummy Portfolio ' + Date.now(),

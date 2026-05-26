@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
+import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.KArgumentCaptor
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
@@ -44,6 +46,25 @@ class DatasetJudgementFinalizationServiceTest {
             MockDatasetJudgementEntityForTest.dummyUserId.toString(),
         )
         dummyDatasetJudgement = MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
+    }
+
+    private fun verifyReviewTasksCaptor(
+        tasksCaptor: KArgumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>,
+        expectedQaStatus: QaStatus,
+    ) {
+        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
+        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
+        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == expectedQaStatus })
+        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
+        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
+    }
+
+    private fun verifyUploadedDataPoint(expectedDataPoint: String) {
+        val uploadCaptor = argumentCaptor<UploadedDataPoint>()
+        verify(dataPointControllerApi).postDataPoint(uploadCaptor.capture(), any())
+        assertEquals(expectedDataPoint, uploadCaptor.firstValue.dataPoint)
+        assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
+        assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
     }
 
     @Test
@@ -78,11 +99,7 @@ class DatasetJudgementFinalizationServiceTest {
 
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
         verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
-        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
-        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Accepted })
-        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
-        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
+        verifyReviewTasksCaptor(tasksCaptor, QaStatus.Accepted)
 
         verify(qaReviewManager).changeQaStatus(
             dataId = dummyDatasetJudgement.datasetId.toString(),
@@ -101,19 +118,12 @@ class DatasetJudgementFinalizationServiceTest {
 
         service.handleAcceptance(dummyDatasetJudgement)
 
-        val uploadCaptor = argumentCaptor<UploadedDataPoint>()
-        verify(dataPointControllerApi).postDataPoint(uploadCaptor.capture(), any())
-        assertEquals(MockDatasetJudgementEntityForTest.CUSTOM_VALUE, uploadCaptor.firstValue.dataPoint)
-        assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
-        assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
+        verifyUploadedDataPoint(MockDatasetJudgementEntityForTest.CUSTOM_VALUE)
 
+        verify(dataPointQaReviewManager, never()).reviewDataPoints(any())
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
-        verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
-        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
-        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
-        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
-        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(tasksCaptor.capture())
+        verifyReviewTasksCaptor(tasksCaptor, QaStatus.Rejected)
     }
 
     @Test
@@ -142,19 +152,12 @@ class DatasetJudgementFinalizationServiceTest {
 
         service.handleAcceptance(dummyDatasetJudgement)
 
-        val uploadCaptor = argumentCaptor<UploadedDataPoint>()
-        verify(dataPointControllerApi).postDataPoint(uploadCaptor.capture(), any())
-        assertEquals(correctedData, uploadCaptor.firstValue.dataPoint)
-        assertEquals(dummyDatasetJudgement.companyId.toString(), uploadCaptor.firstValue.companyId)
-        assertEquals(dummyDatasetJudgement.reportingPeriod, uploadCaptor.firstValue.reportingPeriod)
+        verifyUploadedDataPoint(correctedData)
 
+        verify(dataPointQaReviewManager, never()).reviewDataPoints(any())
         val tasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
-        verify(dataPointQaReviewManager).reviewDataPoints(tasksCaptor.capture())
-        val expectedDataPointIds = dummyDatasetJudgement.dataPoints.map { it.dataPointId }.toSet()
-        assertEquals(dummyDatasetJudgement.dataPoints.size, tasksCaptor.firstValue.size)
-        assertTrue(tasksCaptor.firstValue.all { it.qaStatus == QaStatus.Rejected })
-        assertTrue(tasksCaptor.firstValue.all { it.triggeringUserId == MockDatasetJudgementEntityForTest.dummyUserId.toString() })
-        assertEquals(expectedDataPointIds, tasksCaptor.firstValue.map { it.dataPointId }.toSet())
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(tasksCaptor.capture())
+        verifyReviewTasksCaptor(tasksCaptor, QaStatus.Rejected)
     }
 
     @Test
@@ -186,5 +189,40 @@ class DatasetJudgementFinalizationServiceTest {
 
         verify(dataPointControllerApi, never()).postDataPoint(any(), any())
         verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
+    }
+
+    @Test
+    fun `handleAcceptance with mixed sources routes each data point to the correct review path`() {
+        val correctedData = """{"value": 99}"""
+
+        dummyDatasetJudgement.dataPoints.forEach { it.acceptedSource = AcceptedDataPointSource.Original }
+
+        dummyDatasetJudgement.dataPoints.add(
+            MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
+                it.acceptedSource = AcceptedDataPointSource.Custom
+                it.customValue = MockDatasetJudgementEntityForTest.CUSTOM_VALUE
+            },
+        )
+
+        dummyDatasetJudgement.dataPoints.add(
+            MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
+                it.acceptedSource = AcceptedDataPointSource.Qa
+                it.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+                it.qaReports.first().correctedData = correctedData
+                it.qaReports.first().verdict = QaReportDataPointVerdict.QaRejected
+            },
+        )
+
+        service.handleAcceptance(dummyDatasetJudgement)
+
+        val acceptedTasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
+        verify(dataPointQaReviewManager).reviewDataPoints(acceptedTasksCaptor.capture())
+        assertEquals(1, acceptedTasksCaptor.firstValue.size)
+
+        val rejectedTasksCaptor = argumentCaptor<List<DataPointQaReviewManager.ReviewDataPointTask>>()
+        verify(dataPointQaReviewManager).saveDataPointReviewEntitiesOnly(rejectedTasksCaptor.capture())
+        assertEquals(2, rejectedTasksCaptor.firstValue.size)
+
+        verify(dataPointControllerApi, org.mockito.kotlin.times(2)).postDataPoint(any(), any())
     }
 }

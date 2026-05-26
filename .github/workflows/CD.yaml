@@ -213,6 +213,7 @@ jobs:
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
           SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
           SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
+          AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${{ vars.AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -230,7 +231,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        testGroup: [ 1,2,3,4,5 ]
+        testGroup: [ 1,2,3,4,5,6 ]
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
@@ -245,12 +246,24 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - name: Login to Github Packages
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Github Packages with retry
+        run: |
+          success=false
+          for i in 1 2 3; do
+            echo "Attempt $i to login to ghcr.io..."
+            if echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin; then
+              success=true
+              echo "Successfully logged in to ghcr.io"
+              break
+            else
+              echo "Login failed. Waiting 15 seconds before retrying..."
+              sleep 15
+            fi
+          done
+          if [ "$success" = false ]; then
+            echo "Error: Failed to login to ghcr.io after 3 attempts."
+            exit 1
+          fi
       - name: Download frontend dependencies
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:

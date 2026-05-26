@@ -2,18 +2,18 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-10-22",
+				"dataDate": "2024-05-25",
 				"fiscalYearDeviation": {
-					"value": "NoDeviation"
+					"value": "Deviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-07-21"
+					"value": "2024-12-27"
 				},
 				"referencedReports": {
-					"AnnualReport": {
+					"IntegratedReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "AnnualReport",
-						"publicationDate": "2023-10-28"
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-02-08"
 					}
 				}
 			}
@@ -21,15 +21,15 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 2319,
+					"value": 6442,
 					"dataSource": {
-						"page": "1062-1112",
-						"fileName": "AnnualReport",
+						"page": "1061",
+						"fileName": "IntegratedReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "lifetime value",
+						"tagName": "blockchains",
 						"publicationDate": null
 					},
-					"comment": "calculate optical hard drive",
+					"comment": "synthesize auxiliary application",
 					"quality": "Incomplete"
 				}
 			}
@@ -39,26 +39,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "522",
-						"fileName": "AnnualReport",
+						"page": "752",
+						"fileName": "IntegratedReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "functionalities",
+						"tagName": "applications",
 						"publicationDate": null
 					},
-					"comment": "copy wireless application",
+					"comment": "synthesize haptic pixel",
 					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "479-1251",
-						"fileName": "AnnualReport",
+						"page": "763",
+						"fileName": "IntegratedReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "metrics",
+						"tagName": "platforms",
 						"publicationDate": null
 					},
-					"comment": "hack neural card",
-					"quality": "Audited"
+					"comment": "hack primary transmitter",
+					"quality": "Estimated"
 				}
 			}
 		}

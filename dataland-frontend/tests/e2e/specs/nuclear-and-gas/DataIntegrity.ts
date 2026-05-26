@@ -9,7 +9,7 @@ import {
   type NuclearAndGasData,
   NuclearAndGasDataControllerApi,
 } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetAccepted } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
@@ -41,7 +41,7 @@ type DatasetsComparisonContext = {
  * @returns token, company id, dataset id and dataset type
  */
 async function createCompanyAndUploadDataset(token: string, testCompanyName: string): Promise<UploadedDatasetContext> {
-  const storedCompany = await uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+  const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
   await assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
   const dataMetaInformation = await uploadFrameworkDataForPublicToolboxFramework(
     EuTaxonomyNuclearAndGasBaseFrameworkDefinition,

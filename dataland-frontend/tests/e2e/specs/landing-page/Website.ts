@@ -27,6 +27,42 @@ function checkDataPrivacyPage(): void {
   cy.get("a[href='/']").eq(0).click();
 }
 
+const apiLinkSelector = '#documentation [data-test="api-link"]';
+
+/** Clicks an API documentation link, checks the URL, and returns to the documentation section. */
+function clickAndCheckApiLink(index: number): void {
+  cy.location('origin').then((origin) => {
+    cy.get(apiLinkSelector)
+      .eq(index)
+      .invoke('attr', 'href')
+      .should('exist')
+      .then((href) => {
+        const expectedUrl = new URL(String(href), origin).href;
+
+        cy.get(apiLinkSelector).eq(index).invoke('removeAttr', 'target').click();
+
+        cy.url().should('eq', expectedUrl);
+
+        cy.visit('/product#documentation');
+      });
+  });
+}
+
+/** Checks all API documentation links. */
+function checkApiDocumentationLinks(): void {
+  cy.visit('/product#documentation');
+
+  cy.get(apiLinkSelector)
+    .should('have.length.greaterThan', 0)
+    .then(($links) => {
+      const linkIndexes = [...$links].map((_, index) => index);
+
+      cy.wrap(linkIndexes).each((index) => {
+        clickAndCheckApiLink(Number(index));
+      });
+    });
+}
+
 describe('Check that the website works properly', () => {
   beforeEach(() => {
     cy.setCookie('CookieConsent', cookieConsentValue);
@@ -50,12 +86,15 @@ describe('Check that the website works properly', () => {
     cy.url().should('include', '/about');
     cy.get("a[href='/']").eq(0).click();
 
-    cy.get("nav a[href='/product']:visible").should('exist').click();
-    cy.url().should('include', '/product');
-    cy.get("a[href='/']").eq(0).click();
-
     cy.get("nav a[href='/dataland-community']:visible").should('exist').click();
     cy.url().should('include', '/dataland-community');
+    cy.get("a[href='/']").eq(0).click();
+
+    cy.get("nav a[href='/product']:visible").should('exist').click();
+    cy.url().should('include', '/product');
+
+    checkApiDocumentationLinks();
+
     cy.get("a[href='/']").eq(0).click();
 
     checkLegalPage();

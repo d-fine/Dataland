@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { IdentifierType } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
@@ -112,10 +112,10 @@ describeIf(
       getAdminToken().then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${companyTimestamp}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
-        await uploadCompanyViaApi(token, companyToUpload);
+        await getOrUploadCompanyViaApi(token, companyToUpload);
         const secondCompanyToUpload = generateDummyCompanyInformation(`Test Co.2 ${companyTimestamp}`);
         permIdOfSecondCompany = assertDefined(secondCompanyToUpload.identifiers[IdentifierType.PermId][0]);
-        await uploadCompanyViaApi(token, secondCompanyToUpload);
+        await getOrUploadCompanyViaApi(token, secondCompanyToUpload);
       });
     });
 
