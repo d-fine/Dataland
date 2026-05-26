@@ -66,12 +66,50 @@ function setupCompanyWithData(token: string, companyName: string, years: string[
  * @return {void} This function does not return a value.
  */
 function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
+  cy.task(
+    'log',
+    `[createPortfolio] Starting. company1.companyId=${company1.companyId}, company2.companyId=${company2.companyId}, portfolioName=${portfolioName}`
+  );
   cy.ensureLoggedInAsAdmin();
+  cy.task('log', '[createPortfolio] Logged in as admin, visiting /portfolios');
   cy.visitAndCheckAppMount('/portfolios');
+  cy.task('log', '[createPortfolio] Page loaded, clicking add-portfolio');
   cy.get('[data-test="add-portfolio"]').click();
+  cy.task('log', '[createPortfolio] Dialog opened, typing portfolio name and company identifiers');
   cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
   cy.get('[data-test="company-identifiers-input"]').type(`${company1.companyId},${company2.companyId}`);
+  cy.get('[data-test="company-identifiers-input"]')
+    .invoke('val')
+    .then((val) => {
+      cy.task('log', `[createPortfolio] Input value after type: "${String(val)}"`);
+    });
+  cy.task('log', '[createPortfolio] Clicking ADD COMPANIES');
   cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(5000);
+
+  cy.get('body').then(($body) => {
+    const inputVal = $body.find('[data-test="company-identifiers-input"]').val();
+    const identifierError = $body.find('[data-test="invalidIdentifierErrorMessage"]').is(':visible');
+    const unknownError = $body.find('[data-test="unknown-portfolio-error"]');
+    const companyListItems = $body.find('#existing-company-identifiers li');
+    const saveBtn = $body.find('[data-test="portfolio-dialog-save-button"]');
+
+    cy.task('log', `[createPortfolio] After 5s - input value: "${String(inputVal)}"`);
+    cy.task('log', `[createPortfolio] After 5s - invalidIdentifierErrorMessage visible: ${identifierError}`);
+    cy.task('log', `[createPortfolio] After 5s - unknown-portfolio-error text: "${unknownError.text().trim()}"`);
+    cy.task('log', `[createPortfolio] After 5s - company list item count: ${companyListItems.length}`);
+    companyListItems.each((i, el) => {
+      cy.task('log', `[createPortfolio] After 5s -   company[${i}]: "${Cypress.$(el).text().trim()}"`);
+    });
+    cy.task(
+      'log',
+      `[createPortfolio] After 5s - save button disabled: ${String(saveBtn.attr('disabled'))}, aria-disabled: ${String(saveBtn.attr('aria-disabled'))}`
+    );
+  });
+
+  cy.task('log', '[createPortfolio] Asserting save button is not disabled');
   cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled').click();
 }
 
