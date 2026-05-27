@@ -187,13 +187,7 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
     if (inputs.isEmpty()) {
         return null
     }
-    val usedReference = inputs.map { it.fileReference }.toSet().minOf { it }
-    return ExtendedDocumentReference(
-        fileReference = usedReference,
-        fileName = inputs.first { it.fileReference == usedReference }.fileName,
-        publicationDate = inputs.first { it.fileReference == usedReference }.publicationDate,
-        page = inputs.first().page,
-    )
+    return inputs.minByOrNull { it.fileReference }
 }
 
 /**
