@@ -194,12 +194,6 @@ export default defineConfig({
         },
       });
       on('task', {
-        log(message: string) {
-          console.log(message);
-          return null;
-        },
-      });
-      on('task', {
         createUniquePdfFixture() {
           const fs = require('fs');
           const path = require('path');
