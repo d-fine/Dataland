@@ -5,5 +5,11 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalScope3UpstreamGhgEmissionsInTonnes" ],
+    "calculationMethod" : "Identity"
+  }, {
+    "inputs" : [ "extendedDecimalScope3DownstreamGhgEmissionsInTonnes" ],
+    "calculationMethod" : "Identity"
+  } ]
 }

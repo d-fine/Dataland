@@ -5,5 +5,8 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalScope2GhgEmissionsInTonnes" ],
+    "calculationMethod" : "Identity"
+  } ]
 }

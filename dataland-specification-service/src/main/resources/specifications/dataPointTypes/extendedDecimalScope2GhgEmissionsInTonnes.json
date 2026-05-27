@@ -5,5 +5,11 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes" ],
+    "calculationMethod" : "Identity"
+  }, {
+    "inputs" : [ "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes" ],
+    "calculationMethod" : "Identity"
+  } ]
 }
