@@ -228,14 +228,6 @@ export default defineConfig({
           return filename;
         },
       });
-      on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.name === 'electron') {
-          launchOptions.preferences.commandLineSwitches = {
-            'js-flags': '--max-old-space-size=256',
-          };
-        }
-        return launchOptions;
-      });
       config.expose.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
