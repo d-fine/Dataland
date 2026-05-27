@@ -160,88 +160,181 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
     children: [
       {
         type: 'section',
-        label: 'Assets for Calculation of Green Asset Ratio',
+        label: 'Turnover-based Assets for Calculation of Green Asset Ratio',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Total (gross) Carrying Amount',
+            label: 'Turnover-based Total (gross) Carrying Amount',
             explanation:
-              'Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
+              'Turnover-based total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount,
-                'Total (gross) Carrying Amount'
+                dataset.creditInstitution?.turnoverBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.turnoverBasedTotalGrossCarryingAmount,
+                'Turnover-based Total (gross) Carrying Amount'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
+              'extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalGrossCarryingAmount',
           },
           {
             type: 'cell',
-            label: 'Total Amount of Non-Assessed Exposures',
-            explanation: 'Total amount of assets of which Non-Assessed Exposures',
+            label: 'Turnover-based Total Amount of Non-Assessed Exposures',
+            explanation: 'Turnover-based total amount of assets of which Non-Assessed Exposures',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfNonAssessedExposures,
-                'Total Amount of Non-Assessed Exposures'
+                dataset.creditInstitution?.turnoverBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.turnoverBasedTotalAmountOfNonAssessedExposures,
+                'Turnover-based Total Amount of Non-Assessed Exposures'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposures',
+              'extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalAmountOfNonAssessedExposures',
           },
           {
             type: 'cell',
             label:
-              'Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties',
-            explanation: 'Total amount of assets of which Financing Non-Material Activities of Counterparties',
+              'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties',
+            explanation:
+              'Turnover-based total amount of assets of which Financing Non-Material Activities of Counterparties',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-                  ?.totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties,
-                'Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties'
+                dataset.creditInstitution?.turnoverBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties,
+                'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties',
+              'extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties',
           },
           {
             type: 'cell',
             label:
-              'Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
+              'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
             explanation:
-              'Total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+              'Turnover-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-                  ?.totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities,
-                'Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities'
+                dataset.creditInstitution?.turnoverBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities,
+                'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
+              'extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
           },
           {
             type: 'cell',
             label:
-              'Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution',
+              'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution',
             explanation:
-              'Total amount of assets of which Not Assessed Considered Non-Material by the Credit Institution',
+              'Turnover-based total amount of assets of which Not Assessed Considered Non-Material by the Credit Institution',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio
-                  ?.totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution,
-                'Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution'
+                dataset.creditInstitution?.turnoverBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution,
+                'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId:
-              'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution',
+              'extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'CapEx-based Assets for Calculation of Green Asset Ratio',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'CapEx-based Total (gross) Carrying Amount',
+            explanation:
+              'CapEx-based total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.creditInstitution?.capexBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.capexBasedTotalGrossCarryingAmount,
+                'CapEx-based Total (gross) Carrying Amount'
+              ),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedAssetsForCalculationOfGreenAssetRatioCapexBasedTotalGrossCarryingAmount',
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Total Amount of Non-Assessed Exposures',
+            explanation: 'CapEx-based total amount of assets of which Non-Assessed Exposures',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.creditInstitution?.capexBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.capexBasedTotalAmountOfNonAssessedExposures,
+                'CapEx-based Total Amount of Non-Assessed Exposures'
+              ),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedAssetsForCalculationOfGreenAssetRatioCapexBasedTotalAmountOfNonAssessedExposures',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties',
+            explanation:
+              'CapEx-based total amount of assets of which Financing Non-Material Activities of Counterparties',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.creditInstitution?.capexBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties,
+                'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Financing Non-Material Activities of Counterparties'
+              ),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedAssetsForCalculationOfGreenAssetRatioCapexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
+            explanation:
+              'CapEx-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.creditInstitution?.capexBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities,
+                'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities'
+              ),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedAssetsForCalculationOfGreenAssetRatioCapexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities',
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution',
+            explanation:
+              'CapEx-based total amount of assets of which Not Assessed Considered Non-Material by the Credit Institution',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.creditInstitution?.capexBasedAssetsForCalculationOfGreenAssetRatio
+                  ?.capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution,
+                'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Not Assessed Considered Non-Material by the Credit Institution'
+              ),
+            uploadComponentName: 'CurrencyExtendedDataPointFormField',
+            dataPointTypeId:
+              'extendedCurrencyCreditInstitutionCapexBasedAssetsForCalculationOfGreenAssetRatioCapexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution',
           },
         ],
       },

@@ -20445,11 +20445,19 @@
       "EutaxonomyFinancials202673CreditInstitution": {
         "type": "object",
         "properties": {
-          "assetsForCalculationOfGreenAssetRatio": {
+          "turnoverBasedAssetsForCalculationOfGreenAssetRatio": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio"
+                "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio"
+              }
+            ]
+          },
+          "capexBasedAssetsForCalculationOfGreenAssetRatio": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio"
               }
             ]
           },
@@ -20487,10 +20495,10 @@
           }
         }
       },
-      "EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio": {
+      "EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio": {
         "type": "object",
         "properties": {
-          "totalGrossCarryingAmount": {
+          "capexBasedTotalGrossCarryingAmount": {
             "nullable": true,
             "allOf": [
               {
@@ -20498,7 +20506,7 @@
               }
             ]
           },
-          "totalAmountOfNonAssessedExposures": {
+          "capexBasedTotalAmountOfNonAssessedExposures": {
             "nullable": true,
             "allOf": [
               {
@@ -20506,7 +20514,7 @@
               }
             ]
           },
-          "totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
             "nullable": true,
             "allOf": [
               {
@@ -20514,7 +20522,7 @@
               }
             ]
           },
-          "totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
             "nullable": true,
             "allOf": [
               {
@@ -20522,7 +20530,7 @@
               }
             ]
           },
-          "totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
             "nullable": true,
             "allOf": [
               {
@@ -20681,6 +20689,51 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedTotalGrossCarryingAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposures": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -22735,15 +22788,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

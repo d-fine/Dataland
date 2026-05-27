@@ -9258,8 +9258,11 @@
       "EutaxonomyFinancials202673CreditInstitution": {
         "type": "object",
         "properties": {
-          "assetsForCalculationOfGreenAssetRatio": {
-            "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio"
+          "turnoverBasedAssetsForCalculationOfGreenAssetRatio": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio"
+          },
+          "capexBasedAssetsForCalculationOfGreenAssetRatio": {
+            "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio"
           },
           "turnoverBasedGreenAssetRatioSectorInformation": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRatioSectorInformation"
@@ -9275,22 +9278,22 @@
           }
         }
       },
-      "EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio": {
+      "EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio": {
         "type": "object",
         "properties": {
-          "totalGrossCarryingAmount": {
+          "capexBasedTotalGrossCarryingAmount": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "totalAmountOfNonAssessedExposures": {
+          "capexBasedTotalAmountOfNonAssessedExposures": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+          "capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
@@ -9356,6 +9359,26 @@
           },
           "capexBasedNonAssessedExposures": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedTotalGrossCarryingAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposures": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },

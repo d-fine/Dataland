@@ -2,36 +2,31 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-EU-Taxonomy-Financials-202673-Framework-Company",
-			"headquarters": "Goodyear",
-			"headquartersPostalCode": "19908",
-			"sector": "ROI",
+			"headquarters": "Norman",
+			"headquartersPostalCode": "08914-0065",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"gdBv6fjEVsEI",
-					"STFZscgqud51"
+					"NEYrS2u01I1i",
+					"3IQnHAN9fDEy"
 				],
 				"PermId": [],
 				"Ticker": [
-					"Lz045Nf"
+					"5GKQSX9"
 				],
-				"Duns": [
-					"HdeTkwxzO"
-				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"SDnXb1Z2aBRMcLy"
+				]
 			},
-			"countryCode": "WF",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Brekke, Glover and Pagac",
-				"Hansen - Schaden",
-				"Jenkins-Muller, Prohaska and Blanda",
-				"Rempel Group"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://rich-colonialism.net/",
-			"fiscalYearEnd": "19-Dec",
+			"countryCode": "GF",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://confused-tenant.com/",
+			"fiscalYearEnd": "02-Jan",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -40,612 +35,679 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "601",
-							"fileName": "SustainabilityReport",
+							"page": "689-1050",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
+							"tagName": "supply-chains",
 							"publicationDate": null
 						},
-						"comment": "connect primary alarm",
-						"quality": "Audited"
+						"comment": "override auxiliary feed",
+						"quality": "Reported"
 					},
 					"fiscalYearEnd": {
-						"value": "2025-01-19",
+						"value": "2024-08-14",
 						"dataSource": {
-							"page": "877",
-							"fileName": "SustainabilityReport",
+							"page": "760-888",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "AI",
+							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "override bluetooth feed",
-						"quality": "Audited"
+						"comment": "program 1080p bandwidth",
+						"quality": "Estimated"
 					},
 					"referencedReports": {
-						"SustainabilityReport": {
+						"IntegratedReport": {
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-22"
+							"fileName": "IntegratedReport",
+							"publicationDate": "2024-01-11"
 						}
 					},
 					"areAllGroupEntitiesCovered": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"page": "211-541",
-							"fileName": "SustainabilityReport",
+							"page": "1145",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
+							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "index multi-byte circuit",
-						"quality": "NoDataFound"
+						"comment": "synthesize auxiliary application",
+						"quality": "Reported"
 					},
 					"numberOfEmployees": {
-						"value": 64376.15,
+						"value": 56724.26,
 						"dataSource": {
-							"page": "126",
-							"fileName": "SustainabilityReport",
+							"page": "670",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
+							"tagName": "niches",
 							"publicationDate": null
 						},
-						"comment": "hack auxiliary application",
-						"quality": "Reported"
+						"comment": "back up bluetooth protocol",
+						"quality": "NoDataFound"
 					},
 					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "882-1163",
-							"fileName": "SustainabilityReport",
+							"page": "499",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
+							"tagName": "mindshare",
 							"publicationDate": null
 						},
-						"comment": "synthesize haptic bus",
-						"quality": "NoDataFound"
+						"comment": "connect 1080p card",
+						"quality": "Reported"
 					},
 					"assurance": {
-						"value": "LimitedAssurance",
-						"provider": "Hane, Haag and Donnelly",
+						"value": "ReasonableAssurance",
+						"provider": "Zemlak, Russel and Fritsch",
 						"dataSource": {
-							"page": "482-1072",
-							"fileName": "SustainabilityReport",
+							"page": "834-1084",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "content",
+							"tagName": "metrics",
 							"publicationDate": null
 						}
 					},
 					"reportsInAccordanceWithArticle79OfRegulationEu202673": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"page": "867-1186",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "communities",
-							"publicationDate": null
-						},
-						"comment": "parse 1080p alarm",
-						"quality": "Reported"
-					}
-				}
-			},
-			"creditInstitution": {
-				"assetsForCalculationOfGreenAssetRatio": {
-					"totalGrossCarryingAmount": {
-						"value": 5085616115.62,
-						"dataSource": {
-							"page": "559-698",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
-							"publicationDate": null
-						},
-						"comment": "compress mobile sensor",
-						"quality": "Incomplete",
-						"currency": "PGK"
-					},
-					"totalAmountOfNonAssessedExposures": {
-						"value": 4062117788.21,
-						"dataSource": {
-							"page": "559-1039",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "navigate auxiliary circuit",
-						"quality": "NoDataFound",
-						"currency": "XCD"
-					},
-					"totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
-						"value": 5274267664.66,
-						"dataSource": {
-							"page": "779",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},
-						"comment": "transmit back-end capacitor",
-						"quality": "Incomplete",
-						"currency": "SHP"
-					},
-					"totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 477078337.03,
-						"dataSource": {
-							"page": "764",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "calculate primary interface",
-						"quality": "Estimated",
-						"currency": "KGS"
-					},
-					"totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
-						"value": 9228004046.82,
-						"dataSource": {
-							"page": "615-973",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "calculate mobile pixel",
-						"quality": "Estimated",
-						"currency": "FKP"
-					}
-				},
-				"turnoverBasedGreenAssetRatioSectorInformation": {
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivities": {
-						"value": 8388312289.26,
-						"dataSource": {
-							"page": "447-571",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "large language models",
-							"publicationDate": null
-						},
-						"comment": "copy 1080p application",
-						"quality": "Estimated",
-						"currency": "YER"
-					},
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
-						"value": 4907053416.15,
-						"dataSource": {
-							"page": "1124",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "connect multi-byte program",
-						"quality": "NoDataFound",
-						"currency": "ANG"
-					},
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
-						"value": 6551897844.03,
-						"dataSource": {
-							"page": "471",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "index virtual array",
-						"quality": "Reported",
-						"currency": "QAR"
-					},
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
-						"value": 7791554147.26,
-						"dataSource": {
-							"page": "172-467",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "bypass auxiliary transmitter",
-						"quality": "Audited",
-						"currency": "UZS"
-					},
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
-						"value": 7012194614.99,
-						"dataSource": {
-							"page": "375-714",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "index haptic pixel",
-						"quality": "NoDataFound",
-						"currency": "KES"
-					},
-					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
-						"value": 2755345930.69,
-						"dataSource": {
-							"page": "603-1267",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "reboot multi-byte circuit",
-						"quality": "Audited",
-						"currency": "DJF"
-					}
-				},
-				"capexBasedGreenAssetRatioSectorInformation": {
-					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivities": {
-						"value": 9084712244.24,
-						"dataSource": {
-							"page": "285",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "convergence",
-							"publicationDate": null
-						},
-						"comment": "hack bluetooth alarm",
-						"quality": "Incomplete",
-						"currency": "BGN"
-					},
-					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
-						"value": 2667424860.67,
-						"dataSource": {
-							"page": "158",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
-							"publicationDate": null
-						},
-						"comment": "navigate mobile port",
-						"quality": "Reported",
-						"currency": "ZWL"
-					},
-					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
-						"value": 312048847.58,
-						"dataSource": {
-							"page": "413-1193",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "back up open-source alarm",
-						"quality": "Estimated",
-						"currency": "HUF"
-					},
-					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
-						"value": 5480638439.39,
-						"dataSource": {
-							"page": "1059-1159",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
-							"publicationDate": null
-						},
-						"comment": "reboot optical feed",
-						"quality": "Incomplete",
-						"currency": "XCD"
-					},
-					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
-						"value": 7491743502.72,
-						"dataSource": {
-							"page": "241",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "input primary sensor",
-						"quality": "NoDataFound",
-						"currency": "BTN"
-					},
-					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
-						"value": 7288239042.85,
-						"dataSource": {
-							"page": "730-887",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "bypass online firewall",
-						"quality": "Incomplete",
-						"currency": "SZL"
-					}
-				},
-				"turnoverBasedGreenAssetRatioStock": {
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
-						"value": 17.84,
-						"dataSource": {
-							"page": "269",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "override primary matrix",
-						"quality": "Audited"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
-						"value": 16.79,
-						"dataSource": {
-							"page": "822",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
-							"publicationDate": null
-						},
-						"comment": "back up online firewall",
-						"quality": "NoDataFound"
-					},
-					"substantialContributionToClimateChangeMitigationInPercentAligned": {
-						"value": 92.25,
-						"dataSource": {
-							"page": "16",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "quantify haptic bus",
-						"quality": "NoDataFound"
-					},
-					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
-						"value": 35.54,
-						"dataSource": {
-							"page": "1067",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "compress digital program",
-						"quality": "NoDataFound"
-					},
-					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 24.54,
-						"dataSource": {
-							"page": "498",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "generate digital protocol",
-						"quality": "Reported"
-					},
-					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-						"value": 72.75,
-						"dataSource": {
-							"page": "441",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": "index solid state microchip",
-						"quality": "Incomplete"
-					},
-					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-						"value": 36.6,
-						"dataSource": {
-							"page": "614-860",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "navigate open-source capacitor",
-						"quality": "Incomplete"
-					},
-					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 44.74,
-						"dataSource": {
-							"page": "1002-1117",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "input neural feed",
-						"quality": "Estimated"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
-						"value": 71.44,
-						"dataSource": {
-							"page": "670-1146",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "navigate virtual array",
-						"quality": "Estimated"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
-						"value": 61.12,
-						"dataSource": {
-							"page": "662-1111",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},
-						"comment": "override back-end bus",
-						"quality": "Incomplete"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
-						"value": 78.77,
-						"dataSource": {
-							"page": "321-442",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "hack primary transmitter",
-						"quality": "Incomplete"
-					},
-					"turnoverBasedNonAssessedExposures": {
-						"value": 40.77,
-						"dataSource": {
-							"page": "1001-1119",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
-							"publicationDate": null
-						},
-						"comment": "bypass 1080p array",
-						"quality": "Estimated"
-					}
-				},
-				"capexBasedGreenAssetRatioStock": {
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
-						"value": 8.12,
-						"dataSource": {
-							"page": "575",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "quantify virtual alarm",
-						"quality": "Reported"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
-						"value": 29.11,
-						"dataSource": {
-							"page": "148",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "calculate solid state protocol",
-						"quality": "NoDataFound"
-					},
-					"substantialContributionToClimateChangeMitigationInPercentAligned": {
-						"value": 92.44,
-						"dataSource": {
-							"page": "818",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "parse primary circuit",
-						"quality": "Incomplete"
-					},
-					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
-						"value": 41.18,
-						"dataSource": {
-							"page": "149",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "e-commerce",
-							"publicationDate": null
-						},
-						"comment": "reboot back-end capacitor",
-						"quality": "Reported"
-					},
-					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 60.2,
-						"dataSource": {
-							"page": "105",
-							"fileName": "SustainabilityReport",
+							"page": "296",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
 							"publicationDate": null
 						},
-						"comment": "bypass digital transmitter",
+						"comment": "program primary matrix",
 						"quality": "Incomplete"
-					},
-					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-						"value": 76.4,
+					}
+				}
+			},
+			"creditInstitution": {
+				"turnoverBasedAssetsForCalculationOfGreenAssetRatio": {
+					"turnoverBasedTotalGrossCarryingAmount": {
+						"value": 8495104098.09,
 						"dataSource": {
-							"page": "332",
-							"fileName": "SustainabilityReport",
+							"page": "1167",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
+							"tagName": "synergies",
 							"publicationDate": null
 						},
-						"comment": "quantify wireless matrix",
-						"quality": "Estimated"
+						"comment": "program redundant firewall",
+						"quality": "Estimated",
+						"currency": "MOP"
 					},
-					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-						"value": 4.02,
+					"turnoverBasedTotalAmountOfNonAssessedExposures": {
+						"value": 6874566700.18,
 						"dataSource": {
-							"page": "42",
-							"fileName": "SustainabilityReport",
+							"page": "674-1185",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
+							"tagName": "initiatives",
 							"publicationDate": null
 						},
-						"comment": "index multi-byte card",
-						"quality": "Audited"
+						"comment": "program open-source program",
+						"quality": "Estimated",
+						"currency": "GIP"
 					},
-					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 93.37,
+					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+						"value": 2704552290.38,
 						"dataSource": {
-							"page": "517-1122",
-							"fileName": "SustainabilityReport",
+							"page": "249",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
+							"tagName": "interfaces",
 							"publicationDate": null
 						},
-						"comment": "synthesize cross-platform protocol",
-						"quality": "Incomplete"
+						"comment": "bypass cross-platform array",
+						"quality": "Reported",
+						"currency": "EUR"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
-						"value": 52.42,
+					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 9799882732.96,
 						"dataSource": {
-							"page": "834",
-							"fileName": "SustainabilityReport",
+							"page": "769-1278",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
+							"tagName": "smart contracts",
 							"publicationDate": null
 						},
-						"comment": "synthesize multi-byte hard drive",
-						"quality": "Incomplete"
+						"comment": "navigate optical application",
+						"quality": "Audited",
+						"currency": "ANG"
 					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
-						"value": 32.8,
+					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+						"value": 5558339574.73,
 						"dataSource": {
-							"page": "324-348",
-							"fileName": "SustainabilityReport",
+							"page": "524-949",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
+							"tagName": "experiences",
 							"publicationDate": null
 						},
-						"comment": "reboot mobile microchip",
-						"quality": "Audited"
-					},
-					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
-						"value": 6.84,
+						"comment": "parse back-end feed",
+						"quality": "Reported",
+						"currency": "BHD"
+					}
+				},
+				"capexBasedAssetsForCalculationOfGreenAssetRatio": {
+					"capexBasedTotalGrossCarryingAmount": {
+						"value": 3315452242.1,
 						"dataSource": {
-							"page": "831",
-							"fileName": "SustainabilityReport",
+							"page": "491",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
+							"tagName": "e-commerce",
 							"publicationDate": null
 						},
-						"comment": "parse open-source interface",
-						"quality": "Estimated"
+						"comment": "index neural bus",
+						"quality": "Estimated",
+						"currency": "NIO"
 					},
-					"capexBasedNonAssessedExposures": {
-						"value": 75.55,
+					"capexBasedTotalAmountOfNonAssessedExposures": {
+						"value": 6595861801.73,
 						"dataSource": {
-							"page": "52-1079",
-							"fileName": "SustainabilityReport",
+							"page": "564",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "bypass virtual port",
+						"quality": "Reported",
+						"currency": "TZS"
+					},
+					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
+						"value": 21273670.27,
+						"dataSource": {
+							"page": "1063-1103",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
 							"publicationDate": null
 						},
-						"comment": "override auxiliary driver",
+						"comment": "input virtual microchip",
+						"quality": "Incomplete",
+						"currency": "CAD"
+					},
+					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 6530982910.82,
+						"dataSource": {
+							"page": "281-783",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
+						},
+						"comment": "hack wireless system",
+						"quality": "Audited",
+						"currency": "PEN"
+					},
+					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
+						"value": 7990948441.75,
+						"dataSource": {
+							"page": "1195-1208",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "copy haptic driver",
+						"quality": "NoDataFound",
+						"currency": "MNT"
+					}
+				},
+				"turnoverBasedGreenAssetRatioSectorInformation": {
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivities": {
+						"value": 1442945634.67,
+						"dataSource": {
+							"page": "52-58",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "back up optical bandwidth",
+						"quality": "Estimated",
+						"currency": "BHD"
+					},
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
+						"value": 3139250796.35,
+						"dataSource": {
+							"page": "523",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "connect 1080p alarm",
+						"quality": "NoDataFound",
+						"currency": "MZN"
+					},
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
+						"value": 2220585477.14,
+						"dataSource": {
+							"page": "822",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "calculate haptic alarm",
+						"quality": "NoDataFound",
+						"currency": "DKK"
+					},
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
+						"value": 1561513534.35,
+						"dataSource": {
+							"page": "880",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "connect optical microchip",
+						"quality": "Audited",
+						"currency": "ETB"
+					},
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
+						"value": 5816381576.64,
+						"dataSource": {
+							"page": "217",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "calculate cross-platform hard drive",
+						"quality": "NoDataFound",
+						"currency": "SYP"
+					},
+					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
+						"value": 711418407.66,
+						"dataSource": {
+							"page": "901",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "navigate virtual bus",
+						"quality": "NoDataFound",
+						"currency": "ANG"
+					}
+				},
+				"capexBasedGreenAssetRatioSectorInformation": {
+					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivities": {
+						"value": 5830302531.54,
+						"dataSource": {
+							"page": "740-1300",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "input haptic firewall",
+						"quality": "Estimated",
+						"currency": "LRD"
+					},
+					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
+						"value": 663230246.4,
+						"dataSource": {
+							"page": "355",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "compress open-source card",
+						"quality": "Audited",
+						"currency": "MDL"
+					},
+					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
+						"value": 5877502193.46,
+						"dataSource": {
+							"page": "636-1273",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "synthesize 1080p bus",
+						"quality": "Audited",
+						"currency": "CVE"
+					},
+					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
+						"value": 1216656855.26,
+						"dataSource": {
+							"page": "1186-1298",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "connect neural interface",
+						"quality": "NoDataFound",
+						"currency": "KPW"
+					},
+					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
+						"value": 547953096.73,
+						"dataSource": {
+							"page": "1051",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "compress auxiliary firewall",
+						"quality": "Audited",
+						"currency": "KRW"
+					},
+					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
+						"value": 9011883629.38,
+						"dataSource": {
+							"page": "428",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "input solid state transmitter",
+						"quality": "NoDataFound",
+						"currency": "KMF"
+					}
+				},
+				"turnoverBasedGreenAssetRatioStock": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+						"value": 11.27,
+						"dataSource": {
+							"page": "1019",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "program digital capacitor",
+						"quality": "Reported"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+						"value": 56.31,
+						"dataSource": {
+							"page": "734",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "transmit neural capacitor",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 26.71,
+						"dataSource": {
+							"page": "935-1132",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "program primary system",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 79.94,
+						"dataSource": {
+							"page": "479-1101",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "navigate virtual pixel",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 47.08,
+						"dataSource": {
+							"page": "1165-1196",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "calculate mobile firewall",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 62.11,
+						"dataSource": {
+							"page": "1082-1213",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "index cross-platform capacitor",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 65.42,
+						"dataSource": {
+							"page": "1196-1225",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "calculate neural sensor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 67.93,
+						"dataSource": {
+							"page": "594",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "quantify neural port",
+						"quality": "Audited"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
+						"value": 17.56,
+						"dataSource": {
+							"page": "520-899",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "transmit primary pixel",
+						"quality": "Estimated"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+						"value": 50.19,
+						"dataSource": {
+							"page": "1084-1131",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "methodologies",
+							"publicationDate": null
+						},
+						"comment": "hack auxiliary matrix",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+						"value": 79.54,
+						"dataSource": {
+							"page": "553-861",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "platforms",
+							"publicationDate": null
+						},
+						"comment": "calculate mobile driver",
+						"quality": "Reported"
+					},
+					"turnoverBasedNonAssessedExposures": {
+						"value": 95.32,
+						"dataSource": {
+							"page": "421-622",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "initiatives",
+							"publicationDate": null
+						},
+						"comment": "transmit auxiliary matrix",
+						"quality": "Audited"
+					}
+				},
+				"capexBasedGreenAssetRatioStock": {
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+						"value": 39.09,
+						"dataSource": {
+							"page": "756",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "copy online matrix",
+						"quality": "Audited"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
+						"value": 38.13,
+						"dataSource": {
+							"page": "398-1142",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "back up mobile pixel",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 8.65,
+						"dataSource": {
+							"page": "209",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "compress virtual port",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 33.59,
+						"dataSource": {
+							"page": "480",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "input haptic program",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 64.26,
+						"dataSource": {
+							"page": "431",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "bypass solid state capacitor",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 39.7,
+						"dataSource": {
+							"page": "108-1233",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "synthesize virtual port",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 33.42,
+						"dataSource": {
+							"page": "379",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "parse solid state feed",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 12.57,
+						"dataSource": {
+							"page": "164",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "hack multi-byte card",
+						"quality": "Estimated"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
+						"value": 18.31,
+						"dataSource": {
+							"page": "1172-1176",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "navigate redundant application",
+						"quality": "Reported"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
+						"value": 33.12,
+						"dataSource": {
+							"page": "262",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "copy mobile panel",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
+						"value": 32.51,
+						"dataSource": {
+							"page": "898",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "back up 1080p card",
+						"quality": "Incomplete"
+					},
+					"capexBasedNonAssessedExposures": {
+						"value": 32.83,
+						"dataSource": {
+							"page": "1060-1156",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "navigate primary transmitter",
 						"quality": "NoDataFound"
 					}
 				}
@@ -653,2016 +715,2016 @@
 			"assetManagement": {
 				"assetUnderManagement": {
 					"totalAssetUnderManagementMonetaryAmount": {
-						"value": 9885840450.6,
+						"value": 9499273513.67,
 						"dataSource": {
-							"page": "100-1060",
-							"fileName": "SustainabilityReport",
+							"page": "1189-1203",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
+							"tagName": "convergence",
 							"publicationDate": null
 						},
-						"comment": "calculate auxiliary bus",
+						"comment": "program virtual alarm",
 						"quality": "Estimated",
-						"currency": "DKK"
+						"currency": "WST"
 					},
 					"assetsCoveredByTheKpiInPercent": {
-						"value": 58.28,
+						"value": 69.64,
 						"dataSource": {
-							"page": "153-1247",
-							"fileName": "SustainabilityReport",
+							"page": "804",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
 							"publicationDate": null
 						},
-						"comment": "quantify virtual capacitor",
-						"quality": "Audited"
+						"comment": "index open-source capacitor",
+						"quality": "Reported"
 					},
 					"assetsCoveredByTheKpiMonetaryAmount": {
-						"value": 9302395758.51,
+						"value": 7317799307.35,
 						"dataSource": {
-							"page": "485",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "parse neural program",
-						"quality": "NoDataFound",
-						"currency": "GBP"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
-					"shareOfTurnoverBasedKpiInPercentEligible": {
-						"value": 50.42,
-						"dataSource": {
-							"page": "451",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "quantify 1080p sensor",
-						"quality": "Estimated"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
-						"value": 30.44,
-						"dataSource": {
-							"page": "897-946",
-							"fileName": "SustainabilityReport",
+							"page": "1141-1287",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
 							"publicationDate": null
 						},
-						"comment": "index redundant capacitor",
-						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
-						"value": 96.53,
-						"dataSource": {
-							"page": "974",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
-							"publicationDate": null
-						},
-						"comment": "connect bluetooth transmitter",
-						"quality": "Incomplete"
-					},
-					"shareOfTurnoverBasedKpiInPercentAligned": {
-						"value": 1.72,
-						"dataSource": {
-							"page": "649-676",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "navigate primary monitor",
-						"quality": "NoDataFound"
-					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
-						"value": 37.43,
-						"dataSource": {
-							"page": "98",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "convergence",
-							"publicationDate": null
-						},
-						"comment": "program online application",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
-						"value": 57.09,
-						"dataSource": {
-							"page": "5",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": "generate auxiliary capacitor",
-						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-						"value": 34.77,
-						"dataSource": {
-							"page": "36",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "override auxiliary sensor",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-						"value": 18,
-						"dataSource": {
-							"page": "367",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "reboot cross-platform alarm",
-						"quality": "Reported"
+						"comment": "parse open-source matrix",
+						"quality": "Reported",
+						"currency": "BOB"
 					}
 				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
-						"value": 96.96,
+				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
+					"shareOfTurnoverBasedKpiInPercentEligible": {
+						"value": 8.92,
 						"dataSource": {
-							"page": "854-1062",
-							"fileName": "SustainabilityReport",
+							"page": "896",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "convergence",
+							"tagName": "models",
 							"publicationDate": null
 						},
-						"comment": "transmit neural transmitter",
-						"quality": "Reported"
+						"comment": "reboot 1080p panel",
+						"quality": "Estimated"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
-						"value": 82.19,
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
+						"value": 75.87,
 						"dataSource": {
-							"page": "640",
-							"fileName": "SustainabilityReport",
+							"page": "496-983",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
 							"publicationDate": null
 						},
-						"comment": "program open-source firewall",
-						"quality": "Audited"
+						"comment": "generate bluetooth protocol",
+						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 35.27,
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
+						"value": 93.56,
 						"dataSource": {
-							"page": "1165-1290",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "quantify virtual sensor",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
-						"value": 12.17,
-						"dataSource": {
-							"page": "865",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "bypass wireless sensor",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
-						"value": 13.23,
-						"dataSource": {
-							"page": "324-1025",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "navigate multi-byte protocol",
-						"quality": "NoDataFound"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 71.72,
-						"dataSource": {
-							"page": "242-310",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "AI",
-							"publicationDate": null
-						},
-						"comment": "input wireless bus",
-						"quality": "Audited"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
-					"turnoverBasedNonAssessedExposures": {
-						"value": 7.18,
-						"dataSource": {
-							"page": "745",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "generate back-end port",
-						"quality": "Estimated"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 35.38,
-						"dataSource": {
-							"page": "389",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "override solid state card",
-						"quality": "Audited"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 27.51,
-						"dataSource": {
-							"page": "377-586",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "back up online application",
-						"quality": "Estimated"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 19.02,
-						"dataSource": {
-							"page": "6",
-							"fileName": "SustainabilityReport",
+							"page": "411-1178",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
 							"publicationDate": null
 						},
-						"comment": "synthesize back-end array",
+						"comment": "compress haptic firewall",
+						"quality": "Reported"
+					},
+					"shareOfTurnoverBasedKpiInPercentAligned": {
+						"value": 24.05,
+						"dataSource": {
+							"page": "511",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
+							"publicationDate": null
+						},
+						"comment": "navigate auxiliary microchip",
+						"quality": "Audited"
+					},
+					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
+						"value": 61.57,
+						"dataSource": {
+							"page": "636",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "connect back-end array",
+						"quality": "NoDataFound"
+					},
+					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
+						"value": 35.03,
+						"dataSource": {
+							"page": "299",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "users",
+							"publicationDate": null
+						},
+						"comment": "copy haptic firewall",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+						"value": 23,
+						"dataSource": {
+							"page": "841",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "calculate neural application",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+						"value": 98.08,
+						"dataSource": {
+							"page": "631-692",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "reboot solid state application",
+						"quality": "Audited"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+						"value": 73.96,
+						"dataSource": {
+							"page": "994-1149",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "quantify online interface",
+						"quality": "NoDataFound"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+						"value": 13.73,
+						"dataSource": {
+							"page": "935-1294",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "synthesize virtual application",
+						"quality": "Reported"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 90.44,
+						"dataSource": {
+							"page": "273-546",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "navigate solid state application",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+						"value": 92.58,
+						"dataSource": {
+							"page": "1084-1151",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "compress open-source bus",
+						"quality": "Incomplete"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+						"value": 40.39,
+						"dataSource": {
+							"page": "899-1250",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "architectures",
+							"publicationDate": null
+						},
+						"comment": "connect haptic interface",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 13.06,
+						"dataSource": {
+							"page": "1173",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "generate wireless alarm",
+						"quality": "Incomplete"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+					"turnoverBasedNonAssessedExposures": {
+						"value": 83.99,
+						"dataSource": {
+							"page": "476",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "transmit solid state alarm",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+						"value": 1.45,
+						"dataSource": {
+							"page": "797",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "copy auxiliary protocol",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+						"value": 51.33,
+						"dataSource": {
+							"page": "804-1020",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "program multi-byte system",
+						"quality": "Audited"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 37.26,
+						"dataSource": {
+							"page": "563-1215",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "back up primary card",
 						"quality": "NoDataFound"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiCapexBased": {
 					"shareOfCapexBasedKpiInPercentEligible": {
-						"value": 92.53,
+						"value": 28,
 						"dataSource": {
-							"page": "788-1074",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "copy bluetooth sensor",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
-						"value": 13.86,
-						"dataSource": {
-							"page": "534-811",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "communities",
-							"publicationDate": null
-						},
-						"comment": "generate solid state alarm",
-						"quality": "Audited"
-					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
-						"value": 90,
-						"dataSource": {
-							"page": "622",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "hack back-end matrix",
-						"quality": "Audited"
-					},
-					"shareOfCapexBasedKpiInPercentAligned": {
-						"value": 89.19,
-						"dataSource": {
-							"page": "140",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
-							"publicationDate": null
-						},
-						"comment": "program haptic alarm",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
-						"value": 7.49,
-						"dataSource": {
-							"page": "576-1209",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "calculate solid state port",
-						"quality": "NoDataFound"
-					},
-					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
-						"value": 74.12,
-						"dataSource": {
-							"page": "950-958",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "hack redundant hard drive",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-						"value": 14.88,
-						"dataSource": {
-							"page": "892-1005",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": "navigate solid state microchip",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-						"value": 53.24,
-						"dataSource": {
-							"page": "840-1166",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "override open-source program",
-						"quality": "NoDataFound"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
-						"value": 51.23,
-						"dataSource": {
-							"page": "210",
-							"fileName": "SustainabilityReport",
+							"page": "208-1189",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "calculate wireless panel",
-						"quality": "Reported"
+						"comment": "program primary port",
+						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
-						"value": 72.56,
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
+						"value": 39.59,
 						"dataSource": {
-							"page": "1177",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "synthesize virtual hard drive",
-						"quality": "Incomplete"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 22.76,
-						"dataSource": {
-							"page": "312",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "back up haptic application",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
-						"value": 44.17,
-						"dataSource": {
-							"page": "11",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
-							"publicationDate": null
-						},
-						"comment": "input redundant microchip",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
-						"value": 32.57,
-						"dataSource": {
-							"page": "39",
-							"fileName": "SustainabilityReport",
+							"page": "424",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
 							"publicationDate": null
 						},
-						"comment": "connect multi-byte transmitter",
+						"comment": "synthesize redundant port",
+						"quality": "Reported"
+					},
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
+						"value": 41.67,
+						"dataSource": {
+							"page": "144-494",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "generate 1080p hard drive",
+						"quality": "Audited"
+					},
+					"shareOfCapexBasedKpiInPercentAligned": {
+						"value": 44.43,
+						"dataSource": {
+							"page": "900-998",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "parse auxiliary panel",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
+						"value": 50.85,
+						"dataSource": {
+							"page": "771",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "compress online feed",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
+						"value": 43.93,
+						"dataSource": {
+							"page": "1151-1285",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
+							"publicationDate": null
+						},
+						"comment": "index primary feed",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+						"value": 23.07,
+						"dataSource": {
+							"page": "824",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "compress bluetooth array",
+						"quality": "Reported"
+					},
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+						"value": 69.61,
+						"dataSource": {
+							"page": "673-1251",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "generate virtual hard drive",
+						"quality": "Incomplete"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+						"value": 74.48,
+						"dataSource": {
+							"page": "494-970",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "transmit open-source microchip",
+						"quality": "Reported"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+						"value": 23.01,
+						"dataSource": {
+							"page": "570-749",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "connect redundant pixel",
+						"quality": "Estimated"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 46.07,
+						"dataSource": {
+							"page": "534",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "platforms",
+							"publicationDate": null
+						},
+						"comment": "transmit auxiliary feed",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+						"value": 77.25,
+						"dataSource": {
+							"page": "29-1285",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "solutions",
+							"publicationDate": null
+						},
+						"comment": "parse auxiliary driver",
+						"quality": "NoDataFound"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+						"value": 26.22,
+						"dataSource": {
+							"page": "832",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "program open-source bandwidth",
 						"quality": "Estimated"
 					},
 					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 47.59,
+						"value": 72.71,
 						"dataSource": {
-							"page": "11",
-							"fileName": "SustainabilityReport",
+							"page": "716",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
+							"tagName": "models",
 							"publicationDate": null
 						},
-						"comment": "input solid state hard drive",
-						"quality": "Incomplete"
+						"comment": "hack 1080p sensor",
+						"quality": "NoDataFound"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
 					"capexBasedNonAssessedExposures": {
-						"value": 90.57,
+						"value": 51.38,
 						"dataSource": {
-							"page": "744",
-							"fileName": "SustainabilityReport",
+							"page": "342-429",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
+							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "quantify optical microchip",
-						"quality": "Audited"
+						"comment": "synthesize primary pixel",
+						"quality": "Estimated"
 					},
 					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 45.01,
+						"value": 41.33,
 						"dataSource": {
-							"page": "160",
-							"fileName": "SustainabilityReport",
+							"page": "843-1159",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
+							"tagName": "blockchains",
 							"publicationDate": null
 						},
-						"comment": "parse haptic sensor",
+						"comment": "bypass optical capacitor",
 						"quality": "Estimated"
 					},
 					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 90.92,
+						"value": 97.78,
 						"dataSource": {
-							"page": "1135",
-							"fileName": "SustainabilityReport",
+							"page": "753",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
+							"tagName": "AI",
 							"publicationDate": null
 						},
-						"comment": "parse haptic circuit",
-						"quality": "Incomplete"
+						"comment": "reboot open-source panel",
+						"quality": "Audited"
 					},
 					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 79.3,
+						"value": 69.9,
 						"dataSource": {
-							"page": "951-1205",
-							"fileName": "SustainabilityReport",
+							"page": "467-574",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
+							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "hack primary feed",
-						"quality": "Reported"
+						"comment": "transmit mobile sensor",
+						"quality": "Incomplete"
 					}
 				}
 			},
 			"insuranceReinsurance": {
 				"underwritingKpi": {
 					"totalOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
-						"value": 6808091229.13,
+						"value": 8698451868.73,
 						"dataSource": {
-							"page": "951-1283",
-							"fileName": "SustainabilityReport",
+							"page": "432",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
+							"tagName": "web services",
 							"publicationDate": null
 						},
-						"comment": "index virtual alarm",
-						"quality": "Reported",
-						"currency": "IQD"
+						"comment": "synthesize primary circuit",
+						"quality": "NoDataFound",
+						"currency": "LAK"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
-						"value": 99.93,
+						"value": 40.32,
 						"dataSource": {
-							"page": "737-955",
-							"fileName": "SustainabilityReport",
+							"page": "391-492",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "AI",
+							"tagName": "niches",
 							"publicationDate": null
 						},
-						"comment": "program auxiliary protocol",
-						"quality": "Incomplete"
+						"comment": "reboot primary matrix",
+						"quality": "Reported"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedNuclearActivities": {
-						"value": 77.41,
+						"value": 31.89,
 						"dataSource": {
-							"page": "759",
-							"fileName": "SustainabilityReport",
+							"page": "531-895",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
+							"tagName": "supply-chains",
 							"publicationDate": null
 						},
-						"comment": "quantify back-end system",
-						"quality": "Incomplete"
+						"comment": "override neural firewall",
+						"quality": "NoDataFound"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedFossilGasActivities": {
-						"value": 7.7,
+						"value": 99.63,
 						"dataSource": {
-							"page": "107",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "AI",
-							"publicationDate": null
-						},
-						"comment": "synthesize primary capacitor",
-						"quality": "Reported"
-					},
-					"totalOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
-						"value": 6265489126.72,
-						"dataSource": {
-							"page": "224-1034",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "large language models",
-							"publicationDate": null
-						},
-						"comment": "synthesize back-end circuit",
-						"quality": "Reported",
-						"currency": "HNL"
-					},
-					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
-						"value": 49,
-						"dataSource": {
-							"page": "306",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "reboot cross-platform application",
-						"quality": "NoDataFound"
-					},
-					"proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities": {
-						"value": 56.23,
-						"dataSource": {
-							"page": "675-1229",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "communities",
-							"publicationDate": null
-						},
-						"comment": "generate redundant capacitor",
-						"quality": "Estimated"
-					},
-					"proportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities": {
-						"value": 38.46,
-						"dataSource": {
-							"page": "784",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "synthesize mobile panel",
-						"quality": "Audited"
-					},
-					"totalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
-						"value": 679947907.07,
-						"dataSource": {
-							"page": "851",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
-							"publicationDate": null
-						},
-						"comment": "copy wireless hard drive",
-						"quality": "Incomplete",
-						"currency": "BOB"
-					},
-					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
-						"value": 11.88,
-						"dataSource": {
-							"page": "523",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "back up auxiliary matrix",
-						"quality": "Reported"
-					},
-					"totalOfAbsolutePremiums": {
-						"value": 6138823013.64,
-						"dataSource": {
-							"page": "440",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},
-						"comment": "compress cross-platform hard drive",
-						"quality": "Audited",
-						"currency": "LSL"
-					}
-				},
-				"assetUnderManagement": {
-					"totalAssetUnderManagementMonetaryAmount": {
-						"value": 8880230751.72,
-						"dataSource": {
-							"page": "851-1139",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},
-						"comment": "compress neural pixel",
-						"quality": "NoDataFound",
-						"currency": "MNT"
-					},
-					"assetsCoveredByTheKpiInPercent": {
-						"value": 8.58,
-						"dataSource": {
-							"page": "62",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "navigate mobile interface",
-						"quality": "NoDataFound"
-					},
-					"assetsCoveredByTheKpiMonetaryAmount": {
-						"value": 6171118623.73,
-						"dataSource": {
-							"page": "202-927",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "generate primary array",
-						"quality": "Estimated",
-						"currency": "BYN"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
-					"shareOfTurnoverBasedKpiInPercentEligible": {
-						"value": 12.32,
-						"dataSource": {
-							"page": "919-954",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
-							"publicationDate": null
-						},
-						"comment": "compress auxiliary capacitor",
-						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
-						"value": 90.43,
-						"dataSource": {
-							"page": "1103-1187",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "transmit primary firewall",
-						"quality": "Incomplete"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
-						"value": 19.3,
-						"dataSource": {
-							"page": "847-966",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
-							"publicationDate": null
-						},
-						"comment": "override digital application",
-						"quality": "Estimated"
-					},
-					"shareOfTurnoverBasedKpiInPercentAligned": {
-						"value": 83.58,
-						"dataSource": {
-							"page": "677-850",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "large language models",
-							"publicationDate": null
-						},
-						"comment": "calculate virtual panel",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
-						"value": 41.57,
-						"dataSource": {
-							"page": "613",
-							"fileName": "SustainabilityReport",
+							"page": "895",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
 							"publicationDate": null
 						},
-						"comment": "index auxiliary transmitter",
-						"quality": "Reported"
+						"comment": "connect online array",
+						"quality": "Audited"
 					},
-					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
-						"value": 37.16,
+					"totalOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
+						"value": 549066097.55,
 						"dataSource": {
-							"page": "462",
-							"fileName": "SustainabilityReport",
+							"page": "193",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "navigate back-end port",
+						"quality": "Estimated",
+						"currency": "WST"
+					},
+					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
+						"value": 91.15,
+						"dataSource": {
+							"page": "749-968",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "calculate primary driver",
+						"quality": "Incomplete"
+					},
+					"proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities": {
+						"value": 2.39,
+						"dataSource": {
+							"page": "832",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "calculate online sensor",
+						"comment": "program wireless driver",
 						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-						"value": 53.04,
+					"proportionOfAbsolutePremiumsOfTaxonomyEligibleFossilGasActivities": {
+						"value": 18.33,
 						"dataSource": {
-							"page": "984-1259",
-							"fileName": "SustainabilityReport",
+							"page": "815-1098",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
+							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "index redundant panel",
-						"quality": "Audited"
-					},
-					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-						"value": 6.28,
-						"dataSource": {
-							"page": "899-1116",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "override wireless matrix",
+						"comment": "calculate solid state application",
 						"quality": "NoDataFound"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
-						"value": 79.74,
-						"dataSource": {
-							"page": "158-1140",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "calculate back-end bus",
-						"quality": "Reported"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
-						"value": 54.63,
+					"totalOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
+						"value": 1831095459.07,
 						"dataSource": {
-							"page": "565-1266",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "bypass primary hard drive",
-						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 58.34,
-						"dataSource": {
-							"page": "169-203",
-							"fileName": "SustainabilityReport",
+							"page": "816-1099",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
 							"publicationDate": null
 						},
-						"comment": "index cross-platform interface",
-						"quality": "Audited"
+						"comment": "parse optical alarm",
+						"quality": "NoDataFound",
+						"currency": "SOS"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
-						"value": 35.32,
+					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
+						"value": 29.74,
 						"dataSource": {
-							"page": "637",
-							"fileName": "SustainabilityReport",
+							"page": "63-657",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
+							"tagName": "web services",
 							"publicationDate": null
 						},
-						"comment": "navigate 1080p feed",
-						"quality": "Reported"
-					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
-						"value": 23.78,
-						"dataSource": {
-							"page": "672-995",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "copy bluetooth sensor",
+						"comment": "navigate multi-byte feed",
 						"quality": "Incomplete"
 					},
-					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 34.69,
+					"totalOfAbsolutePremiums": {
+						"value": 34320351.03,
 						"dataSource": {
-							"page": "1030",
-							"fileName": "SustainabilityReport",
+							"page": "1094-1298",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
+							"tagName": "relationships",
 							"publicationDate": null
 						},
-						"comment": "hack online sensor",
-						"quality": "Reported"
+						"comment": "synthesize digital program",
+						"quality": "Incomplete",
+						"currency": "ERN"
 					}
 				},
-				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
-					"turnoverBasedNonAssessedExposures": {
-						"value": 42.43,
+				"assetUnderManagement": {
+					"totalAssetUnderManagementMonetaryAmount": {
+						"value": 5176298525.79,
 						"dataSource": {
-							"page": "607",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "input solid state sensor",
-						"quality": "Reported"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 5.56,
-						"dataSource": {
-							"page": "333-664",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "calculate optical hard drive",
-						"quality": "Audited"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 9.71,
-						"dataSource": {
-							"page": "460-832",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "navigate online port",
-						"quality": "Audited"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 19.72,
-						"dataSource": {
-							"page": "716-1131",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "reboot haptic pixel",
-						"quality": "NoDataFound"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiCapexBased": {
-					"shareOfCapexBasedKpiInPercentEligible": {
-						"value": 82.07,
-						"dataSource": {
-							"page": "237-911",
-							"fileName": "SustainabilityReport",
+							"page": "936-1255",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
 							"publicationDate": null
 						},
-						"comment": "program auxiliary protocol",
-						"quality": "Audited"
+						"comment": "back up haptic protocol",
+						"quality": "Reported",
+						"currency": "ARS"
 					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
-						"value": 31.71,
+					"assetsCoveredByTheKpiInPercent": {
+						"value": 4.58,
 						"dataSource": {
-							"page": "283",
-							"fileName": "SustainabilityReport",
+							"page": "1008-1193",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
+							"tagName": "niches",
 							"publicationDate": null
 						},
-						"comment": "compress 1080p microchip",
+						"comment": "parse primary driver",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
-						"value": 90.49,
+					"assetsCoveredByTheKpiMonetaryAmount": {
+						"value": 1962137040.75,
 						"dataSource": {
-							"page": "468",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "reboot open-source alarm",
-						"quality": "Audited"
-					},
-					"shareOfCapexBasedKpiInPercentAligned": {
-						"value": 30.77,
-						"dataSource": {
-							"page": "725",
-							"fileName": "SustainabilityReport",
+							"page": "800",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
 							"publicationDate": null
 						},
-						"comment": "synthesize 1080p firewall",
-						"quality": "Audited"
-					},
-					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
-						"value": 31.81,
-						"dataSource": {
-							"page": "174",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "index mobile alarm",
-						"quality": "Incomplete"
-					},
-					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
-						"value": 36.99,
-						"dataSource": {
-							"page": "214-1265",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "compress auxiliary interface",
-						"quality": "NoDataFound"
-					},
-					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
-						"value": 20.29,
-						"dataSource": {
-							"page": "198",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "generate cross-platform matrix",
-						"quality": "Incomplete"
-					},
-					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
-						"value": 76.04,
-						"dataSource": {
-							"page": "818-1118",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "content",
-							"publicationDate": null
-						},
-						"comment": "hack redundant bus",
-						"quality": "Audited"
+						"comment": "reboot 1080p interface",
+						"quality": "Audited",
+						"currency": "YER"
 					}
 				},
-				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
-						"value": 54.32,
+				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
+					"shareOfTurnoverBasedKpiInPercentEligible": {
+						"value": 7.62,
 						"dataSource": {
-							"page": "563",
-							"fileName": "SustainabilityReport",
+							"page": "840",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
+							"tagName": "partnerships",
 							"publicationDate": null
 						},
-						"comment": "synthesize auxiliary program",
-						"quality": "Incomplete"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
-						"value": 92.79,
-						"dataSource": {
-							"page": "412",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "quantify bluetooth firewall",
-						"quality": "Estimated"
-					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-						"value": 26.75,
-						"dataSource": {
-							"page": "658-1229",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "copy digital program",
+						"comment": "quantify haptic driver",
 						"quality": "Reported"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
-						"value": 59.25,
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
+						"value": 16.05,
 						"dataSource": {
-							"page": "67-225",
-							"fileName": "SustainabilityReport",
+							"page": "59",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "override cross-platform transmitter",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
+						"value": 18.25,
+						"dataSource": {
+							"page": "1043",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "navigate neural port",
+						"comment": "copy virtual microchip",
 						"quality": "Estimated"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
-						"value": 66.28,
+					"shareOfTurnoverBasedKpiInPercentAligned": {
+						"value": 32.24,
 						"dataSource": {
-							"page": "1124-1293",
-							"fileName": "SustainabilityReport",
+							"page": "947-1062",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
+							"tagName": "interfaces",
 							"publicationDate": null
 						},
-						"comment": "copy open-source bus",
-						"quality": "Audited"
+						"comment": "generate 1080p circuit",
+						"quality": "NoDataFound"
 					},
-					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-						"value": 0.13,
+					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
+						"value": 9.87,
 						"dataSource": {
-							"page": "601-963",
-							"fileName": "SustainabilityReport",
+							"page": "629",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
+							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "compress multi-byte capacitor",
+						"comment": "override digital panel",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
+						"value": 71.72,
+						"dataSource": {
+							"page": "404",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "back up primary driver",
 						"quality": "Incomplete"
-					}
-				},
-				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
-					"capexBasedNonAssessedExposures": {
-						"value": 55.8,
-						"dataSource": {
-							"page": "200-1003",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
-							"publicationDate": null
-						},
-						"comment": "bypass auxiliary sensor",
-						"quality": "Reported"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 18.52,
+					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+						"value": 81.07,
 						"dataSource": {
-							"page": "699",
-							"fileName": "SustainabilityReport",
+							"page": "834",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
 							"publicationDate": null
 						},
-						"comment": "synthesize open-source system",
+						"comment": "navigate optical panel",
+						"quality": "Estimated"
+					},
+					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+						"value": 33.83,
+						"dataSource": {
+							"page": "27-534",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "calculate digital transmitter",
+						"quality": "Audited"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+						"value": 35.83,
+						"dataSource": {
+							"page": "846-1086",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "connect multi-byte sensor",
+						"quality": "Audited"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+						"value": 55.02,
+						"dataSource": {
+							"page": "901",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "navigate back-end panel",
+						"quality": "Incomplete"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 74.87,
+						"dataSource": {
+							"page": "760-976",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "calculate mobile pixel",
+						"quality": "Reported"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+						"value": 39.62,
+						"dataSource": {
+							"page": "968",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "input auxiliary hard drive",
 						"quality": "NoDataFound"
 					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 64.53,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+						"value": 13.43,
 						"dataSource": {
-							"page": "1121-1157",
-							"fileName": "SustainabilityReport",
+							"page": "759-989",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "back up online application",
+						"quality": "Incomplete"
+					},
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 73.06,
+						"dataSource": {
+							"page": "914-1115",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "compress 1080p transmitter",
+						"quality": "Estimated"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresTurnoverBased": {
+					"turnoverBasedNonAssessedExposures": {
+						"value": 55.68,
+						"dataSource": {
+							"page": "1047",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "bypass auxiliary capacitor",
+						"quality": "Reported"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+						"value": 21.77,
+						"dataSource": {
+							"page": "610",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "transmit online transmitter",
+						"quality": "Audited"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 55.69,
+						"dataSource": {
+							"page": "1073-1087",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "override wireless pixel",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+						"value": 12.39,
+						"dataSource": {
+							"page": "56-1096",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "copy mobile bandwidth",
+						"quality": "Reported"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiCapexBased": {
+					"shareOfCapexBasedKpiInPercentEligible": {
+						"value": 78.4,
+						"dataSource": {
+							"page": "1155",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "reboot multi-byte sensor",
+						"comment": "navigate cross-platform alarm",
 						"quality": "Reported"
 					},
-					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 31.43,
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
+						"value": 13.67,
 						"dataSource": {
-							"page": "1195",
-							"fileName": "SustainabilityReport",
+							"page": "722-839",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
+							"tagName": "paradigms",
 							"publicationDate": null
 						},
-						"comment": "navigate cross-platform capacitor",
+						"comment": "quantify open-source bus",
+						"quality": "NoDataFound"
+					},
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
+						"value": 62.45,
+						"dataSource": {
+							"page": "723-1003",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "navigate haptic monitor",
+						"quality": "Reported"
+					},
+					"shareOfCapexBasedKpiInPercentAligned": {
+						"value": 97.31,
+						"dataSource": {
+							"page": "231",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "parse mobile panel",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
+						"value": 22.03,
+						"dataSource": {
+							"page": "518-1117",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "hack optical firewall",
+						"quality": "Estimated"
+					},
+					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
+						"value": 32.37,
+						"dataSource": {
+							"page": "357-592",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "synthesize redundant application",
+						"quality": "Estimated"
+					},
+					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
+						"value": 5.93,
+						"dataSource": {
+							"page": "468",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "methodologies",
+							"publicationDate": null
+						},
+						"comment": "copy solid state bandwidth",
+						"quality": "Reported"
+					},
+					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
+						"value": 57.45,
+						"dataSource": {
+							"page": "1151",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "hack multi-byte sensor",
+						"quality": "NoDataFound"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+						"value": 54.31,
+						"dataSource": {
+							"page": "266-396",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "hack redundant interface",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+						"value": 6.58,
+						"dataSource": {
+							"page": "292-1240",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "reboot primary system",
 						"quality": "Audited"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 80.32,
+						"dataSource": {
+							"page": "798",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "connect optical bandwidth",
+						"quality": "NoDataFound"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+						"value": 83.07,
+						"dataSource": {
+							"page": "124-295",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
+						},
+						"comment": "override haptic bandwidth",
+						"quality": "NoDataFound"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+						"value": 25.02,
+						"dataSource": {
+							"page": "581",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "metrics",
+							"publicationDate": null
+						},
+						"comment": "generate open-source card",
+						"quality": "Incomplete"
+					},
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 8.43,
+						"dataSource": {
+							"page": "471",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "web services",
+							"publicationDate": null
+						},
+						"comment": "calculate multi-byte monitor",
+						"quality": "Estimated"
+					}
+				},
+				"breakdownOfTheNumeratorOfTheKpiForNonAssessedExposuresCapexBased": {
+					"capexBasedNonAssessedExposures": {
+						"value": 2.65,
+						"dataSource": {
+							"page": "587-657",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
+						},
+						"comment": "program multi-byte array",
+						"quality": "Incomplete"
+					},
+					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+						"value": 41.14,
+						"dataSource": {
+							"page": "267-898",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
+							"publicationDate": null
+						},
+						"comment": "synthesize neural program",
+						"quality": "Estimated"
+					},
+					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 1.8,
+						"dataSource": {
+							"page": "218-787",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "navigate auxiliary system",
+						"quality": "NoDataFound"
+					},
+					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+						"value": 42.69,
+						"dataSource": {
+							"page": "383-1113",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "reboot 1080p firewall",
+						"quality": "Estimated"
 					}
 				}
 			},
 			"investmentFirms": {
 				"dealingOnOwnAccountServicesTurnoverBased": {
 					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
-						"value": 9938251905.43,
+						"value": 7930981765.9,
 						"dataSource": {
-							"page": "282-1000",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "initiatives",
-							"publicationDate": null
-						},
-						"comment": "connect back-end monitor",
-						"quality": "Reported",
-						"currency": "KPW"
-					},
-					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
-						"value": 4764136554.43,
-						"dataSource": {
-							"page": "241",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "copy digital bus",
-						"quality": "Audited",
-						"currency": "NZD"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-						"value": 95.73,
-						"dataSource": {
-							"page": "278",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "large language models",
-							"publicationDate": null
-						},
-						"comment": "parse haptic array",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-						"value": 26.34,
-						"dataSource": {
-							"page": "360-612",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "technologies",
-							"publicationDate": null
-						},
-						"comment": "connect primary capacitor",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
-						"value": 50.12,
-						"dataSource": {
-							"page": "64-125",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "input auxiliary firewall",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
-						"value": 44.19,
-						"dataSource": {
-							"page": "941",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": "calculate haptic program",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
-						"value": 32.24,
-						"dataSource": {
-							"page": "720",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "initiatives",
-							"publicationDate": null
-						},
-						"comment": "calculate primary array",
-						"quality": "Reported"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
-						"value": 5.09,
-						"dataSource": {
-							"page": "796-825",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "override digital alarm",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
-						"value": 87.92,
-						"dataSource": {
-							"page": "498",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "copy solid state driver",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-						"value": 84.08,
-						"dataSource": {
-							"page": "618",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "technologies",
-							"publicationDate": null
-						},
-						"comment": "program optical bus",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
-						"value": 80.2,
-						"dataSource": {
-							"page": "790",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
-							"publicationDate": null
-						},
-						"comment": "transmit auxiliary card",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
-						"value": 53.06,
-						"dataSource": {
-							"page": "1150-1179",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
-							"publicationDate": null
-						},
-						"comment": "program mobile card",
-						"quality": "Reported"
-					},
-					"turnoverBasedNonAssessedExposures": {
-						"value": 49.39,
-						"dataSource": {
-							"page": "511-531",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "program mobile capacitor",
-						"quality": "Audited"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 45.92,
-						"dataSource": {
-							"page": "891",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "synthesize cross-platform program",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 20.36,
-						"dataSource": {
-							"page": "764",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "input wireless matrix",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 13.5,
-						"dataSource": {
-							"page": "802",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "quantify cross-platform monitor",
-						"quality": "Estimated"
-					},
-					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
-						"value": 57.2,
-						"dataSource": {
-							"page": "397-931",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "override solid state firewall",
-						"quality": "Reported"
-					},
-					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
-						"value": 93.24,
-						"dataSource": {
-							"page": "580-680",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
-							"publicationDate": null
-						},
-						"comment": "index auxiliary program",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
-						"value": 30.8,
-						"dataSource": {
-							"page": "82",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "parse auxiliary array",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
-						"value": 4.76,
-						"dataSource": {
-							"page": "450-1029",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "e-commerce",
-							"publicationDate": null
-						},
-						"comment": "back up neural pixel",
-						"quality": "Audited"
-					}
-				},
-				"dealingOnOwnAccountServicesCapexBased": {
-					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
-						"value": 1726756855.07,
-						"dataSource": {
-							"page": "433-1151",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
-							"publicationDate": null
-						},
-						"comment": "override mobile application",
-						"quality": "Reported",
-						"currency": "NGN"
-					},
-					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": {
-						"value": 4948839331.11,
-						"dataSource": {
-							"page": "509",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "infrastructures",
-							"publicationDate": null
-						},
-						"comment": "back up primary panel",
-						"quality": "Audited",
-						"currency": "NAD"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-						"value": 58.52,
-						"dataSource": {
-							"page": "5-999",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "quantify open-source transmitter",
-						"quality": "NoDataFound"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-						"value": 42.47,
-						"dataSource": {
-							"page": "959",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "technologies",
-							"publicationDate": null
-						},
-						"comment": "quantify optical program",
-						"quality": "Reported"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
-						"value": 11.98,
-						"dataSource": {
-							"page": "264-971",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "e-commerce",
-							"publicationDate": null
-						},
-						"comment": "compress back-end program",
-						"quality": "Reported"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
-						"value": 42.55,
-						"dataSource": {
-							"page": "812",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "override primary card",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
-						"value": 50.42,
-						"dataSource": {
-							"page": "984",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "override primary port",
-						"quality": "NoDataFound"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
-						"value": 54.24,
-						"dataSource": {
-							"page": "782-881",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "content",
-							"publicationDate": null
-						},
-						"comment": "navigate wireless alarm",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
-						"value": 40.73,
-						"dataSource": {
-							"page": "63",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "compress 1080p matrix",
-						"quality": "Estimated"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-						"value": 71.63,
-						"dataSource": {
-							"page": "798-867",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
-							"publicationDate": null
-						},
-						"comment": "reboot solid state card",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
-						"value": 39.41,
-						"dataSource": {
-							"page": "952-1093",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "program virtual interface",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
-						"value": 45.06,
-						"dataSource": {
-							"page": "1034-1050",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "quantify cross-platform hard drive",
-						"quality": "Audited"
-					},
-					"capexBasedNonAssessedExposures": {
-						"value": 96.8,
-						"dataSource": {
-							"page": "1090-1105",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "bypass multi-byte microchip",
-						"quality": "Audited"
-					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
-						"value": 36.57,
-						"dataSource": {
-							"page": "702-1029",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "reboot 1080p firewall",
-						"quality": "Reported"
-					},
-					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
-						"value": 96.82,
-						"dataSource": {
-							"page": "385",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "calculate open-source array",
-						"quality": "NoDataFound"
-					},
-					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
-						"value": 22.38,
-						"dataSource": {
-							"page": "616",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "hack online hard drive",
-						"quality": "NoDataFound"
-					},
-					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
-						"value": 79.82,
-						"dataSource": {
-							"page": "1128",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "index digital card",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
-						"value": 13.43,
-						"dataSource": {
-							"page": "311",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "copy optical port",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
-						"value": 87.58,
-						"dataSource": {
-							"page": "250-686",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
-							"publicationDate": null
-						},
-						"comment": "compress open-source firewall",
-						"quality": "Reported"
-					},
-					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
-						"value": 56.98,
-						"dataSource": {
-							"page": "327",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
-							"publicationDate": null
-						},
-						"comment": "index haptic feed",
-						"quality": "Audited"
-					}
-				},
-				"otherServicesTurnoverBased": {
-					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
-						"value": 2808839486.72,
-						"dataSource": {
-							"page": "197-719",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "synthesize primary pixel",
-						"quality": "Incomplete",
-						"currency": "DZD"
-					},
-					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
-						"value": 708906755.59,
-						"dataSource": {
-							"page": "314-1062",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
-							"publicationDate": null
-						},
-						"comment": "copy cross-platform transmitter",
-						"quality": "Estimated",
-						"currency": "CLP"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-						"value": 19.33,
-						"dataSource": {
-							"page": "685-1222",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "parse optical bandwidth",
-						"quality": "Reported"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-						"value": 92.95,
-						"dataSource": {
-							"page": "472-1017",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
-							"publicationDate": null
-						},
-						"comment": "index mobile card",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
-						"value": 70.08,
-						"dataSource": {
-							"page": "424-1213",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "navigate optical panel",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
-						"value": 10.21,
-						"dataSource": {
-							"page": "820",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
-							"publicationDate": null
-						},
-						"comment": "index wireless program",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
-						"value": 68.23,
-						"dataSource": {
-							"page": "981",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "program primary microchip",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
-						"value": 84.92,
-						"dataSource": {
-							"page": "878",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "compress redundant pixel",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
-						"value": 3.01,
-						"dataSource": {
-							"page": "546",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "index bluetooth feed",
-						"quality": "NoDataFound"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-						"value": 1.03,
-						"dataSource": {
-							"page": "113-811",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
-							"publicationDate": null
-						},
-						"comment": "copy neural port",
-						"quality": "Estimated"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
-						"value": 31.23,
-						"dataSource": {
-							"page": "110-630",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "compress haptic bandwidth",
-						"quality": "Reported"
-					},
-					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
-						"value": 95.44,
-						"dataSource": {
-							"page": "702",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "synthesize auxiliary transmitter",
-						"quality": "Reported"
-					},
-					"turnoverBasedNonAssessedExposures": {
-						"value": 21.56,
-						"dataSource": {
-							"page": "314-541",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "quantify open-source protocol",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
-						"value": 22.88,
-						"dataSource": {
-							"page": "319",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
-							"publicationDate": null
-						},
-						"comment": "quantify online pixel",
-						"quality": "Reported"
-					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
-						"value": 62.7,
-						"dataSource": {
-							"page": "1079-1242",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
-							"publicationDate": null
-						},
-						"comment": "override redundant interface",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
-						"value": 66.57,
-						"dataSource": {
-							"page": "1131",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "AI",
-							"publicationDate": null
-						},
-						"comment": "synthesize back-end bus",
-						"quality": "Audited"
-					},
-					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
-						"value": 77.03,
-						"dataSource": {
-							"page": "977-1018",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "connect solid state transmitter",
-						"quality": "Estimated"
-					}
-				},
-				"otherServicesCapexBased": {
-					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
-						"value": 552470307.43,
-						"dataSource": {
-							"page": "470",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "generate primary firewall",
-						"quality": "Reported",
-						"currency": "CUP"
-					},
-					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
-						"value": 9234692354.12,
-						"dataSource": {
-							"page": "360",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "synthesize cross-platform application",
-						"quality": "NoDataFound",
-						"currency": "TJS"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
-						"value": 13.16,
-						"dataSource": {
-							"page": "663",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "parse back-end interface",
-						"quality": "NoDataFound"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
-						"value": 53.4,
-						"dataSource": {
-							"page": "738-952",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
-							"publicationDate": null
-						},
-						"comment": "program digital circuit",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
-						"value": 6.04,
-						"dataSource": {
-							"page": "457",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "input solid state program",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
-						"value": 52.73,
-						"dataSource": {
-							"page": "726",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "transmit 1080p capacitor",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
-						"value": 69.36,
-						"dataSource": {
-							"page": "1188",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
-							"publicationDate": null
-						},
-						"comment": "connect primary sensor",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
-						"value": 46.98,
-						"dataSource": {
-							"page": "616",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "generate open-source matrix",
-						"quality": "Estimated"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
-						"value": 60.04,
-						"dataSource": {
-							"page": "885-1296",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "reboot cross-platform system",
-						"quality": "Estimated"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
-						"value": 4.15,
-						"dataSource": {
-							"page": "163",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
-							"publicationDate": null
-						},
-						"comment": "calculate virtual protocol",
-						"quality": "Estimated"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
-						"value": 63.61,
-						"dataSource": {
-							"page": "1092-1128",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "navigate mobile protocol",
-						"quality": "Audited"
-					},
-					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
-						"value": 5.9,
-						"dataSource": {
-							"page": "1063-1095",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "generate haptic hard drive",
-						"quality": "Estimated"
-					},
-					"capexBasedNonAssessedExposures": {
-						"value": 25.45,
-						"dataSource": {
-							"page": "228",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "reboot virtual system",
-						"quality": "Reported"
-					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
-						"value": 27.82,
-						"dataSource": {
-							"page": "14",
-							"fileName": "SustainabilityReport",
+							"page": "979-1043",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
 							"publicationDate": null
 						},
-						"comment": "synthesize cross-platform protocol",
-						"quality": "NoDataFound"
+						"comment": "compress virtual port",
+						"quality": "Estimated",
+						"currency": "ERN"
 					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
-						"value": 63.67,
+					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
+						"value": 8305726170.34,
 						"dataSource": {
-							"page": "1081",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "input cross-platform port",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
-						"value": 28.18,
-						"dataSource": {
-							"page": "448",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "back up neural interface",
-						"quality": "Incomplete"
-					},
-					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
-						"value": 87.52,
-						"dataSource": {
-							"page": "459-792",
-							"fileName": "SustainabilityReport",
+							"page": "122",
+							"fileName": "IntegratedReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "hack auxiliary matrix",
+						"comment": "hack virtual alarm",
+						"quality": "Incomplete",
+						"currency": "SOS"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+						"value": 73.55,
+						"dataSource": {
+							"page": "535",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "hack solid state card",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+						"value": 80.86,
+						"dataSource": {
+							"page": "927-1241",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},
+						"comment": "quantify auxiliary transmitter",
 						"quality": "NoDataFound"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
+						"value": 52.77,
+						"dataSource": {
+							"page": "1015",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "solutions",
+							"publicationDate": null
+						},
+						"comment": "calculate multi-byte capacitor",
+						"quality": "Audited"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
+						"value": 55.57,
+						"dataSource": {
+							"page": "483",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "transmit 1080p protocol",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+						"value": 30.98,
+						"dataSource": {
+							"page": "877-1003",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
+							"publicationDate": null
+						},
+						"comment": "generate solid state bandwidth",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
+						"value": 72.79,
+						"dataSource": {
+							"page": "573-1083",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "parse bluetooth circuit",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+						"value": 50.26,
+						"dataSource": {
+							"page": "1127-1222",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "compress optical alarm",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+						"value": 43.99,
+						"dataSource": {
+							"page": "801",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "copy mobile protocol",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+						"value": 64.65,
+						"dataSource": {
+							"page": "166",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "compress haptic microchip",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+						"value": 54.3,
+						"dataSource": {
+							"page": "466",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "reboot wireless alarm",
+						"quality": "Estimated"
+					},
+					"turnoverBasedNonAssessedExposures": {
+						"value": 21.48,
+						"dataSource": {
+							"page": "299-768",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "quantify bluetooth alarm",
+						"quality": "Reported"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+						"value": 51.15,
+						"dataSource": {
+							"page": "277-699",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "large language models",
+							"publicationDate": null
+						},
+						"comment": "parse wireless bus",
+						"quality": "Reported"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 41.33,
+						"dataSource": {
+							"page": "1053",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "compress redundant driver",
+						"quality": "NoDataFound"
+					},
+					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+						"value": 13.37,
+						"dataSource": {
+							"page": "859",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "copy auxiliary capacitor",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
+						"value": 20.7,
+						"dataSource": {
+							"page": "359-1091",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "back up digital protocol",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+						"value": 3.28,
+						"dataSource": {
+							"page": "863-1143",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "calculate primary sensor",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+						"value": 84.02,
+						"dataSource": {
+							"page": "73",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "generate optical protocol",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
+						"value": 66.61,
+						"dataSource": {
+							"page": "650-1195",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "transmit 1080p hard drive",
+						"quality": "Reported"
+					}
+				},
+				"dealingOnOwnAccountServicesCapexBased": {
+					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
+						"value": 2525808516.74,
+						"dataSource": {
+							"page": "702",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
+						},
+						"comment": "bypass redundant monitor",
+						"quality": "Audited",
+						"currency": "XOF"
+					},
+					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": {
+						"value": 5580111719.81,
+						"dataSource": {
+							"page": "316-556",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},
+						"comment": "input digital program",
+						"quality": "Reported",
+						"currency": "SZL"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+						"value": 64.26,
+						"dataSource": {
+							"page": "177",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "connect multi-byte monitor",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+						"value": 46,
+						"dataSource": {
+							"page": "483",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "navigate digital interface",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
+						"value": 22.78,
+						"dataSource": {
+							"page": "903-911",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "web services",
+							"publicationDate": null
+						},
+						"comment": "override cross-platform port",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
+						"value": 24.8,
+						"dataSource": {
+							"page": "726-1220",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "navigate 1080p interface",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+						"value": 70.91,
+						"dataSource": {
+							"page": "428-863",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "synthesize bluetooth application",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
+						"value": 37.66,
+						"dataSource": {
+							"page": "108",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "transmit cross-platform protocol",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+						"value": 34.97,
+						"dataSource": {
+							"page": "783",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "input back-end transmitter",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+						"value": 92.8,
+						"dataSource": {
+							"page": "950-996",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "quantify optical system",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+						"value": 53.48,
+						"dataSource": {
+							"page": "384",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "compress online transmitter",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+						"value": 31.13,
+						"dataSource": {
+							"page": "623",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "users",
+							"publicationDate": null
+						},
+						"comment": "navigate primary protocol",
+						"quality": "Audited"
+					},
+					"capexBasedNonAssessedExposures": {
+						"value": 61.48,
+						"dataSource": {
+							"page": "355-853",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "connect redundant circuit",
+						"quality": "Estimated"
+					},
+					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
+						"value": 38.2,
+						"dataSource": {
+							"page": "222-358",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "synthesize auxiliary feed",
+						"quality": "NoDataFound"
+					},
+					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
+						"value": 46.1,
+						"dataSource": {
+							"page": "748-1204",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "generate digital application",
+						"quality": "NoDataFound"
+					},
+					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
+						"value": 71.07,
+						"dataSource": {
+							"page": "1116-1150",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "override online application",
+						"quality": "Audited"
+					},
+					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesEligible": {
+						"value": 38.18,
+						"dataSource": {
+							"page": "178",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "web services",
+							"publicationDate": null
+						},
+						"comment": "parse multi-byte pixel",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
+						"value": 3.81,
+						"dataSource": {
+							"page": "55",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "connect online array",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
+						"value": 66.67,
+						"dataSource": {
+							"page": "157",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "architectures",
+							"publicationDate": null
+						},
+						"comment": "input virtual bandwidth",
+						"quality": "NoDataFound"
+					},
+					"capexBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
+						"value": 58.76,
+						"dataSource": {
+							"page": "224",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "copy optical bus",
+						"quality": "Reported"
+					}
+				},
+				"otherServicesTurnoverBased": {
+					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+						"value": 9860801799.61,
+						"dataSource": {
+							"page": "333",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "generate wireless pixel",
+						"quality": "Estimated",
+						"currency": "CAD"
+					},
+					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
+						"value": 4031007109.61,
+						"dataSource": {
+							"page": "436-914",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "input optical hard drive",
+						"quality": "NoDataFound",
+						"currency": "BWP"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+						"value": 37.36,
+						"dataSource": {
+							"page": "176",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "navigate neural alarm",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+						"value": 49.1,
+						"dataSource": {
+							"page": "848-1178",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "methodologies",
+							"publicationDate": null
+						},
+						"comment": "compress multi-byte transmitter",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+						"value": 18.75,
+						"dataSource": {
+							"page": "224-1170",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "program multi-byte microchip",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+						"value": 1.64,
+						"dataSource": {
+							"page": "590",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "reboot neural pixel",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+						"value": 22.15,
+						"dataSource": {
+							"page": "774-967",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "navigate back-end feed",
+						"quality": "Audited"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+						"value": 65.54,
+						"dataSource": {
+							"page": "336-941",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "navigate cross-platform firewall",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+						"value": 19.29,
+						"dataSource": {
+							"page": "184-1254",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "quantify virtual firewall",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+						"value": 20.38,
+						"dataSource": {
+							"page": "1059-1097",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "hack wireless card",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+						"value": 99.06,
+						"dataSource": {
+							"page": "99",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
+						},
+						"comment": "back up primary array",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+						"value": 50.07,
+						"dataSource": {
+							"page": "655",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "quantify bluetooth microchip",
+						"quality": "Audited"
+					},
+					"turnoverBasedNonAssessedExposures": {
+						"value": 70.77,
+						"dataSource": {
+							"page": "205",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "hack optical application",
+						"quality": "Estimated"
+					},
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
+						"value": 40.85,
+						"dataSource": {
+							"page": "345-685",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "bypass mobile capacitor",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+						"value": 20.88,
+						"dataSource": {
+							"page": "27",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
+							"publicationDate": null
+						},
+						"comment": "hack haptic system",
+						"quality": "Reported"
+					},
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+						"value": 39.43,
+						"dataSource": {
+							"page": "88",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
+							"publicationDate": null
+						},
+						"comment": "calculate primary bus",
+						"quality": "Incomplete"
+					},
+					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
+						"value": 39.22,
+						"dataSource": {
+							"page": "255-265",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "back up redundant card",
+						"quality": "Audited"
+					}
+				},
+				"otherServicesCapexBased": {
+					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+						"value": 5132470373.93,
+						"dataSource": {
+							"page": "114-387",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "hack cross-platform feed",
+						"quality": "NoDataFound",
+						"currency": "MVR"
+					},
+					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
+						"value": 5823151526.55,
+						"dataSource": {
+							"page": "299",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "solutions",
+							"publicationDate": null
+						},
+						"comment": "synthesize wireless card",
+						"quality": "Audited",
+						"currency": "ZWL"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+						"value": 80.99,
+						"dataSource": {
+							"page": "112",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "metrics",
+							"publicationDate": null
+						},
+						"comment": "bypass bluetooth firewall",
+						"quality": "NoDataFound"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+						"value": 44.3,
+						"dataSource": {
+							"page": "101",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "reboot cross-platform hard drive",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+						"value": 78.41,
+						"dataSource": {
+							"page": "46-190",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "content",
+							"publicationDate": null
+						},
+						"comment": "generate 1080p circuit",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+						"value": 75.06,
+						"dataSource": {
+							"page": "680-1105",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "reboot bluetooth application",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+						"value": 3.28,
+						"dataSource": {
+							"page": "586-1068",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},
+						"comment": "compress cross-platform panel",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+						"value": 51.42,
+						"dataSource": {
+							"page": "1199",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "generate optical transmitter",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+						"value": 73.34,
+						"dataSource": {
+							"page": "118",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "bypass mobile monitor",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+						"value": 31.6,
+						"dataSource": {
+							"page": "1180-1265",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "back up auxiliary microchip",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+						"value": 41.35,
+						"dataSource": {
+							"page": "1088",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "connect multi-byte firewall",
+						"quality": "Reported"
+					},
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+						"value": 85.83,
+						"dataSource": {
+							"page": "1080-1300",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "quantify virtual port",
+						"quality": "Estimated"
+					},
+					"capexBasedNonAssessedExposures": {
+						"value": 83.5,
+						"dataSource": {
+							"page": "26",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "program wireless driver",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
+						"value": 3.39,
+						"dataSource": {
+							"page": "820-982",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "quantify mobile panel",
+						"quality": "Audited"
+					},
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
+						"value": 19.55,
+						"dataSource": {
+							"page": "976",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "copy mobile hard drive",
+						"quality": "Incomplete"
+					},
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesEligible": {
+						"value": 31.1,
+						"dataSource": {
+							"page": "1162",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "compress digital sensor",
+						"quality": "Estimated"
+					},
+					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
+						"value": 69.13,
+						"dataSource": {
+							"page": "470",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
+							"publicationDate": null
+						},
+						"comment": "reboot primary matrix",
+						"quality": "Estimated"
 					}
 				}
 			}

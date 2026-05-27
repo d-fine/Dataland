@@ -14,12 +14,19 @@
       }
     },
     "creditInstitution" : {
-      "assetsForCalculationOfGreenAssetRatio" : {
-        "totalGrossCarryingAmount" : "CI_GAR_ASSETS_TOTAL_GROSS_CARRYING_AMOUNT",
-        "totalAmountOfNonAssessedExposures" : "CI_GAR_ASSETS_NON_ASSESSED",
-        "totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties" : "CI_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CP",
-        "totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "CI_GAR_ASSETS_NON_ASSESSED_NO_ELIGIBLE_CP",
-        "totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution" : "CI_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CI"
+      "turnoverBasedAssetsForCalculationOfGreenAssetRatio" : {
+        "turnoverBasedTotalGrossCarryingAmount" : "CI_TURNOVER_BASED_GAR_ASSETS_TOTAL_GROSS_CARRYING_AMOUNT",
+        "turnoverBasedTotalAmountOfNonAssessedExposures" : "CI_TURNOVER_BASED_GAR_ASSETS_NON_ASSESSED",
+        "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties" : "CI_TURNOVER_BASED_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CP",
+        "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "CI_TURNOVER_BASED_GAR_ASSETS_NON_ASSESSED_NO_ELIGIBLE_CP",
+        "turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution" : "CI_TURNOVER_BASED_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CI"
+      },
+      "capexBasedAssetsForCalculationOfGreenAssetRatio" : {
+        "capexBasedTotalGrossCarryingAmount" : "CI_CAPEX_BASED_GAR_ASSETS_TOTAL_GROSS_CARRYING_AMOUNT",
+        "capexBasedTotalAmountOfNonAssessedExposures" : "CI_CAPEX_BASED_GAR_ASSETS_NON_ASSESSED",
+        "capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties" : "CI_CAPEX_BASED_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CP",
+        "capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities" : "CI_CAPEX_BASED_GAR_ASSETS_NON_ASSESSED_NO_ELIGIBLE_CP",
+        "capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution" : "CI_CAPEX_BASED_GAR_ASSETS_NON_ASSESSED_NON_MATERIAL_CI"
       },
       "turnoverBasedGreenAssetRatioSectorInformation" : {
         "turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivities" : "CI_TURNOVER_BASED_GAR_SECTOR_NUCLEAR_TOTAL_GROSS_CARRYING_AMOUNT",
