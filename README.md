@@ -38,7 +38,8 @@ To add the provided git pre-hooks to your local development environment execute:
 `git config --local core.hookspath ./.githooks/`
 
 ## Environment Variables for Development
-Environmental variables can be set via the script `setEnvironmentVariables.ps1`.
+Environmental variables can be set by adding them in `environments/.env.dev`, `environments/.env.template`, 
+`.github/workflows/CI.yaml`, `docker-compose.yml` and `verifyEnvironmentVariables.sh`.
 
 ## API Documentation
 Links to the interactive swagger API documentation are available on all running instances of dataland 
