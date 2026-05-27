@@ -97,17 +97,7 @@ class BulkRequestManagerTest {
 
     private val dataMetaInformationList =
         dataDimensionsWithExistingDatasets.map {
-            DataMetaInformation(
-                dataId = UUID.randomUUID().toString(),
-                companyId = it.companyId,
-                dataType = DataTypeEnum.Companion.decode(it.dataType)!!,
-                uploadTime = 0L,
-                reportingPeriod = it.reportingPeriod,
-                currentlyActive = true,
-                qaStatus = QaStatus.Accepted,
-                uploaderUserId = UUID.randomUUID().toString(),
-                ref = null,
-            )
+            createDataMetaInformation(it.companyId, it.dataType, it.reportingPeriod)
         }
 
     private val acceptedDataDimensions =
@@ -151,6 +141,42 @@ class BulkRequestManagerTest {
             state = RequestState.Open,
             dataSourcingEntity = null,
         )
+
+    private fun createDataMetaInformation(
+        companyId: String,
+        dataType: String,
+        reportingPeriod: String,
+    ): DataMetaInformation =
+        DataMetaInformation(
+            dataId = UUID.randomUUID().toString(),
+            companyId = companyId,
+            dataType = DataTypeEnum.decode(dataType)!!,
+            uploadTime = 0L,
+            reportingPeriod = reportingPeriod,
+            currentlyActive = true,
+            qaStatus = QaStatus.Accepted,
+            uploaderUserId = UUID.randomUUID().toString(),
+            ref = null,
+        )
+
+    private fun mockValidatorAccepting(
+        companyIds: Set<String>,
+        dataTypes: Set<String>,
+        reportingPeriods: Set<String>,
+    ) {
+        doReturn(
+            DataSourcingValidator.DataRequestValidationResult(
+                companyIdValidation = companyIds.associateWith { UUID.randomUUID() },
+                dataTypeValidation = dataTypes.associateWith { true },
+                reportingPeriodValidation = reportingPeriods.associateWith { true },
+            ),
+        ).whenever(mockDataSourcingValidator).validateBulkDataRequest(any())
+    }
+
+    private fun mockNoExistingDatabaseRequests() {
+        doReturn(mockQuery).whenever(mockEntityManager).createNativeQuery(any(), eq(RequestEntity::class.java))
+        doReturn(emptyList<RequestEntity>()).whenever(mockQuery).resultList
+    }
 
     @BeforeEach
     fun setup() {
@@ -209,15 +235,7 @@ class BulkRequestManagerTest {
         ).whenever(mockQuery).resultList
         doReturn(dataMetaInformationList)
             .whenever(mockMetaDataControllerApi)
-            .retrieveMetaDataOfActiveDatasets(
-                (validDataDimensions - dataDimensionsWithExistingRequests).map {
-                    org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
-                        companyId = it.companyId,
-                        dataType = it.dataType,
-                        reportingPeriod = it.reportingPeriod,
-                    )
-                },
-            )
+            .retrieveMetaDataOfActiveDatasets(any())
     }
 
     private fun createBulkRequestManager() {
@@ -301,5 +319,38 @@ class BulkRequestManagerTest {
         (allRequestedDataDimensions - acceptedDataDimensions).forEach {
             verify(mockRequestCreationService, times(0)).storeRequest(userId, it)
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [
+            "eutaxonomy-financials, eutaxonomy-financials-2026-73",
+            "eutaxonomy-non-financials, eutaxonomy-non-financials-2026-73",
+        ],
+    )
+    fun `check that a request for an old EU Taxonomy template is blocked when only new template data exists`(
+        oldDataType: String,
+        newDataType: String,
+    ) {
+        val companyId = UUID.randomUUID().toString()
+        val reportingPeriod = "2024"
+
+        mockValidatorAccepting(setOf(companyId), setOf(oldDataType), setOf(reportingPeriod))
+        mockNoExistingDatabaseRequests()
+        doReturn(listOf(createDataMetaInformation(companyId, newDataType, reportingPeriod)))
+            .whenever(mockMetaDataControllerApi)
+            .retrieveMetaDataOfActiveDatasets(any())
+
+        val response =
+            bulkRequestManager.processBulkDataRequest(
+                BulkDataRequest(setOf(companyId), setOf(oldDataType), setOf(reportingPeriod)),
+                userId,
+            )
+
+        Assertions.assertEquals(
+            listOf(BasicDataDimensions(companyId, oldDataType, reportingPeriod)),
+            response.existingDataSets,
+        )
+        Assertions.assertTrue(response.acceptedDataRequests.isEmpty())
     }
 }
