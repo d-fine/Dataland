@@ -381,24 +381,20 @@ describe('DatasetReviewOverview page details', () => {
       qaStatus: QaStatus.Accepted,
     };
 
-    it('shows an error warning when there is no related data request with status Processing', () => {
+    it('shows an error warning when there is no related data request with status Processing ' +
+        'and shows the warning when there is an open request', () => {
       mountPage({ requestCount: 0 });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+    });
 
-      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
-        statusCode: 200,
-        body: 1,
-      }).as('requestCountUpdated');
-
-      cy.then(() => queryClient.invalidateQueries({ queryKey: ['enhancedRequests', 'searchCount'] }));
-      cy.wait('@requestCountUpdated');
+    it('hides the warning when there us a request with status Processing', () => {
+        mountPage({requestCount: 1});
+      cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('not.exist');
     });
-
-
 
     it('shows a warning when the company has no assigned sector', () => {
       const companyWithoutSector = {
