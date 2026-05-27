@@ -7,37 +7,17 @@ const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
- * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion
+ * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion.
+ * Waits for at least one real result item to appear before clicking, to avoid hitting ghost elements.
  * @param searchTerm the term to search for
  */
 function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
   cy.get('input#company_search_bar_standard').scrollIntoView();
-  cy.get('input#company_search_bar_standard').then(($input) => {
-    cy.task('log', `[navigation-test] search bar found, current value="${String($input.val())}"`);
-  });
   cy.get('input#company_search_bar_standard').type(searchTerm);
-  cy.get('input#company_search_bar_standard').then(($input) => {
-    cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
-  });
-  cy.get('[data-pc-section="list"]').then(($list) => {
-    const items = $list.find('[data-pc-section="item"]');
-    cy.task('log', `[navigation-test] autocomplete item count: ${items.length}`);
-    items.each((i, el) => {
-      cy.task('log', `[navigation-test] autocomplete item[${i}]: "${Cypress.$(el).text().trim()}"`);
-    });
-  });
   cy.get('[data-pc-section="list"] [data-pc-section="item"]')
+    .should('have.length.at.least', 1)
     .contains(searchTerm)
-    .then(($el) => {
-      cy.task(
-        'log',
-        `[navigation-test] clicking element: tag=${$el[0].tagName} text="${$el.text().trim()}" data-pc-section="${$el.attr('data-pc-section') ?? $el.parents('[data-pc-section="item"]').attr('data-pc-section')}"`
-      );
-    });
-  cy.get('[data-pc-section="list"] [data-pc-section="item"]').contains(searchTerm).click();
-  cy.url().then((url) => {
-    cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
-  });
+    .click();
 }
 
 /**
@@ -62,7 +42,7 @@ describeIf(
     let betaCompanyIdAndName: CompanyIdAndName;
 
     before(() => {
-      fetchTestCompanies().then(([alpha, beta]) => {
+      return fetchTestCompanies().then(([alpha, beta]) => {
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
         cy.task('log', `[navigation-test] alpha: id=${alpha.companyId} name="${alpha.companyName}"`);
@@ -87,23 +67,14 @@ describeIf(
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
-      cy.task(
-        'log',
-        `[navigation-test] betaCompanyId=${betaCompanyIdAndName?.companyId} betaCompanyName=${betaCompanyIdAndName?.companyName}`
-      );
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
-      cy.task('log', '[navigation-test] intercept registered, visiting alpha cockpit');
       visitCockpitForCompanyAlpha();
-      cy.task('log', '[navigation-test] alpha cockpit loaded, starting search for beta company');
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
-      cy.task('log', '[navigation-test] clicked beta company in autocomplete, waiting for API request');
-      cy.wait('@fetchAggregatedFrameworkSummaryForBeta').then(() => {
-        cy.task('log', '[navigation-test] fetchAggregatedFrameworkSummaryForBeta request was intercepted successfully');
-      });
-      cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
+      cy.url({ timeout: longTimeoutInMs }).should('contain', `/companies/${betaCompanyIdAndName.companyId}`);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
     });
 
     it('From the company cockpit page visit a view page', () => {
