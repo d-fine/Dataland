@@ -5,5 +5,8 @@
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-non-financials" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis" ],
+    "calculationMethod" : "Identity"
+  } ]
 }

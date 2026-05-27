@@ -5,5 +5,8 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-financials" ],
   "constraints" : [ "between:0,100" ],
-  "calculationRules" : null
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiTurnoverBasedShareOfTurnoverBasedKpiInPercentAligned" ],
+    "calculationMethod" : "Identity"
+  } ]
 }
