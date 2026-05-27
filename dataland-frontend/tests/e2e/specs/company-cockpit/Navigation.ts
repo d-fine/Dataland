@@ -12,7 +12,16 @@ const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
  */
 function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
   cy.get('input#company_search_bar_standard').scrollIntoView();
+  cy.get('input#company_search_bar_standard').then(($input) => {
+    cy.task('log', `[navigation-test] search bar found, current value="${String($input.val())}"`);
+  });
   cy.get('input#company_search_bar_standard').type(searchTerm);
+  cy.get('input#company_search_bar_standard').then(($input) => {
+    cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
+  });
+  cy.get('[data-pc-section="list"]').then(($list) => {
+    cy.task('log', `[navigation-test] autocomplete list visible, items: ${$list.text().trim().replace(/\s+/g, ' ')}`);
+  });
   cy.get('[data-pc-section="list"]').contains(searchTerm).click();
 }
 
@@ -57,12 +66,21 @@ describeIf(
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
-      visitCockpitForCompanyAlpha();
+      cy.task(
+        'log',
+        `[navigation-test] betaCompanyId=${betaCompanyIdAndName?.companyId} betaCompanyName=${betaCompanyIdAndName?.companyName}`
+      );
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
+      cy.task('log', '[navigation-test] intercept registered, visiting alpha cockpit');
+      visitCockpitForCompanyAlpha();
+      cy.task('log', '[navigation-test] alpha cockpit loaded, starting search for beta company');
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
-      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
+      cy.task('log', '[navigation-test] clicked beta company in autocomplete, waiting for API request');
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta').then(() => {
+        cy.task('log', '[navigation-test] fetchAggregatedFrameworkSummaryForBeta request was intercepted successfully');
+      });
       cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
     });
