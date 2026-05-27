@@ -381,16 +381,19 @@ describe('DatasetReviewOverview page details', () => {
       qaStatus: QaStatus.Accepted,
     };
 
-    it('shows an error warning when there is no related data request with status Processing ' +
-        'and shows the warning when there is an open request', () => {
-      mountPage({ requestCount: 0 });
-      cy.wait('@getDatasetJudgement');
+    it(
+      'shows an error warning when there is no related data request with status Processing ' +
+        'and shows the warning when there is an open request',
+      () => {
+        mountPage({ requestCount: 0 });
+        cy.wait('@getDatasetJudgement');
 
-      cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
-    });
+        cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+      }
+    );
 
     it('hides the warning when there us a request with status Processing', () => {
-        mountPage({requestCount: 1});
+      mountPage({ requestCount: 1 });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('not.exist');
