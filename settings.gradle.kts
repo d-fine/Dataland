@@ -27,7 +27,6 @@ include(
     "dataland-specification-lib",
     "dataland-specification-service",
     "dataland-user-service",
-    "dataland-reduced-local-stack",
     "dataland-website",
     "dataland-sharedElements",
 )
