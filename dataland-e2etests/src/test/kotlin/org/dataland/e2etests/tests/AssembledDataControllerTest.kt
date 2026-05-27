@@ -24,8 +24,8 @@ class AssembledDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val reportingPeriod = "2025"
 
-        val scope1 = BigDecimal("1.0")
-        val scope2 = BigDecimal("2.0")
+        val scope1 = BigDecimal("0.5")
+        val scope2 = BigDecimal("1.0")
 
         val sfdrData =
             SfdrData(
@@ -40,10 +40,11 @@ class AssembledDataControllerTest {
                     ),
             )
 
-        Backend.sfdrDataControllerApi.postCompanyAssociatedSfdrData(
-            CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData),
-            bypassQa = true,
-        )
+        Backend.sfdrDataControllerApi
+            .postCompanyAssociatedSfdrData(
+                CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData),
+                bypassQa = true,
+            )
 
         ApiAwait.untilAsserted(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
             val response =
@@ -58,8 +59,8 @@ class AssembledDataControllerTest {
 
             assertNotNull(calculatedField, "Calculated field scope1And2GhgEmissionsInTonnes should be present")
             assertEquals(
-                0, BigDecimal("3.0").compareTo(calculatedField!!.value),
-                "Expected 3.0 as calculated sum but got ${calculatedField.value}",
+                0, BigDecimal("1.5").compareTo(calculatedField!!.value),
+                "Expected 1.5 as calculated sum but got ${calculatedField.value}",
             )
         }
     }
