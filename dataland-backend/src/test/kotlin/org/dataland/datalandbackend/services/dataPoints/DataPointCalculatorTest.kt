@@ -43,7 +43,7 @@ class DataPointCalculatorTest {
 
     private val numericDataPointJson =
         TestResourceFileReader
-            .getJsonString("./json/dataPoints/numericDataPointWithExtendedDocumentReference.json")
+            .getJsonString("json/dataPoints/numericDataPointHalf.json")
     private val anotherNumericDataPointJson =
         TestResourceFileReader
             .getJsonString("./json/dataPoints/anotherNumericDataPointForTestingTransformations.json")
@@ -52,7 +52,7 @@ class DataPointCalculatorTest {
             .getJsonString("./json/dataPoints/dataPointWithoutValue.json")
     private val zeroNumericDataPointJson =
         TestResourceFileReader
-            .getJsonString("./json/dataPoints/zeroNumericDataPoint.json")
+            .getJsonString("json/dataPoints/numericDataPointZero.json")
 
     private val datasetDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
