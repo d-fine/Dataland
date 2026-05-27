@@ -76,7 +76,7 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
   cy.task('log', '[createPortfolio] Page loaded, clicking add-portfolio');
   cy.get('[data-test="add-portfolio"]').click();
   cy.task('log', '[createPortfolio] Dialog opened, typing portfolio name and company identifiers');
-  cy.get('[data-test="portfolio-name-input"]:visible').type(portfolioName);
+  cy.get('[data-test="portfolio-name-input"]:visible').invoke('val', portfolioName).trigger('input');
   cy.get('[data-test="company-identifiers-input"]')
     .invoke('val', `${company1.companyId},${company2.companyId}`)
     .trigger('input');
@@ -93,11 +93,13 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
 
   cy.get('body').then(($body) => {
     const inputVal = $body.find('[data-test="company-identifiers-input"]').val();
+    const portfolioNameVal = $body.find('[data-test="portfolio-name-input"]').val();
     const identifierError = $body.find('[data-test="invalidIdentifierErrorMessage"]').is(':visible');
     const unknownError = $body.find('[data-test="unknown-portfolio-error"]');
     const companyListItems = $body.find('#existing-company-identifiers li');
     const saveBtn = $body.find('[data-test="portfolio-dialog-save-button"]');
 
+    cy.task('log', `[createPortfolio] After 5s - portfolio name input value: "${String(portfolioNameVal)}"`);
     cy.task('log', `[createPortfolio] After 5s - input value: "${String(inputVal)}"`);
     cy.task('log', `[createPortfolio] After 5s - invalidIdentifierErrorMessage visible: ${identifierError}`);
     cy.task('log', `[createPortfolio] After 5s - unknown-portfolio-error text: "${unknownError.text().trim()}"`);
