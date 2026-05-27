@@ -20,7 +20,11 @@ function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
     cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
   });
   cy.get('[data-pc-section="list"]').then(($list) => {
-    cy.task('log', `[navigation-test] autocomplete list visible, items: ${$list.text().trim().replace(/\s+/g, ' ')}`);
+    const items = $list.find('[data-pc-section="item"]');
+    cy.task('log', `[navigation-test] autocomplete item count: ${items.length}`);
+    items.each((i, el) => {
+      cy.task('log', `[navigation-test] autocomplete item[${i}]: "${Cypress.$(el).text().trim()}"`);
+    });
   });
   cy.get('[data-pc-section="list"]').contains(searchTerm).click();
 }
@@ -50,6 +54,12 @@ describeIf(
       fetchTestCompanies().then(([alpha, beta]) => {
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
+        cy.task('log', `[navigation-test] alpha: id=${alpha.companyId} name="${alpha.companyName}"`);
+        cy.task('log', `[navigation-test] beta:  id=${beta.companyId} name="${beta.companyName}"`);
+        cy.task(
+          'log',
+          `[navigation-test] names are ${alpha.companyName === beta.companyName ? 'IDENTICAL' : 'different'}`
+        );
       });
     });
 
