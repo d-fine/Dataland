@@ -228,6 +228,13 @@ export default defineConfig({
           return filename;
         },
       });
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.name === 'electron') {
+          launchOptions.args.push('--disable-dev-shm-usage');
+          launchOptions.args.push('--shm-size=16mb');
+        }
+        return launchOptions;
+      });
       config.expose.fakeFixtureDocumentIds = computeFakeFixtureDocumentIds(config.projectRoot);
       return config;
     },
@@ -246,6 +253,13 @@ export default defineConfig({
     indexHtmlFile: 'tests/component/component-index.html',
     setupNodeEvents(on, config) {
       require('@cypress/code-coverage/task')(on, config);
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.name === 'electron') {
+          launchOptions.args.push('--disable-dev-shm-usage');
+          launchOptions.args.push('--shm-size=16mb');
+        }
+        return launchOptions;
+      });
       return config;
     },
   },
