@@ -98,24 +98,45 @@ class BulkRequestManager
             return Pair(invalidDataDimensionTuples, validatedDataDimensionTuples)
         }
 
-        private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
-            metaDataController
-                .retrieveMetaDataOfActiveDatasets(
-                    basicDataDimensions =
-                        requests.map {
-                            org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
-                                companyId = it.companyId,
-                                dataType = it.dataType,
-                                reportingPeriod = it.reportingPeriod,
-                            )
-                        },
-                ).map {
-                    BasicDataDimensions(
-                        companyId = it.companyId,
-                        dataType = it.dataType.toString(),
-                        reportingPeriod = it.reportingPeriod,
-                    )
+        private val oldToNewEuTaxonomyDataTypes =
+            mapOf(
+                "eutaxonomy-financials" to "eutaxonomy-financials-2026-73",
+                "eutaxonomy-non-financials" to "eutaxonomy-non-financials-2026-73",
+            )
+
+        private fun getNewEuTaxonomyEquivalent(request: BasicDataDimensions): BasicDataDimensions? =
+            oldToNewEuTaxonomyDataTypes[request.dataType]?.let { newDataType ->
+                request.copy(dataType = newDataType)
+            }
+
+        private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
+            val mappedTypeEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
+
+            val activeDatasetDimensions =
+                metaDataController
+                    .retrieveMetaDataOfActiveDatasets(
+                        basicDataDimensions =
+                            (requests + mappedTypeEquivalentRequests).map {
+                                org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
+                                    companyId = it.companyId,
+                                    dataType = it.dataType,
+                                    reportingPeriod = it.reportingPeriod,
+                                )
+                            },
+                    ).map {
+                        BasicDataDimensions(
+                            companyId = it.companyId,
+                            dataType = it.dataType.toString(),
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }.toSet()
+
+            return requests
+                .filter { req ->
+                    req in activeDatasetDimensions ||
+                        getNewEuTaxonomyEquivalent(req) in activeDatasetDimensions
                 }.toSet()
+        }
 
         /**
          * Function to retrieve all active data requests for a user based on the provided data dimensions and the user ID.
