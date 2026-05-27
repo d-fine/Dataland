@@ -38,6 +38,8 @@ function checkWarningLinks(subject: Cypress.Chainable<JQuery<HTMLElement>>): voi
 }
 
 describe('DatasetReviewOverview page details', () => {
+  let queryClient: QueryClient;
+
   const keycloakMockWithJudge = minimalKeycloakMock({
     userId: 'current-judge-id',
     roles: [KEYCLOAK_ROLE_JUDGE],
@@ -159,7 +161,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('HEAD', `**/community/company-ownership/${companyId}`, { statusCode: 200, body: [] });
     cy.intercept('HEAD', '**/community/company-role-assignments/CompanyOwner/**', { statusCode: 200, body: [] });
 
-    const queryClient = new QueryClient({
+    queryClient = new QueryClient({
       defaultOptions: {
         queries: { retry: false },
       },
@@ -379,12 +381,24 @@ describe('DatasetReviewOverview page details', () => {
       qaStatus: QaStatus.Accepted,
     };
 
-    it('shows an error warning when there is no related data request with status Open or Processing', () => {
+    it('shows an error warning when there is no related data request with status Processing', () => {
       mountPage({ requestCount: 0 });
       cy.wait('@getDatasetJudgement');
 
       cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
+        statusCode: 200,
+        body: 1,
+      }).as('requestCountUpdated');
+
+      cy.then(() => queryClient.invalidateQueries({ queryKey: ['enhancedRequests', 'searchCount'] }));
+      cy.wait('@requestCountUpdated');
+
+      cy.get('[data-test="review-warning-invalid-request-state"]').should('not.exist');
     });
+
+
 
     it('shows a warning when the company has no assigned sector', () => {
       const companyWithoutSector = {
