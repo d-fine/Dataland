@@ -26,7 +26,18 @@ function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
       cy.task('log', `[navigation-test] autocomplete item[${i}]: "${Cypress.$(el).text().trim()}"`);
     });
   });
-  cy.get('[data-pc-section="list"]').contains(searchTerm).click();
+  cy.get('[data-pc-section="list"] [data-pc-section="item"]')
+    .contains(searchTerm)
+    .then(($el) => {
+      cy.task(
+        'log',
+        `[navigation-test] clicking element: tag=${$el[0].tagName} text="${$el.text().trim()}" data-pc-section="${$el.attr('data-pc-section') ?? $el.parents('[data-pc-section="item"]').attr('data-pc-section')}"`
+      );
+    });
+  cy.get('[data-pc-section="list"] [data-pc-section="item"]').contains(searchTerm).click();
+  cy.url().then((url) => {
+    cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
+  });
 }
 
 /**
