@@ -214,6 +214,46 @@ class DataPointCalculatorTest {
 
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
         val dataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson)
+        val secondDataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson, companyId = secondCompanyId)
+        val secondDataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson, companyId = secondCompanyId)
+
+        doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
+        ).whenever(dataCompositionService)
+            .getAvailableCalculationRules(any())
+        doReturn(listOf(targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-a", "id-b", "id-second-a", "id-second-b"))
+            .whenever(dataAvailabilityChecker)
+            .getViewableDataPointIds(any())
+        doReturn(
+            mapOf(
+                "id-a" to dataPointHalf,
+                "id-b" to dataPointOne,
+                "id-second-a" to secondDataPointHalf,
+                "id-second-b" to secondDataPointOne,
+            ),
+        )
+            .whenever(internalStorageAdapter)
+            .retrieveDataPointsFromInternalStorage(any(), any())
+
+        val result = dataPointCalculator.getCalculatedData(listOf(datasetDimensions, secondDimensions), correlationId)
+        val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value
+
+        assertEquals(0, BigDecimal(1.5).compareTo(value!!))
+        assertTrue(result.containsKey(datasetDimensions))
+        assertTrue(result.containsKey(secondDimensions))
+        assertEquals(companyId, result.getValue(datasetDimensions).first().companyId)
+        assertEquals(secondCompanyId, result.getValue(secondDimensions).first().companyId)
+    }
+
+    @Test
+    fun `check that source data from one company is not used for another company`() {
+        val secondCompanyId = "other-company-id"
+        val secondDimensions = BasicDatasetDimensions(secondCompanyId, framework, reportingPeriod)
+
+        val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
+        val dataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson)
 
         doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(
@@ -227,11 +267,10 @@ class DataPointCalculatorTest {
             .retrieveDataPointsFromInternalStorage(any(), any())
 
         val result = dataPointCalculator.getCalculatedData(listOf(datasetDimensions, secondDimensions), correlationId)
-        val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value
 
-        assertEquals(0, BigDecimal(1.5).compareTo(value!!))
+        assertEquals(1, result.size)
         assertTrue(result.containsKey(datasetDimensions))
-        assertTrue(result.containsKey(secondDimensions))
+        assertFalse(result.containsKey(secondDimensions))
     }
 
     @Test
