@@ -54,6 +54,7 @@ sample_once() {
   { ps aux 2>/dev/null \
     | grep -iE "Cypress|electron" \
     | grep -v grep \
+    | grep -v "awk" \
     | awk '{
         rss_mb = $6 / 1024;
         cpu = $3;
@@ -69,8 +70,13 @@ sample_once() {
       }' >> "$tmp_rows"; } || true
 
   # Processes inside the e2etests container (CI only — silently skipped if container not running)
-  local e2e_ps
-  e2e_ps=$(docker exec dataland-e2etests-1 ps aux --sort=-%mem 2>/dev/null) || true
+  # Find the container dynamically by matching the service name pattern
+  local e2e_container e2e_ps
+  e2e_container=$(docker ps --format "{{.Names}}" 2>/dev/null | grep -iE "e2etests|e2e.test" | head -1) || true
+  e2e_ps=""
+  if [[ -n "$e2e_container" ]]; then
+    e2e_ps=$(docker exec "$e2e_container" ps aux --sort=-%mem 2>/dev/null) || true
+  fi
   if [[ -n "$e2e_ps" ]]; then
     echo "$e2e_ps" | awk 'NR>1 {
         rss_mb = $6 / 1024;
@@ -90,7 +96,7 @@ sample_once() {
   fi
 
   # Print individual rows
-  while IFS='|' read -r _ cpu mem_mb name mem_used mem_limit mem_pct; do
+  while IFS='|' read -r _ cpu _ name mem_used mem_limit mem_pct; do
     printf "%-26s | %-45s | %6s | %12s | %12s | %6s\n" \
       "$ts" "$name" "$cpu" "$mem_used" "$mem_limit" "$mem_pct"
   done < "$tmp_rows"
@@ -121,13 +127,17 @@ monitor_loop() {
   } >> "$logfile"
 
   while true; do
-    sample_once >> "$logfile" 2>&1 || true
-    sleep 2
+    { sample_once >> "$logfile"; } 2>> "$logfile" || true
+    sleep 5
   done
 }
 
 cmd_start() {
   local logfile="${1:-$DEFAULT_LOG_DIR/memory-monitor-$(date '+%Y%m%d_%H%M%S').log}"
+  # Resolve to absolute path so the background process can find it regardless of cwd
+  if [[ "$logfile" != /* ]]; then
+    logfile="$(pwd)/$logfile"
+  fi
 
   if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
     echo "Monitor already running (PID $(cat "$PID_FILE")). Stop it first."
