@@ -20,21 +20,21 @@ function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
     cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
   });
   cy.get('[data-pc-section="list"]').then(($list) => {
-    const items = $list.find('[data-pc-section="item"]');
-    cy.task('log', `[navigation-test] autocomplete item count: ${items.length}`);
-    items.each((i, el) => {
-      cy.task('log', `[navigation-test] autocomplete item[${i}]: "${Cypress.$(el).text().trim()}"`);
+    const options = $list.find('[data-pc-section="option"]');
+    cy.task('log', `[navigation-test] autocomplete list element count on page: ${$list.length}`);
+    cy.task('log', `[navigation-test] autocomplete option count: ${options.length}`);
+    options.each((i, el) => {
+      cy.task('log', `[navigation-test] autocomplete option[${i}]: "${Cypress.$(el).text().trim()}"`);
     });
+    cy.task('log', `[navigation-test] list innerHTML: ${$list.first().html()?.substring(0, 500)}`);
   });
-  cy.get('[data-pc-section="list"] [data-pc-section="item"]')
+  cy.get('[data-pc-section="list"] [data-pc-section="option"]')
+    .should('have.length.at.least', 1)
     .contains(searchTerm)
     .then(($el) => {
-      cy.task(
-        'log',
-        `[navigation-test] clicking element: tag=${$el[0].tagName} text="${$el.text().trim()}" data-pc-section="${$el.attr('data-pc-section') ?? $el.parents('[data-pc-section="item"]').attr('data-pc-section')}"`
-      );
+      cy.task('log', `[navigation-test] clicking option: text="${$el.text().trim()}"`);
     });
-  cy.get('[data-pc-section="list"] [data-pc-section="item"]').contains(searchTerm).click();
+  cy.get('[data-pc-section="list"] [data-pc-section="option"]').contains(searchTerm).click();
   cy.url().then((url) => {
     cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
   });
