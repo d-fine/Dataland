@@ -11,11 +11,9 @@ import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
 
 /**
  * Service to calculate data points based on other data points in case there is no direct data available.
@@ -38,44 +36,56 @@ class DataPointCalculator
                     if (castedDataPoint.value != null) {
                         result.add(uploadedDataPoint)
                     }
-                } catch (ignore: Exception) {
+                } catch (_: Exception) {
                     // Skipping data point as it cannot be cast into an extended data point
                 }
             }
             return result
         }
 
-        private fun getAvailableSourceData(
-            dataPointTypes: Collection<DataPointType>,
-            reportingPeriod: String,
-            companyId: String,
+        private fun getAvailableSourceDataByDatasetDimension(
+            dataPointTypesByDatasetDimension: Map<BasicDatasetDimensions, Collection<DataPointType>>,
             correlationId: String,
-        ): Collection<UploadedDataPoint> {
+        ): Map<BasicDatasetDimensions, Collection<UploadedDataPoint>> {
             val allDimensions =
-                dataPointTypes.map {
-                    BasicDataPointDimensions(reportingPeriod = reportingPeriod, dataPointType = it, companyId = companyId)
-                }
+                dataPointTypesByDatasetDimension
+                    .map { (datasetDimension, dataPointTypes) ->
+                        dataPointTypes.map { dataPointType ->
+                            BasicDataPointDimensions(
+                                companyId = datasetDimension.companyId,
+                                reportingPeriod = datasetDimension.reportingPeriod,
+                                dataPointType = dataPointType,
+                            )
+                        }
+                    }.flatten()
             val allAvailableIds = dataAvailabilityChecker.getViewableDataPointIds(allDimensions)
             val allStoredDataPoints =
                 internalStorageAdapter
                     .retrieveDataPointsFromInternalStorage(dataPointIds = allAvailableIds, correlationId = correlationId)
-            return removeDataPointsWithoutValue(allStoredDataPoints.values)
+            val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
+            val datasetDimensions = dataPointTypesByDatasetDimension.keys
+            val associateBy =
+                datasetDimensions.associateWith { datasetDimension ->
+                    allStoredDataPointsWithValues.filter { dataPoint ->
+                        dataPoint.companyId == datasetDimension.companyId && dataPoint.reportingPeriod == datasetDimension.reportingPeriod
+                    }
+                }
+            return associateBy
         }
 
         /**
-         * Attempts to calculate the values for the [dataPointTypes] and the fixed [reportingPeriod] and [companyId].
-         * If multiple calculation rules are possible the first one with all sources available will be used.
+         * Attempts to calculate data points for the fixed [reportingPeriod] and [companyId].
+         * [potentialCalculations] contains the target data point types and their candidate calculation rules.
+         * [allSourceData] must contain only source data for the same company and reporting period.
+         * If multiple calculation rules are possible, the first one with all required sources available is used.
          * @return A list of all calculated data points (is empty if no calculation was possible)
          */
         private fun calculateDataPoints(
-            dataPointTypes: Collection<DataPointType>,
+            potentialCalculations: Map<DataPointType, Collection<CalculationRule>>,
+            allSourceData: Collection<UploadedDataPoint>,
             companyId: String,
             reportingPeriod: String,
-            correlationId: String,
         ): List<UploadedDataPoint> {
-            val potentialCalculations = dataCompositionService.getAvailableCalculationRules(dataPointTypes)
-            val allSourceTypes = potentialCalculations.values.flatten().flatMap { it.inputs }
-            val allSourceData = getAvailableSourceData(allSourceTypes, reportingPeriod, companyId, correlationId)
             val allSourceDataByType = allSourceData.associateBy { it.dataPointType }
             val allAvailableSourceTypes = allSourceDataByType.keys
             val calculatedDataPoints = mutableListOf<UploadedDataPoint>()
@@ -99,7 +109,7 @@ class DataPointCalculator
                                     method = calculationRule.calculationMethod,
                                     dataPointDimensions = targetDimensions,
                                 )
-                            } catch (exception: IllegalArgumentException) {
+                            } catch (_: IllegalArgumentException) {
                                 // Skip this rule and continue with the next
                                 return@calculationRulesLoop
                             }
@@ -138,24 +148,44 @@ class DataPointCalculator
             datasetDimensions: Collection<BasicDatasetDimensions>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, List<UploadedDataPoint>> {
-            val calculatedData = mutableMapOf<BasicDatasetDimensions, List<UploadedDataPoint>>()
-
-            datasetDimensions.forEach { dataDimensions ->
-                val companyId = dataDimensions.companyId
-                val reportingPeriod = dataDimensions.reportingPeriod
-                val relevantTypes = dataCompositionService.getRelevantDataPointTypes(dataDimensions.framework)
-                val missingDataPointTypes = dataAvailabilityChecker.getMissingDataPointTypes(relevantTypes, reportingPeriod, companyId)
-                val calculatedDataPoints =
-                    calculateDataPoints(
-                        dataPointTypes = missingDataPointTypes,
-                        companyId = companyId,
-                        reportingPeriod = reportingPeriod,
-                        correlationId = correlationId,
-                    )
-                if (calculatedDataPoints.isNotEmpty()) {
-                    calculatedData[dataDimensions] = calculatedDataPoints
+            val missingDataPointTypesByDatasetDimension =
+                datasetDimensions.associateWith { datasetDimensions ->
+                    val relevantTypes = dataCompositionService.getRelevantDataPointTypes(datasetDimensions.framework)
+                    dataAvailabilityChecker
+                        .getMissingDataPointTypes(
+                            relevantTypes, datasetDimensions.reportingPeriod,
+                            datasetDimensions.companyId,
+                        )
                 }
-            }
-            return calculatedData
+
+            val potentialCalculationsByDatasetDimension =
+                missingDataPointTypesByDatasetDimension.mapValues { (_, missingDataPointTypes) ->
+                    dataCompositionService.getAvailableCalculationRules(missingDataPointTypes)
+                }
+            val sourceTypesByDatasetDimensions =
+                potentialCalculationsByDatasetDimension.mapValues { (_, calculationRules) ->
+                    calculationRules.values
+                        .flatten()
+                        .flatMap { it.inputs }
+                        .distinct()
+                }
+
+            val sourceDataByDatasetDimensions =
+                getAvailableSourceDataByDatasetDimension(
+                    sourceTypesByDatasetDimensions,
+                    correlationId = correlationId,
+                )
+
+            return potentialCalculationsByDatasetDimension
+                .mapNotNull { (datasetDimensions, potentialCalculations) ->
+                    val calculatedDataPoints =
+                        calculateDataPoints(
+                            companyId = datasetDimensions.companyId,
+                            reportingPeriod = datasetDimensions.reportingPeriod,
+                            potentialCalculations = potentialCalculations,
+                            allSourceData = sourceDataByDatasetDimensions.getValue(datasetDimensions),
+                        )
+                    calculatedDataPoints.takeIf { it.isNotEmpty() }?.let { datasetDimensions to it }
+                }.toMap()
         }
     }

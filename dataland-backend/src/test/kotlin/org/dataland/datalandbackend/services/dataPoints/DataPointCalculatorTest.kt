@@ -15,6 +15,7 @@ import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -59,6 +60,8 @@ class DataPointCalculatorTest {
     private fun makeUploadedDataPoint(
         type: String,
         dataPointJson: String,
+        companyId: String = this.companyId,
+        reportingPeriod: String = this.reportingPeriod,
     ) = UploadedDataPoint(
         dataPoint = dataPointJson,
         dataPointType = type,
@@ -215,6 +218,45 @@ class DataPointCalculatorTest {
 
         val sourceA = makeUploadedDataPoint(sourceTypeA, numericDataPointJson)
         val sourceB = makeUploadedDataPoint(sourceTypeB, anotherNumericDataPointJson)
+        val secondSourceA = makeUploadedDataPoint(sourceTypeA, numericDataPointJson, companyId = secondCompanyId)
+        val secondSourceB = makeUploadedDataPoint(sourceTypeB, anotherNumericDataPointJson, companyId = secondCompanyId)
+
+        doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
+        ).whenever(dataCompositionService)
+            .getAvailableCalculationRules(any())
+        doReturn(listOf(targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-a", "id-b", "id-second-a", "id-second-b"))
+            .whenever(dataAvailabilityChecker)
+            .getViewableDataPointIds(any())
+        doReturn(
+            mapOf(
+                "id-a" to sourceA,
+                "id-b" to sourceB,
+                "id-second-a" to secondSourceA,
+                "id-second-b" to secondSourceB,
+            ),
+        )
+            .whenever(internalStorageAdapter)
+            .retrieveDataPointsFromInternalStorage(any(), any())
+
+        val result = dataPointCalculator.getCalculatedData(listOf(datasetDimensions, secondDimensions), correlationId)
+
+        assertEquals(2, result.size)
+        assertTrue(result.containsKey(datasetDimensions))
+        assertTrue(result.containsKey(secondDimensions))
+        assertEquals(companyId, result.getValue(datasetDimensions).first().companyId)
+        assertEquals(secondCompanyId, result.getValue(secondDimensions).first().companyId)
+    }
+
+    @Test
+    fun `check that source data from one company is not used for another company`() {
+        val secondCompanyId = "other-company-id"
+        val secondDimensions = BasicDatasetDimensions(secondCompanyId, framework, reportingPeriod)
+
+        val sourceA = makeUploadedDataPoint(sourceTypeA, numericDataPointJson)
+        val sourceB = makeUploadedDataPoint(sourceTypeB, anotherNumericDataPointJson)
 
         doReturn(listOf(targetType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(
@@ -229,9 +271,9 @@ class DataPointCalculatorTest {
 
         val result = dataPointCalculator.getCalculatedData(listOf(datasetDimensions, secondDimensions), correlationId)
 
-        assertEquals(2, result.size)
+        assertEquals(1, result.size)
         assertTrue(result.containsKey(datasetDimensions))
-        assertTrue(result.containsKey(secondDimensions))
+        assertFalse(result.containsKey(secondDimensions))
     }
 
     @Test
