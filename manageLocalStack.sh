@@ -10,14 +10,12 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]" >&3
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--retrieve-certs] [--no-container-backend] [--silent]" >&3
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
   echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)" >&3
-  echo "  --dev-env: Load environments/.env.dev before starting/resetting" >&3
-  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
-  echo "  --simple: Shortcut for --dev-env --self-signed-certs" >&3
+  echo "  --retrieve-certs: Retrieve the SSL certificates instead of using self-signed ones" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --silent: Suppress subcommand output" >&3
   echo "" >&3
@@ -73,13 +71,13 @@ start_development_stack() {
   start_health_check
   run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
 
-  log_success "Local stack started." | tee dev/fd/3
+  log_success "Local stack started." | tee /dev/fd/3
 }
 
 check_backend_not_running() {
   if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
-    log_error "The backend is currently running. This will prevent the new backend from starting." | tee dev/fd/3
-    log_info "Shut down the running process and restart the script." | tee dev/fd/3
+    log_error "The backend is currently running. This will prevent the new backend from starting." | tee /dev/fd/3
+    log_info "Shut down the running process and restart the script." | tee /dev/fd/3
     exit 1
   fi
 }
@@ -106,14 +104,15 @@ reset_development_stack() {
 
 parse_arguments() {
   local local_frontend=false
-  local dev_env=false
   local do_stop=false
   local do_reset=false
   local do_start=false
   
-  local self_signed=false
+  local self_signed=true
   local container_backend=true
   SILENT=false
+
+  load_dev_environment
 
   if [[ $# -eq 0 ]]; then
     print_usage
@@ -137,21 +136,12 @@ parse_arguments() {
         shift
         ;;
       --local-frontend)
-        log_info "Launching in local frontend mode" | tee dev/fd/3
+        log_info "Launching in local frontend mode" | tee /dev/fd/3
         local_frontend=true
         shift
         ;;
-      --dev-env)
-        dev_env=true
-        shift
-        ;;
-      --self-signed-certs)
-        self_signed=true
-        shift
-        ;;
-      --simple)
-        dev_env=true
-        self_signed=true
+      --retrieve-certs)
+        self_signed=false
         shift
         ;;
       --no-container-backend)
@@ -163,16 +153,12 @@ parse_arguments() {
         shift
         ;;
       *)
-        log_error "Unknown option: $1" | tee dev/fd/3
+        log_error "Unknown option: $1" | tee /dev/fd/3
         print_usage
         exit 1
         ;;
     esac
   done
-
-  if [[ "$dev_env" = true ]]; then
-    load_dev_environment
-  fi
 
   if [[ "$local_frontend" = true ]]; then
     export FRONTEND_LOCATION_CONFIG="Localhost"
