@@ -41,10 +41,6 @@ prepare_loki_bind_mounts() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
 }
 
-#start_backend() {
- # ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
-#}
-
 start_development_stack() {
   local local_frontend="$1"
   local self_signed="$2"
@@ -76,12 +72,6 @@ start_development_stack() {
   run_step "Starting Docker services" start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
   run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
-
-  #if [[ "$container_backend" = false ]]; then
-   # log_step "Starting backend locally"
-   # start_backend
-   #  return
-  #fi
 
   log_success "Local stack started." | tee dev/fd/3
 }
