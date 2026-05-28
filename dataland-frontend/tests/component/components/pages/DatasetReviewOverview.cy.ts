@@ -38,7 +38,6 @@ function checkWarningLinks(subject: Cypress.Chainable<JQuery<HTMLElement>>): voi
 }
 
 describe('DatasetReviewOverview page details', () => {
-  let queryClient: QueryClient;
 
   const keycloakMockWithJudge = minimalKeycloakMock({
     userId: 'current-judge-id',
@@ -112,7 +111,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
       statusCode: 200,
       body: options?.requestCount ?? 1,
-    });
+    }).as('getRequestCount');
     cy.intercept('GET', `**/api/companies/${companyId}/info`, options?.companyInfo ?? mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
     cy.intercept('POST', '**/api/metadata/filters', {
@@ -161,7 +160,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('HEAD', `**/community/company-ownership/${companyId}`, { statusCode: 200, body: [] });
     cy.intercept('HEAD', '**/community/company-role-assignments/CompanyOwner/**', { statusCode: 200, body: [] });
 
-    queryClient = new QueryClient({
+    const queryClient = new QueryClient({
       defaultOptions: {
         queries: { retry: false },
       },
@@ -382,17 +381,16 @@ describe('DatasetReviewOverview page details', () => {
     };
 
     it(
-      'shows an error warning when there is no related data request with status Processing ' +
-        'and shows the warning when there is an open request',
+      'shows an error warning when there is no related data request with status Processing ',
       () => {
         mountPage({ requestCount: 0 });
         cy.wait('@getDatasetJudgement');
-
         cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+        cy.wait('@getRequestCount').its('request.body.requestStates').should('deep.equal', ['Processing'])
       }
     );
 
-    it('hides the warning when there us a request with status Processing', () => {
+    it('hides the warning when there is a request with status Processing', () => {
       mountPage({ requestCount: 1 });
       cy.wait('@getDatasetJudgement');
 
