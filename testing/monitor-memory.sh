@@ -68,6 +68,27 @@ sample_once() {
         printf "ROW|%s%%|%.1f|[host] %s|%.1fMB|N/A|%s%%\n", cpu, rss_mb, label, rss_mb, $4;
       }' >> "$tmp_rows"; } || true
 
+  # Processes inside the e2etests container (CI only — silently skipped if container not running)
+  local e2e_ps
+  e2e_ps=$(docker exec dataland-e2etests-1 ps aux --sort=-%mem 2>/dev/null) || true
+  if [[ -n "$e2e_ps" ]]; then
+    echo "$e2e_ps" | awk 'NR>1 {
+        rss_mb = $6 / 1024;
+        cpu = $3;
+        if (rss_mb > 10) {
+          label = "";
+          n = split($0, parts, " ");
+          for (i = 11; i <= n && length(label) < 44; i++) {
+            label = label (i == 11 ? "" : " ") parts[i];
+          }
+          sub(/.*Cypress\/Cypress/, "Cypress", label);
+          sub(/.*node_modules\/\.bin\//, "", label);
+          if (length(label) > 44) label = substr(label, 1, 41) "...";
+          printf "ROW|%s%%|%.1f|[e2e] %s|%.1fMB|N/A|%s%%\n", cpu, rss_mb, label, rss_mb, $4;
+        }
+      }' >> "$tmp_rows" || true
+  fi
+
   # Print individual rows
   while IFS='|' read -r _ cpu mem_mb name mem_used mem_limit mem_pct; do
     printf "%-26s | %-45s | %6s | %12s | %12s | %6s\n" \
@@ -101,7 +122,7 @@ monitor_loop() {
 
   while true; do
     sample_once >> "$logfile" 2>&1 || true
-    sleep 5
+    sleep 2
   done
 }
 
