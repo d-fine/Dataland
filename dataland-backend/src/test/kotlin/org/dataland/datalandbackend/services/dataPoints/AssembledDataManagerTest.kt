@@ -41,13 +41,16 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
@@ -158,7 +161,7 @@ class AssembledDataManagerTest {
             listOf("extendedEnumFiscalYearDeviationDummy", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
-        whenever(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
+        doReturn(testDataProvider.getEmptyStoredCompanyEntity()).whenever(companyQueryManager).getCompanyById(any())
 
         val uploadedDataset =
             StorableDataset(
@@ -219,7 +222,6 @@ class AssembledDataManagerTest {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)
         val dataPointDimensions = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
-        whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
         setMockData(dataPointMap, dataContentMap)
         doReturn(listOf(dataPointId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
 
@@ -289,7 +291,6 @@ class AssembledDataManagerTest {
         val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
         val dataPointDimensions = BasicDataPointDimensions(companyId, resultType, reportingPeriod)
-        whenever(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(null)
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
@@ -317,33 +318,34 @@ class AssembledDataManagerTest {
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
-        assert(!dynamicDataset.isNullOrEmpty())
-        val assembledDatasetNode = defaultObjectMapper.readTree(dynamicDataset!!)
+        assertNotNull(dynamicDataset)
+        assertTrue(dynamicDataset.isNotEmpty())
+        val assembledDatasetNode = defaultObjectMapper.readTree(dynamicDataset)
         val calculatedDataPointNode =
             assembledDatasetNode
                 .path("environmental")
                 .path("greenhouseGasEmissions")
                 .path("scope1And2GhgEmissionsInTonnes")
-        assert(!calculatedDataPointNode.isMissingNode) {
+        assertFalse(calculatedDataPointNode.isMissingNode) {
             "Expected calculated data point 'scope1And2GhgEmissionsInTonnes' to be present in the assembled dataset"
         }
-        assertTrue(BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()) == 0)
+        assertEquals(0, BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()))
     }
 
     private fun setMockData(
         dataPoints: Map<String, String>,
         dataContent: Map<String, String>,
     ) {
-        whenever(datasetDatapointRepository.findById(datasetId)).thenReturn(
+        doReturn(
             Optional.of(
                 DatasetDatapointEntity(
                     datasetId = datasetId,
                     dataPoints = dataPoints,
                 ),
             ),
-        )
+        ).whenever(datasetDatapointRepository).findById(datasetId)
 
-        whenever(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
+        doAnswer { invocation ->
             val dataPointId = invocation.getArgument<Collection<String>>(0)
             dataPointId.map { dataPointId ->
                 DataPointMetaInformationEntity(
@@ -357,9 +359,9 @@ class AssembledDataManagerTest {
                     qaStatus = QaStatus.Accepted,
                 )
             }
-        }
+        }.whenever(metaDataManager).getDataPointMetaInformationByIds(any())
 
-        whenever(storageClient.selectBatchDataPointsByIds(any(), any())).thenAnswer { invocation ->
+        doAnswer { invocation ->
             val dataPointId = invocation.getArgument<List<String>>(1)
             dataPointId.associateWith { dataPointId ->
                 StorableDataPoint(
@@ -369,6 +371,6 @@ class AssembledDataManagerTest {
                     reportingPeriod = reportingPeriod,
                 )
             }
-        }
+        }.whenever(storageClient).selectBatchDataPointsByIds(any(), any())
     }
 }

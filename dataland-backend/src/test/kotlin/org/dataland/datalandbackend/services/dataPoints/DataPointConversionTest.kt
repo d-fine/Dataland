@@ -4,22 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
 import org.dataland.datalandbackend.services.datapoints.createComment
+import org.dataland.datalandbackend.services.datapoints.mergeDataSources
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.util.stream.Stream
 
 class DataPointConversionTest {
@@ -36,13 +40,12 @@ class DataPointConversionTest {
                 ),
         )
 
-    private val numericDataPoint = "./json/dataPoints/numericDataPointWithExtendedDocumentReference.json"
+    private val numericDataPointHalf = "json/dataPoints/numericDataPointHalf.json"
     private val nonNumericDataPoint = "./json/dataPoints/nonNumericDataPoint.json"
-    private val anotherNumericDataPoint = "./json/dataPoints/anotherNumericDataPointForTestingTransformations.json"
+    private val numericDataPointOne = "json/dataPoints/numericDataPointOne.json"
     private val dataPointWithoutValue = "./json/dataPoints/dataPointWithoutValue.json"
-    private val zeroNumericDataPoint = "./json/dataPoints/zeroNumericDataPoint.json"
+    private val numericDataPointZero = "json/dataPoints/numericDataPointZero.json"
 
-    // ToDo clean up the source files for the tests
     companion object {
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -54,6 +57,37 @@ class DataPointConversionTest {
                 Arguments
                     .of(listOf(QualityOptions.Audited, QualityOptions.Reported, QualityOptions.NoDataFound), QualityOptions.NoDataFound),
             )
+
+        @JvmStatic
+        fun provideDataSources(): Stream<Arguments> {
+            val smallerReference =
+                ExtendedDocumentReference(
+                    fileReference = "50abc",
+                    fileName = "fileName1",
+                    page = "1",
+                    publicationDate = LocalDate.of(2024, 1, 1),
+                )
+            val largerReference =
+                ExtendedDocumentReference(
+                    fileReference = "88bed",
+                    fileName = "fileName2",
+                    page = "5",
+                    publicationDate = LocalDate.of(2025, 6, 1),
+                )
+            val expectedMerged =
+                ExtendedDocumentReference(
+                    fileReference = "50abc",
+                    fileName = "fileName1",
+                    page = "1",
+                    publicationDate = LocalDate.of(2024, 1, 1),
+                )
+            return Stream.of(
+                Arguments.of(listOf(smallerReference, largerReference), expectedMerged),
+                Arguments.of(listOf(largerReference, smallerReference), expectedMerged),
+                Arguments.of(emptyList<ExtendedDocumentReference>(), null),
+                Arguments.of(listOf(smallerReference), expectedMerged),
+            )
+        }
 
         @JvmStatic
         fun provideComments(): Stream<Arguments> {
@@ -98,15 +132,33 @@ class DataPointConversionTest {
                     "DummyMethod",
                     "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input.",
                 ),
+                Arguments.of(
+                    listOf(input2, input1),
+                    specs,
+                    "DummyMethod",
+                    "This data point was calculated applying the method \"DummyMethod\" using: Input2, Input1 as input.",
+                ),
+                Arguments.of(
+                    listOf(input1),
+                    specs,
+                    "DummyMethod",
+                    "This data point was calculated applying the method \"DummyMethod\" using: Input1 as input.",
+                ),
+                Arguments.of(
+                    emptyList<UploadedDataPoint>(),
+                    emptyMap<DataPointType, DataPointTypeSpecification>(),
+                    "DummyMethod",
+                    "This data point was calculated applying the method \"DummyMethod\" using:  as input.",
+                ),
             )
         }
     }
 
     @Test
     fun `check that summation of data points works as expected`() {
-        val firstInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
-        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPoint)
-        val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
+        val firstInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
+        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPointHalf)
+        val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
         val inputs = listOf(firstInput, secondInput)
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
@@ -115,7 +167,7 @@ class DataPointConversionTest {
                     "dummy", "Sum", dummySpecs,
                 ).dataPoint,
             )
-        assert(result.value == BigDecimal.valueOf(2.0))
+        assertEquals(0, BigDecimal(1.5).compareTo(result.value))
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
         assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
@@ -126,7 +178,7 @@ class DataPointConversionTest {
     fun `check that summation of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.SUM.convert(
-                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))),
                 "dummy",
                 dummySpecs,
             )
@@ -135,7 +187,7 @@ class DataPointConversionTest {
             DataPointConversion.SUM.convert(
                 listOf(
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(nonNumericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -145,7 +197,7 @@ class DataPointConversionTest {
             DataPointConversion.SUM.convert(
                 listOf(
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -155,20 +207,25 @@ class DataPointConversionTest {
 
     @Test
     fun `check that division of data points works as expected`() {
-        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
-        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
+        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
+        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPointHalf)
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
                 applyTransformation(listOf(numerator, denominator), "dummy", "Division", dummySpecs).dataPoint,
             )
-        assert(result.value == BigDecimal("0.3333333333"))
+        assertEquals(0, BigDecimal(0.5).compareTo(result.value))
+        assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
+        assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
+        assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
+        assert(result.dataSource?.publicationDate == firstDataPoint.dataSource?.publicationDate)
     }
 
     @Test
     fun `check that division of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION.convert(
-                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))),
                 "dummy",
                 dummySpecs,
             )
@@ -176,9 +233,9 @@ class DataPointConversionTest {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION.convert(
                 listOf(
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -188,7 +245,7 @@ class DataPointConversionTest {
             DataPointConversion.DIVISION.convert(
                 listOf(
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -197,8 +254,8 @@ class DataPointConversionTest {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION.convert(
                 listOf(
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointZero)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -208,20 +265,20 @@ class DataPointConversionTest {
 
     @Test
     fun `check that division by percent of data points works as expected`() {
-        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
-        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(anotherNumericDataPoint))
+        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
                 applyTransformation(listOf(numerator, denominator), "dummy", "DivisionByPercent", dummySpecs).dataPoint,
             )
-        assert(result.value == BigDecimal("33.3333333333"))
+        assertEquals(0, BigDecimal(50.0).compareTo(result.value))
     }
 
     @Test
     fun `check that division by percent of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
-                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))),
+                listOf(createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))),
                 "dummy",
                 dummySpecs,
             )
@@ -229,9 +286,9 @@ class DataPointConversionTest {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
                 listOf(
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -241,7 +298,7 @@ class DataPointConversionTest {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
                 listOf(
                     createUploadedDataPoint(TestResourceFileReader.getJsonString(dataPointWithoutValue)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -250,8 +307,8 @@ class DataPointConversionTest {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
                 listOf(
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(zeroNumericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointZero)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -261,7 +318,7 @@ class DataPointConversionTest {
 
     @Test
     fun `check that identity conversion works as expected`() {
-        val input = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint))
+        val input = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
         val result = applyTransformation(listOf(input), "targetType", "Identity", dummySpecs)
         val inputDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(input.dataPoint)
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(result.dataPoint)
@@ -280,8 +337,8 @@ class DataPointConversionTest {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.IDENTITY.convert(
                 listOf(
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
-                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPoint)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
+                    createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf)),
                 ),
                 "dummy",
                 dummySpecs,
@@ -314,6 +371,15 @@ class DataPointConversionTest {
         expected: QualityOptions?,
     ) {
         assert(mergeQuality(inputs) == expected)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDataSources")
+    fun `check that merging of data sources works as expected`(
+        inputs: List<ExtendedDocumentReference>,
+        expected: ExtendedDocumentReference?,
+    ) {
+        assert(mergeDataSources(inputs) == expected)
     }
 
     fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint =
