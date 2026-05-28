@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+exec 3>&1 4>&2
+exec 1>log/localStack.out 2>log/localStack.err
+
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -7,18 +10,18 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]"
-  echo "  --start: Start the development stack"
-  echo "  --stop: Stop the development stack"
-  echo "  --reset: Reset and restart the development stack from scratch"
-  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
-  echo "  --dev-env: Load environments/.env.dev before starting/resetting"
-  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-  echo "  --simple: Shortcut for --dev-env --self-signed-certs"
-  echo "  --no-container-backend: Run backend without containers"
-  echo "  --silent: Suppress subcommand output"
-  echo ""
-  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]" >&3
+  echo "  --start: Start the development stack" >&3
+  echo "  --stop: Stop the development stack" >&3
+  echo "  --reset: Reset and restart the development stack from scratch" >&3
+  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)" >&3
+  echo "  --dev-env: Load environments/.env.dev before starting/resetting" >&3
+  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
+  echo "  --simple: Shortcut for --dev-env --self-signed-certs" >&3
+  echo "  --no-container-backend: Run backend without containers" >&3
+  echo "  --silent: Suppress subcommand output" >&3
+  echo "" >&3
+  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start" >&3
 }
 
 rebuild_gradle_dockerfile() {
@@ -38,9 +41,9 @@ prepare_loki_bind_mounts() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
 }
 
-start_backend() {
-  ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
-}
+#start_backend() {
+ # ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
+#}
 
 start_development_stack() {
   local local_frontend="$1"
@@ -74,19 +77,19 @@ start_development_stack() {
   start_health_check
   run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
 
-  if [[ "$container_backend" = false ]]; then
-    log_step "Starting backend locally"
-    start_backend
-    return
-  fi
+  #if [[ "$container_backend" = false ]]; then
+   # log_step "Starting backend locally"
+   # start_backend
+   #  return
+  #fi
 
-  log_success "Local stack started."
+  log_success "Local stack started." | tee dev/fd/3
 }
 
 check_backend_not_running() {
   if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
-    log_error "The backend is currently running. This will prevent the new backend from starting."
-    log_info "Shut down the running process and restart the script."
+    log_error "The backend is currently running. This will prevent the new backend from starting." | tee dev/fd/3
+    log_info "Shut down the running process and restart the script." | tee dev/fd/3
     exit 1
   fi
 }
@@ -144,7 +147,7 @@ parse_arguments() {
         shift
         ;;
       --local-frontend)
-        log_info "Launching in local frontend mode"
+        log_info "Launching in local frontend mode" | tee dev/fd/3
         local_frontend=true
         shift
         ;;
@@ -170,7 +173,7 @@ parse_arguments() {
         shift
         ;;
       *)
-        log_error "Unknown option: $1"
+        log_error "Unknown option: $1" | tee dev/fd/3
         print_usage
         exit 1
         ;;
