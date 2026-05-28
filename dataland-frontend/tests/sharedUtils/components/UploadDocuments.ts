@@ -1,4 +1,5 @@
 import { TEST_PDF_FILE_BASEPATH } from '@sharedUtils/ConstantsForPdfs';
+import { cyLog } from '@sharedUtils/CypressLog';
 
 export class UploadDocuments {
   private readonly name: string;
@@ -11,7 +12,7 @@ export class UploadDocuments {
   }
 
   selectFile(filename: string): void {
-    cy.task('log', `About to click upload-files-button to add document: ${filename}`);
+    cyLog(`About to click upload-files-button to add document: ${filename}`);
     cy.get(this.addDocumentButtonSelector).click();
     cy.get(this.uploadDocumentsSelector)
       .find('input[type=file]')
