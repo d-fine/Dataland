@@ -11,6 +11,7 @@ export class UploadDocuments {
   }
 
   selectFile(filename: string): void {
+    cy.task('log', `About to click upload-files-button to add document: ${filename}`);
     cy.get(this.addDocumentButtonSelector).click();
     cy.get(this.uploadDocumentsSelector)
       .find('input[type=file]')

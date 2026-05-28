@@ -10,11 +10,14 @@ export class UploadReports extends UploadDocuments {
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number = 1): void {
     this.validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload);
     cy.get(`${this.uploadReportsSelector} [data-test="report-to-upload-form"]`).each((element) => {
+      cy.task('log', 'About to click publicationDate datepicker dropdown button (report-to-upload-form)');
       cy.wrap(element)
         .find(`[data-test="publicationDate"] button`)
         .should('have.class', 'p-datepicker-dropdown')
         .click();
+      cy.task('log', 'About to click Previous Month button in datepicker header (report-to-upload-form)');
       cy.get('.p-datepicker-header').find('button[aria-label="Previous Month"]').click();
+      cy.task('log', 'About to click day "12" in datepicker day view (report-to-upload-form)');
       cy.get('.p-datepicker-day-view').find(`span:contains("12")`).click();
     });
   }
@@ -35,6 +38,7 @@ export class UploadReports extends UploadDocuments {
   }
 
   removeAlreadyUploadedReport(reportName: string): Cypress.Chainable {
+    cy.task('log', `About to click remove button for already-uploaded report: ${reportName}`);
     return cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   }
 
