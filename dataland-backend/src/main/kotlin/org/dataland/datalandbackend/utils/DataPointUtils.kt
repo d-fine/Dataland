@@ -1,14 +1,9 @@
 package org.dataland.datalandbackend.utils
 
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
-import org.dataland.datalandbackend.services.DataPointType
-import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -25,7 +20,6 @@ class DataPointUtils
     constructor(
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
-        private val specificationService: SpecificationService,
         private val dataCompositionService: DataCompositionService,
     ) {
         /**
@@ -38,18 +32,6 @@ class DataPointUtils
                 specificationClient.getFrameworkSpecification(framework)
             } catch (ignore: ClientException) {
                 null
-            }
-
-        /**
-         * Retrieves the relevant data point types for a specific framework
-         * @param framework the name of the framework
-         * @return a set of all relevant data point types
-         */
-        fun getRelevantDataPointTypes(framework: String): Set<String> =
-            cachedFrameworkDataPointTypes.computeIfAbsent(framework) {
-                val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
-                val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-                JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
             }
 
         /**

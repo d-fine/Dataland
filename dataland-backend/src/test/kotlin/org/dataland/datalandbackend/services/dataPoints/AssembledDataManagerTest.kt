@@ -137,7 +137,7 @@ class AssembledDataManagerTest {
         specificationService.initiateSpecifications(null)
         dataCompositionService = DataCompositionService(specificationService)
         datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
-        dataPointUtils = DataPointUtils(specificationClient, metaDataManager, specificationService)
+        dataPointUtils = DataPointUtils(specificationClient, metaDataManager, dataCompositionService)
         internalStorageAdapter = InternalStorageAdapter(storageClient)
         dataPointCalculator =
             DataPointCalculator(dataCompositionService, dataAvailabilityChecker, internalStorageAdapter, specificationService)
