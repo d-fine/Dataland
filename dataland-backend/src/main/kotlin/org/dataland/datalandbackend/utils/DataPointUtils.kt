@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.SpecificationService
+import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -25,9 +26,8 @@ class DataPointUtils
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
         private val specificationService: SpecificationService,
+        private val dataCompositionService: DataCompositionService,
     ) {
-        private val cachedFrameworkDataPointTypes = ConcurrentHashMap<String, Set<DataPointType>>()
-
         /**
          * Retrieve a framework specification from the specification service
          * @param framework the name of the framework to retrieve the specification for
@@ -59,7 +59,7 @@ class DataPointUtils
          */
         fun getLatestUploadTime(dataPointDimensions: BasicDataDimensions): Long =
             metaDataManager.getLatestUploadTimeOfActiveDataPoints(
-                dataPointTypes = getRelevantDataPointTypes(dataPointDimensions.dataType),
+                dataPointTypes = dataCompositionService.getRelevantDataPointTypes(dataPointDimensions.dataType).toSet(),
                 companyId = dataPointDimensions.companyId,
                 reportingPeriod = dataPointDimensions.reportingPeriod,
             )
@@ -82,7 +82,10 @@ class DataPointUtils
                 return emptySet()
             }
 
-            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+            val relevantDataPoints =
+                dataCompositionService
+                    .getRelevantDataPointTypes(framework)
+                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
 
             return metaDataManager
                 .getActiveDataPointMetaInformation(
@@ -126,7 +129,7 @@ class DataPointUtils
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypes = getRelevantDataPointTypes(framework).toList(),
+                            dataTypes = dataCompositionService.getRelevantDataPointTypes(framework).toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
