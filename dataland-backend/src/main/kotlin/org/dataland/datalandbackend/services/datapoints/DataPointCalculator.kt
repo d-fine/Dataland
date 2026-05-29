@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -29,6 +30,8 @@ class DataPointCalculator
         private val specificationService: SpecificationService,
         private val metaDataManager: DataPointMetaInformationManager,
     ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> {
             val result = mutableListOf<UploadedDataPoint>()
             dataPoints.forEach { uploadedDataPoint ->
@@ -111,8 +114,13 @@ class DataPointCalculator
                                     method = calculationRule.calculationMethod,
                                     dataPointDimensions = targetDimensions,
                                 )
-                            } catch (_: IllegalArgumentException) {
-                                // Skip this rule and continue with the next
+                            } catch (exception: IllegalArgumentException) {
+                                logger.error(
+                                    "Skipping calculation rule for data point type $dataPointType, companyId $companyId, " +
+                                        "reportingPeriod $reportingPeriod, method ${calculationRule.calculationMethod}, " +
+                                        "inputs ${calculationRule.inputs}.",
+                                    exception,
+                                )
                                 return@calculationRulesLoop
                             }
                         // Rule was successfully applied, add the calculated data point to the result and do not attempt further rules for this type
@@ -241,8 +249,7 @@ class DataPointCalculator
                             dataTypes = sourceDataPointTypes.distinct(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
-                    )
-                    .map {
+                    ).map {
                         BasicDataPointDimensions(
                             companyId = it.companyId,
                             dataPointType = it.dataPointType,
