@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -30,6 +31,7 @@ class DataPointCalculatorTest {
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
     private val internalStorageAdapter = mock<InternalStorageAdapter>()
     private val specificationService = mock<SpecificationService>()
+    private val metaDataManager = mock<DataPointMetaInformationManager>()
 
     private lateinit var dataPointCalculator: DataPointCalculator
 
@@ -83,7 +85,7 @@ class DataPointCalculatorTest {
         dataPointCalculator =
             DataPointCalculator(
                 dataCompositionService, dataAvailabilityChecker,
-                internalStorageAdapter, specificationService,
+                internalStorageAdapter, specificationService, metaDataManager,
             )
         doReturn(
             mapOf(

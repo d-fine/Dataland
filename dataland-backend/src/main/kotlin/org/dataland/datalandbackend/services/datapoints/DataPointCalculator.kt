@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
@@ -203,6 +204,25 @@ class DataPointCalculator
         fun getActiveSourceDataPointDimensions(
             dataPointTypes: Collection<DataPointType>,
             companyId: String,
+        ): Set<BasicDataPointDimensions> =
+            getActiveSourceDataPointDimensions(
+                dataPointTypes = dataPointTypes,
+                dataDimensionFilter = DataDimensionFilter(companyIds = listOf(companyId)),
+            )
+
+        /**
+         * Finds active source data point dimensions that can be used to calculate any of the given target data point types.
+         *
+         * A source data point dimension is returned only if all inputs of at least one calculation rule are active for the
+         * same company and reporting period. Company and reporting-period filters are applied to the source data points.
+         *
+         * @param dataPointTypes target data point types whose calculation rules should be checked
+         * @param dataDimensionFilter filter whose company and reporting-period constraints should be applied
+         * @return active source dimensions grouped by calculatable company/reporting-period pairs
+         */
+        fun getActiveSourceDataPointDimensions(
+            dataPointTypes: Collection<DataPointType>,
+            dataDimensionFilter: DataDimensionFilter,
         ): Set<BasicDataPointDimensions> {
             val specs = specificationService.getDataPointSpecifications(dataPointTypes.toList())
 
@@ -215,20 +235,27 @@ class DataPointCalculator
 
             val activeSourceDataPointDimensionsByPeriod =
                 metaDataManager
-                    .getActiveDataPointMetaInformation(dataPointTypes = sourceDataPointTypes.toSet(), companyId = companyId)
+                    .getActiveDataPointMetaInformationList(
+                        DataDimensionFilter(
+                            companyIds = dataDimensionFilter.companyIds,
+                            dataTypes = sourceDataPointTypes.distinct(),
+                            reportingPeriods = dataDimensionFilter.reportingPeriods,
+                        ),
+                    )
                     .map {
                         BasicDataPointDimensions(
                             companyId = it.companyId,
                             dataPointType = it.dataPointType,
                             reportingPeriod = it.reportingPeriod,
                         )
-                    }.groupBy { it.reportingPeriod }
+                    }.groupBy { it.companyId to it.reportingPeriod }
 
             val validAndActiveSourceDataPointDimensions = mutableSetOf<BasicDataPointDimensions>()
             specs.forEach { (_, specification) ->
                 specification.calculationRules?.forEach { calculationRule ->
-                    activeSourceDataPointDimensionsByPeriod.forEach { (reportingPeriod, dimensions) ->
+                    activeSourceDataPointDimensionsByPeriod.forEach { (companyIdAndReportingPeriod, dimensions) ->
                         if (dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)) {
+                            val (companyId, reportingPeriod) = companyIdAndReportingPeriod
                             calculationRule.inputs.forEach {
                                 validAndActiveSourceDataPointDimensions.add(
                                     BasicDataPointDimensions(
