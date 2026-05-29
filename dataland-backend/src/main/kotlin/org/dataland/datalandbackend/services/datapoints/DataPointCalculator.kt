@@ -26,6 +26,7 @@ class DataPointCalculator
         private val dataAvailabilityChecker: DataAvailabilityChecker,
         private val internalStorageAdapter: InternalStorageAdapter,
         private val specificationService: SpecificationService,
+        private val metaDataManager: DataPointMetaInformationManager,
     ) {
         private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> {
             val result = mutableListOf<UploadedDataPoint>()
@@ -187,5 +188,61 @@ class DataPointCalculator
                         )
                     calculatedDataPoints.takeIf { it.isNotEmpty() }?.let { datasetDimensions to it }
                 }.toMap()
+        }
+
+        /**
+         * Finds active source data point dimensions that can be used to calculate any of the given target data point types.
+         *
+         * A source data point dimension is returned only if all inputs of at least one calculation rule are active for the
+         * same company and reporting period.
+         *
+         * @param dataPointTypes target data point types whose calculation rules should be checked
+         * @param companyId company for which active source data points should be considered
+         * @return active source dimensions grouped by calculatable reporting periods
+         */
+        fun getActiveSourceDataPointDimensions(
+            dataPointTypes: Collection<DataPointType>,
+            companyId: String,
+        ): Set<BasicDataPointDimensions> {
+            val specs = specificationService.getDataPointSpecifications(dataPointTypes.toList())
+
+            val sourceDataPointTypes =
+                specs.flatMap { (_, specification) ->
+                    specification.calculationRules?.flatMap { calculationRule ->
+                        calculationRule.inputs
+                    } ?: emptyList()
+                }
+
+            val activeSourceDataPointDimensionsByPeriod =
+                metaDataManager
+                    .getActiveDataPointMetaInformation(dataPointTypes = sourceDataPointTypes.toSet(), companyId = companyId)
+                    .map {
+                        BasicDataPointDimensions(
+                            companyId = it.companyId,
+                            dataPointType = it.dataPointType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }.groupBy { it.reportingPeriod }
+
+            val validAndActiveSourceDataPointDimensions = mutableSetOf<BasicDataPointDimensions>()
+            specs.forEach { (_, specification) ->
+                specification.calculationRules?.forEach { calculationRule ->
+                    activeSourceDataPointDimensionsByPeriod.forEach { (reportingPeriod, dimensions) ->
+                        if (dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)) {
+                            calculationRule.inputs.forEach {
+                                validAndActiveSourceDataPointDimensions.add(
+                                    BasicDataPointDimensions(
+                                        companyId = companyId,
+                                        dataPointType = it,
+                                        reportingPeriod = reportingPeriod,
+                                    ),
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            return validAndActiveSourceDataPointDimensions
         }
     }

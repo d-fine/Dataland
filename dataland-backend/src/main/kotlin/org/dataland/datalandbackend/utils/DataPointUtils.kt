@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.DataCompositionService
+import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -21,6 +22,7 @@ class DataPointUtils
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
         private val dataCompositionService: DataCompositionService,
+        private val dataPointCalculator: DataPointCalculator,
     ) {
         /**
          * Retrieve a framework specification from the specification service
@@ -69,12 +71,19 @@ class DataPointUtils
                     .getRelevantDataPointTypes(framework)
                     .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
 
-            return metaDataManager
-                .getActiveDataPointMetaInformation(
-                    dataPointTypes = relevantDataPoints,
-                    companyId = companyId,
-                ).map { it.reportingPeriod }
-                .toSet()
+            val metaData =
+                metaDataManager
+                    .getActiveDataPointMetaInformation(
+                        dataPointTypes = relevantDataPoints,
+                        companyId = companyId,
+                    )
+
+            val calculationSourceDataPointDimension = dataPointCalculator.getActiveSourceDataPointDimensions(relevantDataPoints, companyId)
+            val calculationSourceReportingPeriods = calculationSourceDataPointDimension.map { it.reportingPeriod }.toSet()
+            val relevantDataPointReportingPeriods = metaData.map { it.reportingPeriod }.toSet()
+            val allReportingPeriods = relevantDataPointReportingPeriods + calculationSourceReportingPeriods
+
+            return allReportingPeriods
         }
 
         /**
