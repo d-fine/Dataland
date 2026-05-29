@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -25,6 +26,8 @@ class DataPointUtils
         private val metaDataManager: DataPointMetaInformationManager,
         private val specificationService: SpecificationService,
     ) {
+        private val cachedFrameworkDataPointTypes = ConcurrentHashMap<String, Set<DataPointType>>()
+
         /**
          * Retrieve a framework specification from the specification service
          * @param framework the name of the framework to retrieve the specification for
@@ -42,11 +45,12 @@ class DataPointUtils
          * @param framework the name of the framework
          * @return a set of all relevant data point types
          */
-        fun getRelevantDataPointTypes(framework: String): Set<String> {
-            val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
-            val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
-        }
+        fun getRelevantDataPointTypes(framework: String): Set<String> =
+            cachedFrameworkDataPointTypes.computeIfAbsent(framework) {
+                val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
+                val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+                JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            }
 
         /**
          * Retrieves the latest upload time of an active data point belonging to a given framework and a specific company

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import java.util.concurrent.ConcurrentHashMap
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -24,6 +25,8 @@ class DataCompositionService
     constructor(
         private val specificationService: SpecificationService,
     ) {
+        private val cachedRelevantDataPointTypes = ConcurrentHashMap<String, Set<DataPointType>>()
+
         /**
          * Retrieves all relevant data point types for a given data type
          * @param dataType the name of the data type (either a framework or a data point)
@@ -31,14 +34,16 @@ class DataCompositionService
          * @throws InvalidInputApiException if the data type is not known
          */
         fun getRelevantDataPointTypes(dataType: String): Collection<DataPointType> =
-            when {
-                specificationService.isDataPointType(dataType) -> setOf(dataType)
-                specificationService.isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType)
-                else -> {
-                    throw InvalidInputApiException(
-                        "DataType $dataType not found.",
-                        "The specified dataType $dataType is not known to the specification service.",
-                    )
+            cachedRelevantDataPointTypes.computeIfAbsent(dataType) {
+                when {
+                    specificationService.isDataPointType(dataType) -> setOf(dataType)
+                    specificationService.isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType).toSet()
+                    else -> {
+                        throw InvalidInputApiException(
+                            "DataType $dataType not found.",
+                            "The specified dataType $dataType is not known to the specification service.",
+                        )
+                    }
                 }
             }
 

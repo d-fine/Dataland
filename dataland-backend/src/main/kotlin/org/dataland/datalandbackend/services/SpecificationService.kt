@@ -28,6 +28,8 @@ class SpecificationService
         // Variables to store known classifications since specifications do not change during runtime
         private val cachedDatapointTypes = ConcurrentHashMap<DataPointType, Boolean>()
         private val cachedDataPointSpecifications = ConcurrentHashMap<DataPointType, DataPointTypeSpecification>()
+        private val cachedFrameworkSpecifications = ConcurrentHashMap<String, FrameworkSpecification>()
+        private val cachedResolvedFrameworkSpecifications = ConcurrentHashMap<String, DataPointBaseTypeResolvedSchema>()
         private val assembledFrameworks = mutableSetOf<String>()
         private val nonAssembledFrameworks = mutableSetOf<String>()
 
@@ -93,17 +95,15 @@ class SpecificationService
          * Checks if a given string represents a data point type
          * @param dataPointType the string to be checked
          */
-        fun isDataPointType(dataPointType: String): Boolean {
-            if (!cachedDatapointTypes.containsKey(dataPointType)) {
+        fun isDataPointType(dataPointType: String): Boolean =
+            cachedDatapointTypes.computeIfAbsent(dataPointType) {
                 try {
                     specificationControllerApi.getDataPointTypeSpecification(dataPointType)
-                    cachedDatapointTypes[dataPointType] = true
+                    true
                 } catch (ignore: ClientException) {
-                    cachedDatapointTypes[dataPointType] = false
+                    false
                 }
             }
-            return cachedDatapointTypes.getOrDefault(dataPointType, false)
-        }
 
         /**
          * Retrieve a framework specification from the specification service
@@ -112,14 +112,16 @@ class SpecificationService
          * @throws InvalidInputApiException if the framework is not found
          */
         fun getFrameworkSpecification(framework: String): FrameworkSpecification =
-            try {
-                specificationControllerApi.getFrameworkSpecification(framework)
-            } catch (clientException: ClientException) {
-                logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
-                throw InvalidInputApiException(
-                    "Framework $framework not found.",
-                    "The specified framework $framework is not known to the specification service.",
-                )
+            cachedFrameworkSpecifications.computeIfAbsent(framework) {
+                try {
+                    specificationControllerApi.getFrameworkSpecification(framework)
+                } catch (clientException: ClientException) {
+                    logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
+                    throw InvalidInputApiException(
+                        "Framework $framework not found.",
+                        "The specified framework $framework is not known to the specification service.",
+                    )
+                }
             }
 
         /**
@@ -129,14 +131,16 @@ class SpecificationService
          * @throws InvalidInputApiException if the framework is not found
          */
         fun getResolvedFrameworkSpecification(framework: String): DataPointBaseTypeResolvedSchema =
-            try {
-                specificationControllerApi.getResolvedFrameworkSpecification(framework)
-            } catch (clientException: ClientException) {
-                logger.error("Expected resolved framework specification for $framework not found: ${clientException.message}.")
-                throw InvalidInputApiException(
-                    "Framework $framework not found.",
-                    "The specified framework $framework is not known to the specification service.",
-                )
+            cachedResolvedFrameworkSpecifications.computeIfAbsent(framework) {
+                try {
+                    specificationControllerApi.getResolvedFrameworkSpecification(framework)
+                } catch (clientException: ClientException) {
+                    logger.error("Expected resolved framework specification for $framework not found: ${clientException.message}.")
+                    throw InvalidInputApiException(
+                        "Framework $framework not found.",
+                        "The specified framework $framework is not known to the specification service.",
+                    )
+                }
             }
 
         /**
