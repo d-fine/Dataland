@@ -46,17 +46,24 @@ class DataDeliveryService
                     dataDimension.toBasicDataPointDimensions(
                         relevantDataPointTypes.getValue(dataDimension.framework),
                     )
-                val deliverableDataPointMetaData = dataAvailabilityChecker.getViewableDataPointMetaData(relevantDimensions)
-                if (deliverableDataPointMetaData.isNotEmpty()) {
-                    requiredData[dataDimension] = deliverableDataPointMetaData.map { it.dataPointId }
-                    deliverableDataPointDimensions[dataDimension] =
-                        deliverableDataPointMetaData.map {
-                            BasicDataPointDimensions(
-                                companyId = it.companyId,
-                                dataPointType = it.dataPointType,
-                                reportingPeriod = it.reportingPeriod,
-                            )
-                        }
+                }
+            val deliverableDataPointMetaData =
+                dataAvailabilityChecker
+                    .getViewableDataPointMetaData(relevantDimensionsByDataDimension)
+                    .filterValues { it.isNotEmpty() }
+            val requiredData =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map { it.dataPointId }
+                }
+            val deliverableDataPointDimensions =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map {
+                        BasicDataPointDimensions(
+                            companyId = it.companyId,
+                            dataPointType = it.dataPointType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }
                 }
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
