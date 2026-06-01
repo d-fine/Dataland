@@ -150,6 +150,53 @@ class DataAvailabilityChecker
             getViewableDataPointMetaData(dataDimensions).map { it.dataPointId }
 
         /**
+         * Retrieves all active data point metadata for each given set of dataset dimensions.
+         * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
+         * lookup across all requested data point dimensions.
+         * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
+         * @return a map with the same dataset-dimension keys and the viewable metadata for each dimension
+         */
+        fun <T : DatasetDimensions> getViewableDataPointMetaData(
+            dataPointDimensionsByDatasetDimensions: Map<T, List<BasicDataPointDimensions>>,
+        ): Map<T, List<DataPointMetaInformationEntity>> {
+            val allRelevantDimensions = dataPointDimensionsByDatasetDimensions.values.flatten()
+            val metaDataByDimensions =
+                getMetaDataOfActiveDataPoints(allRelevantDimensions)
+                    .groupBy {
+                        BasicDataPointDimensions(
+                            companyId = it.companyId,
+                            dataPointType = it.dataPointType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }
+
+            return dataPointDimensionsByDatasetDimensions.mapValues { (_, dataPointDimensions) ->
+                val metaData =
+                    dataPointDimensions
+                        .toSet()
+                        .flatMap { metaDataByDimensions.getOrDefault(it, emptyList()) }
+                if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaData.map { it.dataPointType })) {
+                    metaData
+                } else {
+                    emptyList()
+                }
+            }
+        }
+
+        /**
+         * Retrieves all active data point IDs for each given set of dataset dimensions.
+         * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
+         * lookup across all requested data point dimensions.
+         * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
+         * @return a map with the same dataset-dimension keys and the viewable data point IDs for each dimension
+         */
+        fun <T : DatasetDimensions> getViewableDataPointIds(
+            dataPointDimensionsByDatasetDimensions: Map<T, List<BasicDataPointDimensions>>,
+        ): Map<T, List<String>> =
+            getViewableDataPointMetaData(dataPointDimensionsByDatasetDimensions)
+                .mapValues { (_, metaData) -> metaData.map { it.dataPointId } }
+
+        /**
          * Retrieves all active data point IDs that correspond to the data point dimensions provided.
          * Only returns IDs if at least one data point is not an ignorable fields.
          * @param dataDimensions the list of data point dimensions to get the data point IDs for

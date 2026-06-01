@@ -6,13 +6,8 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
-import kotlin.time.TimeSource
 
 /**
  * Service to deliver data based on inputs like data dimensions. Performs assembly of datasets from data points.
@@ -27,8 +22,6 @@ class DataDeliveryService
         private val datasetAssembler: DatasetAssembler,
         private val dataPointCalculator: DataPointCalculator,
     ) {
-        private val logger = LoggerFactory.getLogger(javaClass)
-
         /**
          * Delivers the datasets for the data dimensions provided in [dataDimensions] and returns a map of data dimension to
          * the string representation of the corresponding dataset. Only data points visible to the calling user are used. If
@@ -41,8 +34,6 @@ class DataDeliveryService
             dataDimensions: Collection<BasicDatasetDimensions>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
-            val timeSource = TimeSource.Monotonic
-            val mark1 = timeSource.markNow()
             val relevantDataPointTypes =
                 dataDimensions
                     .map { it.framework }
@@ -50,12 +41,8 @@ class DataDeliveryService
                     .associateWith { framework ->
                         dataCompositionService.getRelevantDataPointTypes(framework)
                     }
-            val mark2 = timeSource.markNow()
-            logger.info("--------------------- getRelevantDataPointTypes: ${mark2 - mark1}")
-            val requiredData = mutableMapOf<BasicDatasetDimensions, List<String>>()
-            val deliverableDataPointDimensions = mutableMapOf<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>()
-            for (dataDimension in dataDimensions) {
-                val relevantDimensions =
+            val relevantDimensionsByDataDimension =
+                dataDimensions.associateWith { dataDimension ->
                     dataDimension.toBasicDataPointDimensions(
                         relevantDataPointTypes.getValue(dataDimension.framework),
                     )
@@ -71,21 +58,13 @@ class DataDeliveryService
                             )
                         }
                 }
-            }
-            val mark3 = timeSource.markNow()
-            logger.info("--------------------- getViewableDataPointMetaData: ${mark3 - mark2}")
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
                     datasetDimensions = dataDimensions,
                     correlationId = correlationId,
                     deliverableDataPointDimensions = deliverableDataPointDimensions,
                 )
-            val mark4 = timeSource.markNow()
-            logger.info("--------------------- getCalculatedData: ${mark4 - mark3}")
-            val assembledDatasets = assembleDatasetsFromDataPointIds(requiredData, calculatedData, correlationId)
-            val mark5 = timeSource.markNow()
-            logger.info("--------------------- assembleDatasetsFromDataPointIds: ${mark5 - mark4}")
-            return assembledDatasets
+            return assembleDatasetsFromDataPointIds(requiredData, calculatedData, correlationId)
         }
 
         /**
@@ -108,10 +87,6 @@ class DataDeliveryService
             val allStoredDataPoints =
                 internalStorageAdapter
                     .retrieveDataPointsFromInternalStorage(dataPointIds = allRequiredIds, correlationId = correlationId)
-            logger.info(
-                "--------------------- assembleDatasetsFromDataPointIds.fetchedDataPoints: requested ${allRequiredIds.size}, " +
-                    "fetched ${allStoredDataPoints.size}",
-            )
 
             dataPointIds.forEach { (dataDimensions, dataIds) ->
                 val datasetInput = dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
