@@ -8,9 +8,11 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
+import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -25,6 +27,8 @@ class DataAvailabilityChecker
         private val dataCompositionService: DataCompositionService,
         private val dataPointMetaInformationRepository: DataPointMetaInformationRepository,
     ) {
+        private val objectMapper = defaultObjectMapper
+
         /**
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
          * @param dataDimensions List of data dimensions to search for.
@@ -58,19 +62,38 @@ class DataAvailabilityChecker
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
         fun getMetaDataOfActiveDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions)
-            val formattedTuples =
-                dimensionsToProcess.joinToString(", ") {
-                    "('${it.companyId}', '${it.dataPointType}', '${it.reportingPeriod}')"
-                }
-
-            val queryToExecute =
-                """SELECT * FROM data_point_meta_information
-                WHERE (company_id, data_point_type, reporting_period) IN ($formattedTuples)
-                AND currently_active = true"""
+            val dimensionsToProcess =
+                dataCompositionService
+                    .filterOutInvalidDataPointDimensions(dataDimensions)
+                    .distinct()
 
             return if (dimensionsToProcess.isNotEmpty()) {
+                val jsonPayload =
+                    objectMapper.writeValueAsString(
+                        dimensionsToProcess.map {
+                            mapOf(
+                                "c" to it.companyId,
+                                "d" to it.dataPointType,
+                                "r" to it.reportingPeriod,
+                            )
+                        },
+                    )
+                val queryToExecute =
+                    """
+                    WITH requested AS (
+                        SELECT DISTINCT c, d, r
+                        FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(c text, d text, r text)
+                    )
+                    SELECT m.*
+                    FROM requested dim
+                    JOIN data_point_meta_information m
+                        ON m.company_id = dim.c
+                        AND m.data_point_type = dim.d
+                        AND m.reporting_period = dim.r
+                    WHERE m.currently_active = true
+                    """
                 val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
+                query.setParameter("jsonPayload", jsonPayload)
                 query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
             } else {
                 emptyList()
