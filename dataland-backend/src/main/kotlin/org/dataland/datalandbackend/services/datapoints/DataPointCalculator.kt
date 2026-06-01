@@ -16,6 +16,8 @@ import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.time.Duration
+import kotlin.time.TimeSource
 
 /**
  * Service to calculate data points based on other data points in case there is no direct data available.
@@ -67,6 +69,10 @@ class DataPointCalculator
             val allStoredDataPoints =
                 internalStorageAdapter
                     .retrieveDataPointsFromInternalStorage(dataPointIds = allAvailableIds, correlationId = correlationId)
+            logger.info(
+                "--------------------- getAvailableSourceDataByDatasetDimension.fetchedDataPoints: requested ${allAvailableIds.size}, " +
+                    "fetched ${allStoredDataPoints.size}",
+            )
             val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
             val datasetDimensions = dataPointTypesByDatasetDimension.keys
             val associateBy =
@@ -156,16 +162,30 @@ class DataPointCalculator
          */
         fun getCalculatedData(
             datasetDimensions: Collection<BasicDatasetDimensions>,
+            deliverableDataPointDimensions: Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, List<UploadedDataPoint>> {
+            val timeSource = TimeSource.Monotonic
+            var getRelevantDataPointTypesTime = Duration.ZERO
+            var getMissingDataPointTypesTime = Duration.ZERO
+            var getAvailableSourceDataByDatasetDimensionTime = Duration.ZERO
+            var calculateDataPointsTime = Duration.ZERO
+
             val missingDataPointTypesByDatasetDimension =
                 datasetDimensions.associateWith { datasetDimensions ->
+                    val mark1 = timeSource.markNow()
                     val relevantTypes = dataCompositionService.getRelevantDataPointTypes(datasetDimensions.framework)
-                    dataAvailabilityChecker
-                        .getMissingDataPointTypes(
-                            relevantTypes, datasetDimensions.reportingPeriod,
-                            datasetDimensions.companyId,
-                        )
+                    val mark2 = timeSource.markNow()
+                    getRelevantDataPointTypesTime += mark2 - mark1
+                    val availableTypes =
+                        deliverableDataPointDimensions
+                            .getOrDefault(datasetDimensions, emptyList())
+                            .map { it.dataPointType }
+                            .toSet()
+                    val missingTypes = relevantTypes - availableTypes
+                    val mark3 = timeSource.markNow()
+                    getMissingDataPointTypesTime += mark3 - mark2
+                    return@associateWith missingTypes
                 }
 
             val potentialCalculationsByDatasetDimension =
@@ -180,23 +200,39 @@ class DataPointCalculator
                         .distinct()
                 }
 
+            val getAvailableSourceDataByDatasetDimensionMark1 = timeSource.markNow()
             val sourceDataByDatasetDimensions =
                 getAvailableSourceDataByDatasetDimension(
                     sourceTypesByDatasetDimensions,
                     correlationId = correlationId,
                 )
+            val getAvailableSourceDataByDatasetDimensionMark2 = timeSource.markNow()
+            getAvailableSourceDataByDatasetDimensionTime +=
+                getAvailableSourceDataByDatasetDimensionMark2 - getAvailableSourceDataByDatasetDimensionMark1
 
-            return potentialCalculationsByDatasetDimension
-                .mapNotNull { (datasetDimensions, potentialCalculations) ->
-                    val calculatedDataPoints =
-                        calculateDataPoints(
-                            companyId = datasetDimensions.companyId,
-                            reportingPeriod = datasetDimensions.reportingPeriod,
-                            potentialCalculations = potentialCalculations,
-                            allSourceData = sourceDataByDatasetDimensions.getValue(datasetDimensions),
-                        )
-                    calculatedDataPoints.takeIf { it.isNotEmpty() }?.let { datasetDimensions to it }
-                }.toMap()
+            val calculatedData =
+                potentialCalculationsByDatasetDimension
+                    .mapNotNull { (datasetDimensions, potentialCalculations) ->
+                        val mark1 = timeSource.markNow()
+                        val calculatedDataPoints =
+                            calculateDataPoints(
+                                companyId = datasetDimensions.companyId,
+                                reportingPeriod = datasetDimensions.reportingPeriod,
+                                potentialCalculations = potentialCalculations,
+                                allSourceData = sourceDataByDatasetDimensions.getValue(datasetDimensions),
+                            )
+                        val mark2 = timeSource.markNow()
+                        calculateDataPointsTime += mark2 - mark1
+                        calculatedDataPoints.takeIf { it.isNotEmpty() }?.let { datasetDimensions to it }
+                    }.toMap()
+            logger.info("--------------------- getCalculatedData.getRelevantDataPointTypes: $getRelevantDataPointTypesTime")
+            logger.info("--------------------- getCalculatedData.getMissingDataPointTypes: $getMissingDataPointTypesTime")
+            logger.info(
+                "--------------------- getCalculatedData.getAvailableSourceDataByDatasetDimension: " +
+                    getAvailableSourceDataByDatasetDimensionTime,
+            )
+            logger.info("--------------------- getCalculatedData.calculateDataPoints: $calculateDataPointsTime")
+            return calculatedData
         }
 
         /**

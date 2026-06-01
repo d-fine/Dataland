@@ -4,12 +4,15 @@ import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
+import kotlin.time.TimeSource
 
 /**
  * Service to deliver data based on inputs like data dimensions. Performs assembly of datasets from data points.
@@ -24,6 +27,8 @@ class DataDeliveryService
         private val datasetAssembler: DatasetAssembler,
         private val dataPointCalculator: DataPointCalculator,
     ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         /**
          * Delivers the datasets for the data dimensions provided in [dataDimensions] and returns a map of data dimension to
          * the string representation of the corresponding dataset. Only data points visible to the calling user are used. If
@@ -36,6 +41,8 @@ class DataDeliveryService
             dataDimensions: Collection<BasicDatasetDimensions>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
+            val timeSource = TimeSource.Monotonic
+            val mark1 = timeSource.markNow()
             val relevantDataPointTypes =
                 dataDimensions
                     .map { it.framework }
@@ -43,23 +50,42 @@ class DataDeliveryService
                     .associateWith { framework ->
                         dataCompositionService.getRelevantDataPointTypes(framework)
                     }
+            val mark2 = timeSource.markNow()
+            logger.info("--------------------- getRelevantDataPointTypes: ${mark2 - mark1}")
             val requiredData = mutableMapOf<BasicDatasetDimensions, List<String>>()
+            val deliverableDataPointDimensions = mutableMapOf<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>()
             for (dataDimension in dataDimensions) {
                 val relevantDimensions =
                     dataDimension.toBasicDataPointDimensions(
                         relevantDataPointTypes.getValue(dataDimension.framework),
                     )
-                val deliverableDataPointIds = dataAvailabilityChecker.getViewableDataPointIds(relevantDimensions)
-                if (deliverableDataPointIds.isNotEmpty()) {
-                    requiredData[dataDimension] = deliverableDataPointIds
+                val deliverableDataPointMetaData = dataAvailabilityChecker.getViewableDataPointMetaData(relevantDimensions)
+                if (deliverableDataPointMetaData.isNotEmpty()) {
+                    requiredData[dataDimension] = deliverableDataPointMetaData.map { it.dataPointId }
+                    deliverableDataPointDimensions[dataDimension] =
+                        deliverableDataPointMetaData.map {
+                            BasicDataPointDimensions(
+                                companyId = it.companyId,
+                                dataPointType = it.dataPointType,
+                                reportingPeriod = it.reportingPeriod,
+                            )
+                        }
                 }
             }
+            val mark3 = timeSource.markNow()
+            logger.info("--------------------- getViewableDataPointMetaData: ${mark3 - mark2}")
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
                     datasetDimensions = dataDimensions,
                     correlationId = correlationId,
+                    deliverableDataPointDimensions = deliverableDataPointDimensions,
                 )
-            return assembleDatasetsFromDataPointIds(requiredData, calculatedData, correlationId)
+            val mark4 = timeSource.markNow()
+            logger.info("--------------------- getCalculatedData: ${mark4 - mark3}")
+            val assembledDatasets = assembleDatasetsFromDataPointIds(requiredData, calculatedData, correlationId)
+            val mark5 = timeSource.markNow()
+            logger.info("--------------------- assembleDatasetsFromDataPointIds: ${mark5 - mark4}")
+            return assembledDatasets
         }
 
         /**
@@ -82,6 +108,10 @@ class DataDeliveryService
             val allStoredDataPoints =
                 internalStorageAdapter
                     .retrieveDataPointsFromInternalStorage(dataPointIds = allRequiredIds, correlationId = correlationId)
+            logger.info(
+                "--------------------- assembleDatasetsFromDataPointIds.fetchedDataPoints: requested ${allRequiredIds.size}, " +
+                    "fetched ${allStoredDataPoints.size}",
+            )
 
             dataPointIds.forEach { (dataDimensions, dataIds) ->
                 val datasetInput = dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
@@ -107,24 +137,41 @@ class DataDeliveryService
             framework: String,
             correlationId: String,
         ): List<PlainDataAndDimensions> {
+            // TODO Clean this up
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()
 
-            val deliverableDataPointIds =
-                dataAvailabilityChecker
-                    .getLatestAvailableDataPointIds(companyIds, dataPointTypes)
-                    .entries
-                    .associate {
-                        BasicDatasetDimensions(it.key.companyId, framework, it.key.reportingPeriod) to it.value.map { dp -> dp.dataPointId }
+            val deliverableDataPointMetaData =
+                dataAvailabilityChecker.getLatestAvailableDataPointIds(companyIds, dataPointTypes).mapKeys { (dim, _) ->
+                    BasicDatasetDimensions(
+                        companyId = dim.companyId,
+                        framework = framework,
+                        reportingPeriod = dim.reportingPeriod,
+                    )
+                }
+            val deliverableDataPointDimensions =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map {
+                        BasicDataPointDimensions(
+                            companyId = it.companyId,
+                            dataPointType = it.dataPointType,
+                            reportingPeriod = it.reportingPeriod,
+                        )
                     }
+                }
 
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
-                    datasetDimensions = deliverableDataPointIds.keys,
+                    datasetDimensions = deliverableDataPointMetaData.keys,
                     correlationId = correlationId,
+                    deliverableDataPointDimensions = deliverableDataPointDimensions,
                 )
 
             return assembleDatasetsFromDataPointIds(
-                dataPointIds = deliverableDataPointIds,
+                dataPointIds =
+                    deliverableDataPointMetaData
+                        .map { (datasetDimension, metaData) ->
+                            datasetDimension to metaData.map { it.dataPointId }
+                        }.toMap(),
                 calculatedData = calculatedData,
                 correlationId = correlationId,
             ).map {

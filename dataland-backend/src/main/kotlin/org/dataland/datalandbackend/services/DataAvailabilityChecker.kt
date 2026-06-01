@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -107,14 +108,38 @@ class DataAvailabilityChecker
          * @param dataDimensions the list of data point dimensions to get the data point IDs for
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */
-        fun getViewableDataPointIds(dataDimensions: List<BasicDataPointDimensions>): List<String> {
+        fun getViewableDataPointMetaData(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
             val metaData = getMetaDataOfActiveDataPoints(dataDimensions)
             return if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaData.map { it.dataPointType })) {
-                metaData.map { it.dataPointId }
+                metaData
             } else {
                 emptyList()
             }
         }
+
+        /**
+         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
+         * Only returns IDs if at least one data point is not an ignorable fields.
+         * @param dataDimensions the list of data point dimensions to get the data point IDs for
+         * @return a list of data point IDs corresponding to the viewable data points of the input
+         */
+        fun getViewableDataPointIds(dataDimensions: List<BasicDataPointDimensions>): List<String> =
+            getViewableDataPointMetaData(dataDimensions).map { it.dataPointId }
+
+        /**
+         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
+         * Only returns IDs if at least one data point is not an ignorable fields.
+         * @param dataDimensions the list of data point dimensions to get the data point IDs for
+         * @return a list of data point IDs corresponding to the viewable data points of the input
+         */
+        fun getViewableDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>): List<DataPointDimensions> =
+            getViewableDataPointMetaData(dataDimensions).map {
+                BasicDataPointDimensions(
+                    companyId = it.companyId,
+                    dataPointType = it.dataPointType,
+                    reportingPeriod = it.reportingPeriod,
+                )
+            }
 
         /** Returns most recent data point meta information entities.
          *
