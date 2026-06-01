@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -23,7 +24,11 @@ import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALID
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -38,6 +43,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -62,6 +68,7 @@ internal class CompanyDataControllerTest(
     @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
     @Autowired private val dataPointUtils: DataPointUtils,
+    @Autowired private val specificationService: SpecificationService,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
@@ -278,12 +285,36 @@ internal class CompanyDataControllerTest(
     fun `getAggregatedFrameworkDataSummary does not count datasets with only shared fields`() {
         val testDataPointTypeName = "extendedDateFiscalYearEnd"
         mockSecurityContext()
-        doReturn(
+        val framework = DataType.valueOf("sfdr").toString()
+        val frameworkSpecification =
             mock<FrameworkSpecification> {
                 on { schema } doReturn
                     "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$testDataPointTypeName\",\"ref\":\"dummy\"}}}}"
-            },
-        ).whenever(specificationClient).getFrameworkSpecification(any<String>())
+            }
+        doReturn(
+            listOf(SimpleFrameworkSpecification(framework = IdWithRef(id = framework, ref = "dummy"), name = "Test")),
+        ).whenever(specificationClient).listFrameworkSpecifications()
+        doAnswer { invocation ->
+            if (invocation.getArgument<String>(0) == framework) {
+                frameworkSpecification
+            } else {
+                throw ClientException()
+            }
+        }.whenever(specificationClient).getFrameworkSpecification(any<String>())
+        specificationService.initiateSpecifications(null)
+        doAnswer { invocation ->
+            val dataPointType = invocation.getArgument<String>(0)
+            if (dataPointType in DataType.values.map { it.toString() }) {
+                throw ClientException()
+            }
+            DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = dataPointType, ref = "dummy"),
+                name = dataPointType,
+                businessDefinition = "",
+                dataPointBaseType = IdWithRef(id = "extendedDate", ref = ""),
+                usedBy = emptyList(),
+            )
+        }.whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(
             listOf(
                 mock<DataPointMetaInformationEntity> {

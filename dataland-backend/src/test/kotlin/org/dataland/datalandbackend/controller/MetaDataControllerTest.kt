@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -23,6 +24,8 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
@@ -32,6 +35,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -59,6 +64,7 @@ internal class MetaDataControllerTest
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataPointMetaInformationManager: DataPointMetaInformationManager,
         private val metaDataController: MetaDataController,
+        private val specificationService: SpecificationService,
         @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
     ) {
         private lateinit var testCompanyInformation: CompanyInformation
@@ -298,6 +304,20 @@ internal class MetaDataControllerTest
                         "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$defaultDataPointType\",\"ref\":\"dummy\"}}}}"
                 },
             ).whenever(specificationClient).getFrameworkSpecification(testFramework)
+            specificationService.initiateSpecifications(null)
+            doAnswer { invocation ->
+                val dataPointType = invocation.getArgument<String>(0)
+                if (dataPointType == testFramework || dataPointType in DataType.values.map { it.toString() }) {
+                    throw ClientException()
+                }
+                DataPointTypeSpecification(
+                    dataPointType = IdWithRef(id = dataPointType, ref = "dummy"),
+                    name = dataPointType,
+                    businessDefinition = "",
+                    dataPointBaseType = IdWithRef(id = "extendedString", ref = ""),
+                    usedBy = emptyList(),
+                )
+            }.whenever(specificationClient).getDataPointTypeSpecification(any())
             addMetainformation()
             addDataPointMetainformation()
             val allDimensions =

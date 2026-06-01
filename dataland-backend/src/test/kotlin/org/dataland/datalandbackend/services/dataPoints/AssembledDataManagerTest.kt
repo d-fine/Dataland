@@ -120,6 +120,15 @@ class AssembledDataManagerTest {
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
+    private fun makeStubSpec(dataPointType: String) =
+        DataPointTypeSpecification(
+            dataPointType = IdWithRef(id = dataPointType, ref = ""),
+            name = dataPointType,
+            businessDefinition = "",
+            dataPointBaseType = IdWithRef(id = "extendedDecimal", ref = ""),
+            usedBy = emptyList(),
+        )
+
     @BeforeEach
     fun resetMocks() {
         reset(
@@ -131,7 +140,13 @@ class AssembledDataManagerTest {
     @BeforeEach
     fun setSpecificationMocks() {
         doReturn(frameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
-        doThrow(ClientException()).whenever(specificationClient).getDataPointTypeSpecification(framework)
+        doAnswer { invocation ->
+            val dataPointType = invocation.getArgument<String>(0)
+            if (dataPointType == framework) {
+                throw ClientException()
+            }
+            makeStubSpec(dataPointType)
+        }.whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
         specificationService = SpecificationService(specificationClient)
         specificationService.initiateSpecifications(null)
@@ -298,27 +313,7 @@ class AssembledDataManagerTest {
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
         val dataPointDimensions = BasicDataPointDimensions(companyId, resultType, reportingPeriod)
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(listOf(resultType)).whenever(dataAvailabilityChecker).getMissingDataPointTypes(any(), any(), any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
-        val decimalBaseType = IdWithRef(id = "extendedDecimal", ref = "")
-        doReturn(
-            DataPointTypeSpecification(
-                dataPointType = IdWithRef(id = sourceOneType, ref = ""),
-                name = sourceOneType,
-                businessDefinition = "",
-                dataPointBaseType = decimalBaseType,
-                usedBy = emptyList(),
-            ),
-        ).whenever(specificationClient).getDataPointTypeSpecification(sourceOneType)
-        doReturn(
-            DataPointTypeSpecification(
-                dataPointType = IdWithRef(id = sourceTwoType, ref = ""),
-                name = sourceTwoType,
-                businessDefinition = "",
-                dataPointBaseType = decimalBaseType,
-                usedBy = emptyList(),
-            ),
-        ).whenever(specificationClient).getDataPointTypeSpecification(sourceTwoType)
         setMockData(dataPointMap, dataContentMap)
         val dynamicDataset =
             assertDoesNotThrow {
@@ -366,6 +361,28 @@ class AssembledDataManagerTest {
                 )
             }
         }.whenever(metaDataManager).getDataPointMetaInformationByIds(any())
+
+        doAnswer { invocation ->
+            val dimensionsByDataset =
+                invocation.getArgument<Map<BasicDatasetDimensions, List<BasicDataPointDimensions>>>(0)
+            dimensionsByDataset.mapValues { (_, dimensions) ->
+                dimensions.mapNotNull { dimension ->
+                    dataPoints[dimension.dataPointType]?.let { dataPointId ->
+                        DataPointMetaInformationEntity(
+                            dataPointId = dataPointId,
+                            companyId = dimension.companyId,
+                            dataPointType = dimension.dataPointType,
+                            reportingPeriod = dimension.reportingPeriod,
+                            uploaderUserId = uploaderUserId,
+                            uploadTime = Instant.now().toEpochMilli(),
+                            currentlyActive = true,
+                            qaStatus = QaStatus.Accepted,
+                        )
+                    }
+                }
+            }
+        }.whenever(dataAvailabilityChecker)
+            .getViewableDataPointMetaData(any<Map<BasicDatasetDimensions, List<BasicDataPointDimensions>>>())
 
         doAnswer { invocation ->
             val dataPointId = invocation.getArgument<List<String>>(1)
