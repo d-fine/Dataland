@@ -23,9 +23,7 @@ describe('Component test for CreateCompany', () => {
   });
 
   it('Check if removing an alternative company name works', () => {
-    void wrapper.setData({
-      companyAlternativeNames: ['No1', 'No2', 'No3'],
-    });
+    wrapper.vm.companyAlternativeNames = ['No1', 'No2', 'No3'];
     (wrapper.vm.removeAlternativeName as (index: number) => void)(2);
     const expectedValues = ['No1', 'No3'];
     for (const [index, name] of (wrapper.vm.companyAlternativeNames as string[]).entries()) {

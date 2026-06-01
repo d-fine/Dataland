@@ -3,7 +3,7 @@ import { getAdminToken } from '@e2e/utils/Auth';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { DataTypeEnum, type EutaxonomyFinancialsData, type LksgData, type SfdrData } from '@clients/backend';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
@@ -225,7 +225,7 @@ describeIf(
     function uploadCompanyAlphaAndData(): void {
       const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
       getAdminToken().then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
           .then((storedCompany) => {
             companyIdOfAlpha = storedCompany.companyId;
             return uploadFrameworkDataForPublicToolboxFramework(
@@ -289,7 +289,7 @@ describeIf(
      */
     function uploadCompanyBetaAndData(): void {
       getAdminToken().then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
+        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta)).then(
           async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
             return uploadFrameworkDataForPublicToolboxFramework(

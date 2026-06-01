@@ -70,6 +70,17 @@ class DataPointQaReviewManager
         }
 
         /**
+         * Saves QA review entries for a list of data points without sending any QA status change messages.
+         *
+         * Use this for Rejected datapoints that will be superseded by a replacement upload, to avoid a
+         * race condition where the status change message is processed after the replacement datapoint is created
+         * and overwrites the correct setting.
+         */
+        @Transactional
+        fun saveDataPointReviewEntitiesOnly(tasks: List<ReviewDataPointTask>): List<DataPointQaReviewEntity> =
+            createDataPointReviewEntities(tasks).map { it.first }
+
+        /**
          * All data required for the reviewDataPointFromMessages function (i.e., the message and the correlationId)
          */
         data class DataPointUploadedMessageWithCorrelationId(
@@ -258,7 +269,6 @@ class DataPointQaReviewManager
             val allCompanyIds = reviewEntitiesWithCorrelationIds.map { it.first.companyId }.distinct()
             val allDataPointTypes = reviewEntitiesWithCorrelationIds.map { it.first.dataPointType }.distinct()
             val allReportingPeriods = reviewEntitiesWithCorrelationIds.map { it.first.reportingPeriod }.distinct()
-
             val activeDataPoints =
                 dataPointQaReviewRepository
                     .getActiveDataPointsForAllTriplets(allCompanyIds, allDataPointTypes, allReportingPeriods)
@@ -281,7 +291,10 @@ class DataPointQaReviewManager
                         BasicDataDimensions(reviewEntity.companyId, "", reviewEntity.reportingPeriod), true,
                     )
 
-                logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
+                logger.info(
+                    "Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}" +
+                        " (correlationId: $correlationId).",
+                )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     body = objectMapper.writeValueAsString(qaStatusChangeMessage),
                     type = MessageType.QA_STATUS_UPDATED,

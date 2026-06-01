@@ -1,6 +1,6 @@
 import { DataTypeEnum } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
-import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures';
 
@@ -20,7 +20,7 @@ describeIf(
 
     before(() => {
       getAdminToken().then(async (token) => {
-        const storedCompany = await uploadCompanyViaApi(token, generateCompanyInformation());
+        const storedCompany = await getOrUploadCompanyViaApi(token, generateCompanyInformation());
         companyId = storedCompany.companyId;
         readerAndUploaderPages = [
           '',
@@ -76,7 +76,7 @@ describeIf(
         cy.get(noPermissionMessage, { timeout: longTimeoutInMs }).should('not.exist');
       }
     });
-    it('Check if an reviewer user can access the corresponding page', () => {
+    it('Check if a reviewer user can access the corresponding page', () => {
       cy.ensureLoggedInAsReviewer();
       for (const page of reviewerOnlyPages) {
         cy.visit(page);

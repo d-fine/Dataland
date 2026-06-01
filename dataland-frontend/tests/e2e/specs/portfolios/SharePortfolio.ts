@@ -1,7 +1,7 @@
 import { reader_userId } from '@e2e/utils/Cypress';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { Configuration, NotificationFrequency, PortfolioControllerApi } from '@clients/userservice';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
@@ -23,7 +23,7 @@ describeIf(
         const companyToUpload = generateDummyCompanyInformation(
           `Company-Created-For-Share-Portfolio-Test-${timestamp}`
         );
-        const uploadResult = await uploadCompanyViaApi(token, companyToUpload);
+        const uploadResult = await getOrUploadCompanyViaApi(token, companyToUpload);
         const companyId = uploadResult.companyId;
 
         const portfolioApi = new PortfolioControllerApi(new Configuration({ accessToken: token }));

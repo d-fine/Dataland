@@ -25,3 +25,7 @@ dataland-loki/data/
 # Allow build/libs directories for pre-built JARs
 **/build/
 !**/build/libs/
+
+# OpenCode
+.opencode/
+

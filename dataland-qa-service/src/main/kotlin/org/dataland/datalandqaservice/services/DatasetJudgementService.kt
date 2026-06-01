@@ -108,13 +108,17 @@ class DatasetJudgementService
                 DatasetJudgementState.FinishedWithDatasetAcceptance -> {
                     datasetJudgementFinalizationService.handleAcceptance(datasetJudgement)
                 }
+
                 DatasetJudgementState.FinishedWithDatasetRejection -> {
                     datasetJudgementFinalizationService.handleRejection(datasetJudgement)
                 }
-                DatasetJudgementState.Pending -> throw InvalidInputApiException(
-                    summary = "Invalid judgement state.",
-                    message = "Cannot set judgement state to pending.",
-                )
+
+                DatasetJudgementState.Pending -> {
+                    throw InvalidInputApiException(
+                        summary = "Invalid judgement state.",
+                        message = "Cannot set judgement state to pending.",
+                    )
+                }
             }
             datasetJudgement.judgementState = state
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
@@ -200,6 +204,7 @@ class DatasetJudgementService
                         this.reporterUserIdOfAcceptedQaReport = null
                     }
                 }
+
                 AcceptedDataPointSource.Qa -> {
                     DatasetJudgementValidationHelper.validateReporterUserIdOfAcceptedQaReport(
                         dataPoint.qaReports,
@@ -211,6 +216,7 @@ class DatasetJudgementService
                             UUID.fromString(patch.reporterUserIdOfAcceptedQaReport)
                     }
                 }
+
                 AcceptedDataPointSource.Custom -> {
                     DatasetJudgementValidationHelper.validateCustomDataPointIsSet(dataPoint)
                     dataPoint.apply {
@@ -218,7 +224,10 @@ class DatasetJudgementService
                         this.reporterUserIdOfAcceptedQaReport = null
                     }
                 }
-                null -> return
+
+                null -> {
+                    return
+                }
             }
         }
 

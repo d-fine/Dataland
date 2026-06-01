@@ -72,13 +72,18 @@ class DatasetJudgementFinalizationService
             val correlationId = UUID.randomUUID().toString()
             val timestamp = Instant.now().toEpochMilli()
 
-            val reviewTasks =
-                dataPoints.map { dataPoint ->
-                    buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
-                }
+            val (acceptedTasks, rejectedTasks) =
+                dataPoints
+                    .map { dataPoint ->
+                        buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
+                    }.partition { it.qaStatus == QaStatus.Accepted }
 
-            dataPointQaReviewManager.reviewDataPoints(reviewTasks)
-
+            if (acceptedTasks.isNotEmpty()) {
+                dataPointQaReviewManager.reviewDataPoints(acceptedTasks)
+            }
+            if (rejectedTasks.isNotEmpty()) {
+                dataPointQaReviewManager.saveDataPointReviewEntitiesOnly(rejectedTasks)
+            }
             dataPoints.forEach { uploadReplacementDataPointIfNeeded(it, companyId, reportingPeriod) }
         }
 
@@ -97,15 +102,22 @@ class DatasetJudgementFinalizationService
         ) {
             val replacementValue =
                 when (dataPoint.acceptedSource) {
-                    AcceptedDataPointSource.Qa -> getReplacementValueFromQaReport(dataPoint)
-                    AcceptedDataPointSource.Custom ->
+                    AcceptedDataPointSource.Qa -> {
+                        getReplacementValueFromQaReport(dataPoint)
+                    }
+
+                    AcceptedDataPointSource.Custom -> {
                         dataPoint.customValue ?: throw InvalidInputApiException(
                             summary = "Custom value is missing.",
                             message =
                                 "Data point ${dataPoint.dataPointId} has acceptedSource=Custom " +
                                     "but no custom value is set.",
                         )
-                    else -> return
+                    }
+
+                    else -> {
+                        return
+                    }
                 }
 
             dataPointControllerApi.postDataPoint(
@@ -164,17 +176,24 @@ class DatasetJudgementFinalizationService
         ): ReviewDataPointTask {
             val qaStatus =
                 when (dataPoint.acceptedSource) {
-                    AcceptedDataPointSource.Original -> QaStatus.Accepted
+                    AcceptedDataPointSource.Original -> {
+                        QaStatus.Accepted
+                    }
+
                     AcceptedDataPointSource.Qa,
                     AcceptedDataPointSource.Custom,
-                    -> QaStatus.Rejected
-                    null ->
+                    -> {
+                        QaStatus.Rejected
+                    }
+
+                    null -> {
                         throw InvalidInputApiException(
                             summary = "Data point has no accepted source.",
                             message =
                                 "Data point ${dataPoint.dataPointId} of type ${dataPoint.dataPointType} " +
                                     "has no accepted source set.",
                         )
+                    }
                 }
             return ReviewDataPointTask(
                 dataPointId = dataPoint.dataPointId,
