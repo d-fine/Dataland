@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.SpecificationService
+import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -69,13 +70,16 @@ class DataPointCalculator
                     .retrieveDataPointsFromInternalStorage(dataPointIds = allAvailableIds, correlationId = correlationId)
             val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
             val datasetDimensions = dataPointTypesByDatasetDimension.keys
-            val associateBy =
-                datasetDimensions.associateWith { datasetDimension ->
-                    allStoredDataPointsWithValues.filter { dataPoint ->
-                        dataPoint.companyId == datasetDimension.companyId && dataPoint.reportingPeriod == datasetDimension.reportingPeriod
-                    }
+            val sourceDataByBaseDimensions =
+                allStoredDataPointsWithValues.groupBy {
+                    BasicBaseDimensions(
+                        companyId = it.companyId,
+                        reportingPeriod = it.reportingPeriod,
+                    )
                 }
-            return associateBy
+            return datasetDimensions.associateWith { datasetDimension ->
+                sourceDataByBaseDimensions.getOrDefault(datasetDimension.toBaseDimensions(), emptyList())
+            }
         }
 
         /**
