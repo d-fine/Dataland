@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.services.DataPointType
@@ -28,6 +29,8 @@ import java.util.stream.Stream
 
 class DataPointConversionTest {
     private val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
+    private val currencyRef = IdWithRef(id = "extendedCurrency", ref = "dummy")
+    private val currencyTargetType = "currencyTargetType"
     private val dummySpecs =
         mapOf(
             "dummy" to
@@ -39,6 +42,18 @@ class DataPointConversionTest {
                     usedBy = emptyList(),
                 ),
         )
+    private val currencySpecs =
+        dummySpecs +
+            (
+                currencyTargetType to
+                    DataPointTypeSpecification(
+                        dataPointType = IdWithRef(id = currencyTargetType, ref = "dummy"),
+                        name = "currency target",
+                        businessDefinition = "dummy",
+                        dataPointBaseType = currencyRef,
+                        usedBy = emptyList(),
+                    )
+            )
 
     private val numericDataPointHalf = "json/dataPoints/numericDataPointHalf.json"
     private val nonNumericDataPoint = "./json/dataPoints/nonNumericDataPoint.json"
@@ -92,20 +107,8 @@ class DataPointConversionTest {
         @JvmStatic
         fun provideComments(): Stream<Arguments> {
             val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
-            val input1 =
-                UploadedDataPoint(
-                    dataPoint = "dummy",
-                    companyId = "dummy",
-                    reportingPeriod = "dummy",
-                    dataPointType = "type1",
-                )
-            val input2 =
-                UploadedDataPoint(
-                    dataPoint = "dummy",
-                    companyId = "dummy",
-                    reportingPeriod = "dummy",
-                    dataPointType = "type2",
-                )
+            val input1 = createDummyUploadedDataPoint("type1")
+            val input2 = createDummyUploadedDataPoint("type2")
             val specs =
                 mapOf(
                     "type1" to
@@ -152,6 +155,14 @@ class DataPointConversionTest {
                 ),
             )
         }
+
+        private fun createDummyUploadedDataPoint(dataPointType: String) =
+            UploadedDataPoint(
+                dataPoint = "dummy",
+                companyId = "dummy",
+                reportingPeriod = "dummy",
+                dataPointType = dataPointType,
+            )
     }
 
     @Test
@@ -172,6 +183,37 @@ class DataPointConversionTest {
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
         assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
         assert(result.dataSource?.publicationDate == firstDataPoint.dataSource?.publicationDate)
+    }
+
+    @Test
+    fun `check that summation of currency data points preserves the currency`() {
+        val firstInput = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val secondInput = createUploadedDataPoint(createCurrencyDataPoint("1.0", "EUR"))
+        val result =
+            defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(
+                applyTransformation(
+                    listOf(firstInput, secondInput),
+                    currencyTargetType,
+                    "Sum",
+                    currencySpecs,
+                ).dataPoint,
+            )
+        assertEquals(0, BigDecimal("1.5").compareTo(result.value))
+        assertEquals("EUR", result.currency)
+    }
+
+    @Test
+    fun `check that summation of currency data points rejects mixed currencies`() {
+        val firstInput = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val secondInput = createUploadedDataPoint(createCurrencyDataPoint("1.0", "USD"))
+        assertThrows<IllegalArgumentException> {
+            applyTransformation(
+                listOf(firstInput, secondInput),
+                currencyTargetType,
+                "Sum",
+                currencySpecs,
+            )
+        }
     }
 
     @Test
@@ -275,6 +317,23 @@ class DataPointConversionTest {
     }
 
     @Test
+    fun `check that division by percent of currency data points preserves the numerator currency`() {
+        val numerator = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
+        val result =
+            defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(
+                applyTransformation(
+                    listOf(numerator, denominator),
+                    currencyTargetType,
+                    "DivisionByPercent",
+                    currencySpecs,
+                ).dataPoint,
+            )
+        assertEquals(0, BigDecimal("50.0000000000").compareTo(result.value))
+        assertEquals("EUR", result.currency)
+    }
+
+    @Test
     fun `check that division by percent of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION_BY_PERCENT.convert(
@@ -325,6 +384,18 @@ class DataPointConversionTest {
         assert(resultDataPoint.value == inputDataPoint.value)
         assert(resultDataPoint.dataSource == inputDataPoint.dataSource)
         assert(result.dataPointType == "targetType")
+        assert(result.companyId == input.companyId)
+        assert(result.reportingPeriod == input.reportingPeriod)
+    }
+
+    @Test
+    fun `check that identity conversion of currency data points preserves the currency`() {
+        val input = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val result = applyTransformation(listOf(input), currencyTargetType, "Identity", currencySpecs)
+        val resultDataPoint = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(result.dataPoint)
+        assertEquals(0, BigDecimal("0.5").compareTo(resultDataPoint.value))
+        assertEquals("EUR", resultDataPoint.currency)
+        assert(result.dataPointType == currencyTargetType)
         assert(result.companyId == input.companyId)
         assert(result.reportingPeriod == input.reportingPeriod)
     }
@@ -388,5 +459,17 @@ class DataPointConversionTest {
             companyId = "dummy",
             reportingPeriod = "dummy",
             dataPointType = "dummy",
+        )
+
+    private fun createCurrencyDataPoint(
+        value: String,
+        currency: String,
+    ): String =
+        defaultObjectMapper.writeValueAsString(
+            ExtendedCurrencyDataPoint(
+                value = BigDecimal(value),
+                currency = currency,
+                quality = QualityOptions.Reported,
+            ),
         )
 }
