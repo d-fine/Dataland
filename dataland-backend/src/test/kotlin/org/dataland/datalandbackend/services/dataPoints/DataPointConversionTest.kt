@@ -68,6 +68,14 @@ class DataPointConversionTest {
         assertEquals(0, BigDecimal(expectedValue).compareTo(actualValue))
     }
 
+    private fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint =
+        UploadedDataPoint(
+            dataPoint = dataPoint,
+            companyId = "dummy",
+            reportingPeriod = "dummy",
+            dataPointType = "dummy",
+        )
+
     companion object {
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -449,14 +457,6 @@ class DataPointConversionTest {
     ) {
         assert(mergeDataSources(inputs) == expected)
     }
-
-    fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint =
-        UploadedDataPoint(
-            dataPoint = dataPoint,
-            companyId = "dummy",
-            reportingPeriod = "dummy",
-            dataPointType = "dummy",
-        )
 
     private fun createCurrencyDataPoint(
         value: String,
