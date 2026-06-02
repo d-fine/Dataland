@@ -93,7 +93,7 @@ class DataDeliveryService
             val allRequiredIds = dataPointIds.values.flatten().toSet()
             val allStoredDataPoints =
                 internalStorageAdapter
-                    .retrieveDataPointsFromInternalStorage(dataPointIds = allRequiredIds, correlationId = correlationId)
+                    .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
 
             dataPointIds.forEach { (dataDimensions, dataIds) ->
                 val datasetInput = dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())

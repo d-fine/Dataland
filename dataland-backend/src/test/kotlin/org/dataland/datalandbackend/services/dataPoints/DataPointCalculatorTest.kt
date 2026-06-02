@@ -121,7 +121,7 @@ class DataPointCalculatorTest {
         doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -152,7 +152,7 @@ class DataPointCalculatorTest {
         doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(mapOf("id-a" to dataPointHalf))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -182,7 +182,7 @@ class DataPointCalculatorTest {
         doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(mapOf("id-a" to dataPointHalf))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -215,7 +215,7 @@ class DataPointCalculatorTest {
         // Both returned from storage, but B has no value
         doReturn(mapOf("id-a" to dataPointWithValue, "id-b" to dataPointWithoutValue))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -234,7 +234,7 @@ class DataPointCalculatorTest {
         doReturn(emptyList<String>()).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(emptyMap<String, UploadedDataPoint>())
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -273,7 +273,7 @@ class DataPointCalculatorTest {
                 "id-second-b" to secondDataPointOne,
             ),
         ).whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -310,7 +310,7 @@ class DataPointCalculatorTest {
         doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(
@@ -346,7 +346,7 @@ class DataPointCalculatorTest {
         doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(mapOf("id-a" to dataPointOne, "id-b" to dataPointZero))
             .whenever(internalStorageAdapter)
-            .retrieveDataPointsFromInternalStorage(any(), any())
+            .getDataPoints(any(), any())
 
         val result =
             dataPointCalculator.getCalculatedData(

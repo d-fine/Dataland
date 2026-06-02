@@ -25,7 +25,7 @@ class InternalStorageAdapter
          * @param correlationId the correlation ID associated to the operation
          * @return a map of data point IDs to the respective content
          */
-        fun retrieveDataPointsFromInternalStorage(
+        fun getDataPoints(
             dataPointIds: Collection<DataPointId>,
             correlationId: String,
         ): Map<DataPointId, UploadedDataPoint> {

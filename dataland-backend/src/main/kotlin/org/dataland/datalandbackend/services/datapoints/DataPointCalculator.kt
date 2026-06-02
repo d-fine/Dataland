@@ -75,7 +75,7 @@ class DataPointCalculator
             val allAvailableIds = dataAvailabilityChecker.getViewableDataPointIds(allDimensions)
             val allStoredDataPoints =
                 internalStorageAdapter
-                    .retrieveDataPointsFromInternalStorage(dataPointIds = allAvailableIds, correlationId = correlationId)
+                    .getDataPoints(dataPointIds = allAvailableIds, correlationId = correlationId)
             val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
             val datasetDimensions = dataPointTypesByDatasetDimension.keys
             val sourceDataByBaseDimensions =
