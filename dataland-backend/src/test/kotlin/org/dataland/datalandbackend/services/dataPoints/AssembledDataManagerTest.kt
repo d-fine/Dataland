@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.services.dataPoints
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
@@ -60,9 +62,20 @@ import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.io.File
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.Optional
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+private data class RawDataPointTypeSpecification(
+    val id: String,
+    val name: String,
+    val businessDefinition: String,
+    val dataPointBaseTypeId: String,
+    val frameworkOwnership: List<String>,
+    val calculationRules: List<CalculationRule>? = null,
+)
 
 class AssembledDataManagerTest {
     private val dataManager = mock<DataManager>()
@@ -84,7 +97,9 @@ class AssembledDataManagerTest {
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
     private val numericDataPoint = "./json/dataPoints/numericDataPointHalf.json"
-    private val calculatedDataPointSpec = "./json/specifications/dataPointWithCalculation.json"
+    private val calculatedDataPointSpec =
+        "../dataland-specification-service/src/main/resources/specifications/dataPointTypes/" +
+            "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities.json"
 
     private val dataPointManager =
         DataPointManager(
@@ -134,6 +149,18 @@ class AssembledDataManagerTest {
         usedBy = emptyList(),
         calculationRules = calculationRules,
     )
+
+    private fun getSpecificationFromRealDataPointTypeFile(resourceFile: String): DataPointTypeSpecification {
+        val rawSpecification = defaultObjectMapper.readValue<RawDataPointTypeSpecification>(File(resourceFile))
+        return DataPointTypeSpecification(
+            dataPointType = IdWithRef(id = rawSpecification.id, ref = ""),
+            name = rawSpecification.name,
+            businessDefinition = rawSpecification.businessDefinition,
+            dataPointBaseType = IdWithRef(id = rawSpecification.dataPointBaseTypeId, ref = ""),
+            usedBy = rawSpecification.frameworkOwnership.map { IdWithRef(id = it, ref = "") },
+            calculationRules = rawSpecification.calculationRules,
+        )
+    }
 
     @BeforeEach
     fun resetMocks() {
@@ -304,16 +331,18 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that a dataset containing calculated fields is correctly delivered`() {
-        val sourceOneType = "extendedDecimalScope1GhgEmissionsInTonnes"
-        val sourceTwoType = "extendedDecimalScope2GhgEmissionsInTonnes"
-        val resultType = "extendedDecimalScope1And2GhgEmissionsInTonnes"
+        val sourceOneType = "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities"
+        val sourceTwoType =
+            "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomy" +
+                "EligibleButTaxonomyNonAlignedActivities"
+        val resultType = "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities"
         val sourceOneId = "Id1"
         val sourceTwoId = "Id2"
 
         doReturn(calculatedFrameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
 
         val dataPointMap = mapOf(sourceOneType to sourceOneId, sourceTwoType to sourceTwoId)
-        val dataPointSpec = TestResourceFileReader.getKotlinObject<DataPointTypeSpecification>(calculatedDataPointSpec)
+        val dataPointSpec = getSpecificationFromRealDataPointTypeFile(calculatedDataPointSpec)
         val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
@@ -329,10 +358,14 @@ class AssembledDataManagerTest {
         val calculatedDataPointNode =
             assembledDatasetNode
                 .path("environmental")
-                .path("greenhouseGasEmissions")
-                .path("scope1And2GhgEmissionsInTonnes")
+                .path("euTaxonomy")
+                .path("activity")
+                .path("insuranceAndReinsurance")
+                .path("nonLifeInsuranceAndReinsurance")
+                .path("proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities")
         assertFalse(calculatedDataPointNode.isMissingNode) {
-            "Expected calculated data point 'scope1And2GhgEmissionsInTonnes' to be present in the assembled dataset"
+            "Expected calculated data point 'proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities' to be present in the assembled " +
+                "dataset"
         }
         assertEquals(0, BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()))
     }
