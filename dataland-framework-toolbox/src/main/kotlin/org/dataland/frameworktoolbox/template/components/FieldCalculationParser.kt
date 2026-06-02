@@ -5,12 +5,12 @@ import org.dataland.datalandspecification.specifications.CalculationRule
 /**
  * Parses the value of the "Field Calculation" column of the framework template.
  *
- * The expected format is a list of keyword/value pairs separated by semi-colons, e.g.
+ * The expected format is a list of keyword/value pairs separated by semicolons, e.g.
  *
  * `"Sum": [extendedDecimalScope1GhgEmissionsInTonnes;extendedDecimalScope2GhgEmissionsInTonnes]; "Division": [example1,example2]`
  *
  * Each pair maps a calculation method (the keyword) to a bracketed list of input data point identifiers.
- * Inside the brackets, inputs may be separated by either a semi-colon or a comma.
+ * Inside the brackets, inputs may be separated by either a semicolon or a comma.
  */
 object FieldCalculationParser {
     private val rulePattern =
