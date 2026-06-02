@@ -196,24 +196,26 @@ enum class DataPointConversion(
                 if (isCurrencyDataPoint(targetType, specs)) {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
                     checkRequirements(dataPoints)
-                    val currencyDataPoint = dataPoints.first()
-                    ExtendedCurrencyDataPoint(
-                        value = currencyDataPoint.value,
-                        currency = getCurrency(currencyDataPoint),
-                        quality = currencyDataPoint.quality,
-                        comment = createComment(inputs, specs, this.name),
-                        dataSource = currencyDataPoint.dataSource,
-                    )
+                    dataPoints.first().let {
+                        ExtendedCurrencyDataPoint(
+                            value = it.value,
+                            currency = getCurrency(it),
+                            quality = it.quality,
+                            comment = createComment(inputs, specs, this.name),
+                            dataSource = it.dataSource,
+                        )
+                    }
                 } else {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(it.dataPoint) }
                     checkRequirements(dataPoints)
-                    val dataPoint = dataPoints.first()
-                    ExtendedDataPoint(
-                        value = dataPoint.value,
-                        quality = dataPoint.quality,
-                        comment = createComment(inputs, specs, this.name),
-                        dataSource = dataPoint.dataSource,
-                    )
+                    dataPoints.first().let {
+                        ExtendedDataPoint(
+                            value = it.value,
+                            quality = it.quality,
+                            comment = createComment(inputs, specs, this.name),
+                            dataSource = it.dataSource,
+                        )
+                    }
                 }
 
             return createUploadedDataPoint(
