@@ -127,7 +127,7 @@ open class ComponentBase(
      *
      * `null` indicates that no calculation rules are defined.
      */
-    var calculationRules: List<CalculationRule>? = null
+    var calculationRules: List<CalculationRule> = emptyList()
 
     /**
      * Obtain an example for this component

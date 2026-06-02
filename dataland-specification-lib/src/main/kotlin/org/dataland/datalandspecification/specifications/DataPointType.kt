@@ -21,7 +21,7 @@ data class DataPointType(
     @JsonSerialize(converter = SetOrderedJsonSerializer::class)
     val frameworkOwnership: Set<String>,
     val constraints: List<String>? = null,
-    val calculationRules: List<CalculationRule>? = null,
+    val calculationRules: List<CalculationRule> = emptyList(),
 ) {
     /**
      * Validates the integrity of the data point specification.

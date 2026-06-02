@@ -47,5 +47,5 @@ data class DataPointTypeSpecification(
     val dataPointBaseType: IdWithRef,
     val usedBy: List<IdWithRef>,
     val constraints: List<String>? = null,
-    val calculationRules: List<CalculationRule>? = null,
+    val calculationRules: List<CalculationRule> = emptyList(),
 )

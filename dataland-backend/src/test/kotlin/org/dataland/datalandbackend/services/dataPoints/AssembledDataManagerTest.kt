@@ -74,7 +74,7 @@ private data class RawDataPointTypeSpecification(
     val businessDefinition: String,
     val dataPointBaseTypeId: String,
     val frameworkOwnership: List<String>,
-    val calculationRules: List<CalculationRule>? = null,
+    val calculationRules: List<CalculationRule> = emptyList(),
 )
 
 class AssembledDataManagerTest {
@@ -140,7 +140,7 @@ class AssembledDataManagerTest {
     private fun makeDataPointTypeSpecification(
         dataPointType: String,
         dataPointBaseType: String = "extendedDecimal",
-        calculationRules: List<CalculationRule>? = null,
+        calculationRules: List<CalculationRule> = emptyList(),
     ) = DataPointTypeSpecification(
         dataPointType = IdWithRef(id = dataPointType, ref = ""),
         name = dataPointType,

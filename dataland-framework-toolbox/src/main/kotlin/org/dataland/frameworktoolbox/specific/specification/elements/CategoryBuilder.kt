@@ -103,7 +103,7 @@ class CategoryBuilder(
         businessDefinition: String,
         dataPointBaseTypeId: String,
         constraints: List<String>?,
-        calculationRules: List<CalculationRule>?,
+        calculationRules: List<CalculationRule>,
     ): DataPointType {
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."

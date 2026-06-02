@@ -36,8 +36,14 @@ class DataCompositionService
         fun getRelevantDataPointTypes(dataType: String): Collection<DataPointType> =
             cachedRelevantDataPointTypes.computeIfAbsent(dataType) {
                 when {
-                    specificationService.isDataPointType(dataType) -> setOf(dataType)
-                    specificationService.isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType).toSet()
+                    specificationService.isDataPointType(dataType) -> {
+                        setOf(dataType)
+                    }
+
+                    specificationService.isAssembledFramework(dataType) -> {
+                        getContainedDataPointTypes(dataType).toSet()
+                    }
+
                     else -> {
                         throw InvalidInputApiException(
                             "DataType $dataType not found.",
@@ -90,7 +96,7 @@ class DataCompositionService
         fun getAvailableCalculationRules(dataPointTypes: Collection<DataPointType>): Map<DataPointType, Collection<CalculationRule>> {
             val availableRules = mutableMapOf<DataPointType, Collection<CalculationRule>>()
             specificationService.getDataPointSpecifications(dataPointTypes.toList()).forEach { (dataPointType, specification) ->
-                if (specification.calculationRules != null) {
+                if (specification.calculationRules.isNotEmpty()) {
                     availableRules[dataPointType] = specification.calculationRules
                 }
             }
