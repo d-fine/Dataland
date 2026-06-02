@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

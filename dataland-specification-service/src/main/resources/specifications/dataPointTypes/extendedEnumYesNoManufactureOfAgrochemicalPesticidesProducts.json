@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

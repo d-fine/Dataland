@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedEnumCompanyExchangeStatus",
   "frameworkOwnership" : [ "pcaf" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

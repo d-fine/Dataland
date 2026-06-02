@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedNuclearAndGasNonEligibleComponent",
   "frameworkOwnership" : [ "nuclear-and-gas" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

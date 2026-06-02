@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

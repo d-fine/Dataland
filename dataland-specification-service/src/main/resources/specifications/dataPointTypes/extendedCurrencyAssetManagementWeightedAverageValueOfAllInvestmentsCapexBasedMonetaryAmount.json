@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-financials" ],
   "constraints" : [ "min:0" ],
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

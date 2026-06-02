@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "between:0,100" ],
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

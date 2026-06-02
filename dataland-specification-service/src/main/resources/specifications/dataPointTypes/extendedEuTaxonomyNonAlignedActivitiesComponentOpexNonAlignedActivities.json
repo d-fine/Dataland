@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedEuTaxonomyNonAlignedActivitiesComponent",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
   "constraints" : null,
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }

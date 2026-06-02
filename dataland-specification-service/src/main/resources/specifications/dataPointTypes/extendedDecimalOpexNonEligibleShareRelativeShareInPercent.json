@@ -5,5 +5,5 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
   "constraints" : [ "between:0,100" ],
-  "calculationRules" : null
+  "calculationRules" : [ ]
 }
