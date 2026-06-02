@@ -61,6 +61,13 @@ class DataPointConversionTest {
     private val dataPointWithoutValue = "./json/dataPoints/dataPointWithoutValue.json"
     private val numericDataPointZero = "json/dataPoints/numericDataPointZero.json"
 
+    private fun assertBigDecimalEquals(
+        expectedValue: String,
+        actualValue: BigDecimal?,
+    ) {
+        assertEquals(0, BigDecimal(expectedValue).compareTo(actualValue))
+    }
+
     companion object {
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -198,7 +205,7 @@ class DataPointConversionTest {
                 applyTransformation(inputs, "dummy", conversionMethod, dummySpecs).dataPoint,
             )
 
-        assertEquals(0, BigDecimal(expectedValue).compareTo(result.value))
+        assertBigDecimalEquals(expectedValue, result.value)
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
         assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
@@ -218,7 +225,7 @@ class DataPointConversionTest {
                     currencySpecs,
                 ).dataPoint,
             )
-        assertEquals(0, BigDecimal("1.5").compareTo(result.value))
+        assertBigDecimalEquals("1.5", result.value)
         assertEquals("EUR", result.currency)
     }
 
@@ -322,7 +329,7 @@ class DataPointConversionTest {
                     currencySpecs,
                 ).dataPoint,
             )
-        assertEquals(0, BigDecimal("50.0000000000").compareTo(result.value))
+        assertBigDecimalEquals("50.0000000000", result.value)
         assertEquals("EUR", result.currency)
     }
 
@@ -386,7 +393,7 @@ class DataPointConversionTest {
         val input = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
         val result = applyTransformation(listOf(input), currencyTargetType, "Identity", currencySpecs)
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(result.dataPoint)
-        assertEquals(0, BigDecimal("0.5").compareTo(resultDataPoint.value))
+        assertBigDecimalEquals("0.5", resultDataPoint.value)
         assertEquals("EUR", resultDataPoint.currency)
         assert(result.dataPointType == currencyTargetType)
         assert(result.companyId == input.companyId)
