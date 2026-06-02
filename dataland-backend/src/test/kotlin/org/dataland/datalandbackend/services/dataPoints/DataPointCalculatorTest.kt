@@ -72,7 +72,7 @@ class DataPointCalculatorTest {
         reportingPeriod = reportingPeriod,
     )
 
-    private fun makeStubSpec(dataPointType: String) =
+    private fun makeDataPointTypeSpecification(dataPointType: String) =
         DataPointTypeSpecification(
             dataPointType = IdWithRef(id = dataPointType, ref = ""),
             name = dataPointType,
@@ -102,8 +102,8 @@ class DataPointCalculatorTest {
             )
         doReturn(
             mapOf(
-                sourceTypeA to makeStubSpec(sourceTypeA),
-                sourceTypeB to makeStubSpec(sourceTypeB),
+                sourceTypeA to makeDataPointTypeSpecification(sourceTypeA),
+                sourceTypeB to makeDataPointTypeSpecification(sourceTypeB),
             ),
         ).whenever(specificationService).getDataPointSpecifications(any())
     }
