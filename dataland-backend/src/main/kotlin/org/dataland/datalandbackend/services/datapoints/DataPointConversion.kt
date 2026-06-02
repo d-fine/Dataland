@@ -147,6 +147,7 @@ enum class DataPointConversion(
      * Applies this conversion strategy to merge [inputs] into a single derived data point of [targetType].
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
      * @return the derived data point produced by this strategy
      */
     abstract fun convert(
@@ -170,6 +171,8 @@ enum class DataPointConversion(
 
 /**
  * Merges the given [QualityOptions] into a single entry, returning the lowest quality among them.
+ * @param inputs the quality values to merge
+ * @return the lowest quality value among the inputs
  */
 internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? {
     val qualityOrder =
@@ -182,6 +185,8 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
 
 /**
  * Merges the given list of [ExtendedDocumentReference] into a single reference.
+ * @param inputs the document references to merge
+ * @return the reference with the smallest file reference, or null if no references are provided
  */
 internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? {
     if (inputs.isEmpty()) {
@@ -191,7 +196,11 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
 }
 
 /**
- * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it
+ * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it.
+ * @param inputs the uploaded data points used as calculation inputs
+ * @param specs the data point type specifications used to resolve input display names
+ * @param method the name of the conversion method used
+ * @return a generated comment describing the calculation inputs and method
  */
 internal fun createComment(
     inputs: Collection<UploadedDataPoint>,
@@ -205,6 +214,11 @@ internal fun createComment(
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].
+ * @param inputs the source data points to be converted
+ * @param targetType the data point type assigned to the resulting data point
+ * @param method the textual identifier of the conversion strategy
+ * @param specs the data point type specifications used during conversion
+ * @return the derived data point produced by the resolved strategy
  */
 fun applyTransformation(
     inputs: Collection<UploadedDataPoint>,
