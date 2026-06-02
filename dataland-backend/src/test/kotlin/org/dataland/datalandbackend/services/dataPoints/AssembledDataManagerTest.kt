@@ -36,6 +36,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
@@ -120,14 +121,18 @@ class AssembledDataManagerTest {
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
-    private fun makeStubSpec(dataPointType: String) =
-        DataPointTypeSpecification(
-            dataPointType = IdWithRef(id = dataPointType, ref = ""),
-            name = dataPointType,
-            businessDefinition = "",
-            dataPointBaseType = IdWithRef(id = "extendedDecimal", ref = ""),
-            usedBy = emptyList(),
-        )
+    private fun makeStubSpec(
+        dataPointType: String,
+        dataPointBaseType: String = "extendedDecimal",
+        calculationRules: List<CalculationRule>? = null,
+    ) = DataPointTypeSpecification(
+        dataPointType = IdWithRef(id = dataPointType, ref = ""),
+        name = dataPointType,
+        businessDefinition = "",
+        dataPointBaseType = IdWithRef(id = dataPointBaseType, ref = ""),
+        usedBy = emptyList(),
+        calculationRules = calculationRules,
+    )
 
     @BeforeEach
     fun resetMocks() {
@@ -242,7 +247,6 @@ class AssembledDataManagerTest {
         val dataPointMap = mapOf(dataPointType to dataPointId)
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)
-        val dataPointDimensions = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
         setMockData(dataPointMap, dataContentMap)
         doReturn(listOf(dataPointId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
 
@@ -311,7 +315,6 @@ class AssembledDataManagerTest {
         val dataPointSpec = TestResourceFileReader.getKotlinObject<DataPointTypeSpecification>(calculatedDataPointSpec)
         val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
-        val dataPointDimensions = BasicDataPointDimensions(companyId, resultType, reportingPeriod)
         doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
         setMockData(dataPointMap, dataContentMap)
