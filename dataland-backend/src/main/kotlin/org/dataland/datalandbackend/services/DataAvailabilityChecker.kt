@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
-import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
@@ -162,36 +161,6 @@ class DataAvailabilityChecker
                 }
             }
         }
-
-        /**
-         * Retrieves all active data point IDs for each given set of dataset dimensions.
-         *
-         * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
-         * lookup across all requested data point dimensions.
-         * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
-         * @return a map with the same dataset-dimension keys and the viewable data point IDs for each dimension
-         */
-        fun <T : DatasetDimensions> getViewableDataPointIds(
-            dataPointDimensionsByDatasetDimensions: Map<T, List<BasicDataPointDimensions>>,
-        ): Map<T, List<String>> =
-            getViewableDataPointMetaData(dataPointDimensionsByDatasetDimensions)
-                .mapValues { (_, metaData) -> metaData.map { it.dataPointId } }
-
-        /**
-         * Retrieves all active data point dimensions that correspond to the data point dimensions provided.
-         *
-         * Only returns dimensions if at least one data point is not an ignorable field.
-         * @param dataDimensions the list of data point dimensions to get the viewable dimensions for
-         * @return the viewable data point dimensions corresponding to the input
-         */
-        fun getViewableDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>): List<DataPointDimensions> =
-            getViewableDataPointMetaData(dataDimensions).map {
-                BasicDataPointDimensions(
-                    companyId = it.companyId,
-                    dataPointType = it.dataPointType,
-                    reportingPeriod = it.reportingPeriod,
-                )
-            }
 
         /** Returns most recent data point meta information entities.
          *
