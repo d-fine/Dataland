@@ -15,7 +15,7 @@ import org.dataland.datalandspecification.specifications.CalculationRule
 object FieldCalculationParser {
     private val rulePattern =
         Regex(
-            """"?(?<method>[A-Za-z][A-Za-z0-9 _-]*)"?\s*:\s*\[(?<inputs>[^\[\]]*)\]""",
+            """"?(?<method>[A-Za-z][A-Za-z0-9 _-]*)"?\s*:\s*\[(?<inputs>[^\[\]]*)]""",
         )
 
     /**
