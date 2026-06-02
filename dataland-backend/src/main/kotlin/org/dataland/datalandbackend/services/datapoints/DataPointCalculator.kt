@@ -1,8 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.DataDimensionFilter
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
@@ -43,8 +41,8 @@ class DataPointCalculator
         private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> =
             dataPoints.filter { uploadedDataPoint ->
                 try {
-                    val castedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(uploadedDataPoint.dataPoint)
-                    castedDataPoint.value != null
+                    val valueNode = defaultObjectMapper.readTree(uploadedDataPoint.dataPoint).get("value")
+                    valueNode != null && !valueNode.isNull
                 } catch (_: Exception) {
                     // Skipping data point as it cannot be cast into an extended data point
                     false
