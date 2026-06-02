@@ -41,7 +41,7 @@ class DataDeliveryService
                     .associateWith { framework ->
                         dataCompositionService.getRelevantDataPointTypes(framework)
                     }
-            val relevantDimensionsByDataDimension =
+            val relevantDimensions =
                 dataDimensions.associateWith { dataDimension ->
                     dataDimension.toBasicDataPointDimensions(
                         relevantDataPointTypes.getValue(dataDimension.framework),
@@ -49,7 +49,7 @@ class DataDeliveryService
                 }
             val deliverableDataPointMetaData =
                 dataAvailabilityChecker
-                    .getViewableDataPointMetaData(relevantDimensionsByDataDimension)
+                    .getViewableDataPointMetaData(relevantDimensions)
                     .filterValues { it.isNotEmpty() }
             val requiredData =
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
