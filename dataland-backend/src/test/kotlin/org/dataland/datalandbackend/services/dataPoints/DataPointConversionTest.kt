@@ -334,7 +334,7 @@ class DataPointConversionTest {
                     currencySpecs,
                 ).dataPoint,
             )
-        assertBigDecimalEquals("50.0000000000", result.value)
+        assertBigDecimalEquals("50", result.value)
         assertEquals("EUR", result.currency)
     }
 
