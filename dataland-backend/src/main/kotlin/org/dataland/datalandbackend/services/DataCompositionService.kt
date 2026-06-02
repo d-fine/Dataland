@@ -82,6 +82,7 @@ class DataCompositionService
 
         /**
          * Returns the calculation rules available for each of the given data point types.
+         *
          * Types whose specification declares no calculation rules are omitted from the result.
          * @param dataPointTypes the data point types to look up
          * @return a map from data point type to its declared calculation rules

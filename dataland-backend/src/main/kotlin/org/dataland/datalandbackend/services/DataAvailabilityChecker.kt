@@ -102,12 +102,12 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves all non-available data point types from a given list for a specific [reportingPeriod] and [companyId]
+         *
          * @param dataPointTypes the list of data point types to check
          * @param reportingPeriod the fixed value of the reporting period
          * @param companyId the fixed value of the company ID
          * @return the subset of unavailable data point type from the input list
          */
-
         fun getMissingDataPointTypes(
             dataPointTypes: Collection<DataPointType>,
             reportingPeriod: String,
@@ -126,10 +126,11 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
-         * Only returns IDs if at least one data point is not an ignorable fields.
-         * @param dataDimensions the list of data point dimensions to get the data point IDs for
-         * @return a list of data point IDs corresponding to the viewable data points of the input
+         * Retrieves all active data point metadata that correspond to the data point dimensions provided.
+         *
+         * Only returns metadata if at least one data point is not an ignorable field.
+         * @param dataDimensions the list of data point dimensions to get the metadata for
+         * @return the metadata corresponding to the viewable data points of the input
          */
         fun getViewableDataPointMetaData(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
             val metaData = getMetaDataOfActiveDataPoints(dataDimensions)
@@ -142,7 +143,8 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves all active data point IDs that correspond to the data point dimensions provided.
-         * Only returns IDs if at least one data point is not an ignorable fields.
+         *
+         * Only returns IDs if at least one data point is not an ignorable field.
          * @param dataDimensions the list of data point dimensions to get the data point IDs for
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */
@@ -151,6 +153,7 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves all active data point metadata for each given set of dataset dimensions.
+         *
          * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
          * lookup across all requested data point dimensions.
          * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
@@ -185,6 +188,7 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves all active data point IDs for each given set of dataset dimensions.
+         *
          * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
          * lookup across all requested data point dimensions.
          * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
@@ -198,9 +202,10 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves all active data point IDs that correspond to the data point dimensions provided.
-         * Only returns IDs if at least one data point is not an ignorable fields.
-         * @param dataDimensions the list of data point dimensions to get the data point IDs for
-         * @return a list of data point IDs corresponding to the viewable data points of the input
+         *
+         * Only returns dimensions if at least one data point is not an ignorable field.
+         * @param dataDimensions the list of data point dimensions to get the viewable dimensions for
+         * @return the viewable data point dimensions corresponding to the input
          */
         fun getViewableDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>): List<DataPointDimensions> =
             getViewableDataPointMetaData(dataDimensions).map {

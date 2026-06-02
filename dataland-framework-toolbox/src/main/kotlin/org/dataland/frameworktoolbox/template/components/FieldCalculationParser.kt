@@ -20,7 +20,10 @@ object FieldCalculationParser {
 
     /**
      * Parse the raw value of the "Field Calculation" column into a list of calculation rules.
+     *
      * Returns null if the input is null or blank.
+     * @param rawValue raw cell content from the "Field Calculation" column
+     * @return parsed calculation rules, or null if the input is null or blank
      */
     fun parse(rawValue: String?): List<CalculationRule>? {
         if (rawValue.isNullOrBlank()) return null

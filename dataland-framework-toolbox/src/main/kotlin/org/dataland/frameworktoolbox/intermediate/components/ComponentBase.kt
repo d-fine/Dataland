@@ -124,6 +124,7 @@ open class ComponentBase(
 
     /**
      * Calculation rules describing how this data point can be derived from other data points.
+     *
      * `null` indicates that no calculation rules are defined.
      */
     var calculationRules: List<CalculationRule>? = null

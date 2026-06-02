@@ -13,7 +13,6 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
-// TODO: is this a sensible default?
 private const val CALCULATION_SCALE = 10
 private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
 private val ONE_HUNDRED = BigDecimal("100")
@@ -21,6 +20,7 @@ private const val EXTENDED_CURRENCY_BASE_TYPE = "extendedCurrency"
 
 /**
  * Closed set of strategies for deriving a data point from a collection of other data points.
+ *
  * Variants are dispatched by their [id] via [byId].
  */
 enum class DataPointConversion(
@@ -226,6 +226,7 @@ enum class DataPointConversion(
 
     /**
      * Applies this conversion strategy to merge [inputs] into a single derived data point of [targetType].
+     *
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -239,6 +240,7 @@ enum class DataPointConversion(
 
     /**
      * Validates that [inputs] satisfy this conversion strategy's cardinality and value constraints.
+     *
      * @param inputs the deserialized data points to validate before conversion
      * @throws IllegalArgumentException if the inputs do not satisfy this strategy's requirements
      */
@@ -247,6 +249,7 @@ enum class DataPointConversion(
     companion object {
         /**
          * Resolves the [DataPointConversion] whose [id] matches the given string.
+         *
          * @param id the textual identifier of the conversion strategy
          * @return the matching [DataPointConversion]
          * @throws IllegalArgumentException if no variant has the given [id]
@@ -259,6 +262,7 @@ enum class DataPointConversion(
 
 /**
  * Checks whether [dataPointType] has the extended currency base type in [specs].
+ *
  * @param dataPointType the data point type to inspect
  * @param specs the data point type specifications keyed by type
  * @return true if the type is specified as an extended currency data point
@@ -270,6 +274,7 @@ private fun isCurrencyDataPoint(
 
 /**
  * Returns the currency set on [dataPoint].
+ *
  * @param dataPoint the currency data point to inspect
  * @return the non-null currency of the data point
  * @throws IllegalArgumentException if [dataPoint] has no currency
@@ -281,6 +286,7 @@ private fun getCurrency(dataPoint: ExtendedCurrencyDataPoint): String {
 
 /**
  * Returns the shared currency used by all [dataPoints].
+ *
  * @param dataPoints the currency data points to inspect
  * @return the single currency used by all given data points
  * @throws IllegalArgumentException if not all data points have the same non-null currency
@@ -293,6 +299,7 @@ private fun getCommonCurrency(dataPoints: Collection<ExtendedCurrencyDataPoint>)
 
 /**
  * Deserializes calculation inputs where the first input is a currency numerator and the remaining inputs are numeric values.
+ *
  * @param inputs the uploaded data points to deserialize
  * @return the deserialized calculation inputs in their original order
  */
@@ -309,6 +316,7 @@ private fun deserializeCurrencyNumeratorCalculationInputs(
 
 /**
  * Wraps [calculatedDataPoint] in an [UploadedDataPoint] using metadata from the first source input.
+ *
  * @param inputs the source inputs providing reporting period and company ID
  * @param targetType the data point type assigned to the calculated data point
  * @param calculatedDataPoint the calculated data point object to serialize
@@ -328,6 +336,7 @@ private fun createUploadedDataPoint(
 
 /**
  * Merges the given [QualityOptions] into a single entry, returning the lowest quality among them.
+ *
  * @param inputs the quality values to merge
  * @return the lowest quality value among the inputs
  */
@@ -342,6 +351,7 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
 
 /**
  * Merges the given list of [ExtendedDocumentReference] into a single reference.
+ *
  * @param inputs the document references to merge
  * @return the reference with the smallest file reference, or null if no references are provided
  */
@@ -354,6 +364,7 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
 
 /**
  * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it.
+ *
  * @param inputs the uploaded data points used as calculation inputs
  * @param specs the data point type specifications used to resolve input display names
  * @param method the name of the conversion method used
@@ -371,6 +382,7 @@ internal fun createComment(
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].
+ *
  * @param inputs the source data points to be converted
  * @param targetType the data point type assigned to the resulting data point
  * @param method the textual identifier of the conversion strategy

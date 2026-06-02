@@ -145,6 +145,7 @@ class SpecificationService
 
         /**
          * Returns the specifications for the given data point types.
+         *
          * Specifications not yet present in the in-memory cache are fetched from the specification service and cached for future calls.
          * @param dataPointTypes the data point types whose specifications should be retrieved
          * @return a map from each requested data point type to its specification

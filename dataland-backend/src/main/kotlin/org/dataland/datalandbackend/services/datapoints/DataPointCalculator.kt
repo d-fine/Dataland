@@ -35,6 +35,7 @@ class DataPointCalculator
 
         /**
          * Filters out uploaded data points whose serialized extended data point has a null value.
+         *
          * Data points that cannot be parsed as extended data points are skipped.
          * @param dataPoints uploaded data points to inspect
          * @return all parseable uploaded data points with non-null values
@@ -56,6 +57,7 @@ class DataPointCalculator
 
         /**
          * Retrieves all available source data points for the requested data point types and groups them by dataset dimension.
+         *
          * Source data points without values are omitted before grouping.
          * @param dataPointTypesByDatasetDimension source data point types required for each dataset dimension
          * @param correlationId correlation id propagated to internal storage reads
@@ -90,9 +92,14 @@ class DataPointCalculator
 
         /**
          * Attempts to calculate data points for the fixed [reportingPeriod] and [companyId].
+         *
          * [potentialCalculations] contains the target data point types and their candidate calculation rules.
          * [allSourceData] must contain only source data for the same company and reporting period.
          * If multiple calculation rules are possible, the first one with all required sources available is used.
+         * @param potentialCalculations target data point types and their candidate calculation rules
+         * @param allSourceData source data points available for the fixed company and reporting period
+         * @param companyId company id shared by the target data points to calculate
+         * @param reportingPeriod reporting period shared by the target data points to calculate
          * @return A list of all calculated data points (is empty if no calculation was possible)
          */
         private fun calculateDataPoints(
@@ -115,6 +122,7 @@ class DataPointCalculator
 
         /**
          * Applies the first available calculation rule for one target data point type.
+         *
          * Rules are evaluated in their given order; rules with missing inputs or failed calculations are skipped.
          * @param dataPointType target data point type to calculate
          * @param calculationRules candidate rules for the target data point type
@@ -151,6 +159,7 @@ class DataPointCalculator
 
         /**
          * Calculates one data point from a rule and converts expected calculation failures into null.
+         *
          * @param calculationRule calculation rule to apply
          * @param dataPointType target data point type used for logging
          * @param allSourceDataByType available source data points by data point type
@@ -186,6 +195,7 @@ class DataPointCalculator
 
         /**
          * Applies the named transformation method to ordered source data points.
+         *
          * Required source and target data point specifications are loaded before transformation.
          * @param inputs ordered source data points for the transformation
          * @param method calculation method name
@@ -209,6 +219,7 @@ class DataPointCalculator
 
         /**
          * Derives the missing data points for each of the given dataset dimensions and returns them grouped per dimension.
+         *
          * For every dimension only the data point types that are not already available are calculated;
          * dimensions for which nothing could be derived are omitted from the result.
          * @param datasetDimensions the dataset dimensions for which calculated data should be produced
@@ -337,6 +348,7 @@ class DataPointCalculator
 
         /**
          * Returns source dimensions for all company/reporting-period groups where the given rule is fully satisfiable.
+         *
          * @param calculationRule calculation rule whose inputs must be active
          * @param activeSourceDataPointDimensionsByPeriod active source dimensions grouped by base dimensions
          * @return active source dimensions that satisfy the rule
