@@ -40,20 +40,16 @@ class DataPointCalculator
          * @param dataPoints uploaded data points to inspect
          * @return all parseable uploaded data points with non-null values
          */
-        private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> {
-            val result = mutableListOf<UploadedDataPoint>()
-            dataPoints.forEach { uploadedDataPoint ->
+        private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> =
+            dataPoints.filter { uploadedDataPoint ->
                 try {
                     val castedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(uploadedDataPoint.dataPoint)
-                    if (castedDataPoint.value != null) {
-                        result.add(uploadedDataPoint)
-                    }
+                    castedDataPoint.value != null
                 } catch (_: Exception) {
                     // Skipping data point as it cannot be cast into an extended data point
+                    false
                 }
             }
-            return result
-        }
 
         /**
          * Retrieves all available source data points for the requested data point types and groups them by dataset dimension.
@@ -77,7 +73,6 @@ class DataPointCalculator
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allAvailableIds, correlationId = correlationId)
             val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
-            val datasetDimensions = dataPointTypes.keys
             val sourceData =
                 allStoredDataPointsWithValues.groupBy {
                     BasicBaseDimensions(
@@ -85,7 +80,7 @@ class DataPointCalculator
                         reportingPeriod = it.reportingPeriod,
                     )
                 }
-            return datasetDimensions.associateWith { datasetDimension ->
+            return dataPointTypes.keys.associateWith { datasetDimension ->
                 sourceData.getOrDefault(datasetDimension.toBaseDimensions(), emptyList())
             }
         }
