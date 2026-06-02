@@ -223,22 +223,21 @@ class DataPointCalculator
          * For every dimension only the data point types that are not already available are calculated;
          * dimensions for which nothing could be derived are omitted from the result.
          * @param datasetDimensions the dataset dimensions for which calculated data should be produced
-         * @param deliverableDataPointDimensions already deliverable data point dimensions by dataset dimension
+         * @param deliverableDataPointTypes already deliverable data point types by dataset dimension
          * @param correlationId correlation id propagated to downstream calls for tracing
          * @return a map from each dataset dimension to the list of newly calculated data points
          */
         fun getCalculatedData(
             datasetDimensions: Collection<BasicDatasetDimensions>,
-            deliverableDataPointDimensions: Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>,
+            deliverableDataPointTypes: Map<BasicDatasetDimensions, Collection<DataPointType>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, List<UploadedDataPoint>> {
             val missingDataPointTypesByDatasetDimension =
                 datasetDimensions.associateWith { datasetDimensions ->
                     val relevantTypes = dataCompositionService.getRelevantDataPointTypes(datasetDimensions.framework)
                     val availableTypes =
-                        deliverableDataPointDimensions
+                        deliverableDataPointTypes
                             .getOrDefault(datasetDimensions, emptyList())
-                            .map { it.dataPointType }
                             .toSet()
                     relevantTypes - availableTypes
                 }

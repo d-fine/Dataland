@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -55,21 +54,17 @@ class DataDeliveryService
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
                     metaData.map { it.dataPointId }
                 }
-            val deliverableDataPointDimensions =
+            val deliverableDataPointTypes =
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
                     metaData.map {
-                        BasicDataPointDimensions(
-                            companyId = it.companyId,
-                            dataPointType = it.dataPointType,
-                            reportingPeriod = it.reportingPeriod,
-                        )
+                        it.dataPointType
                     }
                 }
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
                     datasetDimensions = dataDimensions,
                     correlationId = correlationId,
-                    deliverableDataPointDimensions = deliverableDataPointDimensions,
+                    deliverableDataPointTypes = deliverableDataPointTypes,
                 )
             return assembleDatasetsFromDataPointIds(requiredDataPointIds, calculatedData, correlationId)
         }
@@ -130,14 +125,10 @@ class DataDeliveryService
                         reportingPeriod = dim.reportingPeriod,
                     )
                 }
-            val deliverableDataPointDimensions =
+            val deliverableDataPointTypes =
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
                     metaData.map {
-                        BasicDataPointDimensions(
-                            companyId = it.companyId,
-                            dataPointType = it.dataPointType,
-                            reportingPeriod = it.reportingPeriod,
-                        )
+                        it.dataPointType
                     }
                 }
 
@@ -145,7 +136,7 @@ class DataDeliveryService
                 dataPointCalculator.getCalculatedData(
                     datasetDimensions = deliverableDataPointMetaData.keys,
                     correlationId = correlationId,
-                    deliverableDataPointDimensions = deliverableDataPointDimensions,
+                    deliverableDataPointTypes = deliverableDataPointTypes,
                 )
 
             return assembleDatasetsFromDataPointIds(
