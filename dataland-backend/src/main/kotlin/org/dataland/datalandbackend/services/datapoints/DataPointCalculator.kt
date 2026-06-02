@@ -33,11 +33,16 @@ class DataPointCalculator
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        /**
+         * Filters out uploaded data points whose serialized extended data point has a null value.
+         * Data points that cannot be parsed as extended data points are skipped.
+         * @param dataPoints uploaded data points to inspect
+         * @return all parseable uploaded data points with non-null values
+         */
         private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> {
             val result = mutableListOf<UploadedDataPoint>()
             dataPoints.forEach { uploadedDataPoint ->
                 try {
-                    // Cast to Any? since the value can be of any type and we only want to check for nullability here, the actual type is not relevant
                     val castedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(uploadedDataPoint.dataPoint)
                     if (castedDataPoint.value != null) {
                         result.add(uploadedDataPoint)
@@ -49,6 +54,13 @@ class DataPointCalculator
             return result
         }
 
+        /**
+         * Retrieves all available source data points for the requested data point types and groups them by dataset dimension.
+         * Source data points without values are omitted before grouping.
+         * @param dataPointTypesByDatasetDimension source data point types required for each dataset dimension
+         * @param correlationId correlation id propagated to internal storage reads
+         * @return available source data points grouped by their requested dataset dimensions
+         */
         private fun getAvailableSourceDataByDatasetDimension(
             dataPointTypesByDatasetDimension: Map<BasicDatasetDimensions, Collection<DataPointType>>,
             correlationId: String,
@@ -90,46 +102,96 @@ class DataPointCalculator
             reportingPeriod: String,
         ): List<UploadedDataPoint> {
             val allSourceDataByType = allSourceData.associateBy { it.dataPointType }
-            val allAvailableSourceTypes = allSourceDataByType.keys
-            val calculatedDataPoints = mutableListOf<UploadedDataPoint>()
-            potentialCalculations.forEach potentialCalculationLoop@{ (dataPointType, calculationRules) ->
-                calculationRules.forEach calculationRulesLoop@{ calculationRule ->
-                    if (allAvailableSourceTypes.containsAll(calculationRule.inputs)) {
-                        val targetDimensions =
-                            BasicDataPointDimensions(
-                                companyId = companyId,
-                                dataPointType = dataPointType,
-                                reportingPeriod = reportingPeriod,
-                            )
-                        val orderedInputs =
-                            calculationRule.inputs.map { sourceType ->
-                                allSourceDataByType.getValue(sourceType)
-                            }
-                        val calculatedDataPoint =
-                            try {
-                                calculateSingleDataPoint(
-                                    inputs = orderedInputs,
-                                    method = calculationRule.calculationMethod,
-                                    dataPointDimensions = targetDimensions,
-                                )
-                            } catch (exception: IllegalArgumentException) {
-                                logger.error(
-                                    "Skipping calculation rule for data point type $dataPointType, companyId $companyId, " +
-                                        "reportingPeriod $reportingPeriod, method ${calculationRule.calculationMethod}, " +
-                                        "inputs ${calculationRule.inputs}.",
-                                    exception,
-                                )
-                                return@calculationRulesLoop
-                            }
-                        // Rule was successfully applied, add the calculated data point to the result and do not attempt further rules for this type
-                        calculatedDataPoints.add(calculatedDataPoint)
-                        return@potentialCalculationLoop
-                    }
-                }
+            return potentialCalculations.mapNotNull { (dataPointType, calculationRules) ->
+                calculateFirstAvailableDataPoint(
+                    dataPointType = dataPointType,
+                    calculationRules = calculationRules,
+                    allSourceDataByType = allSourceDataByType,
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
+                )
             }
-            return calculatedDataPoints
         }
 
+        /**
+         * Applies the first available calculation rule for one target data point type.
+         * Rules are evaluated in their given order; rules with missing inputs or failed calculations are skipped.
+         * @param dataPointType target data point type to calculate
+         * @param calculationRules candidate rules for the target data point type
+         * @param allSourceDataByType available source data points by data point type
+         * @param companyId company id of the target data point
+         * @param reportingPeriod reporting period of the target data point
+         * @return the first successfully calculated data point, or null if no rule can be applied
+         */
+        private fun calculateFirstAvailableDataPoint(
+            dataPointType: DataPointType,
+            calculationRules: Collection<CalculationRule>,
+            allSourceDataByType: Map<DataPointType, UploadedDataPoint>,
+            companyId: String,
+            reportingPeriod: String,
+        ): UploadedDataPoint? {
+            val targetDimensions =
+                BasicDataPointDimensions(
+                    companyId = companyId,
+                    dataPointType = dataPointType,
+                    reportingPeriod = reportingPeriod,
+                )
+            return calculationRules.firstNotNullOfOrNull { calculationRule ->
+                if (!allSourceDataByType.keys.containsAll(calculationRule.inputs)) {
+                    return@firstNotNullOfOrNull null
+                }
+                tryCalculateSingleDataPoint(
+                    calculationRule = calculationRule,
+                    dataPointType = dataPointType,
+                    allSourceDataByType = allSourceDataByType,
+                    targetDimensions = targetDimensions,
+                )
+            }
+        }
+
+        /**
+         * Calculates one data point from a rule and converts expected calculation failures into null.
+         * @param calculationRule calculation rule to apply
+         * @param dataPointType target data point type used for logging
+         * @param allSourceDataByType available source data points by data point type
+         * @param targetDimensions dimensions of the data point to calculate
+         * @return calculated data point, or null if the rule cannot be applied
+         */
+        private fun tryCalculateSingleDataPoint(
+            calculationRule: CalculationRule,
+            dataPointType: DataPointType,
+            allSourceDataByType: Map<DataPointType, UploadedDataPoint>,
+            targetDimensions: BasicDataPointDimensions,
+        ): UploadedDataPoint? {
+            val orderedInputs =
+                calculationRule.inputs.map { sourceType ->
+                    allSourceDataByType.getValue(sourceType)
+                }
+            return try {
+                calculateSingleDataPoint(
+                    inputs = orderedInputs,
+                    method = calculationRule.calculationMethod,
+                    dataPointDimensions = targetDimensions,
+                )
+            } catch (exception: IllegalArgumentException) {
+                logger.error(
+                    "Skipping calculation rule for data point type $dataPointType, companyId ${targetDimensions.companyId}, " +
+                        "reportingPeriod ${targetDimensions.reportingPeriod}, method ${calculationRule.calculationMethod}, " +
+                        "inputs ${calculationRule.inputs}.",
+                    exception,
+                )
+                null
+            }
+        }
+
+        /**
+         * Applies the named transformation method to ordered source data points.
+         * Required source and target data point specifications are loaded before transformation.
+         * @param inputs ordered source data points for the transformation
+         * @param method calculation method name
+         * @param dataPointDimensions target data point dimensions
+         * @return the transformed uploaded data point
+         */
         private fun calculateSingleDataPoint(
             inputs: Collection<UploadedDataPoint>,
             method: String,
@@ -150,6 +212,7 @@ class DataPointCalculator
          * For every dimension only the data point types that are not already available are calculated;
          * dimensions for which nothing could be derived are omitted from the result.
          * @param datasetDimensions the dataset dimensions for which calculated data should be produced
+         * @param deliverableDataPointDimensions already deliverable data point dimensions by dataset dimension
          * @param correlationId correlation id propagated to downstream calls for tracing
          * @return a map from each dataset dimension to the list of newly calculated data points
          */
@@ -254,28 +317,44 @@ class DataPointCalculator
                         ),
                     ).map {
                         it.toBasicDataPointDimensions()
-                    }.groupBy { it.companyId to it.reportingPeriod }
+                    }.groupBy {
+                        BasicBaseDimensions(
+                            companyId = it.companyId,
+                            reportingPeriod = it.reportingPeriod,
+                        )
+                    }
 
-            val validAndActiveSourceDataPointDimensions = mutableSetOf<BasicDataPointDimensions>()
-            specs.forEach { (_, specification) ->
-                specification.calculationRules?.forEach { calculationRule ->
-                    activeSourceDataPointDimensionsByPeriod.forEach { (companyIdAndReportingPeriod, dimensions) ->
-                        if (dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)) {
-                            val (companyId, reportingPeriod) = companyIdAndReportingPeriod
-                            calculationRule.inputs.forEach {
-                                validAndActiveSourceDataPointDimensions.add(
-                                    BasicDataPointDimensions(
-                                        companyId = companyId,
-                                        dataPointType = it,
-                                        reportingPeriod = reportingPeriod,
-                                    ),
-                                )
-                            }
-                        }
+            return specs.values
+                .flatMap { specification ->
+                    specification.calculationRules.orEmpty()
+                }.flatMap { calculationRule ->
+                    getActiveSourceDataPointDimensionsForRule(
+                        calculationRule = calculationRule,
+                        activeSourceDataPointDimensionsByPeriod = activeSourceDataPointDimensionsByPeriod,
+                    )
+                }.toSet()
+        }
+
+        /**
+         * Returns source dimensions for all company/reporting-period groups where the given rule is fully satisfiable.
+         * @param calculationRule calculation rule whose inputs must be active
+         * @param activeSourceDataPointDimensionsByPeriod active source dimensions grouped by base dimensions
+         * @return active source dimensions that satisfy the rule
+         */
+        private fun getActiveSourceDataPointDimensionsForRule(
+            calculationRule: CalculationRule,
+            activeSourceDataPointDimensionsByPeriod: Map<BasicBaseDimensions, List<BasicDataPointDimensions>>,
+        ): List<BasicDataPointDimensions> =
+            activeSourceDataPointDimensionsByPeriod
+                .filter { (_, dimensions) ->
+                    dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)
+                }.flatMap { (baseDimensions, _) ->
+                    calculationRule.inputs.map { dataPointType ->
+                        BasicDataPointDimensions(
+                            companyId = baseDimensions.companyId,
+                            dataPointType = dataPointType,
+                            reportingPeriod = baseDimensions.reportingPeriod,
+                        )
                     }
                 }
-            }
-
-            return validAndActiveSourceDataPointDimensions
-        }
     }
