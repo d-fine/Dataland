@@ -85,7 +85,7 @@ class DataDeliveryService
         ): Map<BasicDatasetDimensions, String> {
             val results = mutableMapOf<BasicDatasetDimensions, String>()
 
-            val allRequiredIds = dataPointIds.values.flatten().toSet()
+            val allRequiredIds = dataPointIds.values.flatten()
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)

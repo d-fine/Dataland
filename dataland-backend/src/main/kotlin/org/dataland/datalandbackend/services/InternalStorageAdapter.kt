@@ -26,10 +26,10 @@ class InternalStorageAdapter
          * @return a map of data point IDs to the respective content
          */
         fun getDataPoints(
-            dataPointIds: Collection<DataPointId>,
+            dataPointIds: List<DataPointId>,
             correlationId: String,
         ): Map<DataPointId, UploadedDataPoint> {
-            val dataPointsFromInternalStorage = storageClient.selectBatchDataPointsByIds(correlationId, dataPointIds.toList())
+            val dataPointsFromInternalStorage = storageClient.selectBatchDataPointsByIds(correlationId, dataPointIds)
             return dataPointsFromInternalStorage.entries.associate { (dataPointId, storedDataPoint) ->
                 dataPointId to
                     UploadedDataPoint(
