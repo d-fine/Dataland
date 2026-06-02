@@ -81,9 +81,7 @@ class DataPointUtils
             val calculationSourceDataPointDimension = dataPointCalculator.getActiveSourceDataPointDimensions(relevantDataPoints, companyId)
             val calculationSourceReportingPeriods = calculationSourceDataPointDimension.map { it.reportingPeriod }.toSet()
             val relevantDataPointReportingPeriods = metaData.map { it.reportingPeriod }.toSet()
-            val allReportingPeriods = relevantDataPointReportingPeriods + calculationSourceReportingPeriods
-
-            return allReportingPeriods
+            return relevantDataPointReportingPeriods + calculationSourceReportingPeriods
         }
 
         /**
