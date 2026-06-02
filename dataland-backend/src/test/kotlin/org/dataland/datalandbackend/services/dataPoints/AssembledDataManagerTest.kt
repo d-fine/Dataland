@@ -137,7 +137,7 @@ class AssembledDataManagerTest {
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
 
-    private fun makeStubSpec(
+    private fun makeDataPointTypeSpecification(
         dataPointType: String,
         dataPointBaseType: String = "extendedDecimal",
         calculationRules: List<CalculationRule>? = null,
@@ -178,7 +178,7 @@ class AssembledDataManagerTest {
             if (dataPointType == framework) {
                 throw ClientException()
             }
-            makeStubSpec(dataPointType)
+            makeDataPointTypeSpecification(dataPointType)
         }.whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
         specificationService = SpecificationService(specificationClient)
