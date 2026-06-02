@@ -342,12 +342,8 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
  * @param inputs the document references to merge
  * @return the reference with the smallest file reference, or null if no references are provided
  */
-internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? {
-    if (inputs.isEmpty()) {
-        return null
-    }
-    return inputs.minByOrNull { it.fileReference }
-}
+internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? =
+    inputs.minByOrNull { it.fileReference }
 
 /**
  * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it.
