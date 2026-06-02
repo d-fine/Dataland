@@ -7,45 +7,43 @@ import org.dataland.datalandspecification.specifications.CalculationRule
  *
  * The expected format is a list of keyword/value pairs separated by semicolons, e.g.
  *
- * `"Sum": [extendedDecimalScope1GhgEmissionsInTonnes;extendedDecimalScope2GhgEmissionsInTonnes]; "Division": [example1,example2]`
+ * `"Sum": [extendedDecimalScope1GhgEmissionsInTonnes,extendedDecimalScope2GhgEmissionsInTonnes]; "Division": [example1,example2]`
  *
- * Each pair maps a calculation method (the keyword) to a bracketed list of input data point identifiers.
- * Inside the brackets, inputs may be separated by either a semicolon or a comma.
+ * Each pair maps a calculation method (the keyword) to a bracketed comma-separated list of input data point identifiers.
  */
 object FieldCalculationParser {
     private val rulePattern =
         Regex(
-            """"?(?<method>[A-Za-z][A-Za-z0-9 _-]*)"?\s*:\s*\[(?<inputs>[^\[\]]*)]""",
+            """\s*"?([A-Za-z][A-Za-z0-9 _-]*)"?\s*:\s*\[([^\[\];]*)]\s*""",
         )
 
     /**
      * Parse the raw value of the "Field Calculation" column into a list of calculation rules.
      *
-     * Returns null if the input is null or blank.
+     * Returns an empty list if the input is null or blank.
      * @param rawValue raw cell content from the "Field Calculation" column
-     * @return parsed calculation rules, or null if the input is null or blank
+     * @return parsed calculation rules, or an empty list if the input is null or blank
      */
-    fun parse(rawValue: String?): List<CalculationRule>? {
-        if (rawValue.isNullOrBlank()) return null
+    fun parse(rawValue: String?): List<CalculationRule> {
+        if (rawValue.isNullOrBlank()) return emptyList()
 
-        val matches = rulePattern.findAll(rawValue).toList()
-        require(matches.isNotEmpty()) {
-            "Field Calculation column has unexpected format: '$rawValue'. " +
-                "Expected one or more entries like '\"Sum\": [input1;input2]; \"Division\": [input3,input4]'."
-        }
+        return rawValue.split(';').map { rule ->
+            val match = rulePattern.matchEntire(rule)
+            require(match != null) {
+                "Field Calculation column has unexpected format: '$rawValue'. " +
+                    "Expected one or more entries like '\"Sum\": [input1,input2]; \"Division\": [input3,input4]'."
+            }
 
-        return matches.map { match ->
-            val method = match.groups["method"]!!.value.trim()
+            val (method, rawInputs) = match.destructured
             val inputs =
-                match.groups["inputs"]!!
-                    .value
-                    .split(';', ',')
+                rawInputs
+                    .split(',')
                     .map { it.trim() }
                     .filter { it.isNotEmpty() }
             require(inputs.isNotEmpty()) {
-                "Calculation rule '$method' in '$rawValue' has no inputs."
+                "Calculation rule '${method.trim()}' in '$rawValue' has no inputs."
             }
-            CalculationRule(inputs = inputs, calculationMethod = method)
+            CalculationRule(inputs = inputs, calculationMethod = method.trim())
         }
     }
 }

@@ -2,24 +2,23 @@ package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.datalandspecification.specifications.CalculationRule
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class FieldCalculationParserTest {
     @Test
-    fun `null input returns null`() {
-        assertNull(FieldCalculationParser.parse(null))
+    fun `null input returns empty list`() {
+        assertEquals(emptyList<CalculationRule>(), FieldCalculationParser.parse(null))
     }
 
     @Test
-    fun `blank input returns null`() {
-        assertNull(FieldCalculationParser.parse("   "))
+    fun `blank input returns empty list`() {
+        assertEquals(emptyList<CalculationRule>(), FieldCalculationParser.parse("   "))
     }
 
     @Test
     fun `parses a single sum rule`() {
-        val input = "\"Sum\": [a;b]"
+        val input = "\"Sum\": [a,b]"
         val expected = listOf(CalculationRule(inputs = listOf("a", "b"), calculationMethod = "Sum"))
         assertEquals(expected, FieldCalculationParser.parse(input))
     }
@@ -27,7 +26,7 @@ class FieldCalculationParserTest {
     @Test
     fun `parses multiple rules separated by semi-colons`() {
         val input =
-            "\"Sum\": [extendedDecimalScope1GhgEmissionsInTonnes;extendedDecimalScope2GhgEmissionsInTonnes]; " +
+            "\"Sum\": [extendedDecimalScope1GhgEmissionsInTonnes,extendedDecimalScope2GhgEmissionsInTonnes]; " +
                 "\"Division\": [example1,example2]"
         val expected =
             listOf(
@@ -49,7 +48,7 @@ class FieldCalculationParserTest {
 
     @Test
     fun `accepts unquoted method names`() {
-        val input = "Sum: [a;b]"
+        val input = "Sum: [a,b]"
         val expected = listOf(CalculationRule(inputs = listOf("a", "b"), calculationMethod = "Sum"))
         assertEquals(expected, FieldCalculationParser.parse(input))
     }
@@ -62,5 +61,10 @@ class FieldCalculationParserTest {
     @Test
     fun `throws on empty bracketed inputs`() {
         assertThrows<IllegalArgumentException> { FieldCalculationParser.parse("\"Sum\": []") }
+    }
+
+    @Test
+    fun `throws when inputs are separated by semicolons`() {
+        assertThrows<IllegalArgumentException> { FieldCalculationParser.parse("\"Sum\": [a;b]") }
     }
 }
