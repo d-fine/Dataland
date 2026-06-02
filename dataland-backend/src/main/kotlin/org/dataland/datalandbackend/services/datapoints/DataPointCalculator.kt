@@ -141,7 +141,8 @@ class DataPointCalculator
             method: String,
             dataPointDimensions: BasicDataPointDimensions,
         ): UploadedDataPoint {
-            val specs = specificationService.getDataPointSpecifications(inputs.map { it.dataPointType })
+            val dataPointTypes = inputs.map { it.dataPointType } + dataPointDimensions.dataPointType
+            val specs = specificationService.getDataPointSpecifications(dataPointTypes.distinct())
             return applyTransformation(
                 inputs = inputs,
                 targetType = dataPointDimensions.dataPointType,
