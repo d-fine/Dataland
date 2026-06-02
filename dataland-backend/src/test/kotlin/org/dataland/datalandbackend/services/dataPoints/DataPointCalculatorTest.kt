@@ -272,8 +272,7 @@ class DataPointCalculatorTest {
                 "id-second-a" to secondDataPointHalf,
                 "id-second-b" to secondDataPointOne,
             ),
-        )
-            .whenever(internalStorageAdapter)
+        ).whenever(internalStorageAdapter)
             .retrieveDataPointsFromInternalStorage(any(), any())
 
         val result =
