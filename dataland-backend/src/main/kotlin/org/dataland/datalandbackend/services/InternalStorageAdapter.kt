@@ -29,10 +29,9 @@ class InternalStorageAdapter
             dataPointIds: Collection<DataPointId>,
             correlationId: String,
         ): Map<DataPointId, UploadedDataPoint> {
-            val dataPoints = mutableMapOf<String, UploadedDataPoint>()
             val dataPointsFromInternalStorage = storageClient.selectBatchDataPointsByIds(correlationId, dataPointIds.toList())
-            dataPointsFromInternalStorage.forEach { (dataPointId, storedDataPoint) ->
-                dataPoints[dataPointId] =
+            return dataPointsFromInternalStorage.entries.associate { (dataPointId, storedDataPoint) ->
+                dataPointId to
                     UploadedDataPoint(
                         dataPoint = storedDataPoint.dataPoint,
                         dataPointType = storedDataPoint.dataPointType,
@@ -40,6 +39,5 @@ class InternalStorageAdapter
                         reportingPeriod = storedDataPoint.reportingPeriod,
                     )
             }
-            return dataPoints
         }
     }
