@@ -57,6 +57,7 @@ import kotlin.random.Random
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 internal class MetaDataControllerTest
+    @Suppress("LongParameterList")
     @Autowired
     constructor(
         private val objectMapper: ObjectMapper,
