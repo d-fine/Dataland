@@ -67,62 +67,37 @@ class DataAvailabilityChecker
                     .filterOutInvalidDataPointDimensions(dataDimensions)
                     .distinct()
 
-            return if (dimensionsToProcess.isNotEmpty()) {
-                val jsonPayload =
-                    objectMapper.writeValueAsString(
-                        dimensionsToProcess.map {
-                            mapOf(
-                                "c" to it.companyId,
-                                "d" to it.dataPointType,
-                                "r" to it.reportingPeriod,
-                            )
-                        },
-                    )
-                val queryToExecute =
-                    """
-                    WITH requested AS (
-                        SELECT DISTINCT c, d, r
-                        FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(c text, d text, r text)
-                    )
-                    SELECT m.*
-                    FROM requested dim
-                    JOIN data_point_meta_information m
-                        ON m.company_id = dim.c
-                        AND m.data_point_type = dim.d
-                        AND m.reporting_period = dim.r
-                    WHERE m.currently_active = true
-                    """
-                val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
-                query.setParameter("jsonPayload", jsonPayload)
-                query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
-            } else {
-                emptyList()
+            if (dimensionsToProcess.isEmpty()) {
+                return emptyList()
             }
-        }
 
-        /**
-         * Retrieves all non-available data point types from a given list for a specific [reportingPeriod] and [companyId]
-         *
-         * @param dataPointTypes the list of data point types to check
-         * @param reportingPeriod the fixed value of the reporting period
-         * @param companyId the fixed value of the company ID
-         * @return the subset of unavailable data point type from the input list
-         */
-        fun getMissingDataPointTypes(
-            dataPointTypes: Collection<DataPointType>,
-            reportingPeriod: String,
-            companyId: String,
-        ): Collection<DataPointType> {
-            val relevantDimensions =
-                dataPointTypes.map {
-                    BasicDataPointDimensions(
-                        companyId = companyId,
-                        reportingPeriod = reportingPeriod,
-                        dataPointType = it,
-                    )
-                }
-            val availableTypes = getMetaDataOfActiveDataPoints(relevantDimensions).map { it.dataPointType }
-            return dataPointTypes - availableTypes.toSet()
+            val jsonPayload =
+                objectMapper.writeValueAsString(
+                    dimensionsToProcess.map {
+                        mapOf(
+                            "c" to it.companyId,
+                            "d" to it.dataPointType,
+                            "r" to it.reportingPeriod,
+                        )
+                    },
+                )
+            val queryToExecute =
+                """
+                WITH requested AS (
+                    SELECT DISTINCT c, d, r
+                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(c text, d text, r text)
+                )
+                SELECT m.*
+                FROM requested dim
+                JOIN data_point_meta_information m
+                    ON m.company_id = dim.c
+                    AND m.data_point_type = dim.d
+                    AND m.reporting_period = dim.r
+                WHERE m.currently_active = true
+                """
+            val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
+            query.setParameter("jsonPayload", jsonPayload)
+            return query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
         }
 
         /**
