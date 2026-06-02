@@ -206,10 +206,7 @@ class DataPointConversionTest {
             )
 
         assertBigDecimalEquals(expectedValue, result.value)
-        assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
-        assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
-        assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
-        assert(result.dataSource?.publicationDate == firstDataPoint.dataSource?.publicationDate)
+        assertEquals(firstDataPoint.dataSource, result.dataSource)
     }
 
     @Test
