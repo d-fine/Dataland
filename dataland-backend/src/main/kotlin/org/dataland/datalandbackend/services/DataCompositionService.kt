@@ -90,13 +90,10 @@ class DataCompositionService
          * @param dataPointTypes the data point types to look up
          * @return a map from data point type to its declared calculation rules
          */
-        fun getAvailableCalculationRules(dataPointTypes: Collection<DataPointType>): Map<DataPointType, Collection<CalculationRule>> {
-            val availableRules = mutableMapOf<DataPointType, Collection<CalculationRule>>()
-            specificationService.getDataPointSpecifications(dataPointTypes.toList()).forEach { (dataPointType, specification) ->
-                if (specification.calculationRules.isNotEmpty()) {
-                    availableRules[dataPointType] = specification.calculationRules
-                }
-            }
-            return availableRules
-        }
+        fun getAvailableCalculationRules(dataPointTypes: List<DataPointType>): Map<DataPointType, List<CalculationRule>> =
+            specificationService
+                .getDataPointSpecifications(dataPointTypes)
+                .mapValues { (_, specification) ->
+                    specification.calculationRules
+                }.filterValues { it.isNotEmpty() }
     }
