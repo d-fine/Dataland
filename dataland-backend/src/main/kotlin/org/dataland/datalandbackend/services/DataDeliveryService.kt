@@ -136,9 +136,7 @@ class DataDeliveryService
 
             val deliverableDataPointIds =
                 deliverableDataPointMetaData
-                    .map { (datasetDimension, metaData) ->
-                        datasetDimension to metaData.map { it.dataPointId }
-                    }.toMap()
+                    .mapValues { (_, metaData) -> metaData.map { it.dataPointId } }
             val assembledDatasets =
                 assembleDatasetsFromDataPointIds(
                     dataPointIds = deliverableDataPointIds,
