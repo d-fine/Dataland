@@ -15,10 +15,14 @@ private data class RawDataPointType(
 )
 
 class CoveredCalculationRulesTest {
+    companion object {
+        private const val DATA_POINT_TYPES_PATH =
+            "../dataland-specification-service/src/main/resources/specifications/dataPointTypes"
+    }
+
     @Test
     fun `check that all calculation rules specified in the framework toolbox are also implemented`() {
-        val dataPointTypesFolder =
-            File("../dataland-specification-service/src/main/resources/specifications/dataPointTypes")
+        val dataPointTypesFolder = File(DATA_POINT_TYPES_PATH)
 
         val specifiedCalculationRules =
             dataPointTypesFolder
