@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -82,6 +83,17 @@ data class DataPointMetaInformationEntity(
         BasicDataDimensions(
             companyId = companyId,
             dataType = framework ?: dataPointType,
+            reportingPeriod = reportingPeriod,
+        )
+
+    /**
+     * Converts the entity into the basic data point dimension object
+     * @return a BasicDataPointDimensions object
+     */
+    fun toBasicDataPointDimensions(): BasicDataPointDimensions =
+        BasicDataPointDimensions(
+            companyId = companyId,
+            dataPointType = dataPointType,
             reportingPeriod = reportingPeriod,
         )
 }

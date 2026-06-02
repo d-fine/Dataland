@@ -55,15 +55,9 @@ class DataPointCalculator
         ): Map<BasicDatasetDimensions, Collection<UploadedDataPoint>> {
             val allDimensions =
                 dataPointTypesByDatasetDimension
-                    .map { (datasetDimension, dataPointTypes) ->
-                        dataPointTypes.map { dataPointType ->
-                            BasicDataPointDimensions(
-                                companyId = datasetDimension.companyId,
-                                reportingPeriod = datasetDimension.reportingPeriod,
-                                dataPointType = dataPointType,
-                            )
-                        }
-                    }.flatten()
+                    .flatMap { (datasetDimension, dataPointTypes) ->
+                        datasetDimension.toBasicDataPointDimensions(dataPointTypes)
+                    }
             val allAvailableIds = dataAvailabilityChecker.getViewableDataPointIds(allDimensions)
             val allStoredDataPoints =
                 internalStorageAdapter
@@ -259,11 +253,7 @@ class DataPointCalculator
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     ).map {
-                        BasicDataPointDimensions(
-                            companyId = it.companyId,
-                            dataPointType = it.dataPointType,
-                            reportingPeriod = it.reportingPeriod,
-                        )
+                        it.toBasicDataPointDimensions()
                     }.groupBy { it.companyId to it.reportingPeriod }
 
             val validAndActiveSourceDataPointDimensions = mutableSetOf<BasicDataPointDimensions>()
