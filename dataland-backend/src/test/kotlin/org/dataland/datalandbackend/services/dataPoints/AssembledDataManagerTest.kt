@@ -83,7 +83,7 @@ class AssembledDataManagerTest {
         "./json/frameworkTemplate/frameworkSpecificationWithCalculatedDataPoint.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
-    private val numericDataPoint = "./json/frameworkTemplate/numericDataPointWithExtendedDocumentReference.json"
+    private val numericDataPoint = "./json/dataPoints/numericDataPointHalf.json"
     private val calculatedDataPointSpec = "./json/specifications/dataPointWithCalculation.json"
 
     private val dataPointManager =
