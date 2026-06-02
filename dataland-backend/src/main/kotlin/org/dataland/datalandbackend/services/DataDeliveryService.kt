@@ -51,7 +51,7 @@ class DataDeliveryService
                 dataAvailabilityChecker
                     .getViewableDataPointMetaData(relevantDimensions)
                     .filterValues { it.isNotEmpty() }
-            val requiredData =
+            val requiredDataPointIds =
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
                     metaData.map { it.dataPointId }
                 }
@@ -71,7 +71,7 @@ class DataDeliveryService
                     correlationId = correlationId,
                     deliverableDataPointDimensions = deliverableDataPointDimensions,
                 )
-            return assembleDatasetsFromDataPointIds(requiredData, calculatedData, correlationId)
+            return assembleDatasetsFromDataPointIds(requiredDataPointIds, calculatedData, correlationId)
         }
 
         /**
