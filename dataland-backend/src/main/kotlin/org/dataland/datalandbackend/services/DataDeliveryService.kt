@@ -114,16 +114,11 @@ class DataDeliveryService
             framework: String,
             correlationId: String,
         ): List<PlainDataAndDimensions> {
-            // TODO Clean this up
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()
 
             val deliverableDataPointMetaData =
-                dataAvailabilityChecker.getLatestAvailableDataPointIds(companyIds, dataPointTypes).mapKeys { (dim, _) ->
-                    BasicDatasetDimensions(
-                        companyId = dim.companyId,
-                        framework = framework,
-                        reportingPeriod = dim.reportingPeriod,
-                    )
+                dataAvailabilityChecker.getLatestAvailableDataPointIds(companyIds, dataPointTypes).mapKeys {
+                    it.key.toBasicDatasetDimensions(framework)
                 }
             val deliverableDataPointTypes =
                 deliverableDataPointMetaData.mapValues { (_, metaData) ->
@@ -139,15 +134,18 @@ class DataDeliveryService
                     deliverableDataPointTypes = deliverableDataPointTypes,
                 )
 
-            return assembleDatasetsFromDataPointIds(
-                dataPointIds =
-                    deliverableDataPointMetaData
-                        .map { (datasetDimension, metaData) ->
-                            datasetDimension to metaData.map { it.dataPointId }
-                        }.toMap(),
-                calculatedData = calculatedData,
-                correlationId = correlationId,
-            ).map {
+            val deliverableDataPointIds =
+                deliverableDataPointMetaData
+                    .map { (datasetDimension, metaData) ->
+                        datasetDimension to metaData.map { it.dataPointId }
+                    }.toMap()
+            val assembledDatasets =
+                assembleDatasetsFromDataPointIds(
+                    dataPointIds = deliverableDataPointIds,
+                    calculatedData = calculatedData,
+                    correlationId = correlationId,
+                )
+            return assembledDatasets.map {
                 PlainDataAndDimensions(
                     dimensions = it.key,
                     data = it.value,
