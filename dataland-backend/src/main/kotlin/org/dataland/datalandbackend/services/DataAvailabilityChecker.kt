@@ -81,7 +81,7 @@ class DataAvailabilityChecker
                         )
                     },
                 )
-            val queryToExecute =
+            val query =
                 """
                 WITH requested AS (
                     SELECT DISTINCT company_id, data_point_type, reporting_period
@@ -95,9 +95,9 @@ class DataAvailabilityChecker
                     AND m.reporting_period = dim.reporting_period
                 WHERE m.currently_active = true
                 """
-            val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
-            query.setParameter("jsonPayload", jsonPayload)
-            return query.resultList.filterIsInstance<DataPointMetaInformationEntity>()
+            val nativeQuery = entityManager.createNativeQuery(query, DataPointMetaInformationEntity::class.java)
+            nativeQuery.setParameter("jsonPayload", jsonPayload)
+            return nativeQuery.resultList.filterIsInstance<DataPointMetaInformationEntity>()
         }
 
         /**
