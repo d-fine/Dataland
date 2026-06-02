@@ -31,6 +31,7 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
+         *
          * @param dataDimensions List of data dimensions to search for.
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
@@ -58,6 +59,7 @@ class DataAvailabilityChecker
 
         /**
          * Retrieves metadata of active data points that match the provided data point dimensions. Invalid dimensions are ignored.
+         *
          * @param dataDimensions List of data point dimensions to search for.
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
@@ -176,7 +178,7 @@ class DataAvailabilityChecker
                 .mapValues { (_, metaData) -> metaData.map { it.dataPointId } }
 
         /**
-         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
+         * Retrieves all active data point dimensions that correspond to the data point dimensions provided.
          *
          * Only returns dimensions if at least one data point is not an ignorable field.
          * @param dataDimensions the list of data point dimensions to get the viewable dimensions for
@@ -216,7 +218,7 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Returns most recent available data point IDs per company.
+         * Returns most recent available data point metadata per company.
          *
          * Retrieves the latest available data points for a collection of companies and set of data point types,
          * ignoring data points that are part of the exclusion list. For each company, all meta information items
@@ -226,7 +228,7 @@ class DataAvailabilityChecker
          *
          * @param companyIds the IDs of the companies
          * @param dataPointTypes the set of data point types to consider
-         * @return a map of company IDs, each associated with a list of IDs representing the latest available data points
+         * @return a map of company and reporting-period dimensions, each associated with the latest available data point metadata
          */
         fun getLatestAvailableDataPointIds(
             companyIds: Collection<String>,
