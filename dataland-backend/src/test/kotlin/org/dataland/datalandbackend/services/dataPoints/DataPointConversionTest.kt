@@ -156,6 +156,22 @@ class DataPointConversionTest {
             )
         }
 
+        @JvmStatic
+        fun provideNumericTransformationResults(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of(listOf("json/dataPoints/numericDataPointHalf.json", "json/dataPoints/numericDataPointOne.json"), "Sum", "1.5"),
+                Arguments.of(
+                    listOf("json/dataPoints/numericDataPointHalf.json", "json/dataPoints/numericDataPointOne.json"),
+                    "Division",
+                    "0.5",
+                ),
+                Arguments.of(
+                    listOf("json/dataPoints/numericDataPointHalf.json", "json/dataPoints/numericDataPointOne.json"),
+                    "DivisionByPercent",
+                    "50.0",
+                ),
+            )
+
         private fun createDummyUploadedDataPoint(dataPointType: String) =
             UploadedDataPoint(
                 dataPoint = "dummy",
@@ -165,20 +181,24 @@ class DataPointConversionTest {
             )
     }
 
-    @Test
-    fun `check that summation of data points works as expected`() {
-        val firstInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
-        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPointHalf)
-        val secondInput = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
-        val inputs = listOf(firstInput, secondInput)
+    @ParameterizedTest
+    @MethodSource("provideNumericTransformationResults")
+    fun `check that numeric transformations work as expected`(
+        inputFixturePaths: List<String>,
+        conversionMethod: String,
+        expectedValue: String,
+    ) {
+        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(inputFixturePaths.first())
+        val inputs =
+            inputFixturePaths.map { fixturePath ->
+                createUploadedDataPoint(TestResourceFileReader.getJsonString(fixturePath))
+            }
         val result =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
-                applyTransformation(
-                    inputs,
-                    "dummy", "Sum", dummySpecs,
-                ).dataPoint,
+                applyTransformation(inputs, "dummy", conversionMethod, dummySpecs).dataPoint,
             )
-        assertEquals(0, BigDecimal(1.5).compareTo(result.value))
+
+        assertEquals(0, BigDecimal(expectedValue).compareTo(result.value))
         assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
         assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
         assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
@@ -248,22 +268,6 @@ class DataPointConversionTest {
     }
 
     @Test
-    fun `check that division of data points works as expected`() {
-        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
-        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(numericDataPointHalf)
-        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
-        val result =
-            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
-                applyTransformation(listOf(numerator, denominator), "dummy", "Division", dummySpecs).dataPoint,
-            )
-        assertEquals(0, BigDecimal(0.5).compareTo(result.value))
-        assert(result.dataSource?.fileReference == firstDataPoint.dataSource?.fileReference)
-        assert(result.dataSource?.fileName == firstDataPoint.dataSource?.fileName)
-        assert(result.dataSource?.page == firstDataPoint.dataSource?.page)
-        assert(result.dataSource?.publicationDate == firstDataPoint.dataSource?.publicationDate)
-    }
-
-    @Test
     fun `check that division of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.DIVISION.convert(
@@ -303,17 +307,6 @@ class DataPointConversionTest {
                 dummySpecs,
             )
         }
-    }
-
-    @Test
-    fun `check that division by percent of data points works as expected`() {
-        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointHalf))
-        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
-        val result =
-            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(
-                applyTransformation(listOf(numerator, denominator), "dummy", "DivisionByPercent", dummySpecs).dataPoint,
-            )
-        assertEquals(0, BigDecimal(50.0).compareTo(result.value))
     }
 
     @Test
