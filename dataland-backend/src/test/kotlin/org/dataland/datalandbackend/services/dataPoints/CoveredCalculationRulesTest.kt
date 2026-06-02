@@ -4,18 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.hibernate.validator.internal.util.Contracts.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
 
-private data class RawCalculationRule(
-    val inputs: List<String>,
-    val calculationMethod: String,
-)
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 private data class RawDataPointType(
-    val calculationRules: List<RawCalculationRule>? = null,
+    val calculationRules: List<CalculationRule>? = null,
 )
 
 class CoveredCalculationRulesTest {
