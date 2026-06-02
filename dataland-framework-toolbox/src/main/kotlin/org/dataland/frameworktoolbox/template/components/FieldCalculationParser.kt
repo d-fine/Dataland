@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.datalandspecification.specifications.CalculationRule
 
-
 /**
  * Parses the value of the "Field Calculation" column of the framework template.
  *
