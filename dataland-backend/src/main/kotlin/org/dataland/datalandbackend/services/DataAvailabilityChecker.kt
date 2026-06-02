@@ -75,24 +75,24 @@ class DataAvailabilityChecker
                 objectMapper.writeValueAsString(
                     dimensionsToProcess.map {
                         mapOf(
-                            "c" to it.companyId,
-                            "d" to it.dataPointType,
-                            "r" to it.reportingPeriod,
+                            "company_id" to it.companyId,
+                            "data_point_type" to it.dataPointType,
+                            "reporting_period" to it.reportingPeriod,
                         )
                     },
                 )
             val queryToExecute =
                 """
                 WITH requested AS (
-                    SELECT DISTINCT c, d, r
-                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(c text, d text, r text)
+                    SELECT DISTINCT company_id, data_point_type, reporting_period
+                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(company_id text, data_point_type text, reporting_period text)
                 )
                 SELECT m.*
                 FROM requested dim
                 JOIN data_point_meta_information m
-                    ON m.company_id = dim.c
-                    AND m.data_point_type = dim.d
-                    AND m.reporting_period = dim.r
+                    ON m.company_id = dim.company_id
+                    AND m.data_point_type = dim.data_point_type
+                    AND m.reporting_period = dim.reporting_period
                 WHERE m.currently_active = true
                 """
             val query = entityManager.createNativeQuery(queryToExecute, DataPointMetaInformationEntity::class.java)
