@@ -79,7 +79,8 @@ class AssembledDataManagerTest {
 
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
-    private val inputCalculatedFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecificationCalculation.json"
+    private val inputCalculatedFrameworkSpecification =
+        "./json/frameworkTemplate/frameworkSpecificationWithCalculatedDataPoint.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
     private val numericDataPoint = "./json/frameworkTemplate/numericDataPointWithExtendedDocumentReference.json"
