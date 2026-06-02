@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.services.dataPoints
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.hibernate.validator.internal.util.Contracts.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -21,7 +21,6 @@ private data class RawDataPointType(
 class CoveredCalculationRulesTest {
     @Test
     fun `check that all calculation rules specified in the framework toolbox are also implemented`() {
-        val objectMapper = jacksonObjectMapper()
         val dataPointTypesFolder =
             File("../dataland-specification-service/src/main/resources/specifications/dataPointTypes")
 
@@ -30,7 +29,7 @@ class CoveredCalculationRulesTest {
                 .listFiles { f -> f.extension == "json" }
                 .orEmpty()
                 .flatMap { file ->
-                    objectMapper.readValue<RawDataPointType>(file).calculationRules.orEmpty()
+                    defaultObjectMapper.readValue<RawDataPointType>(file).calculationRules.orEmpty()
                 }.distinctBy { it.calculationMethod }
 
         val unimplementedRules =
