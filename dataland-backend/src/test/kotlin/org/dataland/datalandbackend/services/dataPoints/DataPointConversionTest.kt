@@ -40,6 +40,7 @@ class DataPointConversionTest {
                     businessDefinition = "dummy",
                     dataPointBaseType = dummyRef,
                     usedBy = emptyList(),
+                    calculationRules = emptyList(),
                 ),
         )
     private val currencySpecs =
@@ -52,6 +53,7 @@ class DataPointConversionTest {
                         businessDefinition = "dummy",
                         dataPointBaseType = currencyRef,
                         usedBy = emptyList(),
+                        calculationRules = emptyList(),
                     )
             )
 
@@ -133,6 +135,7 @@ class DataPointConversionTest {
                             businessDefinition = "dummy",
                             dataPointBaseType = dummyRef,
                             usedBy = emptyList(),
+                            calculationRules = emptyList(),
                         ),
                     "type2" to
                         DataPointTypeSpecification(
@@ -141,6 +144,7 @@ class DataPointConversionTest {
                             businessDefinition = "dummy",
                             dataPointBaseType = dummyRef,
                             usedBy = emptyList(),
+                            calculationRules = emptyList(),
                         ),
                 )
             return Stream.of(

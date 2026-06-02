@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestResourceFileReader
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
@@ -79,19 +78,10 @@ class DataPointCalculatorTest {
             businessDefinition = "",
             dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
             usedBy = emptyList(),
+            calculationRules = emptyList(),
         )
 
-    private fun makeDeliverableDataPointDimensions(
-        datasetDimensions: BasicDatasetDimensions,
-        vararg dataPointTypes: String,
-    ): List<BasicDataPointDimensions> =
-        dataPointTypes.map {
-            BasicDataPointDimensions(
-                companyId = datasetDimensions.companyId,
-                dataPointType = it,
-                reportingPeriod = datasetDimensions.reportingPeriod,
-            )
-        }
+    private fun makeDeliverableDataPointTypes(vararg dataPointTypes: String): List<String> = dataPointTypes.toList()
 
     @BeforeEach
     fun setUp() {
@@ -126,8 +116,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
 
@@ -157,8 +147,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA)),
                 correlationId = correlationId,
             )
 
@@ -187,8 +177,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA)),
                 correlationId = correlationId,
             )
 
@@ -220,8 +210,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
         assertTrue(result.isEmpty())
@@ -239,8 +229,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
 
@@ -278,10 +268,10 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions, secondDimensions),
-                deliverableDataPointDimensions =
+                deliverableDataPointTypes =
                     mapOf(
-                        datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB),
-                        secondDimensions to makeDeliverableDataPointDimensions(secondDimensions, sourceTypeA, sourceTypeB),
+                        datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
+                        secondDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
                     ),
                 correlationId = correlationId,
             )
@@ -315,10 +305,10 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions, secondDimensions),
-                deliverableDataPointDimensions =
+                deliverableDataPointTypes =
                     mapOf(
-                        datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB),
-                        secondDimensions to makeDeliverableDataPointDimensions(secondDimensions, sourceTypeA, sourceTypeB),
+                        datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
+                        secondDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
                     ),
                 correlationId = correlationId,
             )
@@ -351,8 +341,8 @@ class DataPointCalculatorTest {
         val result =
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointDimensions =
-                    mapOf(datasetDimensions to makeDeliverableDataPointDimensions(datasetDimensions, sourceTypeA, sourceTypeB)),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
         val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value

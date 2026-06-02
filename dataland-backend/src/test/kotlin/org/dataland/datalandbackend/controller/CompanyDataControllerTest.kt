@@ -313,6 +313,7 @@ internal class CompanyDataControllerTest(
                 businessDefinition = "",
                 dataPointBaseType = IdWithRef(id = "extendedDate", ref = ""),
                 usedBy = emptyList(),
+                calculationRules = emptyList(),
             )
         }.whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(

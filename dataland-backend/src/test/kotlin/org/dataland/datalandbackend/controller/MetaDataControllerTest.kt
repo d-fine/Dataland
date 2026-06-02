@@ -317,6 +317,7 @@ internal class MetaDataControllerTest
                     businessDefinition = "",
                     dataPointBaseType = IdWithRef(id = "extendedString", ref = ""),
                     usedBy = emptyList(),
+                    calculationRules = emptyList(),
                 )
             }.whenever(specificationClient).getDataPointTypeSpecification(any())
             addMetainformation()
