@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.DataPointId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

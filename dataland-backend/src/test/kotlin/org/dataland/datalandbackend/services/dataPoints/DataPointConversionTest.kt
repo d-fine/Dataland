@@ -7,13 +7,13 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
-import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
 import org.dataland.datalandbackend.services.datapoints.createComment
 import org.dataland.datalandbackend.services.datapoints.mergeDataSources
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
 import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef

@@ -6,12 +6,12 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
-import org.dataland.datalandbackend.services.DataPointType
 import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.slf4j.LoggerFactory

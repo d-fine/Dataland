@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
@@ -11,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
-
-// ToDo find better way of sharing typealiases
-typealias DataPointType = String
-typealias DataPointId = String
 
 /**
  * Service to determine the category of a given data type string, relevant constituents of datasets and similar tasks

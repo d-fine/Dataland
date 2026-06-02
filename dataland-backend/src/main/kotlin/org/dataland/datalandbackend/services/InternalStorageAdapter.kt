@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackendutils.model.DataPointId
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
