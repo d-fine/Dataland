@@ -74,10 +74,12 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
-                    val dataPoints = deserializeCurrencyNumeratorCalculationInputs(inputs)
+                    val numerator =
+                        defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
+                    val denominator =
+                        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
+                    val dataPoints = listOf(numerator, denominator)
                     checkRequirements(dataPoints)
-                    val numerator = dataPoints.first() as ExtendedCurrencyDataPoint
-                    val denominator = dataPoints[1] as ExtendedDataPoint<BigDecimal>
                     ExtendedCurrencyDataPoint(
                         value =
                             numerator.value!!.divide(
@@ -130,10 +132,12 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
-                    val dataPoints = deserializeCurrencyNumeratorCalculationInputs(inputs)
+                    val numerator =
+                        defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
+                    val denominator =
+                        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
+                    val dataPoints = listOf(numerator, denominator)
                     checkRequirements(dataPoints)
-                    val numerator = dataPoints.first() as ExtendedCurrencyDataPoint
-                    val denominator = dataPoints[1] as ExtendedDataPoint<BigDecimal>
                     val result =
                         numerator.value!!.multiply(ONE_HUNDRED).divide(
                             denominator.value!!,
@@ -296,23 +300,6 @@ private fun getCommonCurrency(dataPoints: Collection<ExtendedCurrencyDataPoint>)
     require(currencies.size == 1) { "Currency data points used in summation must all have the same currency." }
     return currencies.single()
 }
-
-/**
- * Deserializes calculation inputs where the first input is a currency numerator and the remaining inputs are numeric values.
- *
- * @param inputs the uploaded data points to deserialize
- * @return the deserialized calculation inputs in their original order
- */
-private fun deserializeCurrencyNumeratorCalculationInputs(
-    inputs: Collection<UploadedDataPoint>,
-): List<ExtendedDataPointInterface<BigDecimal>> =
-    inputs.mapIndexed { index, input ->
-        if (index == 0) {
-            defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(input.dataPoint)
-        } else {
-            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(input.dataPoint)
-        }
-    }
 
 /**
  * Wraps [calculatedDataPoint] in an [UploadedDataPoint] using metadata from the first source input.
