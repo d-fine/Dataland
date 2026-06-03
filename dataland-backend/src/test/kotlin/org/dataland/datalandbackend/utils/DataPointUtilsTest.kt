@@ -122,21 +122,15 @@ class DataPointUtilsTest {
     }
 
     @Test
-    fun `check that active data dimensions include direct and calculatable framework dimensions`() {
+    fun `check that active data dimensions include calculatable framework dimensions`() {
         val filter = DataDimensionFilter(companyIds = listOf(companyId), reportingPeriods = listOf("2024"))
-        doReturn(listOf(makeMetaData(directDataPointType, reportingPeriod = "2024")))
-            .whenever(metaDataManager)
+        doReturn(
+            listOf(
+                makeMetaData(calculatedSourceType, reportingPeriod = "2024"),
+            ),
+        ).whenever(metaDataManager)
             .getActiveDataPointMetaInformationList(
                 argThat { companyIds == filter.companyIds && dataTypes == null && reportingPeriods == filter.reportingPeriods },
-            )
-        doReturn(listOf(makeMetaData(directDataPointType, reportingPeriod = "2024")))
-            .whenever(metaDataManager)
-            .getActiveDataPointMetaInformationList(
-                argThat {
-                    companyIds == filter.companyIds &&
-                        dataTypes == listOf(directDataPointType, calculatedSourceType, ignoredDataPointType) &&
-                        reportingPeriods == filter.reportingPeriods
-                },
             )
         doReturn(setOf(BasicDataPointDimensions(companyId, calculatedSourceType, "2024")))
             .whenever(dataPointCalculator)
@@ -146,14 +140,10 @@ class DataPointUtilsTest {
 
         assertEquals(
             setOf(
-                BasicDataDimensions(companyId, directDataPointType, "2024"),
+                BasicDataDimensions(companyId, calculatedSourceType, "2024"),
                 BasicDataDimensions(companyId, framework, "2024"),
             ),
             result,
-        )
-        verify(dataPointCalculator).getActiveSourceDataPointDimensions(
-            dataPointTypes = listOf(directDataPointType, calculatedSourceType, ignoredDataPointType),
-            dataDimensionFilter = filter,
         )
     }
 
