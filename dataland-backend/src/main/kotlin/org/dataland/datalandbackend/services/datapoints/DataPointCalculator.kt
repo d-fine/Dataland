@@ -87,7 +87,9 @@ class DataPointCalculator
          * Attempts to calculate data points for the fixed [reportingPeriod] and [companyId].
          *
          * [potentialCalculations] contains the target data point types and their candidate calculation rules.
-         * [allSourceData] must contain only source data for the same company and reporting period.
+         * [allSourceData] must contain only stored source data for the same company and reporting period.
+         * Calculations are intentionally non-recursive: data points calculated by this method are returned, but are not
+         * fed back as source data into other calculation rules during the same run.
          * If multiple calculation rules are possible, the first one with all required sources available is used.
          * @param potentialCalculations target data point types and their candidate calculation rules
          * @param allSourceData source data points available for the fixed company and reporting period
@@ -213,8 +215,9 @@ class DataPointCalculator
         /**
          * Derives the missing data points for each of the given dataset dimensions and returns them grouped per dimension.
          *
-         * For every dimension only the data point types that are not already available are calculated;
-         * dimensions for which nothing could be derived are omitted from the result.
+         * For every dimension only the data point types that are not already available are calculated from stored source data;
+         * dimensions for which nothing could be derived are omitted from the result. Calculations are intentionally
+         * non-recursive, so newly calculated data points are not used as inputs for further calculations in the same request.
          * @param datasetDimensions the dataset dimensions for which calculated data should be produced
          * @param deliverableDataPointTypes already deliverable data point types by dataset dimension
          * @param correlationId correlation id propagated to downstream calls for tracing
