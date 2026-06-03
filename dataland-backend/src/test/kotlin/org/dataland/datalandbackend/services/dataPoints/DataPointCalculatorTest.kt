@@ -89,8 +89,6 @@ class DataPointCalculatorTest {
         calculationRules = calculationRules,
     )
 
-    private fun makeDeliverableDataPointTypes(vararg dataPointTypes: String): List<String> = dataPointTypes.toList()
-
     private fun makeMetaData(
         dataPointType: String,
         companyId: String = this.companyId,
@@ -141,7 +139,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
 
@@ -172,7 +170,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA)),
                 correlationId = correlationId,
             )
 
@@ -202,7 +200,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA)),
                 correlationId = correlationId,
             )
 
@@ -235,7 +233,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
         assertTrue(result.isEmpty())
@@ -254,7 +252,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
 
@@ -274,7 +272,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB, targetType)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB, targetType)),
                 correlationId = correlationId,
             )
 
@@ -315,8 +313,8 @@ class DataPointCalculatorTest {
                 datasetDimensions = listOf(datasetDimensions, secondDimensions),
                 deliverableDataPointTypes =
                     mapOf(
-                        datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
-                        secondDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
+                        datasetDimensions to listOf(sourceTypeA, sourceTypeB),
+                        secondDimensions to listOf(sourceTypeA, sourceTypeB),
                     ),
                 correlationId = correlationId,
             )
@@ -352,8 +350,8 @@ class DataPointCalculatorTest {
                 datasetDimensions = listOf(datasetDimensions, secondDimensions),
                 deliverableDataPointTypes =
                     mapOf(
-                        datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
-                        secondDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB),
+                        datasetDimensions to listOf(sourceTypeA, sourceTypeB),
+                        secondDimensions to listOf(sourceTypeA, sourceTypeB),
                     ),
                 correlationId = correlationId,
             )
@@ -382,7 +380,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
 
@@ -413,7 +411,7 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
                 correlationId = correlationId,
             )
         val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value
