@@ -87,7 +87,7 @@ class DataDeliveryService
             calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
-            val allRequiredIds = dataPointIds.values.flatten()
+            val allRequiredIds = dataPointIds.values.flatten().distinct()
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
