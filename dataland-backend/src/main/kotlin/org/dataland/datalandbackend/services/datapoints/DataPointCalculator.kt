@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointType
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,24 +29,6 @@ class DataPointCalculator
         private val metaDataManager: DataPointMetaInformationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
-
-        /**
-         * Filters out uploaded data points whose serialized extended data point has a null value.
-         *
-         * Data points that cannot be parsed as extended data points are skipped.
-         * @param dataPoints uploaded data points to inspect
-         * @return all parseable uploaded data points with non-null values
-         */
-        private fun removeDataPointsWithoutValue(dataPoints: Collection<UploadedDataPoint>): Collection<UploadedDataPoint> =
-            dataPoints.filter { uploadedDataPoint ->
-                try {
-                    val valueNode = defaultObjectMapper.readTree(uploadedDataPoint.dataPoint).get("value")
-                    valueNode != null && !valueNode.isNull
-                } catch (_: Exception) {
-                    // Skipping data point as it cannot be cast into an extended data point
-                    false
-                }
-            }
 
         /**
          * Retrieves all available source data points for the requested data point types and groups them by dataset dimension.
@@ -70,9 +51,9 @@ class DataPointCalculator
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allAvailableIds, correlationId = correlationId)
-            val allStoredDataPointsWithValues = removeDataPointsWithoutValue(allStoredDataPoints.values)
+                    .values
             val sourceData =
-                allStoredDataPointsWithValues.groupBy {
+                allStoredDataPoints.groupBy {
                     BasicBaseDimensions(
                         companyId = it.companyId,
                         reportingPeriod = it.reportingPeriod,
