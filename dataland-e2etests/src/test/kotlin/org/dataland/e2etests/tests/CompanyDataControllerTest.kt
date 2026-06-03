@@ -376,6 +376,8 @@ class CompanyDataControllerTest {
         val expectedNumberForFramework: Map<DataTypeEnum, Long> =
             mapOf(
                 DataTypeEnum.eutaxonomyMinusFinancials to 0,
+                // The uploaded non-financial test data contains source datapoints for calculation rules in this framework.
+                DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73 to 2,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73 to 2,
                 DataTypeEnum.sfdr to 0,
