@@ -18,7 +18,7 @@ data class BasicBaseDimensions(
      * @param framework the unique identifier for the framework
      * @return a BasicDatasetDimensions object with the same company ID and reporting period as the original base dimensions
      */
-    fun toBasicDatasetDimensions(framework: String) =
+    fun toBasicDatasetDimensions(framework: DatasetType) =
         BasicDatasetDimensions(
             companyId = companyId,
             framework = framework,
@@ -31,7 +31,7 @@ data class BasicBaseDimensions(
      * @param dataPointType a unique identifier for the type of data point itself
      * @return a BasicDataPointDimensions object with the same company ID and reporting period as the original base dimensions
      */
-    fun toBasicDataPointDimensions(dataPointType: String) =
+    fun toBasicDataPointDimensions(dataPointType: DataPointType) =
         BasicDataPointDimensions(
             companyId = companyId,
             dataPointType = dataPointType,
