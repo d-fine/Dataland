@@ -34,6 +34,6 @@ data class BasicDataDimensions(
      * @param framework the framework of the dataset the dimensions shall be converted to, defaults to the data type
      * @return the basic dataset dimensions object
      */
-    fun toBasicDatasetDimensions(framework: Framework = dataType) =
+    fun toBasicDatasetDimensions(framework: DatasetType = dataType) =
         BasicDatasetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
 }

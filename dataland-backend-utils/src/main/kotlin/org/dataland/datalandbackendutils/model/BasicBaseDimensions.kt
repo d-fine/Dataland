@@ -18,7 +18,7 @@ data class BasicBaseDimensions(
      * @param framework the unique identifier for the framework
      * @return a BasicDatasetDimensions object with the same company ID and reporting period as the original base dimensions
      */
-    fun toBasicDatasetDimensions(framework: Framework) =
+    fun toBasicDatasetDimensions(framework: DatasetType) =
         BasicDatasetDimensions(
             companyId = companyId,
             framework = framework,

@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
  */
 data class BasicDatasetDimensions(
     override val companyId: String,
-    override val framework: Framework,
+    override val framework: DatasetType,
     override val reportingPeriod: String,
 ) : DatasetDimensions {
     /**
