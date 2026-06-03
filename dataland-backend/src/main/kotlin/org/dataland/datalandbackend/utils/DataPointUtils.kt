@@ -118,14 +118,12 @@ class DataPointUtils
                     dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
                 }
             for (framework in frameworks) {
-                val relevantDataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
-                val nonIgnoredRelevantDataPointTypes =
-                    relevantDataPointTypes.subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+                val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypes = relevantDataPointTypes.toList(),
+                            dataTypes = dataPointTypes.toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
@@ -147,7 +145,7 @@ class DataPointUtils
                 val calculatableFrameworkDimensions =
                     dataPointCalculator
                         .getActiveSourceDataPointDimensions(
-                            dataPointTypes = nonIgnoredRelevantDataPointTypes,
+                            dataPointTypes = dataPointTypes,
                             dataDimensionFilter = dataDimensionFilter,
                         ).map {
                             BasicDataDimensions(
