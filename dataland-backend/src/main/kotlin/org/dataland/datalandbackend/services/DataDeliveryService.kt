@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointId
+import org.dataland.datalandbackendutils.model.Framework
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -112,7 +113,7 @@ class DataDeliveryService
          */
         fun getLatestAvailableAssembledDatasets(
             companyIds: Collection<String>,
-            framework: String,
+            framework: Framework,
             correlationId: String,
         ): List<PlainDataAndDimensions> {
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()

@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.datalandbackendutils.model.Framework
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
@@ -55,7 +56,7 @@ class DataCompositionService
          * @param framework the name of the framework for which the data point type composition is requested
          * @return a set of all relevant data point types
          */
-        private fun getContainedDataPointTypes(framework: String): Collection<DataPointType> {
+        private fun getContainedDataPointTypes(framework: Framework): Collection<DataPointType> {
             val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys

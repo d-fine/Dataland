@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.Framework
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -29,7 +30,7 @@ class DataPointUtils
          * @param framework the name of the framework to retrieve the specification for
          * @return the FrameworkSpecification object or null if the framework is not found
          */
-        fun getFrameworkSpecificationOrNull(framework: String): FrameworkSpecification? =
+        fun getFrameworkSpecificationOrNull(framework: Framework): FrameworkSpecification? =
             try {
                 specificationClient.getFrameworkSpecification(framework)
             } catch (ignore: ClientException) {
@@ -60,7 +61,7 @@ class DataPointUtils
          */
         fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
-            framework: String,
+            framework: Framework,
         ): Set<String> {
             if (getFrameworkSpecificationOrNull(framework) == null) {
                 return emptySet()
