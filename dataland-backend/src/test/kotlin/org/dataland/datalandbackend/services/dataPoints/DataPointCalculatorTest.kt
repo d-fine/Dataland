@@ -272,12 +272,16 @@ class DataPointCalculatorTest {
             dataPointCalculator.getCalculatedData(
                 datasetDimensions = listOf(datasetDimensions),
                 deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB, targetType)),
+                    mapOf(datasetDimensions to listOf(targetType)),
                 correlationId = correlationId,
             )
 
         assertTrue(result.isEmpty())
-        verify(dataCompositionService).getAvailableCalculationRules(emptyList())
+        verify(dataCompositionService).getAvailableCalculationRules(
+            argThat {
+                containsAll(listOf(sourceTypeA, sourceTypeB)) && !contains(targetType)
+            },
+        )
     }
 
     @Test
