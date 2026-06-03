@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
@@ -11,7 +12,6 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
-import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
 private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
@@ -37,9 +37,13 @@ enum class DataPointConversion(
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
-                    checkRequirements(dataPoints)
+                    require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
+                    val values =
+                        dataPoints.map {
+                            requireNotNull(it.value) { "Data points for summation must not have null value fields." }
+                        }
                     ExtendedCurrencyDataPoint(
-                        value = dataPoints.sumOf { it.value!! },
+                        value = values.sumOf { it },
                         currency = getCommonCurrency(dataPoints),
                         quality = mergeQuality(dataPoints.map { it.quality }),
                         comment = createComment(inputs, specs, this.name),
@@ -47,9 +51,13 @@ enum class DataPointConversion(
                     )
                 } else {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    checkRequirements(dataPoints)
+                    require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
+                    val values =
+                        dataPoints.map {
+                            requireNotNull(it.value) { "Data points for summation must not have null value fields." }
+                        }
                     ExtendedDataPoint(
-                        value = dataPoints.sumOf { it.value!! },
+                        value = values.sumOf { it },
                         quality = mergeQuality(dataPoints.map { it.quality }),
                         comment = createComment(inputs, specs, this.name),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
@@ -61,11 +69,6 @@ enum class DataPointConversion(
                 calculatedDataPoint = calculatedDataPoint,
             )
         }
-
-        override fun <T> checkRequirements(inputs: Collection<ExtendedDataPointInterface<T>>) {
-            require(inputs.size >= 2) { "At least two data points must be provided for summation." }
-            require(inputs.none { it.value == null }) { "Data points for summation must not have null value fields." }
-        }
     },
 
     DIVISION("Division") {
@@ -76,16 +79,20 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
+                    require(inputs.size == 2) { "Exactly two data points must be provided for division." }
                     val numerator =
                         defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
                     val denominator =
                         defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
-                    val dataPoints = listOf(numerator, denominator)
-                    checkRequirements(dataPoints)
+                    val numeratorValue =
+                        requireNotNull(numerator.value) { "Data points for division must not have null value fields." }
+                    val denominatorValue =
+                        requireNotNull(denominator.value) { "Data points for division must not have null value fields." }
+                    require(denominatorValue.signum() != 0) { "The divisor in division must not be zero." }
                     ExtendedCurrencyDataPoint(
                         value =
-                            numerator.value!!.divide(
-                                denominator.value!!,
+                            numeratorValue.divide(
+                                denominatorValue,
                                 CALCULATION_SCALE,
                                 CALCULATION_ROUNDING_MODE,
                             ),
@@ -96,9 +103,12 @@ enum class DataPointConversion(
                     )
                 } else {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    checkRequirements(dataPoints)
-                    val numerator = dataPoints[0].value!!
-                    val denominator = dataPoints[1].value!!
+                    require(dataPoints.size == 2) { "Exactly two data points must be provided for division." }
+                    val numerator =
+                        requireNotNull(dataPoints[0].value) { "Data points for division must not have null value fields." }
+                    val denominator =
+                        requireNotNull(dataPoints[1].value) { "Data points for division must not have null value fields." }
+                    require(denominator.signum() != 0) { "The divisor in division must not be zero." }
                     ExtendedDataPoint(
                         value =
                             numerator.divide(
@@ -118,12 +128,6 @@ enum class DataPointConversion(
                 calculatedDataPoint = calculatedDataPoint,
             )
         }
-
-        override fun <T> checkRequirements(inputs: Collection<ExtendedDataPointInterface<T>>) {
-            require(inputs.size == 2) { "Exactly two data points must be provided for division." }
-            require(inputs.none { it.value == null }) { "Data points for division must not have null value fields." }
-            require((inputs.elementAt(1).value as BigDecimal).signum() != 0) { "The divisor in division must not be zero." }
-        }
     },
 
     DIVISION_BY_PERCENT("DivisionByPercent") {
@@ -134,15 +138,19 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
+                    require(inputs.size == 2) { "Exactly two data points must be provided for division by percent." }
                     val numerator =
                         defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
                     val denominator =
                         defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
-                    val dataPoints = listOf(numerator, denominator)
-                    checkRequirements(dataPoints)
+                    val numeratorValue =
+                        requireNotNull(numerator.value) { "Data points for division by percent must not have null value fields." }
+                    val denominatorValue =
+                        requireNotNull(denominator.value) { "Data points for division by percent must not have null value fields." }
+                    require(denominatorValue.signum() != 0) { "The divisor in division by percent must not be zero." }
                     val result =
-                        numerator.value!!.multiply(ONE_HUNDRED).divide(
-                            denominator.value!!,
+                        numeratorValue.multiply(ONE_HUNDRED).divide(
+                            denominatorValue,
                             CALCULATION_SCALE,
                             CALCULATION_ROUNDING_MODE,
                         )
@@ -155,9 +163,18 @@ enum class DataPointConversion(
                     )
                 } else {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    checkRequirements(dataPoints)
-                    val numerator = dataPoints[0].value!!
-                    val denominator = dataPoints[1].value!!
+                    require(dataPoints.size == 2) { "Exactly two data points must be provided for division by percent." }
+                    val numerator =
+                        requireNotNull(dataPoints[0].value) {
+                            "Data points for division by percent must not have null value fields."
+                        }
+                    val denominator =
+                        requireNotNull(dataPoints[1].value) {
+                            "Data points for division by percent must not have null value fields."
+                        }
+                    require(denominator.signum() != 0) {
+                        "The divisor in division by percent must not be zero."
+                    }
                     val result =
                         numerator.multiply(ONE_HUNDRED).divide(
                             denominator,
@@ -178,14 +195,6 @@ enum class DataPointConversion(
                 calculatedDataPoint = calculatedDataPoint,
             )
         }
-
-        override fun <T> checkRequirements(inputs: Collection<ExtendedDataPointInterface<T>>) {
-            require(inputs.size == 2) { "Exactly two data points must be provided for division by percent." }
-            require(inputs.none { it.value == null }) { "Data points for division by percent must not have null value fields." }
-            require((inputs.elementAt(1).value as BigDecimal).signum() != 0) {
-                "The divisor in division by percent must not be zero."
-            }
-        }
     },
 
     IDENTITY("Identity") {
@@ -197,7 +206,7 @@ enum class DataPointConversion(
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
-                    checkRequirements(dataPoints)
+                    require(dataPoints.size == 1) { "Exactly one data point must be provided for the identity rule." }
                     dataPoints.first().let {
                         ExtendedCurrencyDataPoint(
                             value = it.value,
@@ -209,7 +218,7 @@ enum class DataPointConversion(
                     }
                 } else {
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(it.dataPoint) }
-                    checkRequirements(dataPoints)
+                    require(dataPoints.size == 1) { "Exactly one data point must be provided for the identity rule." }
                     dataPoints.first().let {
                         ExtendedDataPoint(
                             value = it.value,
@@ -226,10 +235,6 @@ enum class DataPointConversion(
                 calculatedDataPoint = calculatedDataPoint,
             )
         }
-
-        override fun <T> checkRequirements(inputs: Collection<ExtendedDataPointInterface<T>>) {
-            require(inputs.size == 1) { "Exactly one data point must be provided for the identity rule." }
-        }
     }, ;
 
     /**
@@ -245,14 +250,6 @@ enum class DataPointConversion(
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
     ): UploadedDataPoint
-
-    /**
-     * Validates that [inputs] satisfy this conversion strategy's cardinality and value constraints.
-     *
-     * @param inputs the deserialized data points to validate before conversion
-     * @throws IllegalArgumentException if the inputs do not satisfy this strategy's requirements
-     */
-    abstract fun <T> checkRequirements(inputs: Collection<ExtendedDataPointInterface<T>>)
 
     companion object {
         /**
@@ -313,10 +310,10 @@ private fun getCommonCurrency(dataPoints: Collection<ExtendedCurrencyDataPoint>)
  * @param calculatedDataPoint the calculated data point object to serialize
  * @return the uploaded data point representing the calculation result
  */
-private fun createUploadedDataPoint(
+private fun <T : Any> createUploadedDataPoint(
     inputs: Collection<UploadedDataPoint>,
     targetType: DataPointType,
-    calculatedDataPoint: Any,
+    calculatedDataPoint: BaseDataPoint<T>,
 ): UploadedDataPoint =
     UploadedDataPoint(
         dataPoint = defaultObjectMapper.writeValueAsString(calculatedDataPoint),
