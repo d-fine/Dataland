@@ -84,20 +84,20 @@ class DataDeliveryService
             calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
-            val results = mutableMapOf<BasicDatasetDimensions, String>()
-
             val allRequiredIds = dataPointIds.values.flatten()
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
 
-            dataPointIds.forEach { (dataDimensions, dataIds) ->
-                val datasetInput = dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
-
-                results[dataDimensions] =
+            return (dataPointIds.keys + calculatedData.keys)
+                .associateWith { dataDimensions ->
+                    val dataIds = dataPointIds.getOrDefault(dataDimensions, emptyList())
+                    dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
+                }.filterValues { datasetInputs ->
+                    datasetInputs.isNotEmpty()
+                }.mapValues { (dataDimensions, datasetInput) ->
                     datasetAssembler.assembleSingleDataset(datasetInput, dataDimensions.framework)
-            }
-            return results
+                }
         }
 
         /**
