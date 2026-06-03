@@ -112,7 +112,6 @@ class DataPointUtils
                 } else {
                     dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
                 }
-
             for (framework in frameworks) {
                 val relevantDataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
                 val nonIgnoredRelevantDataPointTypes =
@@ -125,7 +124,6 @@ class DataPointUtils
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
-
                 activeDataPointMetaInformation
                     .groupBy {
                         Pair(it.companyId, it.reportingPeriod)
@@ -141,7 +139,6 @@ class DataPointUtils
                             )
                         }
                     }
-
                 val calculatableFrameworkDimensions =
                     dataPointCalculator
                         .getActiveSourceDataPointDimensions(

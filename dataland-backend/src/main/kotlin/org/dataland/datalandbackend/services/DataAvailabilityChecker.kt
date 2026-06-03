@@ -86,7 +86,8 @@ class DataAvailabilityChecker
                 """
                 WITH requested AS (
                     SELECT DISTINCT company_id, data_point_type, reporting_period
-                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb)) AS dim(company_id text, data_point_type text, reporting_period text)
+                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                        AS dim(company_id text, data_point_type text, reporting_period text)
                 )
                 SELECT m.*
                 FROM requested dim
