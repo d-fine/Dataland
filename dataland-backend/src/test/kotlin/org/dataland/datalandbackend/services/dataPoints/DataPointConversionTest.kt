@@ -253,6 +253,21 @@ class DataPointConversionTest {
     }
 
     @Test
+    fun `check that summation of currency data points rejects missing currencies`() {
+        val firstInput = createUploadedDataPoint(createCurrencyDataPoint("0.5", null))
+        val secondInput = createUploadedDataPoint(createCurrencyDataPoint("1.0", "EUR"))
+
+        assertThrows<IllegalArgumentException> {
+            applyTransformation(
+                listOf(firstInput, secondInput),
+                currencyTargetType,
+                "Sum",
+                currencySpecs,
+            )
+        }
+    }
+
+    @Test
     fun `check that summation of data points throws the expected exceptions`() {
         assertThrows<IllegalArgumentException> {
             DataPointConversion.SUM.convert(
@@ -326,6 +341,39 @@ class DataPointConversionTest {
     }
 
     @Test
+    fun `check that division of currency data points preserves the numerator currency`() {
+        val numerator = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
+        val result =
+            defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(
+                applyTransformation(
+                    listOf(numerator, denominator),
+                    currencyTargetType,
+                    "Division",
+                    currencySpecs,
+                ).dataPoint,
+            )
+
+        assertBigDecimalEquals("0.5", result.value)
+        assertEquals("EUR", result.currency)
+    }
+
+    @Test
+    fun `check that division of currency data points rejects missing numerator currency`() {
+        val numerator = createUploadedDataPoint(createCurrencyDataPoint("0.5", null))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
+
+        assertThrows<IllegalArgumentException> {
+            applyTransformation(
+                listOf(numerator, denominator),
+                currencyTargetType,
+                "Division",
+                currencySpecs,
+            )
+        }
+    }
+
+    @Test
     fun `check that division by percent of currency data points preserves the numerator currency`() {
         val numerator = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
         val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
@@ -340,6 +388,21 @@ class DataPointConversionTest {
             )
         assertBigDecimalEquals("50", result.value)
         assertEquals("EUR", result.currency)
+    }
+
+    @Test
+    fun `check that division by percent of currency data points rejects missing numerator currency`() {
+        val numerator = createUploadedDataPoint(createCurrencyDataPoint("0.5", null))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(numericDataPointOne))
+
+        assertThrows<IllegalArgumentException> {
+            applyTransformation(
+                listOf(numerator, denominator),
+                currencyTargetType,
+                "DivisionByPercent",
+                currencySpecs,
+            )
+        }
     }
 
     @Test
@@ -464,7 +527,7 @@ class DataPointConversionTest {
 
     private fun createCurrencyDataPoint(
         value: String,
-        currency: String,
+        currency: String?,
     ): String =
         defaultObjectMapper.writeValueAsString(
             ExtendedCurrencyDataPoint(

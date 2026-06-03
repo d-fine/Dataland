@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -102,6 +103,33 @@ class DataDeliveryServiceTest {
 
         assertEquals(mapOf(datasetDimensions to "assembled-mixed"), result)
         verify(datasetAssembler).assembleSingleDataset(listOf(directDataPoint, calculatedDataPoint), framework)
+    }
+
+    @Test
+    fun `check that latest available direct and calculated data points are assembled together`() {
+        doReturn(
+            mapOf(BasicBaseDimensions(companyId = companyId, reportingPeriod = reportingPeriod) to listOf(makeMetaData())),
+        ).whenever(dataAvailabilityChecker)
+            .getLatestAvailableDataPointIds(listOf(companyId), setOf(directDataPointType, calculatedDataPointType))
+        doReturn(mapOf(directDataPointId to directDataPoint))
+            .whenever(internalStorageAdapter)
+            .getDataPoints(listOf(directDataPointId), correlationId)
+        doReturn(mapOf(datasetDimensions to listOf(calculatedDataPoint)))
+            .whenever(dataPointCalculator)
+            .getCalculatedData(any(), any(), any())
+        doReturn("assembled-latest").whenever(datasetAssembler).assembleSingleDataset(any(), any())
+
+        val result = dataDeliveryService.getLatestAvailableAssembledDatasets(listOf(companyId), framework, correlationId)
+
+        assertEquals(1, result.size)
+        assertEquals(datasetDimensions, result.first().dimensions)
+        assertEquals("assembled-latest", result.first().data)
+        verify(datasetAssembler).assembleSingleDataset(listOf(directDataPoint, calculatedDataPoint), framework)
+        verify(dataPointCalculator).getCalculatedData(
+            datasetDimensions = setOf(datasetDimensions),
+            correlationId = correlationId,
+            deliverableDataPointTypes = mapOf(datasetDimensions to listOf(directDataPointType)),
+        )
     }
 
     @Test

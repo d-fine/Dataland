@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services.dataPoints
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
@@ -10,7 +12,9 @@ import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
@@ -21,8 +25,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.math.BigDecimal
 
@@ -71,17 +77,35 @@ class DataPointCalculatorTest {
         reportingPeriod = reportingPeriod,
     )
 
-    private fun makeDataPointTypeSpecification(dataPointType: String) =
-        DataPointTypeSpecification(
-            dataPointType = IdWithRef(id = dataPointType, ref = ""),
-            name = dataPointType,
-            businessDefinition = "",
-            dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
-            usedBy = emptyList(),
-            calculationRules = emptyList(),
-        )
+    private fun makeDataPointTypeSpecification(
+        dataPointType: String,
+        calculationRules: List<CalculationRule> = emptyList(),
+    ) = DataPointTypeSpecification(
+        dataPointType = IdWithRef(id = dataPointType, ref = ""),
+        name = dataPointType,
+        businessDefinition = "",
+        dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
+        usedBy = emptyList(),
+        calculationRules = calculationRules,
+    )
 
     private fun makeDeliverableDataPointTypes(vararg dataPointTypes: String): List<String> = dataPointTypes.toList()
+
+    private fun makeMetaData(
+        dataPointType: String,
+        companyId: String = this.companyId,
+        reportingPeriod: String = this.reportingPeriod,
+        dataPointId: String = "$companyId-$reportingPeriod-$dataPointType",
+    ) = DataPointMetaInformationEntity(
+        dataPointId = dataPointId,
+        companyId = companyId,
+        dataPointType = dataPointType,
+        reportingPeriod = reportingPeriod,
+        uploaderUserId = "test-user-id",
+        uploadTime = 0,
+        currentlyActive = true,
+        qaStatus = QaStatus.Accepted,
+    )
 
     @BeforeEach
     fun setUp() {
@@ -238,6 +262,27 @@ class DataPointCalculatorTest {
     }
 
     @Test
+    fun `check that already deliverable data point types are not calculated again`() {
+        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(emptyMap<String, Collection<CalculationRule>>()).whenever(dataCompositionService).getAvailableCalculationRules(any())
+        doReturn(emptyList<String>()).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(emptyMap<String, UploadedDataPoint>())
+            .whenever(internalStorageAdapter)
+            .getDataPoints(any(), any())
+
+        val result =
+            dataPointCalculator.getCalculatedData(
+                datasetDimensions = listOf(datasetDimensions),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB, targetType)),
+                correlationId = correlationId,
+            )
+
+        assertTrue(result.isEmpty())
+        verify(dataCompositionService).getAvailableCalculationRules(emptyList())
+    }
+
+    @Test
     fun `check that multiple dataset dimensions are each handled independently`() {
         val secondCompanyId = "other-company-id"
         val secondDimensions = BasicDatasetDimensions(secondCompanyId, framework, reportingPeriod)
@@ -319,6 +364,32 @@ class DataPointCalculatorTest {
     }
 
     @Test
+    fun `check that source data from another reporting period is not used`() {
+        val dataPointHalfFromAnotherPeriod = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson, reportingPeriod = "2024")
+        val dataPointOneFromAnotherPeriod = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson, reportingPeriod = "2024")
+
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
+        ).whenever(dataCompositionService)
+            .getAvailableCalculationRules(any())
+        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(mapOf("id-a" to dataPointHalfFromAnotherPeriod, "id-b" to dataPointOneFromAnotherPeriod))
+            .whenever(internalStorageAdapter)
+            .getDataPoints(any(), any())
+
+        val result =
+            dataPointCalculator.getCalculatedData(
+                datasetDimensions = listOf(datasetDimensions),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to makeDeliverableDataPointTypes(sourceTypeA, sourceTypeB)),
+                correlationId = correlationId,
+            )
+
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
     fun `check that a failed calculation rule falls back to the next applicable rule`() {
         val dataPointOne = makeUploadedDataPoint(sourceTypeA, numericDataPointOneJson)
         val dataPointZero = makeUploadedDataPoint(sourceTypeB, zeroNumericDataPointJson)
@@ -350,5 +421,146 @@ class DataPointCalculatorTest {
         assertTrue(result.containsKey(datasetDimensions))
         assertEquals(targetType, result.getValue(datasetDimensions).first().dataPointType)
         assertEquals(0, BigDecimal(1.0).compareTo(value!!))
+    }
+
+    @Test
+    fun `check that active source dimensions are returned only for complete rules in the same base dimensions`() {
+        doReturn(
+            mapOf(
+                targetType to
+                    makeDataPointTypeSpecification(
+                        targetType,
+                        listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")),
+                    ),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(listOf(targetType))
+        doReturn(
+            listOf(
+                makeMetaData(sourceTypeA, reportingPeriod = "2022"),
+                makeMetaData(sourceTypeB, reportingPeriod = "2022"),
+                makeMetaData(sourceTypeA, reportingPeriod = "2023"),
+                makeMetaData(sourceTypeB, companyId = "other-company-id", reportingPeriod = "2023"),
+            ),
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+
+        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType), companyId)
+
+        assertEquals(
+            setOf(
+                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
+                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
+            ),
+            result,
+        )
+    }
+
+    @Test
+    fun `check that active source lookup is constrained to the requested dimensions`() {
+        val filter = DataDimensionFilter(companyIds = listOf(companyId), reportingPeriods = listOf("2022"))
+        val secondTargetType = "secondCalculatedDataPointType"
+        doReturn(
+            mapOf(
+                targetType to
+                    makeDataPointTypeSpecification(
+                        targetType,
+                        listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")),
+                    ),
+                secondTargetType to
+                    makeDataPointTypeSpecification(
+                        secondTargetType,
+                        listOf(CalculationRule(listOf(sourceTypeA), "Identity")),
+                    ),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(listOf(targetType, secondTargetType))
+        doReturn(
+            listOf(
+                makeMetaData(sourceTypeA, reportingPeriod = "2022"),
+                makeMetaData(sourceTypeB, reportingPeriod = "2022"),
+            ),
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+
+        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType, secondTargetType), filter)
+
+        assertEquals(
+            setOf(
+                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
+                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
+            ),
+            result,
+        )
+        verify(metaDataManager).getActiveDataPointMetaInformationList(
+            argThat {
+                companyIds == filter.companyIds &&
+                    reportingPeriods == filter.reportingPeriods &&
+                    dataTypes?.containsAll(listOf(sourceTypeA, sourceTypeB)) == true
+            },
+        )
+    }
+
+    @Test
+    fun `check that active source dimensions are grouped by company and reporting period and deduplicated`() {
+        val secondCompanyId = "other-company-id"
+        val secondTargetType = "secondCalculatedDataPointType"
+        doReturn(
+            mapOf(
+                targetType to
+                    makeDataPointTypeSpecification(
+                        targetType,
+                        listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")),
+                    ),
+                secondTargetType to
+                    makeDataPointTypeSpecification(
+                        secondTargetType,
+                        listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")),
+                    ),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(listOf(targetType, secondTargetType))
+        doReturn(
+            listOf(
+                makeMetaData(sourceTypeA, reportingPeriod = "2022"),
+                makeMetaData(sourceTypeB, reportingPeriod = "2022"),
+                makeMetaData(sourceTypeA, companyId = secondCompanyId, reportingPeriod = "2024"),
+                makeMetaData(sourceTypeB, companyId = secondCompanyId, reportingPeriod = "2024"),
+            ),
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+
+        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType, secondTargetType), DataDimensionFilter())
+
+        assertEquals(
+            setOf(
+                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
+                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
+                BasicDataPointDimensions(secondCompanyId, sourceTypeA, "2024"),
+                BasicDataPointDimensions(secondCompanyId, sourceTypeB, "2024"),
+            ),
+            result,
+        )
+        verify(metaDataManager).getActiveDataPointMetaInformationList(
+            argThat {
+                dataTypes == listOf(sourceTypeA, sourceTypeB)
+            },
+        )
+    }
+
+    @Test
+    fun `check that active source dimension lookup does not infer recursive calculation chains`() {
+        val intermediateType = "intermediateCalculatedDataPointType"
+        val finalTargetType = "finalCalculatedDataPointType"
+        doReturn(
+            mapOf(
+                finalTargetType to
+                    makeDataPointTypeSpecification(
+                        finalTargetType,
+                        listOf(CalculationRule(listOf(intermediateType), "Identity")),
+                    ),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(listOf(finalTargetType))
+        doReturn(listOf(makeMetaData(sourceTypeA)))
+            .whenever(metaDataManager)
+            .getActiveDataPointMetaInformationList(any())
+
+        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(finalTargetType), companyId)
+
+        assertTrue(result.isEmpty())
     }
 }
