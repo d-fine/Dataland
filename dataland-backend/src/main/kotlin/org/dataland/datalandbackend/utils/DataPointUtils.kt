@@ -27,6 +27,7 @@ class DataPointUtils
     ) {
         /**
          * Retrieve a framework specification from the specification service
+         *
          * @param framework the name of the framework to retrieve the specification for
          * @return the FrameworkSpecification object or null if the framework is not found
          */
@@ -39,6 +40,7 @@ class DataPointUtils
 
         /**
          * Retrieves the latest upload time of an active data point belonging to a given framework and a specific company
+         *
          * @param dataPointDimensions the data point dimensions to get the latest upload time for
          * @return the latest upload time of an active data point as a long
          */
@@ -87,6 +89,7 @@ class DataPointUtils
 
         /**
          * Retrieves all active data dimensions in regard to data points given the filter parameters
+         *
          * @param dataDimensionFilter the filter parameters for the data dimensions
          * @return a list of all active data dimensions
          */
@@ -101,6 +104,7 @@ class DataPointUtils
         /**
          * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
          * all frameworks are taken into account.
+         *
          * @param dataDimensionFilter the filter to use when searching for active data dimensions
          * @return a list of active framework data dimensions
          */

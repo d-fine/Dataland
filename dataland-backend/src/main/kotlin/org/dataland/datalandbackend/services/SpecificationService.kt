@@ -43,6 +43,8 @@ class SpecificationService
 
         /**
          * Initiates the specification cache after application start up. Waits until the specification service is reachable.
+         *
+         * @param ignored the Spring context refresh event that triggers initialization
          */
         @EventListener
         fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
@@ -76,25 +78,33 @@ class SpecificationService
 
         /**
          * Check if any given string represents an assembled framework
+         *
          * @param framework string to be checked
+         * @return true if the string represents an assembled framework
          */
         fun isAssembledFramework(framework: String): Boolean = assembledFrameworks.contains(framework)
 
         /**
          * Check if any given string represents a non-assembled framework
+         *
          * @param framework string to be checked
+         * @return true if the string represents a non-assembled framework
          */
         fun isNonAssembledFramework(framework: String): Boolean = nonAssembledFrameworks.contains(framework)
 
         /**
          * Check if any given string represents a framework (either assembled or non-assembled)
+         *
          * @param framework string to be checked
+         * @return true if the string represents any known framework
          */
         fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
 
         /**
          * Checks if a given string represents a data point type
+         *
          * @param dataPointType the string to be checked
+         * @return true if the string represents a data point type
          */
         fun isDataPointType(dataPointType: String): Boolean =
             cachedDatapointTypes.computeIfAbsent(dataPointType) {
@@ -108,6 +118,7 @@ class SpecificationService
 
         /**
          * Retrieve a framework specification from the specification service
+         *
          * @param framework the name of the framework to retrieve the specification for
          * @return the FrameworkSpecification object
          * @throws InvalidInputApiException if the framework is not found
@@ -127,6 +138,7 @@ class SpecificationService
 
         /**
          * Retrieve a resolved framework specification from the specification service
+         *
          * @param framework the name of the framework to retrieve the specification for
          * @return the resolved schema
          * @throws InvalidInputApiException if the framework is not found
@@ -148,6 +160,7 @@ class SpecificationService
          * Returns the specifications for the given data point types.
          *
          * Specifications not yet present in the in-memory cache are fetched from the specification service and cached for future calls.
+         *
          * @param dataPointTypes the data point types whose specifications should be retrieved
          * @return a map from each requested data point type to its specification
          */

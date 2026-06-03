@@ -21,6 +21,7 @@ object FieldCalculationParser {
      * Parse the raw value of the "Field Calculation" column into a list of calculation rules.
      *
      * Returns an empty list if the input is null or blank.
+     *
      * @param rawValue raw cell content from the "Field Calculation" column
      * @return parsed calculation rules, or an empty list if the input is null or blank
      */

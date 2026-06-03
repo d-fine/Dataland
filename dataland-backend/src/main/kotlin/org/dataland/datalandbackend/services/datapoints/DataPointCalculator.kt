@@ -34,6 +34,7 @@ class DataPointCalculator
          * Retrieves all available source data points for the requested data point types and groups them by dataset dimension.
          *
          * Source data points without values are omitted before grouping.
+         *
          * @param dataPointTypes source data point types required for each dataset dimension
          * @param correlationId correlation id propagated to internal storage reads
          * @return available source data points grouped by their requested dataset dimensions
@@ -72,6 +73,7 @@ class DataPointCalculator
          * Calculations are intentionally non-recursive: data points calculated by this method are returned, but are not
          * fed back as source data into other calculation rules during the same run.
          * If multiple calculation rules are possible, the first one with all required sources available is used.
+         *
          * @param potentialCalculations target data point types and their candidate calculation rules
          * @param allSourceData source data points available for the fixed company and reporting period
          * @param companyId company id shared by the target data points to calculate
@@ -100,6 +102,7 @@ class DataPointCalculator
          * Applies the first available calculation rule for one target data point type.
          *
          * Rules are evaluated in their given order; rules with missing inputs or failed calculations are skipped.
+         *
          * @param dataPointType target data point type to calculate
          * @param calculationRules candidate rules for the target data point type
          * @param allSourceData available source data points by data point type
@@ -173,6 +176,7 @@ class DataPointCalculator
          * Applies the named transformation method to ordered source data points.
          *
          * Required source and target data point specifications are loaded before transformation.
+         *
          * @param inputs ordered source data points for the transformation
          * @param method calculation method name
          * @param dataPointDimensions target data point dimensions
@@ -199,6 +203,7 @@ class DataPointCalculator
          * For every dimension only the data point types that are not already available are calculated from stored source data;
          * dimensions for which nothing could be derived are omitted from the result. Calculations are intentionally
          * non-recursive, so newly calculated data points are not used as inputs for further calculations in the same request.
+         *
          * @param datasetDimensions the dataset dimensions for which calculated data should be produced
          * @param deliverableDataPointTypes already deliverable data point types by dataset dimension
          * @param correlationId correlation id propagated to downstream calls for tracing

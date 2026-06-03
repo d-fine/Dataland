@@ -22,6 +22,8 @@ private const val EXTENDED_CURRENCY_BASE_TYPE = "extendedCurrency"
  * Closed set of strategies for deriving a data point from a collection of other data points.
  *
  * Variants are dispatched by their [id] via [byId].
+ *
+ * @param id the textual identifier of the conversion strategy
  */
 enum class DataPointConversion(
     val id: String,

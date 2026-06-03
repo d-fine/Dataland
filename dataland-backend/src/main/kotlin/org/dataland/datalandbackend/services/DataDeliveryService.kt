@@ -30,6 +30,7 @@ class DataDeliveryService
          *
          * @param dataDimensions the data dimensions for which datasets are to be assembled
          * @param correlationId the correlation ID for the operation
+         * @return a map of data dimensions to the assembled dataset in the form of a JSON string
          */
         fun getAssembledDatasets(
             dataDimensions: Collection<BasicDatasetDimensions>,
@@ -77,6 +78,7 @@ class DataDeliveryService
          * for visibility or existence of the provided data point IDs.
          *
          * @param dataPointIds data point IDs to assemble to data sets grouped by data dimensions
+         * @param calculatedData calculated data points grouped by data dimensions
          * @param correlationId the correlation ID for the operation
          * @return a map of data dimensions to the dataset in the form of a JSON string
          */

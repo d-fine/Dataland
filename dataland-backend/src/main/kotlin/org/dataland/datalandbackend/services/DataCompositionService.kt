@@ -27,6 +27,7 @@ class DataCompositionService
 
         /**
          * Retrieves all relevant data point types for a given data type
+         *
          * @param dataType the name of the data type (either a framework or a data point)
          * @return a set of all relevant data point types
          * @throws InvalidInputApiException if the data type is not known
@@ -53,6 +54,7 @@ class DataCompositionService
 
         /**
          * Retrieves all data point types contained in an assembled framework
+         *
          * @param framework the name of the framework for which the data point type composition is requested
          * @return a set of all relevant data point types
          */
@@ -64,6 +66,7 @@ class DataCompositionService
 
         /**
          * Filters out invalid data dimensions by checking if the company ID, framework, and reporting period are valid.
+         *
          * @param datasetDimensions the list of data dimensions to filter
          * @return the list of all valid data dimensions from the original input
          */
@@ -75,6 +78,7 @@ class DataCompositionService
 
         /**
          * Filters out invalid data point dimensions by checking if the company ID, data point type, and reporting period are valid.
+         *
          * @param dataDimensions the list of data point dimensions to filter
          * @return the list of all valid data point dimensions from the original input
          */
@@ -88,6 +92,7 @@ class DataCompositionService
          * Returns the calculation rules available for each of the given data point types.
          *
          * Types whose specification declares no calculation rules are omitted from the result.
+         *
          * @param dataPointTypes the data point types to look up
          * @return a map from data point type to its declared calculation rules
          */

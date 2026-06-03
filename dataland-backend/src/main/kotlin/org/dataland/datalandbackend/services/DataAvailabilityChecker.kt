@@ -106,6 +106,7 @@ class DataAvailabilityChecker
          * Retrieves all active data point metadata that correspond to the data point dimensions provided.
          *
          * Only returns metadata if at least one data point is not an ignorable field.
+         *
          * @param dataDimensions the list of data point dimensions to get the metadata for
          * @return the metadata corresponding to the viewable data points of the input
          */
@@ -122,6 +123,7 @@ class DataAvailabilityChecker
          * Retrieves all active data point IDs that correspond to the data point dimensions provided.
          *
          * Only returns IDs if at least one data point is not an ignorable field.
+         *
          * @param dataDimensions the list of data point dimensions to get the data point IDs for
          * @return a list of data point IDs corresponding to the viewable data points of the input
          */
@@ -133,6 +135,7 @@ class DataAvailabilityChecker
          *
          * This is the batched equivalent of checking one list of data point dimensions, and performs only one metadata
          * lookup across all requested data point dimensions.
+         *
          * @param dataPointDimensionsByDatasetDimensions map from dataset dimensions to the data point dimensions to check
          * @return a map with the same dataset-dimension keys and the viewable metadata for each dimension
          */
@@ -163,7 +166,8 @@ class DataAvailabilityChecker
             }
         }
 
-        /** Returns most recent data point meta information entities.
+        /**
+         * Returns most recent data point meta information entities.
          *
          * Retrieves the latest available data point meta information entities from a given collection,
          * ignoring data points that are part of the exclusion list. All meta information items in the
