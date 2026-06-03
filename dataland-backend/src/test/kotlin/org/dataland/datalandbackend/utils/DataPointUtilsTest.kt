@@ -152,7 +152,7 @@ class DataPointUtilsTest {
             result,
         )
         verify(dataPointCalculator).getActiveSourceDataPointDimensions(
-            dataPointTypes = setOf(directDataPointType, calculatedSourceType),
+            dataPointTypes = listOf(directDataPointType, calculatedSourceType, ignoredDataPointType),
             dataDimensionFilter = filter,
         )
     }
