@@ -130,7 +130,6 @@ class DataPointConversionTest {
                     listOf(firstDataPoint, secondDataPoint),
                     DataPointConversion.SUM,
                     "This data point was calculated as the sum of the following data points: \n" +
-                        "+ \n" +
                         "+ \"Input1\"\n" +
                         "+ \"Input2\".",
                 ),
@@ -140,7 +139,6 @@ class DataPointConversionTest {
                     listOf(firstDataPoint, secondDataPoint, thirdDataPoint),
                     DataPointConversion.SUM,
                     "This data point was calculated as the sum of the following data points: \n" +
-                        "+ \n" +
                         "+ \"Input1\"\n" +
                         "+ \"Input2\"\n" +
                         "+ \"Input3\".",

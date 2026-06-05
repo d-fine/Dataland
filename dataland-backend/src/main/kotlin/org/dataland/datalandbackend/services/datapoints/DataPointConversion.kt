@@ -36,7 +36,7 @@ enum class DataPointConversion(
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
         ): String {
             val sourceNames = getQuotedSourceNames(inputs, specs)
-            val formula = "\n+ " + sourceNames.joinToString(prefix = "\n+ ", separator = "\n+ ")
+            val formula = sourceNames.joinToString(prefix = "\n+ ", separator = "\n+ ")
             return "This data point was calculated as the sum of the following data points: $formula."
         }
 
