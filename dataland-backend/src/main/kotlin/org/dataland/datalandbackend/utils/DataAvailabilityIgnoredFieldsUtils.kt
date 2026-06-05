@@ -16,6 +16,7 @@ object DataAvailabilityIgnoredFieldsUtils {
             "extendedEnumYesNoIloCoreLabourStandards",
             "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy",
             "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
+            "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis",
         )
 
     /**
