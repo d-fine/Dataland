@@ -15,7 +15,6 @@ import java.math.RoundingMode
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
-private const val FORMULA_COMMENT_PREFIX = "This data point was calculated using the following formula: "
 private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
 private val ONE_HUNDRED = BigDecimal("100")
 private const val EXTENDED_CURRENCY_BASE_TYPE = "extendedCurrency"
@@ -37,13 +36,8 @@ enum class DataPointConversion(
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
         ): String {
             val sourceNames = getQuotedSourceNames(inputs, specs)
-            val formula =
-                if (sourceNames.size > 2) {
-                    sourceNames.joinToString("\n+ ")
-                } else {
-                    sourceNames.joinToString(" + ")
-                }
-            return "$FORMULA_COMMENT_PREFIX$formula."
+            val formula = sourceNames.joinToString("\n+ ")
+            return "This data point was calculated as the sum of the following data points: $formula."
         }
 
         override fun convert(
@@ -93,7 +87,8 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String = "$FORMULA_COMMENT_PREFIX${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+        ): String =
+            "This data point was calculated using the following formula: ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
@@ -158,7 +153,8 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String = "${FORMULA_COMMENT_PREFIX}100 * ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+        ): String =
+            "This data point was calculated using the following formula: 100 * ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
