@@ -123,28 +123,47 @@ class DataPointUtilsTest {
 
     @Test
     fun `check that active data dimensions include calculatable framework dimensions`() {
-        val filter = DataDimensionFilter(companyIds = listOf(companyId), reportingPeriods = listOf("2024"))
+        val sourceFramework = "framework-a"
+        val targetFramework = "framework-b"
+        val sourceDataPointType = "sourceDataPointType"
+        val targetDataPointType = "targetDataPointType"
+        val filter =
+            DataDimensionFilter(
+                companyIds = listOf(companyId),
+                dataTypes = listOf(targetFramework),
+                reportingPeriods = listOf("2024"),
+            )
         doReturn(
             listOf(
-                makeMetaData(calculatedSourceType, reportingPeriod = "2024"),
+                SimpleFrameworkSpecification(framework = IdWithRef(id = sourceFramework, ref = "dummy"), name = "Source"),
+                SimpleFrameworkSpecification(framework = IdWithRef(id = targetFramework, ref = "dummy"), name = "Target"),
             ),
-        ).whenever(metaDataManager)
+        ).whenever(specificationClient).listFrameworkSpecifications()
+        doReturn(listOf(targetDataPointType))
+            .whenever(dataCompositionService)
+            .getRelevantDataPointTypes(targetFramework)
+        doReturn(emptyList<DataPointMetaInformationEntity>())
+            .whenever(metaDataManager)
             .getActiveDataPointMetaInformationList(
-                argThat { companyIds == filter.companyIds && dataTypes == null && reportingPeriods == filter.reportingPeriods },
+                argThat {
+                    companyIds == filter.companyIds &&
+                        dataTypes == listOf(targetDataPointType) &&
+                        reportingPeriods == filter.reportingPeriods
+                },
             )
-        doReturn(setOf(BasicDataPointDimensions(companyId, calculatedSourceType, "2024")))
+        doReturn(setOf(BasicDataPointDimensions(companyId, sourceDataPointType, "2024")))
             .whenever(dataPointCalculator)
-            .getActiveSourceDataPointDimensions(any<Collection<String>>(), any<DataDimensionFilter>())
+            .getActiveSourceDataPointDimensions(listOf(targetDataPointType), filter)
 
         val result = dataPointUtils.getActiveDataDimensionsFromDataPoints(filter).toSet()
 
         assertEquals(
             setOf(
-                BasicDataDimensions(companyId, calculatedSourceType, "2024"),
-                BasicDataDimensions(companyId, framework, "2024"),
+                BasicDataDimensions(companyId, targetFramework, "2024"),
             ),
             result,
         )
+        verify(dataPointCalculator).getActiveSourceDataPointDimensions(listOf(targetDataPointType), filter)
     }
 
     @Test
