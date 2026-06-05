@@ -213,8 +213,6 @@ class DataControllerTest {
             ).forEach { (framework, aggregatedFrameworkDataSummary) ->
                 if (
                     framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value ||
-                    // The uploaded non-financial test data contains source datapoints for calculation rules in this framework.
-                    framework == DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73.value ||
                     framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value
                 ) {
                     assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
