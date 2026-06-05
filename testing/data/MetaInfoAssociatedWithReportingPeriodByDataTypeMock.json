@@ -3,13 +3,13 @@
 		[
 			"2015",
 			{
-				"dataId": "27d06a75-47f0-4650-8899-a2513f327a2c",
-				"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+				"dataId": "d27d06a7-547f-4065-b089-9a2513f327a2",
+				"companyId": "c5508d48-6cdd-40b3-af54-eea4c478e165",
 				"dataType": "eutaxonomy-financials",
 				"reportingPeriod": "2015",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 4499,
+				"uploadTime": 5240,
 				"uploaderUserId": null,
 				"ref": "https://dataland.com/"
 			}
@@ -17,13 +17,13 @@
 		[
 			"2016",
 			{
-				"dataId": "be4fd2b8-2693-4383-9855-8447eee548cc",
-				"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+				"dataId": "abe4fd2b-8269-4338-b385-58447eee548c",
+				"companyId": "c5508d48-6cdd-40b3-af54-eea4c478e165",
 				"dataType": "eutaxonomy-financials",
 				"reportingPeriod": "2016",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 6555,
+				"uploadTime": 5560,
 				"uploaderUserId": null,
 				"ref": "https://dataland.com/"
 			}
@@ -33,13 +33,13 @@
 		[
 			"2021",
 			{
-				"dataId": "511b0458-4c2d-42ee-ad52-fe18d3024af4",
-				"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+				"dataId": "aa511b04-584c-42d2-beed-52fe18d3024a",
+				"companyId": "c5508d48-6cdd-40b3-af54-eea4c478e165",
 				"dataType": "lksg",
 				"reportingPeriod": "2021",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 3786,
+				"uploadTime": 5023,
 				"uploaderUserId": null,
 				"ref": "https://dataland.com/"
 			}
@@ -47,13 +47,13 @@
 		[
 			"2022",
 			{
-				"dataId": "6116d4bc-e15f-4d83-81c0-d0c0e595cee3",
-				"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+				"dataId": "06d6116d-4bce-415f-bd83-1c0d0c0e595c",
+				"companyId": "c5508d48-6cdd-40b3-af54-eea4c478e165",
 				"dataType": "lksg",
 				"reportingPeriod": "2022",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 7827,
+				"uploadTime": 5983,
 				"uploaderUserId": null,
 				"ref": "https://dataland.com/"
 			}
