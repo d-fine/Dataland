@@ -1,29 +1,29 @@
 {
 	"sfdr": {
-		"numberOfProvidedReportingPeriods": 28
+		"numberOfProvidedReportingPeriods": 24
 	},
 	"eutaxonomy-financials": {
-		"numberOfProvidedReportingPeriods": 10
+		"numberOfProvidedReportingPeriods": 6
 	},
 	"eutaxonomy-financials-2026-73": {
-		"numberOfProvidedReportingPeriods": 21
+		"numberOfProvidedReportingPeriods": 6
 	},
 	"eutaxonomy-non-financials": {
-		"numberOfProvidedReportingPeriods": 0
+		"numberOfProvidedReportingPeriods": 24
 	},
 	"eutaxonomy-non-financials-2026-73": {
-		"numberOfProvidedReportingPeriods": 24
+		"numberOfProvidedReportingPeriods": 30
 	},
 	"nuclear-and-gas": {
-		"numberOfProvidedReportingPeriods": 6
+		"numberOfProvidedReportingPeriods": 22
 	},
 	"lksg": {
-		"numberOfProvidedReportingPeriods": 6
+		"numberOfProvidedReportingPeriods": 20
 	},
 	"pcaf": {
-		"numberOfProvidedReportingPeriods": 24
+		"numberOfProvidedReportingPeriods": 26
 	},
 	"vsme": {
-		"numberOfProvidedReportingPeriods": 30
+		"numberOfProvidedReportingPeriods": 13
 	}
 }

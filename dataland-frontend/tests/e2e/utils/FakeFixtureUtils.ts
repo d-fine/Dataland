@@ -23,7 +23,7 @@ import { generateFutureDate, generatePastDate } from '@e2e/fixtures/common/DateF
 import { faker } from '@faker-js/faker';
 import { generateDataSource } from '@e2e/fixtures/common/DataSourceFixtures';
 
-export const DEFAULT_PROBABILITY = 0.0;
+export const DEFAULT_PROBABILITY = 0.2;
 const possibleReports = ['AnnualReport', 'SustainabilityReport', 'IntegratedReport', 'ESEFReport'];
 
 /**

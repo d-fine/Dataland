@@ -2,32 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Bednarcester",
-			"headquartersPostalCode": "75425-5482",
-			"sector": "relationships",
+			"headquarters": "Theresaburgh",
+			"headquartersPostalCode": "06118-6050",
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"qP8fXp68xtYtx5up4vn0"
+				],
 				"Isin": [
-					"EO7zAhiTMrx9"
+					"HR32kGQnQQhH"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"PwVHlfxWN"
+					"9MOdIR0KO"
 				],
-				"CompanyRegistrationNumber": [
-					"lwKJlZtCYc2Vmvt"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "RO",
+			"countryCode": "SK",
 			"companyContactDetails": [
-				"Jonathon_Jacobs@example.com"
+				"Darla.Christiansen@example.com",
+				"Lola.Mann73@example.com",
+				"Colleen.Leuschke83@example.com"
 			],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": "https://tender-bug.name/",
-			"fiscalYearEnd": "12-Sep",
+			"companyAlternativeNames": [
+				"Hoppe, Von and Monahan",
+				"Kihn LLC",
+				"Runte Inc"
+			],
+			"companyLegalForm": null,
+			"website": "https://aggravating-outrun.org",
+			"fiscalYearEnd": "17-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -44,6 +50,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2024"
 	}
 ]
