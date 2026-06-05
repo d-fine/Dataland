@@ -2,35 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-PCAF-Framework-Company",
-			"headquarters": "Fort Okeybury",
-			"headquartersPostalCode": "53203-6683",
-			"sector": "supply-chains",
+			"headquarters": "Fort Myers",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"TeeV6JXZUcdpzQISqlQ9"
+					"G2yp13igRw2Mh4usO7xU"
 				],
 				"Isin": [
-					"fReRuTTm1VYO"
+					"UAy4Wu1PCx0l",
+					"9dsyLtOW9KO3"
 				],
 				"PermId": [
-					"xt0OsDmSMi"
+					"IhkwERLa30"
 				],
 				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"I2NT0kRkM"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ER",
+			"countryCode": "KM",
 			"companyContactDetails": [
-				"Joey.Trantow64@example.com",
-				"Jaylin.Anderson@example.com"
+				"Rosie_Bailey@example.com",
+				"Eden97@example.com",
+				"Charles76@example.com",
+				"Cheyenne.Kovacek@example.com"
 			],
-			"companyAlternativeNames": [
-				"Carroll - Predovic"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://cautious-deduction.info",
-			"fiscalYearEnd": "21-May",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://brilliant-runway.net/",
+			"fiscalYearEnd": "10-Sep",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -39,264 +42,264 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "1134-1279",
-							"fileName": "IntegratedReport",
+							"page": "884",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "e-commerce",
+							"tagName": "mindshare",
 							"publicationDate": null
 						},
-						"comment": "quantify haptic card",
-						"quality": "Incomplete"
+						"comment": "synthesize bluetooth port",
+						"quality": "Audited"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-08-26",
+						"value": "2024-09-27",
 						"dataSource": {
-							"page": "664",
-							"fileName": "IntegratedReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "back up solid state panel",
-						"quality": "Audited"
-					}
-				},
-				"company": {
-					"mainPcafSector": {
-						"value": "Sovereign",
-						"dataSource": {
-							"page": "404",
-							"fileName": "IntegratedReport",
+							"page": "175-1238",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
 							"publicationDate": null
 						},
-						"comment": "generate cross-platform application",
+						"comment": "transmit auxiliary matrix",
+						"quality": "Incomplete"
+					}
+				},
+				"company": {
+					"mainPcafSector": {
+						"value": "CommunicationServices",
+						"dataSource": {
+							"page": "276",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
+							"publicationDate": null
+						},
+						"comment": "back up online capacitor",
 						"quality": "Reported"
 					},
 					"companyExchangeStatus": {
-						"value": "Unlisted",
+						"value": "Listed",
 						"dataSource": {
-							"page": "851-1178",
-							"fileName": "IntegratedReport",
+							"page": "195-1146",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
+							"tagName": "metrics",
 							"publicationDate": null
 						},
-						"comment": "synthesize cross-platform transmitter",
-						"quality": "Estimated"
+						"comment": "input optical alarm",
+						"quality": "Audited"
 					}
 				}
 			},
 			"companyValue": {
 				"listedCompany": {
 					"marketCapitalizationInEUR": {
-						"value": 14541.88,
+						"value": 70430.65,
 						"dataSource": {
-							"page": "458-991",
-							"fileName": "IntegratedReport",
+							"page": "1113-1127",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
+							"tagName": "AI",
 							"publicationDate": null
 						},
-						"comment": "calculate bluetooth card",
-						"quality": "Estimated"
+						"comment": "hack virtual monitor",
+						"quality": "Incomplete"
 					},
 					"bookValueOfDebtInEUR": {
-						"value": 92233.54,
+						"value": 99617.79,
 						"dataSource": {
-							"page": "1193",
-							"fileName": "IntegratedReport",
+							"page": "663",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
+							"tagName": "web services",
 							"publicationDate": null
 						},
-						"comment": "bypass solid state card",
-						"quality": "Audited"
+						"comment": "transmit neural port",
+						"quality": "Incomplete"
 					},
 					"minoritiesInterestInEUR": {
-						"value": 81813.6,
+						"value": 50150.69,
 						"dataSource": {
-							"page": "563-1071",
-							"fileName": "IntegratedReport",
+							"page": "594-1095",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
+							"tagName": "mindshare",
 							"publicationDate": null
 						},
-						"comment": "synthesize online driver",
-						"quality": "Reported"
+						"comment": "connect solid state protocol",
+						"quality": "NoDataFound"
 					}
 				},
 				"unlistedCompany": {
 					"totalEquityAndDebtInEUR": {
-						"value": 16567.79,
+						"value": 11237.31,
 						"dataSource": {
-							"page": "346-858",
-							"fileName": "IntegratedReport",
+							"page": "905-1261",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "convergence",
+							"tagName": "blockchains",
 							"publicationDate": null
 						},
-						"comment": "parse 1080p driver",
-						"quality": "NoDataFound"
+						"comment": "override neural feed",
+						"quality": "Audited"
 					}
 				}
 			},
 			"environmental": {
 				"greenhouseGasEmissions": {
 					"scope1GhgEmissionsInTonnes": {
-						"value": 55403.27,
+						"value": 70783.14,
 						"dataSource": {
-							"page": "637",
-							"fileName": "IntegratedReport",
+							"page": "649",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
+							"tagName": "technologies",
 							"publicationDate": null
 						},
-						"comment": "generate multi-byte alarm",
-						"quality": "Audited"
+						"comment": "generate mobile sensor",
+						"quality": "Incomplete"
 					},
 					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 98860.41,
+						"value": 31611.31,
 						"dataSource": {
-							"page": "879",
-							"fileName": "IntegratedReport",
+							"page": "1126",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
+							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "transmit auxiliary capacitor",
-						"quality": "Audited"
+						"comment": "synthesize virtual matrix",
+						"quality": "Incomplete"
 					},
 					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 49589.86,
+						"value": 40356.34,
 						"dataSource": {
-							"page": "59-131",
-							"fileName": "IntegratedReport",
+							"page": "205-317",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
+							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "compress cross-platform port",
-						"quality": "Reported"
+						"comment": "index cross-platform port",
+						"quality": "Estimated"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 44099.39,
+						"value": 12650.6,
 						"dataSource": {
-							"page": "172-182",
-							"fileName": "IntegratedReport",
+							"page": "713",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
+							"tagName": "blockchains",
 							"publicationDate": null
 						},
-						"comment": "transmit wireless application",
-						"quality": "Estimated"
+						"comment": "index wireless feed",
+						"quality": "NoDataFound"
 					}
 				}
 			},
 			"companyValueEstimation": {
 				"listedCompany": {
 					"marketCapitalizationInEUR": {
-						"value": 9723.25,
+						"value": 81287.53,
 						"dataSource": {
-							"page": "965",
-							"fileName": "IntegratedReport",
+							"page": "260-530",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
+							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": "index back-end array",
-						"quality": "Reported"
+						"comment": "transmit redundant driver",
+						"quality": "Audited"
 					},
 					"bookValueOfDebtInEUR": {
-						"value": 58672.26,
+						"value": 28884.9,
 						"dataSource": {
-							"page": "627-943",
-							"fileName": "IntegratedReport",
+							"page": "285",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
+							"tagName": "content",
 							"publicationDate": null
 						},
-						"comment": "copy bluetooth panel",
-						"quality": "Audited"
+						"comment": "calculate bluetooth matrix",
+						"quality": "NoDataFound"
 					},
 					"minoritiesInterestInEUR": {
-						"value": 91666.75,
+						"value": 83897.42,
 						"dataSource": {
-							"page": "1124-1159",
-							"fileName": "IntegratedReport",
+							"page": "334",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
+							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "synthesize 1080p transmitter",
-						"quality": "Audited"
+						"comment": "navigate solid state application",
+						"quality": "Estimated"
 					}
 				},
 				"unlistedCompany": {
 					"totalEquityAndDebtInEUR": {
-						"value": 80168.27,
+						"value": 41828.94,
 						"dataSource": {
-							"page": "670-826",
-							"fileName": "IntegratedReport",
+							"page": "1133",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
+							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "reboot multi-byte bus",
-						"quality": "Reported"
+						"comment": "compress multi-byte array",
+						"quality": "Estimated"
 					}
 				}
 			},
 			"environmentalEstimation": {
 				"greenhouseGasEmissions": {
 					"scope1GhgEmissionsInTonnes": {
-						"value": 40607.35,
+						"value": 88452.79,
 						"dataSource": {
-							"page": "678",
-							"fileName": "IntegratedReport",
+							"page": "365-723",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
+							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "copy optical bandwidth",
-						"quality": "NoDataFound"
-					},
-					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 66819.94,
-						"dataSource": {
-							"page": "289-807",
-							"fileName": "IntegratedReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
-							"publicationDate": null
-						},
-						"comment": "copy digital capacitor",
+						"comment": "override primary feed",
 						"quality": "Incomplete"
 					},
-					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 46871.3,
+					"scope2GhgEmissionsLocationBasedInTonnes": {
+						"value": 81877.11,
 						"dataSource": {
-							"page": "746",
-							"fileName": "IntegratedReport",
+							"page": "209-969",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "ROI",
+							"tagName": "experiences",
 							"publicationDate": null
 						},
-						"comment": "input wireless driver",
-						"quality": "Audited"
+						"comment": "program cross-platform driver",
+						"quality": "NoDataFound"
+					},
+					"scope2GhgEmissionsMarketBasedInTonnes": {
+						"value": 47981.42,
+						"dataSource": {
+							"page": "1112",
+							"fileName": "AnnualReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "copy optical matrix",
+						"quality": "NoDataFound"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 70153.9,
+						"value": 62441.75,
 						"dataSource": {
-							"page": "164-825",
-							"fileName": "IntegratedReport",
+							"page": "684",
+							"fileName": "AnnualReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
+							"tagName": "initiatives",
 							"publicationDate": null
 						},
-						"comment": "override redundant protocol",
-						"quality": "Estimated"
+						"comment": "bypass online array",
+						"quality": "NoDataFound"
 					}
 				}
 			}

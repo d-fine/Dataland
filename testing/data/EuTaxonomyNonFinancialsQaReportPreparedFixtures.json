@@ -2,42 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "New Steve",
-			"headquartersPostalCode": "21773",
-			"sector": "markets",
+			"headquarters": "Bednarburgh",
+			"headquartersPostalCode": "37783-0713",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"SLy2SMGl1ZyfSDsCMXyL"
+					"LmPvXXYeJxZ39PfAZS9Z"
 				],
 				"Isin": [
-					"abuFJywojyTx",
-					"QTyga2HhtCb1"
+					"xatOKm3hKSW2",
+					"zabX6u6nyi8h"
 				],
-				"PermId": [
-					"lXBCXlbImX"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"PQi0atPOE"
 				],
-				"Ticker": [
-					"eTxXXWz"
-				],
-				"Duns": [],
 				"VatNumber": [
-					"Aylbz7BLs"
+					"T2BKlB2Xr"
 				],
 				"CompanyRegistrationNumber": [
-					"adJ0CPbq0wwG0HF"
+					"S7bQOmHJ4ECZhoX"
 				]
 			},
-			"countryCode": "UM",
+			"countryCode": "CI",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Farrell, Larkin and Kassulke",
-				"Johnson - Hirthe-Champlin",
-				"Mertz - Weimann",
-				"Towne Inc"
+				"Rohan - Hilll",
+				"Schroeder Inc"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://disloyal-sermon.org/",
-			"fiscalYearEnd": "17-Aug",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://pink-pile.info",
+			"fiscalYearEnd": "27-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -114,6 +110,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]
