@@ -129,7 +129,9 @@ class DataPointConversionTest {
                     specs,
                     listOf(firstDataPoint, secondDataPoint),
                     DataPointConversion.SUM,
-                    "This data point was calculated as the sum of the following data points: \"Input1\"\n" +
+                    "This data point was calculated as the sum of the following data points: \n" +
+                        "+ \n" +
+                        "+ \"Input1\"\n" +
                         "+ \"Input2\".",
                 ),
                 Arguments.of(
@@ -137,7 +139,9 @@ class DataPointConversionTest {
                     specs,
                     listOf(firstDataPoint, secondDataPoint, thirdDataPoint),
                     DataPointConversion.SUM,
-                    "This data point was calculated as the sum of the following data points: \"Input1\"\n" +
+                    "This data point was calculated as the sum of the following data points: \n" +
+                        "+ \n" +
+                        "+ \"Input1\"\n" +
                         "+ \"Input2\"\n" +
                         "+ \"Input3\".",
                 ),
