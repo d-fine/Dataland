@@ -2,18 +2,23 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-05-25",
+				"dataDate": "2024-05-04",
 				"fiscalYearDeviation": {
-					"value": "Deviation"
+					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-12-27"
+					"value": "2024-09-17"
 				},
 				"referencedReports": {
-					"IntegratedReport": {
+					"AnnualReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-02-22"
+					},
+					"IntegratedReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 						"fileName": "IntegratedReport",
-						"publicationDate": "2023-02-08"
+						"publicationDate": "2023-06-12"
 					}
 				}
 			}
@@ -21,16 +26,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 6442,
+					"value": 9232,
 					"dataSource": {
-						"page": "1061",
-						"fileName": "IntegratedReport",
+						"page": "235-1070",
+						"fileName": "AnnualReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "blockchains",
+						"tagName": "deliverables",
 						"publicationDate": null
 					},
-					"comment": "synthesize auxiliary application",
-					"quality": "Incomplete"
+					"comment": "parse mobile bus",
+					"quality": "Reported"
 				}
 			}
 		},
@@ -39,26 +44,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "752",
+						"page": "636",
 						"fileName": "IntegratedReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "paradigms",
 						"publicationDate": null
 					},
-					"comment": "synthesize haptic pixel",
+					"comment": "parse digital application",
 					"quality": "Incomplete"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "763",
+						"page": "1099-1211",
 						"fileName": "IntegratedReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "platforms",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "systems",
 						"publicationDate": null
 					},
-					"comment": "hack primary transmitter",
-					"quality": "Estimated"
+					"comment": "parse 1080p card",
+					"quality": "NoDataFound"
 				}
 			}
 		}

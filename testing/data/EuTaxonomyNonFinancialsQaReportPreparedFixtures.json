@@ -2,38 +2,42 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Bednarburgh",
-			"headquartersPostalCode": "37783-0713",
-			"sector": null,
+			"headquarters": "New Steve",
+			"headquartersPostalCode": "21773",
+			"sector": "markets",
 			"identifiers": {
 				"Lei": [
-					"LmPvXXYeJxZ39PfAZS9Z"
+					"SLy2SMGl1ZyfSDsCMXyL"
 				],
 				"Isin": [
-					"xatOKm3hKSW2",
-					"zabX6u6nyi8h"
+					"abuFJywojyTx",
+					"QTyga2HhtCb1"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"PQi0atPOE"
+				"PermId": [
+					"lXBCXlbImX"
 				],
+				"Ticker": [
+					"eTxXXWz"
+				],
+				"Duns": [],
 				"VatNumber": [
-					"T2BKlB2Xr"
+					"Aylbz7BLs"
 				],
 				"CompanyRegistrationNumber": [
-					"S7bQOmHJ4ECZhoX"
+					"adJ0CPbq0wwG0HF"
 				]
 			},
-			"countryCode": "CI",
+			"countryCode": "UM",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Rohan - Hilll",
-				"Schroeder Inc"
+				"Farrell, Larkin and Kassulke",
+				"Johnson - Hirthe-Champlin",
+				"Mertz - Weimann",
+				"Towne Inc"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://pink-pile.info",
-			"fiscalYearEnd": "27-Nov",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://disloyal-sermon.org/",
+			"fiscalYearEnd": "17-Aug",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -110,6 +114,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	}
 ]
